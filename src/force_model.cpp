@@ -289,7 +289,9 @@ bool ForceModel::initializeJPL(JPLVersion version, const std::string& filepath) 
         return true; // Già inizializzato
     }
     
-    jplReader_ = JPLEphemerisReader(version);
+    // TODO: JPL ephemeris not yet implemented - need to implement jpl_ephemeris.cpp first
+    // jplReader_ = JPLEphemerisReader(version);
+    (void)version; // Suppress unused warning
     
     bool success;
     if (!filepath.empty()) {

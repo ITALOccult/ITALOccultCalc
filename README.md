@@ -153,6 +153,34 @@ Funzionalità:
 - Shadow path con bande incertezza
 - Metadati completi (tempo, geometria, probabilità)
 
+### Prediction Reports & Preston Comparison
+Generazione schede di previsione formato IOTA/Occult4 classico e confronto con Steve Preston:
+```bash
+# Genera scheda IOTA classica
+./build/examples/example_prediction_comparison generate 433
+
+# Confronta con previsione Preston
+./build/examples/example_prediction_comparison compare preston_433.txt 433
+
+# Demo completa con dati di esempio
+./build/examples/example_prediction_comparison demo
+```
+Funzionalità:
+- Schede formato IOTA/Occult4 classico (testo ASCII)
+- Formato Preston compatto compatibile
+- Parser automatico file Preston da asteroidoccultation.com
+- Confronto quantitativo tra previsioni:
+  * Differenze temporali (secondi)
+  * Differenze geometriche (larghezza path, durata, PA)
+  * Deviazione coordinate stella (arcsec)
+  * RMS error percorso ombra (km)
+  * Overall agreement score (0-100%)
+- Report dettagliato delle differenze
+- Tabelle comparative
+- Validazione incrociata con metodologia Steve Preston
+
+Output: schede testali visualizzabili/stampabili e report confronto completi per validazione previsioni
+
 Output: file KML visualizzabili in Google Earth con:
 - Traccia centrale occultazione (rossa)
 - Bande di incertezza 1-sigma (blu)
