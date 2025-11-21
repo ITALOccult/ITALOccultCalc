@@ -828,65 +828,77 @@ Max path error (km) & -- & -- & 21.5 km \\
     \draw[thick,->] (-7,0) -- (7,0) node[right] {Longitudine};
     \draw[thick,->] (0,-7) -- (0,6) node[above] {Latitudine};
     
-    % Etichette coordinate
+    % Etichette coordinate (Sud America: 75°W-45°W, 55°S-15°S)
     \foreach \x in {-6,-4,-2,0,2,4,6}
-        \node[below] at (\x,0) {\tiny \pgfmathparse{-80+\x*5}\pgfmathprintnumber{\pgfmathresult}°W};
+        \node[below] at (\x,0) {\tiny \pgfmathparse{-75+\x*2.5}\pgfmathprintnumber{\pgfmathresult}°W};
     \foreach \y in {-6,-4,-2,0,2,4}
-        \node[left] at (0,\y) {\tiny \pgfmathparse{-45+\y*5}\pgfmathprintnumber{\pgfmathresult}°S};
+        \node[left] at (0,\y) {\tiny \pgfmathparse{-55+\y*6.7}\pgfmathprintnumber{\pgfmathresult}°S};
     
-    % Terre emerse - Sud America (Argentina/Cile) approssimato
-    % Cordillera delle Ande
+    % Terre emerse - Sud America (Argentina/Cile) con geometria corretta
+    % Costa Pacifica (Cile)
     \fill[landcolor,opacity=0.3] 
-        (-6,-7) -- (-5,-6.5) -- (-4.5,-5) -- (-4,-3) -- (-3.8,-1) -- (-3.5,1) -- (-3,3) -- (-2.5,5) -- (-2,5.5) -- (-1.5,5) -- (-1,3.5) -- (-0.5,1) -- (0,-1) -- (0.5,-3) -- (1,-5) -- (1.5,-6) -- (1,-6.5) -- (-1,-7) -- cycle;
+        (-5.5,-7) -- (-5.2,-5) -- (-5.0,-3) -- (-4.8,-1) -- (-4.6,1) -- (-4.5,3) -- (-4.3,5) 
+        -- (-3.8,5) -- (-3.5,3) -- (-3.2,1) -- (-2.8,-1) -- (-2.5,-3) -- (-2.0,-5) -- (-1.5,-7) -- cycle;
+    % Parte Argentina
+    \fill[landcolor,opacity=0.3] 
+        (-3.5,3) -- (-2.5,3.5) -- (-1.5,3.8) -- (-0.5,4) -- (0.5,3.8) -- (1.5,3.2) 
+        -- (2,2) -- (2.5,0) -- (3,-2) -- (3.2,-4) -- (3,-6) -- (2.5,-7) -- (-1.5,-7) 
+        -- (-2.0,-5) -- (-2.5,-3) -- (-2.8,-1) -- (-3.2,1) -- (-3.5,3);
     
-    % Path width visualization (434 km = 3.9 unità per lato)
+    % PA = 156.8° significa path quasi verticale (da sud verso nord) con leggera inclinazione verso est
+    % Path più lineare e realistico
+    
+    % Path width visualization (434 km = circa 3.9 unità, ma diviso per lato = 1.95)
+    % Limiti nord e sud del path
     \draw[gray,dotted,very thin] 
-        (-5.5,-6.05) .. controls (-2.5,-4) and (0.5,-1) .. (3.5,2.95)
-        -- (3.9,3.35) .. controls (0.9,-0.6) and (-2.1,-3.6) .. (-5.1,-5.65);
+        (-3.3,-6.5) -- (-3.1,-4) -- (-2.9,-1.5) -- (-2.7,1) -- (-2.5,3.5);
     \draw[gray,dotted,very thin] 
-        (-5.9,-6.45) .. controls (-2.9,-4.4) and (0.1,-1.4) .. (3.1,2.55)
-        -- (3.5,2.95) .. controls (0.5,-1) and (-2.5,-4) .. (-5.5,-6.05);
+        (-1.4,-6.5) -- (-1.2,-4) -- (-1.0,-1.5) -- (-0.8,1) -- (-0.6,3.5);
     
     % Zona 1-sigma Preston (più ampia per evento vecchio)
     \fill[sigma1preston,opacity=0.12] 
-        (-5.8,-6.3) .. controls (-2.8,-4.25) and (0.2,-1.25) .. (3.2,2.7)
-        .. controls (3.6,3.1) and (3.9,3.5) .. (4.1,3.9)
-        -- (4.3,3.7) .. controls (4.1,3.3) and (3.8,2.9) .. (3.4,2.5)
-        .. controls (0.4,-1.5) and (-2.6,-4.5) .. (-5.6,-6.5)
-        -- cycle;
+        (-3.5,-6.5) -- (-3.3,-4) -- (-3.1,-1.5) -- (-2.9,1) -- (-2.7,3.5) -- (-2.6,3.6)
+        -- (-2.8,1) -- (-3.0,-1.5) -- (-3.2,-4) -- (-3.4,-6.5) -- cycle;
+    \fill[sigma1preston,opacity=0.12]
+        (-1.2,-6.5) -- (-1.0,-4) -- (-0.8,-1.5) -- (-0.6,1) -- (-0.4,3.5) -- (-0.5,3.6)
+        -- (-0.7,1) -- (-0.9,-1.5) -- (-1.1,-4) -- (-1.3,-6.5) -- cycle;
     
     % Zona 1-sigma IOccultCalc
     \fill[sigma1color,opacity=0.12] 
-        (-5.7,-6.2) .. controls (-2.7,-4.15) and (0.3,-1.15) .. (3.3,2.8)
-        .. controls (3.7,3.2) and (4.0,3.6) .. (4.2,4.0)
-        -- (4.35,3.85) .. controls (4.15,3.45) and (3.85,3.05) .. (3.45,2.65)
-        .. controls (0.45,-1.4) and (-2.55,-4.4) .. (-5.55,-6.4)
-        -- cycle;
+        (-3.4,-6.5) -- (-3.2,-4) -- (-3.0,-1.5) -- (-2.8,1) -- (-2.6,3.5) -- (-2.55,3.55)
+        -- (-2.75,1) -- (-2.95,-1.5) -- (-3.15,-4) -- (-3.35,-6.5) -- cycle;
+    \fill[sigma1color,opacity=0.12]
+        (-1.3,-6.5) -- (-1.1,-4) -- (-0.9,-1.5) -- (-0.7,1) -- (-0.5,3.5) -- (-0.55,3.55)
+        -- (-0.75,1) -- (-0.95,-1.5) -- (-1.15,-4) -- (-1.35,-6.5) -- cycle;
     
-    % Path centrale Preston (rosso tratteggiato)
+    % Path centrale Preston (rosso tratteggiato) - leggermente offset
     \draw[prestoncolor,very thick,dashed,line width=1.5pt] 
-        (-5.75,-6.25) .. controls (-2.75,-4.2) and (0.25,-1.2) .. (3.25,2.75)
-        .. controls (3.65,3.15) and (3.95,3.55) .. (4.15,3.85);
+        (-2.45,-6.5) -- (-2.25,-4) -- (-2.05,-1.5) -- (-1.85,1) -- (-1.65,3.5);
     
     % Path centrale IOccultCalc (blu continuo)
     \draw[ioccultcolor,ultra thick,line width=2pt] 
-        (-5.65,-6.22) .. controls (-2.65,-4.17) and (0.35,-1.17) .. (3.35,2.78)
-        .. controls (3.75,3.18) and (4.05,3.58) .. (4.25,3.88);
+        (-2.35,-6.5) -- (-2.15,-4) -- (-1.95,-1.5) -- (-1.75,1) -- (-1.55,3.5);
     
-    % Indicatore larghezza path (molto largo per Hygiea)
-    \draw[<->,thick,red] (0.5,-1.3) -- (1.0,-0.7) node[midway,right,font=\tiny] {434 km};
+    % Indicatore larghezza path
+    \draw[<->,thick,red] (-3.2,-2.5) -- (-1.1,-2.5) node[midway,above,font=\tiny] {$\sim$434 km};
     
-    % Punti di riferimento
-    \foreach \pt/\lab in {(-5.65,-6.22)/Valdivia, (-2.65,-4.17)/Bariloche, (0.35,-1.17)/Neuquén, (3.35,2.78)/Córdoba, (4.25,3.88)/Tucumán}
-        \fill[black] \pt circle (2pt) node[below left,font=\tiny] {\lab};
+    % Freccia deviazione tra i due path
+    \draw[->,thick,red] (-2.35,-3) -- (-2.15,-3) node[midway,below,font=\tiny] {12.8 km};
+    
+    % Punti di riferimento geografici corretti
+    \fill[black] (-4.8,-5.5) circle (2pt) node[left,font=\tiny] {Valdivia};
+    \fill[black] (-3.5,-4.5) circle (2pt) node[right,font=\tiny] {Bariloche};
+    \fill[black] (-2.4,-2) circle (2pt) node[left,font=\tiny] {Neuquén};
+    \fill[black] (-1.0,0.5) circle (2pt) node[right,font=\tiny] {Buenos Aires};
+    \fill[black] (-0.8,2.8) circle (2pt) node[right,font=\tiny] {Asunción};
     
     % Note box per evento vecchio
-    \node[draw,fill=yellow!20,align=left,font=\tiny] at (-4.5,5) {
-        \textbf{NOTA:} Evento di quasi\\1 anno fa. Maggiore\\incertezza attesa.
+    \node[draw,fill=yellow!20,align=left,font=\tiny] at (4.5,4.5) {
+        \textbf{NOTA:} Evento\\passato\\(11 mesi fa).\\Maggiore\\incertezza\\attesa.
     };
     
     % Legenda
-    \node[draw,fill=white,align=left,font=\footnotesize] at (4,-5.5) {
+    \node[draw,fill=white,align=left,font=\footnotesize] at (4.5,-4.5) {
         \textcolor{ioccultcolor}{\rule{1cm}{2pt}} IOccultCalc\\
         \textcolor{prestoncolor}{\rule{1cm}{2pt}} Preston\\
         \textcolor{sigma1color}{$\blacksquare$} 1-$\sigma$ IOC\\
@@ -894,10 +906,21 @@ Max path error (km) & -- & -- & 21.5 km \\
         {\color{gray}\dots} Path width
     };
     
-    % Annotazioni
-    \node[font=\tiny,align=center] at (-5.5,-6.8) {Path width: 434 km (più largo!)\\RMS deviation: 12.8 km (2.9\%)\\Evento passato (11 mesi fa)};
+    % Annotazioni con analisi
+    \node[font=\tiny,align=left,draw,fill=white] at (-5.5,4.5) {
+        \textbf{Analisi PA=156.8°:}\\
+        Path quasi verticale\\
+        (S$\rightarrow$N con lieve\\
+        inclinazione verso E)
+    };
+    
+    \node[font=\tiny,align=center] at (0,-6.8) {
+        Path width: 434 km (il più ampio!)\\
+        RMS deviation: 12.8 km (2.9\% del diametro)\\
+        Max error: 21.5 km (ancora accettabile)
+    };
 \end{tikzpicture}
-\caption{(10) Hygiea - Mappa del path attraverso Argentina e Cile. Con 434 km di diametro, Hygiea produce l'ombra più ampia di tutti gli eventi analizzati. La deviazione di 12.8 km rappresenta solo il 2.9\% del diametro dell'asteroide. Le zone 1-$\sigma$ più ampie riflettono la maggiore incertezza per un evento avvenuto quasi un anno fa.}
+\caption{(10) Hygiea - Mappa corretta del path attraverso Argentina e Cile. Il Position Angle di 156.8° determina un percorso quasi verticale da sud verso nord con leggera inclinazione verso est. Con 434 km di diametro, Hygiea produce l'ombra più ampia analizzata. La deviazione di 12.8 km (2.9\%) è dovuta all'evento passato (11 mesi fa) e alla conseguente maggiore incertezza orbitale. Il path attraversa la regione delle Ande da Valdivia (Cile) verso Asunción (Paraguay).}
 \end{figure}
 
 \newpage
