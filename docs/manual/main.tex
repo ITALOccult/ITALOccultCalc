@@ -21,6 +21,8 @@
 \usepackage{natbib}
 \usepackage{siunitx}
 \usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
 \usetikzlibrary{arrows,shapes,positioning}
 
 % Geometry
@@ -73,7 +75,7 @@
 \newcommand{\ioccultcalc}{\texttt{IOccultCalc}}
 \newcommand{\vsop}{\texttt{VSOP87}}
 \newcommand{\gaia}{\textit{Gaia}}
-\newcommand{\unit}[1]{\,\mathrm{#1}}
+% \unit is already defined by siunitx package
 \newcommand{\deriv}[2]{\frac{\mathrm{d}#1}{\mathrm{d}#2}}
 \newcommand{\pderiv}[2]{\frac{\partial #1}{\partial #2}}
 \newcommand{\vect}[1]{\boldsymbol{#1}}
