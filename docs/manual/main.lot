@@ -1,0 +1,42 @@
+\babel@toc {english}{}\relax 
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {1.1}{\ignorespaces Comparison of occultation prediction software precision}}{3}{table.1.1}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {2.1}{\ignorespaces Error budget for coordinate transformations at epoch J2000 + 20 years}}{17}{table.2.1}%
+\contentsline {table}{\numberline {2.2}{\ignorespaces Coordinate transformation functions in \texttt {IOccultCalc}{}}}{18}{table.2.2}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {3.1}{\ignorespaces History of leap seconds (selected)}}{21}{table.3.1}%
+\contentsline {table}{\numberline {3.2}{\ignorespaces Time scale conversion uncertainties}}{25}{table.3.2}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {4.1}{\ignorespaces VSOP87D vs JPL DE441 comparison}}{29}{table.4.1}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces NAIF body ID codes in JPL DE441}}{32}{table.4.2}%
+\contentsline {table}{\numberline {4.3}{\ignorespaces VSOP87D precision for Earth (1 $\sigma $ over ±50 years)}}{34}{table.4.3}%
+\contentsline {table}{\numberline {4.4}{\ignorespaces EMB correction impact on shadow path}}{37}{table.4.4}%
+\contentsline {table}{\numberline {4.5}{\ignorespaces JPL DE441 storage requirements}}{38}{table.4.5}%
+\contentsline {table}{\numberline {4.6}{\ignorespaces JPL DE441 position uncertainties (1 $\sigma $)}}{39}{table.4.6}%
+\contentsline {table}{\numberline {4.7}{\ignorespaces Planetary ephemeris comparison}}{39}{table.4.7}%
+\contentsline {table}{\numberline {4.8}{\ignorespaces Planetary ephemeris comparison across software}}{39}{table.4.8}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {5.1}{\ignorespaces Singularities in classical orbital elements}}{42}{table.5.1}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {6.1}{\ignorespaces Integration requirements}}{51}{table.6.1}%
+\contentsline {table}{\numberline {6.2}{\ignorespaces Integrator performance for 1-year propagation}}{54}{table.6.2}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {7.1}{\ignorespaces Typical perturbation accelerations at 2 AU}}{56}{table.7.1}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {8.1}{\ignorespaces Relativistic effects for asteroid occultations}}{58}{table.8.1}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {9.1}{\ignorespaces Precession-nutation model comparison}}{60}{table.9.1}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {10.1}{\ignorespaces Gaia DR3 astrometric parameters}}{61}{table.10.1}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {15.1}{\ignorespaces Precision modes in IOccultCalc}}{73}{table.15.1}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {16.1}{\ignorespaces VSOP87D validation against JPL HORIZONS DE441}}{77}{table.16.1}%
+\contentsline {table}{\numberline {16.2}{\ignorespaces Integration accuracy for (472) Roma over 10 years}}{78}{table.16.2}%
+\contentsline {table}{\numberline {16.3}{\ignorespaces Performance benchmarks}}{78}{table.16.3}%
+\contentsline {table}{\numberline {16.4}{\ignorespaces Software comparison (summary)}}{79}{table.16.4}%

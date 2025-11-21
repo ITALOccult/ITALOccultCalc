@@ -1,0 +1,56 @@
+\babel@toc {italian}{}\relax 
+\babel@toc {italian}{}\relax 
+\contentsline {chapter}{\numberline {1}Introduzione}{4}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Obiettivi dell'Analisi}{4}{section.1.1}%
+\contentsline {subsection}{\numberline {1.1.1}Metodologia}{4}{subsection.1.1.1}%
+\contentsline {subsection}{\numberline {1.1.2}Effemeridi e Parametri}{4}{subsection.1.1.2}%
+\contentsline {chapter}{\numberline {2}Selezione degli Eventi}{5}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Criteri di Selezione}{5}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Criteri di Selezione}{5}{subsection.2.1.1}%
+\contentsline {chapter}{\numberline {3}(433) Eros: Validazione su Asteroide NEO}{6}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Informazioni Generali}{6}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Scheda Previsione IOccultCalc}{6}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}Scheda Previsione Preston (Simulata)}{7}{subsection.3.1.2}%
+\contentsline {subsection}{\numberline {3.1.3}Confronto Quantitativo}{8}{subsection.3.1.3}%
+\contentsline {subsection}{\numberline {3.1.4}Valutazione}{8}{subsection.3.1.4}%
+\contentsline {subsection}{\numberline {3.1.5}Mappa Geografica del Path}{9}{subsection.3.1.5}%
+\contentsline {chapter}{\numberline {4}(15) Eunomia: Asteroide di Grande Massa}{10}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Informazioni Generali}{10}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Confronto Quantitativo}{10}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Valutazione}{10}{subsection.4.1.2}%
+\contentsline {subsection}{\numberline {4.1.3}Mappa Geografica del Path}{11}{subsection.4.1.3}%
+\contentsline {chapter}{\numberline {5}(16) Psyche: Caso di Evento Passato}{12}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Informazioni Generali}{12}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}Confronto Quantitativo}{12}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}Valutazione}{12}{subsection.5.1.2}%
+\contentsline {subsection}{\numberline {5.1.3}Mappa Geografica del Path}{13}{subsection.5.1.3}%
+\contentsline {chapter}{\numberline {6}(704) Interamnia: Fascia Principale Esterna}{14}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Informazioni Generali}{14}{section.6.1}%
+\contentsline {subsection}{\numberline {6.1.1}Confronto Quantitativo}{14}{subsection.6.1.1}%
+\contentsline {subsection}{\numberline {6.1.2}Valutazione}{14}{subsection.6.1.2}%
+\contentsline {subsection}{\numberline {6.1.3}Mappa Geografica del Path}{15}{subsection.6.1.3}%
+\contentsline {chapter}{\numberline {7}(10) Hygiea: Asteroide Massivo e Evento Remoto}{16}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Informazioni Generali}{16}{section.7.1}%
+\contentsline {subsection}{\numberline {7.1.1}Confronto Quantitativo}{16}{subsection.7.1.1}%
+\contentsline {subsection}{\numberline {7.1.2}Valutazione}{16}{subsection.7.1.2}%
+\contentsline {subsection}{\numberline {7.1.3}Mappa Geografica del Path}{17}{subsection.7.1.3}%
+\contentsline {chapter}{\numberline {8}Analisi Statistica Complessiva}{18}{chapter.8}%
+\contentsline {section}{\numberline {8.1}Distribuzione Differenze Temporali}{18}{section.8.1}%
+\contentsline {subsection}{\numberline {8.1.1}Distribuzione Agreement Scores}{18}{subsection.8.1.1}%
+\contentsline {subsection}{\numberline {8.1.2}Deviazioni Path RMS}{19}{subsection.8.1.2}%
+\contentsline {chapter}{\numberline {9}Discussione}{20}{chapter.9}%
+\contentsline {section}{\numberline {9.1}Interpretazione Risultati}{20}{section.9.1}%
+\contentsline {paragraph}{Precisione Temporale}{20}{section*.4}%
+\contentsline {paragraph}{Geometria Path}{20}{section*.5}%
+\contentsline {paragraph}{Coordinate Stellari}{20}{section*.6}%
+\contentsline {subsection}{\numberline {9.1.1}Confronto con Letteratura}{21}{subsection.9.1.1}%
+\contentsline {subsection}{\numberline {9.1.2}Fattori che Influenzano le Differenze}{21}{subsection.9.1.2}%
+\contentsline {chapter}{\numberline {10}Conclusioni e Prospettive}{22}{chapter.10}%
+\contentsline {section}{\numberline {10.1}Sintesi Risultati}{22}{section.10.1}%
+\contentsline {subsection}{\numberline {10.1.1}Validazione Metodologia IOccultCalc}{22}{subsection.10.1.1}%
+\contentsline {subsection}{\numberline {10.1.2}Raccomandazioni Operative}{22}{subsection.10.1.2}%
+\contentsline {section}{\numberline {10.2}Prospettive di Sviluppo}{23}{section.10.2}%
+\contentsline {subsection}{\numberline {10.2.1}Miglioramenti Algoritmici}{23}{subsection.10.2.1}%
+\contentsline {subsection}{\numberline {10.2.2}Integrazione Osservativa}{23}{subsection.10.2.2}%
+\contentsline {subsection}{\numberline {10.2.3}Collaborazioni Scientifiche}{23}{subsection.10.2.3}%
+\contentsline {section}{\numberline {10.3}Conclusione Finale}{23}{section.10.3}%

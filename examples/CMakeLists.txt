@@ -12,3 +12,39 @@ target_link_libraries(example_occult4_xml ioccultcalc)
 
 add_executable(example_prediction_comparison example_prediction_comparison.cpp)
 target_link_libraries(example_prediction_comparison ioccultcalc)
+
+add_executable(test_conversion test_conversion.cpp)
+target_link_libraries(test_conversion ioccultcalc)
+
+add_executable(example_gauss example_gauss.cpp)
+target_link_libraries(example_gauss ioccultcalc)
+
+add_executable(test_propagator test_propagator.cpp)
+target_link_libraries(test_propagator ioccultcalc)
+
+add_executable(debug_propagator debug_propagator.cpp)
+target_link_libraries(debug_propagator ioccultcalc)
+
+add_executable(compare_propagation compare_propagation.cpp)
+target_link_libraries(compare_propagation ioccultcalc)
+
+add_executable(validate_with_jpl validate_with_jpl.cpp)
+target_link_libraries(validate_with_jpl ioccultcalc)
+
+add_executable(test_propagator_vs_jpl test_propagator_vs_jpl.cpp)
+target_link_libraries(test_propagator_vs_jpl ioccultcalc)
+
+add_executable(test_propagator_simple test_propagator_simple.cpp)
+target_link_libraries(test_propagator_simple ioccultcalc)
+
+add_executable(test_spk_simple test_spk_simple.cpp)
+target_link_libraries(test_spk_simple ioccultcalc)
+
+add_executable(test_gm_constants test_gm_constants.cpp)
+target_link_libraries(test_gm_constants ${CMAKE_CURRENT_SOURCE_DIR}/../external/cspice/lib/cspice.a)
+
+add_executable(test_nongrav test_nongrav.cpp)
+target_link_libraries(test_nongrav ioccultcalc)
+
+add_executable(fit_and_propagate fit_and_propagate.cpp)
+target_link_libraries(fit_and_propagate ioccultcalc)

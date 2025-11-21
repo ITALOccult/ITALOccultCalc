@@ -1,0 +1,56 @@
+#include "ioccultcalc/jpl_ephemeris.h"
+#include <stdexcept>
+
+namespace ioccultcalc {
+
+// Implementazione stub di JPLEphemerisReader
+// TODO: Implementare lettura completa dei file JPL DE
+
+// Definizione stub della struttura SPKFile
+class JPLEphemerisReader::SPKFile {
+public:
+    SPKFile() {}
+    ~SPKFile() {}
+};
+
+JPLEphemerisReader::JPLEphemerisReader() : spkData(nullptr) {}
+
+JPLEphemerisReader::~JPLEphemerisReader() {}
+
+bool JPLEphemerisReader::loadFile(const std::string& filename) {
+    // TODO: Implementare caricamento file JPL
+    throw std::runtime_error("JPLEphemerisReader::loadFile not yet implemented");
+    return false;
+}
+
+bool JPLEphemerisReader::downloadDE(JPLVersion version, const std::string& outputDir) {
+    // TODO: Implementare download da JPL
+    throw std::runtime_error("JPLEphemerisReader::downloadDE not yet implemented");
+    return false;
+}
+
+Vector3D JPLEphemerisReader::getPosition(JPLBody body, double jd) {
+    // TODO: Implementare calcolo posizioni
+    throw std::runtime_error("JPLEphemerisReader::getPosition not yet implemented");
+    return Vector3D();
+}
+
+Vector3D JPLEphemerisReader::getVelocity(JPLBody body, double jd) {
+    // TODO: Implementare calcolo velocità
+    throw std::runtime_error("JPLEphemerisReader::getVelocity not yet implemented");
+    return Vector3D();
+}
+
+void JPLEphemerisReader::getState(JPLBody body, double jd, 
+                                 Vector3D& position, Vector3D& velocity) {
+    // TODO: Implementare calcolo stato
+    throw std::runtime_error("JPLEphemerisReader::getState not yet implemented");
+}
+
+// Note: getVersion(), getStartJD(), getEndJD(), isLoaded() are inline in header
+
+void JPLEphemerisReader::precache(double jdStart, double jdEnd) {
+    // TODO: Implementare precaching
+}
+
+} // namespace ioccultcalc

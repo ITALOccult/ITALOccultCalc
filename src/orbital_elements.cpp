@@ -53,4 +53,33 @@ EquinoctialElements EquinoctialElements::fromKeplerian(double a, double ecc, dou
     return elem;
 }
 
+// Nuovo metodo che ritorna OrbitalElements
+OrbitalElements EquinoctialElements::toKeplerian() const {
+    OrbitalElements orb;
+    orb.a = a;
+    orb.epoch = epoch;
+    orb.H = H;
+    orb.G = G;
+    orb.diameter = diameter;
+    orb.designation = designation;
+    orb.name = name;
+    
+    // Converti elementi
+    toKeplerian(orb.e, orb.i, orb.omega, orb.Omega, orb.M);
+    
+    return orb;
+}
+
+EquinoctialElements EquinoctialElements::fromKeplerian(const OrbitalElements& orb) {
+    return fromKeplerian(orb.a, orb.e, orb.i, orb.omega, orb.Omega, orb.M, orb.epoch);
+}
+
+EquinoctialElements OrbitalElements::toEquinoctial() const {
+    return EquinoctialElements::fromKeplerian(*this);
+}
+
+OrbitalElements OrbitalElements::fromEquinoctial(const EquinoctialElements& eq) {
+    return eq.toKeplerian();
+}
+
 } // namespace ioccultcalc

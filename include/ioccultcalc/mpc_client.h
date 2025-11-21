@@ -45,6 +45,9 @@ private:
     // Parsing formato MPC 80 colonne
     AstrometricObservation parseMPC80Line(const std::string& line);
     
+    // Parsing formato RWO (AstDyS custom format)
+    AstrometricObservation parseRWOLine(const std::string& line);
+    
     // Parsing formato ADES (XML/JSON)
     std::vector<AstrometricObservation> parseADES(const std::string& content);
 };

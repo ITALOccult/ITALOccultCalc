@@ -18,6 +18,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CURL_INCLUDE_DIRS}
     ${LIBXML2_INCLUDE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/cspice/include
 )
 
 # Source files
@@ -36,7 +37,17 @@ set(SOURCES
     src/observation.cpp
     src/mpc_client.cpp
     src/orbit_determination.cpp
+    src/orbit_fitter.cpp
+    src/orbit_determination_gauss.cpp
     src/force_model.cpp
+    src/jpl_ephemeris.cpp
+    src/orbit_propagator.cpp
+    src/jpl_horizons_client.cpp
+    src/jpl_de_downloader.cpp
+    src/spk_reader.cpp
+    src/spice_spk_reader.cpp
+    src/jpleph.cpp
+    src/ra15_integrator.cpp
 )
 
 # Header files
@@ -58,11 +69,20 @@ set(HEADERS
     include/ioccultcalc/orbit_determination.h
     include/ioccultcalc/force_model.h
     include/ioccultcalc/jpl_ephemeris.h
+    include/ioccultcalc/orbit_propagator.h
+    include/ioccultcalc/jpl_horizons_client.h
+    include/ioccultcalc/jpl_de_downloader.h
+    include/ioccultcalc/spk_reader.h
+    include/ioccultcalc/spice_spk_reader.h
+    include/ioccultcalc/jpleph.h
+    include/ioccultcalc/jpl_int.h
+    include/ioccultcalc/get_bin.h
     include/ioccultcalc/numerical_integrator.h
     include/ioccultcalc/relativistic_corrections.h
     include/ioccultcalc/star_catalog.h
     include/ioccultcalc/asteroid_shape.h
     include/ioccultcalc/uncertainty_propagation.h
+    include/ioccultcalc/ra15_integrator.hpp
 )
 
 # Create library
@@ -71,6 +91,7 @@ add_library(ioccultcalc STATIC ${SOURCES} ${HEADERS})
 target_link_libraries(ioccultcalc
     CURL::libcurl
     ${LIBXML2_LIBRARIES}
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/cspice/lib/cspice.a
 )
 
 target_include_directories(ioccultcalc PUBLIC
@@ -82,6 +103,9 @@ target_include_directories(ioccultcalc PUBLIC
 if(BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif()
+
+# Tools
+add_subdirectory(tools)
 
 # Tests
 if(BUILD_TESTS)

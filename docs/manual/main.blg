@@ -1,0 +1,70 @@
+This is BibTeX, Version 0.99d (TeX Live 2025)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+A level-1 auxiliary file: chapters/01_introduction.aux
+A level-1 auxiliary file: chapters/02_coordinate_systems.aux
+A level-1 auxiliary file: chapters/03_time_systems.aux
+A level-1 auxiliary file: chapters/04_planetary_ephemerides.aux
+A level-1 auxiliary file: chapters/05_orbital_mechanics.aux
+A level-1 auxiliary file: chapters/06_numerical_integration.aux
+A level-1 auxiliary file: chapters/07_perturbations.aux
+A level-1 auxiliary file: chapters/08_relativistic_corrections.aux
+A level-1 auxiliary file: chapters/09_precession_nutation.aux
+A level-1 auxiliary file: chapters/10_stellar_astrometry.aux
+A level-1 auxiliary file: chapters/11_orbit_determination.aux
+A level-1 auxiliary file: chapters/12_asteroid_shape.aux
+A level-1 auxiliary file: chapters/13_besselian_method.aux
+A level-1 auxiliary file: chapters/14_uncertainty_propagation.aux
+A level-1 auxiliary file: chapters/15_implementation.aux
+A level-1 auxiliary file: chapters/16_validation.aux
+A level-1 auxiliary file: chapters/appendix_a_constants.aux
+A level-1 auxiliary file: chapters/appendix_b_algorithms.aux
+A level-1 auxiliary file: chapters/appendix_c_vsop87_coefficients.aux
+The style file: apalike.bst
+Database file #1: references.bib
+Warning--I didn't find a database entry for "Herald2023"
+Warning--I didn't find a database entry for "Milani2010"
+Warning--there's a number but no volume in Fehlberg1968
+Warning--there's a number but no volume in Moyer1971
+You've used 46 entries,
+            1935 wiz_defined-function locations,
+            803 strings with 11142 characters,
+and the built_in function-call counts, 16291 in all, are:
+= -- 1609
+> -- 603
+< -- 35
++ -- 210
+- -- 194
+* -- 1330
+:= -- 2932
+add.period$ -- 139
+call.type$ -- 46
+change.case$ -- 315
+chr.to.int$ -- 46
+cite$ -- 48
+duplicate$ -- 623
+empty$ -- 1153
+format.name$ -- 260
+if$ -- 3124
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 48
+newline$ -- 233
+num.names$ -- 139
+pop$ -- 248
+preamble$ -- 1
+purify$ -- 320
+quote$ -- 0
+skip$ -- 473
+stack$ -- 0
+substring$ -- 1125
+swap$ -- 44
+text.length$ -- 4
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 256
+warning$ -- 2
+while$ -- 138
+width$ -- 0
+write$ -- 592
+(There were 4 warnings)

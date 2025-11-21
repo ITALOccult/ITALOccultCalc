@@ -1,0 +1,253 @@
+\begin{thebibliography}{}
+
+\bibitem[Acton, 1996]{Acton1996}
+Acton, C.~H. (1996).
+\newblock Ancillary data services of {NASA}'s navigation and ancillary
+  information facility.
+\newblock {\em Planetary and Space Science}, 44(1):65--70.
+
+\bibitem[Arias et~al., 1995]{Arias2003}
+Arias, E.~F., Charlot, P., Feissel, M., and Lestrade, J.-F. (1995).
+\newblock The extragalactic reference system of the {International Earth
+  Rotation Service}, {ICRS}.
+\newblock {\em Astronomy and Astrophysics}, 303:604--608.
+
+\bibitem[Bretagnon and Francou, 1988]{BretagonFrancou1988}
+Bretagnon, P. and Francou, G. (1988).
+\newblock Planetary theories in rectangular and spherical variables. {VSOP87}
+  solutions.
+\newblock {\em Astronomy and Astrophysics}, 202:309--315.
+
+\bibitem[Broucke, 1969]{Broucke1969}
+Broucke, R.~A. (1969).
+\newblock Numerical integration of periodic orbits in the main problem of
+  artificial satellite theory.
+\newblock {\em Celestial Mechanics}, 1:110--122.
+
+\bibitem[Broucke and Cefola, 1972]{BrouckeBat1980}
+Broucke, R.~A. and Cefola, P.~J. (1972).
+\newblock On the equinoctial orbit elements.
+\newblock {\em Celestial Mechanics}, 5:303--310.
+
+\bibitem[{Bureau International des Poids et Mesures}, 2019]{BIPM2019}
+{Bureau International des Poids et Mesures} (2019).
+\newblock The international system of units ({SI}).
+\newblock Technical report, BIPM.
+
+\bibitem[Capitaine et~al., 2003]{Capitaine2003}
+Capitaine, N., Wallace, P.~T., and Chapront, J. (2003).
+\newblock Expressions for {IAU} 2000 precession quantities.
+\newblock {\em Astronomy and Astrophysics}, 412:567--586.
+
+\bibitem[Carpino et~al., 2003]{Carpino2003}
+Carpino, M., Milani, A., and Chesley, S.~R. (2003).
+\newblock Error statistics of asteroid optical astrometric observations.
+\newblock {\em Icarus}, 166:248--270.
+
+\bibitem[Chapront-Touz\'e and Chapront, 1983]{ChaprontTouze1983}
+Chapront-Touz\'e, M. and Chapront, J. (1983).
+\newblock The lunar ephemeris {ELP2000}.
+\newblock {\em Astronomy and Astrophysics}, 124:50--62.
+
+\bibitem[Charlot et~al., 2020]{ICRF3}
+Charlot, P., Jacobs, C.~S., Gordon, D., et~al. (2020).
+\newblock The third realization of the {International Celestial Reference
+  Frame} by very long baseline interferometry.
+\newblock {\em Astronomy and Astrophysics}, 644:A159.
+
+\bibitem[Danby, 1988]{Danby1988}
+Danby, J. M.~A. (1988).
+\newblock {\em Fundamentals of Celestial Mechanics}.
+\newblock Willmann-Bell, 2nd edition.
+
+\bibitem[{\v D}urech et~al., 2010]{Durech2010}
+{\v D}urech, J., Sidorin, V., and Kaasalainen, M. (2010).
+\newblock {DAMIT}: a database of asteroid models.
+\newblock {\em Astronomy and Astrophysics}, 513:A46.
+
+\bibitem[Einstein, 1916]{Einstein1916}
+Einstein, A. (1916).
+\newblock Die {Grundlage} der allgemeinen {Relativit\"atstheorie}.
+\newblock {\em Annalen der Physik}, 354(7):769--822.
+
+\bibitem[Fairhead and Bretagnon, 1990]{Fairhead1990}
+Fairhead, L. and Bretagnon, P. (1990).
+\newblock An analytical formula for the time transformation {TB-TT}.
+\newblock {\em Astronomy and Astrophysics}, 229:240--247.
+
+\bibitem[Fehlberg, 1968]{Fehlberg1968}
+Fehlberg, E. (1968).
+\newblock Classical fifth-, sixth-, seventh-, and eighth-order {Runge-Kutta}
+  formulas with stepsize control.
+\newblock {\em NASA Technical Report}, (NASA TR R-287).
+
+\bibitem[Folkner et~al., 2014]{Folkner2014}
+Folkner, W.~M., Williams, J.~G., Boggs, D.~H., Park, R.~S., and Kuchynka, P.
+  (2014).
+\newblock The planetary and lunar ephemerides {DE430} and {DE431}.
+\newblock Technical Report IPN Progress Report 42-196, Jet Propulsion
+  Laboratory, California Institute of Technology.
+
+\bibitem[{Gaia Collaboration} et~al., 2022]{GaiaDR3}
+{Gaia Collaboration}, Vallenari, A., Brown, A. G.~A., et~al. (2022).
+\newblock {Gaia} data release 3: Summary of the content and survey properties.
+\newblock {\em Astronomy and Astrophysics}, 674:A1.
+
+\bibitem[Giorgini et~al., 1996]{Giorgini1996}
+Giorgini, J.~D., Yeomans, D.~K., Chamberlin, A.~B., et~al. (1996).
+\newblock {JPL}'s on-line solar system data service.
+\newblock {\em Bulletin of the American Astronomical Society}, 28:1158.
+
+\bibitem[Hairer et~al., 1993]{Hairer1993}
+Hairer, E., Nørsett, S.~P., and Wanner, G. (1993).
+\newblock {\em Solving Ordinary Differential Equations I: Nonstiff Problems},
+  volume~8 of {\em Springer Series in Computational Mathematics}.
+\newblock Springer.
+
+\bibitem[Herald et~al., 2020]{Herald2020}
+Herald, D., Gault, D., Preston, S., et~al. (2020).
+\newblock Precise astrometry of asteroids from stellar occultations.
+\newblock {\em Journal of the International Occultation Timing Association},
+  7(1):12--28.
+
+\bibitem[Hilton et~al., 2006]{HiltonEtAl2006}
+Hilton, J.~L., Capitaine, N., Chapront, J., et~al. (2006).
+\newblock Report of the {International Astronomical Union Division I Working
+  Group} on {Precession} and the {Ecliptic}.
+\newblock {\em Celestial Mechanics and Dynamical Astronomy}, 94:351--367.
+
+\bibitem[{International Astronomical Union}, 1991]{IAU1991}
+{International Astronomical Union} (1991).
+\newblock {IAU} resolution a4: Definition of {TT}.
+\newblock Proceedings of the 21st General Assembly.
+
+\bibitem[{International Astronomical Union}, 1997]{IAU1997}
+{International Astronomical Union} (1997).
+\newblock {IAU} resolution b2: {ICRS} realization.
+\newblock Proceedings of the 23rd General Assembly.
+
+\bibitem[{International Astronomical Union}, 2006]{IAU2006}
+{International Astronomical Union} (2006).
+\newblock {IAU} 2006 resolution b1: Adoption of the p03 precession theory and
+  definition of the ecliptic.
+\newblock Proceedings of the 26th General Assembly.
+
+\bibitem[Jazwinski, 1970]{Jazwinski1970}
+Jazwinski, A.~H. (1970).
+\newblock {\em Stochastic Processes and Filtering Theory}.
+\newblock Academic Press.
+
+\bibitem[Kaasalainen and Torppa, 2001]{Kaasalainen2001}
+Kaasalainen, M. and Torppa, J. (2001).
+\newblock Optimization methods for asteroid lightcurve inversion. {I}. {Shape}
+  determination.
+\newblock {\em Icarus}, 153:24--36.
+
+\bibitem[Klioner, 2003]{Klioner2003}
+Klioner, S.~A. (2003).
+\newblock A practical relativistic model for microarcsecond astrometry in
+  space.
+\newblock {\em Astronomical Journal}, 125:1580--1597.
+
+\bibitem[Lindegren et~al., 2021]{Lindegren2021}
+Lindegren, L., Klioner, S.~A., Hern\'andez, J., et~al. (2021).
+\newblock {Gaia} early data release 3: The astrometric solution.
+\newblock {\em Astronomy and Astrophysics}, 649:A2.
+
+\bibitem[Mathews et~al., 2002]{Mathews2002}
+Mathews, P.~M., Herring, T.~A., and Buffett, B.~A. (2002).
+\newblock Modeling of nutation and precession: {New} nutation series for
+  nonrigid {Earth} and insights into the {Earth}'s interior.
+\newblock {\em Journal of Geophysical Research}, 107(B4):ETG 3--1--ETG 3--26.
+
+\bibitem[Meeus, 1998]{Meeus1998}
+Meeus, J. (1998).
+\newblock {\em Astronomical Algorithms}.
+\newblock Willmann-Bell, 2nd edition.
+
+\bibitem[Milani et~al., 2005]{Milani2005}
+Milani, A., Chesley, S.~R., Sansaturio, M.~E., et~al. (2005).
+\newblock Nonlinear impact monitoring: a new least-squares algorithm.
+\newblock {\em Icarus}, 173:362--384.
+
+\bibitem[Milani and Gronchi, 2010]{MilaniGronchi2010}
+Milani, A. and Gronchi, G.~F. (2010).
+\newblock {\em Theory of Orbit Determination}.
+\newblock Cambridge University Press.
+
+\bibitem[Montenbruck and Gill, 2000]{Montenbruck2000}
+Montenbruck, O. and Gill, E. (2000).
+\newblock {\em Satellite Orbits: Models, Methods and Applications}.
+\newblock Springer.
+
+\bibitem[Moyer, 1971]{Moyer1971}
+Moyer, T.~D. (1971).
+\newblock Mathematical formulation of the double-precision orbit determination
+  program ({DPODP}).
+\newblock {\em JPL Technical Report}, (32-1527).
+
+\bibitem[Moyer, 1981]{Moyer1981}
+Moyer, T.~D. (1981).
+\newblock Transformation from proper time on {Earth} to coordinate time in
+  solar system barycentric space-time frame of reference.
+\newblock {\em Celestial Mechanics}, 23:33--56.
+
+\bibitem[Moyer, 2003]{Moyer2003}
+Moyer, T.~D. (2003).
+\newblock {\em Formulation for Observed and Computed Values of Deep Space
+  Network Data Types for Navigation}.
+\newblock Deep-Space Communications and Navigation Series. John Wiley \& Sons.
+
+\bibitem[Murray and Dermott, 1999]{MurrayDermott1999}
+Murray, C.~D. and Dermott, S.~F. (1999).
+\newblock {\em Solar System Dynamics}.
+\newblock Cambridge University Press.
+
+\bibitem[{National Imagery and Mapping Agency}, 2000]{NIMA2000}
+{National Imagery and Mapping Agency} (2000).
+\newblock Department of defense world geodetic system 1984: Its definition and
+  relationships with local geodetic systems.
+\newblock Technical Report TR8350.2, NIMA.
+
+\bibitem[Park et~al., 2021]{Park2021}
+Park, R.~S., Folkner, W.~M., Williams, J.~G., and Boggs, D.~H. (2021).
+\newblock The {JPL} planetary and lunar ephemerides {DE440} and {DE441}.
+\newblock {\em The Astronomical Journal}, 161(3):105.
+
+\bibitem[Petit and Luzum, 2010]{IERS2010}
+Petit, G. and Luzum, B. (2010).
+\newblock {IERS} conventions (2010).
+\newblock Technical Report IERS Technical Note 36, International Earth Rotation
+  and Reference Systems Service.
+
+\bibitem[Seidelmann, 1992]{Seidelmann1992}
+Seidelmann, P.~K. (1992).
+\newblock Explanatory supplement to the astronomical almanac.
+\newblock {\em University Science Books}.
+
+\bibitem[Shapiro, 1964]{Shapiro1964}
+Shapiro, I.~I. (1964).
+\newblock Fourth test of general relativity.
+\newblock {\em Physical Review Letters}, 13(26):789--791.
+
+\bibitem[Stumpff, 1985]{Stumpff1985}
+Stumpff, P. (1985).
+\newblock Rigorous treatment of proper motion in positional astronomy.
+\newblock {\em Astronomy and Astrophysics Supplement Series}, 61:217--228.
+
+\bibitem[Urban and Seidelmann, 2013]{Explanatory2013}
+Urban, S.~E. and Seidelmann, P.~K., editors (2013).
+\newblock {\em Explanatory Supplement to the Astronomical Almanac}.
+\newblock University Science Books, 3rd edition.
+
+\bibitem[Vallado, 2013]{Vallado2013}
+Vallado, D.~A. (2013).
+\newblock {\em Fundamentals of Astrodynamics and Applications}.
+\newblock Microcosm Press, 4th edition.
+
+\bibitem[Yoshida, 1990]{Yoshida1990}
+Yoshida, H. (1990).
+\newblock Construction of higher order symplectic integrators.
+\newblock {\em Physics Letters A}, 150(5--7):262--268.
+
+\end{thebibliography}

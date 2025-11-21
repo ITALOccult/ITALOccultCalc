@@ -12,7 +12,7 @@
 
 #include "ioccultcalc/astdys_client.h"
 #include "ioccultcalc/mpc_client.h"
-#include "ioccultcalc/orbit_determination.h"
+#include "ioccultcalc/orbit_fitter.h"
 #include "ioccultcalc/ephemeris.h"
 #include <iostream>
 #include <iomanip>
@@ -20,60 +20,42 @@
 
 using namespace ioccultcalc;
 
-void printElements(const EquinoctialElements& elem, const std::string& label) {
-    std::cout << "\n" << label << ":\n";
-    std::cout << std::fixed << std::setprecision(8);
-    std::cout << "  a (AU):       " << elem.a << "\n";
-    std::cout << "  h:            " << elem.h << "\n";
-    std::cout << "  k:            " << elem.k << "\n";
-    std::cout << "  p:            " << elem.p << "\n";
-    std::cout << "  q:            " << elem.q << "\n";
-    std::cout << "  lambda (deg): " << elem.lambda * RAD_TO_DEG << "\n";
-    std::cout << "  Epoch (JD):   " << elem.epoch.jd << "\n";
-}
 
-void printObservationStats(const ObservationSet& obs) {
-    std::cout << "\nStatistiche osservazioni:\n";
-    std::cout << "  Numero totale: " << obs.numberOfObservations << "\n";
-    std::cout << "  Arco (giorni): " << obs.arcLength << "\n";
-    std::cout << "  Prima:         " << obs.firstObservation.jd << "\n";
-    std::cout << "  Ultima:        " << obs.lastObservation.jd << "\n";
-    std::cout << "  RMS totale:    " << obs.getRMSResidual() << " arcsec\n";
-    std::cout << "  RMS RA:        " << obs.getRAResidualRMS() << " arcsec\n";
-    std::cout << "  RMS Dec:       " << obs.getDecResidualRMS() << " arcsec\n";
-}
 
-void printFitResult(const OrbitFitResult& result) {
+void printFitResult(const OrbitFitResult& result, const OrbitalElements& initial) {
     std::cout << "\n=== RISULTATI FIT ORBITALE ===\n";
     std::cout << "Convergenza: " << (result.converged ? "SI" : "NO") << "\n";
     std::cout << "Iterazioni: " << result.iterations << "\n";
-    std::cout << "Osservazioni usate: " << result.numberOfObservations << "\n";
-    std::cout << "Outliers rimossi: " << result.numberOfOutliers << "\n";
-    std::cout << "Gradi di libertà: " << result.degreesOfFreedom << "\n";
+    std::cout << "Osservazioni usate: " << result.nObservations << "\n";
+    std::cout << "Outliers rimossi: " << result.nOutliers << "\n";
     
     std::cout << std::fixed << std::setprecision(4);
     std::cout << "\nResiduali:\n";
     std::cout << "  RMS totale: " << result.rmsResidual << " arcsec\n";
-    std::cout << "  RMS RA:     " << result.raRMS << " arcsec\n";
-    std::cout << "  RMS Dec:    " << result.decRMS << " arcsec\n";
+    std::cout << "  RMS max:    " << result.maxResidual << " arcsec\n";
     std::cout << "  Chi-quadro: " << result.chi2 << "\n";
     
     std::cout << std::setprecision(8);
     std::cout << "\nIncertezze elementi (1-sigma):\n";
     std::cout << "  sigma_a:      " << result.sigma_a * AU << " km\n";
-    std::cout << "  sigma_h:      " << result.sigma_h << "\n";
-    std::cout << "  sigma_k:      " << result.sigma_k << "\n";
-    std::cout << "  sigma_p:      " << result.sigma_p << "\n";
-    std::cout << "  sigma_q:      " << result.sigma_q << "\n";
-    std::cout << "  sigma_lambda: " << result.sigma_lambda * RAD_TO_DEG << " deg\n";
+    std::cout << "  sigma_e:      " << result.sigma_e << "\n";
+    std::cout << "  sigma_i:      " << result.sigma_i * RAD_TO_DEG << " deg\n";
+    std::cout << "  sigma_Omega:  " << result.sigma_Omega * RAD_TO_DEG << " deg\n";
+    std::cout << "  sigma_omega:  " << result.sigma_omega * RAD_TO_DEG << " deg\n";
+    std::cout << "  sigma_M:      " << result.sigma_M * RAD_TO_DEG << " deg\n";
     
-    printElements(result.initialElements, "Elementi iniziali");
-    printElements(result.improvedElements, "Elementi migliorati");
-    
-    // Miglioramento
-    double deltaA = (result.improvedElements.a - result.initialElements.a) * AU;
-    std::cout << "\nVariazioni:\n";
-    std::cout << "  Delta a: " << deltaA << " km\n";
+    std::cout << "\n=== CONFRONTO ELEMENTI ===\n";
+    std::cout << std::fixed << std::setprecision(8);
+    std::cout << "                  Iniziali          Migliorati        Variazione\n";
+    std::cout << "  a (AU):         " << std::setw(15) << initial.a 
+              << "  " << std::setw(15) << result.fittedElements.a
+              << "  " << std::setw(15) << (result.fittedElements.a - initial.a) << "\n";
+    std::cout << "  e:              " << std::setw(15) << initial.e 
+              << "  " << std::setw(15) << result.fittedElements.e
+              << "  " << std::setw(15) << (result.fittedElements.e - initial.e) << "\n";
+    std::cout << "  i (deg):        " << std::setw(15) << initial.i * RAD_TO_DEG
+              << "  " << std::setw(15) << result.fittedElements.i * RAD_TO_DEG
+              << "  " << std::setw(15) << (result.fittedElements.i - initial.i) * RAD_TO_DEG << "\n";
 }
 
 int main(int argc, char** argv) {
@@ -90,143 +72,73 @@ int main(int argc, char** argv) {
         // 1. Carica elementi orbitali iniziali da AstDyS2
         std::cout << "1. Caricamento elementi orbitali da AstDyS2...\n";
         AstDysClient astdys;
-        auto initialElements = astdys.getElements(asteroidName);
+        auto initialEquinoctial = astdys.getElements(asteroidName);
+        
+        // Converti in elementi Kepleriani
+        auto initialElements = initialEquinoctial.toKeplerian();
         
         std::cout << "   Elementi caricati con successo\n";
-        printElements(initialElements, "Elementi AstDyS2");
+        std::cout << "   a=" << initialElements.a << " AU, e=" << initialElements.e 
+                  << ", i=" << initialElements.i * RAD_TO_DEG << "°\n";
         
-        // 2. Scarica osservazioni da MPC
-        std::cout << "\n2. Download osservazioni astrometriche da MPC...\n";
+        // 2. Scarica osservazioni da AstDyS/MPC
+        std::cout << "\n2. Download osservazioni astrometriche...\n";
         MPCClient mpc;
         auto observations = mpc.getObservations(asteroidName);
         
+        observations.computeStatistics();
+        
         std::cout << "   Scaricate " << observations.numberOfObservations 
                   << " osservazioni\n";
-        printObservationStats(observations);
+        std::cout << "   Arc: " << (observations.lastObservation.jd - observations.firstObservation.jd) << " giorni\n";
+        std::cout << "   Osservatori: " << observations.numberOfObservatories << "\n";
         
-        // 3. Setup orbit determination
-        std::cout << "\n3. Setup orbit determination...\n";
-        OrbitDetermination od;
-        od.setInitialElements(initialElements);
-        od.setObservations(observations);
+        // 3. Setup orbit fitter
+        std::cout << "\n3. Setup differential corrector...\n";
+        OrbitFitter fitter;
         
         // Configura opzioni fit
-        OrbitDetermination::FitOptions options;
-        options.useWeights = true;           // Usa pesi basati su incertezze
-        options.removeOutliers = true;       // Rimuovi outliers
-        options.outlierThreshold = 3.0;      // 3-sigma
-        
-        od.setFitOptions(options);
+        OrbitFitOptions options;
+        options.maxIterations = 10;
+        options.convergenceThreshold = 0.01;  // 0.01 arcsec
+        options.rejectOutliers = true;
+        options.outlierSigma = 3.0;
+        options.useWeights = true;
+        options.includeJupiter = true;
+        options.includeSaturn = true;
         
         // 4. Esegui fit
         std::cout << "\n4. Esecuzione differential correction...\n";
-        auto result = od.fitOrbit();
+        auto result = fitter.fit(initialElements, observations, options);
         
         // 5. Mostra risultati
-        printFitResult(result);
+        printFitResult(result, initialElements);
         
-        // 6. Valuta qualità orbita
-        std::cout << "\n=== VALUTAZIONE QUALITA' ===\n";
+        // 6. Statistiche residui
+        std::cout << "\n=== ANALISI RESIDUI ===\n";
+        double meanRA, meanDec, rmsRA, rmsDec, rmsTotal;
+        ResidualAnalysis::computeStatistics(result.observations, 
+                                           meanRA, meanDec, rmsRA, rmsDec, rmsTotal);
         
-        int conditionCode = OrbitQuality::computeConditionCode(observations);
-        std::cout << "Condition code MPC: " << conditionCode << "\n";
+        std::cout << std::fixed << std::setprecision(3);
+        std::cout << "  Mean RA:  " << meanRA << "\" (bias: " 
+                  << (fabs(meanRA) / rmsRA) << "σ)\n";
+        std::cout << "  Mean Dec: " << meanDec << "\" (bias: " 
+                  << (fabs(meanDec) / rmsDec) << "σ)\n";
+        std::cout << "  RMS RA:   " << rmsRA << "\"\n";
+        std::cout << "  RMS Dec:  " << rmsDec << "\"\n";
+        std::cout << "  RMS Tot:  " << rmsTotal << "\"\n";
         
-        bool reliable = OrbitQuality::isOrbitReliable(
-            result, observations, 
-            30.0,  // minimo 30 giorni arco
-            10     // minimo 10 osservazioni
-        );
-        std::cout << "Orbita affidabile: " << (reliable ? "SI" : "NO") << "\n";
-        
-        // Stima incertezza effemeridi tra 30 giorni
-        JulianDate futureDate;
-        futureDate.jd = result.improvedElements.epoch.jd + 30.0;
-        
-        double uncertainty30d = OrbitQuality::computeUncertaintyParameter(
-            result, 30.0
-        );
-        std::cout << "Incertezza stimata a +30 giorni: " 
-                  << uncertainty30d << " arcsec\n";
-        
-        // Calcola ellisse errore
-        double semiMajor, semiMinor, angle;
-        result.getErrorEllipse(futureDate, semiMajor, semiMinor, angle);
-        
-        std::cout << "\nEllisse errore a +30 giorni:\n";
-        std::cout << "  Semi-asse maggiore: " << semiMajor << " arcsec\n";
-        std::cout << "  Semi-asse minore:   " << semiMinor << " arcsec\n";
-        std::cout << "  Angolo posizione:   " << angle << " deg\n";
-        
-        // 7. Confronto effemeridi
-        std::cout << "\n=== CONFRONTO EFFEMERIDI ===\n";
-        std::cout << "Effemeridi tra 7 giorni:\n";
-        
-        JulianDate testDate;
-        testDate.jd = result.improvedElements.epoch.jd + 7.0;
-        
-        Ephemeris ephInitial(result.initialElements);
-        Ephemeris ephImproved(result.improvedElements);
-        
-        auto dataInitial = ephInitial.compute(testDate);
-        auto dataImproved = ephImproved.compute(testDate);
-        
-        std::cout << std::fixed << std::setprecision(6);
-        std::cout << "\nElementi iniziali:\n";
-        std::cout << "  RA:       " << dataInitial.geocentricPos.ra * RAD_TO_DEG << " deg\n";
-        std::cout << "  Dec:      " << dataInitial.geocentricPos.dec * RAD_TO_DEG << " deg\n";
-        std::cout << "  Distanza: " << dataInitial.distance << " AU\n";
-        
-        std::cout << "\nElementi migliorati:\n";
-        std::cout << "  RA:       " << dataImproved.geocentricPos.ra * RAD_TO_DEG << " deg\n";
-        std::cout << "  Dec:      " << dataImproved.geocentricPos.dec * RAD_TO_DEG << " deg\n";
-        std::cout << "  Distanza: " << dataImproved.distance << " AU\n";
-        
-        double dRA = (dataImproved.geocentricPos.ra - dataInitial.geocentricPos.ra) 
-                     * cos(dataInitial.geocentricPos.dec) * RAD_TO_DEG * 3600.0;
-        double dDec = (dataImproved.geocentricPos.dec - dataInitial.geocentricPos.dec) 
-                      * RAD_TO_DEG * 3600.0;
-        double dPos = sqrt(dRA * dRA + dDec * dDec);
-        
-        std::cout << "\nDifferenza posizionale:\n";
-        std::cout << "  Delta RA:  " << dRA << " arcsec\n";
-        std::cout << "  Delta Dec: " << dDec << " arcsec\n";
-        std::cout << "  Totale:    " << dPos << " arcsec\n";
-        
-        // 8. Salva risultati
-        std::cout << "\n=== SALVATAGGIO RISULTATI ===\n";
-        
-        // Salva osservazioni con residui
-        std::string obsFile = asteroidName + "_observations.txt";
-        observations.saveToFile(obsFile);
-        std::cout << "Osservazioni salvate in: " << obsFile << "\n";
-        
-        // Salva elementi migliorati (formato semplice)
-        std::string elemFile = asteroidName + "_improved_elements.txt";
-        std::ofstream out(elemFile);
-        out << std::fixed << std::setprecision(12);
-        out << "# Elementi orbitali migliorati per " << asteroidName << "\n";
-        out << "# Epoca (JD): " << result.improvedElements.epoch.jd << "\n";
-        out << "# RMS fit: " << result.rmsResidual << " arcsec\n";
-        out << "# Osservazioni: " << result.numberOfObservations << "\n";
-        out << "# Arco: " << observations.arcLength << " giorni\n\n";
-        out << "a      " << result.improvedElements.a << " +/- " 
-            << result.sigma_a * AU << " km\n";
-        out << "h      " << result.improvedElements.h << " +/- " 
-            << result.sigma_h << "\n";
-        out << "k      " << result.improvedElements.k << " +/- " 
-            << result.sigma_k << "\n";
-        out << "p      " << result.improvedElements.p << " +/- " 
-            << result.sigma_p << "\n";
-        out << "q      " << result.improvedElements.q << " +/- " 
-            << result.sigma_q << "\n";
-        out << "lambda " << result.improvedElements.lambda << " +/- " 
-            << result.sigma_lambda << " rad\n";
-        out.close();
-        
-        std::cout << "Elementi migliorati salvati in: " << elemFile << "\n";
+        double biasRA, biasDec;
+        bool hasBias = ResidualAnalysis::detectSystematicBias(result.observations,
+                                                               biasRA, biasDec);
+        if (hasBias) {
+            std::cout << "\n⚠  ATTENZIONE: Rilevato bias sistematico!\n";
+            std::cout << "   Bias RA:  " << biasRA << "\"\n";
+            std::cout << "   Bias Dec: " << biasDec << "\"\n";
+        }
         
         std::cout << "\n=== COMPLETATO ===\n";
-        
         return 0;
         
     } catch (const std::exception& e) {

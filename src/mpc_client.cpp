@@ -2,6 +2,7 @@
 #include "ioccultcalc/time_utils.h"
 #include <curl/curl.h>
 #include <sstream>
+#include <iostream>
 #include <fstream>
 #include <iomanip>
 #include <regex>
@@ -71,6 +72,65 @@ void MPCClient::setTimeout(int seconds) {
 }
 
 ObservationSet MPCClient::getObservations(const std::string& designation) {
+    // Prova prima con AstDyS per asteroidi numerati
+    // Struttura: https://newton.spacedys.com/~astdys2/mpcobs/numbered/<num/1000>/<num>.rwo
+    
+    ObservationSet obsSet;
+    obsSet.objectDesignation = designation;
+    
+    // Se è un numero, prova AstDyS
+    if (std::all_of(designation.begin(), designation.end(), ::isdigit)) {
+        try {
+            int asteroidNumber = std::stoi(designation);
+            int dirNumber = asteroidNumber / 1000;
+            
+            std::string astdysURL = "https://newton.spacedys.com/~astdys2/mpcobs/numbered/" 
+                                  + std::to_string(dirNumber) + "/" + designation + ".rwo";
+            
+            std::string content = pImpl->httpGet(astdysURL);
+            
+            // Parse formato .rwo (formato Fortran AstDyS)
+            std::istringstream iss(content);
+            std::string line;
+            bool headerPassed = false;
+            int tested = 0;
+            
+            while (std::getline(iss, line)) {
+                // Salta header fino alla riga con "! Design"
+                if (!headerPassed) {
+                    if (line.find("! Design") != std::string::npos) {
+                        headerPassed = true;
+                    }
+                    continue;
+                }
+                
+                // Ignora commenti e righe vuote
+                if (line.empty() || line[0] == '#' || line[0] == '!') {
+                    continue;
+                }
+                
+                // Formato .rwo: colonne fisse Fortran, lunghezza minima 115
+                if (line.length() >= 115) {
+                    try {
+                        auto obs = parseRWOLine(line);
+                        obsSet.observations.push_back(obs);
+                    } catch (const std::exception&) {
+                        // Silently skip unparseable lines
+                    }
+                }
+            }
+            std::cerr << "Tested " << tested << " lines, got " << obsSet.observations.size() << " obs\n";
+            
+            if (!obsSet.observations.empty()) {
+                obsSet.computeStatistics();
+                return obsSet;
+            }
+        } catch (const std::exception& e) {
+            // AstDyS fallito, prova con MPC
+        }
+    }
+    
+    // Fallback: prova con MPC
     // URL per scaricare osservazioni dal MPC
     // Formato: https://www.minorplanetcenter.net/db_search/show_object?object_id=433
     
@@ -80,10 +140,6 @@ ObservationSet MPCClient::getObservations(const std::string& designation) {
     std::string content = pImpl->httpGet(url);
     
     // Parse HTML e estrai osservazioni in formato MPC
-    ObservationSet obsSet;
-    obsSet.objectDesignation = designation;
-    
-    // Parsing semplificato - in realtà il formato è più complesso
     std::istringstream iss(content);
     std::string line;
     
@@ -261,6 +317,117 @@ bool MPCClient::downloadObservatoryCodes(const std::string& outputFile) {
     } catch (...) {
         return false;
     }
+}
+
+AstrometricObservation MPCClient::parseRWOLine(const std::string& line) {
+    // Formato .rwo di AstDyS (custom format, non MPC standard)
+    // Lunghezza tipica: ~197 caratteri
+    // ! Design   K T N YYYY MM DD.dddddddddd   Accuracy HH MM SS.sss  Accuracy      RMS  F     Bias    Resid sDD MM SS.ss  Accuracy      RMS  F     Bias    Resid Val  B   RMS  Resid Cat Cod       Chi A M
+    //     433       O A   1893 10 29.4132        1.000E-04 06 08 59.320  1.500E-01    2.000 F    0.000   -0.493 +53 39 04.20  1.000E-01    2.000 F    0.000    1.114                         802      0.61 1 0
+    
+    if (line.length() < 150) {
+        throw std::runtime_error("Line too short for RWO format");
+    }
+    
+    AstrometricObservation obs;
+    
+    // Design (colonne 0-10 circa)
+    // K T N (colonne 14-20)
+    // Data: YYYY MM DD.dddddddddd (colonne ~22-42)
+    // RA: HH MM SS.sss (colonne ~60-72)
+    // Dec: sDD MM SS.ss (colonne ~100-112)
+    // Cod: observatory code (colonne ~130-133)
+    
+    try {
+        // Formato Fortran .rwo - colonne fisse basate su header:
+        // ! Design   K T N YYYY MM DD.dddddddddd   Accuracy HH MM SS.sss...
+        // Cols 1-10:   Design (numero asteroide con spazi)
+        // Cols 11-20:  K T N (tipo osservazione)
+        // Cols 21-40:  YYYY MM DD.dddddddddd (data)
+        // Cols 51-62:  HH MM SS.sss (RA)
+        // Cols 101-112: sDD MM SS.ss (Dec)
+        // Cols 181-183: Cod (codice osservatorio)
+        
+        // Parsing data: colonne 18-38 (Fortran 1-based) = substr(17, 21) (C++ 0-based)
+        // Esempio: "1893 10 29.4132    " oppure "2023 07 04.244976  "
+        std::string dateStr = line.substr(17, 21);
+        std::istringstream dateStream(dateStr);
+        
+        int year, month;
+        double day;
+        dateStream >> year >> month >> day;
+        
+        if (year < 1800 || year > 2100 || month < 1 || month > 12 || day <= 0 || day >= 32) {
+            throw std::runtime_error("Invalid date values in RWO");
+        }
+        
+        int dayInt = (int)day;
+        double dayFrac = day - dayInt;
+        obs.epoch = TimeUtils::calendarToJD(year, month, dayInt, 0, 0, dayFrac * 86400.0);
+        
+        // Parsing RA: colonne 51-63 (Fortran 1-based) = substr(50, 13) (C++ 0-based)
+        // Esempio: "06 08 59.320"
+        std::string raStr = line.substr(50, 13);
+        std::istringstream raStream(raStr);
+        
+        int raH, raM;
+        double raS;
+        raStream >> raH >> raM >> raS;
+        
+        if (raH < 0 || raH >= 24 || raM < 0 || raM >= 60) {
+            throw std::runtime_error("Invalid RA in RWO");
+        }
+        
+        double raHours = raH + raM / 60.0 + raS / 3600.0;
+        obs.obs.ra = raHours * 15.0 * DEG_TO_RAD;
+        
+        // Parsing Dec: inizia a posizione 104 (1-based) = substr(103, 12) (0-based)
+        // Esempio: "+53 39 04.20"
+        std::string decStr = line.substr(103, 12);
+        
+        // Primo carattere è il segno
+        char sign = decStr[0];
+        if (sign != '+' && sign != '-') {
+            throw std::runtime_error("Invalid Dec sign in RWO");
+        }
+        
+        std::istringstream decStream(decStr.substr(1));
+        int decD, decM;
+        double decS;
+        decStream >> decD >> decM >> decS;
+        
+        if (decD < 0 || decD > 90 || decM < 0 || decM >= 60) {
+            throw std::runtime_error("Invalid Dec in RWO");
+        }
+        
+        double decDeg = decD + decM / 60.0 + decS / 3600.0;
+        if (sign == '-') decDeg = -decDeg;
+        obs.obs.dec = decDeg * DEG_TO_RAD;
+        
+        // Codice osservatorio: posizione 180-182 (1-based) = substr(179, 3) (0-based)
+        // Esempio: "802" per Heidelberg
+        if (line.length() >= 182) {
+            obs.observatoryCode = line.substr(179, 3);
+            // Trim spazi
+            obs.observatoryCode.erase(0, obs.observatoryCode.find_first_not_of(" \t"));
+            obs.observatoryCode.erase(obs.observatoryCode.find_last_not_of(" \t") + 1);
+        }
+        
+        // Errori tipici per osservazioni moderne
+        obs.raError = 0.5;  // arcsec
+        obs.decError = 0.5; // arcsec
+        
+        // Carica info osservatorio se disponibile
+        if (!obs.observatoryCode.empty()) {
+            Observatory observatory = Observatory::fromMPCCode(obs.observatoryCode);
+            obs.observerLocation = observatory.location;
+        }
+        
+    } catch (const std::exception& e) {
+        throw std::runtime_error(std::string("Error parsing RWO line: ") + e.what());
+    }
+    
+    return obs;
 }
 
 AstrometricObservation MPCClient::parseMPC80Line(const std::string& line) {

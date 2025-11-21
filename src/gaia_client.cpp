@@ -4,8 +4,105 @@
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 #include <sstream>
+#include <iostream>
 #include <stdexcept>
 #include <iomanip>
+#include <cstring>
+#include <vector>
+#include <cstdint>
+
+// Base64 decoding table
+static const unsigned char base64_decode_table[256] = {
+    64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+    64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+    64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 62, 64, 64, 64, 63,
+    52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 64, 64, 64, 64, 64, 64,
+    64,  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14,
+    15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 64, 64, 64, 64, 64,
+    64, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
+    41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 64, 64, 64, 64, 64,
+    64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+    64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+    64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+    64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+    64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+    64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+    64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+    64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64
+};
+
+// Decode base64 string
+static std::vector<unsigned char> base64_decode(const std::string& input) {
+    std::vector<unsigned char> output;
+    int val = 0, valb = -8;
+    
+    for (unsigned char c : input) {
+        if (base64_decode_table[c] == 64) continue;
+        val = (val << 6) + base64_decode_table[c];
+        valb += 6;
+        if (valb >= 0) {
+            output.push_back((val >> valb) & 0xFF);
+            valb -= 8;
+        }
+    }
+    return output;
+}
+
+// Convert big-endian bytes to double (IEEE 754)
+static double bytes_to_double(const unsigned char* bytes) {
+    // I dati Gaia sono in big-endian IEEE 754
+    // Su macOS (little-endian), dobbiamo invertire i byte
+    unsigned char temp[8];
+    #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+        for (int i = 0; i < 8; i++) {
+            temp[i] = bytes[7 - i];
+        }
+    #else
+        for (int i = 0; i < 8; i++) {
+            temp[i] = bytes[i];
+        }
+    #endif
+    
+    double result;
+    std::memcpy(&result, temp, sizeof(double));
+    return result;
+}
+
+// Convert big-endian bytes to float (IEEE 754)
+static float bytes_to_float(const unsigned char* bytes) {
+    unsigned char temp[4];
+    #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+        for (int i = 0; i < 4; i++) {
+            temp[i] = bytes[3 - i];
+        }
+    #else
+        for (int i = 0; i < 4; i++) {
+            temp[i] = bytes[i];
+        }
+    #endif
+    
+    float result;
+    std::memcpy(&result, temp, sizeof(float));
+    return result;
+}
+
+// Convert big-endian bytes to int64
+static int64_t bytes_to_int64(const unsigned char* bytes) {
+    unsigned char temp[8];
+    #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+        for (int i = 0; i < 8; i++) {
+            temp[i] = bytes[7 - i];
+        }
+    #else
+        for (int i = 0; i < 8; i++) {
+            temp[i] = bytes[i];
+        }
+    #endif
+    
+    int64_t result;
+    std::memcpy(&result, temp, sizeof(int64_t));
+    return result;
+}
 
 namespace ioccultcalc {
 
@@ -171,11 +268,15 @@ std::vector<GaiaStar> GaiaClient::queryAlongPath(
 }
 
 std::string GaiaClient::executeADQL(const std::string& adqlQuery) {
+    std::cerr << "[GaiaClient::executeADQL] DEBUG: Query ADQL:\n" << adqlQuery << "\n\n";
+    
     std::string url = pImpl->tapURL + "sync";
+    std::cerr << "[GaiaClient::executeADQL] DEBUG: URL: " << url << "\n";
     
     // Prepara i dati POST
+    // NOTA: Usa CSV invece di VOTable perché BINARY2 è complesso da parsare
     std::ostringstream postData;
-    postData << "REQUEST=doQuery&LANG=ADQL&FORMAT=votable&QUERY=";
+    postData << "REQUEST=doQuery&LANG=ADQL&FORMAT=csv&QUERY=";
     
     // URL-encode della query
     CURL* curl = pImpl->curl;
@@ -183,47 +284,201 @@ std::string GaiaClient::executeADQL(const std::string& adqlQuery) {
     postData << encodedQuery;
     curl_free(encodedQuery);
     
-    return pImpl->httpPost(url, postData.str());
+    std::cerr << "[GaiaClient::executeADQL] DEBUG: POST data length: " << postData.str().length() << "\n";
+    
+    try {
+        std::string result = pImpl->httpPost(url, postData.str());
+        std::cerr << "[GaiaClient::executeADQL] DEBUG: Response length: " << result.length() << " bytes\n";
+        std::cerr << "[GaiaClient::executeADQL] DEBUG: First 500 chars:\n" << result.substr(0, 500) << "\n\n";
+        return result;
+    } catch (const std::exception& e) {
+        std::cerr << "[GaiaClient::executeADQL] ERROR: " << e.what() << "\n";
+        throw;
+    }
 }
 
 std::vector<GaiaStar> GaiaClient::parseVOTable(const std::string& votable) {
+    std::cerr << "[GaiaClient::parseVOTable] DEBUG: Parsing response, length = " << votable.length() << "\n";
+    
     std::vector<GaiaStar> stars;
+    
+    // Rileva se è CSV o VOTable
+    if (votable.find("source_id,ra,dec") == 0 || votable.find("source_id,ra,dec") != std::string::npos) {
+        // Parse CSV
+        std::cerr << "[GaiaClient::parseVOTable] DEBUG: Detected CSV format\n";
+        std::istringstream stream(votable);
+        std::string line;
+        
+        // Salta header
+        if (std::getline(stream, line)) {
+            std::cerr << "[GaiaClient::parseVOTable] DEBUG: CSV Header: " << line << "\n";
+        }
+        
+        int rowCount = 0;
+        while (std::getline(stream, line)) {
+            if (line.empty()) continue;
+            rowCount++;
+            
+            // Parse CSV: source_id,ra,dec,parallax,pmra,pmdec,phot_g_mean_mag,phot_bp_mean_mag,phot_rp_mean_mag
+            std::istringstream lineStream(line);
+            std::string token;
+            std::vector<std::string> tokens;
+            
+            while (std::getline(lineStream, token, ',')) {
+                tokens.push_back(token);
+            }
+            
+            if (tokens.size() >= 9) {
+                try {
+                    GaiaStar star;
+                    star.sourceId = tokens[0];
+                    double ra = std::stod(tokens[1]);
+                    double dec = std::stod(tokens[2]);
+                    star.parallax = tokens[3].empty() || tokens[3] == "null" ? 0.0 : std::stod(tokens[3]);
+                    star.pmra = tokens[4].empty() || tokens[4] == "null" ? 0.0 : std::stod(tokens[4]);
+                    star.pmdec = tokens[5].empty() || tokens[5] == "null" ? 0.0 : std::stod(tokens[5]);
+                    star.phot_g_mean_mag = tokens[6].empty() || tokens[6] == "null" ? 99.0 : std::stod(tokens[6]);
+                    star.phot_bp_mean_mag = tokens[7].empty() || tokens[7] == "null" ? 99.0 : std::stod(tokens[7]);
+                    star.phot_rp_mean_mag = tokens[8].empty() || tokens[8] == "null" ? 99.0 : std::stod(tokens[8]);
+                    
+                    // Calcola distanza da parallasse
+                    double distance = 0.0;
+                    if (star.parallax > 0) {
+                        distance = 1000.0 / star.parallax;
+                    }
+                    star.pos = EquatorialCoordinates(ra * DEG_TO_RAD, dec * DEG_TO_RAD, distance);
+                    
+                    stars.push_back(star);
+                } catch (const std::exception& e) {
+                    std::cerr << "[GaiaClient::parseVOTable] WARNING: Failed to parse CSV line " << rowCount << ": " << e.what() << "\n";
+                }
+            }
+        }
+        
+        std::cerr << "[GaiaClient::parseVOTable] DEBUG: Parsed " << stars.size() << " stars from CSV\n";
+        return stars;
+    }
     
     // Parse XML usando libxml2
     xmlDocPtr doc = xmlReadMemory(votable.c_str(), votable.length(),
                                   "votable.xml", NULL, 0);
     if (!doc) {
+        std::cerr << "[GaiaClient::parseVOTable] ERROR: Failed to parse XML\n";
         throw std::runtime_error("Failed to parse VOTable XML");
     }
     
     xmlNodePtr root = xmlDocGetRootElement(doc);
+    std::cerr << "[GaiaClient::parseVOTable] DEBUG: Root element: " << (char*)root->name << "\n";
     
-    // Trova la tabella e i dati
-    // Questa è una implementazione semplificata
-    // VOTable ha una struttura complessa con RESOURCE/TABLE/DATA/TABLEDATA
-    
-    xmlNodePtr node = root;
+    // Cerca BINARY2 o TABLEDATA
+    xmlNodePtr binary2 = nullptr;
     xmlNodePtr tableData = nullptr;
     
-    // Naviga l'albero XML per trovare TABLEDATA
-    std::function<void(xmlNodePtr)> findTableData = [&](xmlNodePtr n) {
+    std::function<void(xmlNodePtr)> findData = [&](xmlNodePtr n) {
         if (!n) return;
+        if (xmlStrcmp(n->name, (const xmlChar*)"BINARY2") == 0) {
+            binary2 = n;
+            std::cerr << "[GaiaClient::parseVOTable] DEBUG: BINARY2 found\n";
+            return;
+        }
         if (xmlStrcmp(n->name, (const xmlChar*)"TABLEDATA") == 0) {
             tableData = n;
+            std::cerr << "[GaiaClient::parseVOTable] DEBUG: TABLEDATA found\n";
             return;
         }
         for (xmlNodePtr child = n->children; child; child = child->next) {
-            findTableData(child);
-            if (tableData) return;
+            findData(child);
+            if (binary2 || tableData) return;
         }
     };
     
-    findTableData(root);
+    findData(root);
     
-    if (tableData) {
+    if (binary2) {
+        // Parse BINARY2 format
+        std::cerr << "[GaiaClient::parseVOTable] DEBUG: Parsing BINARY2 format\n";
+        
+        // Trova il STREAM con base64
+        xmlNodePtr stream = nullptr;
+        for (xmlNodePtr child = binary2->children; child; child = child->next) {
+            if (xmlStrcmp(child->name, (const xmlChar*)"STREAM") == 0) {
+                stream = child;
+                break;
+            }
+        }
+        
+        if (!stream) {
+            std::cerr << "[GaiaClient::parseVOTable] ERROR: STREAM not found in BINARY2\n";
+            xmlFreeDoc(doc);
+            return stars;
+        }
+        
+        // Estrai il contenuto base64
+        xmlChar* content = xmlNodeGetContent(stream);
+        if (!content) {
+            std::cerr << "[GaiaClient::parseVOTable] ERROR: Empty STREAM\n";
+            xmlFreeDoc(doc);
+            return stars;
+        }
+        
+        std::string base64Str(reinterpret_cast<char*>(content));
+        xmlFree(content);
+        
+        // Rimuovi whitespace
+        base64Str.erase(std::remove_if(base64Str.begin(), base64Str.end(), ::isspace), base64Str.end());
+        
+        std::cerr << "[GaiaClient::parseVOTable] DEBUG: Base64 length: " << base64Str.length() << "\n";
+        
+        // Decode base64
+        std::vector<unsigned char> binaryData = base64_decode(base64Str);
+        std::cerr << "[GaiaClient::parseVOTable] DEBUG: Binary data length: " << binaryData.size() << " bytes\n";
+        
+        // Parse binary data
+        // Formato: source_id(long=8), ra(double=8), dec(double=8), parallax(double=8),
+        //          pmra(double=8), pmdec(double=8), phot_g_mean_mag(float=4),
+        //          phot_bp_mean_mag(float=4), phot_rp_mean_mag(float=4)
+        // Totale: 60 bytes per riga
+        
+        const size_t rowSize = 60;
+        size_t numRows = binaryData.size() / rowSize;
+        
+        std::cerr << "[GaiaClient::parseVOTable] DEBUG: Expected rows: " << numRows << "\n";
+        
+        for (size_t i = 0; i < numRows; i++) {
+            const unsigned char* ptr = binaryData.data() + i * rowSize;
+            
+            GaiaStar star;
+            star.sourceId = std::to_string(bytes_to_int64(ptr)); ptr += 8;
+            double ra = bytes_to_double(ptr); ptr += 8;
+            double dec = bytes_to_double(ptr); ptr += 8;
+            star.parallax = bytes_to_double(ptr); ptr += 8;
+            star.pmra = bytes_to_double(ptr); ptr += 8;
+            star.pmdec = bytes_to_double(ptr); ptr += 8;
+            star.phot_g_mean_mag = bytes_to_float(ptr); ptr += 4;
+            star.phot_bp_mean_mag = bytes_to_float(ptr); ptr += 4;
+            star.phot_rp_mean_mag = bytes_to_float(ptr); ptr += 4;
+            
+            // Converti coordinate da gradi a radianti
+            double distance = 0.0;
+            if (star.parallax > 0) {
+                distance = 1000.0 / star.parallax; // parallax in mas -> distanza in parsec
+            }
+            star.pos = EquatorialCoordinates(ra * DEG_TO_RAD, dec * DEG_TO_RAD, distance);
+            
+            stars.push_back(star);
+        }
+        
+        std::cerr << "[GaiaClient::parseVOTable] DEBUG: Parsed " << stars.size() << " stars from BINARY2\n";
+        
+    } else if (tableData) {
+        // Parse TABLEDATA format (vecchio codice)
+        std::cerr << "[GaiaClient::parseVOTable] DEBUG: Parsing TABLEDATA format\n";
+        
         // Parse ogni riga (TR)
+        int rowCount = 0;
         for (xmlNodePtr tr = tableData->children; tr; tr = tr->next) {
             if (xmlStrcmp(tr->name, (const xmlChar*)"TR") == 0) {
+                rowCount++;
                 GaiaStar star;
                 int colIndex = 0;
                 
@@ -253,11 +508,15 @@ std::vector<GaiaStar> GaiaClient::parseVOTable(const std::string& votable) {
                 stars.push_back(star);
             }
         }
+        std::cerr << "[GaiaClient::parseVOTable] DEBUG: Parsed " << rowCount << " rows, " << stars.size() << " stars\n";
+    } else {
+        std::cerr << "[GaiaClient::parseVOTable] ERROR: Neither BINARY2 nor TABLEDATA found in VOTable\n";
     }
     
     xmlFreeDoc(doc);
     xmlCleanupParser();
     
+    std::cerr << "[GaiaClient::parseVOTable] DEBUG: Returning " << stars.size() << " stars\n";
     return stars;
 }
 

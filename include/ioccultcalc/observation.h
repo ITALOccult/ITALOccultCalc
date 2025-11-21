@@ -92,6 +92,11 @@ struct Observatory {
     GeographicCoordinates location;
     bool isSpacecraft;          // Se è un osservatorio spaziale
     
+    // Coordinate geocentriche cartesiane (dal file MPC)
+    // In unità di raggio equatoriale terrestre (a_earth = 6378.137 km)
+    double rho_cos_phi;  // ρ·cos(φ') - componente equatoriale
+    double rho_sin_phi;  // ρ·sin(φ') - componente polare
+    
     static Observatory fromMPCCode(const std::string& code);
 };
 

@@ -2,6 +2,7 @@
 #include "ioccultcalc/time_utils.h"
 #include <curl/curl.h>
 #include <sstream>
+#include <iostream>
 #include <stdexcept>
 #include <regex>
 
@@ -20,7 +21,7 @@ public:
     int timeout;
     CURL* curl;
     
-    Impl() : baseURL("https://newton.spacedys.com/astdys2/"), timeout(30) {
+    Impl() : baseURL("https://newton.spacedys.com/~astdys2/"), timeout(30) {
         curl_global_init(CURL_GLOBAL_DEFAULT);
         curl = curl_easy_init();
     }
@@ -79,25 +80,27 @@ void AstDysClient::setTimeout(int seconds) {
 
 EquinoctialElements AstDysClient::getElements(const std::string& designation) {
     // Costruisci URL per scaricare file .eq
-    // Esempio: https://newton.spacedys.com/astdys2/propsynth/(433).eq0
+    // Struttura: https://newton.spacedys.com/~astdys2/epoch/numbered/<num/1000>/<num>.eq0
+    // Esempio: 433 -> epoch/numbered/0/433.eq0
+    //          15080 -> epoch/numbered/15/15080.eq0
     
-    std::string filename = designation;
-    // Se è un numero, aggiungi parentesi
+    int asteroidNumber = 0;
+    
+    // Se è un numero, calcola la directory
     if (std::all_of(designation.begin(), designation.end(), ::isdigit)) {
-        filename = "(" + designation + ")";
+        asteroidNumber = std::stoi(designation);
+    } else {
+        throw std::runtime_error("AstDyS supports only numbered asteroids");
     }
     
-    std::string url = pImpl->baseURL + "propsynth/" + filename + ".eq0";
+    // Calcola il numero della directory (numero / 1000)
+    int dirNumber = asteroidNumber / 1000;
     
-    try {
-        std::string content = pImpl->httpGet(url);
-        return parseEquinoctialFile(content, designation);
-    } catch (const std::exception& e) {
-        // Prova con altra convenzione
-        url = pImpl->baseURL + "propsynth/" + designation + ".eq0";
-        std::string content = pImpl->httpGet(url);
-        return parseEquinoctialFile(content, designation);
-    }
+    // Formato senza parentesi
+    std::string url = pImpl->baseURL + "epoch/numbered/" + std::to_string(dirNumber) + "/" + designation + ".eq0";
+    
+    std::string content = pImpl->httpGet(url);
+    return parseEquinoctialFile(content, designation);
 }
 
 std::vector<EquinoctialElements> AstDysClient::getElementsBatch(
@@ -156,29 +159,48 @@ EquinoctialElements AstDysClient::parseEquinoctialFile(const std::string& conten
     int lineNum = 0;
     
     while (std::getline(iss, line)) {
-        if (line.empty() || line[0] == '#') continue;
+        if (line.empty() || line[0] == '#' || line[0] == '!') continue;
         
         lineNum++;
         
-        if (lineNum == 1) {
-            // Nome
+        // Rimuovi spazi iniziali
+        size_t start = line.find_first_not_of(" \t");
+        if (start == std::string::npos) continue;
+        line = line.substr(start);
+        
+        // Controlla il tipo di linea
+        if (line.find("format") == 0 || line.find("rectype") == 0 || 
+            line.find("refsys") == 0 || line.find("END_OF_HEADER") == 0) {
+            continue; // Header, salta
+        }
+        
+        // Nome dell'asteroide (solo numero o designazione)
+        if (elem.name.empty() && line.find_first_not_of("0123456789") == std::string::npos) {
             elem.name = line;
-        } else if (lineNum == 2) {
-            // Epoca (MJD)
+            continue;
+        }
+        
+        // Linea EQU con elementi
+        if (line.find("EQU") == 0) {
+            std::istringstream iss_line(line.substr(3)); // Salta "EQU"
+            iss_line >> elem.a >> elem.h >> elem.k >> elem.p >> elem.q >> elem.lambda;
+            continue;
+        }
+        
+        // Linea MJD con epoca
+        if (line.find("MJD") == 0) {
+            std::istringstream iss_line(line.substr(3)); // Salta "MJD"
             double mjd;
-            std::istringstream(line) >> mjd;
-            elem.epoch = JulianDate::fromMJD(mjd);
-        } else if (lineNum == 3) {
-            // Elementi equinoziali
-            std::istringstream(line) >> elem.a >> elem.h >> elem.k 
-                                     >> elem.p >> elem.q >> elem.lambda;
-            // Converti lambda in radianti se necessario
-            if (elem.lambda > 2.0 * M_PI) {
-                elem.lambda *= DEG_TO_RAD;
-            }
-        } else if (lineNum == 4) {
-            // Parametri fotometrici
-            std::istringstream(line) >> elem.H >> elem.G;
+            iss_line >> mjd;
+            elem.epoch.jd = mjd + 2400000.5; // Converti MJD in JD
+            continue;
+        }
+        
+        // Linea MAG con H e G
+        if (line.find("MAG") == 0) {
+            std::istringstream iss_line(line.substr(3)); // Salta "MAG"
+            iss_line >> elem.H >> elem.G;
+            continue;
         }
     }
     
