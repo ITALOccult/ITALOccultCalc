@@ -1,0 +1,8 @@
+add_executable(example_basic basic_usage.cpp)
+target_link_libraries(example_basic ioccultcalc)
+
+add_executable(example_search search_occultations.cpp)
+target_link_libraries(example_search ioccultcalc)
+
+add_executable(example_orbit_improvement orbit_improvement.cpp)
+target_link_libraries(example_orbit_improvement ioccultcalc)

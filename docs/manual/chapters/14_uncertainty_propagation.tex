@@ -1,0 +1,75 @@
+\chapter{Uncertainty Propagation}
+\label{chap:uncertainty}
+
+\section{Introduction}
+
+All predictions have uncertainties. \ioccultcalc{} quantifies them via \citep{Montenbruck2000}:
+\begin{itemize}
+    \item State Transition Matrix (STM): Linear propagation
+    \item Monte Carlo: Nonlinear, full distribution
+    \item Probability maps: Visualization for observers
+\end{itemize}
+
+\section{State Transition Matrix}
+
+The STM $\mat{\Phi}(t, t_0)$ maps initial covariance $\mat{C}_0$ to time $t$:
+
+\begin{equation}
+\mat{C}(t) = \mat{\Phi}(t, t_0) \mat{C}_0 \mat{\Phi}^T(t, t_0)
+\end{equation}
+
+\textbf{Variational equations:}
+\begin{equation}
+\frac{d\mat{\Phi}}{dt} = \frac{\partial \vect{f}}{\partial \vect{x}} \mat{\Phi}, \quad \mat{\Phi}(t_0, t_0) = \mat{I}
+\end{equation}
+
+where $\vect{f}$ is the force model.
+
+\textbf{Integration:} Integrate STM simultaneously with state vector (36 additional equations for 6×6 matrix).
+
+\section{Monte Carlo Sampling}
+
+For nonlinear propagation:
+
+\begin{algorithm}[H]
+\caption{Monte Carlo Uncertainty Propagation}
+\begin{algorithmic}[1]
+\REQUIRE Initial state $\vect{x}_0$, covariance $\mat{C}_0$, samples $N = 10000$
+\STATE Compute Cholesky decomposition: $\mat{C}_0 = \mat{L}\mat{L}^T$
+\FOR{$i = 1$ to $N$}
+    \STATE Sample $\vect{\epsilon}_i \sim \mathcal{N}(0, \mat{I})$
+    \STATE $\vect{x}_i = \vect{x}_0 + \mat{L}\vect{\epsilon}_i$
+    \STATE Propagate $\vect{x}_i$ to time $t$
+    \STATE Store result $\vect{x}_i(t)$
+\ENDFOR
+\STATE Compute statistics: mean, covariance, percentiles
+\end{algorithmic}
+\end{algorithm}
+
+\section{Probability Maps}
+
+Visualize shadow path uncertainty:
+
+\begin{enumerate}
+    \item Generate $N = 10000$ shadow paths (Monte Carlo)
+    \item For each geographic location, count passages
+    \item Probability = count / $N$
+    \item Color-code: Red (high), yellow (medium), blue (low)
+\end{enumerate}
+
+\textbf{Example output:} 1σ corridor width $\sim$20 km for well-determined orbits.
+
+\section{Summary}
+
+Uncertainty quantification provides:
+\begin{itemize}
+    \item Prediction confidence assessment
+    \item Observer site selection guidance
+    \item Real-time updates as observations accumulate
+\end{itemize}
+
+\textbf{References:}
+\begin{itemize}
+    \item Montenbruck \& Gill (2000) \citep{Montenbruck2000}: STM formulation
+    \item Jazwinski (1970) \citep{Jazwinski1970}: stochastic estimation
+\end{itemize}

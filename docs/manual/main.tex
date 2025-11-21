@@ -1,0 +1,223 @@
+% IOccultCalc Scientific Manual
+% Main LaTeX document
+\documentclass[11pt,a4paper,twoside]{book}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{natbib}
+\usepackage{siunitx}
+\usepackage{tikz}
+\usetikzlibrary{arrows,shapes,positioning}
+
+% Geometry
+\geometry{
+    a4paper,
+    left=25mm,
+    right=25mm,
+    top=30mm,
+    bottom=30mm
+}
+
+% Headers and footers
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\thepage}
+\fancyhead[RE]{\leftmark}
+\fancyhead[LO]{\rightmark}
+
+% Hyperref setup
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=cyan,
+    citecolor=blue,
+    pdftitle={IOccultCalc Scientific Manual},
+    pdfauthor={IOccultCalc Development Team},
+    pdfsubject={Asteroid Occultation Prediction},
+    pdfkeywords={asteroid, occultation, astrometry, orbit determination}
+}
+
+% Code listings style
+\lstset{
+    language=C++,
+    basicstyle=\small\ttfamily,
+    keywordstyle=\color{blue},
+    commentstyle=\color{green!60!black},
+    stringstyle=\color{red},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=8pt,
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    backgroundcolor=\color{gray!10}
+}
+
+% Custom commands
+\newcommand{\ioccultcalc}{\texttt{IOccultCalc}}
+\newcommand{\vsop}{\texttt{VSOP87}}
+\newcommand{\gaia}{\textit{Gaia}}
+\newcommand{\unit}[1]{\,\mathrm{#1}}
+\newcommand{\deriv}[2]{\frac{\mathrm{d}#1}{\mathrm{d}#2}}
+\newcommand{\pderiv}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\vect}[1]{\boldsymbol{#1}}
+\newcommand{\mat}[1]{\boldsymbol{#1}}
+
+% Title page information
+\title{
+    \huge\textbf{IOccultCalc} \\
+    \vspace{0.5cm}
+    \Large Scientific Manual for High-Precision \\
+    Asteroid Occultation Prediction \\
+    \vspace{0.5cm}
+    \large Version 2.0
+}
+
+\author{
+    IOccultCalc Development Team \\
+    \small \texttt{https://github.com/manvalan/IOccultCalc}
+}
+
+\date{\today}
+
+\begin{document}
+
+% Title page
+\frontmatter
+\maketitle
+
+% Copyright and license
+\clearpage
+\thispagestyle{empty}
+\vspace*{\fill}
+\begin{center}
+\textbf{Copyright \textcopyright\ 2024-2025 IOccultCalc Development Team}
+
+\vspace{1cm}
+
+This manual is licensed under the Creative Commons \\
+Attribution-ShareAlike 4.0 International License.
+
+\vspace{0.5cm}
+
+Software licensed under MIT License
+
+\vspace{1cm}
+
+\textbf{Citation}
+
+If you use \ioccultcalc{} in your research, please cite:
+
+\textit{IOccultCalc Development Team (2025). IOccultCalc: A High-Precision \\
+C++ Library for Asteroid Occultation Prediction. \\
+https://github.com/manvalan/IOccultCalc}
+\end{center}
+\vspace*{\fill}
+
+% Abstract
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+
+\ioccultcalc{} is a professional-grade C++ library for computing high-precision predictions of asteroid occultations. This manual provides a comprehensive scientific description of the algorithms, mathematical formulations, and computational methods implemented in the library.
+
+The software achieves sub-kilometer accuracy in shadow path prediction through the implementation of state-of-the-art algorithms including:
+\begin{itemize}
+    \item Complete VSOP87D planetary theory for Earth position
+    \item Numerical integration with Runge-Kutta-Fehlberg 7(8) method
+    \item Full relativistic corrections (aberration, light-time, gravitational deflection)
+    \item IAU 2000A precession-nutation model
+    \item Besselian elements for shadow path computation
+    \item Monte Carlo uncertainty propagation
+    \item Rigorous proper motion corrections for \gaia{} DR3 stars
+\end{itemize}
+
+The precision achieved ($\pm 0.5$--$1$ km in shadow path) represents a significant improvement over existing software, making \ioccultcalc{} suitable for professional observing campaigns and scientific research.
+
+This manual is intended for astronomers, astrometry specialists, and software developers who require a detailed understanding of the computational methods employed.
+
+% Preface
+\chapter*{Preface}
+\addcontentsline{toc}{chapter}{Preface}
+
+Asteroid occultations provide a unique opportunity to determine asteroid sizes, shapes, and binary companions with unprecedented accuracy. However, accurate prediction of these events requires sophisticated computational methods that account for numerous subtle effects in celestial mechanics, relativity, and astrometry.
+
+This manual documents the scientific foundation of \ioccultcalc{}, a library designed to meet the demanding precision requirements of modern occultation prediction. The algorithms described herein are based on the latest international standards (IAU 2000/2006, IERS Conventions 2010) and validated against reference software such as OrbFit and JPL HORIZONS.
+
+The development of \ioccultcalc{} was motivated by the need for:
+\begin{enumerate}
+    \item Higher precision than existing tools (e.g., Occult4)
+    \item Open-source implementation with full documentation
+    \item Modern software architecture suitable for integration
+    \item Rigorous uncertainty quantification
+\end{enumerate}
+
+We hope this manual serves both as a reference for users of the library and as a educational resource for those interested in the mathematical and computational aspects of positional astronomy.
+
+\vspace{1cm}
+\noindent
+\textit{IOccultCalc Development Team} \\
+\textit{November 2025}
+
+% Table of Contents
+\tableofcontents
+
+% List of Figures
+\listoffigures
+
+% List of Tables
+\listoftables
+
+% List of Algorithms
+\listofalgorithms
+
+% Main content
+\mainmatter
+
+% Include chapters
+\include{chapters/01_introduction}
+\include{chapters/02_coordinate_systems}
+\include{chapters/03_time_systems}
+\include{chapters/04_planetary_ephemerides}
+\include{chapters/05_orbital_mechanics}
+\include{chapters/06_numerical_integration}
+\include{chapters/07_perturbations}
+\include{chapters/08_relativistic_corrections}
+\include{chapters/09_precession_nutation}
+\include{chapters/10_stellar_astrometry}
+\include{chapters/11_orbit_determination}
+\include{chapters/12_asteroid_shape}
+\include{chapters/13_besselian_method}
+\include{chapters/14_uncertainty_propagation}
+\include{chapters/15_implementation}
+\include{chapters/16_validation}
+
+% Appendices
+\appendix
+\include{chapters/appendix_a_constants}
+\include{chapters/appendix_b_algorithms}
+\include{chapters/appendix_c_vsop87_coefficients}
+
+% Bibliography
+\bibliographystyle{apalike}
+\bibliography{references}
+
+% Index (if needed)
+% \printindex
+
+\end{document}

@@ -1,0 +1,287 @@
+\chapter{Introduction}
+\label{chap:introduction}
+
+\section{Motivation and Scope}
+
+Asteroid occultations occur when a Solar System small body passes in front of a star as observed from Earth. These events provide unique opportunities for scientific investigation, including:
+
+\begin{itemize}
+    \item Direct measurement of asteroid size and shape with kilometric precision
+    \item Detection of binary and multiple asteroid systems
+    \item Characterization of asteroid density through combined occultation and mass estimates
+    \item Improvement of asteroid orbits through astrometric timing
+    \item Detection of atmospheres and surface features
+\end{itemize}
+
+The prediction of occultation events requires high precision in both the ephemerides of the asteroid and the positions of stars. Modern requirements demand shadow path accuracy of $\pm 1$ km or better to effectively coordinate observing campaigns and maximize scientific return.
+
+\subsection{Historical Context}
+
+Early occultation predictions relied on simplified two-body orbital propagation and approximate planetary ephemerides. Software such as Occult \citep{Herald2023} has been widely used by amateur astronomers but achieves typical precisions of $\pm 5$--$10$ km due to:
+
+\begin{enumerate}
+    \item Use of simplified VSOP87 with reduced term count ($\sim 100$ terms vs. $\sim 2000$ in complete theory)
+    \item Two-body Keplerian propagation without planetary perturbations
+    \item Simplified stellar positions without rigorous proper motion
+    \item Lack of relativistic corrections
+    \item Approximate uncertainty estimation
+\end{enumerate}
+
+Professional software like OrbFit \citep{Milani2010} and JPL HORIZONS \citep{Giorgini1996} achieve higher precision but are not specifically designed for occultation prediction and lack features such as automated star catalog queries and shadow path visualization.
+
+\subsection{Design Goals}
+
+\ioccultcalc{} was developed with the following objectives:
+
+\begin{description}
+    \item[Precision] Shadow path accuracy of $\pm 0.5$--$1$ km, comparable to professional orbit determination software
+    \item[Completeness] Implementation of all significant corrections according to IAU and IERS standards
+    \item[Uncertainty Quantification] Rigorous propagation of orbital uncertainties using Monte Carlo and State Transition Matrix methods
+    \item[Modularity] Clean API allowing integration into larger systems
+    \item[Documentation] Full scientific documentation of algorithms and validation
+    \item[Open Source] MIT license enabling verification and extension
+\end{description}
+
+\section{Precision Requirements}
+
+\subsection{Error Budget}
+
+The total error in shadow path prediction can be decomposed into several components:
+
+\begin{equation}
+\sigma_{\text{total}}^2 = \sigma_{\text{asteroid}}^2 + \sigma_{\text{star}}^2 + \sigma_{\text{Earth}}^2 + \sigma_{\text{algorithm}}^2
+\label{eq:error_budget}
+\end{equation}
+
+where:
+
+\begin{description}
+    \item[$\sigma_{\text{asteroid}}$] Uncertainty in asteroid ephemeris, dominated by orbital uncertainty. For well-observed main belt asteroids: $0.1$--$1$ km. For newly discovered NEAs: $10$--$1000$ km.
+    
+    \item[$\sigma_{\text{star}}$] Uncertainty in stellar position. With \gaia{} DR3 and proper motion: $\sim 0.1$--$1$ mas ($\sim 0.5$ km at 1 AU). Increases for fainter stars without proper motion.
+    
+    \item[$\sigma_{\text{Earth}}$] Uncertainty in Earth position. With VSOP87D: $< 0.1$ km. Negligible for most applications.
+    
+    \item[$\sigma_{\text{algorithm}}$] Numerical and approximation errors in computation. Target: $< 0.1$ km through high-order integration and complete models.
+\end{description}
+
+For a typical well-observed main belt asteroid at opposition:
+\begin{align}
+\sigma_{\text{asteroid}} &\approx 0.5 \unit{km} \\
+\sigma_{\text{star}} &\approx 0.5 \unit{km} \\
+\sigma_{\text{Earth}} &\approx 0.05 \unit{km} \\
+\sigma_{\text{algorithm}} &\approx 0.05 \unit{km} \\
+\sigma_{\text{total}} &\approx 0.7 \unit{km}
+\end{align}
+
+\subsection{Comparison with Existing Software}
+
+Table~\ref{tab:software_comparison} compares the precision achieved by different software packages.
+
+\begin{table}[htbp]
+\centering
+\caption{Comparison of occultation prediction software precision}
+\label{tab:software_comparison}
+\begin{tabular}{@{}llcc@{}}
+\toprule
+Software & Method & Shadow Path & Comp. Time \\
+\midrule
+Occult4 & 2-body + VSOP reduced & $\pm 5$--$10$ km & $\sim 1$ s \\
+OrbFit & N-body + full models & $\pm 0.5$--$1$ km & $\sim 10$ s \\
+JPL HORIZONS & DE440 + full models & $\pm 0.1$--$0.5$ km & $\sim 5$ s \\
+\ioccultcalc{} v2.0 & N-body + full models & $\pm 0.5$--$1$ km & $\sim 2$--$10$ s \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Overview of Methods}
+
+This manual documents the complete computational chain from orbital elements to shadow path prediction:
+
+\subsection{Coordinate Systems and Transformations (Chapter~\ref{chap:coordinates})}
+\begin{itemize}
+    \item Celestial coordinate systems (ICRS, J2000, ecliptic, equatorial)
+    \item Earth-fixed coordinates (ITRS, geodetic, geocentric)
+    \item Transformation matrices and rotation conventions
+\end{itemize}
+
+\subsection{Time Systems (Chapter~\ref{chap:time})}
+\begin{itemize}
+    \item TAI, UTC, UT1, TT, TDB
+    \item Leap seconds and ΔT
+    \item Sidereal time (GMST, GAST, ERA)
+\end{itemize}
+
+\subsection{Planetary Ephemerides (Chapter~\ref{chap:ephemerides})}
+\begin{itemize}
+    \item VSOP87D theory for Earth and planets
+    \item ELP2000 theory for the Moon
+    \item Coordinate transformations
+    \item Precision estimates
+\end{itemize}
+
+\subsection{Orbital Mechanics (Chapter~\ref{chap:orbital})}
+\begin{itemize}
+    \item Keplerian elements and equinoctial elements
+    \item Two-body problem and Kepler's equation
+    \item Osculating and mean elements
+\end{itemize}
+
+\subsection{Numerical Integration (Chapter~\ref{chap:integration})}
+\begin{itemize}
+    \item Runge-Kutta-Fehlberg 7(8) method
+    \item Adaptive step size control
+    \item State Transition Matrix propagation
+    \item Symplectic integrators for long-term stability
+\end{itemize}
+
+\subsection{Perturbations (Chapter~\ref{chap:perturbations})}
+\begin{itemize}
+    \item Planetary perturbations (all planets + Moon)
+    \item Solar radiation pressure
+    \item Yarkovsky effect (optional)
+\end{itemize}
+
+\subsection{Relativistic Corrections (Chapter~\ref{chap:relativistic})}
+\begin{itemize}
+    \item Light-time correction
+    \item Stellar aberration (annual and diurnal)
+    \item Gravitational light deflection
+    \item Shapiro time delay
+\end{itemize}
+
+\subsection{Precession and Nutation (Chapter~\ref{chap:precession})}
+\begin{itemize}
+    \item IAU 2000A precession-nutation model
+    \item Frame bias from ICRS to J2000
+    \item Equation of the equinoxes
+\end{itemize}
+
+\subsection{Stellar Astrometry (Chapter~\ref{chap:stellar})}
+\begin{itemize}
+    \item \gaia{} DR3 catalog structure
+    \item Rigorous proper motion corrections
+    \item Parallax (annual and diurnal)
+    \item Space velocities
+\end{itemize}
+
+\subsection{Orbit Determination (Chapter~\ref{chap:orbit_determination})}
+\begin{itemize}
+    \item Differential correction
+    \item Weighted least squares
+    \item Covariance matrix computation
+    \item Outlier detection
+\end{itemize}
+
+\subsection{Asteroid Shape Models (Chapter~\ref{chap:shape})}
+\begin{itemize}
+    \item Triaxial ellipsoid representation
+    \item Effective radius computation
+    \item Shape databases (DAMIT, SBNDB)
+\end{itemize}
+
+\subsection{Besselian Method (Chapter~\ref{chap:besselian})}
+\begin{itemize}
+    \item Fundamental plane coordinate system
+    \item Besselian elements
+    \item Shadow path computation
+    \item Umbra and penumbra
+\end{itemize}
+
+\subsection{Uncertainty Propagation (Chapter~\ref{chap:uncertainty})}
+\begin{itemize}
+    \item Monte Carlo sampling
+    \item Unscented Transform
+    \item Probability maps
+    \item Confidence regions
+\end{itemize}
+
+\section{Software Architecture}
+
+\ioccultcalc{} is implemented in modern C++17 with the following design principles:
+
+\subsection{Modularity}
+Each major component (ephemerides, integration, corrections) is encapsulated in separate classes with well-defined interfaces. This enables:
+\begin{itemize}
+    \item Independent testing and validation
+    \item Performance optimization of critical components
+    \item Alternative implementations (e.g., different integrators)
+\end{itemize}
+
+\subsection{Precision Control}
+Users can select precision levels trading computational cost for accuracy:
+\begin{description}
+    \item[FAST] 2-body propagation, reduced VSOP87 ($\sim 1$ s, $\pm 10$ km)
+    \item[STANDARD] Numerical integration, planetary perturbations ($\sim 5$ s, $\pm 2$ km)
+    \item[HIGH] Full corrections, relativistic effects ($\sim 30$ s, $\pm 0.5$ km)
+    \item[REFERENCE] Maximum precision, Monte Carlo ($\sim 5$ min, $\pm 0.3$ km)
+\end{description}
+
+\subsection{External Dependencies}
+Minimal dependencies for portability:
+\begin{itemize}
+    \item \texttt{libcurl} for HTTP queries (AstDyS, MPC, \gaia{})
+    \item \texttt{libxml2} for VOTable parsing
+    \item Standard C++17 library
+\end{itemize}
+
+\section{Validation Strategy}
+
+The software is validated through:
+
+\begin{enumerate}
+    \item \textbf{Unit tests} for individual algorithms (e.g., Kepler solver, coordinate transformations)
+    \item \textbf{Integration tests} comparing ephemerides with JPL HORIZONS
+    \item \textbf{Historical events} comparing predictions with observed occultation chords
+    \item \textbf{Cross-validation} with OrbFit orbit propagation
+\end{enumerate}
+
+Chapter~\ref{chap:validation} presents detailed validation results.
+
+\section{Notation and Conventions}
+
+Throughout this manual:
+
+\begin{itemize}
+    \item Vectors are denoted in bold: $\vect{r}$, $\vect{v}$
+    \item Matrices are denoted in bold capitals: $\mat{A}$, $\mat{\Phi}$
+    \item Unit vectors have a hat: $\hat{\vect{r}}$
+    \item Coordinate systems are indicated by superscripts: $\vect{r}^{\text{ICRS}}$
+    \item Time derivatives: $\dot{\vect{r}} = \deriv{\vect{r}}{t}$
+    \item Partial derivatives: $\pderiv{f}{x}$
+    \item Astronomical units (AU) are used for distances unless otherwise specified
+    \item Julian Date (JD) is used for time unless otherwise specified
+    \item Angles in radians unless marked with $\degree$
+\end{itemize}
+
+\subsection{Physical Constants}
+
+All constants conform to IAU 2015 and CODATA 2018 recommendations. A complete list is provided in Appendix~\ref{app:constants}.
+
+Key constants:
+\begin{align}
+c &= 299792458 \unit{m\,s^{-1}} \quad \text{(speed of light)} \\
+\mathrm{AU} &= 149597870700 \unit{m} \quad \text{(astronomical unit)} \\
+k &= 0.01720209895 \unit{AU^{3/2}\,d^{-1}\,M_\odot^{-1/2}} \quad \text{(Gaussian constant)}
+\end{align}
+
+\section{Organization of This Manual}
+
+\begin{description}
+    \item[Chapters 2--4] establish the foundational systems (coordinates, time, reference ephemerides)
+    \item[Chapters 5--7] cover orbital mechanics and propagation
+    \item[Chapters 8--10] detail corrections for high-precision astrometry
+    \item[Chapters 11--14] present advanced topics (orbit fitting, uncertainty, shadow computation)
+    \item[Chapter 15] discusses implementation aspects
+    \item[Chapter 16] presents validation and testing results
+    \item[Appendices] provide reference data and detailed algorithms
+\end{description}
+
+Each chapter includes:
+\begin{itemize}
+    \item Mathematical formulation of the problem
+    \item Description of the algorithm
+    \item Implementation notes
+    \item Error analysis
+    \item References to original literature
+\end{itemize}

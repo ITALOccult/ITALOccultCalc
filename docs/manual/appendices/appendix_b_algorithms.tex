@@ -1,0 +1,173 @@
+\chapter{Algorithm Pseudocode}
+\label{app:algorithms}
+
+\section{Complete Occultation Prediction Workflow}
+
+\begin{algorithm}[H]
+\caption{Complete Occultation Prediction}
+\label{alg:complete_prediction}
+\begin{algorithmic}[1]
+\REQUIRE Asteroid name, time range $[t_{\text{start}}, t_{\text{end}}]$, observer location
+\STATE \textbf{// Step 1: Acquire asteroid elements}
+\STATE $\vect{elem} \leftarrow$ AstDyS.getElements(asteroid\_name)
+\STATE \textbf{// Step 2: Query potential target stars}
+\STATE $\text{stars} \leftarrow$ Gaia.queryRegion($\vect{elem}.\alpha$, $\vect{elem}.\delta$, radius=5°, mag<15)
+\STATE \textbf{// Step 3: For each star, search for close approaches}
+\FOR{each $\text{star}$ in $\text{stars}$}
+    \STATE \textbf{// 3a: Coarse search (Keplerian, 1-day steps)}
+    \STATE $t_{\text{close}} \leftarrow$ findCloseApproach($\vect{elem}$, star, $t_{\text{start}}$, $t_{\text{end}}$, mode=FAST)
+    \IF{separation($t_{\text{close}}$) $<$ 2 arcmin}
+        \STATE \textbf{// 3b: Refine with high-precision propagation}
+        \STATE $\vect{state} \leftarrow$ convertToCartesian($\vect{elem}$)
+        \STATE $\vect{state}(t) \leftarrow$ RKF78.propagate($\vect{state}$, $t_{\text{close}}$ - 1 hour, $t_{\text{close}}$ + 1 hour)
+        \STATE \textbf{// 3c: Apply corrections}
+        \STATE $\vect{pos}_{\text{star}} \leftarrow$ correctProperMotion(star, $t_{\text{close}}$)
+        \STATE $\vect{pos}_{\text{star}} \leftarrow$ applyAberration($\vect{pos}_{\text{star}}$, Earth velocity)
+        \STATE \textbf{// 3d: Check occultation condition}
+        \STATE $\Delta\theta \leftarrow$ angularSeparation($\vect{state}$, $\vect{pos}_{\text{star}}$)
+        \STATE $\theta_{\text{max}} \leftarrow$ asteroidRadius / distance
+        \IF{$\Delta\theta < \theta_{\text{max}}$}
+            \STATE \textbf{// 3e: Compute shadow path (Besselian method)}
+            \STATE $\text{path} \leftarrow$ computeShadowPath($\vect{state}$, star, $t_{\text{close}}$)
+            \STATE \textbf{// 3f: Monte Carlo uncertainty}
+            \IF{uncertaintyMode == ENABLED}
+                \STATE $\text{path}.\text{uncertainty} \leftarrow$ monteCarloPropagate($\vect{elem}$, 10000 samples)
+            \ENDIF
+            \STATE \textbf{// Store event}
+            \STATE events.append(\{asteroid, star, $t_{\text{close}}$, path\})
+        \ENDIF
+    \ENDIF
+\ENDFOR
+\STATE \textbf{// Step 4: Export results}
+\STATE KMLExporter.write("predictions.kml", events)
+\RETURN events
+\end{algorithmic}
+\end{algorithm}
+
+\section{RKF78 Integration Step}
+
+\begin{algorithm}[H]
+\caption{RKF78 Single Integration Step}
+\label{alg:rkf78_step}
+\begin{algorithmic}[1]
+\REQUIRE State $\vect{y}_n$ at time $t_n$, step size $h$, force model $\vect{f}$
+\STATE \textbf{// Compute 13 stages}
+\STATE $\vect{k}_1 \leftarrow \vect{f}(t_n, \vect{y}_n)$
+\FOR{$i = 2$ to $13$}
+    \STATE $\vect{y}_{\text{temp}} \leftarrow \vect{y}_n + h \sum_{j=1}^{i-1} a_{ij} \vect{k}_j$
+    \STATE $\vect{k}_i \leftarrow \vect{f}(t_n + c_i h, \vect{y}_{\text{temp}})$
+\ENDFOR
+\STATE \textbf{// 7th-order solution}
+\STATE $\vect{y}_{n+1} \leftarrow \vect{y}_n + h \sum_{i=1}^{13} b_i \vect{k}_i$
+\STATE \textbf{// 8th-order solution (for error estimate)}
+\STATE $\vect{y}_{n+1}^* \leftarrow \vect{y}_n + h \sum_{i=1}^{13} b_i^* \vect{k}_i$
+\STATE \textbf{// Error estimate}
+\STATE $\vect{e} \leftarrow \vect{y}_{n+1}^* - \vect{y}_{n+1}$
+\STATE $\text{error} \leftarrow ||\vect{e}|| / \max(||\vect{y}_{n+1}||, \text{scale})$
+\STATE \textbf{// Adaptive step control}
+\IF{error $< \epsilon$}
+    \STATE accept step, $t_{n+1} \leftarrow t_n + h$
+\ELSE
+    \STATE reject step, stay at $t_n$
+\ENDIF
+\STATE $h_{\text{new}} \leftarrow 0.9 h (\epsilon / \text{error})^{1/8}$
+\RETURN $\vect{y}_{n+1}$, $t_{n+1}$, $h_{\text{new}}$, accepted
+\end{algorithmic}
+\end{algorithm}
+
+\section{Kepler Equation Solver}
+
+\begin{algorithm}[H]
+\caption{Kepler Equation Newton-Raphson Solver}
+\label{alg:kepler_detailed}
+\begin{algorithmic}[1]
+\REQUIRE Mean anomaly $M$, eccentricity $e$, tolerance $\epsilon = 10^{-12}$
+\STATE \textbf{// Initial guess}
+\IF{$e < 0.8$}
+    \STATE $E \leftarrow M$ \quad // Good for low eccentricity
+\ELSE
+    \STATE $E \leftarrow \pi$ \quad // Better for high eccentricity
+\ENDIF
+\STATE \textbf{// Newton-Raphson iteration}
+\FOR{$i = 1$ to $15$}
+    \STATE $f \leftarrow E - e \sin E - M$
+    \STATE $f' \leftarrow 1 - e \cos E$
+    \STATE $f'' \leftarrow e \sin E$ \quad // For convergence check
+    \STATE $\Delta E \leftarrow -f / f'$
+    \STATE $E \leftarrow E + \Delta E$
+    \IF{$|\Delta E| < \epsilon$}
+        \STATE \textbf{break} \quad // Converged
+    \ENDIF
+    \IF{$i > 10$ AND $|f| > 0.1$}
+        \STATE \textbf{warning:} "Slow convergence, check inputs"
+    \ENDIF
+\ENDFOR
+\IF{$|\Delta E| \geq \epsilon$}
+    \STATE \textbf{error:} "Kepler equation did not converge"
+\ENDIF
+\RETURN $E$
+\end{algorithmic}
+\end{algorithm}
+
+\section{Besselian Shadow Path Calculation}
+
+\begin{algorithm}[H]
+\caption{Besselian Shadow Path on Earth Surface}
+\label{alg:besselian_path}
+\begin{algorithmic}[1]
+\REQUIRE Asteroid state $\vect{r}_{\text{ast}}$, star direction $\hat{s}$, time range
+\STATE \textbf{// Define fundamental plane (perpendicular to star)}
+\STATE $\hat{x}_{\text{fund}} \leftarrow \hat{s} \times \hat{z}$ \quad // East direction
+\STATE $\hat{y}_{\text{fund}} \leftarrow \hat{x}_{\text{fund}} \times \hat{s}$ \quad // North direction
+\STATE \textbf{// Project asteroid onto fundamental plane}
+\STATE $d_{\text{ast}} \leftarrow \vect{r}_{\text{ast}} \cdot \hat{s}$ \quad // Distance along star direction
+\STATE $\xi_{\text{ast}} \leftarrow (\vect{r}_{\text{ast}} - d_{\text{ast}} \hat{s}) \cdot \hat{x}_{\text{fund}}$
+\STATE $\eta_{\text{ast}} \leftarrow (\vect{r}_{\text{ast}} - d_{\text{ast}} \hat{s}) \cdot \hat{y}_{\text{fund}}$
+\STATE \textbf{// Project Earth surface onto plane}
+\STATE $\text{path\_points} \leftarrow []$
+\FOR{latitude $\phi = -90°$ to $+90°$ step $1°$}
+    \FOR{longitude $\lambda = 0°$ to $360°$ step $1°$}
+        \STATE $\vect{r}_{\text{obs}} \leftarrow$ geodeticToECEF($\phi$, $\lambda$, $h=0$)
+        \STATE $\xi_{\text{obs}} \leftarrow (\vect{r}_{\text{obs}}) \cdot \hat{x}_{\text{fund}}$
+        \STATE $\eta_{\text{obs}} \leftarrow (\vect{r}_{\text{obs}}) \cdot \hat{y}_{\text{fund}}$
+        \STATE $\text{distance} \leftarrow \sqrt{(\xi_{\text{ast}} - \xi_{\text{obs}})^2 + (\eta_{\text{ast}} - \eta_{\text{obs}})^2}$
+        \IF{distance $< R_{\text{shadow}}$}
+            \STATE path\_points.append($\phi$, $\lambda$, distance)
+        \ENDIF
+    \ENDFOR
+\ENDFOR
+\RETURN path\_points
+\end{algorithmic}
+\end{algorithm}
+
+\section{Monte Carlo Uncertainty Propagation}
+
+\begin{algorithm}[H]
+\caption{Monte Carlo Shadow Path Uncertainty}
+\label{alg:monte_carlo_detailed}
+\begin{algorithmic}[1]
+\REQUIRE Nominal state $\vect{x}_0$, covariance $\mat{C}_0$, $N$ samples
+\STATE \textbf{// Cholesky decomposition}
+\STATE $\mat{L} \leftarrow$ cholesky($\mat{C}_0$) \quad // $\mat{C}_0 = \mat{L}\mat{L}^T$
+\STATE \textbf{// Generate samples}
+\STATE $\text{paths} \leftarrow []$
+\FOR{$i = 1$ to $N$}
+    \STATE $\vect{\epsilon} \sim \mathcal{N}(0, \mat{I}_6)$ \quad // Standard normal vector
+    \STATE $\vect{x}_i \leftarrow \vect{x}_0 + \mat{L} \vect{\epsilon}$ \quad // Perturbed state
+    \STATE \textbf{// Propagate to event time}
+    \STATE $\vect{x}_i(t_{\text{event}}) \leftarrow$ RKF78.propagate($\vect{x}_i$, $t_0$, $t_{\text{event}}$)
+    \STATE \textbf{// Compute shadow path}
+    \STATE $\text{path}_i \leftarrow$ computeShadowPath($\vect{x}_i(t_{\text{event}})$, star)
+    \STATE paths.append($\text{path}_i$)
+\ENDFOR
+\STATE \textbf{// Statistical analysis}
+\STATE $\text{mean\_path} \leftarrow \frac{1}{N} \sum_i \text{path}_i$
+\STATE $\text{std\_deviation} \leftarrow \sqrt{\frac{1}{N-1} \sum_i (\text{path}_i - \text{mean\_path})^2}$
+\STATE \textbf{// Probability map}
+\FOR{each geographic location $(lat, lon)$}
+    \STATE $\text{count} \leftarrow$ number of paths passing through $(lat, lon)$
+    \STATE $P(lat, lon) \leftarrow \text{count} / N$
+\ENDFOR
+\RETURN mean\_path, std\_deviation, probability\_map
+\end{algorithmic}
+\end{algorithm}

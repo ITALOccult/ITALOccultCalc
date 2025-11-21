@@ -1,0 +1,17 @@
+# Lista di asteroidi per ricerca occultazioni
+# Un asteroide per riga (numero o designazione)
+# Le linee che iniziano con # sono commenti
+
+# Grandi asteroidi del main belt
+433   # Eros
+6     # Hebe
+7     # Iris
+15    # Eunomia
+16    # Psyche
+29    # Amphitrite
+324   # Bamberga
+532   # Herculina
+
+# TNO e Centauri (se disponibili in AstDyS)
+# 134340  # Pluto
+# 136199  # Eris
