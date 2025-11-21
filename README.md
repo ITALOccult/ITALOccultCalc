@@ -17,7 +17,7 @@ IOccultCalc è una libreria completa per astronomi amatoriali e professionisti c
 - 🌟 **Query intelligenti Gaia DR3** - scarica solo le stelle necessarie
 - 🛰️ **Propagazione orbitale precisa** usando elementi equinoziali (non singolari)
 - 🪐 **Modello N-body completo** - perturbazioni di tutti i pianeti e corpi maggiori
-- 🌍 **VSOP87D completo** - effemeridi planetarie con ~3000 termini per pianeta (0.1 km precisione)
+- 🌍 **JPL DE441 ephemerides** - standard NASA con precisione <100m per pianeti (10-50× meglio di VSOP87)
 - 🔬 **Orbit determination** - miglioramento orbitale con osservazioni astrometriche
 - 📡 **Download osservazioni MPC** - formato standard 80 colonne
 - 📈 **Differential correction** - metodo Gauss-Newton con least squares

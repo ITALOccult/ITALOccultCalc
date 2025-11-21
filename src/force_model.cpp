@@ -103,16 +103,14 @@ ForceModelConfig ForceModelConfig::fullConfig() {
 // ForceModel
 // ============================================================================
 
-ForceModel::ForceModel() : config_(ForceModelConfig::standardConfig()) {
+ForceModel::ForceModel() : config_(ForceModelConfig::standardConfig()), jplInitialized_(false) {
     initializeBodyDatabase();
-    vsop87_ = std::make_unique<VSOP87Calculator>();
-    elp2000_ = std::make_unique<ELP2000Calculator>();
+    // JPL viene inizializzato on-demand o tramite initializeJPL()
 }
 
-ForceModel::ForceModel(const ForceModelConfig& config) : config_(config) {
+ForceModel::ForceModel(const ForceModelConfig& config) : config_(config), jplInitialized_(false) {
     initializeBodyDatabase();
-    vsop87_ = std::make_unique<VSOP87Calculator>();
-    elp2000_ = std::make_unique<ELP2000Calculator>();
+    // JPL viene inizializzato on-demand o tramite initializeJPL()
 }
 
 void ForceModel::initializeBodyDatabase() {
@@ -268,6 +266,78 @@ Vector3D ForceModel::pointMassAcceleration(const Vector3D& asteroidPos,
     return directTerm - indirectTerm;
 }
 
+// Converte PerturbingBody in JPLBody
+static JPLBody toJPLBody(PerturbingBody body) {
+    switch (body) {
+        case PerturbingBody::MERCURY: return JPLBody::MERCURY;
+        case PerturbingBody::VENUS: return JPLBody::VENUS;
+        case PerturbingBody::EARTH: return JPLBody::EARTH;
+        case PerturbingBody::MARS: return JPLBody::MARS;
+        case PerturbingBody::JUPITER: return JPLBody::JUPITER;
+        case PerturbingBody::SATURN: return JPLBody::SATURN;
+        case PerturbingBody::URANUS: return JPLBody::URANUS;
+        case PerturbingBody::NEPTUNE: return JPLBody::NEPTUNE;
+        case PerturbingBody::MOON: return JPLBody::MOON;
+        case PerturbingBody::PLUTO: return JPLBody::PLUTO;
+        case PerturbingBody::SUN: return JPLBody::SUN;
+        default: return JPLBody::SUN; // Fallback
+    }
+}
+
+bool ForceModel::initializeJPL(JPLVersion version, const std::string& filepath) {
+    if (jplInitialized_) {
+        return true; // Già inizializzato
+    }
+    
+    jplReader_ = JPLEphemerisReader(version);
+    
+    bool success;
+    if (!filepath.empty()) {
+        // Carica da file specifico
+        success = jplReader_.loadFile(filepath);
+    } else {
+        // Auto-download se necessario
+        success = jplReader_.downloadDE(version);
+    }
+    
+    if (success) {
+        jplInitialized_ = true;
+        
+        // Aggiorna parametri GM dal file JPL
+        JPLConstants constants = jplReader_.getConstants();
+        bodyDatabase_[PerturbingBody::SUN].GM = constants.GM_Sun;
+        bodyDatabase_[PerturbingBody::EARTH].GM = constants.GM_Earth;
+        bodyDatabase_[PerturbingBody::MOON].GM = constants.GM_Moon;
+        
+        for (int i = 0; i < 9; ++i) {
+            PerturbingBody body;
+            switch (i) {
+                case 0: body = PerturbingBody::MERCURY; break;
+                case 1: body = PerturbingBody::VENUS; break;
+                case 2: body = PerturbingBody::EARTH; break;
+                case 3: body = PerturbingBody::MARS; break;
+                case 4: body = PerturbingBody::JUPITER; break;
+                case 5: body = PerturbingBody::SATURN; break;
+                case 6: body = PerturbingBody::URANUS; break;
+                case 7: body = PerturbingBody::NEPTUNE; break;
+                case 8: body = PerturbingBody::PLUTO; break;
+                default: continue;
+            }
+            bodyDatabase_[body].GM = constants.GM_planets[i];
+            bodyDatabase_[body].GM_AU_day = BodyData::convertGM_to_AU_day(constants.GM_planets[i]);
+        }
+    }
+    
+    return success;
+}
+
+JPLVersion ForceModel::getJPLVersion() const {
+    if (!jplInitialized_) {
+        return JPLVersion::DE441; // Default
+    }
+    return jplReader_.getVersion();
+}
+
 Vector3D ForceModel::getBodyPosition(PerturbingBody body, double jd) const {
     // Verifica cache
     auto cacheKey = std::make_pair(body, jd);
@@ -276,66 +346,37 @@ Vector3D ForceModel::getBodyPosition(PerturbingBody body, double jd) const {
         return it->second;
     }
     
+    // Inizializza JPL se necessario (lazy initialization)
+    if (!jplInitialized_) {
+        const_cast<ForceModel*>(this)->initializeJPL();
+    }
+    
     Vector3D pos;
     
-    switch (body) {
-        case PerturbingBody::SUN:
-            pos = Vector3D(0, 0, 0); // Origine riferimento
-            break;
-            
-        case PerturbingBody::MERCURY:
-            pos = vsop87_->getPosition(VSO87Planet::MERCURY, jd);
-            break;
-            
-        case PerturbingBody::VENUS:
-            pos = vsop87_->getPosition(VSO87Planet::VENUS, jd);
-            break;
-            
-        case PerturbingBody::EARTH:
-            pos = vsop87_->getPosition(VSO87Planet::EARTH, jd);
-            break;
-            
-        case PerturbingBody::MARS:
-            pos = vsop87_->getPosition(VSO87Planet::MARS, jd);
-            break;
-            
-        case PerturbingBody::JUPITER:
-            pos = vsop87_->getPosition(VSO87Planet::JUPITER, jd);
-            break;
-            
-        case PerturbingBody::SATURN:
-            pos = vsop87_->getPosition(VSO87Planet::SATURN, jd);
-            break;
-            
-        case PerturbingBody::URANUS:
-            pos = vsop87_->getPosition(VSO87Planet::URANUS, jd);
-            break;
-            
-        case PerturbingBody::NEPTUNE:
-            pos = vsop87_->getPosition(VSO87Planet::NEPTUNE, jd);
-            break;
-            
-        case PerturbingBody::MOON: {
-            // Luna: ELP2000 + Earth VSOP87
-            Vector3D earthPos = vsop87_->getPosition(VSO87Planet::EARTH, jd);
-            Vector3D lunarGeocentricPos = elp2000_->getPosition(jd);
-            pos = earthPos + lunarGeocentricPos;
-            break;
-        }
-            
-        case PerturbingBody::PLUTO:
-            // Per Plutone usiamo elementi orbitali medi (da implementare)
-            // Per ora posizione approssimata
-            pos = Vector3D(0, 0, 0); // TODO: implementare effemeridi Plutone
-            break;
-            
-        case PerturbingBody::CERES:
-        case PerturbingBody::PALLAS:
-        case PerturbingBody::VESTA:
-            // Grandi asteroidi: richiedono elementi orbitali da database
-            // Per ora ritorna origine (da implementare)
-            pos = Vector3D(0, 0, 0); // TODO: implementare effemeridi asteroidi
-            break;
+    if (body == PerturbingBody::SUN) {
+        // Sole: otteniamo posizione baricentrica e convertiamo in eliocentrica
+        // Per riferimento eliocentrico, Sole è all'origine
+        pos = Vector3D(0, 0, 0);
+    } else if (body == PerturbingBody::CERES || 
+               body == PerturbingBody::PALLAS || 
+               body == PerturbingBody::VESTA) {
+        // Grandi asteroidi: JPL DE441 include 343 asteroidi principali
+        // TODO: implementare lookup per ID asteroide in JPL
+        pos = Vector3D(0, 0, 0);
+    } else {
+        // Pianeti e Luna: usa JPL DE
+        JPLBody jplBody = toJPLBody(body);
+        
+        // Ottiene posizione barycentric da JPL (in km)
+        Vector3D posKm = jplReader_.getPosition(jplBody, jd);
+        
+        // Converte in eliocentrico sottraendo posizione Sole
+        Vector3D sunPosKm = jplReader_.getPosition(JPLBody::SUN, jd);
+        Vector3D heliocentricKm = posKm - sunPosKm;
+        
+        // Converte da km ad AU
+        constexpr double KM_TO_AU = 1.0 / AU_KM;
+        pos = heliocentricKm * KM_TO_AU;
     }
     
     // Salva in cache
@@ -352,14 +393,39 @@ Vector3D ForceModel::getBodyVelocity(PerturbingBody body, double jd) const {
         return it->second;
     }
     
+    // Inizializza JPL se necessario
+    if (!jplInitialized_) {
+        const_cast<ForceModel*>(this)->initializeJPL();
+    }
+    
     Vector3D vel;
     
-    // Derivata numerica (differenze finite centrali)
-    double dt = 0.001; // 0.001 giorni = 86.4 secondi
-    Vector3D pos_plus = getBodyPosition(body, jd + dt);
-    Vector3D pos_minus = getBodyPosition(body, jd - dt);
-    
-    vel = (pos_plus - pos_minus) * (0.5 / dt);
+    if (body == PerturbingBody::SUN) {
+        // Sole: velocità zero in riferimento eliocentrico
+        vel = Vector3D(0, 0, 0);
+    } else if (body == PerturbingBody::CERES || 
+               body == PerturbingBody::PALLAS || 
+               body == PerturbingBody::VESTA) {
+        // Asteroidi: usa differenze finite (per ora)
+        double dt = 0.001; // 0.001 giorni
+        Vector3D pos_plus = getBodyPosition(body, jd + dt);
+        Vector3D pos_minus = getBodyPosition(body, jd - dt);
+        vel = (pos_plus - pos_minus) * (0.5 / dt);
+    } else {
+        // Pianeti: JPL fornisce velocità direttamente
+        JPLBody jplBody = toJPLBody(body);
+        
+        // Ottiene velocità barycentric da JPL (in km/day)
+        Vector3D velKm = jplReader_.getVelocity(jplBody, jd);
+        
+        // Converte in eliocentrico sottraendo velocità Sole
+        Vector3D sunVelKm = jplReader_.getVelocity(JPLBody::SUN, jd);
+        Vector3D heliocentricVelKm = velKm - sunVelKm;
+        
+        // Converte da km/day ad AU/day
+        constexpr double KM_TO_AU = 1.0 / AU_KM;
+        vel = heliocentricVelKm * KM_TO_AU;
+    }
     
     // Salva in cache
     velocityCache_[cacheKey] = vel;

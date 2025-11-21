@@ -298,9 +298,10 @@ All computations use **heliocentric ecliptic J2000** coordinates:
 
 ### Ephemeris Sources
 
-- **Planets**: VSOP87D (complete, ~3000 terms per planet)
-- **Moon**: ELP2000 (20000+ terms)
-- **Major asteroids**: Orbital elements from AstDyS/JPL
+- **Planets**: **JPL DE441** (2021, <100m precision, Chebyshev interpolation)
+- **Moon**: Included in JPL DE441 (<10m precision)
+- **Pluto**: Included in JPL DE441
+- **Major asteroids**: JPL DE441 includes 343 asteroids (Ceres, Pallas, Vesta, etc.)
 
 ### Gravitational Parameters
 

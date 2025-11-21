@@ -17,7 +17,7 @@
 #define IOCCULTCALC_FORCE_MODEL_H
 
 #include "ioccultcalc/types.h"
-#include "ioccultcalc/vsop87.h"
+#include "ioccultcalc/jpl_ephemeris.h"
 #include <vector>
 #include <string>
 #include <memory>
@@ -230,14 +230,34 @@ public:
                                           const Vector3D& vel) const;
     
     /**
-     * @brief Verifica se cache VSOP87 è inizializzata
+     * @brief Inizializza reader JPL DE ephemerides
+     * 
+     * @param version Versione JPL DE da usare (default: DE441)
+     * @param filepath Path al file .bsp (se vuoto, usa default)
+     * @return true se inizializzazione riuscita
+     */
+    bool initializeJPL(JPLVersion version = JPLVersion::DE441,
+                      const std::string& filepath = "");
+    
+    /**
+     * @brief Verifica se JPL ephemerides sono inizializzate
+     */
+    bool isJPLInitialized() const { return jplInitialized_; }
+    
+    /**
+     * @brief Ottiene versione JPL corrente
+     */
+    JPLVersion getJPLVersion() const;
+    
+    /**
+     * @brief Verifica se cache è inizializzata
      */
     bool isCacheInitialized() const;
     
     /**
      * @brief Pre-carica posizioni planetarie per intervallo
      * 
-     * Ottimizzazione: pre-calcola VSOP87 per evitare ricalcoli
+     * Ottimizzazione: pre-calcola posizioni per evitare ricalcoli
      * 
      * @param jdStart Inizio intervallo
      * @param jdEnd Fine intervallo
@@ -253,9 +273,9 @@ public:
 private:
     ForceModelConfig config_;
     
-    // VSOP87 engine per posizioni planetarie
-    mutable std::unique_ptr<VSOP87Calculator> vsop87_;
-    mutable std::unique_ptr<ELP2000Calculator> elp2000_;
+    // JPL DE ephemerides engine (sostituisce VSOP87)
+    mutable JPLEphemerisReader jplReader_;
+    bool jplInitialized_;
     
     // Cache per posizioni planetarie (ottimizzazione)
     mutable std::map<std::pair<PerturbingBody, double>, Vector3D> positionCache_;

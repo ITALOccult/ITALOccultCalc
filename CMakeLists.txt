@@ -51,7 +51,7 @@ set(HEADERS
     include/ioccultcalc/mpc_client.h
     include/ioccultcalc/orbit_determination.h
     include/ioccultcalc/force_model.h
-    include/ioccultcalc/vsop87.h
+    include/ioccultcalc/jpl_ephemeris.h
     include/ioccultcalc/numerical_integrator.h
     include/ioccultcalc/relativistic_corrections.h
     include/ioccultcalc/star_catalog.h
