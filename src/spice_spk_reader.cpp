@@ -24,6 +24,10 @@ public:
     Impl() : handle(-1), loaded(false) {
         // Inizializza CSPICE error handling
         erract_c("SET", 0, const_cast<char*>("RETURN"));
+        
+        // Sopprime output errori SPICE su stderr (evita spam da asteroidi mancanti)
+        // Gli errori vengono comunque gestiti via failed_c() e getmsg_c()
+        errprt_c("SET", 0, const_cast<char*>("NONE"));
     }
     
     ~Impl() {

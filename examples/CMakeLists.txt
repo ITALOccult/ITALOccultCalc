@@ -136,3 +136,8 @@ target_link_libraries(test_barycentric_heliocentric ioccultcalc)
 
 add_executable(test_ast17_availability test_ast17_availability.cpp)
 target_link_libraries(test_ast17_availability ioccultcalc)
+
+# JPL Horizons occultation search with orbital elements propagation
+add_executable(jpl_horizons_occultation_search jpl_horizons_occultation_search.cpp)
+target_link_libraries(jpl_horizons_occultation_search ioccultcalc)
+
