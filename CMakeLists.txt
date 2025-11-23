@@ -66,6 +66,7 @@ set(SOURCES
     src/planetary_aberration.cpp
     src/cubic_spline.cpp
     src/parallel_algorithms.cpp
+    src/output_manager.cpp
 )
 
 # Fortran wrapper for OrbFit

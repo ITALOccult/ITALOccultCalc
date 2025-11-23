@@ -1,0 +1,48 @@
+{
+  "description": "Configurazione output multi-formato per ITALOccultCalc",
+  "version": "1.0",
+  
+  "output": {
+    "format": "PDF",
+    "file": "occultations_output.pdf",
+    "append_mode": false,
+    
+    "text": {
+      "include_header": true,
+      "include_map_ascii": true,
+      "width_columns": 80
+    },
+    
+    "latex": {
+      "compile_pdf": true,
+      "include_tikz_map": true,
+      "include_uncertainty_plot": true,
+      "document_class": "article"
+    },
+    
+    "xml": {
+      "schema_version": "Occult4.2.0",
+      "include_uncertainties": true
+    },
+    
+    "json": {
+      "pretty_print": true,
+      "indent_spaces": 2,
+      "include_metadata": true
+    },
+    
+    "iota_card": {
+      "image_width": 1920,
+      "image_height": 1080,
+      "include_map": true,
+      "include_finder_chart": true,
+      "map_projection": "mercator"
+    },
+    
+    "path": {
+      "resolution_km": 100.0,
+      "include_italy_highlight": true,
+      "highlight_countries": ["Italy", "France", "Switzerland", "Austria"]
+    }
+  }
+}

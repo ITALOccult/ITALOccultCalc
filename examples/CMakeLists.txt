@@ -258,3 +258,7 @@ target_link_libraries(italoccultcalc ioccultcalc)
 # Test massivo 1000 asteroidi - Gennaio 2026
 add_executable(test_massive_jan2026 test_massive_jan2026.cpp)
 target_link_libraries(test_massive_jan2026 ioccultcalc)
+
+# Test output manager multi-formato
+add_executable(test_output_formats test_output_formats.cpp)
+target_link_libraries(test_output_formats ioccultcalc)
