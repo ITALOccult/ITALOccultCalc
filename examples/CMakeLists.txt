@@ -246,3 +246,11 @@ target_link_libraries(test_cubic_spline ioccultcalc)
 
 add_executable(test_parallel_algorithms test_parallel_algorithms.cpp)
 target_link_libraries(test_parallel_algorithms ioccultcalc)
+
+# Real-world occultation test
+add_executable(test_realworld_occultation test_realworld_occultation.cpp)
+target_link_libraries(test_realworld_occultation ioccultcalc)
+
+# ITALOccultCalc - Complete occultation search application
+add_executable(italoccultcalc italoccultcalc.cpp)
+target_link_libraries(italoccultcalc ioccultcalc)
