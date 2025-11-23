@@ -1,0 +1,87 @@
+! IOccultCalc Configuration File
+! High-precision asteroid occultation prediction
+! Based on OrbFit .oop format
+
+! Target object configuration
+object.
+        .name = '433 Eros'
+        .id = '433'
+        .diameter = 16.84               ! Diameter in km
+        .H = 10.43                      ! Absolute magnitude
+        .source = 'AstDyS'              ! Orbital elements source
+
+! Propagation settings
+propag.
+        .type = 'RK4'                   ! Integrator: RK4, RA15, or ORBFIT
+        .step_size = 0.05               ! Integration step (days)
+        .start_jd = 2461041.0           ! Start epoch (2026-01-01)
+        .end_jd = 2461405.0             ! End epoch (2026-12-31)
+        .tolerance = 1.0e-12            ! Integration tolerance
+        .max_iterations = 10000         ! Maximum iterations
+
+! JPL Ephemerides configuration
+ephemeris.
+        .jpl_version = 'DE441'          ! JPL ephemeris version
+        .de_file = '~/.ioccultcalc/ephemerides/linux_p1550p2650.441'
+        .ast17_file = '~/.ioccultcalc/ephemerides/codes_300ast_20100725.bsp'
+        .auto_download = .TRUE.         ! Automatically download missing files
+
+! Perturbation model (matching OrbFit's force model)
+perturbations.
+        .planets = .TRUE.               ! Include 8 major planets
+        .asteroid_count = 17            ! AST17: 17 massive asteroids
+        .relativity = .TRUE.            ! Post-Newtonian corrections
+        .sun_j2 = .FALSE.               ! Solar oblateness (usually negligible)
+        .earth_moon = .TRUE.            ! Separate Earth-Moon
+        .nongravitational = .FALSE.     ! Non-gravitational forces (comets)
+
+! Occultation search parameters
+search.
+        .start_jd = 2461041.0           ! Search start (2026-01-01)
+        .end_jd = 2461405.0             ! Search end (2026-12-31)
+        .step_days = 0.5                ! Sampling interval (days)
+        .max_separation = 0.1           ! Maximum angular separation (degrees)
+        .min_duration = 0.1             ! Minimum duration (seconds)
+        .mag_limit = 14.0               ! Star magnitude limit
+        .cone_radius = 5.0              ! Search cone radius (degrees)
+
+! Star catalog configuration
+star.
+        .catalog = 'Gaia'               ! Star catalog: Gaia, UCAC4, etc.
+        .gaia_release = 'DR3'           ! Gaia data release
+        .proper_motion = .TRUE.         ! Apply proper motion corrections
+        .parallax = .TRUE.              ! Apply parallax corrections
+        .cache_dir = '~/.ioccultcalc/star_cache'
+
+! Output settings
+output.
+        .format = 'JSON'                ! Output format: JSON, KML, TEXT, CSV
+        .file = 'occultation_predictions.json'
+        .verbosity = 1                  ! 0=quiet, 1=normal, 2=verbose, 3=debug
+        .include_uncertainty = .TRUE.   ! Include position uncertainties
+        .include_elements = .TRUE.      ! Include orbital elements in output
+        .coordinate_frame = 'J2000'     ! Reference frame: J2000, ICRF
+
+! Error model (for uncertainty propagation)
+error_model.
+        .name = 'vfcc17'                ! Error model name (from OrbFit)
+        .position_sigma = 1.0           ! Initial position uncertainty (arcsec)
+        .velocity_sigma = 0.01          ! Initial velocity uncertainty (km/s)
+        .propagate_covariance = .TRUE.  ! Propagate covariance matrix
+
+! IERS Earth orientation parameters
+IERS.
+        .use_iers = .TRUE.              ! Use IERS corrections
+        .finals_file = '~/.ioccultcalc/iers/finals.all'
+        .extrapolation = .TRUE.         ! Allow extrapolation beyond available data
+        .update_interval = 7            ! Update interval (days)
+
+! Operations to perform
+operations.
+        .download_elements = .TRUE.     ! Download orbital elements from AstDyS
+        .fit_orbit = .FALSE.            ! Fit orbit to observations (requires obs data)
+        .propagate = .TRUE.             ! Propagate orbit
+        .search_occultations = .TRUE.   ! Search for occultations
+        .generate_ephemeris = .TRUE.    ! Generate ephemeris table
+        .export_kml = .FALSE.           ! Export results to KML
+        .export_json = .TRUE.           ! Export results to JSON

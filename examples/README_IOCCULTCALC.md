@@ -1,8 +1,10 @@
-# Ricerca Occultazioni con JPL Horizons
+# IOccultCalc - Asteroid Occultation Prediction Tool
 
-## Programma: `jpl_horizons_occultation_search`
+## Programma: `ioccultcalc_search`
 
 Procedura completa per calcolare occultazioni asteroidali in un intervallo temporale.
+
+**NOTA**: Gli elementi orbitali vengono **automaticamente scaricati da AstDyS** (Asteroids Dynamic Site) per qualsiasi asteroide numerato. Non è necessario fornire file di elementi orbitali.
 
 ### Compilazione
 
@@ -13,8 +15,10 @@ cd /Users/michelebigi/VisualStudio\ Code/GitHub/IOccultCalc
 
 ### Uso Base
 
+#### Metodo 1: Linea di Comando
+
 ```bash
-./build/examples/jpl_horizons_occultation_search \
+./build/examples/ioccultcalc_search \
     <asteroid_id> \
     <star_ra_degrees> \
     <star_dec_degrees> \
@@ -23,16 +27,66 @@ cd /Users/michelebigi/VisualStudio\ Code/GitHub/IOccultCalc
     [diameter_km]
 ```
 
-### Esempio: Betelgeuse e 433 Eros (2026)
+#### Metodo 2: File di Configurazione (CONSIGLIATO)
 
 ```bash
-./build/examples/jpl_horizons_occultation_search \
+# Usa file JSON
+./build/examples/ioccultcalc_search --config my_config.json
+
+# Usa file .oop (compatibile OrbFit)
+./build/examples/ioccultcalc_search --config my_config.oop
+
+# Override parametri dalla linea di comando
+./build/examples/ioccultcalc_search --config my_config.json 88.79 7.41
+```
+
+### Esempio: Betelgeuse e 433 Eros (2026)
+
+#### Linea di Comando
+
+```bash
+./build/examples/ioccultcalc_search \
     433 \
     88.79 \
     7.41 \
     2026-01-01 \
     2026-12-31 \
     16.84
+```
+
+#### File di Configurazione
+
+Crea `eros_config.json`:
+```json
+{
+  "sections": [
+    {
+      "type": "object",
+      "parameters": [
+        {"name": "id", "value": "433", "type": "string"}
+      ]
+    },
+    {
+      "type": "search",
+      "parameters": [
+        {"name": "start_jd", "value": "2461041.0", "type": "double"},
+        {"name": "end_jd", "value": "2461405.0", "type": "double"},
+        {"name": "step_days", "value": "0.5", "type": "double"}
+      ]
+    },
+    {
+      "type": "operations",
+      "parameters": [
+        {"name": "download_elements", "value": "true", "type": "bool"}
+      ]
+    }
+  ]
+}
+```
+
+Poi esegui:
+```bash
+./build/examples/ioccultcalc_search --config eros_config.json 88.79 7.41
 ```
 
 **Parametri:**
@@ -45,16 +99,16 @@ cd /Users/michelebigi/VisualStudio\ Code/GitHub/IOccultCalc
 
 ```bash
 # Aldebaran (α Tau, mag 0.85)
-./build/examples/jpl_horizons_occultation_search 433 68.98 16.51 2026-01-01 2027-01-01
+./build/examples/ioccultcalc 433 68.98 16.51 2026-01-01 2027-01-01
 
 # Regulus (α Leo, mag 1.35)
-./build/examples/jpl_horizons_occultation_search 433 152.09 11.97 2026-01-01 2027-01-01
+./build/examples/ioccultcalc 433 152.09 11.97 2026-01-01 2027-01-01
 
 # Spica (α Vir, mag 0.97)
-./build/examples/jpl_horizons_occultation_search 433 201.30 -11.16 2026-01-01 2027-01-01
+./build/examples/ioccultcalc 433 201.30 -11.16 2026-01-01 2027-01-01
 
 # Antares (α Sco, mag 0.96)
-./build/examples/jpl_horizons_occultation_search 433 247.35 -26.43 2026-01-01 2027-01-01
+./build/examples/ioccultcalc 433 247.35 -26.43 2026-01-01 2027-01-01
 ```
 
 ### Come Funziona
@@ -144,7 +198,7 @@ RESULTS: 12 candidate occultations found
 **Programma si blocca:**
 ```bash
 # Termina processo
-pkill -9 jpl_horizons_occultation_search
+pkill -9 ioccultcalc
 ```
 
 **Intervallo troppo lungo:**

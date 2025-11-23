@@ -9,7 +9,7 @@ Questa procedura permette di:
 3. **Calcolare** la geometria dell'occultazione (separazione stella-asteroide)
 4. **Determinare** visibilità e probabilità di occultazione
 
-### Programma: `jpl_horizons_occultation_search`
+### Programma: `ioccultcalc`
 
 #### Compilazione
 
@@ -18,12 +18,12 @@ cd /Users/michelebigi/VisualStudio\ Code/GitHub/IOccultCalc
 ./build.sh
 ```
 
-Il programma verrà compilato in: `build/examples/jpl_horizons_occultation_search`
+Il programma verrà compilato in: `build/examples/ioccultcalc`
 
 #### Uso
 
 ```bash
-./build/examples/jpl_horizons_occultation_search \
+./build/examples/ioccultcalc \
     <asteroid_id> \
     <star_ra_deg> \
     <star_dec_deg> \
@@ -45,7 +45,7 @@ Il programma verrà compilato in: `build/examples/jpl_horizons_occultation_searc
 **1. Ricerca occultazioni di Betelgeuse da parte di 433 Eros nel 2026:**
 
 ```bash
-./build/examples/jpl_horizons_occultation_search \
+./build/examples/ioccultcalc \
     433 \
     88.79293899 \
     7.40703634 \
@@ -57,19 +57,19 @@ Il programma verrà compilato in: `build/examples/jpl_horizons_occultation_searc
 
 ```bash
 # Aldebaran (α Tau, mag 0.85)
-./build/examples/jpl_horizons_occultation_search \
+./build/examples/ioccultcalc \
     433 68.98016279 16.50930235 2026-01-01 2027-01-01
 
 # Regulus (α Leo, mag 1.35)
-./build/examples/jpl_horizons_occultation_search \
+./build/examples/ioccultcalc \
     433 152.09293925 11.96721238 2026-01-01 2027-01-01
 
 # Spica (α Vir, mag 0.97)
-./build/examples/jpl_horizons_occultation_search \
+./build/examples/ioccultcalc \
     433 201.29824967 -11.16131949 2026-01-01 2027-01-01
 
 # Antares (α Sco, mag 0.96)
-./build/examples/jpl_horizons_occultation_search \
+./build/examples/ioccultcalc \
     433 247.35191587 -26.43200003 2026-01-01 2027-01-01
 ```
 
@@ -77,15 +77,15 @@ Il programma verrà compilato in: `build/examples/jpl_horizons_occultation_searc
 
 ```bash
 # 1 Ceres (pianeta nano, diametro ~940 km)
-./build/examples/jpl_horizons_occultation_search \
+./build/examples/ioccultcalc \
     1 88.79 7.41 2026-01-01 2026-12-31 940
 
 # 4 Vesta (grande asteroide, diametro ~525 km)
-./build/examples/jpl_horizons_occultation_search \
+./build/examples/ioccultcalc \
     4 88.79 7.41 2026-01-01 2026-12-31 525
 
 # 16 Psyche (asteroide metallico, diametro ~226 km)
-./build/examples/jpl_horizons_occultation_search \
+./build/examples/ioccultcalc \
     16 88.79 7.41 2026-01-01 2026-12-31 226
 ```
 
@@ -404,7 +404,7 @@ if (result.separation < 10.0) {
 **433 Eros occultation of κ Gem (2012-01-31):**
 ```bash
 # Coordinate κ Gem: RA=115.5126°, Dec=24.3979°
-./build/examples/jpl_horizons_occultation_search \
+./build/examples/ioccultcalc \
     433 115.5126 24.3979 2012-01-20 2012-02-10
 
 # Risultato atteso: occultazione il 2012-01-31 ~20:00 UTC

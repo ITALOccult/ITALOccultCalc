@@ -136,69 +136,296 @@ void OrbitPropagator::setOptions(const PropagatorOptions& options) {
 }
 
 OrbitState OrbitPropagator::elementsToState(const EquinoctialElements& elements) {
-    // Converti elementi equinoziali in stato cartesiano (r, v)
+    // Implementation following OrbFit's prop2b function EXACTLY
+    // Reference: OrbFit/src/suit/orb_els.f90, subroutine prop2b
+    // This propagates equinoctial elements using 2-body Kepler dynamics
+    // Elements from AstDyS are in ECLM J2000 (ecliptic frame)
     
-    // Calcola anomalia media
-    double omega_plus_Omega = atan2(elements.h, elements.k);
-    double M = elements.lambda - omega_plus_Omega;
+    const double gm = GM_SUN_AU;  // AU^3/day^2
+    const double t0 = elements.epoch.jd - 2400000.5;  // MJD
+    const double t1 = t0;  // No propagation, just convert at epoch
     
-    // Eccentricità
-    double e = sqrt(elements.h * elements.h + elements.k * elements.k);
+    // Mean motion (enne in OrbFit)
+    double enne = sqrt(gm / (elements.a * elements.a * elements.a));
     
-    // Risolvi equazione di Keplero: E - e*sin(E) = M
-    double E = M;
-    for (int i = 0; i < 10; i++) {
-        E = M + e * sin(E);
+    // Mean longitude (pml) at time t1
+    double pml = elements.lambda + enne * (t1 - t0);
+    
+    // Eccentricity squared
+    double ecc2 = elements.h * elements.h + elements.k * elements.k;
+    double eps = 100.0 * std::numeric_limits<double>::epsilon();
+    
+    // Longitude of pericenter (pol)
+    double pol;
+    if (ecc2 < eps) {
+        pol = 0.0;
+    } else if (ecc2 >= 1.0) {
+        throw std::runtime_error("Eccentricity >= 1.0, hyperbolic orbit");
+    } else {
+        pol = atan2(elements.h, elements.k);
+        // Normalize to [-pi, pi]
+        while (pol > M_PI) pol -= 2.0 * M_PI;
+        while (pol < -M_PI) pol += 2.0 * M_PI;
+    }
+    
+    // Normalize pml to [pol, pol + 2*pi]
+    while (pml > M_PI) pml -= 2.0 * M_PI;
+    while (pml < -M_PI) pml += 2.0 * M_PI;
+    if (pml < pol) {
+        pml += 2.0 * M_PI;
+    }
+    
+    // Newton's method to solve Kepler equation in equinoctial form:
+    // F - k*sin(F) + h*cos(F) - lambda = 0
+    // Starting guess
+    double el = M_PI + pol;
+    const int iter_max = 25;
+    
+    for (int j = 0; j < iter_max; j++) {
+        double sinel = sin(el);
+        double cosel = cos(el);
+        double rf = el - elements.k * sinel + elements.h * cosel - pml;
+        double rdf = 1.0 - elements.k * cosel - elements.h * sinel;
+        double del = -rf / rdf;
+        el += del;
+        if (std::abs(del) < eps) break;
+    }
+    
+    // Position in equinoctial orbital frame
+    double sinel = sin(el);
+    double cosel = cos(el);
+    double beta = 1.0 / (1.0 + sqrt(1.0 - ecc2));
+    
+    double xe = elements.a * ((1.0 - beta*elements.h*elements.h)*cosel + 
+                              elements.h*elements.k*beta*sinel - elements.k);
+    double ye = elements.a * ((1.0 - beta*elements.k*elements.k)*sinel + 
+                              elements.h*elements.k*beta*cosel - elements.h);
+    
+    // Broucke reference frame vectors (f, g, w)
+    double upq = 1.0 + elements.p*elements.p + elements.q*elements.q;
+    Vector3D f, g;
+    f.x = (1.0 - elements.p*elements.p + elements.q*elements.q) / upq;
+    f.y = 2.0 * elements.p * elements.q / upq;
+    f.z = -2.0 * elements.p / upq;
+    
+    g.x = 2.0 * elements.p * elements.q / upq;
+    g.y = (1.0 + elements.p*elements.p - elements.q*elements.q) / upq;
+    g.z = 2.0 * elements.q / upq;
+    
+    // Convert from equinoctial to absolute coordinates (lincom operation)
+    // x = f * xe + g * ye
+    Vector3D position_ecl;
+    position_ecl.x = f.x * xe + g.x * ye;
+    position_ecl.y = f.y * xe + g.y * ye;
+    position_ecl.z = f.z * xe + g.z * ye;
+    
+    // Compute velocities
+    double r = sqrt(xe*xe + ye*ye);
+    double coe = enne * elements.a * elements.a / r;
+    
+    double xpe = coe * (elements.h*elements.k*beta*cosel - 
+                        (1.0 - beta*elements.h*elements.h)*sinel);
+    double ype = coe * ((1.0 - beta*elements.k*elements.k)*cosel - 
+                        elements.h*elements.k*beta*sinel);
+    
+    Vector3D velocity_ecl;
+    velocity_ecl.x = f.x * xpe + g.x * ype;
+    velocity_ecl.y = f.y * xpe + g.y * ype;
+    velocity_ecl.z = f.z * xpe + g.z * ype;
+    
+    // Position and velocity are in ECLM J2000 (ecliptic frame)
+    // Convert to EQUATORIAL J2000 for the propagator
+    constexpr double obliquity = 23.4392911 * M_PI / 180.0;
+    double cos_eps = cos(obliquity);
+    double sin_eps = sin(obliquity);
+    
+    Vector3D position, velocity;
+    position.x = position_ecl.x;
+    position.y = position_ecl.y * cos_eps - position_ecl.z * sin_eps;
+    position.z = position_ecl.y * sin_eps + position_ecl.z * cos_eps;
+    
+    velocity.x = velocity_ecl.x;
+    velocity.y = velocity_ecl.y * cos_eps - velocity_ecl.z * sin_eps;
+    velocity.z = velocity_ecl.y * sin_eps + velocity_ecl.z * cos_eps;
+    
+    return OrbitState(elements.epoch, position, velocity);
+}
+
+EquinoctialElements OrbitPropagator::stateToElements(const OrbitState& state) {
+    // Converti vettori di stato in elementi orbitali equinoziali
+    // Algoritmo standard: r,v → (a, e, i, Ω, ω, M) → (a, h, k, p, q, λ)
+    
+    // I vettori in input sono in frame EQUATORIALE (da Horizons)
+    // Ma elementsToState assume elementi in frame ECLITTICO
+    // Quindi convertiamo vettori equatoriali → eclittici
+    constexpr double obliquity = 23.4392911 * M_PI / 180.0;
+    double cos_eps = cos(obliquity);
+    double sin_eps = sin(obliquity);
+    
+    // Conversione EQUATORIALE → ECLITTICO (rotazione inversa)
+    Vector3D r_ecl, v_ecl;
+    r_ecl.x = state.position.x;
+    r_ecl.y = state.position.y * cos_eps + state.position.z * sin_eps;
+    r_ecl.z = -state.position.y * sin_eps + state.position.z * cos_eps;
+    
+    v_ecl.x = state.velocity.x;
+    v_ecl.y = state.velocity.y * cos_eps + state.velocity.z * sin_eps;
+    v_ecl.z = -state.velocity.y * sin_eps + state.velocity.z * cos_eps;
+    
+    const Vector3D& r = r_ecl;
+    const Vector3D& v = v_ecl;
+    constexpr double mu = GM_SUN_AU;  // AU³/day²
+    
+    // Momento angolare specifico
+    Vector3D h_vec = r.cross(v);
+    double h_mag = h_vec.magnitude();
+    
+    // Vettore eccentricità (Laplace-Runge-Lenz)
+    double r_mag = r.magnitude();
+    double v_mag = v.magnitude();
+    Vector3D e_vec = v.cross(h_vec) / mu - r / r_mag;
+    double e = e_vec.magnitude();
+    
+    // Semiasse maggiore
+    double energy = v_mag * v_mag / 2.0 - mu / r_mag;
+    double a = -mu / (2.0 * energy);
+    
+    // Nodo ascendente N = k × h
+    Vector3D k_unit(0, 0, 1);  // Asse z (polo equatoriale)
+    Vector3D n_vec = k_unit.cross(h_vec);
+    double n_mag = n_vec.magnitude();
+    
+    // Inclinazione
+    double inc = acos(h_vec.z / h_mag);
+    
+    // Longitudine nodo ascendente
+    double Omega;
+    if (n_mag > 1e-10) {
+        Omega = acos(n_vec.x / n_mag);
+        if (n_vec.y < 0) Omega = 2.0 * M_PI - Omega;
+    } else {
+        Omega = 0.0;  // Orbita equatoriale
+    }
+    
+    // Argomento del pericentro
+    double omega;
+    if (n_mag > 1e-10 && e > 1e-10) {
+        double cos_omega = n_vec.dot(e_vec) / (n_mag * e);
+        // Clamp per evitare errori numerici
+        if (cos_omega > 1.0) cos_omega = 1.0;
+        if (cos_omega < -1.0) cos_omega = -1.0;
+        omega = acos(cos_omega);
+        if (e_vec.z < 0) omega = 2.0 * M_PI - omega;
+    } else {
+        omega = 0.0;
     }
     
     // Anomalia vera
-    double nu = 2.0 * atan2(sqrt(1.0 + e) * sin(E / 2.0), 
-                            sqrt(1.0 - e) * cos(E / 2.0));
+    double nu;
+    if (e > 1e-10) {
+        double cos_nu = e_vec.dot(r) / (e * r_mag);
+        if (cos_nu > 1.0) cos_nu = 1.0;
+        if (cos_nu < -1.0) cos_nu = -1.0;
+        nu = acos(cos_nu);
+        if (r.dot(v) < 0) nu = 2.0 * M_PI - nu;
+    } else {
+        // Orbita circolare, usa longitudine
+        nu = atan2(r.y, r.x) - Omega - omega;
+        if (nu < 0) nu += 2.0 * M_PI;
+    }
     
-    // Raggio
-    double r = elements.a * (1.0 - e * cos(E));
+    // Anomalia eccentrica
+    double E = 2.0 * atan(sqrt((1.0 - e) / (1.0 + e)) * tan(nu / 2.0));
     
-    // Coordinate nel piano orbitale
-    double x_orb = r * cos(nu);
-    double y_orb = r * sin(nu);
+    // Anomalia media
+    double M = E - e * sin(E);
+    if (M < 0) M += 2.0 * M_PI;
+    
+    // Converti in elementi equinoziali
+    EquinoctialElements elem;
+    elem.a = a;
+    elem.h = e * sin(omega + Omega);
+    elem.k = e * cos(omega + Omega);
+    elem.p = tan(inc / 2.0) * sin(Omega);
+    elem.q = tan(inc / 2.0) * cos(Omega);
+    elem.lambda = M + omega + Omega;
+    
+    // Normalizza lambda in [0, 2π]
+    while (elem.lambda < 0) elem.lambda += 2.0 * M_PI;
+    while (elem.lambda >= 2.0 * M_PI) elem.lambda -= 2.0 * M_PI;
+    
+    elem.epoch = state.epoch;
+    elem.designation = "";  // Da riempire dal chiamante
+    elem.H = 0.0;
+    elem.G = 0.15;
+    
+    return elem;
+}
+
+// f-g series propagation (Goodyear method, used by OrbFit)
+void OrbitPropagator::fSeriesPropagation(const Vector3D& r0, const Vector3D& v0,
+                                         double t0, double t, double gm,
+                                         Vector3D& r, Vector3D& v) {
+    // Simple Kepler propagation using f-g series
+    // For now, use a simplified version. Full implementation would include
+    // higher-order terms for better accuracy over long time spans.
+    
+    double dt = t - t0;
+    if (std::abs(dt) < 1e-10) {
+        r = r0;
+        v = v0;
+        return;
+    }
+    
+    double r0_mag = r0.magnitude();
+    double v0_mag = v0.magnitude();
+    double r0v0 = r0.dot(v0);
+    
+    // Semi-major axis from energy
+    double energy = v0_mag * v0_mag / 2.0 - gm / r0_mag;
+    double a = -gm / (2.0 * energy);
     
     // Mean motion
-    double n = sqrt(GM_SUN_AU / (elements.a * elements.a * elements.a));
+    double n = sqrt(gm / (a * a * a));
     
-    // Velocità nel piano orbitale
-    double v_factor = n * elements.a / (1.0 - e * cos(E));
-    double vx_orb = -v_factor * sin(E);
-    double vy_orb = v_factor * sqrt(1.0 - e * e) * cos(E);
+    // Eccentric anomaly at t0
+    double cos_E0 = (1.0 - r0_mag / a);
+    double sin_E0 = r0v0 / (n * a * a);
+    double E0 = atan2(sin_E0, cos_E0);
     
-    // Trasforma al sistema inerziale usando elementi equinoziali
-    double f = 1.0 + elements.p * elements.p + elements.q * elements.q;
+    // Mean anomaly at t0
+    double M0 = E0 - sin_E0;
     
-    double m11 = (1.0 - elements.p * elements.p + elements.q * elements.q) / f;
-    double m12 = 2.0 * elements.p * elements.q / f;
-    double m21 = 2.0 * elements.p * elements.q / f;
-    double m22 = (1.0 + elements.p * elements.p - elements.q * elements.q) / f;
-    double m31 = -2.0 * elements.p / f;  // FIX: Changed sign for Z-axis
-    double m32 = 2.0 * elements.q / f;   // FIX: Changed sign for Z-axis
+    // Mean anomaly at t
+    double M = M0 + n * dt;
     
-    double cos_wp = cos(omega_plus_Omega);
-    double sin_wp = sin(omega_plus_Omega);
+    // Solve Kepler equation for E at time t
+    double E = M;
+    for (int i = 0; i < 10; i++) {
+        E = M + (a * a * a / (gm)) * n * n * (E - sin(E));
+        E = M + sin_E0 * cos(E) - cos_E0 * sin(E) + E - E0;
+        // Simplified: just iterate
+        E = M + (E - M - sin(E) + sin(M)) / (1.0 - cos(E));
+        double dE = (M - E + sin(E)) / (1.0 - cos(E));
+        E += dE;
+        if (std::abs(dE) < 1e-12) break;
+    }
     
-    double x_ref = x_orb * cos_wp - y_orb * sin_wp;
-    double y_ref = x_orb * sin_wp + y_orb * cos_wp;
+    // f-g functions
+    double f = 1.0 - a / r0_mag * (1.0 - cos(E - E0));
+    double g = dt - sqrt(a * a * a / gm) * ((E - E0) - sin(E - E0));
     
-    double vx_ref = vx_orb * cos_wp - vy_orb * sin_wp;
-    double vy_ref = vx_orb * sin_wp + vy_orb * cos_wp;
+    r.x = f * r0.x + g * v0.x;
+    r.y = f * r0.y + g * v0.y;
+    r.z = f * r0.z + g * v0.z;
     
-    Vector3D position, velocity;
-    position.x = m11 * x_ref + m12 * y_ref;
-    position.y = m21 * x_ref + m22 * y_ref;
-    position.z = m31 * x_ref + m32 * y_ref;
+    double r_mag = r.magnitude();
+    double fdot = -sqrt(gm * a) / (r_mag * r0_mag) * sin(E - E0);
+    double gdot = 1.0 - a / r_mag * (1.0 - cos(E - E0));
     
-    velocity.x = m11 * vx_ref + m12 * vy_ref;
-    velocity.y = m21 * vx_ref + m22 * vy_ref;
-    velocity.z = m31 * vx_ref + m32 * vy_ref;
-    
-    return OrbitState(elements.epoch, position, velocity);
+    v.x = fdot * r0.x + gdot * v0.x;
+    v.y = fdot * r0.y + gdot * v0.y;
+    v.z = fdot * r0.z + gdot * v0.z;
 }
 
 Vector3D OrbitPropagator::computeAcceleration(const JulianDate& jd,

@@ -22,12 +22,14 @@ include_directories(
     ${CURL_INCLUDE_DIRS}
     ${LIBXML2_INCLUDE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/external/cspice/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/external
 )
 
 # Source files
 set(SOURCES
     src/astdys_client.cpp
     src/gaia_client.cpp
+    src/gaia_cache.cpp
     src/orbital_elements.cpp
     src/ephemeris.cpp
     src/occultation_predictor.cpp
@@ -54,6 +56,10 @@ set(SOURCES
     src/initial_orbit.cpp
     src/orbfit_wrapper.cpp
     src/iers_data.cpp
+    src/config_manager.cpp
+    src/asteroid_filter.cpp
+    src/data_manager.cpp
+    src/asteroid_database.cpp
 )
 
 # Fortran wrapper for OrbFit
@@ -65,6 +71,7 @@ set(FORTRAN_SOURCES
 set(HEADERS
     include/ioccultcalc/astdys_client.h
     include/ioccultcalc/gaia_client.h
+    include/ioccultcalc/gaia_cache.h
     include/ioccultcalc/orbital_elements.h
     include/ioccultcalc/ephemeris.h
     include/ioccultcalc/occultation_predictor.h
@@ -96,6 +103,10 @@ set(HEADERS
     include/ioccultcalc/uncertainty_propagation.h
     include/ioccultcalc/ra15_integrator.hpp
     include/ioccultcalc/initial_orbit.h
+    include/ioccultcalc/config_manager.h
+    include/ioccultcalc/asteroid_filter.h
+    include/ioccultcalc/data_manager.h
+    include/ioccultcalc/asteroid_database.h
 )
 
 # OrbFit integration via Fortran wrapper with bind(C)

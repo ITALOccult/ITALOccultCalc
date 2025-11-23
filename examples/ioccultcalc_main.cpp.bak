@@ -1,5 +1,5 @@
 /**
- * @file jpl_horizons_occultation_search.cpp
+ * @file ioccultcalc.cpp
  * @brief Ricerca occultazioni usando elementi orbitali da JPL Horizons
  * 
  * Procedura completa:
@@ -9,10 +9,10 @@
  * 4. Determina visibilità e probabilità
  * 
  * Uso:
- *   ./jpl_horizons_occultation_search <asteroid_id> <star_ra> <star_dec> <start_date> <end_date>
+ *   ./ioccultcalc <asteroid_id> <star_ra> <star_dec> <start_date> <end_date>
  * 
  * Esempio:
- *   ./jpl_horizons_occultation_search 433 10.684 41.269 2026-01-01 2026-12-31
+ *   ./ioccultcalc 433 10.684 41.269 2026-01-01 2026-12-31
  *   (Cerca occultazioni di Betelgeuse da parte di 433 Eros nel 2026)
  */
 

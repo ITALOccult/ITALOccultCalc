@@ -1,0 +1,156 @@
+! Advanced Filter Examples
+! Creative asteroid selection strategies
+
+! ============================================================================
+! Example 1: "The Big Ones" - Giants of the asteroid belt
+! ============================================================================
+big_asteroids.
+        .name = 'Giants Survey'
+        .from = 1
+        .to = 10000
+        .where = [
+            'diameter > 200',           ! Monsters only (>200 km)
+            'H < 6',                    ! Very bright
+            '2.2 < a < 3.2'            ! Main belt core
+        ]
+        .wherenot = [
+            'spectral_type = "M"'       ! Exclude metallic (too bright)
+        ]
+
+! ============================================================================
+! Example 2: "Dark Matter" - Dark asteroids for challenging observations
+! ============================================================================
+dark_asteroids.
+        .name = 'Dark Objects Campaign'
+        .from = 1
+        .to = 50000
+        .where = [
+            'albedo < 0.07',            ! Very dark (C-type typically)
+            'diameter > 50',             ! But still large
+            'spectral_type in ["C", "P", "D"]',
+            'H > 9'                     ! Faint despite size
+        ]
+
+! ============================================================================
+! Example 3: "Near Misses" - Asteroids with Earth-crossing potential
+! ============================================================================
+earth_crossers.
+        .name = 'Earth Crossers'
+        .from = 1
+        .to = 100000
+        .where = [
+            'a < 1.3',                  ! Semi-major axis
+            'e > 0.2',                  ! Eccentric
+            'diameter > 0.5',           ! >500m (significant size)
+            'orbit_class in ["Aten", "Apollo", "Amor"]'
+        ]
+        .wherenot = [
+            'i > 35'                    ! Exclude very tilted orbits
+        ]
+
+! ============================================================================
+! Example 4: "The Families" - Asteroid family members
+! ============================================================================
+flora_family.
+        .name = 'Flora Family'
+        .from = 8
+        .to = 100000
+        .where = [
+            '2.15 < a < 2.35',         ! Flora family region
+            '0.12 < e < 0.18',
+            '2 < i < 8',
+            'spectral_type in ["S", "Sr"]',
+            'diameter > 10'
+        ]
+
+! ============================================================================
+! Example 5: "The Oddballs" - Unusual orbital characteristics
+! ============================================================================
+unusual_orbits.
+        .name = 'Orbital Oddities'
+        .from = 1
+        .to = 100000
+        .where = [
+            'diameter > 20'
+        ]
+        .wherenot = [
+            '0.05 < e < 0.25',         ! Exclude normal eccentricity
+            '5 < i < 20',              ! Exclude normal inclination
+            '2.2 < a < 3.2'            ! Exclude normal semi-major axis
+        ]
+        ! Results: retrograde, high-i, extreme-e, etc.
+
+! ============================================================================
+! Example 6: "Binary Candidates" - Potential binary systems
+! ============================================================================
+binary_candidates.
+        .name = 'Binary System Candidates'
+        .from = 1
+        .to = 100000
+        .where = [
+            'diameter > 50',
+            'H < 12',
+            'spectral_type in ["M", "E"]',  ! Metallic (often binary)
+            'rotation_period between 2 and 5'  ! Fast rotators
+        ]
+
+! ============================================================================
+! Example 7: "Historic Top 100" - First century of discoveries
+! ============================================================================
+historic_100.
+        .name = 'Historic First 100'
+        .from = 1
+        .to = 100
+        .where = [
+            'diameter > 0'              ! All of them (most are large)
+        ]
+        ! Famous asteroids: Ceres, Pallas, Juno, Vesta, etc.
+
+! ============================================================================
+! Example 8: "Goldilocks Zone" - Optimal observation conditions
+! ============================================================================
+goldilocks.
+        .name = 'Optimal Targets'
+        .from = 1
+        .to = 100000
+        .where = [
+            '30 < diameter < 150',      ! Not too big, not too small
+            '8 < H < 12',               ! Not too bright, not too faint
+            '0.05 < e < 0.15',          ! Moderate eccentricity
+            '5 < i < 15',               ! Moderate inclination
+            '2.3 < a < 2.9',            ! Middle main belt
+            'albedo > 0.10'             ! Reasonably reflective
+        ]
+        ! "Just right" for occultation observations
+
+! ============================================================================
+! Example 9: "Rapid Rotation" - Fast spinners
+! ============================================================================
+fast_rotators.
+        .name = 'Fast Spinners'
+        .from = 1
+        .to = 100000
+        .where = [
+            'rotation_period < 3',      ! < 3 hours
+            'diameter > 5',
+            'diameter < 50'             ! Small fast rotators
+        ]
+        ! May be rubble piles or monolithic
+
+! ============================================================================
+! Example 10: "The Extremes" - Record holders
+! ============================================================================
+extremes.
+        .name = 'Extreme Characteristics'
+        .explicit_list = [
+            1,      ! Ceres - largest
+            4,      ! Vesta - brightest
+            16,     ! Psyche - most metallic
+            243,    ! Ida - first with moon discovered
+            433,    ! Eros - first NEA visited
+            951,    ! Gaspra - first photographed
+            1620,   ! Geographos - elongated
+            2060,   ! Chiron - Centaur
+            3200,   ! Phaethon - weird orbit
+            4179    ! Toutatis - tumbling
+        ]

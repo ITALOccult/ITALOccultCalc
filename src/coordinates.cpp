@@ -14,6 +14,7 @@ Vector3D Coordinates::equatorialToCartesian(const EquatorialCoordinates& eq) {
 }
 
 EquatorialCoordinates Coordinates::cartesianToEquatorial(const Vector3D& vec) {
+    // NOTA: vec deve essere GIÀ in frame equatoriale J2000
     double r = vec.magnitude();
     double dec = asin(vec.z / r);
     double ra = atan2(vec.y, vec.x);

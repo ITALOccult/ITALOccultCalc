@@ -192,6 +192,11 @@ private:
     OrbitState integrateRKF78(const OrbitState& state0, double dt, double& errorEst);
     OrbitState integrateRA15(const OrbitState& state0, const JulianDate& targetEpoch);
     
+    // f-g series propagation (Goodyear method, used by OrbFit)
+    void fSeriesPropagation(const Vector3D& r0, const Vector3D& v0,
+                           double t0, double t, double gm,
+                           Vector3D& r, Vector3D& v);
+    
 public:  // ← TEMPORANEO per test validazione
     // Calcola accelerazione totale (gravitazione + perturbazioni)
     Vector3D computeAcceleration(const JulianDate& jd,

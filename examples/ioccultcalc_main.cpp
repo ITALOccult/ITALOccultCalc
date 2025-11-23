@@ -1,6 +1,6 @@
 /**
- * @file jpl_horizons_occultation_search.cpp
- * @brief Ricerca occultazioni usando elementi orbitali da AstDyS/JPL Horizons
+ * @file ioccultcalc_main.cpp
+ * @brief IOccultCalc - Asteroid occultation prediction tool
  * 
  * Procedura completa:
  * 1. Scarica elementi orbitali da AstDyS per qualsiasi asteroide
@@ -9,11 +9,11 @@
  * 4. Determina visibilità e probabilità
  * 
  * Uso:
- *   ./jpl_horizons_occultation_search <asteroid_id> <star_ra> <star_dec> <start_date> <end_date> [diameter]
+ *   ./ioccultcalc_search <asteroid_id> <star_ra> <star_dec> <start_date> <end_date> [diameter]
  * 
  * Esempio:
- *   ./jpl_horizons_occultation_search 433 10.684 41.269 2026-01-01 2026-12-31
- *   ./jpl_horizons_occultation_search 4 137.302 25.788 2026-01-01 2026-03-31 525
+ *   ./ioccultcalc_search 433 10.684 41.269 2026-01-01 2026-12-31
+ *   ./ioccultcalc_search 4 137.302 25.788 2026-01-01 2026-03-31 525
  *   (Cerca occultazioni di stelle da parte di 433 Eros o 4 Vesta)
  */
 
@@ -29,6 +29,7 @@
 #include <ioccultcalc/time_utils.h>
 #include <ioccultcalc/jpl_ephemeris.h>
 #include <ioccultcalc/types.h>
+#include <ioccultcalc/config_manager.h>
 
 using namespace ioccultcalc;
 
@@ -214,6 +215,20 @@ int main(int argc, char* argv[]) {
     std::cout << "║  Propagazione con AST17 (17 asteroidi massivi)            ║\n";
     std::cout << "╚════════════════════════════════════════════════════════════╝\n\n";
     
+    // Controlla se c'è un file di configurazione
+    std::string configFile;
+    bool useConfig = false;
+    
+    // Cerca opzione --config
+    for (int i = 1; i < argc - 1; ++i) {
+        std::string arg = argv[i];
+        if (arg == "--config" || arg == "-c") {
+            configFile = argv[i + 1];
+            useConfig = true;
+            break;
+        }
+    }
+    
     // Parametri default
     std::string asteroidId = "433";         // 433 Eros
     double starRA = 88.79293899 * M_PI / 180.0;   // Betelgeuse (gradi -> rad)
@@ -221,14 +236,84 @@ int main(int argc, char* argv[]) {
     std::string startDateStr = "2026-01-01";
     std::string endDateStr = "2026-12-31";
     double asteroidDiameter = 0.0; // Sarà scaricato da AstDyS
+    double stepDays = 0.5;
+    bool downloadFromAstDyS = true;  // DEFAULT: scarica sempre da AstDyS
     
-    // Parse argomenti
-    if (argc > 1) asteroidId = argv[1];
-    if (argc > 2) starRA = std::stod(argv[2]) * M_PI / 180.0;
-    if (argc > 3) starDec = std::stod(argv[3]) * M_PI / 180.0;
-    if (argc > 4) startDateStr = argv[4];
-    if (argc > 5) endDateStr = argv[5];
-    if (argc > 6) asteroidDiameter = std::stod(argv[6]);
+    // Carica configurazione se specificata
+    if (useConfig) {
+        try {
+            ConfigManager config;
+            
+            // Determina formato dal suffisso
+            if (configFile.substr(configFile.length() - 4) == ".oop") {
+                std::cout << "📄 Loading configuration from OrbFit file: " << configFile << "\n";
+                config.loadFromOop(configFile);
+            } else {
+                std::cout << "📄 Loading configuration from JSON file: " << configFile << "\n";
+                config.loadFromJson(configFile);
+            }
+            
+            // Leggi parametri dalla configurazione
+            auto objSection = config.getSection(ConfigSection::OBJECT);
+            if (objSection) {
+                auto id = objSection->getParameter("id");
+                if (id) asteroidId = id->asString();
+                
+                auto diam = objSection->getParameter("diameter");
+                if (diam) asteroidDiameter = diam->asDouble();
+            }
+            
+            auto searchSection = config.getSection(ConfigSection::SEARCH);
+            if (searchSection) {
+                auto start = searchSection->getParameter("start_jd");
+                if (start) {
+                    JulianDate jd(start->asDouble());
+                    startDateStr = TimeUtils::jdToISO(jd).substr(0, 10);
+                }
+                
+                auto end = searchSection->getParameter("end_jd");
+                if (end) {
+                    JulianDate jd(end->asDouble());
+                    endDateStr = TimeUtils::jdToISO(jd).substr(0, 10);
+                }
+                
+                auto step = searchSection->getParameter("step_days");
+                if (step) stepDays = step->asDouble();
+            }
+            
+            auto opsSection = config.getSection(ConfigSection::OPERATIONS);
+            if (opsSection) {
+                auto download = opsSection->getParameter("download_elements");
+                if (download) downloadFromAstDyS = download->asBool();
+            }
+            
+            std::cout << "   ✓ Configuration loaded successfully\n\n";
+            
+        } catch (const std::exception& e) {
+            std::cerr << "❌ Error loading configuration: " << e.what() << "\n";
+            std::cerr << "   Using command-line parameters instead\n\n";
+            useConfig = false;
+        }
+    }
+    
+    // Parse argomenti da linea di comando (sovrascrivono la config)
+    // Salta gli argomenti --config e il suo valore
+    int argOffset = useConfig ? 2 : 0;
+    
+    if (!useConfig || argc > (2 + argOffset)) {
+        if (argc > (1 + argOffset) && std::string(argv[1]) != "--config" && std::string(argv[1]) != "-c") 
+            asteroidId = argv[1 + argOffset];
+        if (argc > (2 + argOffset)) 
+            starRA = std::stod(argv[2 + argOffset]) * M_PI / 180.0;
+        if (argc > (3 + argOffset)) 
+            starDec = std::stod(argv[3 + argOffset]) * M_PI / 180.0;
+        if (argc > (4 + argOffset)) 
+            startDateStr = argv[4 + argOffset];
+        if (argc > (5 + argOffset)) 
+            endDateStr = argv[5 + argOffset];
+        if (argc > (6 + argOffset)) 
+            asteroidDiameter = std::stod(argv[6 + argOffset]);
+    }
     
     std::cout << "📋 Parameters:\n";
     std::cout << "   Asteroid ID: " << asteroidId << "\n";

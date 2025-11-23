@@ -15,11 +15,28 @@ extern "C" {
 
 namespace ioccultcalc {
 
+// Struttura per cache interpolazione Chebyshev
+struct CacheEntry {
+    int bodyId;
+    int centerId;
+    double jdStart;
+    double jdEnd;
+    std::vector<Vector3D> positions;
+    std::vector<Vector3D> velocities;
+    std::vector<double> times;
+};
+
 class SPICESPKReader::Impl {
 public:
     int handle;
     bool loaded;
     std::string filepath;
+    
+    // Cache per interpolazione Chebyshev
+    static constexpr int CACHE_SIZE = 10;
+    static constexpr int INTERP_POINTS = 7;  // Punti per interpolazione
+    static constexpr double CACHE_SPAN_DAYS = 1.0;  // Span temporale cache
+    std::vector<CacheEntry> cache;
     
     Impl() : handle(-1), loaded(false) {
         // Inizializza CSPICE error handling
@@ -28,6 +45,8 @@ public:
         // Sopprime output errori SPICE su stderr (evita spam da asteroidi mancanti)
         // Gli errori vengono comunque gestiti via failed_c() e getmsg_c()
         errprt_c("SET", 0, const_cast<char*>("NONE"));
+        
+        cache.reserve(CACHE_SIZE);
     }
     
     ~Impl() {
@@ -74,13 +93,13 @@ public:
         return true;
     }
     
-    std::pair<Vector3D, Vector3D> getState(int bodyId, double jd, int centerId) {
+    // Query diretta SPK senza cache
+    std::pair<Vector3D, Vector3D> getStateDirect(int bodyId, double jd, int centerId) {
         if (!loaded) {
             throw std::runtime_error("SPK file not loaded");
         }
         
         // Converti JD in ET (Ephemeris Time)
-        // JD = 2451545.0 corrisponde a J2000 = 0 ET
         double et = (jd - 2451545.0) * 86400.0;  // secondi da J2000
         
         // Buffer per stato (pos + vel, 6 elementi)
@@ -93,7 +112,17 @@ public:
         snprintf(targetStr, sizeof(targetStr), "%d", bodyId);
         snprintf(observerStr, sizeof(observerStr), "%d", centerId);
         
-        spkezr_c(targetStr, et, "ECLIPJ2000_DE441", "NONE", observerStr, state, &lt);
+        const char* frame = "ECLIPJ2000";
+        spkezr_c(targetStr, et, frame, "NONE", observerStr, state, &lt);
+        
+        // DEBUG temporaneo
+        constexpr double KM_TO_AU_DBG = 1.0 / 149597870.7;
+        static bool debugPrinted = false;
+        if (!debugPrinted && bodyId == 399 && centerId == 10) {
+            std::cerr << "DEBUG SPK frame=" << frame << " body=399 center=10:\n";
+            std::cerr << "  pos=[" << state[0]*KM_TO_AU_DBG << ", " << state[1]*KM_TO_AU_DBG << ", " << state[2]*KM_TO_AU_DBG << "] AU\n";
+            debugPrinted = true;
+        }
         
         if (failed_c()) {
             char msg[1841];
@@ -111,6 +140,86 @@ public:
         Vector3D vel(state[3] * KMS_TO_AUD, state[4] * KMS_TO_AUD, state[5] * KMS_TO_AUD);
         
         return {pos, vel};
+    }
+    
+    // Interpolazione Lagrange (più stabile per pochi punti)
+    Vector3D lagrangeInterpolate(const std::vector<Vector3D>& points,
+                                 const std::vector<double>& times,
+                                 double targetTime) {
+        int n = points.size();
+        if (n == 0) throw std::runtime_error("No points for interpolation");
+        if (n == 1) return points[0];
+        
+        // Interpolazione polinomiale di Lagrange
+        Vector3D result(0, 0, 0);
+        
+        for (int i = 0; i < n; ++i) {
+            // Calcola L_i(targetTime)
+            double L_i = 1.0;
+            for (int j = 0; j < n; ++j) {
+                if (i != j) {
+                    L_i *= (targetTime - times[j]) / (times[i] - times[j]);
+                }
+            }
+            
+            // Aggiungi contributo
+            result.x += points[i].x * L_i;
+            result.y += points[i].y * L_i;
+            result.z += points[i].z * L_i;
+        }
+        
+        return result;
+    }
+    
+    // Cerca o crea cache entry
+    CacheEntry* getCacheEntry(int bodyId, int centerId, double jd) {
+        // Cerca cache esistente
+        for (auto& entry : cache) {
+            if (entry.bodyId == bodyId && entry.centerId == centerId &&
+                jd >= entry.jdStart && jd <= entry.jdEnd) {
+                return &entry;
+            }
+        }
+        
+        // Crea nuova entry
+        CacheEntry newEntry;
+        newEntry.bodyId = bodyId;
+        newEntry.centerId = centerId;
+        newEntry.jdStart = jd - CACHE_SPAN_DAYS / 2.0;
+        newEntry.jdEnd = jd + CACHE_SPAN_DAYS / 2.0;
+        
+        // Campiona punti per interpolazione
+        double dt = CACHE_SPAN_DAYS / (INTERP_POINTS - 1);
+        for (int i = 0; i < INTERP_POINTS; ++i) {
+            double t = newEntry.jdStart + i * dt;
+            auto [pos, vel] = getStateDirect(bodyId, t, centerId);
+            newEntry.positions.push_back(pos);
+            newEntry.velocities.push_back(vel);
+            newEntry.times.push_back(t);
+        }
+        
+        // Aggiungi a cache (sostituisci più vecchio se piena)
+        if (cache.size() >= CACHE_SIZE) {
+            cache.erase(cache.begin());
+        }
+        cache.push_back(newEntry);
+        
+        return &cache.back();
+    }
+    
+    std::pair<Vector3D, Vector3D> getState(int bodyId, double jd, int centerId) {
+        // Usa cache con interpolazione per Terra (query frequenti)
+        if (bodyId == 399 && centerId == 10) {
+            CacheEntry* entry = getCacheEntry(bodyId, centerId, jd);
+            
+            Vector3D pos = lagrangeInterpolate(entry->positions, entry->times, jd);
+            Vector3D vel = lagrangeInterpolate(entry->velocities, entry->times, jd);
+            
+            return {pos, vel};
+        }
+        
+        // Query diretta per altri corpi
+        return getStateDirect(bodyId, jd, centerId);
     }
     
     void close() {

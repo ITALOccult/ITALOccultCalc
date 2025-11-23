@@ -44,6 +44,10 @@ public:
     static Vector3D getEarthPosition(const JulianDate& jd);
     static Vector3D getEarthVelocity(const JulianDate& jd);
     
+    // Ottiene posizione Terra con correzioni complete (aberrazione, relatività)
+    static Vector3D getEarthPositionWithCorrections(const JulianDate& jd, 
+                                                     const Vector3D& observerPos);
+    
 private:
     EquinoctialElements elements_;
     

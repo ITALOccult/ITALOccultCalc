@@ -113,15 +113,15 @@ cd /Users/michelebigi/VisualStudio\ Code/GitHub/IOccultCalc
 
 ```bash
 # 1. Test veloce Vesta (10 giorni)
-./build/examples/jpl_horizons_occultation_search \
+./build/examples/ioccultcalc \
     4 137.302 25.788 2026-01-15 2026-01-25 525
 
 # 2. Eros anno completo
-./build/examples/jpl_horizons_occultation_search \
+./build/examples/ioccultcalc \
     433 88.79 7.41 2026-01-01 2026-12-31
 
 # 3. Ceres con stima diametro automatica
-./build/examples/jpl_horizons_occultation_search \
+./build/examples/ioccultcalc \
     1 201.298 -11.161 2026-01-01 2026-06-30
 ```
 
@@ -320,17 +320,17 @@ Bodies: 17 massive asteroids
 
 ```bash
 # Test veloce (1 giorno)
-./build/examples/jpl_horizons_occultation_search \
+./build/examples/ioccultcalc \
     433 88.79 7.41 2026-01-01 2026-01-02
 
 # Ricerca estesa (1 anno, tutti asteroidi)
 for ast in 1 2 4 10 16 433; do
-    ./build/examples/jpl_horizons_occultation_search \
+    ./build/examples/ioccultcalc \
         $ast 88.79 7.41 2026-01-01 2026-12-31 > ${ast}_results.txt
 done
 
 # Output formattato
-./build/examples/jpl_horizons_occultation_search \
+./build/examples/ioccultcalc \
     4 137.302 25.788 2026-01-01 2026-03-31 525 | tee vesta_2026.log
 ```
 

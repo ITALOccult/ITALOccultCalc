@@ -1,0 +1,80 @@
+{
+  "_comment": "IOccultCalc Configuration - Survey Mode with Database and GAIA Cache",
+  
+  "asteroid_range": {
+    "_comment": "Use asteroid database for massive surveys",
+    "mode": "database",
+    "where": [
+      "diameter > 50",
+      "H < 12"
+    ],
+    "wherenot": []
+  },
+  
+  "search_parameters": {
+    "start_date": "2026-01-01T00:00:00",
+    "end_date": "2026-12-31T23:59:59",
+    "time_step_hours": 2.4,
+    "max_magnitude": 16.0,
+    "path_width_deg": 0.01,
+    "min_duration_seconds": 0.1,
+    "max_duration_seconds": 600.0,
+    "min_probability": 0.1
+  },
+  
+  "asteroid_database": {
+    "enabled": true,
+    "database_path": "~/.ioccultcalc/database/asteroid_db.json",
+    "auto_download": false,
+    "data_source": "MPC_EXTENDED_JSON",
+    "cache_filtered_results": true
+  },
+  
+  "gaia_cache": {
+    "enabled": true,
+    "cache_dir": "~/.ioccultcalc/gaia",
+    "auto_download": true,
+    "tap_url": "https://gea.esac.esa.int/tap-server/tap",
+    "timeout_seconds": 300,
+    "verbose": true,
+    "pre_download": {
+      "enabled": false,
+      "regions": []
+    }
+  },
+  
+  "propagation": {
+    "method": "cowell",
+    "integrator": "rk78",
+    "step_size_days": 1.0,
+    "tolerance": 1e-12,
+    "perturbations": {
+      "sun": true,
+      "moon": true,
+      "planets": ["MERCURY", "VENUS", "EARTH", "MARS", "JUPITER", "SATURN", "URANUS", "NEPTUNE"],
+      "relativistic": false,
+      "radiation_pressure": false,
+      "yarkovsky": false
+    }
+  },
+  
+  "ephemerides": {
+    "de_file": "de441.bsp",
+    "auto_download": true,
+    "cache_dir": "~/.ioccultcalc/ephemerides"
+  },
+  
+  "output": {
+    "format": "json",
+    "output_file": "occultations_2026.json",
+    "include_negative": false,
+    "verbose": true,
+    "progress_updates": true
+  },
+  
+  "performance": {
+    "parallel_threads": 8,
+    "chunk_size": 100,
+    "memory_limit_mb": 4096
+  }
+}

@@ -98,9 +98,6 @@ target_link_libraries(test_pompeia_precision ioccultcalc)
 add_executable(test_astdys_fit_propagate test_astdys_fit_propagate.cpp)
 target_link_libraries(test_astdys_fit_propagate ioccultcalc)
 
-add_executable(test_propagator_validation test_propagator_validation.cpp)
-target_link_libraries(test_propagator_validation ioccultcalc)
-
 add_executable(test_rk4_three_body test_rk4_three_body.cpp)
 target_link_libraries(test_rk4_three_body ioccultcalc)
 
@@ -137,7 +134,101 @@ target_link_libraries(test_barycentric_heliocentric ioccultcalc)
 add_executable(test_ast17_availability test_ast17_availability.cpp)
 target_link_libraries(test_ast17_availability ioccultcalc)
 
-# JPL Horizons occultation search with orbital elements propagation
-add_executable(jpl_horizons_occultation_search jpl_horizons_occultation_search.cpp)
-target_link_libraries(jpl_horizons_occultation_search ioccultcalc)
+# IOccultCalc: Asteroid occultation prediction tool (legacy single mode)
+add_executable(ioccultcalc_main ioccultcalc_main.cpp)
+target_link_libraries(ioccultcalc_main ioccultcalc)
+
+# IOccultCalc: Unified search tool (single + database modes)
+add_executable(ioccultcalc_search ioccultcalc_search.cpp)
+target_link_libraries(ioccultcalc_search ioccultcalc)
+
+# Advanced survey example with full integration
+add_executable(advanced_survey advanced_survey_example.cpp)
+target_link_libraries(advanced_survey ioccultcalc)
+
+# Configuration manager test
+add_executable(test_config_manager test_config_manager.cpp)
+target_link_libraries(test_config_manager ioccultcalc)
+
+# Asteroid filter test
+add_executable(test_asteroid_filter test_asteroid_filter.cpp)
+target_link_libraries(test_asteroid_filter ioccultcalc)
+
+add_executable(test_database test_database.cpp)
+target_link_libraries(test_database ioccultcalc)
+
+add_executable(test_gaia_cache test_gaia_cache.cpp)
+target_link_libraries(test_gaia_cache ioccultcalc)
+
+add_executable(test_real_occultation test_real_occultation.cpp)
+target_link_libraries(test_real_occultation ioccultcalc)
+
+add_executable(test_simple_occultation test_simple_occultation.cpp)
+target_link_libraries(test_simple_occultation ioccultcalc)
+
+add_executable(test_known_occultation test_known_occultation.cpp)
+target_link_libraries(test_known_occultation ioccultcalc)
+
+add_executable(test_preston_occultation test_preston_occultation.cpp)
+target_link_libraries(test_preston_occultation ioccultcalc)
+
+add_executable(test_preston_quick test_preston_quick.cpp)
+target_link_libraries(test_preston_quick ioccultcalc)
+
+add_executable(test_preston_recent test_preston_recent.cpp)
+target_link_libraries(test_preston_recent ioccultcalc)
+
+add_executable(validate_horizons validate_horizons.cpp)
+target_link_libraries(validate_horizons ioccultcalc)
+
+add_executable(debug_conversion debug_conversion.cpp)
+target_link_libraries(debug_conversion ioccultcalc)
+
+add_executable(test_keplerian_direct test_keplerian_direct.cpp)
+target_link_libraries(test_keplerian_direct ioccultcalc)
+
+add_executable(test_eq0_direct test_eq0_direct.cpp)
+target_link_libraries(test_eq0_direct ioccultcalc)
+
+add_executable(test_frame_first test_frame_first.cpp)
+target_link_libraries(test_frame_first ioccultcalc)
+
+add_executable(test_forward_prop test_forward_prop.cpp)
+target_link_libraries(test_forward_prop ioccultcalc)
+
+add_executable(test_osculating_elements test_osculating_elements.cpp)
+target_link_libraries(test_osculating_elements ioccultcalc)
+
+add_executable(test_horizons_vectors test_horizons_vectors.cpp)
+target_link_libraries(test_horizons_vectors ioccultcalc)
+
+add_executable(test_database_population test_database_population.cpp)
+target_link_libraries(test_database_population ioccultcalc)
+
+add_executable(test_preston_with_horizons test_preston_with_horizons.cpp)
+target_link_libraries(test_preston_with_horizons ioccultcalc)
+
+add_executable(test_horizons_position test_horizons_position.cpp)
+target_link_libraries(test_horizons_position ioccultcalc)
+
+add_executable(test_spk_frames_complete test_spk_frames_complete.cpp)
+target_link_libraries(test_spk_frames_complete ioccultcalc)
+
+add_executable(validate_earth_position validate_earth_position.cpp)
+target_link_libraries(validate_earth_position ioccultcalc)
+
+add_executable(compare_earth_methods compare_earth_methods.cpp)
+target_link_libraries(compare_earth_methods ioccultcalc)
+
+add_executable(compare_occultation_predictions compare_occultation_predictions.cpp)
+target_link_libraries(compare_occultation_predictions ioccultcalc)
+
+add_executable(test_aberration_corrections test_aberration_corrections.cpp)
+target_link_libraries(test_aberration_corrections ioccultcalc)
+
+add_executable(test_aberration_impact test_aberration_impact.cpp)
+target_link_libraries(test_aberration_impact ioccultcalc)
+
+add_executable(test_all_corrections test_all_corrections.cpp)
+target_link_libraries(test_all_corrections ioccultcalc)
 
