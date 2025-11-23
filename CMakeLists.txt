@@ -65,6 +65,7 @@ set(SOURCES
     src/nutation.cpp
     src/planetary_aberration.cpp
     src/cubic_spline.cpp
+    src/parallel_algorithms.cpp
 )
 
 # Fortran wrapper for OrbFit
@@ -117,6 +118,7 @@ set(HEADERS
     include/nutation.h
     include/planetary_aberration.h
     include/cubic_spline.h
+    include/parallel_algorithms.h
 )
 
 # OrbFit integration via Fortran wrapper with bind(C)
