@@ -232,3 +232,7 @@ target_link_libraries(test_aberration_impact ioccultcalc)
 add_executable(test_all_corrections test_all_corrections.cpp)
 target_link_libraries(test_all_corrections ioccultcalc)
 
+
+# Phase 1 implementations test
+add_executable(test_phase1_implementations test_phase1_implementations.cpp)
+target_link_libraries(test_phase1_implementations ioccultcalc)
