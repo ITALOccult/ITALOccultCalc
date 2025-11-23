@@ -10,6 +10,7 @@
 
 #include "refraction.h"
 #include "topocentric.h"
+#include "nutation.h"
 #include "ioccultcalc/types.h"
 #include <iostream>
 #include <iomanip>
@@ -316,6 +317,120 @@ void testIntegratedCorrections() {
     std::cout << "\nOverall status: " << (all_ok ? "✓ ALL PASS" : "✗ SOME FAILURES") << "\n";
 }
 
+void testNutation() {
+    printHeader("TEST 4 - IAU 2000B NUTATION");
+    
+    // Test dates with known nutation values
+    // J2000.0: 2000-01-01 12:00 TT
+    double jd_j2000 = 2451545.0;
+    
+    // J2024.0: 2024-01-01 12:00 TT (approximate)
+    double jd_2024 = 2460310.0;
+    
+    NutationCalculator calculator;
+    
+    // Test fundamental arguments
+    std::cout << "\n1. Fundamental arguments at J2000.0:\n";
+    FundamentalArguments args_j2000 = calculator.getFundamentalArguments(jd_j2000);
+    std::cout << "   l  (mean anomaly Moon):          " << (args_j2000.l * 180.0 / M_PI) << "°\n";
+    std::cout << "   l' (mean anomaly Sun):           " << (args_j2000.lp * 180.0 / M_PI) << "°\n";
+    std::cout << "   F  (L - Ω):                      " << (args_j2000.F * 180.0 / M_PI) << "°\n";
+    std::cout << "   D  (mean elongation):            " << (args_j2000.D * 180.0 / M_PI) << "°\n";
+    std::cout << "   Ω  (longitude ascending node):   " << (args_j2000.Om * 180.0 / M_PI) << "°\n";
+    
+    // Test mean obliquity
+    std::cout << "\n2. Mean obliquity:\n";
+    double eps0_j2000 = calculator.meanObliquity(jd_j2000);
+    double eps0_2024 = calculator.meanObliquity(jd_2024);
+    std::cout << "   At J2000.0: " << (eps0_j2000 * 180.0 / M_PI) << "° = ";
+    std::cout << (eps0_j2000 * 3600.0 * 180.0 / M_PI) << "\"\n";
+    std::cout << "   Expected:   23.4392911° = 84381.406\"\n";
+    std::cout << "   At J2024.0: " << (eps0_2024 * 180.0 / M_PI) << "°\n";
+    
+    double eps0_diff = std::abs((eps0_j2000 * 3600.0 * 180.0 / M_PI) - 84381.406);
+    std::cout << "   Difference: " << eps0_diff << "\" ";
+    std::cout << (eps0_diff < 0.001 ? "✓ PASS" : "✗ FAIL") << "\n";
+    
+    // Test nutation calculation (IAU 2000B)
+    std::cout << "\n3. Nutation angles (IAU 2000B - 77 terms):\n";
+    
+    // At J2000.0
+    NutationAngles nut_j2000 = calculator.calculate2000B(jd_j2000);
+    std::cout << "   At J2000.0:\n";
+    std::cout << "     Δψ = " << (nut_j2000.dpsi * 3600.0 * 180.0 / M_PI) << "\"\n";
+    std::cout << "     Δε = " << (nut_j2000.deps * 3600.0 * 180.0 / M_PI) << "\"\n";
+    
+    // At J2024.0
+    NutationAngles nut_2024 = calculator.calculate2000B(jd_2024);
+    std::cout << "   At J2024.0:\n";
+    std::cout << "     Δψ = " << (nut_2024.dpsi * 3600.0 * 180.0 / M_PI) << "\"\n";
+    std::cout << "     Δε = " << (nut_2024.deps * 3600.0 * 180.0 / M_PI) << "\"\n";
+    
+    // Typical nutation amplitudes: Δψ ~ 17", Δε ~ 9"
+    double dpsi_mag = std::abs(nut_2024.dpsi * 3600.0 * 180.0 / M_PI);
+    double deps_mag = std::abs(nut_2024.deps * 3600.0 * 180.0 / M_PI);
+    std::cout << "   Expected range: |Δψ| < 20\", |Δε| < 12\"\n";
+    std::cout << "   Check: " << (dpsi_mag < 20.0 && deps_mag < 12.0 ? "✓ PASS" : "✗ FAIL") << "\n";
+    
+    // Test true obliquity
+    std::cout << "\n4. True obliquity (ε = ε₀ + Δε):\n";
+    double eps_true_j2000 = calculator.trueObliquity(jd_j2000);
+    double eps_true_2024 = calculator.trueObliquity(jd_2024);
+    std::cout << "   At J2000.0: " << (eps_true_j2000 * 180.0 / M_PI) << "°\n";
+    std::cout << "   At J2024.0: " << (eps_true_2024 * 180.0 / M_PI) << "°\n";
+    std::cout << "   Correction: " << ((eps_true_2024 - eps0_2024) * 3600.0 * 180.0 / M_PI) << "\"\n";
+    
+    // Test equation of equinoxes
+    std::cout << "\n5. Equation of equinoxes (EE = Δψ cos ε₀):\n";
+    double ee_j2000 = calculator.equationOfEquinoxes(jd_j2000);
+    double ee_2024 = calculator.equationOfEquinoxes(jd_2024);
+    std::cout << "   At J2000.0: " << (ee_j2000 * 3600.0 * 180.0 / M_PI) << "\"\n";
+    std::cout << "   At J2024.0: " << (ee_2024 * 3600.0 * 180.0 / M_PI) << "\"\n";
+    std::cout << "   (Converts between mean and apparent sidereal time)\n";
+    
+    // Test rotation matrix
+    std::cout << "\n6. Nutation rotation matrix:\n";
+    double matrix[3][3];
+    calculator.nutationRotationMatrix(jd_2024, matrix);
+    std::cout << "   Matrix at J2024.0:\n";
+    std::cout << "   [" << std::setw(10) << matrix[0][0] << " " << std::setw(10) << matrix[0][1] 
+              << " " << std::setw(10) << matrix[0][2] << "]\n";
+    std::cout << "   [" << std::setw(10) << matrix[1][0] << " " << std::setw(10) << matrix[1][1] 
+              << " " << std::setw(10) << matrix[1][2] << "]\n";
+    std::cout << "   [" << std::setw(10) << matrix[2][0] << " " << std::setw(10) << matrix[2][1] 
+              << " " << std::setw(10) << matrix[2][2] << "]\n";
+    
+    // Test orthogonality (R^T R = I)
+    double det = matrix[0][0] * (matrix[1][1]*matrix[2][2] - matrix[1][2]*matrix[2][1])
+               - matrix[0][1] * (matrix[1][0]*matrix[2][2] - matrix[1][2]*matrix[2][0])
+               + matrix[0][2] * (matrix[1][0]*matrix[2][1] - matrix[1][1]*matrix[2][0]);
+    std::cout << "   Determinant: " << det << " (should be ~1.0)\n";
+    std::cout << "   Check: " << (std::abs(det - 1.0) < 1e-10 ? "✓ PASS" : "✗ FAIL") << "\n";
+    
+    // Test simplified model
+    std::cout << "\n7. Simplified model (5 largest terms):\n";
+    NutationAngles nut_simple = calculator.calculateSimplified(jd_2024);
+    std::cout << "   Δψ (simplified): " << (nut_simple.dpsi * 3600.0 * 180.0 / M_PI) << "\"\n";
+    std::cout << "   Δψ (full):       " << (nut_2024.dpsi * 3600.0 * 180.0 / M_PI) << "\"\n";
+    std::cout << "   Difference:      " << ((nut_2024.dpsi - nut_simple.dpsi) * 3600.0 * 180.0 / M_PI) << "\"\n";
+    
+    // Test convenience functions
+    std::cout << "\n8. Global convenience functions:\n";
+    NutationAngles nut_global = calculateNutation(jd_2024);
+    double eps0_global = calculateMeanObliquity(jd_2024);
+    double eps_global = calculateTrueObliquity(jd_2024);
+    std::cout << "   calculateNutation(): Δψ = " << (nut_global.dpsi * 3600.0 * 180.0 / M_PI) << "\"\n";
+    std::cout << "   calculateMeanObliquity(): " << (eps0_global * 180.0 / M_PI) << "°\n";
+    std::cout << "   calculateTrueObliquity(): " << (eps_global * 180.0 / M_PI) << "°\n";
+    
+    // Summary
+    std::cout << "\n9. Impact on occultation predictions:\n";
+    std::cout << "   Typical nutation correction: 0.5-1.0\" in position\n";
+    std::cout << "   At 2.5 AU (asteroid belt): ~1-3 km on shadow path\n";
+    std::cout << "   Important for: precise timing, path centerline\n";
+    std::cout << "   IAU 2000B precision: ~1 milliarcsecond\n";
+}
+
 int main() {
     std::cout << "\n";
     std::cout << "╔══════════════════════════════════════════════════════════════════╗\n";
@@ -325,12 +440,14 @@ int main() {
     std::cout << "║   1. Atmospheric Refraction (Bennett, Saemundsson, Hohenkerk)   ║\n";
     std::cout << "║   2. Topocentric Corrections (WGS84, elevation, parallax)       ║\n";
     std::cout << "║   3. Integrated scenario (Mauna Kea occultation)                ║\n";
+    std::cout << "║   4. IAU 2000B Nutation (77 terms)                              ║\n";
     std::cout << "╚══════════════════════════════════════════════════════════════════╝\n";
     
     try {
         testRefraction();
         testTopocentric();
         testIntegratedCorrections();
+        testNutation();
         
         printHeader("PHASE 1 TESTING COMPLETE");
         std::cout << "\nAll Phase 1 implementations have been tested successfully!\n";

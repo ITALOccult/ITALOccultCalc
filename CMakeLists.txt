@@ -62,6 +62,7 @@ set(SOURCES
     src/asteroid_database.cpp
     src/refraction.cpp
     src/topocentric.cpp
+    src/nutation.cpp
 )
 
 # Fortran wrapper for OrbFit
@@ -111,6 +112,7 @@ set(HEADERS
     include/ioccultcalc/asteroid_database.h
     include/refraction.h
     include/topocentric.h
+    include/nutation.h
 )
 
 # OrbFit integration via Fortran wrapper with bind(C)
