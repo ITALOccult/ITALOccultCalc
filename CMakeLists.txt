@@ -64,6 +64,7 @@ set(SOURCES
     src/topocentric.cpp
     src/nutation.cpp
     src/planetary_aberration.cpp
+    src/cubic_spline.cpp
 )
 
 # Fortran wrapper for OrbFit
@@ -115,6 +116,7 @@ set(HEADERS
     include/topocentric.h
     include/nutation.h
     include/planetary_aberration.h
+    include/cubic_spline.h
 )
 
 # OrbFit integration via Fortran wrapper with bind(C)

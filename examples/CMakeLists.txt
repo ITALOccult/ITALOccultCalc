@@ -240,3 +240,6 @@ target_link_libraries(test_phase1_implementations ioccultcalc)
 # Phase 2 implementations test
 add_executable(test_planetary_aberration test_planetary_aberration.cpp)
 target_link_libraries(test_planetary_aberration ioccultcalc)
+
+add_executable(test_cubic_spline test_cubic_spline.cpp)
+target_link_libraries(test_cubic_spline ioccultcalc)
