@@ -254,3 +254,7 @@ target_link_libraries(test_realworld_occultation ioccultcalc)
 # ITALOccultCalc - Complete occultation search application
 add_executable(italoccultcalc italoccultcalc.cpp)
 target_link_libraries(italoccultcalc ioccultcalc)
+
+# Test massivo 1000 asteroidi - Gennaio 2026
+add_executable(test_massive_jan2026 test_massive_jan2026.cpp)
+target_link_libraries(test_massive_jan2026 ioccultcalc)
