@@ -236,3 +236,7 @@ target_link_libraries(test_all_corrections ioccultcalc)
 # Phase 1 implementations test
 add_executable(test_phase1_implementations test_phase1_implementations.cpp)
 target_link_libraries(test_phase1_implementations ioccultcalc)
+
+# Phase 2 implementations test
+add_executable(test_planetary_aberration test_planetary_aberration.cpp)
+target_link_libraries(test_planetary_aberration ioccultcalc)
