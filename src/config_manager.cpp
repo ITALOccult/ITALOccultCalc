@@ -242,6 +242,13 @@ std::string ConfigSectionData::sectionTypeToString() const {
         case ConfigSection::SEARCH: return "search";
         case ConfigSection::STAR: return "star";
         case ConfigSection::IERS: return "IERS";
+        case ConfigSection::OBSERVER: return "observer";
+        case ConfigSection::FILTERING: return "filtering";
+        case ConfigSection::SCORING: return "scoring";
+        case ConfigSection::PERFORMANCE: return "performance";
+        case ConfigSection::DATABASE: return "database";
+        case ConfigSection::GAIA: return "gaia";
+        case ConfigSection::VALIDATION: return "validation";
         case ConfigSection::CUSTOM: return "custom";
         default: return "unknown";
     }
@@ -258,6 +265,13 @@ ConfigSection ConfigSectionData::stringToSectionType(const std::string& str) {
     if (str == "search") return ConfigSection::SEARCH;
     if (str == "star") return ConfigSection::STAR;
     if (str == "IERS" || str == "iers") return ConfigSection::IERS;
+    if (str == "observer") return ConfigSection::OBSERVER;
+    if (str == "filtering") return ConfigSection::FILTERING;
+    if (str == "scoring") return ConfigSection::SCORING;
+    if (str == "performance") return ConfigSection::PERFORMANCE;
+    if (str == "database") return ConfigSection::DATABASE;
+    if (str == "gaia") return ConfigSection::GAIA;
+    if (str == "validation") return ConfigSection::VALIDATION;
     return ConfigSection::CUSTOM;
 }
 

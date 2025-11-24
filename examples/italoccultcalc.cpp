@@ -148,12 +148,40 @@ std::vector<AsteroidCandidate> selectAsteroids(const ConfigManager& config) {
     
     std::vector<AsteroidCandidate> candidates;
     
-    // Criteri per occultazioni in Italia
-    double maxMagnitude = 14.0;        // Osservabile con telescopi amatoriali
-    double minDiameter = 50.0;         // km - durata significativa
-    double maxDiameter = 1000.0;       // km
-    double minPerihelion = 1.5;        // AU - no NEA troppo vicini
-    double maxAphelion = 4.5;          // AU - fascia principale
+    // Criteri di default
+    double maxMagnitude = 14.0;        
+    double minDiameter = 50.0;         
+    double maxDiameter = 1000.0;       
+    double minPerihelion = 1.5;        
+    double maxAphelion = 4.5;          
+    
+    // Leggi parametri da configurazione se presenti
+    auto objectSection = config.getSection(ConfigSection::OBJECT);
+    if (objectSection) {
+        if (objectSection->hasParameter("min_diameter")) {
+            minDiameter = objectSection->getParameter("min_diameter")->asDouble();
+        }
+        if (objectSection->hasParameter("max_diameter")) {
+            maxDiameter = objectSection->getParameter("max_diameter")->asDouble();
+        }
+    }
+    
+    auto searchSection = config.getSection(ConfigSection::SEARCH);
+    if (searchSection) {
+        if (searchSection->hasParameter("mag_limit")) {
+            maxMagnitude = searchSection->getParameter("mag_limit")->asDouble();
+        }
+    }
+    
+    auto databaseSection = config.getSection(ConfigSection::DATABASE);
+    if (databaseSection) {
+        if (databaseSection->hasParameter("min_perihelion")) {
+            minPerihelion = databaseSection->getParameter("min_perihelion")->asDouble();
+        }
+        if (databaseSection->hasParameter("max_aphelion")) {
+            maxAphelion = databaseSection->getParameter("max_aphelion")->asDouble();
+        }
+    }
     
     std::cout << "Criteri selezione:\n";
     std::cout << "  Magnitudine max: " << maxMagnitude << "\n";

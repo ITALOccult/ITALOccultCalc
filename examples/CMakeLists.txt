@@ -262,3 +262,7 @@ target_link_libraries(test_massive_jan2026 ioccultcalc)
 # Test output manager multi-formato
 add_executable(test_output_formats test_output_formats.cpp)
 target_link_libraries(test_output_formats ioccultcalc)
+
+# Genera scheda IOTA per Hygiea
+add_executable(generate_hygiea_iota_card generate_hygiea_iota_card.cpp)
+target_link_libraries(generate_hygiea_iota_card ioccultcalc)

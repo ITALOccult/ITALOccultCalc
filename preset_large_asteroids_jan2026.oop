@@ -1,0 +1,63 @@
+! IOccultCalc Configuration File - Large Asteroids Survey
+! Ricerca occultazioni asteroidi con diametro >5 km - Gennaio 2026
+! Created: 24 November 2025
+
+object.
+        .id = '0'
+        .name = 'Survey Large Asteroids >5km'
+        .min_diameter = 5.0
+        .max_diameter = 1000.0
+
+propag.
+        .start_jd = 2460676.500000  ! 2026-01-01 00:00 UTC
+        .end_jd = 2460707.500000    ! 2026-02-01 00:00 UTC (31 days)
+        .step_size = 0.050000       ! 0.05 days = 1.2 hours
+        .type = 'RK4'
+
+ephemeris.
+        .jpl_version = 'DE441'
+        .ast17_file = '~/.ioccultcalc/ephemerides/codes_300ast_20100725.bsp'
+
+output.
+        .file = 'occultations_large_asteroids_jan2026.json'
+        .format = 'JSON'
+        .verbosity = 2
+
+perturbations.
+        .planets = .TRUE.
+        .relativity = .TRUE.
+        .asteroid_count = 17
+
+search.
+        .start_jd = 2460676.500000  ! 2026-01-01 00:00 UTC
+        .end_jd = 2460707.500000    ! 2026-02-01 00:00 UTC
+        .mag_limit = 15.0           ! Magnitudine limite
+        .step_days = 0.5            ! Step di ricerca (12 ore)
+        .min_duration = 0.5         ! Durata minima secondi
+        .max_duration = 300.0       ! Durata massima secondi
+
+database.
+        .min_perihelion = 1.0       ! AU - include anche NEA
+        .max_aphelion = 5.0         ! AU - fascia principale + Jupiter
+        .min_observations = 50      ! Numero minimo osservazioni
+        .max_uncertainty = 10.0     ! arcsec - precisione orbitale
+        .require_diameter = .TRUE.  ! Richiedi diametro noto
+
+filtering.
+        .min_magnitude_drop = 0.5   ! Delta mag minimo
+        .min_altitude = 20.0        ! Altezza minima gradi
+        .sun_elevation_limit = -12.0 ! Crepuscolo astronomico
+        .moon_separation_min = 30.0 ! Separazione Luna gradi
+
+scoring.
+        .weight_magnitude = 0.25
+        .weight_duration = 0.20
+        .weight_diameter = 0.30     ! Peso maggiore per asteroidi grandi
+        .min_score = 5.0            ! Score minimo per output
+
+performance.
+        .parallel_threads = 8
+        .use_openmp = .TRUE.
+
+! Criteri di selezione asteroidi (diameter > 5 km)
+! Database JPL verrà interrogato automaticamente con questi filtri

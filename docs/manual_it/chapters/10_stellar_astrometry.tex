@@ -1,0 +1,112 @@
+\chapter{Stellar Astrometry and Catalogs}
+\label{chap:stars}
+
+\section{Introduction}
+
+Accurate star positions are critical. \gaia{} DR3 provides astrometry at 0.02--0.3 mas level \citep{GaiaDR3}.
+
+\section{Gaia DR3 Catalog}
+
+\subsection{Data Provided}
+
+For each star, \gaia{} DR3 provides:
+
+\begin{table}[htbp]
+\centering
+\caption{Gaia DR3 astrometric parameters}
+\label{tab:gaia_parameters}
+\begin{tabular}{lcp{6cm}}
+\hline
+\textbf{Parameter} & \textbf{Symbol} & \textbf{Description} \\
+\hline
+Right Ascension & $\alpha_0$ & Position at reference epoch \\
+Declination & $\delta_0$ & Position at reference epoch \\
+Parallax & $\varpi$ & Distance indicator (mas) \\
+Proper motion RA & $\mu_\alpha$ & Motion in RA (mas/yr) \\
+Proper motion Dec & $\mu_\delta$ & Motion in Dec (mas/yr) \\
+Radial velocity & $v_r$ & Line-of-sight velocity (km/s) \\
+\hline
+\multicolumn{3}{l}{\textit{Reference epoch: J2016.0 for DR3}} \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Query via TAP/ADQL}
+
+\ioccultcalc{} queries \gaia{} via Table Access Protocol:
+
+\begin{verbatim}
+SELECT source_id, ra, dec, parallax, pmra, pmdec, 
+       radial_velocity, phot_g_mean_mag
+FROM gaiadr3.gaia_source
+WHERE 1=CONTAINS(
+    POINT(ra, dec),
+    CIRCLE(<ra_center>, <dec_center>, <radius_deg>)
+)
+AND phot_g_mean_mag < <mag_limit>
+\end{verbatim}
+
+\section{Proper Motion Correction}
+
+Stars move across the sky. The position at epoch $t$ is \citep{Stumpff1985}:
+
+\begin{align}
+\alpha(t) &= \alpha_0 + \frac{\mu_\alpha}{\cos\delta_0} (t - t_0) \label{eq:proper_motion_ra} \\
+\delta(t) &= \delta_0 + \mu_\delta (t - t_0) \label{eq:proper_motion_dec}
+\end{align}
+
+This linear approximation is valid for $|t - t_0| < 50$ years and distances $> 10$ pc.
+
+\textbf{Rigorous method} (for nearby stars) accounts for:
+\begin{itemize}
+    \item Perspective acceleration
+    \item Radial velocity projection
+    \item Non-linear path on celestial sphere
+\end{itemize}
+
+See \citet{Stumpff1985} for full formulation.
+
+\section{Parallax Correction}
+
+Nearby stars show annual parallax:
+
+\begin{equation}
+\Delta\alpha = \varpi \frac{X}{D}, \quad \Delta\delta = \varpi \frac{Y}{D}
+\end{equation}
+
+where $(X, Y)$ are Earth's heliocentric coordinates perpendicular to star direction, and $D$ is star distance in AU.
+
+\textbf{Maximum effect:} For $\varpi = 100$ mas (10 pc), parallax $= \pm 100$ mas = ±0.1''.
+
+\section{Star Magnitude and Selection}
+
+\textbf{Magnitude limit:} For occultations, typically select stars with:
+\begin{itemize}
+    \item $G < 16$ for visual observations
+    \item $G < 18$ for CCD with small telescopes
+    \item $G < 20$ for large professional telescopes
+\end{itemize}
+
+\gaia{} DR3 contains:
+\begin{itemize}
+    \item 1.8 billion sources total
+    \item $\sim$1 million with $G < 12$ (naked eye to small telescope)
+    \item $\sim$100 million with $G < 18$ (CCD accessible)
+\end{itemize}
+
+\section{Summary}
+
+\gaia{} DR3 provides:
+\begin{itemize}
+    \item 1.8 billion stars with 0.02--0.3 mas astrometry
+    \item Proper motions for epoch propagation (Eqs.~\ref{eq:proper_motion_ra}--\ref{eq:proper_motion_dec})
+    \item Parallax for nearby star corrections
+    \item TAP/ADQL interface for automated queries
+\end{itemize}
+
+\textbf{References:}
+\begin{itemize}
+    \item Gaia Collaboration (2022) \citep{GaiaDR3}: DR3 release
+    \item Stumpff (1985) \citep{Stumpff1985}: rigorous proper motion
+    \item Lindegren et al. (2021) \citep{Lindegren2021}: Gaia astrometric solution
+\end{itemize}

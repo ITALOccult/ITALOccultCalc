@@ -32,6 +32,13 @@ enum class ConfigSection {
     SEARCH,        // Occultation search parameters
     STAR,          // Star catalog configuration
     IERS,          // Earth orientation parameters
+    OBSERVER,      // Observer location constraints
+    FILTERING,     // Quality and observability filters
+    SCORING,       // Priority scoring system
+    PERFORMANCE,   // Performance and optimization
+    DATABASE,      // Asteroid database filters
+    GAIA,          // Gaia catalog settings
+    VALIDATION,    // Validation and quality control
     CUSTOM         // User-defined sections
 };
 

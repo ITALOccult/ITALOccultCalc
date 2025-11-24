@@ -1,35 +1,367 @@
 \babel@toc {italian}{}\relax 
 \babel@toc {italian}{}\relax 
-\contentsline {chapter}{Prefazione}{iii}{chapter*.1}%
+\contentsline {chapter}{Abstract}{iii}{chapter*.1}%
+\contentsline {chapter}{Prefazione}{v}{chapter*.2}%
 \contentsline {chapter}{\numberline {1}Introduzione}{1}{chapter.1}%
 \contentsline {section}{\numberline {1.1}Cosa sono le Occultazioni Asteroidali}{1}{section.1.1}%
 \contentsline {subsection}{\numberline {1.1.1}Importanza Scientifica}{1}{subsection.1.1.1}%
-\contentsline {section}{\numberline {1.2}Stato dell'Arte}{1}{section.1.2}%
-\contentsline {subsection}{\numberline {1.2.1}Software Esistenti}{1}{subsection.1.2.1}%
+\contentsline {section}{\numberline {1.2}Stato dell'Arte}{2}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}Software Esistenti}{2}{subsection.1.2.1}%
 \contentsline {subsection}{\numberline {1.2.2}Precisione Richiesta}{2}{subsection.1.2.2}%
 \contentsline {section}{\numberline {1.3}Architettura di IOccultCalc}{2}{section.1.3}%
 \contentsline {subsection}{\numberline {1.3.1}Filosofia di Design}{2}{subsection.1.3.1}%
 \contentsline {subsection}{\numberline {1.3.2}Componenti Principali}{3}{subsection.1.3.2}%
 \contentsline {subsection}{\numberline {1.3.3}Workflow Tipico}{3}{subsection.1.3.3}%
-\contentsline {section}{\numberline {1.4}Fondamenti Matematici}{3}{section.1.4}%
-\contentsline {subsection}{\numberline {1.4.1}Sistema di Riferimento}{3}{subsection.1.4.1}%
+\contentsline {section}{\numberline {1.4}Fondamenti Matematici}{4}{section.1.4}%
+\contentsline {subsection}{\numberline {1.4.1}Sistema di Riferimento}{4}{subsection.1.4.1}%
 \contentsline {subsection}{\numberline {1.4.2}Equazioni del Moto}{4}{subsection.1.4.2}%
 \contentsline {subsection}{\numberline {1.4.3}Perturbazioni Incluse}{4}{subsection.1.4.3}%
 \contentsline {subsection}{\numberline {1.4.4}Integrazione Numerica}{4}{subsection.1.4.4}%
 \contentsline {section}{\numberline {1.5}Validazione}{5}{section.1.5}%
 \contentsline {section}{\numberline {1.6}Struttura del Manuale}{5}{section.1.6}%
-\contentsline {section}{\numberline {1.7}Requisiti e Installazione}{5}{section.1.7}%
-\contentsline {subsection}{\numberline {1.7.1}Requisiti Software}{5}{subsection.1.7.1}%
+\contentsline {section}{\numberline {1.7}Requisiti e Installazione}{6}{section.1.7}%
+\contentsline {subsection}{\numberline {1.7.1}Requisiti Software}{6}{subsection.1.7.1}%
 \contentsline {subsection}{\numberline {1.7.2}Installazione}{6}{subsection.1.7.2}%
 \contentsline {subsection}{\numberline {1.7.3}Primo Utilizzo}{6}{subsection.1.7.3}%
-\contentsline {section}{\numberline {1.8}Convenzioni e Notazioni}{6}{section.1.8}%
-\contentsline {subsection}{\numberline {1.8.1}Notazione Matematica}{6}{subsection.1.8.1}%
+\contentsline {section}{\numberline {1.8}Convenzioni e Notazioni}{7}{section.1.8}%
+\contentsline {subsection}{\numberline {1.8.1}Notazione Matematica}{7}{subsection.1.8.1}%
 \contentsline {subsection}{\numberline {1.8.2}Sistemi di Coordinate}{7}{subsection.1.8.2}%
-\contentsline {subsection}{\numberline {1.8.3}Tempi}{7}{subsection.1.8.3}%
-\contentsline {section}{\numberline {1.9}Risorse Aggiuntive}{7}{section.1.9}%
-\contentsline {subsection}{\numberline {1.9.1}Dati}{7}{subsection.1.9.1}%
-\contentsline {subsection}{\numberline {1.9.2}Software}{7}{subsection.1.9.2}%
-\contentsline {subsection}{\numberline {1.9.3}Comunità}{8}{subsection.1.9.3}%
-\contentsline {section}{\numberline {1.10}Come Contribuire}{8}{section.1.10}%
-\contentsline {section}{\numberline {1.11}Licenza}{8}{section.1.11}%
-\contentsline {chapter}{Ringraziamenti}{9}{appendix*.7}%
+\contentsline {subsection}{\numberline {1.8.3}Tempi}{8}{subsection.1.8.3}%
+\contentsline {section}{\numberline {1.9}Risorse Aggiuntive}{8}{section.1.9}%
+\contentsline {subsection}{\numberline {1.9.1}Dati}{8}{subsection.1.9.1}%
+\contentsline {subsection}{\numberline {1.9.2}Software}{8}{subsection.1.9.2}%
+\contentsline {subsection}{\numberline {1.9.3}Comunità}{9}{subsection.1.9.3}%
+\contentsline {section}{\numberline {1.10}Come Contribuire}{9}{section.1.10}%
+\contentsline {section}{\numberline {1.11}Licenza}{9}{section.1.11}%
+\contentsline {chapter}{\numberline {2}Coordinate Systems and Transformations}{11}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Introduction}{11}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Celestial Coordinate Systems}{11}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}International Celestial Reference System (ICRS)}{11}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}J2000.0 Mean Equatorial System}{12}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Ecliptic Coordinate System}{13}{subsection.2.2.3}%
+\contentsline {section}{\numberline {2.3}Earth-Fixed Coordinate Systems}{14}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}International Terrestrial Reference System (ITRS)}{14}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Geodetic Coordinates}{14}{subsection.2.3.2}%
+\contentsline {section}{\numberline {2.4}Transformation Between Celestial and Terrestrial Frames}{16}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Precession-Nutation Matrix $\boldsymbol {Q}(t)$}{16}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Earth Rotation Matrix $\boldsymbol {R}(t)$}{17}{subsection.2.4.2}%
+\contentsline {subsection}{\numberline {2.4.3}Polar Motion Matrix $\boldsymbol {W}(t)$}{17}{subsection.2.4.3}%
+\contentsline {section}{\numberline {2.5}Rotation Matrices}{18}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}Elementary Rotations}{18}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.5.2}Composition of Rotations}{18}{subsection.2.5.2}%
+\contentsline {section}{\numberline {2.6}Spherical Coordinates}{18}{section.2.6}%
+\contentsline {subsection}{\numberline {2.6.1}Equatorial Coordinates}{18}{subsection.2.6.1}%
+\contentsline {subsection}{\numberline {2.6.2}Ecliptic Coordinates}{19}{subsection.2.6.2}%
+\contentsline {subsection}{\numberline {2.6.3}Horizontal Coordinates}{19}{subsection.2.6.3}%
+\contentsline {section}{\numberline {2.7}Angular Separation}{19}{section.2.7}%
+\contentsline {section}{\numberline {2.8}Position Angle}{20}{section.2.8}%
+\contentsline {section}{\numberline {2.9}Implementation Notes}{20}{section.2.9}%
+\contentsline {subsection}{\numberline {2.9.1}Numerical Considerations}{20}{subsection.2.9.1}%
+\contentsline {subsection}{\numberline {2.9.2}Coordinate Validation}{20}{subsection.2.9.2}%
+\contentsline {section}{\numberline {2.10}Precision Budget}{21}{section.2.10}%
+\contentsline {section}{\numberline {2.11}Implementation in \texttt {IOccultCalc}{}}{21}{section.2.11}%
+\contentsline {section}{\numberline {2.12}Summary}{21}{section.2.12}%
+\contentsline {chapter}{\numberline {3}Celestial Mechanics Fundamentals}{23}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Celestial Coordinate Systems}{23}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Introduction to Celestial Coordinates}{23}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}Fundamental Planes and Reference Points}{23}{subsection.3.1.2}%
+\contentsline {subsubsection}{The Ecliptic Plane}{23}{section*.8}%
+\contentsline {subsubsection}{The Equatorial Plane}{24}{section*.9}%
+\contentsline {subsubsection}{Galactic Plane}{24}{section*.10}%
+\contentsline {subsection}{\numberline {3.1.3}Ecliptic Coordinate System}{24}{subsection.3.1.3}%
+\contentsline {subsubsection}{Ecliptic Longitude and Latitude}{24}{section*.11}%
+\contentsline {subsubsection}{Rectangular Ecliptic Coordinates}{24}{section*.12}%
+\contentsline {subsection}{\numberline {3.1.4}Equatorial Coordinate System}{25}{subsection.3.1.4}%
+\contentsline {subsubsection}{Right Ascension and Declination}{25}{section*.13}%
+\contentsline {subsubsection}{Rectangular Equatorial Coordinates}{25}{section*.14}%
+\contentsline {subsection}{\numberline {3.1.5}Transformation: Ecliptic $\leftrightarrow $ Equatorial}{25}{subsection.3.1.5}%
+\contentsline {subsubsection}{Ecliptic to Equatorial}{25}{section*.15}%
+\contentsline {subsubsection}{Equatorial to Ecliptic}{26}{section*.16}%
+\contentsline {subsubsection}{Spherical Coordinate Transformations}{26}{section*.17}%
+\contentsline {subsection}{\numberline {3.1.6}Heliocentric vs Geocentric vs Barycentric}{26}{subsection.3.1.6}%
+\contentsline {subsubsection}{Reference Centers}{26}{section*.18}%
+\contentsline {subsubsection}{Transformation}{27}{section*.19}%
+\contentsline {section}{\numberline {3.2}Time-Dependent Coordinate Systems}{27}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Epoch and Equinox}{27}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Standard Epochs}{27}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}ICRF: International Celestial Reference Frame}{27}{subsection.3.2.3}%
+\contentsline {section}{\numberline {3.3}Proper Motion and Parallax}{28}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Stellar Proper Motion}{28}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Parallax}{28}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.3}Space Motion Vector}{28}{subsection.3.3.3}%
+\contentsline {section}{\numberline {3.4}Aberration and Light-Time Effects}{29}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}Annual Aberration}{29}{subsection.3.4.1}%
+\contentsline {subsection}{\numberline {3.4.2}Diurnal Aberration}{29}{subsection.3.4.2}%
+\contentsline {subsection}{\numberline {3.4.3}Light-Time Correction}{29}{subsection.3.4.3}%
+\contentsline {section}{\numberline {3.5}Gravitational Light Deflection}{29}{section.3.5}%
+\contentsline {subsection}{\numberline {3.5.1}Einstein's Prediction}{29}{subsection.3.5.1}%
+\contentsline {subsection}{\numberline {3.5.2}Full Relativistic Formula}{30}{subsection.3.5.2}%
+\contentsline {subsection}{\numberline {3.5.3}Implementation in IOccultCalc}{30}{subsection.3.5.3}%
+\contentsline {section}{\numberline {3.6}Coordinate Systems in Practice}{30}{section.3.6}%
+\contentsline {subsection}{\numberline {3.6.1}JPL HORIZONS Conventions}{30}{subsection.3.6.1}%
+\contentsline {subsection}{\numberline {3.6.2}SPICE Toolkit Frames}{30}{subsection.3.6.2}%
+\contentsline {subsection}{\numberline {3.6.3}IOccultCalc Implementation}{31}{subsection.3.6.3}%
+\contentsline {section}{\numberline {3.7}Summary}{31}{section.3.7}%
+\contentsline {chapter}{\numberline {4}Time Systems and Conversions}{33}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Introduction}{33}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Time Scales Hierarchy}{33}{section.4.2}%
+\contentsline {section}{\numberline {4.3}International Atomic Time (TAI)}{33}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Coordinated Universal Time (UTC)}{34}{section.4.4}%
+\contentsline {section}{\numberline {4.5}Universal Time (UT1)}{35}{section.4.5}%
+\contentsline {section}{\numberline {4.6}Terrestrial Time (TT)}{36}{section.4.6}%
+\contentsline {section}{\numberline {4.7}Barycentric Dynamical Time (TDB)}{37}{section.4.7}%
+\contentsline {section}{\numberline {4.8}Julian Date and Modified Julian Date}{38}{section.4.8}%
+\contentsline {subsection}{\numberline {4.8.1}Julian Date (JD)}{38}{subsection.4.8.1}%
+\contentsline {subsection}{\numberline {4.8.2}Modified Julian Date (MJD)}{38}{subsection.4.8.2}%
+\contentsline {subsection}{\numberline {4.8.3}Conversion Algorithm}{38}{subsection.4.8.3}%
+\contentsline {section}{\numberline {4.9}Time Scale Conversions in Practice}{39}{section.4.9}%
+\contentsline {subsection}{\numberline {4.9.1}Implementation Example}{39}{subsection.4.9.1}%
+\contentsline {section}{\numberline {4.10}Precision Considerations}{40}{section.4.10}%
+\contentsline {section}{\numberline {4.11}Data Sources for Time Conversions}{40}{section.4.11}%
+\contentsline {subsection}{\numberline {4.11.1}Leap Seconds}{40}{subsection.4.11.1}%
+\contentsline {subsection}{\numberline {4.11.2}UT1 - UTC ($\Delta $UT1)}{41}{subsection.4.11.2}%
+\contentsline {section}{\numberline {4.12}Summary}{41}{section.4.12}%
+\contentsline {chapter}{\numberline {5}Planetary Ephemerides: JPL Development Ephemerides}{43}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Introduction}{43}{section.5.1}%
+\contentsline {section}{\numberline {5.2}JPL Development Ephemerides Overview}{43}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Historical Context}{43}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}Comparison: VSOP87 vs JPL DE441}{44}{subsection.5.2.2}%
+\contentsline {section}{\numberline {5.3}Mathematical Formulation: Chebyshev Interpolation}{44}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}Why Chebyshev Polynomials?}{44}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}Chebyshev Polynomial Definition}{46}{subsection.5.3.2}%
+\contentsline {subsection}{\numberline {5.3.3}Position Interpolation}{46}{subsection.5.3.3}%
+\contentsline {subsection}{\numberline {5.3.4}Velocity Computation}{46}{subsection.5.3.4}%
+\contentsline {subsection}{\numberline {5.3.5}Example: Earth Position at 2025-01-01}{47}{subsection.5.3.5}%
+\contentsline {section}{\numberline {5.4}SPICE SPK File Format}{48}{section.5.4}%
+\contentsline {subsection}{\numberline {5.4.1}Overview}{48}{subsection.5.4.1}%
+\contentsline {subsection}{\numberline {5.4.2}File Structure}{48}{subsection.5.4.2}%
+\contentsline {subsection}{\numberline {5.4.3}Body Identifiers}{48}{subsection.5.4.3}%
+\contentsline {subsection}{\numberline {5.4.4}Data Type 2: Chebyshev Polynomials}{49}{subsection.5.4.4}%
+\contentsline {section}{\numberline {5.5}Coordinate Conversions}{49}{section.5.5}%
+\contentsline {subsection}{\numberline {5.5.1}Barycentric to Heliocentric}{49}{subsection.5.5.1}%
+\contentsline {subsection}{\numberline {5.5.2}ICRF to Ecliptic (Optional)}{50}{subsection.5.5.2}%
+\contentsline {subsection}{\numberline {5.5.3}Heliocentric to Geocentric}{50}{subsection.5.5.3}%
+\contentsline {section}{\numberline {5.6}Precision Analysis}{50}{section.5.6}%
+\contentsline {subsection}{\numberline {5.6.1}Comparison with JPL Ephemerides}{50}{subsection.5.6.1}%
+\contentsline {subsection}{\numberline {5.6.2}Error Budget by Component}{50}{subsection.5.6.2}%
+\contentsline {section}{\numberline {5.7}Implementation Details}{52}{section.5.7}%
+\contentsline {subsection}{\numberline {5.7.1}Data Storage}{52}{subsection.5.7.1}%
+\contentsline {subsection}{\numberline {5.7.2}Evaluation Algorithm}{53}{subsection.5.7.2}%
+\contentsline {subsection}{\numberline {5.7.3}Optimization Techniques}{53}{subsection.5.7.3}%
+\contentsline {section}{\numberline {5.8}Earth-Moon System}{53}{section.5.8}%
+\contentsline {subsection}{\numberline {5.8.1}Geocenter vs. EMB}{54}{subsection.5.8.1}%
+\contentsline {subsection}{\numberline {5.8.2}Lunar Ephemeris: ELP2000}{54}{subsection.5.8.2}%
+\contentsline {subsection}{\numberline {5.8.3}Practical Impact}{55}{subsection.5.8.3}%
+\contentsline {section}{\numberline {5.9}Implementation and Performance}{55}{section.5.9}%
+\contentsline {subsection}{\numberline {5.9.1}Evaluation Algorithm}{55}{subsection.5.9.1}%
+\contentsline {subsection}{\numberline {5.9.2}Memory and Storage}{55}{subsection.5.9.2}%
+\contentsline {section}{\numberline {5.10}Validation and Accuracy}{56}{section.5.10}%
+\contentsline {subsection}{\numberline {5.10.1}Internal Consistency}{56}{subsection.5.10.1}%
+\contentsline {subsection}{\numberline {5.10.2}Accuracy Estimates}{56}{subsection.5.10.2}%
+\contentsline {section}{\numberline {5.11}Comparison with Other Software}{56}{section.5.11}%
+\contentsline {section}{\numberline {5.12}Comparison with Other Software}{57}{section.5.12}%
+\contentsline {section}{\numberline {5.13}Summary}{57}{section.5.13}%
+\contentsline {chapter}{\numberline {6}Earth Position Optimizations}{59}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Historical Context and Problem Discovery}{59}{section.6.1}%
+\contentsline {subsection}{\numberline {6.1.1}Initial Implementation}{59}{subsection.6.1.1}%
+\contentsline {subsection}{\numberline {6.1.2}Problem Discovery (December 2024)}{59}{subsection.6.1.2}%
+\contentsline {subsection}{\numberline {6.1.3}Diagnostic Process}{59}{subsection.6.1.3}%
+\contentsline {section}{\numberline {6.2}Solution 1: Frame Correction}{60}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}Root Cause}{60}{subsection.6.2.1}%
+\contentsline {subsection}{\numberline {6.2.2}Implementation}{60}{subsection.6.2.2}%
+\contentsline {subsection}{\numberline {6.2.3}Results}{60}{subsection.6.2.3}%
+\contentsline {section}{\numberline {6.3}Solution 2: Aberration of Light}{60}{section.6.3}%
+\contentsline {subsection}{\numberline {6.3.1}Physical Basis}{60}{subsection.6.3.1}%
+\contentsline {subsection}{\numberline {6.3.2}Iterative Solution}{61}{subsection.6.3.2}%
+\contentsline {subsection}{\numberline {6.3.3}Implementation}{61}{subsection.6.3.3}%
+\contentsline {subsection}{\numberline {6.3.4}Results}{62}{subsection.6.3.4}%
+\contentsline {section}{\numberline {6.4}Solution 3: Relativistic Corrections}{62}{section.6.4}%
+\contentsline {subsection}{\numberline {6.4.1}Shapiro Time Delay}{62}{subsection.6.4.1}%
+\contentsline {subsection}{\numberline {6.4.2}Gravitational Light Bending}{63}{subsection.6.4.2}%
+\contentsline {subsection}{\numberline {6.4.3}Implementation}{63}{subsection.6.4.3}%
+\contentsline {subsection}{\numberline {6.4.4}Results}{64}{subsection.6.4.4}%
+\contentsline {section}{\numberline {6.5}Solution 4: Interpolation and Caching}{64}{section.6.5}%
+\contentsline {subsection}{\numberline {6.5.1}Motivation}{64}{subsection.6.5.1}%
+\contentsline {subsection}{\numberline {6.5.2}Cache Design}{64}{subsection.6.5.2}%
+\contentsline {subsection}{\numberline {6.5.3}Lagrange Interpolation}{64}{subsection.6.5.3}%
+\contentsline {subsection}{\numberline {6.5.4}Implementation}{65}{subsection.6.5.4}%
+\contentsline {subsection}{\numberline {6.5.5}Results}{65}{subsection.6.5.5}%
+\contentsline {section}{\numberline {6.6}Comprehensive Validation}{66}{section.6.6}%
+\contentsline {subsection}{\numberline {6.6.1}Multi-Date Test}{66}{subsection.6.6.1}%
+\contentsline {subsection}{\numberline {6.6.2}Occultation Comparison}{66}{subsection.6.6.2}%
+\contentsline {subsection}{\numberline {6.6.3}Error Budget}{66}{subsection.6.6.3}%
+\contentsline {section}{\numberline {6.7}Implementation Summary}{67}{section.6.7}%
+\contentsline {subsection}{\numberline {6.7.1}Files Modified}{67}{subsection.6.7.1}%
+\contentsline {subsection}{\numberline {6.7.2}Test Suite}{67}{subsection.6.7.2}%
+\contentsline {section}{\numberline {6.8}Conclusions}{68}{section.6.8}%
+\contentsline {subsection}{\numberline {6.8.1}Achievement Summary}{68}{subsection.6.8.1}%
+\contentsline {subsection}{\numberline {6.8.2}State-of-the-Art Techniques}{68}{subsection.6.8.2}%
+\contentsline {subsection}{\numberline {6.8.3}Remaining Limitations}{68}{subsection.6.8.3}%
+\contentsline {subsection}{\numberline {6.8.4}Recommendations}{68}{subsection.6.8.4}%
+\contentsline {subsection}{\numberline {6.8.5}Future Work}{69}{subsection.6.8.5}%
+\contentsline {section}{\numberline {6.9}References}{69}{section.6.9}%
+\contentsline {chapter}{\numberline {7}Orbital Mechanics and Elements}{71}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Introduction}{71}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Classical Orbital Elements}{71}{section.7.2}%
+\contentsline {subsection}{\numberline {7.2.1}Keplerian Elements}{71}{subsection.7.2.1}%
+\contentsline {subsection}{\numberline {7.2.2}Singularities in Classical Elements}{72}{subsection.7.2.2}%
+\contentsline {section}{\numberline {7.3}Equinoctial Orbital Elements}{73}{section.7.3}%
+\contentsline {subsection}{\numberline {7.3.1}Definition}{73}{subsection.7.3.1}%
+\contentsline {subsection}{\numberline {7.3.2}Geometric Interpretation}{74}{subsection.7.3.2}%
+\contentsline {subsection}{\numberline {7.3.3}Conversion: Equinoctial $\leftrightarrow $ Classical}{74}{subsection.7.3.3}%
+\contentsline {subsection}{\numberline {7.3.4}Example Conversion}{75}{subsection.7.3.4}%
+\contentsline {section}{\numberline {7.4}Cartesian State Vectors}{75}{section.7.4}%
+\contentsline {subsection}{\numberline {7.4.1}Position and Velocity}{75}{subsection.7.4.1}%
+\contentsline {subsection}{\numberline {7.4.2}Conversion: Elements $\rightarrow $ Cartesian}{76}{subsection.7.4.2}%
+\contentsline {subsection}{\numberline {7.4.3}Conversion: Cartesian $\rightarrow $ Elements}{76}{subsection.7.4.3}%
+\contentsline {section}{\numberline {7.5}Two-Body Motion}{76}{section.7.5}%
+\contentsline {subsection}{\numberline {7.5.1}Kepler's Laws}{76}{subsection.7.5.1}%
+\contentsline {subsection}{\numberline {7.5.2}Kepler's Equation}{77}{subsection.7.5.2}%
+\contentsline {subsection}{\numberline {7.5.3}Solving Kepler's Equation}{77}{subsection.7.5.3}%
+\contentsline {section}{\numberline {7.6}Orbital Energy and Period}{78}{section.7.6}%
+\contentsline {subsection}{\numberline {7.6.1}Specific Orbital Energy}{78}{subsection.7.6.1}%
+\contentsline {subsection}{\numberline {7.6.2}Orbital Period}{79}{subsection.7.6.2}%
+\contentsline {section}{\numberline {7.7}Perturbations Preview}{79}{section.7.7}%
+\contentsline {section}{\numberline {7.8}Summary}{80}{section.7.8}%
+\contentsline {chapter}{\numberline {8}Numerical Integration Methods}{81}{chapter.8}%
+\contentsline {section}{\numberline {8.1}Introduction}{81}{section.8.1}%
+\contentsline {section}{\numberline {8.2}Requirements for Occultation Prediction}{81}{section.8.2}%
+\contentsline {section}{\numberline {8.3}Runge-Kutta-Fehlberg 7(8)}{81}{section.8.3}%
+\contentsline {subsection}{\numberline {8.3.1}Method Description}{81}{subsection.8.3.1}%
+\contentsline {subsection}{\numberline {8.3.2}Butcher Tableau}{82}{subsection.8.3.2}%
+\contentsline {section}{\numberline {8.4}Dormand-Prince 8(5,3)}{82}{section.8.4}%
+\contentsline {section}{\numberline {8.5}Symplectic Integrators}{83}{section.8.5}%
+\contentsline {subsection}{\numberline {8.5.1}Yoshida 6th Order}{83}{subsection.8.5.1}%
+\contentsline {section}{\numberline {8.6}Implementation in IOccultCalc}{84}{section.8.6}%
+\contentsline {section}{\numberline {8.7}Performance Comparison}{84}{section.8.7}%
+\contentsline {section}{\numberline {8.8}Summary}{84}{section.8.8}%
+\contentsline {chapter}{\numberline {9}Planetary Perturbations}{87}{chapter.9}%
+\contentsline {section}{\numberline {9.1}Introduction}{87}{section.9.1}%
+\contentsline {section}{\numberline {9.2}N-Body Equations of Motion}{87}{section.9.2}%
+\contentsline {section}{\numberline {9.3}Force Model in IOccultCalc}{87}{section.9.3}%
+\contentsline {section}{\numberline {9.4}Perturbation Magnitudes}{88}{section.9.4}%
+\contentsline {section}{\numberline {9.5}Summary}{88}{section.9.5}%
+\contentsline {chapter}{\numberline {10}Relativistic Corrections}{89}{chapter.10}%
+\contentsline {section}{\numberline {10.1}Introduction}{89}{section.10.1}%
+\contentsline {section}{\numberline {10.2}Light-Time Correction}{89}{section.10.2}%
+\contentsline {section}{\numberline {10.3}Stellar Aberration}{90}{section.10.3}%
+\contentsline {section}{\numberline {10.4}Gravitational Light Deflection}{90}{section.10.4}%
+\contentsline {section}{\numberline {10.5}Shapiro Time Delay}{90}{section.10.5}%
+\contentsline {section}{\numberline {10.6}Summary}{90}{section.10.6}%
+\contentsline {chapter}{\numberline {11}Precession and Nutation}{93}{chapter.11}%
+\contentsline {section}{\numberline {11.1}Introduction}{93}{section.11.1}%
+\contentsline {section}{\numberline {11.2}IAU 2000A Precession-Nutation Model}{93}{section.11.2}%
+\contentsline {subsection}{\numberline {11.2.1}Precession Matrix}{93}{subsection.11.2.1}%
+\contentsline {subsection}{\numberline {11.2.2}Nutation Matrix}{93}{subsection.11.2.2}%
+\contentsline {section}{\numberline {11.3}Transformation Precision}{94}{section.11.3}%
+\contentsline {section}{\numberline {11.4}Implementation}{94}{section.11.4}%
+\contentsline {section}{\numberline {11.5}Summary}{95}{section.11.5}%
+\contentsline {chapter}{\numberline {12}Stellar Astrometry and Catalogs}{97}{chapter.12}%
+\contentsline {section}{\numberline {12.1}Introduction}{97}{section.12.1}%
+\contentsline {section}{\numberline {12.2}Gaia DR3 Catalog}{97}{section.12.2}%
+\contentsline {subsection}{\numberline {12.2.1}Data Provided}{97}{subsection.12.2.1}%
+\contentsline {subsection}{\numberline {12.2.2}Query via TAP/ADQL}{97}{subsection.12.2.2}%
+\contentsline {section}{\numberline {12.3}Proper Motion Correction}{98}{section.12.3}%
+\contentsline {section}{\numberline {12.4}Parallax Correction}{98}{section.12.4}%
+\contentsline {section}{\numberline {12.5}Star Magnitude and Selection}{98}{section.12.5}%
+\contentsline {section}{\numberline {12.6}Summary}{99}{section.12.6}%
+\contentsline {chapter}{\numberline {13}Orbit Determination}{101}{chapter.13}%
+\contentsline {section}{\numberline {13.1}Introduction}{101}{section.13.1}%
+\contentsline {section}{\numberline {13.2}Observational Equations}{101}{section.13.2}%
+\contentsline {section}{\numberline {13.3}Differential Correction}{101}{section.13.3}%
+\contentsline {section}{\numberline {13.4}Covariance Matrix}{102}{section.13.4}%
+\contentsline {section}{\numberline {13.5}Summary}{102}{section.13.5}%
+\contentsline {chapter}{\numberline {14}Asteroid Shape Models}{103}{chapter.14}%
+\contentsline {section}{\numberline {14.1}Introduction}{103}{section.14.1}%
+\contentsline {section}{\numberline {14.2}Triaxial Ellipsoid Model}{103}{section.14.2}%
+\contentsline {section}{\numberline {14.3}Shadow Cross-Section}{103}{section.14.3}%
+\contentsline {section}{\numberline {14.4}Summary}{104}{section.14.4}%
+\contentsline {chapter}{\numberline {15}Besselian Elements Method}{105}{chapter.15}%
+\contentsline {section}{\numberline {15.1}Introduction}{105}{section.15.1}%
+\contentsline {section}{\numberline {15.2}Fundamental Plane}{105}{section.15.2}%
+\contentsline {section}{\numberline {15.3}Besselian Elements}{105}{section.15.3}%
+\contentsline {section}{\numberline {15.4}Occultation Condition}{106}{section.15.4}%
+\contentsline {section}{\numberline {15.5}Advantages}{106}{section.15.5}%
+\contentsline {section}{\numberline {15.6}Summary}{106}{section.15.6}%
+\contentsline {chapter}{\numberline {16}Uncertainty Propagation}{109}{chapter.16}%
+\contentsline {section}{\numberline {16.1}Introduction}{109}{section.16.1}%
+\contentsline {section}{\numberline {16.2}State Transition Matrix}{109}{section.16.2}%
+\contentsline {section}{\numberline {16.3}Monte Carlo Sampling}{109}{section.16.3}%
+\contentsline {section}{\numberline {16.4}Probability Maps}{110}{section.16.4}%
+\contentsline {section}{\numberline {16.5}Summary}{110}{section.16.5}%
+\contentsline {chapter}{\numberline {17}Software Implementation}{111}{chapter.17}%
+\contentsline {section}{\numberline {17.1}Architecture Overview}{111}{section.17.1}%
+\contentsline {section}{\numberline {17.2}Phase 2 Enhancements (2024-2025)}{111}{section.17.2}%
+\contentsline {subsection}{\numberline {17.2.1}Planetary Aberration}{111}{subsection.17.2.1}%
+\contentsline {subsection}{\numberline {17.2.2}Cubic Spline Interpolation}{112}{subsection.17.2.2}%
+\contentsline {subsection}{\numberline {17.2.3}OpenMP Parallelization}{112}{subsection.17.2.3}%
+\contentsline {section}{\numberline {17.3}Multi-Format Output System}{113}{section.17.3}%
+\contentsline {subsection}{\numberline {17.3.1}OutputManager Architecture}{113}{subsection.17.3.1}%
+\contentsline {subsection}{\numberline {17.3.2}IOTA Card Generation}{114}{subsection.17.3.2}%
+\contentsline {section}{\numberline {17.4}Precision Levels}{114}{section.17.4}%
+\contentsline {section}{\numberline {17.5}API Example}{115}{section.17.5}%
+\contentsline {section}{\numberline {17.6}Performance Optimization}{116}{section.17.6}%
+\contentsline {section}{\numberline {17.7}Summary}{116}{section.17.7}%
+\contentsline {chapter}{\numberline {18}Validation and Test Cases}{117}{chapter.18}%
+\contentsline {section}{\numberline {18.1}Validation Strategy}{117}{section.18.1}%
+\contentsline {section}{\numberline {18.2}VSOP87 vs. JPL DE441}{117}{section.18.2}%
+\contentsline {section}{\numberline {18.3}Historical Occultation: (87) Sylvia}{117}{section.18.3}%
+\contentsline {section}{\numberline {18.4}Numerical Integration Accuracy}{118}{section.18.4}%
+\contentsline {section}{\numberline {18.5}Orbit Determination Test}{118}{section.18.5}%
+\contentsline {section}{\numberline {18.6}Steve Preston Validation (2024)}{118}{section.18.6}%
+\contentsline {subsection}{\numberline {18.6.1}Test Case: (324) Bamberga}{118}{subsection.18.6.1}%
+\contentsline {subsection}{\numberline {18.6.2}Comparison Results}{119}{subsection.18.6.2}%
+\contentsline {subsection}{\numberline {18.6.3}Path Comparison}{119}{subsection.18.6.3}%
+\contentsline {section}{\numberline {18.7}Large-Scale Occultation Search Test}{119}{section.18.7}%
+\contentsline {subsection}{\numberline {18.7.1}January 2026 Campaign}{119}{subsection.18.7.1}%
+\contentsline {subsection}{\numberline {18.7.2}Best Event: (10) Hygiea}{120}{subsection.18.7.2}%
+\contentsline {section}{\numberline {18.8}Performance Benchmarks}{120}{section.18.8}%
+\contentsline {section}{\numberline {18.9}Comparison with Existing Software}{121}{section.18.9}%
+\contentsline {section}{\numberline {18.10}Summary}{121}{section.18.10}%
+\contentsline {chapter}{\numberline {19}Asteroid Database System}{123}{chapter.19}%
+\contentsline {section}{\numberline {19.1}Overview}{123}{section.19.1}%
+\contentsline {section}{\numberline {19.2}Data Sources}{123}{section.19.2}%
+\contentsline {subsection}{\numberline {19.2.1}AstDyS (Asteroids Dynamic Site)}{123}{subsection.19.2.1}%
+\contentsline {subsection}{\numberline {19.2.2}MPC (Minor Planet Center)}{124}{subsection.19.2.2}%
+\contentsline {section}{\numberline {19.3}Database Schema}{124}{section.19.3}%
+\contentsline {section}{\numberline {19.4}Filtering System}{124}{section.19.4}%
+\contentsline {subsection}{\numberline {19.4.1}Orbital Element Filters}{124}{subsection.19.4.1}%
+\contentsline {subsection}{\numberline {19.4.2}Predefined Groups}{125}{subsection.19.4.2}%
+\contentsline {section}{\numberline {19.5}Performance Optimization}{125}{section.19.5}%
+\contentsline {subsection}{\numberline {19.5.1}Indexing Strategy}{125}{subsection.19.5.1}%
+\contentsline {subsection}{\numberline {19.5.2}Query Performance}{125}{subsection.19.5.2}%
+\contentsline {section}{\numberline {19.6}Implementation}{125}{section.19.6}%
+\contentsline {chapter}{\numberline {20}Performance Optimization Strategies}{127}{chapter.20}%
+\contentsline {section}{\numberline {20.1}Overview}{127}{section.20.1}%
+\contentsline {section}{\numberline {20.2}Caching System}{127}{section.20.2}%
+\contentsline {subsection}{\numberline {20.2.1}Design Principles}{127}{subsection.20.2.1}%
+\contentsline {subsection}{\numberline {20.2.2}Earth Position Cache}{127}{subsection.20.2.2}%
+\contentsline {subsection}{\numberline {20.2.3}Gaia Catalog Cache}{128}{subsection.20.2.3}%
+\contentsline {section}{\numberline {20.3}Interpolation Techniques}{128}{section.20.3}%
+\contentsline {subsection}{\numberline {20.3.1}Lagrange Interpolation}{128}{subsection.20.3.1}%
+\contentsline {subsection}{\numberline {20.3.2}Spline Interpolation}{129}{subsection.20.3.2}%
+\contentsline {section}{\numberline {20.4}Configuration Management}{129}{section.20.4}%
+\contentsline {subsection}{\numberline {20.4.1}JSON Presets}{129}{subsection.20.4.1}%
+\contentsline {subsection}{\numberline {20.4.2}Performance Comparison}{130}{subsection.20.4.2}%
+\contentsline {section}{\numberline {20.5}Parallel Processing}{130}{section.20.5}%
+\contentsline {subsection}{\numberline {20.5.1}Search Parallelization}{130}{subsection.20.5.1}%
+\contentsline {subsection}{\numberline {20.5.2}Thread Safety}{130}{subsection.20.5.2}%
+\contentsline {section}{\numberline {20.6}Memory Optimization}{131}{section.20.6}%
+\contentsline {subsection}{\numberline {20.6.1}Smart Memory Management}{131}{subsection.20.6.1}%
+\contentsline {subsection}{\numberline {20.6.2}Memory Footprint}{131}{subsection.20.6.2}%
+\contentsline {section}{\numberline {20.7}Profiling Results}{131}{section.20.7}%
+\contentsline {subsection}{\numberline {20.7.1}Bottleneck Analysis}{131}{subsection.20.7.1}%
+\contentsline {subsection}{\numberline {20.7.2}Optimization Impact}{131}{subsection.20.7.2}%
+\contentsline {section}{\numberline {20.8}Future Optimization Opportunities}{132}{section.20.8}%
+\contentsline {subsection}{\numberline {20.8.1}GPU Acceleration}{132}{subsection.20.8.1}%
+\contentsline {subsection}{\numberline {20.8.2}Advanced Techniques}{132}{subsection.20.8.2}%
+\contentsline {section}{\numberline {20.9}Best Practices}{132}{section.20.9}%
+\contentsline {section}{\numberline {20.10}Implementation}{133}{section.20.10}%
+\contentsline {chapter}{\numberline {A}Costanti Fisiche e Dati di Riferimento}{135}{appendix.Alph1}%
+\contentsline {section}{\numberline {A.1}Costanti Fondamentali (CODATA 2018)}{135}{section.Alph1.1}%
+\contentsline {section}{\numberline {A.2}Costanti Astronomiche IAU}{135}{section.Alph1.2}%
+\contentsline {section}{\numberline {A.3}Offset delle Scale Temporali}{136}{section.Alph1.3}%
+\contentsline {section}{\numberline {A.4}Masse Planetarie}{136}{section.Alph1.4}%
+\contentsline {section}{\numberline {A.5}Parametri Ellissoide WGS84}{136}{section.Alph1.5}%
+\contentsline {section}{\numberline {A.6}Secondi Intercalari (1972--2025)}{136}{section.Alph1.6}%
+\contentsline {chapter}{Ringraziamenti}{141}{appendix*.21}%

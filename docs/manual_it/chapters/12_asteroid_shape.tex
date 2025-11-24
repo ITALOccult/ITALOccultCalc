@@ -1,0 +1,48 @@
+\chapter{Asteroid Shape Models}
+\label{chap:asteroid_shape}
+
+\section{Introduction}
+
+Asteroids are not point sources—their shapes affect shadow geometry \citep{Kaasalainen2001,Durech2010}.
+
+\section{Triaxial Ellipsoid Model}
+
+Approximate asteroid as ellipsoid with semi-axes $(a, b, c)$:
+
+\begin{equation}
+\frac{x^2}{a^2} + \frac{y^2}{b^2} + \frac{z^2}{c^2} = 1
+\end{equation}
+
+\textbf{Data sources:}
+\begin{itemize}
+    \item DAMIT: Database of Asteroid Models from Inversion Techniques
+    \item SBNDB: Small Bodies Node Database
+    \item Lightcurve inversions \citep{Kaasalainen2001}
+\end{itemize}
+
+\section{Shadow Cross-Section}
+
+The effective diameter varies with viewing geometry:
+
+\begin{equation}
+D_{\text{eff}}(\theta, \phi) = 2\sqrt{a^2\cos^2\phi + b^2\sin^2\phi \cos^2\theta + c^2\sin^2\theta}
+\end{equation}
+
+where $(\theta, \phi)$ are viewing angles in asteroid's body frame.
+
+\textbf{Example:} (253) Mathilde with $(a, b, c) = (33, 24, 23)$ km:
+\begin{itemize}
+    \item Pole-on view: $D = 46$ km
+    \item Equator-on (long axis): $D = 66$ km
+    \item Variation: ±15 km from mean
+\end{itemize}
+
+\section{Summary}
+
+Triaxial ellipsoid models improve shadow size prediction from spherical assumption (error $\sim$10--30\% for elongated asteroids).
+
+\textbf{References:}
+\begin{itemize}
+    \item Kaasalainen \& Torppa (2001) \citep{Kaasalainen2001}: lightcurve inversion
+    \item Ďurech et al. (2010) \citep{Durech2010}: DAMIT database
+\end{itemize}

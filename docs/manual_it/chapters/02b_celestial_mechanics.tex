@@ -1,0 +1,428 @@
+\chapter{Celestial Mechanics Fundamentals}
+\label{ch:celestial_mechanics}
+
+This chapter provides a comprehensive treatment of celestial mechanics concepts essential for understanding occultation predictions. We cover coordinate systems in detail, reference planes, and the mathematical transformations required for high-precision astrometry.
+
+\section{Celestial Coordinate Systems}
+\label{sec:coordinate_systems_detailed}
+
+\subsection{Introduction to Celestial Coordinates}
+
+Celestial coordinates specify the position of objects on the celestial sphere. Different coordinate systems are optimized for different purposes, and transformations between them require careful attention to reference frames, epochs, and physical effects.
+
+\subsection{Fundamental Planes and Reference Points}
+
+\subsubsection{The Ecliptic Plane}
+
+The \textbf{ecliptic} is the plane of Earth's orbit around the Sun. It serves as the fundamental reference plane for planetary motion and is defined by:
+
+\begin{equation}
+\vect{n}_{\text{ecl}} = \frac{\vect{L}_{\oplus}}{|\vect{L}_{\oplus}|}
+\end{equation}
+
+where $\vect{L}_{\oplus}$ is Earth's orbital angular momentum vector.
+
+\textbf{Advantages}:
+\begin{itemize}
+    \item Natural for describing planetary and asteroid orbits
+    \item Minimal out-of-plane motion for most solar system bodies
+    \item Used by JPL ephemerides (ECLIPJ2000 frame)
+\end{itemize}
+
+\textbf{Obliquity}: The angle between ecliptic and equator is:
+\begin{equation}
+\epsilon = 23°26'21.406'' - 46.836769'' T - 0.0001831'' T^2 + 0.00200340'' T^3
+\end{equation}
+where $T$ is centuries from J2000.0 (IAU 2006).
+
+\subsubsection{The Equatorial Plane}
+
+The \textbf{celestial equator} is the projection of Earth's equator onto the celestial sphere. The \textbf{vernal equinox} ($\gamma$) is the ascending node of the ecliptic on the equator.
+
+\textbf{Advantages}:
+\begin{itemize}
+    \item Natural for Earth-based observations
+    \item Right ascension aligned with Earth's rotation
+    \item Traditional system for stellar catalogs
+\end{itemize}
+
+\textbf{Precession}: The equinox moves along the ecliptic due to:
+\begin{itemize}
+    \item Lunisolar precession: $\sim 50.3''/\text{year}$
+    \item Planetary precession: $\sim 0.1''/\text{year}$
+\end{itemize}
+
+\subsubsection{Galactic Plane}
+
+Defined by the Milky Way disk, useful for stellar kinematics but rarely used for solar system work.
+
+\subsection{Ecliptic Coordinate System}
+
+\subsubsection{Ecliptic Longitude and Latitude}
+
+Position on celestial sphere in ecliptic coordinates:
+
+\begin{align}
+\lambda &= \text{ecliptic longitude (measured along ecliptic from } \gamma\text{)} \\
+\beta &= \text{ecliptic latitude (perpendicular to ecliptic)}
+\end{align}
+
+Range: $\lambda \in [0°, 360°)$, $\beta \in [-90°, +90°]$
+
+\subsubsection{Rectangular Ecliptic Coordinates}
+
+Position vector in ecliptic frame (ECLIPJ2000):
+
+\begin{equation}
+\vect{r}_{\text{ecl}} = \begin{pmatrix}
+x_{\text{ecl}} \\
+y_{\text{ecl}} \\
+z_{\text{ecl}}
+\end{pmatrix} = r \begin{pmatrix}
+\cos\beta \cos\lambda \\
+\cos\beta \sin\lambda \\
+\sin\beta
+\end{pmatrix}
+\end{equation}
+
+\textbf{Key Property}: For objects near the ecliptic (asteroids, planets), $|z_{\text{ecl}}| \ll r$, typically $|z_{\text{ecl}}| < 0.4$ AU for Earth.
+
+\textbf{Critical Discovery} (2024): Using J2000 equatorial frame for Earth position introduced 0.38 AU error in $z$-component. Switching to ECLIPJ2000 reduced total error from 58 million km to 261,000 km (223$\times$ improvement). See Chapter~\ref{ch:earth_optimizations}.
+
+\subsection{Equatorial Coordinate System}
+
+\subsubsection{Right Ascension and Declination}
+
+\begin{align}
+\alpha &= \text{right ascension (along equator from } \gamma\text{)} \\
+\delta &= \text{declination (perpendicular to equator)}
+\end{align}
+
+Range: $\alpha \in [0^h, 24^h)$ or $[0°, 360°)$, $\delta \in [-90°, +90°]$
+
+Convention: $\alpha$ often expressed in hours, minutes, seconds:
+\begin{equation}
+1^h = 15°, \quad 1^m = 15', \quad 1^s = 15''
+\end{equation}
+
+\subsubsection{Rectangular Equatorial Coordinates}
+
+Position vector in equatorial frame (ICRF/J2000):
+
+\begin{equation}
+\vect{r}_{\text{eq}} = \begin{pmatrix}
+x_{\text{eq}} \\
+y_{\text{eq}} \\
+z_{\text{eq}}
+\end{pmatrix} = r \begin{pmatrix}
+\cos\delta \cos\alpha \\
+\cos\delta \sin\alpha \\
+\sin\delta
+\end{pmatrix}
+\end{equation}
+
+\subsection{Transformation: Ecliptic $\leftrightarrow$ Equatorial}
+
+The transformation between ecliptic and equatorial systems is a rotation about the $x$-axis by the obliquity $\epsilon$:
+
+\subsubsection{Ecliptic to Equatorial}
+
+\begin{equation}
+\vect{r}_{\text{eq}} = \mat{R}_x(-\epsilon) \vect{r}_{\text{ecl}} = 
+\begin{pmatrix}
+1 & 0 & 0 \\
+0 & \cos\epsilon & -\sin\epsilon \\
+0 & \sin\epsilon & \cos\epsilon
+\end{pmatrix}
+\begin{pmatrix}
+x_{\text{ecl}} \\
+y_{\text{ecl}} \\
+z_{\text{ecl}}
+\end{pmatrix}
+\end{equation}
+
+Explicitly:
+\begin{align}
+x_{\text{eq}} &= x_{\text{ecl}} \\
+y_{\text{eq}} &= y_{\text{ecl}} \cos\epsilon - z_{\text{ecl}} \sin\epsilon \\
+z_{\text{eq}} &= y_{\text{ecl}} \sin\epsilon + z_{\text{ecl}} \cos\epsilon
+\end{align}
+
+\subsubsection{Equatorial to Ecliptic}
+
+Inverse transformation (rotation by $+\epsilon$):
+
+\begin{equation}
+\vect{r}_{\text{ecl}} = \mat{R}_x(+\epsilon) \vect{r}_{\text{eq}}
+\end{equation}
+
+\begin{align}
+x_{\text{ecl}} &= x_{\text{eq}} \\
+y_{\text{ecl}} &= y_{\text{eq}} \cos\epsilon + z_{\text{eq}} \sin\epsilon \\
+z_{\text{ecl}} &= -y_{\text{eq}} \sin\epsilon + z_{\text{eq}} \cos\epsilon
+\end{align}
+
+\subsubsection{Spherical Coordinate Transformations}
+
+For spherical coordinates:
+
+\textbf{Ecliptic to Equatorial}:
+\begin{align}
+\tan\alpha &= \frac{\sin\lambda \cos\epsilon - \tan\beta \sin\epsilon}{\cos\lambda} \\
+\sin\delta &= \sin\beta \cos\epsilon + \cos\beta \sin\epsilon \sin\lambda
+\end{align}
+
+\textbf{Equatorial to Ecliptic}:
+\begin{align}
+\tan\lambda &= \frac{\sin\alpha \cos\epsilon + \tan\delta \sin\epsilon}{\cos\alpha} \\
+\sin\beta &= \sin\delta \cos\epsilon - \cos\delta \sin\epsilon \sin\alpha
+\end{align}
+
+\textbf{Implementation Note}: Use \texttt{atan2(y,x)} to handle quadrant correctly.
+
+\subsection{Heliocentric vs Geocentric vs Barycentric}
+
+\subsubsection{Reference Centers}
+
+\begin{itemize}
+    \item \textbf{Heliocentric}: Origin at Sun center (most natural for asteroids)
+    \item \textbf{Geocentric}: Origin at Earth center (natural for observations)
+    \item \textbf{Barycentric}: Origin at solar system barycenter (most rigorous for relativity)
+\end{itemize}
+
+\subsubsection{Transformation}
+
+Position of asteroid observed from Earth:
+
+\begin{equation}
+\vect{r}_{\text{geo}} = \vect{r}_{\text{ast,helio}} - \vect{r}_{\text{Earth,helio}}
+\end{equation}
+
+For barycentric:
+\begin{equation}
+\vect{r}_{\text{helio}} = \vect{r}_{\text{bary}} - \vect{r}_{\text{Sun,bary}}
+\end{equation}
+
+\textbf{Sun-barycenter offset}: Typically $\sim 1$--$2$ $R_{\odot}$ due to Jupiter.
+
+\section{Time-Dependent Coordinate Systems}
+
+\subsection{Epoch and Equinox}
+
+Celestial coordinate systems evolve due to:
+\begin{enumerate}
+    \item \textbf{Precession}: Slow drift of equinox ($\sim 50''/\text{year}$)
+    \item \textbf{Nutation}: Periodic oscillations (period 18.6 years)
+    \item \textbf{Polar motion}: Wobble of Earth's rotation axis
+    \item \textbf{Proper motion}: Actual motion of stars
+\end{enumerate}
+
+\subsection{Standard Epochs}
+
+\begin{itemize}
+    \item \textbf{J2000.0}: JD 2451545.0 (2000 January 1.5 TT)
+    \item \textbf{B1950.0}: Older standard, now obsolete
+    \item \textbf{Epoch of date}: Coordinates at observation time
+\end{itemize}
+
+\subsection{ICRF: International Celestial Reference Frame}
+
+The \textbf{ICRF} is the current fundamental reference frame, realized by:
+\begin{itemize}
+    \item Precise positions of $\sim 300$ extragalactic radio sources (quasars)
+    \item Accuracy: $\sim 0.02$ milliarcseconds (mas)
+    \item Non-rotating by definition (tied to distant universe)
+\end{itemize}
+
+\textbf{J2000 vs ICRF}: Practically identical ($<0.02$ arcsec offset), but ICRF is more rigorous. Modern catalogs use ICRF as basis.
+
+\section{Proper Motion and Parallax}
+
+\subsection{Stellar Proper Motion}
+
+Stars move relative to solar system barycenter. Position evolves as:
+
+\begin{align}
+\alpha(t) &= \alpha_0 + \mu_\alpha (t - t_0) \\
+\delta(t) &= \delta_0 + \mu_\delta (t - t_0)
+\end{align}
+
+where $\mu_\alpha$ (in $''/\text{year}$) includes $\cos\delta$ factor:
+\begin{equation}
+\mu_\alpha = \pderiv{\alpha}{t} \cos\delta
+\end{equation}
+
+\textbf{Gaia DR3}: Provides proper motions with $\sim 0.02$--$0.1$ mas/year precision for $>10^9$ stars.
+
+\subsection{Parallax}
+
+Annual apparent motion due to Earth's orbital motion:
+
+\begin{equation}
+p = \frac{1 \text{ AU}}{d} = \frac{1''}{d[\text{pc}]}
+\end{equation}
+
+Maximum displacement: $p$ arcsec
+
+\textbf{Correction}: For accurate occultation prediction, parallax must be computed for exact Earth-star-asteroid geometry. Gaia parallaxes: $\sim 0.02$ mas precision.
+
+\subsection{Space Motion Vector}
+
+Complete 6D position and velocity in ICRF:
+
+\begin{equation}
+\vect{x} = (\alpha, \delta, p, \mu_\alpha, \mu_\delta, v_r)
+\end{equation}
+
+where $v_r$ is radial velocity (from spectroscopy).
+
+Transformation to Cartesian:
+\begin{align}
+\vect{r} &= \frac{1}{p} \begin{pmatrix}
+\cos\delta \cos\alpha \\
+\cos\delta \sin\alpha \\
+\sin\delta
+\end{pmatrix} \\
+\vect{v} &= \frac{k}{p} \begin{pmatrix}
+-\mu_\alpha \sin\alpha - \mu_\delta \cos\alpha \sin\delta \\
++\mu_\alpha \cos\alpha - \mu_\delta \sin\alpha \sin\delta \\
++\mu_\delta \cos\delta
+\end{pmatrix} + v_r \frac{\vect{r}}{|\vect{r}|}
+\end{align}
+
+where $k = 4.74047$ km/s per (mas/year)(pc).
+
+\section{Aberration and Light-Time Effects}
+
+\subsection{Annual Aberration}
+
+Apparent displacement due to Earth's orbital velocity:
+
+\begin{equation}
+\Delta\vect{n} = -\frac{\vect{v}_{\oplus}}{c}
+\end{equation}
+
+Magnitude: $\sim 20.5''$ (maximum displacement)
+
+Direction: Points toward solar apex (roughly toward constellation Leo)
+
+\textbf{Physical interpretation}: We see objects displaced in direction of Earth's motion, analogous to rain appearing to fall at an angle when driving.
+
+\subsection{Diurnal Aberration}
+
+Due to Earth's rotation: $\sim 0.3''$ at equator
+
+Usually negligible for occultation predictions compared to other uncertainties.
+
+\subsection{Light-Time Correction}
+
+Position at time $t$ is where object \emph{was} at retarded time $t - \Delta t$:
+
+\begin{equation}
+\Delta t = \frac{|\vect{r}(t - \Delta t)|}{c}
+\end{equation}
+
+Solved iteratively:
+\begin{algorithm}
+\caption{Light-time iteration}
+\begin{algorithmic}
+\STATE $\Delta t \gets 0$
+\FOR{$i = 1$ to $N_{\text{iter}}$}
+    \STATE $\vect{r} \gets$ position at $(t - \Delta t)$
+    \STATE $\Delta t \gets |\vect{r}|/c$
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+Typical convergence: 2 iterations sufficient for $<1$ km accuracy.
+
+\textbf{Recent Implementation} (Chapter~\ref{ch:earth_optimizations}): Implemented iterative light-time correction for Earth position, improving accuracy by $\sim 500$--$15,000$ km depending on observer distance.
+
+\section{Gravitational Light Deflection}
+
+\subsection{Einstein's Prediction}
+
+General relativity predicts light deflection near massive bodies:
+
+\begin{equation}
+\Delta\theta = \frac{4GM}{c^2 b}
+\end{equation}
+
+where $b$ is impact parameter (closest approach to mass).
+
+For Sun: $\Delta\theta_{\odot} = 1.75''$ at limb
+
+\subsection{Full Relativistic Formula}
+
+For arbitrary geometry (Klioner 1991):
+
+\begin{equation}
+\vect{n}_{\text{obs}} = \vect{n}_{\text{geo}} + \frac{2GM}{c^2} \frac{\vect{n}_{\text{geo}} - \vect{e}(\vect{n}_{\text{geo}} \cdot \vect{e})}{b}
+\end{equation}
+
+where $\vect{e}$ is unit vector toward mass center.
+
+\subsection{Implementation in IOccultCalc}
+
+Light bending correction applied for:
+\begin{itemize}
+    \item Sun (primary contribution)
+    \item Planets (when very close to line of sight)
+    \item Not needed for asteroids (too small)
+\end{itemize}
+
+See Chapter~\ref{ch:relativistic} for detailed treatment.
+
+\textbf{Recent Implementation}: Added full relativistic corrections including Shapiro delay and light bending, contributing $\sim 1$--$5$ km position correction.
+
+\section{Coordinate Systems in Practice}
+
+\subsection{JPL HORIZONS Conventions}
+
+\begin{itemize}
+    \item Default: ICRF/J2000 equatorial
+    \item Option for ecliptic via \texttt{@sun} center
+    \item Automatically includes aberration corrections
+    \item Reference: \texttt{https://ssd.jpl.nasa.gov/horizons.cgi}
+\end{itemize}
+
+\subsection{SPICE Toolkit Frames}
+
+\textbf{Critical}: Different frames for different purposes:
+
+\begin{itemize}
+    \item \texttt{J2000}: ICRF equatorial (inertial)
+    \item \texttt{ECLIPJ2000}: Ecliptic J2000 (inertial)
+    \item \texttt{IAU\_EARTH}: Body-fixed rotating
+    \item \texttt{ITRF93}: Terrestrial reference frame
+\end{itemize}
+
+\textbf{Lesson}: Always verify which frame is being used! The frame mismatch discovered in 2024 (J2000 vs ECLIPJ2000) caused 58 million km error.
+
+\subsection{IOccultCalc Implementation}
+
+Internal representations:
+\begin{itemize}
+    \item \textbf{Orbits}: Heliocentric ecliptic J2000
+    \item \textbf{Stars}: Geocentric equatorial ICRF
+    \item \textbf{Earth}: Heliocentric ecliptic J2000 (from SPICE)
+    \item \textbf{Output}: Geocentric equatorial J2000 (standard for observers)
+\end{itemize}
+
+All transformations explicitly documented in code.
+
+\section{Summary}
+
+Key points for occultation prediction:
+
+\begin{enumerate}
+    \item Use \textbf{ecliptic} for asteroid orbits and planetary positions
+    \item Use \textbf{equatorial} for stellar positions and observer output
+    \item Always specify \textbf{epoch} (J2000.0 standard)
+    \item Include \textbf{proper motion} for all stars
+    \item Apply \textbf{aberration} and \textbf{light-time} corrections
+    \item Use \textbf{ICRF} as fundamental reference
+    \item Verify \textbf{frame consistency} across data sources
+\end{enumerate}
+
+The careful treatment of coordinate systems and transformations is \emph{essential} for achieving sub-arcsecond prediction accuracy required for successful occultation observations.
