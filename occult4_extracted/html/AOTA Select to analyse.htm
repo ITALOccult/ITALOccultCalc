@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Overview</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<h2>AOTA Help topics</h2>
+<a href="AOTA%20Overview.htm">Overview and form layout</a><br><br>
+<a href="AOTA%20Read%20and%20integrate.htm">Tab 1. Read, Integrity, Set time, Bin and Normalise</a><br>
+<a href="AOTA%20Fourier.htm">Tab 2A. Fourier plot</a><br>
+<a href="AOTA%20Short.htm">Tab 2B. Short event check</a><br>
+<a href="AOTA%20Find%20events.htm">Tab 3. Find events</a><br>
+<a href="AOTA%20Select%20to%20analyse.htm">Tab 4. Select event to analyse</a><br>
+<a href="AOTA%20Analyse.htm">Tab 5. Analyse</a><br>
+<a href="AOTA%20FinalTimes.htm">Tab 6. Camera corrections, final results</a><br><br>
+<a href="AOTA%20Integrity.htm">Integrity check</a><br>
+<a href="AOTA%20Integration%20and%20binning.htm">Integration, binning & normalisation</a><br>
+<a href="AOTA%20Set%20time%20scale.htm">Set time scale</a><br>
+<a href="AOTA%20Verify.htm">Verify event times</a><br>
+<a href="AOTA%20VTI%20info.htm">VTI information</a><br><br>
+<a href="AOTA%20Hints%20and%20Tips.htm"><B>Hints and Tips</B></a><br>
+
+
+<H1>AOTA: Tab 4. Select event to analyse</H1>
+
+The cross-correlation investigation will have identified possible occultation events, and provided information to assist the user in deciding whether or not an 'event' was a real occultation. The determination of the times to be associated with the event involves a completely different analysis, which must be run for each 'event'. Under this tab the user selects an event to be analysed in detail. <p>
+<img src = "AOTA_SelectEvent.png"><p>
+The tab form displays five rows of possible events under five columns:<ul>
+<li>A check-box under the heading <B>Plot</B> to plot the possible occultation event associated with that line (as a black dashed line), and to activate the controls on that line
+<li>A radio button under the heading <B>Add/Edit</B> to control whether to add a new event, or modify the location of an existing event
+<li>A box under the heading <B>Posn</B> that gives the location along the light curve of the centre of the event 
+<li>A box under the heading <B>Width</B> that gives the width of the event in frames (or plot points) 
+<li>A button with the caption <B>Analyse #x</B>, which is clicked to analyse that event.
+<li>A check-box used to set (or clear) the possible event as a 'non-event' (followed by a single button to set all 5 check boxes to a 'non-event').</ul>
+
+The first line in the list is automatically checked (with non-event clear). It corresponds to the most likely event found in the Cross-correlation search.
+
+<p>Any other possible events found in the search are listed with positive values for the Posn and Width is similarly indicated. Usually fewer than 5 possible occultations will be found (usually only one!), and the values in Posn and Width are set to -1 when there is no associated possible occultation.
+
+<p>If in the final analysis (tab 6) an event is marked as a 'non-event', that setting can be cleared from the 'non-event' listing in this tab. In this situation the event should be re-analysed.
+
+<p>The location of any event - except the first event - can be changed by checking the relevant radio button, moving the cursor to a point along the plot, and clicking. The details of the Position and width, corresponding to the peak cross-correlation value at the location of the cursor, will now be displayed. Also the occultation event will be displayed if the check box is checked.
+
+<p>An event is treated as a MISS event if (and only if) all possible events are set as 'non-Event'. A button <B><I>Set ALL as 'Non-Event' </I></B>is provided to set all events as a non-Event. Users should not be too hasty to set all events as non-events. For example, it is possible for the first event to be a Non-Event for a reason such as cloud, with a later-listed event being a 'real' event.
+
+<h3>Manual event identification</h3>
+It may be that the cross-correlation curve shows a number of peaks within the Peach band at the bottom, and you would like to get a sense of what a possible occultation at that point might be like - or indeed do a full analysis. You can investigate this by <ul type=i>
+<li>checking a <B>Plot </B>checkbox (other than the first) - typically on a line with no associated event. 
+<li>check the radio button on that line to enable the <B>Add/Edit </B>functionality for that line
+<li>point the cursor to a point of interest along the cross-correlation curve (usually a peak on that curve) and click.</ul>
+You will now see the <I>possible event </I>drawn on the plot; the position and width of that <I>event </I>are displayed in the Posn and Width boxes.
+
+<p>You can add multiple possible events by repeating this process using different lines.
+
+<p>If the radio button is on the first line, no changes to the Posn and Width on that line are made. 
+
+<p>You can analyse any event selected in this manner by clicking the corresponding <B>Analyse #... </B>button.
+
+<p>Remember that you can overlay the plot with any comparison stars that have been measured. This may assist with assessing whether a peak is a real event.
+
+<p> Note that this process will give rise to a <I>possible event</I> at every point along the light curve. It is very unlikely that such events are 'real' events. Remember that there will rarely be more than one 'real' event in a light curve - which means that there must be some reason to select a particular point along the light curve over any other point (with the primary consideration being the shape of the cross-correlation curve). Coincidence with a predicted time does <B><I>not </I></B>constitute a relevant reason.
+
+</BODY>
+</HTML>

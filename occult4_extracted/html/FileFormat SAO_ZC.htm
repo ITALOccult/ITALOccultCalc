@@ -1,0 +1,29 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>SAO_ZC</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1><A NAME="idh_4overview">SAO_ZC.dat</A></H1>
+<!-- Insert Header in above line -->
+<PThis file give a cross reference from an SAO number to ZC numbers. </p>
+
+<p>The file is sorted by SAO number. Only SAO stars that are listed in the ZC 
+catalogue are included. To find a ZC number for a specified SAO number, perform a binary search for the SAO number.</p>
+
+<p>The file contains <span lang="en-us"></span>3227 records, with a record length of 5 bytes. </p>
+
+<p>The first 3 bytes of each record contain the SAO number - given by <ul>
+<b>65536*asc(byte1)+256*asc(byte2)+asc(byte3).</b></ul></p>
+
+<p>The last 2 bytes of each record give the corresponding ZC number - as:<ul>
+<b>asc(byte4) + 256*asc(byte5).</b></ul></p>
+
+
+</BODY>
+</HTML>

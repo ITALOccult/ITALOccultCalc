@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Display Asteroids</Title>
+<style type="text/css">
+.auto-style1 {
+	color: #FF0000;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1 class="auto-style1">This topic is for a legacy function that will be 
+removed.</H1>
+<p class="auto-style1">The legacy functionality relied on the occultation 
+elements being held on disk with a fixed-length record structure - with the data 
+for any one event being read from disk. The fixed-length record structure 
+prevented easy modifications to incorporate extra data elements - and as a 
+result became a barrier to the development of improvements to Occult. The 
+replacement approach maintains all the prediction data in memory, allowing for 
+easier access and filtering; it uses variable length .csv files and .xml files 
+for holding relevant data.</p>
+<H1>Select and Display Asteroid predictions</H1>
+
+<h2>Selection criteria</h2>
+<P align=center><img src="AsteroidDisplay%20Criteria.png">
+<p>The following selection criteria may be <span lang="en-us"></span>applied, by checking the relevant check boxes.
+<table columns=3 border=1>
+<TR><TH NOWRAP>Item</TH><TH>Comments</TH></TR>
+<TR><TD>Visible from...</TD><TD>Includes events if, at the specified location and time of closest approach to that location <ul type=i>
+<li>For stars brighter than mag 4, the only criterion is that the asteroid must be at least 1 deg above the horizon
+<li>For stars fainter than mag 4 - no events if the sun's altitude is greater than -1 deg. And no events if the asteroid's altitude is less than 5 deg and the sun's altitude greater than -9 deg.</ul>
+<p>The latitude/longitude values are retained between sessions. You can use the<A  href="Site%20editor.htm"> site files</a> to insert the coordinates of a selected site, by clicking the <b>Select site</b> button. This will also allow you to insert your home site location (set in the User Settings) by clicking the <B>Home </B>button on the form that appears to select from the site files..
+<p>The longitude and latitude values here are also used as the default site location for plotting the occultation maps.</TD></TR>
+<TR><TD>Distance of site from path...</TD><TD>This is intended to limit events where the observer is prepared to travel to the occultation region. Note that the distance calculation is approximate, and become unreliable when the distance is of the order of 1000km. This should not be used at the same time as the next filter.</TD></TR>
+<TR><TD>Distance of asteroid from star....</TD><TD>This filter focuses on the sky-separation of the star and asteroid - and for a 
+	stationary observer is more relevant in filtering events that might occur at their home location. This should not be used at the same time as the previous filter.</TD></TR>
+<TR><TD>Magnitude drop...</TD><TD>Limit the output to events where the magnitude drop will be at least the amount set. Visual observers should set a value of at least 0.7 mag here.</TD></TR>
+<TR><TD>Maximum duration at least...</TD><TD>Use this to exclude short-duration events. Visual observers should set a value of at least 1 second here.</TD></TR>
+<TR><TD>Diameter at least...</TD><TD>Use this to filter out small asteroids from a large file of occultation elements.</TD></TR>
+<TR><TD>Asteroid number contains...</TD><TD>Use this to extract predictions of a particular asteroid from a large file of occultation elements.</TD></TR>
+<TR><TD>Asteroid name contains...</TD><TD>Use this to extract predictions of a particular asteroid from a large file of occultation elements.</TD></TR>
+<TR><TD>Date between...</TD><TD>Use this to extract predictions during a particular period from a large file of occultation elements.
+<p>The end date is automatically set to be a period later than the first date, 
+whenever the first date is changed. The difference is set in User Settings, in the box <B>Asteroid occultations - search and display</B>, the item <B>Default date range...</B>.</TD></TR>
+<TR><TD>Planet </TD><TD>Use this to extract predictions of a particular planet and its moons from a large file of occultation elements.</TD></TR>
+<TR><TD>Trans-Neptunian asteroids</TD><TD>Use this to extract predictions of a TNO's from a large file of occultation elements. The criterion applied is whether the 
+	semi-major axis of the orbit is greater than 6AU - which is a little larger than 
+	the orbit of Jupiter. As a result the filter will include non-TNO objects.</TD></TR>
+<TR><TD>Binary asteroids</TD><TD>Use this to select asteroids that are binary or probably binary asteroids. [Note - this filter is based on the asteroid being marked as binary when the Occelmnt file was created.]</TD></TR>
+</table>
+
+<h2><br><br>Plot scale for prediction plots</h2>
+<P align=center><img src="AsteroidDisplay%20PlotScale.png">
+
+<p>This is used to set the plot scale used for plotting the occultation path.
+<p><B>IMPORTANT</B>. The setting here is the default setting for all the asteroid plots. In 
+particular, if you adjust the plot scale for one event on the plot of that event, when you plot the next 
+event that will be plotted at the scale set here. Similarly automated plot output is drawn at the scale set here. </TD></TR>
+
+
+<h2><br><br>Plot using Summary listings</h2>
+<P align=center><img src="AsteroidDisplay%20Summary%20Buttons.png">
+
+<p>When any of these buttons are clicked (except the Draw paths from the last summary) you will need to select a file of occultation elements. For this reason, when you specify the file name for occultation elements when you conduct the search, you should give careful consideration to the file name so that you can easily identify the file when you want to display events.
+
+<p>The Summary lists are provided in two formats. <ul type=1>
+<li>The 'normal' format provides a simple list - with the occultation map being drawn automatically whenever an event line is selected
+<li>The second format is designed to assist the automatic generation of output files - for example, for making available on a web page. This mode is selected by checking the <B>Enable generation of output files </B>from the Summary form check box. When selected:<ul>
+<li> the summary list has check-boxes on each line, 
+<li>the menu bar contains a drop-down box to select a relevant site file to use for predictions
+<li>the menu bar contains a button <b>Auto file generation</b> - which will create output files for each event that is checked in the summary list. The files that are generated are specified in the User Settings form.
+<li>Output files are only overwritten if the occultation elements have been updated. There may be a need to overwite output files if the site file being used has been updated - in which event the check box <b>Site file has been updated</b> should be checked to enable overwriting of the old files. 
+</ul></ul>
+<table columns=3 border=1>
+<TR><TH NOWRAP>Button</TH><TH>Comments</TH></TR>
+<TR><TD>Local events: Summary</TD><TD>Provides a text summary of events that meet the criteria - including visibility from the specified site. From here you can plot individual events, automatically generate a range of output files [<A href="Asteroid%20predictions%20-%20Summary.htm">details</a>], and draw a regional map showing all the occultation paths [<A href="Asteroid%20predictions%20-%20World%20plot.htm">map details</a>].
+<p>If output is being generated to create a <A  href="OccultWatcherFeed.htm">feed for OccultWatcher</a>, check the box <b>Local events Summary - Save elements for OccultWatcher</b> to ensure an Occelemnt file is written for each event.</TD></TR>
+<TR><TD>Global events: Summary</TD><TD>Provides a text summary of events visible anywhere is the world that meet the criteria (other than the site location.) From here you can plot individual events, automatically generate a range of output files [<A href="Asteroid%20predictions%20-%20Summary.htm">Details</a>], and draw a regional map showing all the occultation paths [<A href="Asteroid%20predictions%20-%20World%20plot.htm">map details</a>].  
+<p><B>NOTE</B>:<I> If this function is selected, the first two selection criteria (site location and distance from path) are not applied.</I>
+</TD></TR>
+<TR><TD>Draw paths from the last summary</TD><TD>The data used to plot the paths of events shown in a Summary is held in a temporary file, and is available to plot paths even after the summary has been closed. Click here to replot the paths.</TD></TR>
+<TR><TD>Planets: local times summary</TD><TD>For occultations by the major 
+	planets, this gives a list of the D and R times for the occultation by the 
+	planet's disc as seen from the site location.<A href="Asteroid%20predictions%20-%20Planet%20contact%20times.htm"> 
+	Details</a>
+<p>Observable occultations by the outer planets are not common - mainly because of the slow motion of the outer planets, and the brightness of the planet. However occultations of reasonably bright stars by Mercury and Venus are somewhat common. But the region of visibility is quite small because these planets are always close to the Sun, and as a result observable occultations are often not publicised. Users should consider conducting searches for occultations by these planets, using this option to identify those events that will be visible from their location.</p>
+</TD></TR>
+</table>
+
+<h2><br><br>Plot sequentially</h2>
+<P align=center><img src="AsteroidDisplay%20Sequence%20Button.png">
+<p>This button does a sequential display of events that meet the selection criteria. <A href="Asteroid%20predictions%20-%20World%20plot.htm">Details</a></TD></TR>
+
+
+<h2><br><br>Create DWD file</h2>
+<P align=center><img src="AsteroidDisplay%20DWD.png">
+<p>This option is to create files of a <A href="FileFormat%20DWD.htm">format  </a>used by David Dunham for certain publication activities. It is of no value to anyone else - and should be ignored.
+<p>The step interval is usually set to 1 day for asteroidal occultations. But for some objects (including planetary moons) a shorter interval 
+
+</BODY>
+</HTML>

@@ -1,0 +1,824 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Asteroid observations editor</Title>
+<style type="text/css">
+.auto-style1 {
+	margin-left: auto;
+}
+.auto-style2 {
+	font-family: Consolas;
+	font-size: x-small;
+}
+.auto-style3 {
+	margin-left: 20px;
+}
+.auto-style4 {
+	border-style: solid;
+	border-width: 1px;
+}
+.auto-style7 {
+	border: 1px solid #000000;
+}
+.auto-style8 {
+	color: #0000FF;
+}
+.auto-style9 {
+	border: 1px solid #000000;
+	font-size: medium;
+	background-color: #CCFF99;
+}
+.auto-style10 {
+	border-width: 1px;
+	font-size: medium;
+	background-color: #CC99FF;
+}
+.auto-style11 {
+	border: 1px solid #000000;
+	font-size: medium;
+	background-color: #9999FF;
+}
+.auto-style12 {
+	border: 1px solid #000000;
+	font-size: medium;
+	background-color: #66CCFF;
+}
+.auto-style13 {
+	font-size: medium;
+	font-weight: bold;
+}
+.auto-style14 {
+	font-size: medium;
+}
+.auto-style15 {
+	margin-left: 40px;
+}
+.auto-style16 {
+	color: #000080;
+}
+.auto-style17 {
+	color: #FF0000;
+}
+.auto-style18 {
+	color: #FF0000;
+	font-style: italic;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1 class="auto-style1">Asteroid observations editor</H1>
+<P class="auto-style1">This form is used to enter and edit observations of asteroid occultations.
+
+<p class="auto-style1">The form as three logical components:
+<li class="auto-style1">Fields which are specific to an event - namely, the date, star and asteroid
+<li class="auto-style1">Fields which are specific to an observer - namely the observer details, times, and conditions
+<li class="auto-style1">Fields for managing the data, including the display of historical events.
+
+<h2>Fields specific to an event</h2>
+<p>These fields, which are in groups with an orange background, need to be completed when a record is created for a new event.
+<h3>The event date</h3>
+<P align=center><img src="Asteroid%20Observations%20-%20date.png">
+<p>Set here the Date of the event, and the approximate mid-time of the observations.,
+<p>The mid-time is used to generate a 3rd-order expression for the motion of the asteroid's shadow past the Earth. The 
+time is set to 0.1 hrs - and should be for a time close to the middle of all the 
+observations. A time of 0.0 hours is not allowed - use 0.1 instead.<p><B>Note 1</B>: If observations extend across a day boundary, ensure the date corresponds to the day of the earliest observation and that all times for the following day use hours 24 and greater.
+<p><B>Note 2</B>: If the mid-time field is changed, you should click the button <B>Get details </B>in the <B>Asteroid</B> box to make sure that the internal expression for the asteroid's motion is updated. If the dates is changed by more than a few 
+hours, you should also click the button <B>Get details </B>in the <B>Star</B> box to make sure the star position is correct.
+
+
+<h3><br>The star number</h3>
+<P align=center><img src="Asteroid%20Observations%20-%20star.png"width="150">
+<P align=center><img src="Asteroid%20Observations%20-%20star2.png"width="150">
+<p>To specify the star, you must first select the catalogue from the drop-down box. The catalogues catered for are Hipparcos, Tycho2, 
+UCAC4, UCAC3, UCAC2, USNO-B1, NOMAD, URAT1, and Gaia stars in the Occult Gaia 
+catalogues that have not been matched to UCAC4, Tycho2 or Hipparcos - identified 
+by Ghhmmss.s±ddmmss. Use the catalogue first in this order. 
+Provided the Gaia catalogue is installed, Occult will endeavor to retrieve a 
+Gaia position for the star - and will preferentially use Hipparcos, Tycho2 and 
+UCAC4 star identifiers. If a Gaia position has been retrieved, that fact will 
+appear at the bottom-right of this group.<p>The data fields for the star number depend on the star catalogue. Hipparcos, UCAC2, 
+and the Gaia coordinate identifier, have a single field; Tycho2  has three fields (region, number, and component), while 
+the remainder have two fields (zone and number)
+<p>When the number has been entered, click the <B>Get details </B>button to retrieve the star coordinates. [If star coordinates are not retrieved, you cannot plot the observations.] Also displayed on a separate form will be all double star entries in the Washington Double Star Catalogue and 4th Interferometric Cataogue. [For this to be functional, these catalogues will need to be downloaded from the Downloads option on the Maintenance tab.]
+<p>In appropriate circumstances, an extra button, and 2 extra data items are 
+displayed.<p>The <strong>Identify G*</strong> button checks whether a star 
+identified by the G coordinates has a traditional identifier in the Occult Gaia 
+catalogue. If so, this identifier should be used.<p>If the star position in the 
+Occult Gaia catalogue has used the UCAC4 position to derive a proper motion, 
+this fact is noted. The fact thta this has occurred is an indicator that there 
+are problems with the position of this star<p>If the star has an apparent 
+diameter that could lead to events being gradual, the estimated duration of such 
+fades, as seen on the center line, is given.<p><B>Note 1</B>: to retrieve USNO-B1 stars, you need to have the NOMAD catalogue. To retrieve a 2UCAC star that is fainter than mag 12, you will need to have either the full 2UCAC catalogue, or the NOMAD catalogue.
+<p><B>Note 2</B>: Manual entry of star coordinates is not available in this version of Occult - a deliberate decision to avoid erroneous data entry.
+
+<p><strong>Note 3</strong>: The Gaia number by coordinates matches stars by the 
+firsts star that is within 0.1sec of the RA and 1&quot; of the Dec - with the 
+coordinates being specified for the version of Gaia (almost inevitably DR2 - 
+2015.5) When there are two stars close together, the possibility of the wrong 
+star being identified in the first instance is real. For example, an occultation 
+on 2019 Jan 2 by Alven occulted a star identified as G100729.6+131605. The 
+star's coordinates (2015.5) are:<p>10 07 29.5956&nbsp; +13 16 05.09<p>However 
+the previous entry in the file is:<p>10 07 29.4260&nbsp; + 13 16 06.44<p>The 
+specified G coordinates retrieves the previous entry star, as it is the first 
+star to match the coordinates at the 0.1s/1&quot; precision. The correct 
+star is retrieved by adjusting the identifier to G100729.7+131605.
+<span class="auto-style8">The point to remember here is to ensure you have 
+retrieved the correct star by comparing the retrieved coordinates with those in 
+the prediction, and adjusting the identifier as required to retrieve the correct 
+star.</span><h3><br>The asteroid or planet</h3>
+<P align=center><img src="Asteroid%20Observations%20-%20asteroid.png"width="200">
+<P align=center><img src="Asteroid%20Observations%20-%20asteroid2.png"width="200">
+<p><B>To specify an asteroid</B>
+<li class="auto-style1">select the Asteroids radio button
+<li class="auto-style1">enter the asteroid's number. <li class="auto-style1">click <B>Get details</B>. The field for the Name will be completed, as well as the information items of 
+the shadow's motion on the fundamental plane (in km/sec), the parallax, visual 
+magnitude, and diameter in km. If the asteroid is in either the DAMIT or ISAM 
+databases of shape models, the number of models available in the relevant 
+database will be given in yellow text on a blue background. The blue background 
+can be clicked to download the shape models.
+
+<p>Instead of the asteroid's number, you can enter the name - but it has to be 
+the full name (case insensitive). Usually you should enter the number.<p>For unnumbered asteroids, you need to enter its name - making sure that it is identical to the MPC formatted name. 
+<p><B>Note</B>. If you are entering an observation of a relatively small asteroid, you will need to make sure the asteroid is in the file of asteroid elements maintained by Occult. For this purpose, it is usually best to include the asteroid number in the list of 'mandatory' minor planets maintained on the form for <A href="Maintenance%20Convert%20Astorb.htm"> Converting Astorb etc.</a> 
+<p><B>Note 2</B>. When an asteroid is not included in the current file of asteroid elements, you can update that file from the Main Occult form from either the Asteroid Predictions tab, or the Maintenance tab, by clicking the <B>Convert ASTORB and MPCOrb </B>button, without closing the editor. Once the asteroid has been added and a new file created, you can go back to the editor and click the <B>Get Details </B>button to retrieve the asteroid details.
+
+<h4>To specify a planet or satellite</h4>
+<ul>
+	<li>Check the radio button Planets</li>
+	<li>select the planet and satellite using the drop-down boxes</li>
+	<li>click <B>Get details</B>.</li>
+</ul>
+<p>The information displayed 
+at the bottom of the box is</p>
+<ul>
+	<li>the motion of the shadow on the fundamental plane, in km/sec</li>
+	<li>the parallax of the object, and its hourly rate of change</li>
+	<li>the visual magnitude of the object</li>
+	<li>the objects diameter and uncertainty in km; its apparent diameter in 
+	mas. If the asteroid's diameter has been derived from its absolute 
+	magnitude, the diameter is indicated as an estimated diameter (est.Dia.....)</li>
+</ul>
+
+<h2><br>Fields which are specific to an observer </h2>
+<p>These fields are in groups with a light green background, and specify details of an observation. Each observation consists of a Disappearance and 
+Reappearance event pair. In the case of a double star or double asteroid, there needs to be an observation line for each component.
+<h3><br>Observer details</h3>
+<P align=center><img src="Asteroid%20Observations%20-%20observer.png">
+
+<p><B>Observer name</B> The form provides for two observer names to be expressly 
+specified, with a box to check if there are more than two observers. [When there 
+are 3 or more observers, only 2 names can be specifically stated.]<p>The 
+observer names are used when reporting astrometry to the Minor Planet Center. To 
+avoid any problems when reporting the astrometry, it is critical that the name 
+fields are filled on as follows:<p>&nbsp;To facilitate extraction of name information for reporting results to (for example) the 
+Minor Planet Center (MPC), the following formatting is essential:<ul>
+	<li>Names are given as an Initial, followed by the family name - e.g. 'D Herald'</li>
+	<li>One or more full given names can be specified. However it will be 
+	automatically reduced to a single initial when reporting to the MPC.</li>
+	<li>Name qualifiers like Mc (as in McArthur), Van der...., and so forth, 
+	should be included.</li>
+	<li>Qualifiers like Mrs/Mr etc must not be included. Similarly educational 
+	qualifications (eg PhD), or membership of organisations, must not be 
+	included.</li>
+	<li>Do not qualify the name with anything intended to indicate the 
+	observer's location. The field must contain the observer's name, and 
+	absolutely nothing else!</li>
+	<li>There MUST be an initial. A family name with no initial will not be 
+	accepted by the MPC</li>
+	<li>The name must be of a person, not an organisation.</li>
+	<li>The field is processed in the order of given name - family name. For 
+	cultures where the family name normally comes first, it is important that 
+	the names be captured in the given name - family name order.</li>
+</ul>
+<p><strong>Located near</strong></p>
+<p class="auto-style1">This box provides for a textual description of the 
+approximate location of he observer. It is provided essentially for assistance 
+with validation the site coordinates, in instances where there is cause for 
+concern about where the observer was located. As a free text box, users should 
+try to make sure that what is specified has meaning to 3rd parties, potentially 
+years after an event. In circumstances where an observer sets up a multi-station 
+deployment with all having the same approximate location, it is appropriate to 
+label the sites by appending characters like '#1'&nbsp;&nbsp; '#2' etc </p>
+<p><strong>Country or State</strong></p>
+<ul>
+	<li>This field provides for an indication of the country or state in which 
+	the observer was located - again, solely for general indication of where the 
+	observer was located. The filed is to be completed by specifying the 
+	relevant International Standard 2- or 3- letter country codes or (for 
+	Australia, Canada, and the USA) state or province codes. 
+	<li>for a list of the codes, click the Help button just above this box.<li>
+	Commas cannot (&amp; must not) be used in this field</ul>
+
+<p><B>Telescope aperture</B> - specify to the nearest cm. 
+<p><B>Telescope type</B> - select the most appropriate from the drop-down box. 
+Available options are</p>
+
+<ul>
+	_ = unstated<br>1 = 
+								Refractor<br>2 = Newtonian<br>3 = SCT<br>4 = Dobsonian<br>5 = Binoculars<br>6 = Other<br>7 = None<br>8 =	Electronic
+</ul>
+<p>When Electronic is selected, the Method, and Time fields are automatically set for that telescope type/p>
+
+
+								<p><B>Site coordinates</B> - select the relevant format for the data entry (dms, dm.m or d.dd), then enter the coordinates. Remember to include a '-' for west longitudes (i.e. the Americas, most of England, etc.] and for southern latitudes.<ul>
+<B>Note</B>. Once an observation line has been entered, you can plot all observation sites in 
+GoogleEarth under the menu item <B>with Observations... Plot sites in GoogleEarth</B>. This will highlight any significant data entry error!</ul> 
+
+<p><B>Datum</B>. Indicate the datum used for the latitude/longitude, using the drop-down box. 
+Almost all modern datums can be treated asWGS84<p><B>Altitude</B>. Select meters or feet (the data is stored as meters). <B>Note</B>. Altitudes are assumed to be referenced to mean sea level (msl) 
+- which is the international standard for referencing altitudes. Some GPS units 
+have the ability to output an elevation referenced to the WGS spheroid. That 
+elevation <strong><em>MUST NOT BE SPECIFIED</em></strong> - always use altitude 
+above mean sea level (msl).
+<p>The word Altitude is actually a 'button'. Click on the word <strong>Altitude</strong>,&nbsp; and you will activate the
+<strong>Site Altitude</strong> validation function that is described below under the <strong>with Observations...</strong> description. 
+When an event is read from a file, or is pasted, the word Altitude will be shown 
+in red - until the site validation has been undertaken.</p>
+<p>&nbsp;<H3><br>Event times</h3>
+<P align=center><img src="Asteroid%20Observations%20-%20Times.png" width="240">
+<p>Enter the <B>observed times </B>of the events here. Particular issues are:<ul>
+<li>Ensure each field of h, m and s is completed. If any of the fields for a time is blank, the event will be treated as a 'no event'.
+<li>For a Miss event, insert the expected time of the occultation - for BOTH the D and R
+<li>'<B>+/-</B>' is the 3-sigma uncertainty in the reported time. For a visual observation, it is usually smaller than the PEq.
+<li><B>PEq </B>is the personal equation applied to visual observations. Preferably, the reported time should be corrected for PEq. In any case, the value should be specified here.
+	<li><B>Wt</B>. A value of 0 to 5. This field should normally be left blank - in which case visual observations are weighted as 1 and video observations are weighted as 
+	5. 
+However during analyses stages it may be appropriate to apply different 
+weightings (within the range 0 to 5). A weighting of 0 results in an observation being excluded from the solution but 
+	can be included in the plot of observations (with the observation number being underlined). 
+	The default values (which are used when the setting is blank) are set as 
+	follows:<br>&nbsp; 5 - for analogue or digital (non-SLR) video<br>&nbsp; 4 - 
+	for digital SLR-camera video, and Photometer<br>&nbsp; 3 - for sequential 
+	images and drift scan<br>&nbsp; 1 - for visual and anything else.<br>&nbsp; 
+	0 - event is ignored in any solution, but can still be plotted, depending on 
+	obne of the options on the Plot form.<li><B>Time Shift (secs</B>) This is an adjustment applied in analysis to bring a discordant observation into alignment with other observations. It assumes the 
+existence of an error in the time base used by the observer. A time shift should 
+not be applied without good reason.
+	<li><B>Not seen</B>. <span class="auto-style18">This should rarely be used</span><span class="auto-style17">. 
+	</span>This allows a coordinator to enter the coordinates of an observer to demonstrate what they missed out on as a result of (for example) cloud, or failing to go out and observe. Data entries for this event type are not added to the file of 
+	<B>Historical observations.</B></ul>
+
+<p>You also need to indicate the <B>Event qualifier </B>using the check boxes. Check boxes in the left column can be checked by themselves, or (when appropriate) together with check boxes in the right column. The significance of the check items is:<ul>
+<li>a 'normal' occultation with regular D and R events has no check boxes 
+marked.<li><B>No occultation detected</B>. Check this to indicate no occultation was detected. A nominal D and R time (hh mm ss) must be specified for both (a time consistent with the event analysis will be generated during the event analysis). These events most commonly identify observations where the asteroid does not cover the target star (a so-called Miss event). However there may be other explanations for such an observation.
+<li><B>Prediction</B>. It is very useful to include an entry representing the prediction, as a means for verifying the data entry and accuracy of the observation. 
+The preferred source of the prediction entry is from an Occult generated path 
+prediction using the Horizons system with the paste from that prediction 
+including the JPL solution number and date.<li><strong>unseen Satellite parent</strong>. This is used when the 
+	observations for an event are of the satellite of an asteroid, and not the 
+	main body of the asteroid. Such an event is <span class="auto-style16"><em>2010 June 14 
+	(617) Patroclus</em></span>. To process such an observation, Occult needs a 
+	nominal 'observation' of the main body. While the box can be checked 
+	manually, the strongly preferred approach to such a situation is:<ul>
+		<li>generate a prediction for the asteroid (which will usually relate to 
+		the main body)<li>generate path coordinates for that event, and select a 
+		line near the location of the observation - and click the menu item 
+		<strong>with prediction... Copy prediction line for Observations report... 
+		Occult</strong>.<li>In the observations editor, click the menu item 
+		<strong>Paste... 
+		Prediction for the primary body of a binary asteroid (which has not been 
+		observed</strong></ul>
+	<p class="auto-style15">This will create two lines in the observation editor. One is a Prediction line, 
+with event code<strong> P</strong>. The other is an event line for the unseen primary, with event 
+codes <strong>e </strong>and<strong> f </strong>and an observer name of <strong>Unseen-Primary-Event</strong>.
+	<p class="auto-style15">If you have a prediction line for the satellite, you can also paste that into the editor in the usual manner.</p>
+<li><B>2nd star</B>. Where the occultation involves a binary star, this is used to indicate that the reported times are associated with the fainter star. Note:<ul>
+<li>frequently the 'double star' event will only be noticed at one of the D and R phases. In that situation it would be 
+expected that the report line for the 2nd star will contain just one time.
+<li>It is often difficult to correctly associate the event times with each of the components. Frequently it is only at the analysis stage that the correct allocation of times to components can be determined.</ul>
+<li><B>Ring</B> - an occultation by a ring around an asteroid or planet. D and R 
+times are for the middle of the events on opposite arms of the ring. The 
+duration of the occultation by a ring arm should be noted in the Free text.<li><B>Satellite</B>. 
+	This box is checked when an occultation is by a satellite of an asteroid. 
+	This may not be known until the analysis of other observations of that event 
+	have been included.</ul>
+IMPORTANT: Where multiple events are observed from the same location, 
+place them in chronological order, to facilitate plots that show the star when visible.
+
+<H3><br>Conditions</h3>
+<P align=center><img src="Asteroid%20Observations%20-%20Conditions.png"width="250">
+
+<p>In this section you select various items from the drop-down boxes. [Note - attempts to key changes into the drop down boxes will be ineffective). The items are:
+
+<p><B>Method </B>- select the most appropriate description of the method used to make the observation (and for visual observers, the basis of the Personal equation). 
+Available options are<body>:<ul>_ &nbsp;unspecified<br>a&nbsp; Analogue or digital video<br>b&nbsp; Digital SLR-camera video<br>c&nbsp; 
+	Photometer<br>d&nbsp; Sequential images<br>e&nbsp; 
+	Drift scan<br>f&nbsp;&nbsp; Visual<br>g&nbsp; 
+	Other
+	</ul>
+
+</body>
+	<p>
+	<B>Time </B>- select the most appropriate description for the source of time used to make the observation. 
+The available options are:<ul>
+_ unspecified<br>
+a GPS<br>b NTP<br>
+c Telephone time (fixed or mobile)<br>
+d Radio time signal<br>
+e Internal clock of recorder  [such as by calibrating the recorder well before and after the event]<br>
+f&nbsp;
+Stopwatch<br>
+g Other
+</ul>
+<br><B>Signal-to-Noise ratio</B>- set the most appropriate description of the stability of the 
+atmosphere. The control has variable increments, as follows:<br><ul>
+<li class="auto-style2">&lt; 0.20&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.02</li>
+	<li class="auto-style2">0.20 to 2.0&nbsp; 0.1</li>
+	<li class="auto-style2">2 to 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.5</li>
+	<li class="auto-style2">&gt;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+	1</li></ul>
+<br><B>Stability </B>- select the most appropriate description of the stability of the 
+atmosphere. Options are:<ul>
+_ = unstated<br>1 = Steady<br>2 = Slight flickering<br>3 = Strong flickering</ul>
+<B><br>Transparency </B>- select the most appropriate description of the transparency of the atmosphere.
+
+Options are:<ul>_ = unstated<br>1 = Clear<br>
+								2 = Fog<br>3 = Thin cloud &lt;2 [mag loss &lt;2 mag.]<br>
+								4 = Thick cloud &gt;2 [mag loss &gt;2 mag. <br>5 = 
+								Broken opaque cloud [that is, observed thru gaps 
+								in the cloud]<br>6 = Star faint<br>7 = By 
+								averted vision</ul>
+<p><B>Free text</B> - this is a location where you can add comments to highlight special issues. Comments on routine matters should not be included. 
+You cannot use Enter or Tab. The character&nbsp; |, as well as non-ASCII 
+characters, the character &quot;, and control characters, will not be accepted. 
+The number of characters in the free text is indicated above the top-right of 
+the field<br>When entering text into 
+this field, the text box will be enlarged, with a button underneath to return it 
+to its small size. Clicking another data entry control will also reduce it back 
+to its small size. it is important that it be meaningful for external readers, and 
+relates to an issue that is relevant to the reliability or credibility of the 
+observation. Comments about the tool used to measure the video, or analyze the 
+light curve, are generally not appropriate.</p>
+<p><strong>Include in solution </strong>This field identifies observations 
+that are excluded from the solution (including the graphic display of the event. The choices available are:
+<table columns=3 border=1>
+<TR><TH NOWRAP>Option</TH><TH>Comments</TH></TR>
+<TR><TD>Include observation</TD><TD>Both the D and R events are included in the solution, 
+	and plotted</TD></TR>
+<TR><TD>Include D only</TD><TD>Only the D event is&nbsp; included in the solution 
+	and plotted. The R event is ignored</TD></TR>
+<TR><TD>Include R only</TD><TD>Only the R event is included in the solution and 
+	plotted. The D event is ignored</TD></TR>
+<TR><TD>Exclude observation</TD><TD>The complete observation is excluded from the 
+	solution, and is not plotted</TD></TR>
+</table>
+<p>The setting can be used to:
+<li class="auto-style1">to exclude an apparently erroneous observations; or
+<li class="auto-style1">exclude extremely distant Not detected events, so that the plot of the events is properly concentrated on the observed chords and close 
+not-detected events.
+
+<h2>Manage observers</h2>
+<P align=center><img src="Asteroid%20Observations%20-%20ManageObservers.png">
+<p>At the bottom-right of the form are buttons for managing the data contained 
+in memory for the particular event displayed:<ul>
+<li>Add the data in the edit fields as a new observation record<li>Replace the currently selected observation record with the data in the edit fields
+<li>move the currently selected observation either up or down in the list of observations<li>
+	delete the currently selected observation; and<li>sequentially renumber the observations in the list<br>
+</ul>
+
+<p>In addition,
+controls are provided in the menu item <B>with Observations</B>, where you can sort the list of observations by any of<ul>
+<li>longitude
+<li>latitude
+<li>the observer name field
+<li>the observer name field ignoring the first two characters (that is, the family name of the observer - if the name has been entered in accordance with the guidelines above)
+<li>path distance, or
+<li>sequence number.</ul>
+<B>Note</B>. Sorting by distance (followed by a Re-number) is particularly useful, as it ensures the observer numbers displayed on the plot of the event progress uniformly across the plot. This makes it much easier to find the chord of a particular observer.<br>
+
+<h2>Manage Historical file</h2>
+<P align=center><img src="Asteroid%20Observations%20-%20ManageHistorical1.png">
+<p></p><P align=center><img src="Asteroid%20Observations%20-%20ManageHistorical2.png">
+<p class="auto-style1">This button requires administrator access; It is used to maintain the Historical Observations file with the edited data, 
+and is located below the buttons for managing observers. 
+The text on the button varies between <strong>Add event to Historical file</strong>, 
+and <strong>Update Historical file with revised event</strong>, depending on</p>
+<ul class="auto-style3">
+	<li>whether the data in the form has been 'entered' or imported using the
+	<strong>File... open</strong>, or <strong>Paste</strong> options, or </li>
+	<li>whether the data 
+has originated from the Historical observations file.<br>&nbsp;</li></li>
+
+</li>
+</ul>
+
+<h3 class="auto-style1">Open-save check box</h3>
+<p class="auto-style1">This only appears when Administration access is enabled. 
+When checked, a button will appear with the label '+1'. If that button is 
+clicked, the next event listed in the event drop-down box will be opened, and 
+then immediately saved. This functionality is provided for updating the event 
+solution (particularly the astrometric solution) as a result of code changes. It 
+should not be used generally.</p>
+<h3 class="auto-style1">List offset from prediction</h3>
+<p class="auto-style1">Under the menu item List... you can list the offset of the observed occultation 
+location from the prediction. This function has two purposes:<ul class="auto-style3">
+<li>to monitor the accuracy of predictions; and
+<li>in the case of single-chord observations, provide a basis for assessing whether there are any large errors in the observation - either in the reported data, or in the data as entered.</ul>
+<p class="auto-style1">The function is further described <A href="AsteroidEditor%20-%20Prediction%20offsets.htm">here</a>
+
+<h3 class="auto-style1">List possible time base corrections</h3>
+<p class="auto-style1">This editing tool can help in identifying problem observations, and is further explained <A href="AsteroidEditor%20-%20TimeBase%20offsets.htm">here</a>
+
+<h2 class="auto-style1">Displayed information</h2>
+<p class="auto-style1">The following information is displayed in the bottom part of the form<ul class="auto-style3">
+<li>A list box listing all the observations entered for the event<li>At the top left of the list box, the expected magnitude drop at occultation
+<li>At top-middle of the list box - a summary of the current solution for the ellipse and any double star component
+<li>At the top right of the list box (for observations in the Historical file) - if an astrometric position has been reported to the Minor Planet Center, the Minor Planet Circular number and publication date (yyyymmdd)  of the circular containing the relevant observer summary.</ul>
+
+<h2 class="auto-style1">Analysing/fitting an ellipse to the observations<br>Setting the quality of the observation</h2>
+<p class="auto-style1">The fitting of an ellipse to the observations, and other data analysis is done on a separate form. The form is accessed by clicking the menu item 
+<strong>Plot event.</strong> If the form is already open, merely bringing that form into focus will generate a plot.
+<p class="auto-style1">The details about fitting an ellipse, and setting the quality of the fit, are given <A href="AsteroidEditor%20-%20Plot%20observations.htm">here</a>
+<p class="auto-style1">This form needs to be accessed and updated before saving an event - to ensure the details of the fit and quality setting are included in the saved file.
+
+<h1 class="auto-style1"><br>Viewing Historical observations</h1>
+<p class="auto-style1">The viewing of a past asteroid occultation is governed by the controls in the Historical Observations box.
+<P align=center class="auto-style1"><img src="Asteroid%20Observations%20-%20Historical.png" width="240">
+<p class="auto-style1">Most of the controls in the box are used to set the list of events that are listed in the drop-down box at the bottom of the 
+area. The event data displayed in the drop-down box are:<ul class="auto-style3">
+	<li>Year, month and day of the event</li>
+	<li># - when shape models are available, and all have been fitted</li>
+	<li>† - when shape models are available that have not been fitted</li>
+	<li>Asteroid number and name</li>
+	<li>number of observations (records) - excluding prediction lines</li>
+	<li>number of observed chords (limited to the primary star)</li>
+</ul>
+<p class="auto-style1">Use the radio buttons to set whether to select the event on the basis of date, by asteroid name, asteroid number, but the number of observation lines (Records), or events involving a planet or a moon of a planet.<ul class="auto-style3">
+<li>When <B>Date </B>is selected, select the year range with the drop-down box. The main drop down box will list events in that date range, sorted by date.
+ <li>When <B>Name </B>is selected, select the relevant letter for the first letter of the asteroid's name from the drop-down box. The main drop down box will list all events involving asteroids commencing with that letter (or number), sorted alphanumerically, then by date.
+<li>When <B>Number </B>is selected, select the number range with the drop-down box. The main drop down box will list asteroids in that number range, sorted by number then date.
+<li><strong>Shape Models</strong> limits the displayed events to those having shape models available.
+<li><strong>Unfitted Models</strong> limits the displayed events to those where shape models are available that have not been fitted.
+<li>When <B>#Records</B> is selected, the main drop down box will list all events sorted by the number of records.
+<li>When <B>#Chords</B> is selected, the main drop down box will list all events sorted by the number of 
+observed chords.
+<li>When <B>Planets only</B> is selected, the main drop down box will list events involving planets or their moons, sorted by planet number, then moon number.
+</ul>
+With any of these selections, the text immediately above the main drop-down box gives the number of items in the main drop-down box, and the total number of 
+events.<p>&nbsp;To display an event, merely select the event in the drop-down box. the observations will be displayed on the form, and the events plotted.
+
+</p>
+
+<h1 class="auto-style1"><br>Menu functions</h1>
+The menu bar provides the following functions:<h3 class="auto-style8">File...</h3>
+<table columns=3 border=1 class="auto-style1">
+<TR><TH NOWRAP>Menu sub-item</TH><TH>Function</TH></TR>
+<TR><TD>New</TD><TD>Clears the currently displayed event from the editor. Needed 
+	for pasting an event into the editor.</TD></TR>
+<TR><TD>When opening, sort by path distance</TD><TD>When checked, the 
+	observations in a file are sorted by path distance when the file is opened.</TD></TR>
+<TR><TD>Check submitted files for omissions</TD><TD>For administrator use. 
+	Parses one or more selected observations files, to check for completion of 
+	Quality of Fit, and shape model fitting.</TD></TR>
+<TR><TD style="height: 33px">Open</TD><TD style="height: 33px">Opens an observation file - in either the Occult xml 
+	format, or the 'old' Occult .<strong>obs</strong> format</TD></TR>
+<TR><TD>Open multiple files</TD><TD>Opens multiple files - in either the xml or 
+	obs format. The functionality enables the ready processing of multiple 
+	observation files to add them to the file of Historical observations. The 
+	files are processed sequentially, with the next file in the sequence being 
+	[placed in the editor when either (i) the observation is added to the 
+	Historical file, or (ii) <strong>File... Skip to next file </strong>is 
+	clicked.</TD></TR>
+<TR><TD>Save</TD><TD>Saves the current event. Whenever possible, use the .xml 
+	format to ensure all data elements are saved.</TD></TR>
+<TR><TD>Save as...</TD><TD>Saves the current event using a different file name 
+	to that from which it was opened. Whenever possible, use the .xml format to 
+	ense all data elements are saved.</TD></TR>
+<TR><TD>Unistellar: match to existing records</TD><TD>Special functionality for 
+	observations reported from by Unistellar</TD></TR>
+<TR><TD>Add to historical file</TD><TD>Administrator functionality to add the 
+	event currently displayed in the editor to the file of historical observations</TD></TR>
+<TR><TD>Skip to next file</TD><TD>When opening multiple files, or pasting 
+	multiple files, click this to skip the event currently displayed in the 
+	editor</TD></TR>
+<TR><TD>&nbsp;Update historical file</TD><TD>Enabled when an event is displayed 
+	from the file of Historical observations. Administrator functionality to update the event 
+	in the historical observations with any edits made</TD></TR>
+<TR><TD>Copy event in XML</TD><TD>Makes a copy of the full record for the currently displayed event. The copy provides the full .XML format for that record.</TD></TR>
+<TR><TD TH NOWRAP>Copy all observer names</TD><TD>Creates a comma-separated list of all observers for the event</TD></TR>
+<TR><TD TH NOWRAP>Copy 'valid' observer names</TD><TD>Creates a comma-separated list of all observers for the event that have been included in the solution.</TD></TR>
+<TR><TD TH NOWRAP>Copy all Observer details</TD><TD>Creates a list of all 
+	observers, together with site coordinates and telescope aperture</TD></TR>
+<TR><TD TH NOWRAP>Convert MPCorb etc</TD><TD>Opens the form form for converting 
+	MPCORB, Astorb or AstDys-2 orbital elements into the format used in Occult. 
+	This is provided for convenience if the asteroid for the currently displayed 
+	event is not contained in the currnt file of asteroid elements (so that the 
+	asteroid can be readily included.)</TD></TR>
+</table>
+<p></p>
+<h3 class="auto-style8">Paste</h3>
+<table columns=3 border=1 class="auto-style1">
+<TR><TD><strong>Menu item</strong></TD><TD><strong>Function</strong></TD></TR>
+<TR><TD>When pasting, sort by Path distance</TD><TD>A check item</TD></TR>
+<TR><TD>Single event - xml or old OBS format</TD><TD>Copy a full event in the Occult 
+	XML format (or the old OBS format), and Paste it with this functionality. The function is equivalent to Opening the file.</TD></TR>
+<TR><TD>New observation line [one or more groups] - XML format</TD><TD>Copy one 
+	or more observation group of lines in the Occult XML format, and Paste it with this functionality into a pre-existing report for the event.</TD><TR><TD>Prediction line</TD><TD>Copy a prediction line - either from the path coordinate list in Steve Preston's site, or from the Occult path prediction, and Paste it with this functionality into a pre-existing report for the event, to create a Prediction event line.</TD></TR>
+<TR><TD>Prediction for the primary body of a binary asteroid (which has not been 
+	observed)</TD><TD>Used for observations of a binary asteroid, when no 
+	occultation by the primary bode has been detected. Functionality basically 
+	the same as Prediction. But can only be used when that path actually crosses 
+	the Earth</TD></TR><TR><TD>Multiple events [dates + observations] from Euraster</TD><TD>Copy a 
+	sequence of event blocks from the Euraster site, and Paste it with this functionality. It will convert the data into the Occult format - although a manual check is required. 
+	Events that have no positive chords will be automatically skipped.</TD></TR>
+<TR><TD>New observation line [one group only] from Euraster</TD><TD>Copy one or 
+	more observation blocks from the Euraster site, and Paste it with this functionality into a pre-existing report for the event. It will convert the data into the Occult format - although a manual check is required</TD></TR>
+<TR><TD>Multiple events [dates + observations] from JOIN (Japan)</TD><TD>Copy multiple full event blocks from the Japanese site, and Paste it with this functionality. It will convert the data into the Occult format - although a manual check is required</TD></TR>
+<TR><TD>New observation line [one group only] from JOIN (Japan)</TD><TD>Copy an observation block from the Japanese site, and Paste it with this functionality into a pre-existing report for the event. It will convert the data into the Occult format - although a manual check is required</TD></TR>
+</table>
+<p></p>
+<h3 class="auto-style8">with Observations</h3>
+<table class="auto-style4">
+	<tr>
+		<td class="auto-style7" style="width: 325px"><strong>Menu item</strong></td>
+		<td class="auto-style7" style="width: 952px"><strong>Function</strong></td>
+	</tr>
+	<tr>
+		<td class="auto-style7" style="width: 325px">sort by Latitude</td>
+		<td class="auto-style7" style="width: 952px">Sorts the list of observers 
+		by site latitude (south to north)</td>
+	</tr>
+	<tr>
+		<td class="auto-style7" style="width: 325px">sort by Longitude</td>
+		<td class="auto-style7" style="width: 952px">Sorts the list of observers 
+		by site longitude (west to east)</td>
+	</tr>
+	<tr>
+		<td class="auto-style7" style="width: 325px">sort by Observer's full 
+		name</td>
+		<td class="auto-style7" style="width: 952px">Sorts the list of observers 
+		by Observer's name (inclusive of given name or initial) as given in the
+		<strong>Name1</strong> field</td>
+	</tr>
+	<tr>
+		<td class="auto-style7" style="width: 325px">sort by Observer's family 
+		name</td>
+		<td class="auto-style7" style="width: 952px">Sorts the list of observers 
+		by Observer's family name as given in the <strong>Name1</strong> field</td>
+	</tr>
+	<tr>
+		<td class="auto-style7" style="width: 325px">sort by Path distance</td>
+		<td class="auto-style7" style="width: 952px">Sorts the list of observers 
+		by their distance relative to the occultation path. If the path is 
+		largely east-west, the observers are sorted from north to south. If the 
+		path is largely north-south, the observers are sorted from west to east</td>
+	</tr>
+	<tr>
+	<td class="auto-style7" style="width: 325px">sort by Path distance &amp; Renumber</td>
+		<td class="auto-style7" style="width: 952px">Sorts the list of observers 
+		by their distance relative to the occultation path, and then renumbers 
+		the list.</td>
+
+	</tr>
+	<tr>
+		<td class="auto-style7" style="width: 325px">sort by Sequence number</td>
+		<td class="auto-style7" style="width: 952px">Sorts the list of observers 
+		by the sequence number in the table</td>
+	</tr>
+	<tr>
+		<td class="auto-style7" style="width: 325px">Renumber observations</td>
+		<td class="auto-style7" style="width: 952px">Renumbers the observations 
+		sequentially in their displayed order. When observations have been 
+		entered, sort by a desired criteria, then use this to number the events 
+		to reflect that order.<br><br>This functionality is also available under
+		<strong>Manage Observers, RENUMBER list </strong>at the right of the 
+		editor</td>
+	</tr>
+		<tr>
+		<td class="auto-style7" style="width: 325px">Site Altitudes - validate</td>
+		<td class="auto-style7" style="width: 952px">Generates a list of the observer's reported site altitude, and the site altitude retrieved from GoogleMaps. 
+		This is useful for identifying errors in the observer's site coordinates 
+		- either in altitude, or more likely, in Longitude/Latitude.<br><br>the 
+		result displays the site number, observer name, the altitude reported by 
+		the observer, the altitude for the location returned from GoogleMaps, 
+		the difference in altitudes, and the maximum interpolation distance 
+		GoogleMaps has used. If the difference is several 10's of meters or 
+		more, it is appropriate to check the site location in GoogleEarth (see 2 
+		items below) If he Max Interpolation distance is more than 50 meters, 
+		the GoogleMaps altitude could be unreliable.<br><br>To use this 
+		capability, you need a Google Account (which requires a credit card...), 
+		get an API key, and for security limits its use to the 'Maps Elevation 
+		API'. Copy the key &amp; store it safely. Then on the Occult User Settings 
+		page, in group 6 there is a box for the API key. Simply paste the key 
+		there and the function will be enabled. There is a pricing structure 
+		involved. However normal use of the function in Occult will not result 
+		in any charges being incurred. Indeed, a check of the altitudes for
+		<strong>all</strong> sites in <strong>all</strong> events in Occult as 
+		at 2023 is insufficient to incur a charge.<br><br>Information about 
+		getting the key can be found&nbsp;
+		<a href="https://developers.google.com/maps/documentation/elevation/get-api-key">
+		here</a></td>
+	</tr>
+	
+	<tr>
+		<td class="auto-style7" style="width: 325px">... Validate on Open or 
+		Paste</td>
+		<td class="auto-style7" style="width: 952px">Check this for an automatic 
+		validation upon File... open, or Paste of an event</td>
+	</tr>
+	<tr>
+		<td class="auto-style7" style="width: 325px">Plot sites in GoogleEarth</td>
+		<td class="auto-style7" style="width: 952px">Plots the sites in 
+		GoogleEarth. Very useful for resolving any concerns about site 
+		locations.</td>
+	</tr>
+</table>
+<p></p>
+<h3 class="auto-style8">Plot Event</h3>
+<p>This menu item moves focus to the form for plotting the event - and plots the 
+event. Detailed help <a href="AsteroidEditor%20-%20Plot%20Observations.htm">
+here</a></p>
+<h3>&nbsp;</h3>
+<h3 class="auto-style8">Solutions</h3>
+<p>This menu item displays solution values for the current event, and permits 
+deletions of solutions. The options provided are: </p>
+<table class="auto-style4">
+	<tr>
+		<td style="width: 444px" class="auto-style7"><strong>Menu item</strong></td>
+		<td style="width: 952px" class="auto-style7"><strong>Function</strong></td>
+	</tr>
+	<tr>
+		<td style="width: 444" class="auto-style10"><strong>Double stars</strong></td>
+		<td style="width: 952px" class="auto-style7">&nbsp;</td>
+	</tr>
+	<tr>
+		<td style="width: 444px" class="auto-style7">List current-event double 
+		star solution(s)</td>
+		<td style="width: 952px" class="auto-style7">Displays the details for the displayed event, 
+		of all double star solutions</td>
+	</tr>
+	<tr>
+		<td style="width: 444px" class="auto-style7">Delete current-event double star solution(s)</td>
+		<td style="width: 952px" class="auto-style7">Enables the deletion of 
+		selected double star solutions. Particularly important where the initial 
+		solution involved multiple solutions, but some of those solutions can be excluded because 
+		they are incompatible with other factors (such as Miss events).</td>
+	</tr>
+	<tr>
+		<td style="width: 444" class="auto-style11"><strong>Satellites</strong></td>
+		<td style="width: 952px" class="auto-style7">&nbsp;</td>
+	</tr>
+	<tr>
+		<td style="width: 444px" class="auto-style7">List current-event satellite solutions</td>
+		<td style="width: 952px" class="auto-style7">Displays the details for the displayed event, 
+		of any satellite solution. There can be up to 4 satellites</td>
+	</tr>
+	<tr>
+		<td style="width: 444px" class="auto-style7">Delete current-event satellite&nbsp; solution(s)</td>
+		<td style="width: 952px" class="auto-style7">Deletes one or more 
+		selected satellite solutions</td>
+	</tr>
+	<tr>
+		<td style="width: 444" class="auto-style12"><strong>Shape Models</strong></td>
+		<td style="width: 952px" class="auto-style7">&nbsp;</td>
+	</tr>
+	<tr>
+		<td style="width: 444px; height: 28px;" class="auto-style7">List 
+		current-event shape-model solution(s)</td>
+		<td style="width: 952px; height: 28px;" class="auto-style7">Lists all 
+		the shape model solutions that have been fitted to the event</td>
+	</tr>
+	<tr>
+		<td style="width: 444px" class="auto-style7">Delete current-event 
+		shape-model solution(s)</td>
+		<td style="width: 952px" class="auto-style7">This allows the user to 
+		delete one or more shape model solutions that have been entered. Used 
+		for when a shape model has been fitted, but would prefer to not have 
+		been made. </td>
+	</tr>
+	<tr>
+		<td style="width: 444px" class="auto-style7">Download shape models</td>
+		<td style="width: 952px" class="auto-style7">Retrieves all available shape models from the <B>D</B>atabase of <B>A</B>steroid <B>M</B>odels from <B>I</B>nversion <B>T</B>echniques, and from the <B>I</b>nteractive <B>S</B>ervice for <B>A</B>steroid <B>M</B>odels. . These are databases of three-dimensional models of asteroids computed using inversion techniques. DAMIT contains models for more asteroids than ISAM, whereas ISAM contains more models than DAMIT for many individual asteroids.<br>
+		<br>This functionality is also provided by clicking the blue text boxes in the 
+		Asteroid group on the Editor. Note that those text boxes only appear 
+		when a shape model is available.<p>Full information on accessing the shape models is provided <a href = "Asteroids%20-%20Damit.htm"> here</a></td>
+	</tr>
+	<tr>
+		<td style="width: 444" class="auto-style9"><strong>Astrometric solution</strong></td>
+		<td style="width: 952px" class="auto-style7">&nbsp;</td>
+	</tr>
+	<tr>
+		<td style="width: 444px" class="auto-style7">Astrometric solution</td>
+		<td style="width: 952px" class="auto-style7">Displays the astrometric 
+		solution for the current event. Full details on the information listed 
+		is provided <a href="Asteroid%20Results%20-%20Astrometric%20details.htm"> here</a></td>
+	</tr>
+	<tr>
+		<td style="width: 444px" class="auto-style7">Astrometric solution - including 'at conjunction' solution</td>
+		<td style="width: 952px" class="auto-style7">Displays the astrometric 
+		solution for the current event, including a solution for the astrometry at the time of geocentric conjunction. Full details on the information listed 
+		is provided <a href="Asteroid%20Results%20-%20Astrometric%20details.htm"> here</a></td>
+	</tr>
+</table>
+<p>&nbsp;</p>
+<h3 class="auto-style8">List</h3>
+<table columns=3 border=1 class="auto-style1">
+<TR><TD style="width: 292px"><strong>Menu item</strong></TD><TD><strong>Function</strong></TD></TR>
+<TR><TD style="width: 292px">Offset from prediction</TD><TD>If a center-line prediction is included in the observation list, this displays the offset in time and and km between the observation and the prediction</TD></TR>
+<TR><TD style="width: 292px; height: 32px;">Possible time base correction</TD>
+	<TD style="height: 32px">This lists possible corrections to the time base. 
+	<em>Read the specific Help item and notes on the form carefully.</em></TD></TR>
+<TR><TD style="width: 292px">Relative path distances</TD><TD>This lists the distances of an observer chord in the direction across the path. If a center-line prediction is included in the observation list (with the characters 'predict' present in the name field) the distances are referenced to that line. Otherwise the distances are referenced to the center of the fitted ellipse.</TD></TR>
+<TR><TD style="width: 292px">Chord lengths</TD><TD>Lists the length of the observed chords in km. The chord lengths are in the sky-plane.</TD></TR>
+<TR><TD style="width: 292px">Display occultation light curves for this event (if 
+	any are available)</TD><TD>Displays any available occultation light curves</TD></TR>
+<TR><TD style="width: 292px">Star details</TD><TD>Lists the full details of the 
+	star. For Gaia stars, they are the star identifier, the Gaia identifier, the 
+	Gaia RUWE and Duplicate source flags, the blue, green and red magnitudes, 
+	the estimated apparent diameter&nbsp;of the star, and the RA and Dec with 
+	uncertainties.</TD></TR>
+<TR><TD style="width: 292px">WDS, Interferometic, and variable star data</TD><TD>
+	Displays double and variable star information for the star.</TD></TR>
+<TR><TD style="width: 292px">Nearby stars</TD><TD>Displays a list of stars 
+	within 15 arcsec of the target star</TD></TR>
+<TR><TD style="width: 292px">Alternative star identifiers</TD><TD>Lists alternative star identifiers for the star. Needed to provide 'usual' star identifiers if the event is to be published in the literature</TD></TR>
+<TR><TD style="width: 292px">Asteroid IR diameters</TD><TD>Lists all the 
+	individual infra-red diameter measurements from the IRAS, Akari and NEOWISE 
+	missions</TD></TR>
+	<tr>
+		<TD style="width: 292px">Previous occultations of this star</TD><TD>Lists 
+	any previous occultations of this star - either asteroidal or lunar.</TD>
+	</tr>
+<TR><TD style="width: 292px">Events where DAMIT has been updated</TD><TD>Lists 
+	events where new DAMIT models are available for fitting to the observation.</TD></TR>
+<TR><TD style="width: 292px">Asteroid IR diameters</TD><TD>
+	Lists all the individual asteroid diameter measurements from each of the 
+	IRAS, Akira Acua and NEOWISE infra-red satellites</TD></TR>
+<TR><TD style="width: 292px">Stellar diameter & Fresnel diffraction</TD><TD>
+	Occasionally events are observed as being gradual fades. This option provides an estimate of the possible effects of stellar diameter and Fresnel diffraction. </TD></TR>
+<TR><TD style="width: 292px">Asteroid light curve data</TD><TD>Displays the period and light curve amplitude of the displayed asteroid, using the <A  href="Asteroids%20-%20Light%20Curve%20Data.htm"> Light Curve DataBase</a>.</TD></TR>
+<TR><TD style="width: 292px">Gravitational light deflection</TD><TD>Lists the 
+	gravitational deflection for the star, the asteroid, and the consequential 
+	apparent deflection of the asteroid relative to the star</TD></TR>
+<TR><TD style="width: 292px">Set Lists to AutoDisplay</TD><TD>
+	Sets which of the List options are automatically displayed when a new event 
+	is opened in the editor</TD></TR>
+</table>
+
+<h1 class="auto-style1">&nbsp;</h1>
+<h3 class="auto-style8">Export/Import</h3>
+<p>This menu item provides functionality for distributed editing of events, with 
+the results of that edit being able to be imported into the main 
+centrally-maintained file of historical observations. Detailed help is provided
+<a href="#14/Help/html/AsteroidEditor ExportImport.htm">here</a></p>
+<h1 class="auto-style1">&nbsp;</h1>
+<h1 class="auto-style1"><br>Administrator functions</h1>
+<p class="auto-style1">When an event is displayed from the file of Historical Observations, and you make changes to the data, you cannot update the entry in the file of Historical 
+observations unless Administrator status is enabled in the User Settings. Similarly, you cannot add 
+new observations to the file of Historical observations.<p class="auto-style1">Additionally, Administrator status enables a menu option to import observations or events from the <A href="http://www.euraster.net/results/index.html" target=_blank>Euraster site</a>, and from the site of Japanese observations</a>. These function as follows:<ul class="auto-style3">
+	<span class="auto-style13">Euraster</span><br>
+<li>To add a complete event report from Euraster - highlight all lines of the report, <B>Copy</B>, then select <I><B>Paste..New event [date + observation] from Euraster</B></I>. This will copy all the events into the editor, and complete all the star/asteroid details where possible.
+	<li>To add multiple event reports from Euraster - highlight the lines from 
+	the start of the first report to the end of the last. <B>Copy</B>, then select <I><B>Paste..Multiple events [date + observation] from Euraster</B></I>. 
+	This will process all events where a positive observation was reported, 
+	one-by-one<li>To add a single observation from Euraster to an existing 
+	report - highlight the additional observation line, <B>Copy</B>, then select <I><B>Paste..New observation line [one only] from Euraster</B></I>. This will add the event to those in the editor. 
+<br><B>Note 1. </B>To Paste a new event, you will need to click F<strong>ile... 
+	New</strong>, to clear any events from the current 
+	display<li><b>Note 2. </b>From Occult 4.6, new event lines can be added to a 
+	displayed Historical observation using the Paste functionality.
+
+<p><span class="auto-style13">Japan</span><br>
+<li>To add a complete event report from Japan - highlight all lines of the observation [starting at the line that identifies the star]. <B>Copy</B>, then select <I><B>Paste..Multiple events [date + observation] from JP</B></I>. 
+This will process all events where a positive observation was reported, 
+one-by-one.
+<li>To add a single observation from Japan to an existing report - highlight the 
+additional observation line, <I><B>Copy, </B></I>then select <B><I>Paste..New 
+observation line [one only] from JP</I></B>. This will add the event to those in the editor. 
+<br><B>Note 1.</B> To Paste a new event, you will need to click F<strong>ile... 
+New</strong>, to clear any events from the current display<li>
+	<b>Note 2. </b>From Occult 4.6, new event lines can be added to a displayed 
+	Historical observation using the Paste functionality.</ul>
+&nbsp;<p class="auto-style1"><B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="auto-style14"> OBS format&nbsp; 
+[This is an old format that is no longer used.]</span></B></p>
+<p class="auto-style1">There are two processes for importing observations that 
+are in the native format used in Occult:</p>
+<p class="auto-style1">&nbsp;Individual files can be opened/edited/saved using 
+the menu item <strong>File... Save</strong>. Multiple files can be opened, 
+edited and (typically) added to the Historical file of observations, using the 
+menu item <strong>File... Open Multiple files</strong>.<br></p>
+<ul class="auto-style3">
+<li>Similarly, individual events can be pasted using the menu item FileTo add a complete event report from a report that is already in the OBS format used by Occult - highlight all lines of the observation. <B>Copy</B>, then select <I><B>Paste..Ne w event - OBS format</B></I>. This will copy all the events into the editor, and complete all the star/asteroid details where possible.
+<li>To add one or more observation lines in the OBS format - highlight the one or several observation lines, <B>Copy</B>, then select <I><B>Paste..New observation line [or Lines] - OBS format</B></I>. This will add the events to those in the editor. 
+<br><B>Note 1</B> - unlike pasting from Euraster and JP, you can add more than one observation in a single Paste. 
+<br><B>Note 2</B> - if adding observations to an event in the Historical observations - you must first do a <B>File ... Save as  </B>with the event. Then add the observations and save the updated file. Incorporation of the updated event into the observations file will require a manual edit of the file.
+
+<p><B>Prediction line</B><br>
+<li> To add a prediction line - either from the path coordinate list in Steve Preston's site, or from the Occult path prediction. 
+Highlight (select) a line in the prediction that relates to a location near to the observers. 
+From the menu line, select <strong>with Prediction....&nbsp; Create Prediction 
+line for Observations Report... Occult</strong> Then in the 
+Observations Editor, click <strong>Paste... Prediction line</strong>.
+
+</ul>
+<p class="auto-style1"><B>IMPORTANT </B>Always check the data for both completeness and correctness before adding the event to the Historical observations file.
+
+
+
+</BODY>
+</HTML>

@@ -1,0 +1,178 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Overview</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<h2>AOTA Help topics</h2>
+<a href="AOTA%20Overview.htm">Overview and form layout</a><br><br>
+<a href="AOTA%20Read%20and%20integrate.htm">Tab 1. Read, Integrity, Set time, Bin and Normalise</a><br>
+<a href="AOTA%20Fourier.htm">Tab 2A. Fourier plot</a><br>
+<a href="AOTA%20Short.htm">Tab 2B. Short event check</a><br>
+<a href="AOTA%20Find%20events.htm">Tab 3. Find events</a><br>
+<a href="AOTA%20Select%20to%20analyse.htm">Tab 4. Select event to analyse</a><br>
+<a href="AOTA%20Analyse.htm">Tab 5. Analyse</a><br>
+<a href="AOTA%20FinalTimes.htm">Tab 6. Camera corrections, final results</a><br><br>
+<a href="AOTA%20Integrity.htm">Integrity check</a><br>
+<a href="AOTA%20Integration%20and%20binning.htm">Integration, binning & normalisation</a><br>
+<a href="AOTA%20Set%20time%20scale.htm">Set time scale</a><br>
+<a href="AOTA%20Verify.htm">Verify event times</a><br>
+<a href="AOTA%20VTI%20info.htm">VTI information</a><br><br>
+<a href="AOTA%20Hints%20and%20Tips.htm"><B>Hints and Tips</B></a><br>
+
+
+<H1>AOTA: Tab 3. Find Events</H1>
+<h2>Initial plot</h2>
+<img src = "AOTA_InitialPlot.png"><p>
+The initial plot shows the observed data points. The data points are not joined by lines - as such lines tend to erroneously suggest changes in the light signal rather than the uncertainties in the measurements.
+<p>The horizontal black line is at the mean level of the entire signal, while the two dashed green lines indicate 1 standard deviation on either side.
+
+
+<h2>Methodology</h2>
+<ul type=a>
+<li>This step conducts a cross-correlation between the observed signal and a series of test occultation signals. 
+<li>The test signal has an instantaneous drop from full light to occulted light with a following rise back to full light - and otherwise has constant light levels.
+<li>The test signal extends for the full duration of the observed signal.
+<li>The duration of the test occultation is increased from 1 frame up to 50% of the duration of the observed signal. To avoid searching for occultations far longer than expected, a maximum duration can be set by specifying the maximum expected duration of the event.
+<li>The cross-correlation evaluation for a given occultation duration is based on the entire observed signal. The cross-correlation is calculated with the location of the mid-point of the occultation in the test signal being moved from one end of the observed signal to the other end.
+<li>The cross-correlation value at any displacement <I><B>d</B></I> of the test signal relative to the observed signal is calculated using:
+<p><img src="AOTA%20XcorrlnFormula.png"><br>
+where:<ul>
+<I><B>x(i) </B></I>is the observed signal, and <I><B>mx</B></I> is the mean value of <I><B>x</B></I>;<br>
+<I><B>y(i)</B></I> is the test signal, and<I> <B>my</B> </I>is the mean value of<I><B> y </B></I></ul>
+
+<li>Initially the cross-correlation is evaluated using a test signal with an occultation duration of 1 frame. The maximum of the cross-correlation values across the length of the signal is recorded. It may be assumed that any 'real' occultation will result in a cross-correlation value greater than this amount.  The region of the plot below this value is peach-coloured. 
+<li>As the cross-correlation evaluation proceeds, the cross-correlation value will reach a peak when the width of the test signal occultation is closest to the width of a potential occultation event. As the width of test signal exceeds the width of a possible occultation event, the correlation value will decrease. A green line is drawn showing the maximum cross-correlation value at each point along the signal. Only points above the peach-coloured area (or very close to the top of that area) are significant.<br><ul>
+<font size=2>Note: The precise value of the cross-correlation function has a small dependency on the ratio of the test occultation duration over the overall signal duration - such that the peak in the cross-correlation value does not correspond precisely with the optimal width of the occultation.</ul></font>
+<li>The cross-correlation is evaluated for each displacement of the test occultation signal along the observed signal, for each 1-frame increments in the test occultation duration. Progress is indicated with a progress-bar, plus text indicating the current width of the test occultation signal. The maximum value of the cross-correlation coefficient, and the corresponding occultation duration, are retained for each point along the observed signal.</ul>
+
+<h2>Setting light levels</h2>
+<img src="AOTA_SetLightLevels.png"><p>
+To maximise the sensitivity of the cross-correlation function, the light levels used in the test signal are matched to the light levels used in the observed signal. <I>There is no need to be careful about electing the 'correct' light levels, as the cross-correlation evaluation is not very sensitive to the light level settings.</I>
+
+<p>The light levels can be set 'automatically' by clicking the 'automatic set levels' button. This is usually sufficient.
+<p>However you may wish to set the levels manually. For this purpose:<ul type=a>
+<li>At the left side of the tabbed form, check that the radio button is set to 'Full light'. Then place the cursor left-right on the plot somewhat before or after the location where you think an occultation might have occurred - and click. Note that the cursor does not have to be located at the height of the observed data - the only factor considered is the left-right location of the cursor.  When clicked:<ul type=i>
+<li>A red line will appear within the data points - at a height corresponding to the mean over the length of that line. 
+<li>The location of the mid-point of that line will appear in the box next to the radio button;
+<li>The height of that line will appear in the adjacent box; and
+<li>The radio button selection will move to <B><I>Possible occn</I></B>. </ul>
+
+<li>Now move the cursor to a location within the region where you think an occultation may have occurred, and click. This time:<ul type=i>
+<li>A short red line with dashed red lines on either side will appear within the data points in the occultation region - at a height corresponding to the mean over the length of the solid section of that line. [If the height of this line is higher than the first line, select another location...]
+<li>The location of the mid-point of that line will appear in the box next to the 2<sup>nd</sup> radio button;
+<li>The height of that line will appear in the adjacent box; and
+<li>The Signal-to-Noise ratio will be indicated for this possible occultation event.</ul></ul>
+
+<p>You should now have red lines similar to the following:
+<p><img src="AOTA_LightLevelsSet.png">
+
+<p>The Signal-to-Noise ratio<B> S/N </B>that is displayed in the box is calculated using the RMS amplitude of the noise as assessed at the level intermediate between the un-occulted and occulted light signal levels.
+
+<p>When this tab (tab 3) is entered, the 'Full light' radio button is always set. Furthermore the 'Possible Occn' radio button is always set whenever the light level for Full Light is set. This means that in routine use:<ul>
+<li>when this form first appears, set the first light level by merely positioning the cursor in a region clearly before or after the occultation, and clicking; then
+<li>move the cursor to a location within a suspected occultation region, and clicking a second time. </ul>
+However if you want to reset the location of the light levels, you will need to pay close attention to the radio button settings.
+
+<h2>Setting the expected light drop</h2>
+<p><img src="AOTA_MagDrop.png"><p>
+It can be useful to compare the variations in the light curve with the light drop expected from the known magnitudes of the star and asteroid. Functionality is provided to plot a line at the level expected during a full occultation. The line can be set in two ways:<ul type=i>
+<li>Set the magnitudes of the star, and of the asteroid (object) using the up/down boxes provided. As you set these magnitudes, the box for magnitude drop will change
+<li>Directly set the magnitude change in the relevant box (using, typically, the magnitude drop listed in predictions).</ul>
+The expected light level during an occultation is displayed below the Magnitude drop box, with a dashed green line being drawn across the plot at the relevant level (provided the magnitude drop is at least 0.05 mag)..
+
+<p>On a visual inspection, a match between a drop in the observed light curve and the expected light level can add an extra level of confidence that the event was an occultation. Nevertheless an occultation is characterised by sudden light changes separated by a uniform light level - and the absence of these characteristics is not overcome by the observed light drop being consistent with the expected light change. Conversely there are many reasons why the observed light drop will not correspond to the expected magnitude drop, including:<ul type=a>
+<li>The star being a double star, and only one component being occulted at the location;
+<li>Most asteroids have a light variation of several tenths of a magnitude as they rotate. For some asteroids the variation can be greater than one magnitude. Predicted light drops do not usually incorporate the variation in the asteroid's brightness;
+<li>When the asteroid and star have significantly different colours, the colour response of the video camera will affect how much the apparent light level appears to drop;
+<li>Calibration issues within the measurement tool that result in the zero light level from that tool not being a true zero light level.
+<li>Similarly there are situations (such as the passage of thin cloud) where a light level could drop by the expected amount and not be an occultation observation. </ul>
+
+<p>AOTA does not use the drop in the expected light level in any manner. It is provided merely for visual information, and to provide an indication that further investigations (such as whether the star is a double star) are warranted.
+
+<h2>Setting Maximum duration</h2>
+<p><img src="AOTA_MaxDurn.png"><p>
+
+The cross-correlation assessment of the light curve covers all potential widths from 1 frame up to 50% of the overall duration of the light curve. For a long light curve this can result in a lengthy evaluation time.
+
+<p>AOTA provides three ways to limit the evaluation:<ul type=a>
+<li>At any time you can click a 'Cancel' button that is displayed during the evaluation.
+<li>AOTA monitors the peak cross-correlation value. When that value is above the cross-correlation value for a single-frame event, and the maximum has not increased for 5 successive evaluations with increasing occultation width, you will get a message indicating that the program thinks it may have identified the primary event, together with the location, width, and cross-correlation value. At this point you can opt to discontinue the evaluation. If you continue, this message will not re-appear. <B><I><font color=DarkGreen>Generally speaking, if there are no other obvious occultation candidates in the cross-correlation curve, it is appropriate to discontinue the evaluation at this stage.</font>
+</I></B><li>You can specify the maximum expected duration of the occultation (in seconds). To convert this to a frame duration, the program needs to know:<ul type=i>
+<li>whether the recording has been made using NTSC or PAL - using the radio buttons in the Maximum Duration group.  [The radio button will usually be set if the CSV file was generated using LiMovie, but it has to be set manually if Tangra was used.]
+<li>how many frames have been combined (integration/binning). A box is provided to set this value. This box is pre-filled with any integration/binning done at Tab 1. However if the .csv file contains a binned signal [Tangra], the binning level will need to be set manually.</ul>
+The maximum occultation width (in data points) that will be considered is displayed. This value is 40% larger than that derived from the maximum event duration - to allow for variations arising from uncertainty in the asteroid's diameter, and ellipticity of the asteroid. Durations less than 5 seconds cannot be set - to ensure the search is not inadvertently set too short. 
+<br><B>Note: </B>The search will not extend for durations greater than 50% of the observed light chord - irrespective of the value set here.</ul>
+
+<h2>Running the search</h2>
+When the various parameters have been set, click 'Find possible occs' to start the search. A scroll-bar will appear to indicate progress. The current width of the occultation in frames (data points) is also displayed.  It will usually be the case that the search has fully identified the occultation well before the full number of widths has been considered - in which case you will get a form asking if you want to stop the search.
+<p><img src="AOTA_EventFound.png"><p>
+<font color=DarkGreen>Usually it will be appropriate to stop the search at this stage.</font> Alternatively the search can be terminated at any stage using the Cancel button that is present during the search. Once the search has been completed, the program will automatically take you to the next tab (Select event to analyse).
+
+<h1>Interpreting the Cross-correlation analysis.</h1>
+
+<h2>Data presented</h2>
+<p><img src="AOTA_FindEventDataPresented.png"><p>
+
+As the cross-correlation analysis progresses, a green line is drawn on the plot. This green line represents the maximum cross-correlation value amongst all considered occultation widths, at each point along the light curve. As the cross-correlation continues, this line will have a general trend of increasing in height.
+
+<p>Across the bottom region of the plot is a Peach-coloured bar. The top of this bar is located at the height of the maximum cross-correlation value across the light curve for an occultation lasting a single frame (data point). It can be assumed that the cross-correlation value for any 'real' occultation will be located at a height greater than (and certainly not much less than) the top of this bar. That is, attention need only be given to the portions of the green cross-correlation line that grow above this Peach-region.
+
+<p>As the cross-correlation continues, the test occultation light curve corresponding to the current peak of the cross-correlation curve is plotted as a black dashed line. The test light curve will increase in width and move in location until the width of the test light curve matches the observed light curve. The user should watch the cross-correlation curve grow - as it is possible for a well-defined short-duration event to be overwhelmed by a long-duration event of dubious validity. In general, you should not continue the cross-correlation investigation for longer than is necessary to identify the main occultation.
+
+<p>As the cross-correlation continues, the program identifies up to 6 highest points above the Peach region - corresponding to possible unique occultation events (i.e. a possible occultation which does not overlap another possible occultation. In cases of overlap, the event with the higher cross-correlation value is selected).  For these possible occultations:<ul>
+<li>If the event is more than 25 data points wide, 5 bars will be drawn across the bottom of the event:<ul>
+<li>the mean light level of the data points covered by the length of the bar is shown by a dashed black line within the bar; and
+<li>The vertical width of the bars represents the standard deviation of the mean light level of the data points covered by the length of the bar</ul>
+<li>If the width of the possible occultation is less than 25 data points - a single bar representing the mean and standard deviation of the mean across the occultation is drawn.</ul>
+
+<h2>Shape of an occultation light curve</h2>
+Putting to one side the issue of double stars, as well as extended fades associated with large stars, the primary characteristics of an occultation event are: <ul>
+<li>Short transitions between full light and occulted light
+<li>Constancy of light (flatness)between the transitions</ul>
+To assert an occultation has been observed, you must be satisfied that the light curve has these characteristics. This becomes more challenging as the signal-to-noise ratio gets smaller.
+
+<h2>Interpretation - shape of the cross-correlation curve</h2>
+In the ideal situation of an observed occultation signal having no noise, the cross-correlation curve generated using the cross-correlation formula given above will be characterised by:<ul>
+<li>A general level at zero height;
+<li>A symmetrical, straight-sided, triangular peak centred on the occultation, and having a height of 1.000 (that is, peaking at the top of the plot area.)</ul>
+This is a direct consequence of the shape of the occultation signal - a flat section of reduced brightness within an otherwise flat signal.
+
+<p>The effect of general noise in the signal is to reduce the sensitivity of the cross-correlation - the greater the general noise, the lower the maximum possible value of the cross-correlation function. That is, the height of the triangular peak can only approach 1 when the overall noise is small; as the level of noise increases, the maximum possible height for the peak of the cross-correlation function decreases.
+
+<p>Noise within the occultation region affects the shape of the 'triangle'. The greater the noise, the less the triangle will rise above the general level. Any significant non-uniformity of noise across the occultation region will affect the shape of the 'triangle'. Indications that the region is not caused by an occultation are:<ul>
+<li>the triangular region has a significantly-rounded apex,
+<li>the triangular region is not symmetric;
+<li>the sides of the triangle are significantly non-linear. </ul>
+
+<p>In the cross-correlation assessment, this shows up in the following way:<ul>
+<li>A true occultation will give rise to a cross-correlation light curve that looks like an up-side-down V (some would say - like a pyramid). That is, it has a sharp peak (that might last a small number of frames) and relatively straight sides that are symmetrically oriented about the peak.
+<li>Variations caused by cloud will usually not have a sharp peak; the sides will frequently be irregular, and will not be symmetric about the peak. They look more like a hill than a pyramid</ul>
+
+<h2>Interpretation - bars within the occultation</h2>
+These bars are useful for assessing whether the event is an occultation in the following way:
+The bars drawn at the bottom of the light curve provide a visual indication of the constancy of the light during the occultation. As a general guide, you should be able to draw a horizontal line that passes through, or close to, all of the bars drawn across the occultation. If this is not the case, then the possibility that the event was not a real occultation must be considered.
+
+<h2>Interpretation - comparison stars</h2>
+If the measurement file contains data for comparison stars, it can be useful to plot the comparison star light curves against the occulted star. In particular, any variations caused by cloud or the like will likely affect the comparison star is a similar manner.
+
+<p><img src="AOTA_EventAndCloudEvent.png"><p>
+
+This figure shows a definite occultation, and a cloud event. For the definite occultation, the cross-correlation curve is a triangle with straight symmetric sides. Also the bars at the bottom of the light curve are reasonably aligned . For the cloud event (the right hand peak), the correlation curve (i) is not sharply pointed, (ii) does not have straight sides, (iii) the sides are not symmetrical, and (iv)  the bars at the bottom are unaligned.
+
+<p>The nature of the cloud event is highlighted when the comparison star is plotted. The next diagram shows how the comparison star light (in green) drops at the same time as the occulted star..
+
+<p><img src="AOTA_CloudEventwithComparison.png"><p>
+
+
+
+
+
+
+</BODY>
+</HTML>

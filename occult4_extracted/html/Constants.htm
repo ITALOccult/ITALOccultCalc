@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Constants and values</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Constants and values used in Occult</H1>
+
+<P>The following lists various constants and values used in Occult.
+
+<p>Astronomical Unit = 149597870.700 km
+<br>Solar parallax at 1 AU = 8.79414"
+<br>Light-time for 1 AU = .00577551833 days
+<br>Gaussian gravitational constant K = 0.01720209895, k0 = 172020.9895;
+<br>Radius of Earth = 6378.137 km
+<br>Obliquity of the ecliptic J2000 = 84381.448" (1976 value) [84381.40600" (2006 value, not used)]
+<br>Radius of the Moon = 1737.4 km
+<br>Earth flattening = 1/298.257223563
+<br>Siderial day = .99726956633
+<br>Speed of light = 299792458 m/sec
+<br><br>Precession - IAU 2006. 
+
+
+<h2>Planetary rotation</h2>
+<p>Time is measured from JD 2451545. 'jd' = days, T = centuries.
+<table columns=4 border=1>
+<TR><TH NOWRAP>Planet </TH><TH NOWRAP> Pole RA (equinox of date)</TH><TH NOWRAP>Pole Dec (Equinox of date)  </TH><TH NOWRAP> Rotation</TH></TR>
+<TR><TD> Sun </TD><TD>286.13 + 0.1857 * T  </TD><TD>63.87 + 0.1531 * T   </TD><TD>84.10 + 14.1844 * jd    </TD></TR>
+<TR><TD>Mercury  </TD><TD>281.01 + (0.2768 - 0.003) * T  </TD><TD> 61.45 + (0.1064 - 0.005) * T  </TD><TD>329.71 + 6.1385025 * jd    </TD></TR>
+<TR><TD>Venus  </TD><TD>272.76 - 0.0423 * T  </TD><TD>67.16 + 0.027 * T </TD><TD>160.26 - 1.4813596 * jd      </TD></TR>
+<TR><TD>Mars  </TD><TD>317.681 + (0.7859 - 0.106) * T  </TD><TD> 52.887 + (0.4117 - 0.061) * T  </TD><TD>176.868 + 350.8919830 * jd    </TD></TR>
+<TR><TD>Jupiter I </TD><TD>268.05 + (0.1152 - 0.009) * T  </TD><TD>64.49 + (-0.0189 + 0.003) * T   </TD><TD>67.1 + 877.9 * jd    </TD></TR>
+<TR><TD>Jupiter II </TD><TD>" </TD><TD>"</TD><TD>W2 = 43.3 + 870.27 * jd   </TD></TR>
+<TR><TD>Saturn  I</TD><TD>40.5954 + (4.47549 - 0.0577) * T  </TD><TD>83.5380 + (0.4223 - 0.0066) * T  </TD><TD>227.2037 + 844.3 * jd     </TD></TR>
+<TR><TD>Uranus  </TD><TD>257.43 + 1.4279 * T  </TD><TD> -15.1 - 0.1212 * T   </TD><TD>203.81 - 501.1600928 * jd    </TD></TR>
+<TR><TD nowrap>Neptune III </TD><TD>299.36 + 0.8492 * T + .07 * Sin(357.85 + 52.316 * T)  </TD><TD>43.46 + 0.2382 * T - .51 * Cos(357.85 + 52.316 * T) </TD><TD> 253.18 + 536.3128492 * jd - .48 * Sin(357.85 + 52.316 * T) </TD></TR>
+<TR><TD>Pluto  </TD><TD>313.02 + 1.2508 * T  </TD><TD>9.09 + 0.3698 * T  </TD><TD>236.77 - 56.3623195 * jd </TD></TR>
+</table>
+
+<h2>Planet  radii</h2>
+
+<table columns=3 border=1>
+<TR><TH NOWRAP>Planet</TH><TH>Radius - in arc-sec / Earth radii / km</TH></TR>
+<!-- <TR><TD>Sun</TD><TD>961.18" at unit distance</TD></TR> -->
+<TR><TD>Sun</TD><TD>959.63" at unit distance [IAU value] <br>959.28" <A  href="http://adsabs.harvard.edu/abs/2010IAUS..264...21E "  target=_blank>from SOHO</a> not used.</TD></TR>
+<TR><TD>Moon</TD><TD>0.2725076</TD></TR>
+<TR><TD>Moon -  reduced for totality</TD><TD>0.272281</TD></TR>
+<TR><TD>Mercury</TD><TD>0.3824</TD></TR>
+<TR><TD>Venus</TD><TD>0.948866 + 0.010975 (augmentation to top of clouds)</TD></TR>
+<TR><TD>Earth</TD><TD>6378.137 km </TD></TR>
+<TR><TD>Mars</TD><TD>0.5326</TD></TR>
+<TR><TD>Jupiter</TD><TD>71398.1km</TD></TR>
+<TR><TD>Saturn</TD><TD>60000km</TD></TR>
+<TR><TD>Uranus</TD><TD>25400km</TD></TR>
+<TR><TD>Neptune</TD><TD>24300km</TD></TR>
+<TR><TD>Pluto</TD><TD>1180km</TD></TR>
+</table>
+
+<h2>Planet oblateness and ring radii
+<table columns=3 border=1>
+<TR><TH NOWRAP style="height: 25px">Planet  </TH><TH style="height: 25px">Oblateness  </TH>
+	<TH style="height: 25px">Ring radii  </TH></TR>
+<TR><TD>Jupiter  </TD><TD>0.064809</TD><TD> 1.3988, 1.7177, 1.7205, 1.8072, 2.9961  </TD></TR>
+<TR><TD> Saturn </TD><TD>0.09796 </TD><TD> 1.1117, 1.2360, 1.5262, 1.9496, 2.0251, 2.2694, 
+	2.3267  </TD></TR>
+<TR><TD>Uranus </TD><TD>0.03  </TD><TD>1.5494, 1.6370, 1.6523, 1.6659, 1.7497, 1.7868, 1.8463, 1.8635, 1.8894, 1.9570, 
+	2.0009   </TD></TR>
+<TR><TD>Neptune </TD><TD>0.0259  </TD><TD>1.6920, 2.1483, 2.2371, 2.3260, 2.5412   </TD></TR>
+<TR><TD>  </TD><TD>  </TD><TD>   </TD></TR>
+</table>
+
+
+</BODY>
+</HTML>

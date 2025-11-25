@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Get Gaia DR2 position</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Get Gaia DR2 position from VizieR</H1>
+<!-- Insert Header in above line -->
+<P>This form is provided to obtain Gaia DR2 star positions for stars irrespective of magnitude. 
+It is called from the Asteroid Observations editor.</P>
+
+
+
+<p>Where the user has the star catalogue files Gaia14_DR2 or Gaia11_DR2, and the 
+user retrieves a star position, occult will retrieve a Gaia DR2 position from 
+those files - assuming the star is present in Gaia DR2 and the star's magnitude 
+is brighter than the faint limit of these files (14 and 11 respectively)</p>
+<p>This form allows the user to retrieve Gaia DR2 data irrespective of the 
+star's magnitude. The form has the following appearance:</p>
+<p><img align="middle" src="GetGaiaFromVizieR.PNG" alt=""></p>
+<h2>Identifying the star</h2>
+<p>The retrieval of the Gaia position is based on the star's coordinates There 
+are two ways of specifying the coordinates:</p>
+<ol>
+	<li>Manually enter the coordinates in the RA and Dec boxes at the top-right 
+	of the form; or</li>
+	<li>retrieve coordinates from a local copy of UCAC4 or USNO-B1, using the 
+	one and Sequence number fields at top left, and clicking the button 
+	underneath</li>
+</ol>
+<p>When this form is activated from the Asteroid Observations Editor, the UCAC4 
+or USNO-B1 fields are populated (when available) from the editor. </p>
+<p>Where the star coordinates are specified using the star identification at top 
+left, the coordinates specified for the search have had proper motion to 2015.5 
+applied (2015.5 being the epoch of Gaia DR2). Ifyou are manually entering the 
+star coordinates, you should try to ensure the coordinates you specify are for 
+2015.5, and not 2000. </p>
+<h2>Retrieving the Gaia DR2 coordinates</h2>
+<p>To retrieve the Gaia DR2 coordinates, click the Get Gaia DR2... button at the 
+top right. It will take several seconds or more to send the query to VizieR and 
+retrieve the response. VizieR has 9 sites around the world, and you can select 
+which site you want to use from the menu item <strong>Vizier site...</strong>. 
+[However some VizieR sites do not have a full collection of catalogues.]</p>
+<p>The search conducted by this form retrieves all stars within 4 arc sec of the 
+specified position. This may result in more than one star being returned. Up to 
+4 stars will be listed, sorted by distance from that position.</p>
+<h2>Selecting the star</h2>
+<p>If you have used a reliable source of the star's position to specify its 
+coordinates at 2015.5, the relevant Gaia DR2 entry should be the first listed 
+entry.</p>
+<p>However you should scan through the list to make sure you have correctly 
+specified the relevant star. Have particular regard to the magnitudes. Also, 
+whether proper motion has been specified (a star with proper motion specified is 
+more likely to be the relevant star than one with no proper motions). The 
+character sequence <strong>NaN</strong> indicates no proper motion value.</p>
+<p>To select a star, check the corresponding radio button to its left. The first 
+radio button is fixed to 'none' - to provide an option where no coordinates are 
+returned.</p>
+<h2>Returning the star coordinates</h2>
+<p>Once you have checked the relevant radio button, click Return selected star. 
+You will be taken back to the Observations editor, where the star's position for 
+the date of the event (corrected for proper motion and parallax) will be 
+displayed.</p>
+<p>&nbsp;</p>
+
+
+
+</BODY>
+</HTML>

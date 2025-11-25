@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Lunar Results Overview</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1><A NAME="Lunar Results Main"></A>Lunar Occultation Observations  - Overview</H1>
+<!-- Insert Header in above line -->
+<P>This form provides functionality to record and analyse lunar occultations</P>
+
+<h2><br>Add / Edit / Plot observed Lunar Occultations</h2>
+<p>This is the primary tool for recording and analysing occultation observations. The features that are provided are:<ul>
+
+<b>Editor</b><br>
+<li>A form for the 'header' details of the Report. To set default values to use in later reports, you can read in an existing report, and set the values used in that report as default values to use in any new report.<br></li>
+<li>A form for entering/editing site details and observer names, with ability to set a site (such as your usual site) as a default site, and to insert the default site details in a new report. You can also move/sort/renumber the entries, which can be useful when entering the results from a graze expedition.<br></li>
+<li>A single form for entering/editing the observations, where all fields can be viewed at once. The event type (D, R, etc.) is set by radio-button. Automatic calculation of the residual as you enter the data. 
+The ability to identify the star (useful if you observe an 'unpredicted' occultation - if the star is in the XZ catalogue, you can easily identify it.) Wherever possible, information required in the ILOC report is set by selecting the appropriate item from a drop-down box.  You can also move/sort/renumber the entries, which can be useful when entering the results from a graze expedition.<br></li>
+<li>For grazing occultation events, it can happen that there are more than one group of observers, and each group prepares its own ILOC report. You can merge reports prepared by observers or coordinators into a single combined report, with up to 52 sites/observers [A-Z plus a-z], and no limit on the number of events.</li>
+<li>'76' and '78' column report formats can be read, in addition to the Y2K compliant format used in Occult. [Note: all file output is in the Y2K compliant format used in Occult, which is accepted by ILOC.]</li>
+<li>Sites can be plotted in GoogleEarth (particularly useful for detecting data entry errors.)<br></li>
+
+<B><br>Reduction of observations</B><br>
+<I>The reduction of observations is accessed from the editor. You must read a file into the editor before it can be reduced.</I> The functionality provided is:<br>
+<li>a choice of whether to correct the heights from the Watts Charts by the corrections of  <A  href="http://adsabs.harvard.edu/abs/1981MNRAS.196.1013M"> Morrison & Appleby</a></li>
+<li>once generated, the residuals can be sorted by a number of fields, such as observer name, date, residual, PA, etc.<br></li>
+
+<B><br>Plot results</B><br>
+<I>This functionality is limited to grazing occultations. It is accessed after the observations have been reduced. It plots the residuals against the lunar limb. </I>The functionality provided is:<br>
+<li>Residuals plotted against the limb. Placing the cursor over the data points will display basic observation details above the plot. </li>
+<li>Vertical scale adjustable to better highlight detailed features. Ability to adjust the range of Axis Angle to plot, again to better highlight detailed features.</li>
+<li>Ability to plot observations from past grazes and ordinary occultations. And when such results are plotted, to list those grazes that have been plotted. Also, placing the cursor over the past observations will display basic details of that observation above the plot. </li>
+<li>Ability to display the limb as shown in the Watts charts, together with a chart of the librations of each of the photographs used to generate the Watts chart at that particular Axis Angle</li>
+</ul>
+</p>
+
+<h2><br>Determine the P.A. and separation from lunar occultations</h2>
+When a lunar occultation of a double star has been observed from two or more widely spaced locations, it is possible to determine the position angle and separation of the components using gthis option.
+
+
+<h2><br>Historical lunar occultations</h2>
+<p>Occult maintains files of ordinary lunar occultations observed since 1623. The files are held in the directory \Resource Files. The reduced observations are used when drawing a lunar graze profile, or in the analysis of Baily's Beads. They are also an invaluable archive of observations to access when researching issues.</p>
+
+<h3>View / analyse historical observations : 1623 - now</h3>
+<p>This option provides a range of tools to investigate the record of past occultations. If an observer reports something unusual at an occultation, or you are planning an important observation and want to know as much as possible about the star, this allows you to investigate almost 400 years of observations.</p>
+<p>The historical files are in two groups. Those where the data was collected by Royal Greenwich Observatory and those collected by ILOC. The observations can be accessed in three ways:<ul>
+
+<li>Extract all observations for a particular star and analyse those observations. Each observation is reduced on a line-by-line basis, or all observations of that star can be reduced and written to a file in the  \Observations\Results directory with the file name being the star number. Tools are provided to select/highlight events that might indicate a double star.<br></li>
+
+<li>Read a file of sites into memory. The sites can be sorted by various parameters. From the site file you can create a report of all observations recorded at that site with the results being placed in the Occultation editor (where they can be analysed and saved.) If you want, you can identify all your own observations from various sites, and create a consolidated file of all your observations. <br></li>
+
+<li>Read an Archive file into memory, and scan through the observations - with observations being reduced on a line-by-line basis. [Note - loading the Archive file into the form is slow, caused by the file size.]</li>
+</ul></p>
+<ul><B>Example</B>. Assume an observer reports that they thought the occultation of ZC3052 indicated a double star, and was interested in knowing whether anyone else had observed it as a double star.  You will be able to establish that the star has been recorded at 76 occultations, with the first being in 1855. And that 9 of those observations indicate double star phenomena.
+</ul>
+
+
+<h2>Historical grazing occultations</h2>
+<p>Grazing occultations are specially flagged in the observation files, and can be separaetly analysed. The reduced observations are used when drawing a lunar graze profile or in the analysis of Baily's Beads. They are also an invaluable archive of observations to access when researching issues.</p>
+<h3>View / analyse historical grazes : 1706 - now</h3>
+<p>This function allows the investigation of past grazing occultations. Grazes can be searched on the basis of date, star, or by observer name. When the grazes are listed, right-clicking on a particular graze will result in the observation being placed in the occultation editor - where it can be reduced and plotted.</p>
+<ul><B>Example</B>: if you have observed a grazing occultation in the last 30 years, specify your family name in the search criteria, and conduct a search. This should list all grazes that you participated in. [Of course, if your name is a common name, it might list grazes observed by other people having your family name. And name information is generally not available for grazes observed before about 1974.] Then you can right-click on any of your grazes to transfer the data into the editor, then reduce the observations, plot the results, and compare them to the residuals from other grazes.</ul>
+
+
+
+<!-- <h3>Reduce main file of grazes</h3>
+<p>This function reduces all the observations in the main file of grazing occultation observations. This option is run if the data in the file has been revised. It can also be run to replace a corrupted file of reduced grazing occultations. The option will take a few minutes to run.</p>
+
+<h3>Reduce file of recent grazes</h3>
+<p>This function reduces all the observations in the main file of grazing occultation observations. This option is run if the data in the file has been revised. It can also be run to replace a corrupted file of reduced grazing occultations. The option will take a few minutes to run.</p>
+-->
+
+
+<!-- 
+<h3>Reduce selected historical file</h3>
+<p>This function reduces all the observations in the file indicated in the drop-down box above the button. This option is run if the data in the particular observation file has been revised. It can also be run to replace corrupted reduced observations files. The option will take quite a few minutes to run.</p>
+
+<h3>Reduce ALL historical files</h3>
+<p>This function reduces all the observations in ALL the observation files present. It will take MANY minutes (or hours, on a slow computer) to complete.</p>
+-->
+
+</BODY>
+</HTML>

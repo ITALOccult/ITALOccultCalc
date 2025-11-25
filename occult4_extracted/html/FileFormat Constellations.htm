@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Constellations</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Constellations - files for boudaries and identification</H1>
+<P>The files here are used to draw the boundaries of constellations, and identify the constellation for a speciffied RA and dec. The original paper is given <A href="http://articles.adsabs.harvard.edu/cgi-bin/nph-iarticle_query?1987PASP...99..695R&amp;data_type=PDF_HIGH&amp;whole_paper=YES&amp;type=PRINTER&amp;filetype=.pdf" target = _blank>here.</a>, and the dataset can be downloaded from <A href="http://cdsarc.u-strasbg.fr/viz-bin/Cat?VI/42" target = _blank>here</a>.   </P>
+
+<h2>ConstLinesNS.dat, ConstLinesEW.dat</h2>
+
+<p>These two files contain the co-ordinates of the start and end of the lines defining the borders of the constellations. The lines are those of the IAU 1930, and are specified in the equinox of 1875. [At that equinox, the lines are coincident with the lines of RA and declination]. The files are structured as follows:
+
+<p>Data in each file is held as variable-length ASCII data, with CRLF between each data element. The data in the two files are:
+
+<h3>ConstLinesNS.dat</h3>
+<p>380 records. Each record consists of:<ul>
+<li>Declination of North end of line
+<li>Declination of South end of line
+<li>Right Ascension of line</ul>
+
+<h3>ConstLinesEW.dat</h3>
+<p>397 records. Each record consists of:<ul>
+<li>Right ascension of west end of line
+<li>Right ascension of east end of line
+<li>Declination of line</ul>
+
+<p>Right ascensions are expressed in decimal hours; declination in decimal degrees.
+
+<p>To plot a line of the constellation boundary, it is necessary to precess the line to the equinox of the chart being drawn. That transformation is non-linear along the length of a line - so that the transformation will generally need to be done for a series of points along the line [especially for long lines.]
+
+
+<h2>Constell.id</h2>
+
+<p>This file contains data to enable the identification of the constellation, for any specified co-ordinate. The co-ordinates must be referenced to the 1875 equinox.
+
+<p>357 records. Each record consists of:<ul>
+<li>West right ascension
+<li>East right ascension
+<li>Declination 
+<li>Constellation number</ul>
+
+<p>To identify a constellation:<ul type=1>
+<li>scan through the file to the first record having a declination &lt= the specified declination;
+<li>from (and including) that point, scan to the first record where the East right ascension &lt= the specified right ascension;
+<li>from (and including) that point, scan to the first record where the West right ascension &gt the specified right ascension.
+<li>Repeat steps 2 and 3 until a record is found where the record satisfies both 2 and 3.</ul>
+The Constellation number for that last record identifies the constellation.
+
+<h2>Constell.nam, Constell.abb</h2>
+
+These two files contain, respectively, the full names of the constellations, and the three-letter abbreviation of the name. Data is ordered alphabetically by full name, and in the ordered referenced from the Constell.id file.
+
+
+</BODY>
+</HTML>

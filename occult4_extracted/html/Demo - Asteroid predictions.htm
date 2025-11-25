@@ -1,0 +1,370 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Demonstration of Asteroid predictions</Title>
+<style type="text/css">
+.auto-style1 {
+	font-weight: normal;
+}
+.auto-style2 {
+	color: #800000;
+}
+.auto-style3 {
+	color: #0000FF;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<h1>Overview of the prediction process</h1>
+<P>An asteroidal occultation consists of a path across the Earth having a width 
+equal to the diameter of the asteroid. That is, the width of the path is only a 
+fraction of the Earth's diameter. Furthermore, some of the path may be in 
+locations which are sunlit at the time of the occultation, and/or may be in 
+locations which are relatively inaccessible.</P>
+<P>&nbsp;Occult generates predictions in a two-stage 
+process. </P>
+<h4>Stage 1 is</h4>
+<ul>
+	<li>specify the asteroid or asteroids to be considered in the search;</li>
+	<li>select the star catalogue to be used in the search;</li>
+	<li>set the start and end of the period to be covered by the search; and</li>
+	<li>generate a set of Besselian elements for all events where an edge of the 
+	occultation path comes within a specified distance of the Earth's center 
+	(default distance is 1.01 Earth radius - with allowance for the effects of 
+	stellar diameter being incorporated where appropriate).</li>
+</ul>
+<p>The <em>Help</em> topic for Stage 1 is
+<a href="#14/Help/html/Asteroid predictions - Search.htm">here</a></p>
+<h4>Stage 2 is</h4>
+<ul>
+	<li>filter the list of events to those that are of potential 
+	interest. Those filters include parameters like solar elongation, local 
+	altitude, minimum duration, minimum magnitude drop, faintest star magnitude, 
+	and distance relevant to the observer's location.</li>
+	<li>save the list of events for future reference</li>
+	<li>create a 'personal feed' for Occult Watcher</li>
+	<li>sort the events according to a range of parameters</li>
+</ul>
+<p>At any stage, selected events can be displayed, with a wide range of related 
+information being accessible.</p>
+<p>The <em>Help</em> topic for Stage 2 is
+<a href="#14/Help/html/Asteroid predictions - ListAndDisplay.htm" target="_blank">
+here</a></p>
+
+<H1>Demonstration of Asteroid predictions</H1>
+
+<p>Generating predictions of asteroid or planet occultations is a three-step process<ul type=1>
+<li>ensure you have a current set of orbital elements for asteroids
+<li>compare the position of the asteroid or planet with a star catalogue to 
+generate a list of global;
+<li>filter the events using a range of selection criteria to create a list of predictions 
+of interest to you.</ul>
+
+<B><p><B>NOTE:</B> <span class="auto-style1">The initial installation of </span>Occult<span class="auto-style1"> does not include any 
+catalogues suitable for Asteroid predictions. Three relevant star catalogues can 
+be downloaded from the </span>Downloads<span class="auto-style1"> form of </span>Occult:
+<ul>
+	<li>Tycho2 
+(pre Gaia) (#32) <span class="auto-style1"><em>[ a 64MB download]</em></span>,
+	</li>
+	<li>Gaia11_DR2 (#41)<span class="auto-style1"> <em>[ a 70MB download<B>] </B>
+	</em>and </span></li>
+	<li>Gaia14_DR2 (#40) <B><span class="auto-style1"><em>[ a 847MB download]</em></span></B>.
+	</li>
+</ul>
+<p><span class="auto-style1">Occult can also use <strong>UCAC4</strong>, <strong>UCAC5</strong> &amp; 
+<strong>PPMXL</strong> - which need to be 
+sourced elsewhere. This example assumes you have downloaded the </span>Tycho2 
+(preGaia)
+</B>
+catalogue 
+(download option <strong>#32</strong>).
+</p>
+<h2>Step 1 - Create a current set of orbital elements</h2>
+<ul type=1>
+<li>Select the <B>Maintenance </B>tab, and click the <B>General downloads </B>
+button to open the Downloads form.<li>Make sure you are internet connected.
+	<li>The preferred source of elements is <strong>MPCORB</strong>. However we 
+	want to have <strong>Astorb</strong> available as it contains error 
+	estimates that are not present in <strong>MPCORB</strong> or <strong>
+	AstDyS-2.</strong><li>The conversion process also makes use of information 
+	contained in the files relating to <strong>Binary Asteroids</strong> 
+	(download <strong>#6</strong>), <strong>Asteroid Rings</strong> (Download<strong> 
+	#7</strong>), <strong>Asteroid Diameters</strong> (download <strong>#8</strong>) 
+	and <strong>Asteroid Classes</strong> (download <strong>#9</strong>). You 
+	should ensure these files are up-to-date<li>Under <B>Files for Asteroid Predictions</B>, click the <B>Download</B> button next to <B>Astorb 
+	(option #24)</B>. 
+<li>After a few seconds, a progress bar will appear showing download status. If you cannot connect to 
+<strong>Astorb</strong>, try clicking the adjacent button for the VizieR Mirror 
+(option 24a).
+<li>When the download completes, click <B>OK </B>in the confirmation box.  The file will be unzipped, and then a conversion form containing three boxes will automatically open. 
+We do not want to convert <strong>Astorb</strong> at this time - so simply close 
+this form.<li>The downloads form should still be open. Click the <B>Download</B> button next to 
+	<B>MPCORB (option #22)</B> - which is the file we want to use 
+	<li>When the download completes, the conversion form containing three boxes will automatically open. 
+	<li>In box <B>1 Select File</B>, check <strong>MPCORB</strong>.
+	It should be pre-checked) 
+	<li>In box <B>2 Set selection criteria</B>, set the diameter to 15 km, and check the 
+	<B>Numbered minor planets only </B>check box.<li>Box<B> 3 Specify 
+	'mandatory' minor planets</B> has several asteroids listed. 
+Do not make any changes here at this time. But if later you want to generate predictions of a particular small asteroid, you can enter the number here to make sure the asteroid is included in the file.
+	<li>Click <strong>Convert</strong>. A file dialogue box will appear. It should show the file 
+	<em>MPCORB.dat</em> in the directory Downloaded Files. In the <B>Name </B>section of the dialog, double-click 
+	<em>MPCORB.dat</em>. The conversion will now take place.
+	<li>Click <B>OK </B>in the confirmation box.
+	<li>Close the <B>Downloads </B>form.</ul>
+<p>You now have a file of asteroid elements that can be used to search for 
+occultation events. That file is located in the <em>Occult 4\Resource Files\</em> 
+directory with the name<em> AsteroidElements.csv</em>. The format is described
+<a href="#14/Help/html/FileFormat AsteroidElements.htm">here</a>.</p>
+
+<h2>Step 2 - Search for occultation events</h2>
+<ul type=1>
+<li>On the Occult Main Menu, select the <B>Asteroid predictions </B>tab, and click the <B>Search for, 
+&amp; list, occultations </B>button.
+<li>In box <B>1 set the date range for the Search</B>, click the button for <B>2018</B>. [If you are doing this after 2018, set the date range to cover all of 2018].
+<li>In box <b>2</b>, <b>set the search for Minor Planets</b>.
+	<li>In box <B>3 Select star catalogue for search</B>, <br>* select the <B>Tycho2 
+	(pre Gaia) </B>catalogue:<br>* Leave the three check boxes at the bottom of 
+	box 3 unchecked.
+<li>In box <B>4 Select the minor planets for the search</B>, click the <B>Set range of minor planets </B>
+button. In the form that appears, read the text. But click OK without entering anything into the text field.
+<li>In the list of asteroids that now appears, highlight asteroids 1 through to 30. Then click the <B>OK</B> button at the bottom of the screen. Note how the range of selected 
+asteroids is now indicated on the search form next to the <B>Set range of minor planets </B>button.
+	<li>Repeat step 5, but this time enter <strong>-40</strong> into the text 
+	field in the form that appears. Note how the range is now set to cover the 
+	asteroids 1 to 40.<li>Ensure the diameter in the line for <B>Exclude minor planets smaller than  </B>is set to 15 km. The check box for <B>User file of elements </B>
+should be clear. The drop-down box labeled 'Limit search to' should be set to
+<strong>All </strong>(this box limits a search based on taxonomy). The check box 
+to <strong>Exclude if duration less than</strong> should be checked, with a 
+value of 2 secs being a reasonable value.<li>Box <B>5</B> is only enabled when the asteroid is known to have one or more moons with known orbits. If this box is enabled, read the Help topic for the Search form to learn how to use this box.
+<li>In the group of boxes at the bottom of the form, the button for <B>1995 Oct 10 == 2023 Feb 23 </B>should be 
+greyed out (disabled). If not, click it. If you are going to generate a 
+prediction for a date outside this range, you will need to click other buttons so that the entire date range for the prediction is covered.
+<li>In box <B>6, Set the file to save the occultation elements from the search</B>, 
+<br>* the check box to <strong>Automatically save the search results</strong> 
+should be left unchecked.<br>* leave the filename as generated. <li>In box <B>7 Do the search</B>, set the <B>Increase miss distance </B>to zero. 
+<br>* Note at the bottom-left of this box the source of asteroid elements being 
+used, and their date;<br>* At the bottom-right of this box, ensure the check box
+<strong>Clear the previous results from Memory</strong><b>&nbsp; is checked.<br>
+* </b>click <b>Search</b>.
+<br><li>You will now see events listed as the search progresses. Progress can be monitored by the progress bar; the 
+name of the asteroid currently being considered is listed at the top of the display box.
+	<li>When the search is completed, you will be taken to the form <strong>List &amp; 
+Display</strong>, where the events are listed in chronological order.
+</ul>
+<h2>Step 3 - List &amp; Display predictions</h2>
+<ul type=1>
+	<li>The number of events listed is shown at the top left of the form, under 
+	the button List Events. In the test run conducted for this topic, 535 events 
+	were found (but this may change as a result of different orbital elements 
+	being used).<li>Generally, you will not be trying to observe events when the 
+	solar elongation is small. In the orange filter box, check <strong>Solar 
+	elongation &gt;</strong>, and set a value of <strong>30</strong>. 
+	Click <strong>List Events</strong>, and note how the number of events is 
+	reduced to 426.<li>Events with a small magnitude drop can be hard to detect. 
+	In the orange box, check the <strong>Magnitude drop &gt;</strong>, and set the 
+	value to <strong>0.2</strong>. Click <strong>List Events</strong>, and 
+	notice how the number of events is reduced to 337.<li>Click the menu item <strong>Sort events... by star magnitude.</strong> The list will now be sorted with the brightest stars at 
+the top of the list. Using <strong>Sort events</strong>, sort the list by date.<li>
+	Now let us identify events that might be observable in either North America 
+	or Europe. In the purple filter box check the <strong>Path crosses </strong>
+	check box. Then enter the following longitude/latitude values :&nbsp; (-100, 
+	50), (30, 50), (-100, 30), (30, 50). (You can pre-define regions using
+	<strong>File... Edit list of regions</strong>, and select predefined regions 
+	using <strong>File...&nbsp; select region...</strong>) This will select all events where the 
+	occultation path crosses some part of the quadrilateral set by those 
+	coordinates. Click <strong>List events</strong>. 33 events are listed.<li>Click the menu 
+	item <strong>Sort events... by star magnitude.</strong> The first entry is 
+	an occultation by 25 Phocaea on 2018 Jan 23. Place the cursor on the line, and click to select it. This will bring up a map showing the occultation path, with details given in the header area.
+<li>On the map, place the cursor somewhere on the path on one side of the Earth 
+globe and double-click. Note how the coordinates of that location appear at the 
+top of the form, just above the plot. Do the same on the other side of the Earth 
+globe, and note how the Earth appears to rotate a small amount. This rotation 
+represents the orientation of the Earth at the selected location at the time of 
+the occultation at that location.
+<li>Click the button at top left with '4' </B>on it. Note how the map is drawn at a larger scale. Try the other numbered buttons to see the effect.
+<li>Click the button '16'. Select the menu item <strong>Options... Export 
+buttons - enabled</strong>, At the top right of the form there will be two 
+drop-down boxes for Sites and Names. Select the <B>USA Short.site </B>from the left drop-down box. You may notice some small circles drawn on the map. On the right-hand drop-down box, select 
+<strong>all</strong>. </B>The names of towns will appear on the map. [To control how sites are drawn,
+<a href="#14/Help/html/Site editor.htm">edit the Site file</a>.] <br><li>Anywhere on the map, right-click, and select <B>View in GoogleEarth</B>. The centre line of the occultation path is green; the path limits are blue, and the 1-sigma variation of the path limits are shown in red.
+<Ii> While in GoogleEarth, under the View menu item, click <B>Switch to Google sky</B>. Now place the cursor back on the Occult map of the occultation path, right-click, and select <B>View star in GoogleSky</B> 
+	a second time. GoogleSky will now zoom in on the star. [Close GoogleEarth/Sky]<br><li>On the Occult map, right-click, and select 
+	<strong>Path coordinates</B></strong>. Note the effect of checking the <B>Include path where sun is up</B>. Close the <B>Path coordinates </B>box.
+
+<br><li>On the Occult map, right-click, and select <B>Path distances for multiple locations</B>. In the drop-down box, select 
+	<strong>North America.site</strong> file. In the menu item <B>Set distance limits</B>, select <B>Limit output to 1-sigma</B>. Note the listing of a number of cities, and their distance and direction from the occultation path. Change the site file to <B>World Main.site</B>, and note a different set of sites. Close the <B>Asteroid - Multi-location predictions
+	</b>form. <li>On the Occult map, right-click, and select <B>Prepoint stars</B>. 
+	The list of stars can be used to pre-point a telescope prior to the occultation so that the Earth's rotation will bring the occulted stars into the center of the field at the time of the occultation. 
+	If you have downloaded the SAO catalogue from the Downloads form under 
+	option #42, the SAO number will be given for all stars (if one exists). This 
+	can assist setting GoTo type telescopes, which typically have the SAO star 
+	number available as a star identifier. [Note - you can retrieve SAO numbers 
+	using VizieR by checking the box at the top-right of the form - however this 
+	is a very slow process.]<li>Increase the Lead-time in the box by an hour. Note how additional pre-point stars are now displayed. <li>Assume the occultation at 'your' location will be at 23h 3m 30s. Enter that time in the field above the list, and check the <B>Event Time </B>box. Note how the list changes to give the actual time the telescope needs to be pointing at the pre-point star.
+
+<li>Adjust the fields for <B>Magnitude </B>and <B>separation</B>, and see how the list changes when you click <B>List stars</B>. Note that the value in the fields for Magnitude and Separation are retained between sessions.
+<li>Close the <strong>Asteroid - Pre-point stars</strong> form. <li>On the Occult map, right-click, and select <B>Show large star chart. </B>Adjust the map settings at the top of the form to see how the map changes. <I>
+	<br>Note 1. the default values for the star chart are set in the Maintenance 
+	tab, User Settings, group 9 Star Chart start-up<br>Note 2. the map is capable of handling the Full NOMAD catalogue, and the PPMXL catalogue, plotting stars to mag 21. When using these catalogues, make sure you set the field size to a small value - as otherwise the plot will be crowded, and the 
+	time to draw the plot will be lengthy.</i><li>Click <B>with Plot.. Mirror</B>, and note how the map is drawn mirror-reversed 
+	- for use when images from your system are displayed mirror-reversed.
+<li>Click <B>with Plot... Display in GoogleSky </B>The image in Google Sky covers a region similar to that displayed in the Occult map. [Make sure the Occult Map is <I>NOT drawn as Mirror!] </i>Note that you will have to do this twice - the first time to get Google 
+Earth to change to Google Sky, and then to display the actual star field.<li>Return now to the 
+	<B>List &amp; Display form. </B>In the purple box, uncheck the <B>Path 
+	crosses</B> box.<B> </B>In the yellow box: <B>
+<br>* </B>Check <B>Visible from... </B>, and set the longitude to 0, latitude to +52 (London)
+	<B>
+<br>* </B>Check the <B>Distance of asteroid from star... </B>box, and set the 
+	distance to 0.2 arcsecs<B>. <br>* </B> Click <B>List </B>events. Two events are 
+	listed.<B><br> </B>Repeat this, but with <B> <strong>Distance from path &lt;&nbsp; </strong>
+	</B>checked, set a distance of 400km, and click<B> <B>List events.</B></B> Two events 
+	are listed. Notice that they are not exactly the same as the previous two.<li>
+	Click on the first event to see the world map. AT the top left of the form 
+	there are buttons for the plot scale, with arrows at either end. Note how 
+	clicking the arrows will move the display from one event to the next. In 
+	this case note how both paths pass close to London.<li>Uncheck the <strong>
+	Visible from </strong>box, and click <B>File... plot paths on a map.</B>
+	Note a map showing paths centered on the location set in the yellow box. 
+	Change the map limits and click <B>Redraw</B>, and note the change in the 
+	number of paths shown.<li>Note the menu item <strong>File... Saved listed 
+	events</strong>. This enables you to save the occultation data for each of 
+	the events listed.<li>Note the menu item <strong>File... Save all events</strong>. 
+	This enables you to save the occultation data for all events that were found 
+	in the search - irrespective of whether they are displayed with the 
+	currently set filters.<li>Note the menu item <strong>File... Save listed 
+	events as a 'Personal' OW feed</strong>. This allows you to save the 
+	displayed events in a file (<strong>OccelmntSubsetForOW.dat</strong>) 
+	designed for use with <strong>OccultWatcher</strong>. You merely have to coy 
+	that file form the Occult 4\Generated files]\ directory to the <strong>
+	OccultWatcher\Personal\</strong> directory, and set <strong>OccultWatcher</strong> 
+	(Under <strong>configuration... prediction feeds</strong>) to use the
+	<strong>Personal feed</strong> - and you can have your own personal set of 
+	predictions included in <strong>OccultWatcher</strong> for your reminding 
+	and use.<li>It is possible that you will have many forms open at this stage. 
+	Locate the main <strong>Occult </strong>form (using the task bar at the 
+	bottom of the screen, if needed). In the menu of the main form click <strong>
+	Cascade forms</strong>, and note how the forms are cascaded.</ul>
+
+<h2>Occultations by Planets</h2>
+ <ul type=1>
+<li>Return to the main menu, and click the <B>Search for Occultations</B> button.
+<li>In box <B>1</B>, set the search period to be 2018. In box<B> 2 </B>set the search to be for Planets. In Box <B>3</B>, set the star catalogue to <B>Tycho2 
+(pre Gaia)</B>. In box <B>4</B>, set the planet to <B>Saturn </B>and check <B>Include main moons, </B>
+leave the check box for <strong>For main planet, exclude stars fainter than 
+magnitude X</strong> clear, and clear the check box for <strong>Include small 
+moons.</strong> [<em>If you want to add the search results to the previous 
+search in memory, clear the check box </em><strong><em>Clear the previous 
+results from Memory</em></strong><em>. This example proceeds on the basis that 
+this box is checked</em>.] Then click <B>Search</B>.
+	 <li>Select the occultation by Saturn on 2018 Jun 15. The world map will be drawn.
+<li>Right click anywhere on the map, and select <B>Planet contact times for multiple locations</B>. On the form, change the site file to Australia.sites, and note the contact times 
+with both the planet and the ring system
+<li>Right click anywhere on the map, and select <B>Show planet appearance</B>. At the top of the form reduce the hours of the plot to 
+16 hrs. set the plot duration to 0.10 days, plot interval to 0.001 days, and 
+move the slider to the far left - which will start the animation. Adjust the slider to vary the plot scale. 
+Note how at large plot scales you can see the Earth's rotation during the event.<br><li>Return to the <B>global summary of events</B>. Select the occultation by 
+	 Iapetus on 2018 Jul 21 - the world map will be drawn. On the world map, right click and select<B> Show planet appearance</B>.
+	 Adjust the plot scale so that Saturn appears in the plot (Iapetus is 
+	 located a long way from Saturn for this event.)</ul>
+
+<B>
+
+
+
+<h1>To generate a 'personal' OccultWatcher feed.</h1>
+</b>
+<p>Individuals can generate their own 'personal' feed for OccultWatcher, 
+allowing&nbsp; them to use the OccultWatcher functionality to manage events of 
+interest to them. <span class="auto-style3"><strong>Importantly, if the user indicates in OccultWatcher they 
+are planning on observing a 'personal' event, that event will become visible to other 
+OccultWatcher users who have the Personal Predictions feed 
+selected. </strong></span>That means that others may join you in observing 
+events in your 'personal' events.</p>
+<p>To create a personal OccultWatcher feed, simply click Save all listed events as a 'Personal' OW feed 
+This saves the 
+occultation elements of the events that are displayed in a file called <strong>OccelmntSubsetForOW.dat</strong>, in the Occult subdirectory <span class="auto-style2">\Generated Files\</span>. If you are running <span class="auto-style2">OccultWatcher </span>'OW' on your computer, simply 
+copy this file to the OW subdirectory <strong>Personal</strong> (making no 
+change to the file name), and the events 
+will be included in <span class="auto-style2">OccultWatcher</span> (after 
+OccultWatcher has done an feed update). This way, you can generate your own list of 
+events specific to your location, and have them appear in 
+	<span class="auto-style2">OccultWatcher</span>. 
+You can learn more about this option in <span class="auto-style2">OccultWatcher
+	</span>from the <span class="auto-style2">OccultWatcher </span><em>Help 
+	</em>system, under <em>Configuration </em>(towards the end).</p>
+
+<B>
+
+<h1>Advanced users - generating files for a web site</h1>
+</b>
+<p>Occult supports the generation of files to mount on a web site such as
+<a href="http://www.poyntsource.com/New/Global.htm">here</a>, as well as files 
+needed to support a 'feed' in <a href="http://www.occultwatcher.net/">
+OccultWatcher</a>. This example assumes you have a list of events displayed in 
+the List &amp; Display form<h2>To generate a feed for OccultWatcher.</h2>
+Under <strong>Generate predictions for all listed event</strong><ul>
+	<li>set the scale of the map that will be generated to 4</li>
+	<li>check the item <strong>Plot the maps Path/Site centered [&nbsp; ]
+	</strong>(the current 
+	setting will be displayed in the brackets)</li>
+	<li>click <strong>Create files for OccultWatcher feed</strong></li>
+	<li>In the dialogue box that appears, specify the name of the feed. That is 
+	used to create a directory under the Occult directory <em>Occult 4\OWFeeds\</em> that 
+	will contain all the generated files</li>
+	<li>Next you will have a confirmation dialogue about the map scale. Click 
+	Yes</li>
+	<li>The files will now be generated, with a progress bar appearing at the 
+	top of the <em>List &amp; Display</em> form</li>
+</ul>
+<p>These files can then be uploaded to the OW site (assuming your feed has been 
+approved.) The files that are generated for each event are</p>
+<ul>
+	<li>A world plot of the event (and for this you need to ensure you have 
+	selected an appropriate scale for the maps)</li>
+	<li>a file containing the path coordinates</li>
+	<li>an html 'summary' file that contains a world map, and a link to the path 
+	coordinates file</li>
+	<li>a file containing the occultation elements, used by OccultWatcher for 
+	local event times</li>
+</ul>
+<p>In addition there is an html file containing a summary of all the events.</p>
+<h2>To generate files for a web page.</h2>
+<p>Go to the Occult Main form, Maintenance tab, User settings, bottom section - 
+and check the files you want to have generated. A typical set of files would be
+<B>World map, path coordinates, station sort, pre-point stars, star chart</B>, 
+	<B>GoogleMaps.HTM</B> and <b>GoogleEarth.KMZ</B>.Then return to the List &amp; 
+Display form.</p>
+<p>Under <strong>Generate predictions for all listed event</strong></p>
+<ul>
+	<li>set the scale of the map that will be generated to 4</li>
+	<li>check the item Plot the maps Path/Site centered [&nbsp; ] (the current 
+	setting will be displayed in the brackets)</li>
+	<li>click <strong>Create files [using station sort...</strong> A drop-down list appears of 
+	all site files available. The site file is used to generate local 
+	predictions for all sites in that file, sorted across the path. Select a 
+	site file - or select the first option '<strong>none'</strong></li>
+	<li>Next you will have a confirmation dialogue about the map scale. Click 
+	<strong>Yes</strong> to proceed.<li>Next you will have a confirmation dialogue about the site 
+	file, which will also advise of the number of files that will be generated. 
+	Click <strong>Yes</strong> to proceed.<li>The files will now be generated, with a progress 
+	bar appearing at the top of the <strong>List &amp; Display</strong> form.<li>The generated files 
+	are held in the directory <strong>Occult4/AutoGenerated Asteroids</strong>. Included in the 
+	directory is an index file [<strong>FileIndex.txt</strong>]. A subdirectory 
+	<strong>MJD</strong> contains a file for each event, containing the <strong>Modified Julian Date</strong> of the date of generation of the Occelmnt file. These files are used to ensure output is only regenerated when a more-recent prediction is being used.
+</ul>
+
+
+
+<p>&nbsp;</p>
+
+
+
+</BODY>
+</HTML>

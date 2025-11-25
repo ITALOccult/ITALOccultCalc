@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Creating Double Star reports from the Lunar Archive</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Creating Double Star reports from the Lunar Archive</H1>
+<P>The observations listed in the Lunar Archive can be used to generate double star reports for use with the Double Star analyser. To achieve this, the list of observations must be reduced to pairs of observations of the two components, with the brighter component being listed first (and with all other observations removed from the list). Once this is achieved, the menu item <B>with List... Create double star files </B>can generate a double star observation file for each pair of observations - and those files can be read into the double star analyser for analysis. The menu option <B>with List... Validate data </B>will check to confirm that the list of observations is ready to create the double star files.
+
+<p>The process involves a manual selection and editing of observations. Intermediate lists of observations can be saved for later re-loading and continuing, using the <B>File... Save </B>menu option, and the <B>File... Open previously saved list</B> menu option. You can also break the task up into multiple segments for easier editing of smaller portions of the file, followed by a merge using the menu option <B>File... Merge previously saved list</B> (which merges a previously saved list with the currently displayed list.)
+
+<p><font color=Red><B>NOTE</B>: The functionality discussed in this topic does not, and cannot, result in any changes to the data held in the Lunar Archive.</font> That is, you do not need to be concerned about inadvertantly making changes to the Lunar Archive in this process.
+
+<p>The process is as follows:
+<h2>Step 1 - create a list of events</h2>
+<ul type =1>
+<li>Open the form to <B>View/analyse historcal occultation observations</B>.
+<li>Check the option button <B>search for star</B>
+<li>In the line of check boxes after <B>Double stars</B>:<ul type=a>
+<li>Check the check box <B>Select for Analysis</B> - which is the 4th check box . This will display a box containing edit controls specific to the process. [It also enables Multi-selection of displayed events.]
+<li>If you are confident that in all instances where an observer has reported times for both components, the archive has both components flagged as a double star, check the box <B>only list doubles</B>. [This is unlikely to be true, especially for older observations.] Otherwise, leave the checkboxes for <B>Highlight</B>, <B>only list doubles</B>, and <B>list ALL unidentified doubles </B>unchecked.</ul>
+<li>Specify the star of interest - either by name or star number.
+<li>Now click Read, to list the observations of the star.</ul>
+
+<h2>Step 2 - course filtering</h2>
+<p>Having displayed a list of stars, the next step is to edit it to create pairs of observations involving the two components. The <B>Edit controls - double stars</B> tools are intended to facilitate thios process. The basic process is to highlight and delete non-double-star events, and re-order double-star pairings so that the brighter (or A component) occurs first. The tools provided have the following functionality: <ul type=i>
+<li><B>Move highlighted UP</b> Moves an individual highlighted line up one line. Used to place events in the correct order.
+<li><B>Move highlighted DOWN</b> Moves an individual highlighted line down one line. Used to place events in the correct order.
+<li><B>Select grazes</b> Double star observations made during grazes are not well suited for analysis in the  Double Star analyser. Rather they should be analysed in the functionality provided when the graze results are plotted against the lunar limb. This button highights all observations marked as being made during a graze - with the intention of the user deleting all such observations from the list.
+<li><B>Select D events </b>Highlights all Disappearance events. For some stars the companion is only seen at either the Disappearance, or the Reappearance phase. This button (together with the <B>Reverse HIGHLIGHTED </B>button, allows all events where the companion cannot be seen to be highlighted and deleted.
+<li><B>Bright Limb events </b> Highlights all events that are against the Bright limb. For the majority of double stars the companion can only seen at a Dark limb event. This button all bright limb events to be highlighted and deleted.
+<li><B>dT &gt 15secs</b> Highlights all events where the time difference from both the previous and following events is greater than 15 seconds. When clicked, the algorithm will initially highlight all observations that are within 10 secs of each other; when this is complete, the highlighting is reversed.]
+<li><B>Reverse HIGHLIGHTED</b> This swaps the highlight. That is, unhighlighted events become highlighted, and highlighted events become unhighlighted. Particularly relevant for the Select D events button.
+<li><B>Delete HIGHLIGHTED</b> This deletes all highlighted events from the displayed list.</ul>
+
+<h3>Example</h3>
+Antares provides a useful example. The companion of Antares is only visible at Reappearance events. Furthermore, at mag 5.6 it is not visible against the bright limb. So the initial processing steps would be: <ul type=1>
+<li>Set the form to Analyse, and list all events involving Antares (ZC2366)
+<li>Click <B>Select grazes</B>. All graze events will be highlighted (it will take a few seconds...). Click <B>Delete HIGHLIGHTED</b> to remove them from the list.
+<li>Click <B>Bright Limb events </b> All events that were against the Bright limb will be highlighted (it will take a few seconds...). Click <B>Delete HIGHLIGHTED</b> to remove them from the list.
+<li>Click <B>Select D events </b>All events that were Disappearances be highlighted (it will take a few seconds...). For Antares, the companion can only be seen at Reappearance events. Click <B>Delete HIGHLIGHTED</b> to remove all the Disapperance events from the list. [For stars where the companion can only be seen at the Disappearance, after clicking <B>Select D events </b>, click <B>Reverse HIGHLIGHTED</b> ; this will result in all the Reapperance events being highlighted - which can then be deleted.]</ul>
+<p>At this point you now have a much smaller list of events to deal with. It may be appropriate to save the list at this time, so that it can be retrieved if you muck up the subsequent editing.
+ 
+<h2>Step 3: manual editing</h2>
+You need to remove all events where the observer has not reported times for both components. Note that while the usual situation for a single event is for it to be of the primary star, the data for Antares shows instances of old observations where the only reported time is for the companion (eg 1897 Jan 28).
+<br>To do this, visually scan through the list to identify and highlight observations for which there are no observations of the other component. As MultiSelect is turned on, you can highlight multiple lines. However be alert to the presence of two observations by the same observer but with slightly different times - as it is quite possible that the double star flags have not been set in the Archive. [That is, do not be too reliant on the 'A' or 'B' WDS identifier in this process.]
+<p>During this process it is likely that you will be looking at observations where both components have been reported. It can be convenient to place such observations in the correct order - brighter star (or A component) before the fainter (B) component. [If this is done incorrectly, it can be corrected in the Double Star analyser by clicking the button to swap the T1 and T2 times.] The ordering is adjusted by highlighting a relevant observation and clicking either the ><B>Move highlighted UP</b> or ><B>Move highlighted DOWN</b> button. When doing this, make sure you match both the date, site coordinates, and observer.
+
+<p>If the list of observations for manual editing is long, it can help to break the list up into smaller sublists. To do this: <ul type=i>
+<li>Save the full list of course-filtered observations.
+<li>Highlight a convenient span of years; click Reverse Highlighted to change the highlighting to be for all the other events.
+<li>Click <B>Delete HIGHLIGHTED</b>. Then Save (with a file name appropriate to the date selection, for subnsequent identification). 
+<li>Continue editing the displayed data; OR
+<li>reload the saved full list, and select a different span of years.</ul>
+
+<h2>Step 4: confirm that the data is ready to generate the double star report files</h2>
+To generate the final set of double star report files, you must have removed all extraneous observations, and have all other observations ordered as pairs (with the bright star occurring first).
+<p>When you think you have achieved this, select the menu item with<B> List...  validate data</B>. This will check whether the requirements for generating the double star report files have been met. A message box will either advise that the data is ready to genertate the files. Or it will advise of the number of 'errors' in the list. The errors can be found in the file:
+<br><I>Occult4\Observations\Doubles\{starNumber}\Test.txt</I>
+<br>This file lists pairs of lines which are 'incompatible' with the requirement of pairs of observations relating to the two components of the star observed by the same observerconfirm that . In this regard, a single extraneous line can result in all subsequent pairings appearing to be in error.
+
+<h2>Step 5: generate the double star report files</h2>
+Select the menu item with <B>List... Create double star files.</B> This will create a set of .txt files in the directory <br><I>Occult4\Observations\Doubles\{starNumber}\ </i>. 
+<br>The file name is structured as:
+<b><i> YYYYMMDD_{starID}_{Name}.txt</i></b>
+<br>where 'name' is either the observer's name, or the site location.
+
+
+
+</BODY>
+</HTML>

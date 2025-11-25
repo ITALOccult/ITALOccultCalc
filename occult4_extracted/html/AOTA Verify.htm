@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Verify</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+<h2>AOTA Help topics</h2>
+<a href="AOTA%20Overview.htm">Overview and form layout</a><br><br>
+<a href="AOTA%20Read%20and%20integrate.htm">Tab 1. Read, Integrity, Set time, Bin and Normalise</a><br>
+<a href="AOTA%20Fourier.htm">Tab 2A. Fourier plot</a><br>
+<a href="AOTA%20Short.htm">Tab 2B. Short event check</a><br>
+<a href="AOTA%20Find%20events.htm">Tab 3. Find events</a><br>
+<a href="AOTA%20Select%20to%20analyse.htm">Tab 4. Select event to analyse</a><br>
+<a href="AOTA%20Analyse.htm">Tab 5. Analyse</a><br>
+<a href="AOTA%20FinalTimes.htm">Tab 6. Camera corrections, final results</a><br><br>
+<a href="AOTA%20Integrity.htm">Integrity check</a><br>
+<a href="AOTA%20Integration%20and%20binning.htm">Integration, binning & normalisation</a><br>
+<a href="AOTA%20Set%20time%20scale.htm">Set time scale</a><br>
+<a href="AOTA%20Verify.htm">Verify event times</a><br>
+<a href="AOTA%20VTI%20info.htm">VTI information</a><br><br>
+<a href="AOTA%20Hints%20and%20Tips.htm"><B>Hints and Tips</B></a><br>
+
+<H1>Verify event times</H1>
+This functionality is available when AOTA is accessed from a direct call from Tangra.
+<p>When a video suffers from irregularities - such as dropped anr duplicated frames - it is desirable to confirm the correctness of the time associated with the frame at the time of the event. 
+
+<p>When <B>Verify </B>is called,  the form that is displayed is like:<br>
+<img src ="AOTA_VerifyTimes.png"><p>
+
+The form is specific to the event being analysed. It contains two regions - one for the D event, and one for the R event. To verify the times, click the <B>Display frame </B>button for the relevant event. This will display the corresponding video frame in Tangra. Below the <B>Display Frame </B>button, the time AOTA believes corresponds to this frame is displayed.
+
+<p>Below that is an 'up/down' control to apply a correction to the displayed AOTA time. Below that the time that should be displayed on the video frame is displayed. If that does not correspond to the time stamp on the video frame, adjust the value of the correction until it does correspond.
+
+<p>Check the times for both the D and R event. Each event is treated separately - as dropped or duplicated frames can occur anywhere.
+
+<p>Once done, exit the form using <B>Exit with Corrections </B>to have the corrections applied to those two events. Click <B>Cancel </B>to leave with any previous corrections for those particular events remaining unchanged. To <I>remove </I>previously-determined corrections, you need to set the corrections to zero. 
+
+
+
+</BODY>
+</HTML>

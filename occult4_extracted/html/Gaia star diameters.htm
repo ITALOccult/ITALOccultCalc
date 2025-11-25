@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Overview</Title>
+<style type="text/css">
+.auto-style1 {
+	border: 2px solid #000000;
+}
+.auto-style2 {
+	border: 1px solid #800000;
+}
+.auto-style3 {
+	margin-left: 40px;
+}
+.auto-style4 {
+	color: #800080;
+}
+.auto-style5 {
+	border: 1px solid #800000;
+	color: #800080;
+}
+.auto-style6 {
+	color: #000080;
+}
+.auto-style7 {
+	color: #0000FF;
+}
+.auto-style8 {
+	color: #800000;
+}
+.auto-style9 {
+	color: #FF0000;
+}
+.auto-style10 {
+	font-size: medium;
+	color: #008000;
+}
+.auto-style11 {
+	font-size: large;
+	color: #008000;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Star diameters from the Gaia DR3 Supplementary files</H1>
+<!-- Insert Header in above line -->
+<P>This form enables the retrieval of star diameters from the Gaia supplementary 
+files. There are two supplementary files:</P>
+
+
+
+<table style="width: 600" class="auto-style1">
+	<tr>
+		<td class="auto-style5"><strong>paramp</strong></td>
+		<td class="auto-style2">1D astrophysical 
+		parameters produced by the Apsis processing chain developed in Gaia DPAC 
+		CU8</td>
+	</tr>
+	<tr>
+		<td class="auto-style5"><strong>paramsup</strong></td>
+		<td class="auto-style2">Additional 
+		parameters from the Apsis processing chain, compared to the main table 
+		astrophysical parameters, from modules that produce more than one result 
+		for a parameter</td>
+	</tr>
+</table>
+
+<br>The diameters provided in these files are not 'measured' diameters, but diameters inferred using different techniques. 
+
+<p>The data element provided in these files is the star's radius in units of Solar Radius. These radii are converted to the apparent diameter as seen from the Earth using the star's parallax, using:</p>
+
+<p class="auto-style3"><strong>Dia (mas) = 9.304 * Parallax * SolarRadius</strong></p>
+
+<p>where the star's parallax is specified in arcsec.
+</p>
+<p>To retrieve the diameters, follow the instructions on the form. The VizieR 
+query will return with 4 data elements for each basis for estimating the 
+diameter</p>
+<ul>
+	<li>the estimated radius of the star in Solar Units</li>
+	<li>the apparent diameter of the star, in mas</li>
+	<li>the + and - uncertainty values of that diameter</li>
+</ul>
+
+<p>&nbsp;</p>
+<p>The basis of the diameter measurements are:</p>
+<h4 class="auto-style4">paramp file</h4>
+<li>Radius from GSP-Phot Aeneas <span class="auto-style6">best</span> library using BP/RP spectra</li>
+<li>Radius of the star from FLAME using teff_gspphot and lum_flame</li>
+<br><h4 class="auto-style4">paramsup file</h4>
+<li>Radius from GSP-Phot Aeneas for MARCS library using BP/RP spectra</li>
+<li>Radius from GSP-Phot Aeneas for PHOENIX library using BP/RP spectra</li>
+<li>Radius from GSP-Phot Aeneas for OB library using BP/RP spectra</li>
+<li>Radius from GSP-Phot Aeneas for A library using BP/RP spectra</li>
+<li>Radius of the star from FLAME using teffGspspec and lumFlameSpec</li>
+<br><br><br>
+<h2 class="auto-style9">For those who want to know more about the tools used:</h2>
+<p class="auto-style11"><strong>FLAME</strong></p>
+<p>For
+an explanation of <strong>&nbsp;<span class="auto-style7">FLAME</span></strong> (Final Luminosity And Mass Estimator), click 
+<a href="https://gea.esac.esa.int/archive/documentation/GDR3/Data_analysis/chap_cu8par/sec_cu8par_apsis/ssec_cu8par_apsis_flame.html">here</a>. The FLAME results are in the 
+<strong><span class="auto-style4">paramp</span> </strong>file for approximately 
+300M sources ( G&lt;18.25).</p>
+<p>A second <span class="auto-style7"><strong>FLAME</strong></span> result is 
+produced only for the bright sources based on GSP-Spec parameters for 
+approximately 5M sources, and these are found in the <strong>
+<span class="auto-style4">paramsup</span> </strong>file.</p>
+<p class="auto-style10">&nbsp;</p>
+<p class="auto-style11"><strong>GSP-Phot</strong></p>
+<p>For an explanation of<strong><span class="auto-style7"> GSP-Phot</span></strong> (General Stellar Parametrizer from Photometry), click
+<a href="https://gea.esac.esa.int/archive/documentation/GDR3/Data_analysis/chap_cu8par/sec_cu8par_apsis/ssec_cu8par_apsis_gspphot.html">here</a>. The 'best-library' results are provided in 
+<span class="auto-style4"><strong>paramp</strong></span>. The separate results for MARCS, PHOENIX, A, OB (modulo filtering) libraries are provided in the 
+<strong><span class="auto-style4">paramsup</span> </strong>file.</p>
+<h3 class="auto-style8">Some more explanation of the set of GSP-Phot categories, as set out in the 
+documentation:</h3>
+<p>GSP-Phot has processed all sources down to G&#8804;19 with all four libraries (MARCS, PHOENIX, A, OB). Consequently, there are, in principle, four sets of GSP-Phot results for every source (some results are removed during filtering). After filtering, GSP-Phot still provides 1 665 152 313 results (73.97%) for 470 759 263 sources (83.65%)</p>
+<p>All results are reported in the paramsup 
+file such that users favouring certain libraries can always access those results. However, in the 
+paramp file we also report the results for the “best” library.&nbsp; </p>
+<p>The best library is identified as the one <br>&nbsp;&nbsp;&nbsp; 
+<span class="auto-style7">having the highest mean log-posterior value averaged over the MCMC samples</span><br>with formulae being set out in the documentation.</p>
+<p>Further reading</p>
+<p>
+<a href="https://www.aanda.org/articles/aa/full_html/2023/06/aa43462-22/aa43462-22.html">
+Analysis of the Gaia BP/RP spectra using the General Stellar Parameterizer from 
+Photometry</a></p>
+<p><a href="https://www.mpia.de/gaia/projects/gsp">GSP-Phot (Generalized Stellar 
+Parametrizer)</a></p>
+<p><a href="https://www.mpia.de/gaia/projects/gsp/aeneas">Aeneas: Bayesian 
+parameter estimation</a></p>
+</BODY>
+</HTML>

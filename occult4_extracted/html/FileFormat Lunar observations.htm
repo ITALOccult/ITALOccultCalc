@@ -1,0 +1,319 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Lunar observations - report format</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Lunar observations - report format</H1>
+
+<pre>
+<B>IOTA2008 Reporting format for lunar occultation observations
+</B>
+
+VERSION 0.7  31 June 2008
+
+
+*************************************
+* Header group.                     *
+*************************************
+Byte(s): (Format) Description
+Line 1
+  1- 10: (A10)    Literal 'Place Name'
+ 16- 65: (A50)    Name of closest city or town. [note 50 characters is the Archive allocation]
+ 66- 67: (A2)     CR/LF sequence
+
+Line 2
+  1- 13: (A13)    Literal 'Email address' 
+ 16- 75: (A60)    Email address (required for return of reduction. Not archived)
+ 76- 77: (A2)     CR/LF sequence
+
+Line 3
+  1- 14: (A14)    Literal 'Representative' 
+ 16- 75: (A60)    Name of person submitting the report - not archived)
+ 76- 77: (A2)     CR/LF sequence
+
+
+*************************************
+* Site group                        *
+*************************************
+Byte(s): (Format) Description
+  1    : (A1)     Literal 'T'  
+  2    : (A1)     Site link code (A-Z, a-z)
+  3-  4:          blank
+
+  5    : (A1)     Type of telescope
+                     R  Refractor [including Achromatic, Apochromatic, binoculars,
+                        and camera lenses]
+                     N  Newtonian reflector [including Dobsonian, Schmidt-Newtonian,
+                        Maksutov-Newtonian, Jones-Bird, Schiefspiegler]
+                     C  Cassegrain, [including Schmidt-Cassegrain, Maksutov,
+                        Ritchy-Chretien, Dall-Kirkham]
+                     O  Other, including naked eye.
+                    &LT&GT  not known 
+  6    : (A1)     Mounting
+                     E  Equatorial mounting
+                     A  Alt-Azimuth mounting
+                    &LT&GT  not known
+  7    : (A1)     Driving
+                     D  Driven
+                     M  Manual
+                    &LT&GT  not known
+  8    :          blank
+  9- 12: (I4)     Telescope aperture (cm) - rounded to the nearest cm.
+ 13- 14:          blank
+ 15- 18: (I4)     Telescope focal length (cm) - rounded to the nearest cm.
+ 19- 20           blank
+ 21    : (A1)     Sign of longitude, +'ve to East. Blank treated as '+'
+ 22- 24: (I3)     degrees of longitude
+ 25- 26: (I2)     minutes of longitude
+ 27- 31: (F5.2)   seconds of longitude. The location is for the intersection of the telescope
+                   with its declination or altitude axis. Only to 1 decimal place, unless the
+                   position has been measured by a surveyor.
+ 32               blank
+ 33    : (A1)     Sign of latitude, +'ve to North. Blank treated as '+' 
+ 34- 35: (I2)     degrees of latitude
+ 36- 37: (I2)     minutes of latitude
+ 38- 42: (F5.2)   seconds of latitude. The location is for the intersection of the telescope
+                   with its declination or altitude axis. Only to 1 decimal place, unless the
+                   position has been measured by a surveyor.
+ 43               blank
+ 44- 45: (I2)     Horizontal datum code
+                    84  WGS84 and equivalents [preferred horizontal datum]
+                        (This includes all national datums dated 1983 or later, and native
+                         GPS output) 
+                    10  Measured using GoogleEarth
+                    &LT&GT  not known 
+ 46               blank      
+ 47- 52: (F6.1)   Altitude (meters) [range -999.9 to +9999.9]. The elevation is for the intersection
+                   of the telescope with its declination or altitude axis. Only to the nearest meter
+                   unless the elevation has been measured by a surveyor.
+ 53    : (A1)     Vertical datum code
+                     M  Mean Sea Level [preferred vertical dstum]
+                     E  Ellipsoid (or equivalent) ellipsoid [for use when a GPS unit does not
+                         correct computed elevations for the difference between the Ellipsoid
+                         and Mean Sea Level.] 
+ 54- 55: (A2)     CR/LF sequence
+
+
+*************************************
+* Observer group                    *
+*************************************
+Byte(s): (Format) Description
+  1    : (A1)     Literal 'O'  
+  2    : (A1)     Observer link code (A-Z, a-z)
+  3-  4:          blank
+  5- 29: (A25)    Name of observer. If more than one observer, specify main observer. Names need to
+                  be specified in simple ASCII characters (without accents).
+ 30- 31: (A2)     CR/LF sequence
+
+
+*************************************
+* Observation group                 *
+*************************************
+This group contains the observations. There is no limit on the number of events that can be
+included in a single report.
+
+Byte(s): (Format) Description
+  1-  4: (I4)     Year [Note: full year required - such as '2008']
+
+  5-  6: (I2)     Month   
+
+  7-  8: (I2)     Day
+
+  9- 10: (I2)     Hour
+
+ 11- 12: (I2)     Minute
+
+ 13- 18: (F6.3)   Second. Specify decimal places according to accuracy. 
+                       [Visual - 1 decimal place; video - 2 decimal places]
+
+ 19    : (A1)     Star catalogue /  object type
+                     R  Zodiacal Catalogue
+                     S  SAO catalogue
+                     X  XZ80Q catalogue
+                     A  Numbered asteroid
+                     P  Planet and planet satellites
+                     U  Unidentified star
+
+ 20- 25: (I6)     Number in catalogue
+                     For an Unidentified star - blank
+                     For planets, number is formed as pmmm, where:
+                         p = planet number
+                         mmm = moon number. Set to 000 for occultation of planet.
+                         eg Mercury = 1000, Jupiter = 5000, Ganymede = 5003, Titan = 6006
+                     For asteroids: asteroid number. [Unnumbered asteroids cannot be specified]
+
+ 26    : (A1)     WDS double star component identifier (A - Z, a - z)
+
+ 27    : (A1)     Phenomena
+                     D  disappear
+                     R  reappear
+                     B  Blink. The mid-time of a blink event. Usually only occurs during a graze,
+                           but can occur in near-graze situations. Duration is specified at 
+                            column 48.
+                           (video) partial disappearance (always &GT25% of full light). 
+                           (visual) a short disappearance-reappearance - too close to separately
+                            time.
+                     F  Flash. The mid-time of a flash event. Usually only occurs during a graze,
+                           but can occur in near-graze situations. Duration is specified at
+                            column 48.
+                           (video) partial reappearance (always &LT25% of full light). 
+                           (visual) a short reappearance-disappearance - too close to separately
+                            time.
+                     M  Miss. The time when the star was adjacent the highest point on the
+                          observed or predicted graze profile. Only used when other observers in
+                          a graze observation have recorded D &/or R events
+                     S  Start or resume. Only used in a graze observation, to indicate periods
+                          when the observer was obsrving.
+                     E  End or pause. Only used in a graze observation, to indicate periods when
+                          the observer was not obsrving.
+                     O  Other [used by ILOC instead of S or E]
+
+ 28    : (A1)     Limb
+                     D  dark limb
+                     B  bright limb (including lunar eclipse penumbra)
+                     U  umbra of lunar eclipse 
+
+ 29    : (A1)     Graze flag
+                     G  graze event
+                    &LT&GT  ordinary occultation
+
+ 30- 33: (F4.2)   Personal equation. Range 0.00 to 9.99 sec. Blank if PE not applicable.
+
+ 34    : (A1)     Application of Personal equation
+                     S  personal equation has been subtracted from the observed time.
+                     A  = S, but PE listed is an assumed value. [compatibility for ILOC
+                        observations]
+                     B  = S, but the value of the PE applied is unknown. [compatibility
+                        for RGO observations]
+                     U  personal equation has not been subtracted from the reported time.
+                     E  personal equation not relevant to the method of timing (eg video, eye-ear)
+                     X  Not known whether any PE has been applied.
+
+ 35    : (A1)     Method of timing and recording
+                     G  Video with time insertion
+                     V  Video - other time linking
+                     S  Stopwatch (visual)
+                     T  Tape recorder (visual)
+                     E  Eye and ear
+                     P  Photoelectric
+                     K  Key-tapping - including computer keyboards
+                     X  Chronograph
+                     C  Camera and clock
+
+ 36    : (A1)     Method of timing and recording (2)
+                     Same definitions as for (35), plus the following. Blank if no second method was used.
+                     A  Time base corrected using adjacent observers
+
+ 37    : (A1)     Time source
+                     G  GPS (using 1PPS output, NOT GPS screen display)
+                     R  Radio signal (standard time signal)
+                     N  Network Time Protocol (using NTP software)
+                     C  Clock(adjusted by standard time signal)
+                     T  Telephone
+                     M  Some medium related with standard time signal
+                     O  GPS screen display, computer clock not using NTP software (poor accuracy).
+
+ 38- 42: (F5.3)   Accuracy of time. Range 0.000 to 9.999. Blank if no figure provided. 
+                  For observations between 1600 and 1750 the allowable range is 0 to 99.9
+
+ 43    : (A1)     Certainty
+                     1  Sure
+                     2  Possibly spurious
+                     3  Most likely spurious
+ 44- 46: (F3.1)   Signal-to-Noise ratio (for video & photoelectric). Range 0.0 to 9.9. Blank if 
+                  not relevant, or not provided.
+
+ 47    : (A1)     Double star / unidentified star
+                    &LT&GT  No double star effect noted
+                     W  Preceding (west) component
+                     E  Following (east) component
+                     N  North component
+                     S  South component
+                     B  Brighter component
+                     F  Fainter component
+                     U  Unidentified star
+
+ 48- 52: (F5.3)   Duration of non-instantaneous event. Range 0.000 to 9.999 secs. Blank if 
+                  not relevant.
+
+ 53    : (A1)     Light level used to define event time (for video & photoelectric, if event is
+                  non-instantaneous)
+                    &LT&GT  Not specified / not relevant
+                     T  25% light level (consistent with fresnel diffraction)
+                     F  50% light level (consistent with stellar diameter effects)
+
+ 54    : (A1)     Sky stability
+                    &LT&GT  Not specified
+                     1  Good
+                     2  Fair
+                     3  Poor
+
+ 55    : (A1)     Sky transparency
+                    &LT&GT  Not specified
+                     1  Good
+                     2  Fair
+                     3  Poor
+
+ 56    : (A1)     Remarkable circumstances
+                    &LT&GT  No remarkable circumstances
+                     1  Gradual[not instantaneous] event
+                     2  Dark limb visible
+                     3  By averted vision
+                     4  Star faint
+                     5  Through thin cloud
+                     6  Many clouds
+                     7  Strong wind
+                     8  In strong twilight
+                     9  In daylight (sun altitude &GT-6 deg {civil twilight})
+
+ 57- 59: (I3)     Temperature Centigrade. Range -49 to 50. Blank if not provided.
+
+ 60    : (A1)     Site link code (A-Z, a-z)
+
+ 61    : (A1)     Observer link code (A-Z, a-z)
+
+ 62- 63: (A2)     CR/LF sequence
+
+**** Comment Line ****
+Any event line may have an 'Comment Line' containing free text. The comment line follows
+ immediately after the relevant observation line, and is formated as follows:
+  1-  4: (A4)     Literal - 4 spaces (marker for a comment line)
+
+  5- 59: (A55)    Free-text comments 
+
+ 60- 61: (A2)     CR/LF sequence
+
+An optional format, used to specify a GSC star identifier:
+  1-  4: (A4)     Literal - 4 spaces (marker for a comment line)
+
+  5    : (A1)     Literal "G"
+
+  6-  9: (I4)     GSC Field number
+
+ 10- 14: (I5)     GSC Number within the field.
+
+ 15- 59: (A45)    Free-text comments 
+
+ 60- 61: (A2)     CR/LF sequence
+
+*** Important: The comment line is not included when the observation is Archived. ***
+
+
+
+NOTES
+All Text fields [Ax] are left justified.
+All integer fields [Ix] are right justified.
+All floating point fields are aligned by the decimal point.
+For floating point fields, the number of decimal places used is determined by the accuracy of
+ the reported data. The remainder of the field is padded with spaces, not zeros. 
+
+</pre&>
+
+</BODY>
+</HTML>

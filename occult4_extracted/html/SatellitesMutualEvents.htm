@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Mutual eclipses and occultations of satellites</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Mutual eclipses and occultations of satellites</H1>
+<!-- Insert Header in above line -->
+<P>This module computes predictions of mutual eclipses and occultations of the major satellites of Jupiter, Saturn, and Uranus. Eclipses occur in a well-defined period as the sun passes through the orbital plane of the satellites. However, the Earth passes through the orbital plane either once, or three times, at each apparition. As a result, occultations can occur either over an extended period. </p>
+
+<p>For satellites whose orbits are close to co-planar, eclipses and occultations occur when the 
+Sun or Earth passes through the orbital plane. When the orbital planes are not close to being co-planar, mutual events only occur when the respective satellites are at the location of the node of the apparent orbits. There are two such satellites:<ul>
+<li>Iapetus (Saturn). The orbit is inclined 15 deg. to the orbits of the other satellites. Its orbit is outside the orbits of the other satellites. The result is that eclipses and occultations do not occur when the 
+Earth/Sun passes through the orbital plane of the other satellites, but several years removed. The number of eclipses and occultations that occur during such an apparition is quite small. In the 2006/7 apparition, there is one such event - on 2007 Jan 6, Iapetus occults Mimas. To make sure events are found, specify a large minimum separation, such as 4”.
+<li>Miranda (Uranus). The orbit is inclined 4.3 deg. to the orbits of the other satellites. Its orbit is inside the orbits of the other major satellites of Uranus. The result is that eclipses and occultations occur over a period centered on when the 
+Earth/Sun passes through the orbital plane of the other satellites, but occur over an extended period. However, the frequency of events is reduced as a result of the significant inclination of the orbit.</ul></p>
+
+<p>The Earth/Sun passes through the orbital planes of the major satellites every 6 years for Jupiter, 14 years for Saturn and 42 years for Uranus. The events occur over a period of around 15 months for Jupiter, 2 years for Saturn (less for Iapetus), and 6 months for Uranus (somewhat longer for events involving Miranda). The mid-times of these events in the near future are:
+
+<table columns=3 border=1>
+<TR><TH NOWRAP>Planet</TH><TH>Dates</TH></TR>
+<TR><TD>Jupiter</TD><TD>2009, 2014, 2021, 2026</TD></TR>
+<TR><TD>Saturn</TD><TD>2009, 2026, 2038</TD></TR>
+<TR><TD> - Iapetus</TD><TD>2007, 2023, 2036</TD></TR>
+<TR><TD>Uranus</TD><TD>2007/8, 2049</TD></TR>
+</table></p>
+
+<p>The planet for the predictions is selected using the radio buttons at the top left. The search is conducted on the basis of a start year and month, and an end year and month. For the end date, the date is taken as the last day of the specified month. The predictions can be limited to events that are visible at the specified site location. That is, the planet above the horizon, and the sun at least 6 degrees below the horizon. Events where the satellites come close but do not eclipse or transit, can be included by selecting a "miss distance" greater than 0". [For most purposes a miss distance of 0" should be selected.]</p>
+
+<p>The events found in the search are displayed in two boxes. The left box gives the details of all events found. The right box gives the contact times for any highlighted event. A typical prediction line (with the header line) is as follows. It involves satellites of Jupiter.</p>
+
+<pre>Year  M  D  h  m  s  Event Type     Ph   Dur dMag  %Ill   Sep  PA  MinD 
+2015  3  9 14 22 39  (I) ecl (II)    P   250  0.4  68.3  30.9 291  0.522</pre>
+
+<p>The information contained in the prediction line is:
+<table columns=3 border=1>
+<TR><TH NOWRAP>Column</TH><TH>Meaning</TH></TR>
+<TR><TD nowrap>Year  M  D  h  m  s  </TD><TD>Year, month, day, hour, minute and second for mid-event. Time is UT. An asterisk following this time indicates that the moons come close but do not cross each other</TD></TR>
+<TR><TD>Event Type</TD><TD>The event description. The first mentioned moon either eclipses (<B>ecl</B>) or occults (<B>occ</B>) the second mentioned moon. In this example, (II) eclipses (III)
+</TD></TR>
+<TR><TD>Ph</TD><TD>The kind of event:
+<li><B>M </B>= Miss
+<li><B>E </B>= Penumbral eclipse
+<li><B>P </B>= Partial eclipse/occultation
+<li><B>T </B>= Total eclipse/occultation, where the eclipsed/occulted moon is fully obscured
+<li><B>A </B>= Annular eclipse/occultation, where the umbral eclipse shadow, or occulting moon, fully enters the disk of the eclipsed/occulted moon.</ul><p>Following the event kind, there can be an additional letter with the following meanings:
+<li><B>e</B> =occultation, with the occulting satellite being in Jupiter's shadow. Event will be visible
+<li><B>f</B> = occultation, with the occulted satellite being in Jupiter's shadow. Event will not be visible
+<li><B>g</B> = occultation, with both satellites being in Jupiter's shadow. Only observableif the satellites are detectable in the shadow
+<li><B>h</B> = hidden. The eclipsed/occulted moon is either in the planet's shadow, or behind the planet.<br>
+<li><B>t</B> = transiting. The eclipsed/occulted moon is transiting the planet. 
+The code '<B>h</B>' will only appear if the check box to 'Include hidden events' is checked.
+</TD></TR>
+<TR><TD>Dur</TD><TD>The duration, in seconds.</TD></TR>
+<TR><TD>dMag</TD><TD>The magnitude drop. In the case of occultations, it is in comparison to the combined magnitude of the two moons. A value of 9.99 indicates a total eclipse.</TD></TR>
+<TR><TD>%Ill</TD><TD>The illumination at maximum eclipse or occultation, as a percentage of the full illumination of the moon alone (eclipses) or of both moons (occultations).</TD></TR>
+<TR><TD>Sep</TD><TD>Distance (arcsecs) of the eclipsed/occulted satellite from the centre of the planet.</TD></TR>
+<TR><TD>PA</TD><TD>PA (deg) of the eclipsed/occulted satellite with respect to the planet.</TD></TR>
+<TR><TD>MinD</TD><TD>The minimum separation of the centres of the satellites, or satellite and shadow - in arc secs.</TD></TR>
+</table>
+<p>The right box shows the contact times for this event, as follows:<pre>
+        h  m  s
+  T1 = 14 20 34 
+  T2 = 14 21 51
+  T3 =  
+Tmax = 14 22 39
+  T5 =  
+  T6 = 14 23 27
+  T7 = 14 24 44
+</pre>
+<p>The times, in the format hh mm ss, correspond to the following:
+<table columns=3 border=1>
+<TR><TH NOWRAP>Lines</TH><TH>Occurrence</TH></TR>
+<TR><TD>T1and T7</TD><TD>For eclipses only. Commencement/end of contact with the penumbral shadow</TD></TR>
+<TR><TD>T2 and T6</TD><TD>Commencement/end of external contact with:
+<li>for eclipses, the umbral shadow
+<li>for occultations, the limbs of the moon
+</TD></TR>
+<TR><TD>T3 and T5</TD><TD>Commencement/end of totality or annularity.</TD></TR>
+<TR><TD>Tmax</TD><TD>The mid-time of the event.</TD></TR>
+</table>
+
+For contact times occurring in the day before the date of the mid-event, the hour is preceded by a 'p' (for 'preceding'). 
+E.g. 'p23 56 34'. For events in the following day, the hour value is preceded by an 'f' (for 'following'). E.g. 'f 0 02 23'</p>
+
+After the predictions have been generated, they can be copied to the Clipboard, printed, saved to a file, or appended to an existing file, with the relevant menu item under With predictions….. For each of these options, a choice exists between the events, or the events + times. A sample output for events + times, with header, for 2015 Mar 8 is as follows (for satellites of Jupiter):
+
+<pre>Year  M  D  h  m  s  Event Type     Ph   Dur dMag  %Ill   Sep  PA  MinD          h  m  s   h  m  s   h  m  s   h  m  s   h  m  s   h  m  s   h  m  s
+2015  3  8  6 18  2  (II) occ (I)    P   334  0.5  61.9 115.9 289  0.148     |             6 15 15             6 18  2             6 20 49           
+2015  3  8  7 24  2  (II) ecl (I)    A   381  0.9  42.6 104.9 289  0.197     |   7 20 52   7 21 58   7 23 36   7 24  2   7 24 28   7 26  6   7 27 13 
+2015  3  8  9 38 19  (III) occ (IV)  P  1324  0.2  82.5 328.9 109  0.490     |             9 27 17             9 38 19             9 49 21           
+2015  3  8 15 49 45  (III) ecl (IV)  P  1452  0.7  51.0 373.3 109  0.548     |  15 37 39  15 44 12            15 49 45            15 55 18  16  1 51 
+</pre>
+
+If the output is generated for a particular location, the list of events is limited to those where the altitude of Jupiter at the mid-time of the event is greater than 5 deg, and the sun is at least 6 deg below the horizon (Civil twilight). In this case an additional column gives the altitude, as in the following example for 2015 Mar 8:
+
+<pre>Visible at Longitude 149°, Latitude -35°
+Year  M  D  h  m  s  Event Type     Ph   Dur dMag  %Ill   Sep  PA  MinD  Alt     h  m  s   h  m  s   h  m  s   h  m  s   h  m  s   h  m  s   h  m  s
+2015  3  8  9 38 19  (III) occ (IV)  P  1324  0.2  82.5 328.9 109  0.490  27 |             9 27 17             9 38 19             9 49 21           
+2015  3  8 15 49 45  (III) ecl (IV)  P  1452  0.7  51.0 373.3 109  0.548  16 |  15 37 39  15 44 12            15 49 45            15 55 18  16  1 51 
+</pre>
+ 
+<h2>Viewing the Planet and its satellites</h2>
+To get a visual impression of the location of the satellites relative to the planet and other satellites, select an event in the list, then double-click on that event. This will bring up the usual <a href = EphemPlanetGraphic.htm>graphic of the planet and its satellites</a>.
+
+<h2>Graphic displays</h2>
+<h3>1. Light curves</h3>
+<p>Next to the contact times, the form displays:<ul>
+<li>the expected light curve for the event (upper plot).  This light curve  fully takes into account changes in the relative rate of motion of the wto satellites, or the sattelite and shadow. The light curve plot always starts at an integral minute; as a result the distribution is generally not centered within the plot.
+<li>if the event is an eclipse, the light distribution across the eclipse shadow (lower plot). The shadow region is shown with a light-yellow background, with the black curve representing the light level.</ul>
+The following example is of the 2015 March 8 III ecl IV event.:<p>
+<img src="2015%20Mar%208%20Shadow%20for%20Mutual%20Events%20of%20Jupiter.png">
+
+<p>The magnitude of the central eclipse - as seen from the distance of the eclipsed satellite - is given at the bottom of the plot. Most eclipses have a central umbral region, with the magnitude of the eclipse being between 1.0 and about 4.5. For eclipses involving Ganymede or Callisto it is possible for the shadow to be entirely penumbral; such eclipses are annular as seen from the distance of the eclipsed satellite, with a magnitude between about 0.7 and 1
+
+<p>A larger plot of the light curve can be generated by either double-clicking on the upper plot, or from the menu item with <B>Predictions... Display light curve (Large)</B>. This large plot is designed to overlay an observed light curve - so that observers can get a feel about how close their observation matches prediction.<p>
+
+<h3>2. Time-representation of the event</h3>
+<p>In the lower portion of the form is a graphic display of the circumstances of the mutual event. The display shows the location of the occulting moon/eclipse-shadow relative to the occulted or eclipsed moon. The circumstances are plotted at 11 equally spaced points in time, centred on the mid-time of the event.  
+
+<p>For an occultation the the occulting satellite is shown in a lightl range, while the occulted satellite is in yellow. The image is drawn in a way that allows the occulted satellite is faintly visible through the occulted satellite . The following example is of the event 2015 March 8 II occ I event.
+
+<img src="2015%20Mar%208%20Occultation%20for%20Mutual%20Events%20of%20Jupiter.png">
+
+<p>For an eclipse event the umbra (if any) is shown as a brown circle, while the prenumbra is a grey circle of graduated density - to indicate the brightness of the shadow. The following example is of the 2015 March 8 III ecl IV event.:
+
+<img src="2015%20Mar%208%20Eclipse%20Mutual%20Event.png">
+
+<p>In the plot:
+<li>The occulted or eclipsed satellite is plotted on the horizontal line, and is coloured yellow;
+<li>The occulting satellite, or the eclipse shadow, is plotted relative to the occulted or eclipsed satellite - with a dotted line joining them
+<li>For occultations, the occulting moon is shown as a full circle and is coloured orange, with the occulted satellite being faintly visible behind it.
+<li>For eclipses, the shadow is shown with umbra (brown circle) and penumbra (grey region). For smaller satellites the shadow may have no umbral region.
+<li>The UT of each item is displayed below the occulted/eclipsed satellite.</p>
+<p>The time interval of the plot is based on the predicted duration of the event. The time span can be increased using the option buttons in the box labeled <B>Increase plot time-span</B>. This is particularly useful for events where the two moons (or moon + shadow) are moving largely in the same direction, such that the relative motion is very non-linear. 
+An example is the 2015 May 21 III ecl I event. The list of events provides two events, with mid-times at 6h 51m and 8h 6m. By selecting Increase plot Time-span to x2, you can visualise the entire event - which shows the shadow of Ganymede passing eastwards across Europa, and then reversing direction and passing westwards across Europa, this time with a greater minimum separation.<p>
+<img src="2015May21%20IIIecl1%20TimePlot.png"><p>
+The light curve neatly shows this extended event with two minima.<p>
+<img src="2015May21%20IIIecl1%20LightCurves.png"><p>
+
+<p>The scale of the plot is set according to whether the event involves Jupiter, Saturn or Uranus. This scale can be increased using the option buttons in the box labeled <B>Increase plot scale</B>. For occultations, the scale is the angular distance <I>as seen from the Earth</I>. For eclipses, the scale is the angular distance <I>as seen from the Sun</I>; in the case of Jupiter, this can differ from the geocentric scale by up to 20%.</p>
+
+
+<h2>Technical notes</h2>
+<p>The routine generates the prediction by computing the separation at two times separated by 6 minutes - and assumes linear motion over this time. The routine iterates for the time of closest approach. The assumption of linear motion is less valid as the duration of the event increases; events lasting more than a few minutes arise only in circumstances when the motion of the inner satellite of the pair is significantly non-linear. For some events the iteration does not converge. Such events are marked by an asterisk, and arise when the relative motion of the moons is very small.</p>
+
+<p>For occultations, the maximum possible magnitude drop is 0.75 mag - assuming both objects are of the same size, have the same albedo, and the occultation is central. The predicted magnitude drop takes into account the different sizes and albedos of the satellites involved. 
+<p>For eclipses the magnitude drop is a combination of the area of the eclipsed moon that is covered by the shadow, and the brightnes distribution across the shadow. The brightness distribution is based on the degree of obscuration of the limb-darkened sun by the eclipsing satellite as seen from the eclipsed satellite. The area of the moon covered by the shadow is calculated by dividing the shadow into 100 annuli of equal width (with each annulus having a brightness level depending in the location within the shadow), and computing the area of the moon that is covered by each annulus and its corresponding brightness level), and adding the results. 
+<p>The brightness of each annulus in the shadow is calculated by dividing the sun into 100 annuli having a brightness proportioned according to solar limb darkening, and adding the contribution of each annulus depending on their visibility at the mid-point of each shadow annulus. A graph (intensity vs radius) of the limb darking intensity model used is:<br>
+<img src="SolarLimbDarkening.png"><br>
+Ref:<I> Pierce A.K., Slaughter C.D., </I>1977, Solar Physics, <B>51</B>, 25
+
+
+<p>The source of the ephemerides used in the predictions is listed <A href="FileFormat%20SatellitesEphemerisSources.htm">here</a></p>
+
+
+</BODY>
+</HTML>

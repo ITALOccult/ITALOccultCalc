@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Overview</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<h2>AOTA Help topics</h2>
+<a href="AOTA%20Overview.htm">Overview and form layout</a><br><br>
+<a href="AOTA%20Read%20and%20integrate.htm">Tab 1. Read, Integrity, Set time, Bin and Normalise</a><br>
+<a href="AOTA%20Fourier.htm">Tab 2A. Fourier plot</a><br>
+<a href="AOTA%20Short.htm">Tab 2B. Short event check</a><br>
+<a href="AOTA%20Find%20events.htm">Tab 3. Find events</a><br>
+<a href="AOTA%20Select%20to%20analyse.htm">Tab 4. Select event to analyse</a><br>
+<a href="AOTA%20Analyse.htm">Tab 5. Analyse</a><br>
+<a href="AOTA%20FinalTimes.htm">Tab 6. Camera corrections, final results</a><br><br>
+<a href="AOTA%20Integrity.htm">Integrity check</a><br>
+<a href="AOTA%20Integration%20and%20binning.htm">Integration, binning & normalisation</a><br>
+<a href="AOTA%20Set%20time%20scale.htm">Set time scale</a><br>
+<a href="AOTA%20Verify.htm">Verify event times</a><br>
+<a href="AOTA%20VTI%20info.htm">VTI information</a><br><br>
+<a href="AOTA%20Hints%20and%20Tips.htm"><B>Hints and Tips</B></a><br>
+
+<H1>AOTA - Overview and Layout</H1>
+
+<h2>Overview of Asteroidal Occultation Time Analyser (AOTA)</h2>
+AOTA is a tool designed to analyse the light curve of an asteroidal occultation to determine the existence of an occultation, the location in the light curve of the D and R events, and the uncertainties associated with those event times.
+<p>The AOTA methodology is<ul type=1>
+<li>the existence and approximate location of occultation events are determined using a cross-correlation analysis
+<li>the location of the D and R events are individually determined using a  &#967<sup>2</sup> fit of a theoretical step light curve to the observed event. The fit considers a range of transition durations based on a gradual event being caused by stellar diameter effects.
+<li>the uncertainty in each event times is estimated using a Monte Carlo analysis - looking at the variation in the event times that arise when random noise consistent with the observed noise is added to the theoretical light signal (or, optionally, to the observed light signal). </ul>
+
+An important part of the processing is that the user is able to see a detailed representation of the fitted light curve to the observed data points, so that the reliability of the fit, and the cause of uncertainty in the times, is evident. Additionally the user is able to adjust a number of settings used in the solution to ensure they are appropriate to the light curve in the region of the event. 
+
+<p><font color=red><font size=4 face=Arial><B>IMPORTANT</B>. The maxim of <B><I>garbage in = garbage out</I></B> applies to any tool for measuring a light curve. Users must make every effort with measurement tools such as Limovie or Tangra to make the best possible measurement of the video.  AOTA (or any other analysis tool) assumes the CSV data is an accurate representation of the light signal recorded on the video, and cannot rectify the effects of poor measurement.</font></font>
+
+<h2>Definitional issue - frame</h2>
+AOTA reads a csv file containing measures of either fields or frames (Limovie), or frames or binned frames (Tangra). For the purpose of the AOTA analysis, the base unit is the individual measures in the CSV file - whether that be fields, frames or binned frames.
+<p>Importantly, while the time to be associated with a complete frame will usually be the mid-time of the particular frame, the logical description of a frame covers the interval between the start and end of its exposure. A reference in AOTA to frame xxx.0 is a reference to the start of frame xxx, while a reference to frame xxx.5 is a reference to the midpoint in time of that frame.
+<p>The AOTA analysis is conducted on the basis of logical frames - that being the unit of measurements of the CSV file read by AOTA. The conversion of that frame identification to a time is dependent upon a number of factors, including<ul type=i>
+<li>any instrumental delays in the camera used
+<li>if the camera is an integrating camera - the 'delays' associated with the integration process
+<li>the detail of any GPS video time inserter - specifically, whether the time stamps relate to the time at the start or end of the displayed field (or, possibly, some other time).</ul>
+Users need to take care to ensure the conversion from frame identification for an event to time is appropriate to the combination of video camera and video inserter being used.
+
+
+<h2>Form layout</h2>
+The form has the following layout features:<ul type=a>
+<li>A menu bar, that is used to open a CSV file, and to exit the program
+<li>A region for plotting the occultation observations and a range of curves and lines generated during the analysis;
+<li>A box for varying the scale of the plot, and for selecting whether or not to display the light curve of comparison stars on the plot.
+<li>A tabbed area below the plot for conducting the analysis</ul>
+
+<h2>Plot scale</h2>
+The control of the plot scale is available at all steps of the analysis. It is located at the left below the plot region. 
+<p><img src=AOTA_PlotScale.png>
+
+ 
+<p>The default horizontal plot scale is 1.0. The scale can be adjusted in increments of 0.5, between 0.5 and 20.0. Buttons are also provided to easily set the plot scale to any of 1, 5, 10 or 15. Note that for lengthy light curves, the right-hand end may not get plotted at large plot scales. The limiting number of observations that will be included in the plot is:<ul>
+32700/PlotScale</ul>
+which corresponds to a duration (of frame-rate measurements) of:<ul>
+	1090/PlotScale seconds (NTSC), or<br>
+	1300/PlotScale seconds (PAL)</ul>
+
+If the measured signal is binned, this limit applies to the number of binned measurements, and not the number of original measurements.
+
+<p>Additionally the vertical plot scale can be adjusted using the 'Vertical' up-down control.
+
+<h2>Comparison stars</h2>
+The controls relating to comparison stars are available at all steps of the analysis. It is located at the left below the plot region and the section for setting the plot scale.. 
+
+<p><img src=AOTA_ComparisonStars.png> 
+<p>You should always try to measure at least one comparison star - so that the 
+light curve of the comparison star can be used as a check for any variations in 
+the occulted star's light curve. All of Limovie, PyOTE and Tangra allow comparison stars to be included in the measurement, and the data for up to two (Limovie) or three (PyOTE 
+&amp; Tangra) comparison stars are read from the CSV file. You should try to have the comparison stars near to the target star. 
+Generally you should aim at having a signal strength for your comparison stars 
+similar to the target, so that the light variations best reflect variations in 
+atmospheric transparency and scintillation noise of the target star. However if 
+the target star is faint the comparison stars should be of mid-range brightness. 
+To consider whether an event involved a satellite, at least one of the 
+comparison stars should be 1.5 mags or fainter than the target star - to be able 
+to eliminate a double star as the cause. (One of the comparisons should also be 
+of similar magnitude to the target, and a 3rd part-way between.) For a double 
+star event, a comparison star at an intermediate light level is relevant to 
+determining the magnitudes of the components. In some situations it will be 
+appropriate to make multiple measurements of the video, with different 
+comparison stars.
+
+<p>There are three check boxes at the bottom left of the form for displaying comparison star observations. They are only enabled when comparison star data has been read from the CSV file. Checking the box for the comparison star will overlay the plot with the light curve for the comparison star.&nbsp; 
+At the bottom of the list is an option 'Scale comparisons'. If unchecked (the 
+default setting), the comparison stars are plotted at their true height compared 
+to the target star. However comparison stars that are much brighter than the 
+target may not appear on the plot; and those much fainter will be very low on 
+the plot. If&nbsp; 'Scale comparisons' is checked, the comparison light curves 
+are scaled such that their average light level is 0.8, 0.75 and 0.7 (for 
+comparisons 1 to 3) of the average light level of the target star. Additionally there is a checkbox for displaying the background measurements used for measuring the occulted star.
+
+<p>An additional check box allows the various light curves to be plotted as a running average - with values of 0 to 35 being provided in a drop-down list. The running average plots may assist in detecting long-term systematic variations in the image.
+
+<h2>Basic plot details</h2>
+The plot of the light curve has the following general content:<ul>
+<li>The stars are plotted as dark-blue dots - with the size of the dots increasing as the plot scale increases. Stars used in the final analysis have uncertainty bars attached.
+<li>Tick-marks at the top and bottom, with labels at the bottom, indicate the frame ID corresponding to the point along the plot. The tick marks at the bottom of the plot consist of a long line at the start of the frame that is labeled, a short line at the end of that frame, and a joining line. The tick-marks at the start of the frame are joined by faint lines. When the observations are binned, the frame ID corresponds to the first frame in each bin (and will generally not end in a zero...)
+When the video has been measured at field intervals, the label refers to the 
+first field in a frame, and the number ends with '.0' to indicate this.<li>A horizontal orange line near the bottom of the plot corresponds to the zero light level used in the output from LiMovie or Tangra. [Note - it cannot be assumed that this zero light level is anything more than an approximation to a 'true' zero light.]</ul>
+Other data items that are plotted during the course of the analysis are described in other topics.
+
+<h2>Displaying times on the plot</h2>
+The time corresponding to the position along the plot is displayed as a Tooltip on the cursor. However when the tooltip is displayed, the search for an event is effectively halted if the cursor is located on the plot region. There are two solutions to this:
+<li>make sure the cursor is not on the plot region during the search for events; or
+<li>turn the tooltip off - under the menu item <B>File... Show time in Tooltip</B>
+<p><B>Note:</B> the time displayed is the video time stamp (or other time base) associated with each frame, as corrected by the camera corrections as set in Tab 6. Accordingly that time will not be completely correct until the camera corrections have been set.
+
+<h2>Processing Time stamps</h2>
+The logic of the processing of the event time in AOTA is as follows:<ul type=1>
+<li>The VTI applies a time stamp on the video signal as it leaves the camera. For most VTI's the time stamp on a video field is the UTC at the time when the field starts to be transmitted from the camera. [Advice   on selecting the relevant time stamp is given within AOTA]
+<li>The exposure actually commenced at an earlier time. The correction depends upon the length of integration (if any), and camera characteristics. The delay is computed in Tab 5.
+<li>AOTA allows frames to be binned. If the video was taken with an integrating camera, binning needs to correspond to the integration periods - but can be for multiple integration periods. 
+<li>AOTA generates the event time (and uncertainty points) as being at the start, or at the mid-point, of a measurement period. The mid-point of an exposure corresponds to half the duration of the number of frames binned.</ul>
+Accordingly, the event time is generated as:
+<li>For an event occurring at the start of a measured 'frame' - VTI time stamp, LESS camera correction, LESS the integration period.
+<li>For an event occurring half-way through a measured 'frame' - VTI time stamp, LESS camera correction, LESS the integration period, PLUS half the binning duration..
+
+<h3>Special considerations - Tangra</h3>
+When Tangra is used to measure a recording made with <B>ADVS</B>, or with <B>OccuRec</B>, the time measurements processed in Tangra are referred to the mid-time of the exposure. These times are adjusted by AOTA to refer to the start time of the exposure.
+<p>Tangra may also have applied camera corrections to the time values passed to AOTA. In this situation, the times are adjusted to refer to the start time of the exposure, and the only other adjustment is to add half the binning duration when the event time corresponds to half way through a measurement frame.
+
+
+
+
+
+
+</BODY>
+</HTML>

@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Ephemerides Overview</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1><A NAME="Ephemerides Main"></A>Ephemerides - Overview</H1>
+<!-- Insert Header in above line -->
+<P>This form provides general ephemeris predictions, The predictions are divided up into 6 groups.</P>
+<h2>Positions</h2>
+<h3>Planets</h3>
+<p>This generates basic ephemerides of the planets. The data provided is:<ul>
+<li> Right ascension and Declination</li>
+<li>geocentric distance</li>
+<li>equatorial diameter</li>
+<li>magnitude</li>
+<li>solar elongation</li>
+<li>phase angle (the Sun-Planet-Earth angle)</li>
+<li>percent illumination</li>
+<li>PA of the centre of the bright limb</li>
+<li>planetocentric declination of the Earth</li>
+<li>PA of the planet's pole</li></ul>
+<p>Predictions can be generated for the reference frames of J2000, Mean equinox of date, or Apparent position.</p>
+
+<h2>Asteroids</h2>
+Generates an ephemeris of any asteroids contained in the file of asteroid elements used for asteroidal occultation predictions. The ephemeris is computed using an osculating orbit that is integrated to near the date of the ephemeris. The generated output is:<ul>
+<li>Right ascension and Declination - J2000</li>
+<li>geocentric distance</li>
+<li>heliocentric distance</li>
+<li>solar elongation</li>
+<li>phase angle</li>
+<li>magnitude </li>
+<li>apparent motion - arcseconds per minute in PA.</li></ul></p>
+
+<H3>Comets</h3>
+<p>This generates ephemerides for currently visible comets. The orbital elements are obtained/updated from the Minor Planet Center by a one-click ftp download. The generated output is:<ul>
+<li>Right ascension and Declination - J2000</li>
+<li>geocentric distance</li>
+<li>heliocentric distance</li>
+<li>solar elongation</li>
+<li>phase angle</li>
+<li>magnitude (total)</li>
+<li>apparent motion - arcseconds per minute in PA.</li></ul></p>
+
+<H3>Planet satellites</h3>
+<p>This generates accurate ephemerides of the positions of planetary satellites. 
+The satellites covered are:<ul>
+<li><B>Mars </B>(I - II) Phobos and Deimos</li>
+<li><B>Jupiter  </B>(I - XVI) Io, Europa, Ganymede, Callisto, Amalthea, Himalia, Elara, Pasiphae, Sinope, Lysithea, Carme, Ananke, Leda, Thebe, Adrastea, and Metis</li>
+<li><B>Saturn </B>(1- IX)  Mimas, Enceladus, Tethys, Dione, Rhea, Titan, Hyperion, Iapetus, and Phoebe (only approximate)</li>
+<li><B>Uranus  </B>(I - XV) Ariel, Umbriel, Titania, Oberon, Miranda, Cordelia, Ophelia, Bianca, Cressida, Desdemona, Juliet, Portia, Rosalind, Belinda, and Puck</li>
+<li><B>Neptune </B>(I - II)  Triton, Nereid</li>
+<li><B>Pluto  </B>(I - III)   Charon, Nix, Hydra</li></ul>
+<p>The predictions include the following:<ul>
+<li>Right ascension and Declination - J2000</li>
+<li>magnitude</li>
+<li>separation (arcseconds)</li>
+<li>PA</li>
+<li>apparent motion - arcseconds per minute in PA.</li></ul></p>
+
+<h3>Asteroid Satellites</h3>
+Queries the <B>Miriade</b> server of the IMCCE {part of Paris Observatory} to display ephemerides of satellites of asteroids. Predictions provide offsets in arcsec in x & y coords, the PA and separation, and a plot of the position of the satellite relative to the primary.
+
+
+<h2>Appearance of the Planets and Moon</h2>
+<H3>Graphics of the planets and their moons</h3>
+
+<p>This provides a graphic display of the appearance of planets and their satellites. The display can be limited to the principal moons or include all moons. You can choose whether to display the orbit or just the positions of the moons.</p>
+<p>Animation is provided, so that you can watch the change in the appearance of the planet and its moons. The animation can provide a good instructional tool. Two good examples:<ul>
+<li>Plot the appearance of Venus over a period of 1000 days at a 1-day interval.</li>
+<li>Plot the appearance of Jupiter over a period of 1000 days at a 1-day interval - but with the 'x10' box checked to show the outer moons.</li></ul></p>
+<H3>Moon phases, perigee/apogee, Physical ephemeris</h3>
+<p>This calculates the times of the moon's phases (new moon, full moon, first/last quarter), and the times of perigee and apogee, for a 12-month period. It also generates a physical ephemeris of the moon at a 2-day interval for the whole year.</p>
+<H3>Central meridians of Mars, Jupiter and Saturn</h3>
+<p>This generates a 12-month table listing the longitude of the central meridian of Mars, Jupiter and Saturn at 0hrs UT. The central meridian is referenced to the apparent center of the disk (that is, corrected for phase.)</p>
+<p>For Jupiter, two tables are produced - corresponding to System I and System II.
+<p>All tables have a motion table allowing for simple calculation of the central meridian for any time during the day.</p>
+
+<h2>Astronomical events</h2>
+<H3>Diary of astronomical phenomena</h3>
+<p>This generates a list of various astronomical events for a 12-month period. The type of phenomena included are: Phases, perigee and apogee of the moon, oppositions and conjunctions of the planets, conjunctions of the moon with bright stars, greatest elongations of Mercury and Venus, and more....</p>
+ 
+<H3>Mutual conjunctions of the planets</h3>
+This searches for conjunctions between planets - with a user-specified conjunction distance. Where a conjunction is found, a graphic of the event is generated. The graphic includes a map of the Earth, indicating where the event will be visible from. The graphic also shows the 4 main satellites of Jupiter, and Titan for Saturn.</p>
+
+<p>This function can be used to search for occultations between planets. The next such event is an occultation of Jupiter by Venus on 2065 Nov 22.</p>
+
+<h2>Asteroid shape models</h2>
+Displays shape models as available on <B>DAMIT </B>(<B>D</B>atabase of <B>A</B>steroid <B>M</B>odels from <B>I</B>nversion <B>T</B>echniques) and <B>ISAM </B>(<B>Interactive Service for Asteroid Models</b>)
+<p>If either the DAMIT or ISAM web site is 'down', the functionality can become very slow. A tool is provided to establish whether those sites are currently on-line. The routine will only attempt to access the shape models if the relevant check box is ticked. [Note - if either DAMIT or ISAM is 'down', the check can take in excess of 20 seconds - and double this if both sites are down.] The result of that check is applied to all three locations where the check is provided.
+
+
+<h2>Rise and Set times</h2>
+<H3>Rise and set times of the major planets</h3>
+<p>This generates a table of the rise and set times of all major planets (Mercury to Neptune) for a given location. The table interval can be set by the user.</p>
+<H3>Moonrise and Moonset</h3>
+<p>This generates a 12-month table for Moonrise and Moonset, for a given location.</p>
+<H3>Altitude of an object</h3>
+This generates teh altitude of an object from its coordinates, teh site location, and the date/time. It can also generate the Rise/set time of that object for a range of different horizon elevations.
+
+<h2>Calendar, Dates and Conversions</h2>
+<H3>Calendar</h3>
+<p>Generates a Gregorian calendar for any specified year. For the year 1582 and earlier, the calendar is the Julian calendar.</p>
+<H3>Julian day number, sidereal time, time of solar transit, ecliptic</h3>
+<p>Generates a table giving these items.</p> 
+<H3>JD &lt=&gt date, Angle conversions, precession, Earth orientation</h3>
+<p>Provides a tool to.<ul>
+<li>convert between Julian day number and Date</li>
+<li>convert between various angular measures - Dms, Hms, Degrees, Hours, Radians, Revolutions</li>
+<li>precess coodinates from one equinox to another</li>
+<li>display the the location of the pole of the Earth's rotation, and the correction to be applied to UTC to give UT1</ul></p>
+ 
+
+<h2>Other</h2>
+<H3>Star chart</h3>
+<p>This provides mapping functionality using the internal 'Tycho2' catalogue, the 2UCAC catalogue, or the USNO NOMAD catalogue. [With the full NOMAD catalogue, maps can extend to magnitude 20].<p>
+<H3>Magnitude calculator</h3>
+<p>This magnitude calculator provides two functions:<ul>
+<li>calculate the combined magnitude from two specified magnitudes</li>
+<li>calculate the magnitudes of the components of a double star - given the star's combined magnitude, and the light levels in a photometric light curve.</ul>
+
+<H3>Distance between two points</h3>
+Calculates the great circle distance between any two points on the celestial sphere. Merely enter the coordintaes to get the separation and PA.
+
+<H3>Datum conversions, Geoid heights</h3>
+Two functions are provided:<ul>
+<li>Convert latitude and longitude as specified in an 'old' geodetic system to coordinates on the WGS84 standard; and
+<li>Displays the height of mean Sea Level above the WGS84 spheroid at any specified location.
+
+
+</BODY>
+</HTML>

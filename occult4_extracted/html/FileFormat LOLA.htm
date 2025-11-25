@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>LOLA</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>LOLA limb data</H1>
+<P>The LOLA128.bin file has been created from the LRO LOLA data gridded dataset as follows:
+<ul type=i><li>The dataset used was the LOLA LDEM GDR dataset, gridded at 1/512 degree intervals in cylindrical coordinates. It is available <a href="http://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/cylindrical/img/" target=blank> here.</a>
+<li>There are 16 source .IMG binary files (1.97GB each) with coordinates in selenographic longitude and latitude. Each file contains the height of ~106 million data points, with the longitude/latitude coordinates being determined by the position in the data point in the file. A consequence of this is that the density of data points is much greater at the polar regions than the equatorial regions.
+<li>The coordinates have been transformed to the (P,D) coordinate system. The P coordinate is a distance around the circumference of the Moon. The D coordinate is a distance from the mean limb of the Moon. 
+More strictly, the D coordinate corresponds to latitude with reference to a pole 
+oriented in the direction of the mean position of the Earth.<li>The data set has a resolution of 0.01 deg in P, and 0.02 deg in D. [0.01deg in P corresponds to a sky-plane angular distance at the mean distance of the moon of about 0.17".] The data set was limited to points having a D within the range of -20deg to +20deg.
+<li>Multiple points in the (L,B) reference frame could be mapped to a single bin in the 
+(P,D) reference frame. This is particularly the case in polar regions, but occurred throughout the data set. 
+The height for a bin location was taken as the mean of all heights mapped to 
+that bin.
+<li>The data was arranged as follows:<ul type=a>
+<li>The D coordinate is divided into 2001 values between -20.00 and +20.00
+<li>The P coordinate is divided into 36000 values between 0.00 and 359.99
+<li>The data in the file is ordered by the D coordinate - from -20 to +20. For each value of D, the file contains 36000 values of P. The height (in meters) at each point is stored as a 16-bit signed integer.  
+<li>To retrieve a height (in meters):<ul>
+<li>Calculate  Dpos = (integer) { (D+20) * 50};
+<li>Calculate  Ppos = (integer) { P * 100};
+<li>File position = 2 * (Dpos + 2001 * Ppos)</ul>
+</ul></ul>
+The resulting file contains 72,036,000 data points evenly distributed around the lunar limb.
+
+
+</BODY>
+</HTML>

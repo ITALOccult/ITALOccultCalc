@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>J6 to J13</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>J6.bin to J13.bin</H1>
+
+<P>The files J6 to J13contain Chebychev polynomials for the Jovian moons 6 to 13. The polynomials were derived by Paris Observatory on a fit to observations made from discovery to 1993. The polynomials are valid for the period 1900 Jan 1 to 2048 October.
+
+<p>The Chebychev polynomials represent a Poisson fit to a numerical integration. An explanation of the data is available <A href="http://www.imcce.fr/en/publications/nst/pdf/note54.pdf" target = _blank>here</a>, and the source files in ASCII can be obtained <A href="ftp://ftp.imcce.fr/pub/ephem/satel/faintsat/jupiter/" target = _blank>here</a>, as files j6.xyz to j13.xyz.
+
+<p>The series are stored as doubles, seriatum corresponding to the ASCII layout as follows:<ul>
+
+<li>JD at start of block
+<li>No of days in block
+<li>S0, S1, S2 and S3
+<li>No of lines for power ^0
+<li>for each line, coeff of Cos(Arg), coeff of Sin(Arg), Arg
+<li>No of lines for power ^1
+<li>for each line, coeff of Cos(Arg), coeff of Sin(Arg), Arg
+<li>No of lines for power ^2
+<li>for each line, coeff of Cos(Arg), coeff of Sin(Arg), Arg</ul>
+
+This structure repeats for each coordinate (x, y, z), and then for each block.
+
+</BODY>
+</HTML>

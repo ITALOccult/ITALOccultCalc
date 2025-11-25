@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Star diameters</Title>
+<style type="text/css">
+.auto-style1 {
+	color: #000080;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Star diameters</H1>
+<P>Star diameters are displayed in several locations in Occult.
+
+The basis of the values displayed is:
+<ul type=1> <li>
+<ul type=i>
+
+	<li>The apparent angular diameter for stars in the Occult Gaia subset files. This value has been derived from:
+	<ul type=a>
+		<li>g<strong>aiadr3.Astrophysical_parameters_supp</strong> file, field<strong> 
+		radius_flame_spec, </strong>&nbsp;(Rad-Flame in VizieR), and&nbsp;
+		<li>&nbsp;g<strong>aiadr3.Astrophysical_parameters</strong> 
+		file, field<strong> radius_flame, </strong>&nbsp;(Rad-Flame in VizieR). 
+	</ul>
+	with the solar radius value having been converted to the apparent star diameter with:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; diam(mas)= 9.304 *
+	<strong>parallax(asec)</strong> * <strong>radius_flame<br></strong>
+	
+	<li>If a measured value exists in the CHARM2 or CADARS catalogues 
+	<span class="auto-style1"><strong>with a 
+	value that is greater than 1 mas,</strong></span>&nbsp; that measured value.
+	</ul><br>
+	<li>If the star position is not obtained from the Gaia subset files (for example, positions from PPMX, USNO-B1, NOMAD, and User stars) the star diameter will be the value listed in the CHARM2 or CADARS catalogues. 
+	Diameters derived using the Warner expression (see below) are no longer 
+	displayed.</ul>
+
+Occult will list the diameter in two formats:
+<ul type=i><li><strong> 0.xxxx" [Estimated]</strong> - which indicates that the diameter has been derived 
+from the Gaia Flame values;
+or: <li> <strong>0.xxxx" [CHARM/CADARS, y measures]</strong> - which indicates the diameter is a measured diameter extracted from one or both of the <A  href="FileFormat%20StarDia.htm">CHARM2 and CADARS</a> catalogues. The value of "y" gives number of measures that have been averaged to provide the indicated diameter.<br><br>
+</ul>
+<hr color=red size=5>
+
+<h3>Prior to diameters being derived from the 
+Gaia Flame values, the following was used to estimate a star's diameter from its 
+color magnitudes</h3><P>The diameter is computed on the basis of the 
+<a href="http://adsabs.harvard.edu/full/1972MNRAS.158P...1W">Warner expression</a>. 
+That is :
+
+<ul type=1>
+<li>An estimate of the diameter derived from the star magnitude and colour. The expression used is:<br>
+            StarDia = Math.Pow(10, 0.73 * (B-V) - 0.2 * Mv - 2.512);<br>
+where:<ul>
+	<li>StarDia is the angular diameter in arc secs
+	<li>V is the Mv magnitude; and
+	<li>B is the Mp magnitude.<br><br></ul>
+
+	<li>If Mp is not available, and Mr is available, V-R is converted to B-V 
+	using:<br>(B-V) = (V-R)/0.57<br>[see
+	<a href="http://brucegary.net/photometry/V-R.htm">http://brucegary.net/photometry/V-R.htm</a> 
+	]<br>
+</ul>
+</ul>
+
+
+
+</BODY>
+</HTML>

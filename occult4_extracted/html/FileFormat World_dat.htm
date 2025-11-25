@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>World.Dat</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>World.Dat, World.inx</H1>
+
+<h2>Data set containing Coastal Outlines, Country Borders, and State Borders</h2>
+
+<p>The files <B>WORLD.DAT </B>and <B>WORLD.INX </B>contain the latitude/longitude co-ordinate pairs for the coastal outlines, country borders, and state borders, for the world. 
+
+<p>The files were created from a data set supplied by David Dunham. The .DOC file accompanying that data is given in full at the end of this document. To create the files WORLD.DAT and WORLD.INX the data set supplied by Dunham was manipulated as follows:<ul type=1>
+
+
+<li>There were a significant number of duplicated co-ordinate pairs in the data set. These were removed (reducing the file size by 10%).
+
+<li>The file data originally was broken into a series of blocks with a maximum of 48 co-ordinate pairs per block. The data was represented as a text file, with the information for each block immediately preceding each block.
+
+	<p>The file was reformatted so that:<ul>
+	<li>sequential blocks representing a continuing line segment are merged;
+	<li>the main file only contains co-ordinate pairs, which are held as as two-byte integers;
+	<li>an index file was created, containing (for each line segment):<ul>
+	<li>record number in the main file for the start of the segment.
+	<li>number of co-ordinate pairs in the segment
+	<li>the most westerly longitude of the segment
+	<li>the most easterly ........................
+	<li>the most southerly latitude ..............
+	<li>the most northerly .......................</ul>
+	<li>the index file was ordered to group sea-board boundaries, country borders, and state borders (Australia, Canada, & USA)</ul>
+
+<p>(NOTE: Duplicate entries were removed before the blocks were merged. Then, if the last entry of one block was identical to the first entry of the next block, the second block was taken to be a continuation of the first block; no index entry made; and the duplicate entries were maintained. The location of all merged blocks can be determined {if required} by searching the file for all instances of duplicate co-ordinates.)
+
+<h3>Reading the data</h3>
+<li>All longitudes and latitudes are held as two-byte signed integers. To convert the integer to degrees, divide by 90. (This is clearly the conversion factor used when the dataset was created; the factor 0.011111 is an approximation to 1/90, and introduces a small conversion error.) The factor of 90 scales longitude values to being within the integer range.
+
+Longitudes are measured +'ve to East and range from 0 to 360 degrees. 
+
+<h3>Subsequent changes to the data.</h3>
+<li>The borders of the former states of the USSR, Yugoslavia, and the border between the Czech and Slovak republics, have been added. In 2005 new data for the coastal outline of New Zealand, supplied by Glen Rowe of New Zealand, was incorporated. At this time the data for the old borders of East/West Germany, and North/South Vietnam, were formally removed from the data. Additionally the data was edited to rectify gaps in:<br>
+* the state borders of the USA - 26 line segments<br>
+* coastlines - 22 line segments</ul>
+
+
+<h3>The format of the WORLD.DAT file is:</h3>
+<table columns=3 border=1>
+<TR><TH NOWRAP>Byte</TH><TH>meaning</TH></TR>
+<TR><TD>0-1</TD><TD>longitude (2 byte signed integer)</TD></TR>
+<TR><TD>2-3</TD><TD>latitude .......................</TD></TR>
+</table>
+repeating to provide 91791 co-ordinate pairs
+
+<h3>The format of the WORLD.INX file is</h3>
+<table columns=3 border=1>
+<TR><TH NOWRAP>Byte</TH><TH>meaning</TH></TR>
+<TR><TD>0-3</TD><TD>record number in WORLD.DAT for the first co-ordinate pair for this line segment, held as a 4-byte signed integer</TD></TR>
+<TR><TD>4-5</TD><TD>number of co-ordinate pairs for this line segment, held as a 2-byte signed integer</TD></TR>
+<TR><TD>6-7</TD><TD>most westerly longitude in this line segment (2-byte integer)</TD></TR>
+<TR><TD>8-9</TD><TD>most easterly longitude .................................</TD></TR>
+<TR><TD>10-11</TD><TD>most southerly latitude .................................</TD></TR>
+<TR><TD>12-13</TD><TD>most northerly ..........................................</TD></TR>
+</table>
+repeating to provide Records for 1330 line segments
+
+	
+<p>The records are grouped as:
+<table columns=3 border=1>
+<TR><TH NOWRAP>Records</TH><TH>Scope</TH></TR>
+<TR><TD>0-939</TD><TD>Sea-board boundaries</TD></TR>
+<TR><TD>940-1186</TD><TD>Country Borders</TD></TR>
+<TR><TD>1187-1307</TD><TD>State Borders (Australia, Canada, & USA)</TD></TR>
+<TR><TD>1308-1326</TD><TD>Borders of the former states of the USSR</TD></TR>
+<TR><TD>1327-1330</TD><TD>Borders of former states of Yugoslavia</TD></TR>
+<TR><TD>1331</TD><TD>Border between Czech and Slovak republics</TD></TR>
+</table>
+
+<p>Some line segments (about 5) cross over the zero longitude line; these segments thus contain longitude values close to 360, and to 0. The index file has not given these segments any special treatment (so that a segment from 357 to 2 deg will be indexed as having a minimum longitude just greater than 0, and a maximum longitude just less than 360) but can be detected if the difference between the maximum and minimum longitudes is greater than 340 deg.
+
+
+<h2><br>The following is the original text accompanying the data set</h2>
+
+<h3>World Coastlines/Boundaries Dataset and Software</h3>
+
+<p>The file worldcan.dat on the enclosed diskette contains co-ordinates of the coastlines and national boundaries of the world.  Besides coastlines of the oceans, coastlines of the larger lakes are included.  Besides national boundaries, State boundaries in Australia and the U.S.A. are included, as well as Canadian Provincial boundaries.  The national dataset is old, so it includes no-longer-relevant boundaries between East and West Germany, and between North and South Vietnam.  It does not include boundaries of the new nations of the former Soviet Union and Yugoslavia; if anyone has access to these in machine-readable form, I would be interested in obtaining a copy to add to the worldcan.dat file.  In most areas, the resolution is rather good, to 1 or 2 km.  But the state boundaries of the U.S.A. are not nearly as good, and include many gaps of about 20 km and more, as well as unwanted extensions of the northern border of Pennsylvania.  The border between Maryland and Virginia across the Chesapeake Bay, and between New Jersey and Delaware down the middle of Delaware Bay are included, but the Outer Banks of North Carolina and the Florida Keys are not included.
+
+<p>For compactness, the file consists of segments of pairs of integer numbers.  The top of the file contains the scale factor, 0.011111.  Multiply it by the first number of a pair to obtain the longitude (positive east of Greenwich) in degrees, and by the second number of the pair for the latitude in degrees (north positive).  Each segment of pairs has a header, the first number of which is a sequential segment count (there are 2908 segments) and the second number is the number of points (following lines of pairs) in the segment; the maximum size of a segment is 48 points.
+
+
+</BODY>
+</HTML>

@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Convert Astorb</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Download and Convert MPCORB, AstDyS-2 and Astorb</H1>
+<!-- Insert Header in above line -->
+<P></P>
+
+<h2>Download files</h2>
+
+<p>The program can retrieve orbital elements of asteroids from&nbsp; the Minor Planet Center (<B>MPCORB</B>), 
+the Asteroids Dynamic Site (<strong>AstDyS-2</strong>) which is sponsored by the 
+European Space Agency, and Lowell Observatory (<B>Astorb</B>). Ftp links are provided to the primary site, and to a mirror site 
+for MPCORB and Astorb.</p>
+<p>The preferred source of elements is MPCORB, followed closely by AstDyS-2, and 
+then Astorb. MPCORB is updated daily, AstDyS-2 is updated monthly, and Astorb is 
+updated daily. Astorb has a useful data element that is not present in MPCORB or 
+AstDyS-2 - an estimate of future positional accuracy which is called Peak Ephemeris Uncertainty 
+(PEU). PEU can be used to estimate the uncertainty in an occultation prediction. 
+Since all three essentially use the same set of observations to derive orbits, 
+the PEU values used in Astorb are added to MPCORB or AstDyS-2 in the conversion 
+process (providing Astorb is present on the user's computer.) </p>
+
+<h3>MPCORB download</h3>
+<p>The primary location for the MPCORB download is the Minor Planet Center. MPCORB is updated daily. The file is downloaded as a Zip file. After the download, the program will unzip the file.</p>
+<p>If the MPC server is unavailable for some reason, the file can be downloaded 
+from a mirror site run by the Czech Astronomical Society at Klet Observatory<I>.</I></p>
+<p><em>NOTE</em>. In late 2017 Harvard University limited internet access to the 
+Minor Planet Center to the https protocol. This is implemented in Occult 
+v.4.5.0.0 and subsequent. If you have trouble getting a connection to download MPCOrb, read <A HREF="http://cfa-www.harvard.edu/iau/MPCORB.html">MPCOrb database</A>. </p>
+<h3>AstDyS-2 download</h3>
+<p>A second source of elements is the <A  href="http://hamilton.dm.unipi.it/astdys2/"  target=_blank> Asteroids - Dynamic 
+Site</a> generally known as AstDyS-2. This site is sponsored by the European 
+Space Agency, and is updated on a monthly basis. The file that Occult downloads 
+is 'allnum.cat' - which contains Keplerian orbits for all numbered asteroids 
+(but no un-numbered asteroids). However it does not include the names of the 
+numbered asteroids; when AstDyS-2 is converted (see below) the asteroid names 
+are taken from either Astorb or MPCORB. </p>
+
+<h3>Astorb download</h3>
+<p>The primary location for the Astorb download is Lowell Observatory. Astorb is updated daily. The file is downloaded as a GZip file. After the download, the program will unzip the file.</p>
+<p>If the Lowell server is unavailable for some reason, the file can be 
+downloaded from VizieR, which is ipdated on a monthly basis In both instances, the file is downloaded as a GZip file. After the download, the program will unzip the file.</p>
+<h3>&nbsp;</h3>
+
+<h2>Convert the file</h2>
+<p>The orbital elements need to be placed in a format used by Occult. Apart from the format, the conversion adds diameters - either from the file 
+Asteroid Diameters.dat, or calculated from the H0 magnitude. Also added is the number of moons 
+(from the file BinaryAsteroids.csv), the number of rings (from the file 
+AsteroidRings.dat), and the taxanomic class (from the file AsteroidClasses.csv). 
+For conversions of MPCORB and AstDyS-2, the PEU value from Astorb is added. For 
+conversion of AstDyS-2, the asteroid's name is added from either Astorb or 
+MPCORB.</p>
+
+<p>The conversion step allows the user to set some selection parameters, so that 
+the objects contained in the converted file are those having a greater 
+likelihood of a successful occultation observation.<h3>1.Select the file to convert</h3>
+<p>Check the relevant file to convert. Usually it will be the file that you have just downloaded!</p>
+
+<h3>2. Set the selection criteria</h3>
+<p>This is the most important part of the conversion process. It controls what asteroids will be included in the file. The choices are:<ul>
+<li><B>Asteroid diameter</B>. This is the primary selection criterion. The diameter set here is retained between sessions. Things to 
+remember are:<ul>
+<li>the probability of observing an occultation reduces as the diameter reduces 
+<li>The following plot shows the number of asteroids against diameter. The vertical 
+scale is log<sub>10</sub>, and ranges from 1,000 to 1,000,000. As a general 
+guide, halving the diameter will increase the number of asteroids by a factor of 
+at least 2. <br><img src="AsteroidsVsDiameter.png">
+</ul>
+<li><B>Limit to numbered asteroids</B>. This should be checked, unless there is a special reason to consider un-numbered asteroids. 
+Remember that the fundamental reason why an asteroid is not numbered is because the uncertainty in the orbit is too large. Consequently the uncertainty in an occultation prediction 
+of an unnumbered asteroid will usually be so large as to make the prediction meaningless.
+<li><B>If un-numbered asteroids are included, limit to those observed at 3 or more oppositions</B>. In the event that un-numbered asteroids are to be included, check this box to limit the asteroids to those that have been observed at a minimum of three oppositions - with a consequential presumption that there is some accuracy in the orbit. <i>Note: Only 
+MPCOrb includes a field for the number of oppositions. For Astorb the criterion applied is an observed arc of at least 1500 days.</i>
+<li><B>If un-numbered asteroids are included, include a particular asteroid</B>. This allows the user to specify a 
+particular un-numbered asteroid to be included - irrespective of the diameter criterion or the number of oppositions. 
+As a result you can generate predictions of a particular un-numbered asteroid 
+without needing to include a large number of unnumbered asteroids generally, or 
+reducing the diameter of asteroids to imclude.<br>
+<em>Note:</em> you must make sure the asteroid identifier is strictly in accordance with the standard format, as in: '2006 RN102', '2006 TX17', '2000 DN8', '1999 YH'. 
+In all instances, there is a single space between the year and the letters, and the letters are uppercase.
+
+</ul>
+
+<h3>3. Specify 'mandatory' minor planets</h3>
+This location is used to specify numbered planets that should be included in the conversion - irrespective of the selection criterion. There are two uses for this list:<ul>
+<li>to ensure small asteroids that have been observed in an occultation are included in the asteroid file, for use when analysing observed occultations. Such asteroids should be retained in this list.
+<li>to include a particular asteroid for a special prediction. In this situation you would sensibly remove the asteroid from the list after the conversion has been completed, to ensure the asteroid was not unnecessarily included in subsequent conversions.
+</ul>
+
+<h3>4. Convert</h3>
+Click Convert. Select the source file. A progress bar will indicate progress.
+<p>When the conversion is complete, the program will automatically update the 
+User File of asteroid elements used for lunar occultation predictions. Some 
+users have reported an error at this point; the solution is to:</p>
+<ul>
+	<li>in the first instance, ignore the error - it is not fatal, although 
+	there may be a problem with Lunar occultations;</li>
+	<li>then from the Lunar Predictions tab, click
+	<a href="User%20asteroids%20Edit.htm">Edit the User file of minor planets</a> 
+	[see, in particular, the section at the end of this linked Help topic];</li>
+	<li>from this editor, clear anything displayed, and then insert a basic 
+	number of asteroids using the Add button at bottom left, using the default 
+	magnitude value of 9.0;</li>
+	<li>Save</li>
+</ul>
+
+
+</BODY>
+</HTML>

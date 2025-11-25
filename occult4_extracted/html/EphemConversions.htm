@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Conversions</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Conversions, Earth Orientation</H1>
+
+<P>This form provides for a number of useful conversions. 
+<h2>Julian Day Number to Date</h2>
+<p>Enter a Julian day number, and display the year, month and day. The conversion 
+assumes the Gregorian calendar commenced in 1583. The Julian calendar is used for earlier dates.
+
+<h2>Date to Julian Day Number</h2>
+<p>Enter a year, month and day, and display the Julian day number. The conversion 
+assumes the Gregorian calendar commenced in 1583. The Julian calendar is used for earlier dates.
+<p>Also displayed is the date in decimal years - if the dtae is between 1900 and 2100. This form of date is useful for reporting double star positions. The date generated is based on the Julian year, with  2000.0000 corresponding to 2000 Jan 1.5 = JD 2451545.0.
+
+<h2>Precession</h2>
+<p>Precesses a position from one equinox to another. The equinox year can be a decimal value. The start year can be after the end year (that is, precess backwards in time). For example, if you wanted to relate a star to the BD or CPD catalogues, you could precess a position back to the equinoxes of those catalogues (1855 and 1875 respectively) and then compare positions.
+<p>If the position is a B1950 or J2000 position (typically, a catalogue position) a check box is available to display the position at an end date that is an 'apparent' position. That is, the position is corrected for precession, nutation and aberration. 
+
+<h2>Angle conversions</h2>
+<p>A set of fields for different angular measures:
+<li>degrees, minutes, seconds
+<li>hours, minutes, seconds
+<li>decimal Degrees
+<li>decimal Hours
+<li>Radians
+<li>Revolutions
+<p>Enter a value in any field, and see the equivalent values displayed.
+
+
+<h2>Earth orientation parameters.</h2>
+<p>The physical mass of the Earth moves about the stable axis of rotation of the Earth. As well, the rotation of the Earth about its axis is non-uniform. The Earth Orientation Parameters (EOP) define the location of the pole of rotation, and the correction to be applied to UTC to give UT.
+
+The EOP are:
+<table columns=3 border=1>
+<TR><TH NOWRAP>Parameter</TH><TH>Meaning</TH></TR>
+<TR><TD>x</TD><TD>Displacement of the celestial Ephemeris Pole along the Greenwhich Meridian (arcsec) - positive towards Greenwhich</TD></TR>
+<TR><TD>y</TD><TD>Displacement of the celestial Ephemeris Pole along the -90-deg Meridian (arcsec) - positive towards Canada</TD></TR>
+<TR><TD>dUT1</TD><TD>UT1 - UTC (sec)</TD></TR>
+</table>
+
+<p>Values of the EOP can be displayed for any date between 1846 and present, by specifying the relevant date.
+<p>The data provided in the EOP series is as follows:<br>
+1846 - 1889 : x, y - at 0.1 year intervals [dUT1 =0]. Read using linear interpolation<br>
+1990 - 1961 : x, y - at 0.05 year intervals [dUT1 = 0]. Read using linear interpolation<br>
+1962 - present : x, y, dUT1 - at daily intervals. 
+
+
+<h2>Convert reported apparent Solar times of historical observations - to UT</h2>
+<p>Historical observations used to be reported using the local solar time. That 
+is, the start of the day was noon, with the Sun on the meridian. This block 
+converts such a time to UT.<ul>
+	<li>The fields to be entered are:</li>
+	<li>The date, as reported, of the observation. Remember that 0hrs Solar Time 
+	corresponds to midday. The routine corrects the date to the relevant UT date 
+	whenever required.</li>
+	<li>The longitude of the site, measured eastwards. For best results, an 
+	effort should be made to locate the site (from its coordinates) on a mapping 
+	tool such as GoogleEarth, and use the 'modern' longitude. In doing this, be 
+	prepared for the reported site coordinates to differ from its modern 
+	coordinates by several km.</li>
+	<li>The reported apparent solar time.</li>
+</ul>
+<p>The corresponding UT is displayed.<p><strong><em>Important.</em></strong><em> 
+Whenever investigating old observations, always double check everything. Also 
+check to ensure the modern reduction of the observation is consistent with the 
+reported details.</em> 
+
+
+</BODY>
+</HTML>

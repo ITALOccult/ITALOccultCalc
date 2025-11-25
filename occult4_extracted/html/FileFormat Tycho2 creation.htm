@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<Title>Tycho2 - file creation</Title>
+</HEAD>
+<BODY BGCOLOR="#FFFFCC" TEXT="#000000">
+
+
+
+<H1><A NAME="idh_4overview"></A>Tycho2  -  creation</H1>
+
+
+The following is detail about how the Tycho-2, Hipparcos, and 2UCAC catalogues were processed to generate the Tycho-2 catalogue for use in OCCULT.
+
+<H2>Identity and Position processing</H2>
+
+<H3>in Hipparcos catalogue:</H3>
+263 entries had no precise positions. These stars were not cross-referenced from the Tycho-2 catalogue - so their null positions have not been transferred. Most of the 263 stars have entries in the Tycho-2 catalogue.
+
+<H3>in Tycho-2:</H3>
+<P>For stars marked "X" in column 14 - i.e. no proper motion available. Position at epoch (~1991) used. 'Catalogue Name' field OR'ed with 16, to indicate this status.</P>
+
+<P>For stars marked "P" in column 14 - i.e. photocentric position of double, each component has an entry. The position used is the position at epoch of the component, with proper motion for the combined object being applied to the component to refer the position to J2000.  'Catalogue Name' field OR'ed with 32 to indicate this status.</P>
+
+<P>For stars marked "P" in column 201 - i.e. photocentric position used for a double star, with the components unresolved (& thus only a single entry.) No manipulation of the coordinates, but the   'Catalogue Name' field OR'ed with 64 to indicate the double status.</P>
+
+<H2>Correlation between Hipparcos & Tycho-2</H2>
+<P>Hipparcos positions were used in place of the Tycho position, in the following circumstances<OL TYPE = 1>
+<LI>The Hipparcos reference number in Tycho has no component identifier;</LI>
+<LI>The Hipparcos component identifier in Tycho exactly matches the component identifier in Hipparcos;</LI>
+<LI>The component identifier in Tycho is either '*' or '-', and Hipparcos refers to a specific component;</LI>
+<LI>Tycho specifies an 'A' component (with or without others), but Hipparcos uses '*' or '-'  ;</LI>
+<LI>Tycho identifies more than one component (e.g. AB), and Hipparcos refers specifically to one of those components; and</LI>
+<LI>Seven Hipparcos stars (2444, 29737, 39606, 42543, 54976, 71377, and 110766). These stars are flagged as '*' in Hipparcos, but have a specific identifier in Tycho that does not involve an 'A' component. [See item 4 above.]</OL></P>
+
+<P>Two stars required special treatment.<OL TYPE = 1>
+<LI>H27000 - flagged as double with '*' in Hipparcos, but separate entries in Tycho Supplement 1 (as components D and E). Entry consists of parallax from Hipparcos; all other details from Tycho.</LI>
+<LI>H67626 - flagged as double with '*' in Hipparcos, but separate entries in Tycho (with no component identifiers) having no proper motions or parallax. Entry consists of Hipparcos proper motion and parallax, and Tycho positions (moved to J2000) and magnitudes.</LI></OL></P>
+
+<H2>Magnitude processing</H2>
+<H3>in Hipparcos:</H3> 
+<P>Johnson V magnitude given for all but one star (which was a star with no precise position - H120412).</P>
+	
+<P>Johnson B-V given for all but 1281 stars. This was combined with V to give the B magnitude. For another 344 stars, a Johnson B magnitude was derived from the magnitudes VT and BT using the approximate expression:<UL>
+		B=.76*BT+.24*VT</UL>
+For the remaining 931stars the B, magnitude was set as 90. [No BT magnitude was available for any of these stars.]  </P>
+
+<H3>in Tycho-2:</H3>
+The Johnson B and V magnitudes were derived from the BT and VT magnitudes as<UL>
+		V=1.09*VT -.09*BT<BR>
+		B=.76*BT +.24*VT<BR></UL>
+Where one of those magnitudes was not available, no correction was applied to the other magnitude.
+
+<H2>Adding UCAC2 data</H2>
+<P>The catalogue has been modified with the availability (August 2003) of the UCAC2 catalogue, by:<UL>
+<LI>replacing the positions/proper motions of all non-Hipparcos stars of magnitude fainter than 9.0 with those from UCAC2; and</LI>
+<LI>adding UCAC2 stars of magnitude brighter than 12.00 that were not in Tycho2</LI></UL></P>
+
+<P>The criteria used to replace positions with UCAC2 data were:<UL>
+<LI>no replacement if a star in Tycho2 is within 2” of another star, or Tycho2 magnitude brighter than 9.00</LI>
+<LI>replacement if a UCAC2 star matched the Tycho2 star to better than 1” in RA and Dec; BUT</LI>
+<LI>no replacement if more than one UCAC star matched the Tycho2 star</LI></UL></P>
+
+<P>The criteria used to add a UCAC2 star were:<UL>
+<LI>magnitude <12.00 on the UCAC magnitude system; and</LI>
+<LI>if UCAC2 star matched a Tycho2 star to better than 1.8” in each coordinate - not added</LI>
+<LI>Mv and Mp were both set to the UCAC2 magnitude - which is slightly redder than V.</LI></UC></P>
+
+
+</BODY>
+</HTML>

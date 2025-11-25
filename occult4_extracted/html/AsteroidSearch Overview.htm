@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>AsteroidSearch Overview</Title>
+<style type="text/css">
+.auto-style2 {
+	color: #E89744;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Occultations by Asteroids, Planets and Planetary Moons</H1>
+This page provides access to the forms for <ul>
+<li>searching for occultations, 
+<li>generating predictions for any location, or to plot the occultation on the 
+earth
+<li>downloading occultation elements, and 
+<li>managing user files of stars and asteroids for generating predictions of specific objects.</ul>
+<H2>Summary of the prediction process</h2>
+<P>This form is the location for generating predictions of occultations by asteroids (or planets). The prediction process involves the following steps.<ul type=1>
+
+<li>Download a current version of <B>MPCorb, AstDyS2 </B>or<B> Astorb </B>- files of orbital elements of asteroids. This is done from the <B>Maintenance </B>tab, using the <B>Downloads</b> 
+button. The download is 40 to 60 MB. The preferred sources of elements are
+<strong>MPCorb</strong> and <strong>AstDyS2</strong>; however you should ensure 
+you also have downloaded <strong>Astorb</strong>, as error information is 
+available from that file.<br><br></li>
+
+<li>Extract asteroids larger than a certain size (e.g. 25km), and convert their data into a format that Occult can use (which includes diameters for all asteroids) - again using <B>Convert Astorb and MPCorb</B>. 
+It is desirable to have <strong>Astorb</strong> downloaded so that error 
+information can be included with elements from <strong>MPCorb</strong> or
+<strong>AstDyS2</strong>. The conversion process also adds the taxonomic class 
+to the record.<br><br></li>
+
+<li>Conduct a search for possible occultations. This is done from the <B>Asteroid Predictions </B>form, using the <B>Search for Occultations </B>button - where you can specify the date range, the asteroids to be considered, 
+and the star catalogue to use. Possible events are listed as the search progresses.<br><br></li>
+
+<li>The events that have been found are listed on the <strong>List and Display</strong> 
+form. On this form you can filter the events by a wide range of criteria, such 
+as:<ul><li>
+your location</li><li>
+a distance to the occultation path - 300km is a good value to allow for prediction uncertainties</li>
+<li>a magnitude drop of at least 1.0 magnitude</li>
+<li>a duration of at least 3 seconds<br><br></ul>
+
+You can view events by clicking on them. From the plot of an event you can display a range of related prediction details, as well as various special output files.
+<br><br><li>You can save the occultation elements of either the filtered list of events, 
+	or all computed events - for retrieving at a later date.</li>
+</ul>
+
+<h1>Button functions on the form</h1>
+<h2>Search for, &amp; list, occultations</h2>
+<p>Brings up the form for conducting the search and creating a file of occultation elements. <A href="Asteroid%20predictions%20-%20Search.htm">Details</a>
+
+
+<h2>List &amp; Display occultations</h2>
+<p>Brings up the form for listing and displaying occultations. <A href="Asteroid%20predictions%20-%20ListAndDisplay.htm">Details</a>
+
+<h3>Convert Astorb, MPCORB, &amp; AstDyS-2</h3>
+Opens the form for converting Astorb, MPCORB and AstDyS-2 into the format used by Occult. While this form is usually accessed from the Maintenance tab, its provision here is to facilitate the recreation of the Occult file of asteroid orbital elements using a different 
+orbit source, or a different set of parameters (such as the asteroid diameter).<h3>Edit the coordinates of a 'User' star</h3>
+In some circumstances there can be a need to conduct a search for occultations of a particular star with details of the star being provided by the user. The star details are held in a 'user' catalogue that contains just one star. This option allows for editing of the star details.<p>Once the star coordinates have been specified, the search is conducted against that star by selecting <B>User Star </B>in section 3 of the Search form.</p>
+
+<h3>Edit the 'User' file of minor planets</h3>
+In some circumstances there can be a need to conduct a search for occultations of an object not in the usual file of orbital elements, or using an updated set of orbital elements. Such elements are held in a 'user' catalogue. This option allows for editing of the elements. 
+A particular use for this User catalogue is for predictions of occultations be 
+comets - the form for editing the User file includes the capability to import 
+comet orbits.&nbsp;
+<p>If the User file of elements is selected in the search form (with the check box in section 4 of the search form), the search is conducted against all objects in the file. For this reason, the number of objects held in this file should be kept to a minimum.</p>
+<h3>Select DE Ephemeris</h3>
+<p>Allows the user to select the JPL DE planetary ephemeris to use in the 
+search. Normally you would use the latest available JPL ephemeris. [This functionality was provided  for Pluto, when its ephemeris was troublesome.]<h3>
+Asteroid shape models - Damit &amp; ISAM</h3>
+<p>The Display routine can make use of Asteroidal shape models which are available on DAMIT and ISAM web sites. However if either of those web sites is 'down', the functionality can become very slow. A tool is provided to establish whether those sites are currently on-line. The routine will only attempt to access the shape models if the relevant check box is ticked. [Note - if either DAMIT or ISAM is 'down', the check can take in excess of 20 seconds - and double this if both sites are down.] The result of that check is applied to all three locations where the check is provided.
+
+<h3>Download prediction files</h3>
+<p> <B>Steve Preston</B> generates updated predictions of occultations with orbital elements that he has determined using the latest available astrometry. These files (<B>Future.xml </B>and <B>FutureALL</B>.xml) can be downloaded with these buttons, and then used to generate predictions.
+<ul>Occasionally users may want to be able to access previous versions of the Future.xml file. In the User Settings form, in the box for FTP URL's, there is a check box under Future.xml - "On download, preserve previous version of Future.xml". If this box is checked, an existing Future.xml 
+file is renamed by adding the date of the new download to the file name - formatted as 'Future_yyyymmdd.dat'. That is, the file name includes the date it was replaced. The current setting is indicated below these two download buttons.</ul>
+
+
+<p>The <B>LuckyStar </B>files are predictions involving Pluto, TNO asteroids, and other outer asteroids 
+generated by Paris Observatory. To use this feed you must agree to certain conditions of use - which are explained when this option is selected.
+</p>
+<ul>
+	<li>The basic operation of this feed involves downloading a group of files from a web site (each 
+	file relating to a separate object), and converting the data in those files into the Occelmnt format. 
+	<li>The object files are held in directories covering 1-year periods</li>.The 
+	first step is to select the year of interest. Data is generally not 
+	available for many years in advance.<li>Having selected the year, the object 
+	files will be downloaded.<li>Once the download is complete, the conversion 
+	will occur. If the cursor is held over an Occult for, a rotating cursor 
+	symbol will indicate progress.<li>The converted data is automatically 
+	stored, with the file name being of the form:<br>LuckyStarYYYY_yyyymmdd.XML, 
+	where YYYY is the LuckyStar event year, and yyyymmdd is the date of the 
+	conversion.</ul>
+
+The <B>RIO TNO </B>files are predictions involving Pluto, TNO asteroids, and other outer asteroids. To use this feed you must agree to certain conditions of use - which are explained when this option is selected. 
+<ul>The basic operation of this feed involves downloading three files from a web site, and converting the data in those files into the Occelemnt format. On the Asteroid predictions page of Occult, three options are provided:<ul>
+<li><I>Exclude events more than one month old</I>. The data in the feed will typically include old events. This self-explanatory option limits the output to current and future events.
+<li><I>Use existing files</I>. This option is applicable when you have (for some reason) edited the RIO source files. Or you need to regenerate the Occelmnt file on the basis of a previous download.
+<li><I>Use local 'LOG.dat' & 'table_occult.txt' (only)</I> The RIO/IMCCE groups may be in a position of issuing an update to their prediction just a few days before an event. If there is enough time, the files that are accessed via the normal download are updated, and the update can be accessed in the normal manner. However occassionally the updates are only available by way of two files - 'table_occult.txt' and  'LOG.dat', which are emailed to certain users. This option creates an Occelmnt file from those two files. In this situation, the user needs to copy the two files from the email to a directory of their choice - then run this option. The user will be asked to select each of these files (by way of two dialogue boxes), following which Occult will create the Occelmnt file in the <B>Generated Files </B>subdirectory of Occult, ready to generate prediction maps etc.</ul></ul>
+
+
+<h2 class="auto-style2">Read &amp; display occultations</h2>
+<p><span class="auto-style2">Old functionality. It has been superseded by the List &amp; Display process, 
+and will 
+ultimately be removed. Brings up the form for specifying selection criteria and displaying occultations that meet those criteria.
+</span> <A href="Asteroid%20predictions%20-%20Select%20for%20Display.htm">Details</a>
+
+
+</BODY>
+</HTML>

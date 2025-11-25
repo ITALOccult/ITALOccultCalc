@@ -1,0 +1,245 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Create MPC report</Title>
+<style type="text/css">
+.auto-style2 {
+	color: #FF0000;
+	font-size: large;
+}
+.auto-style3 {
+	color: #000080;
+}
+.auto-style4 {
+	color: #800080;
+}
+.auto-style5 {
+	color: #008000;
+}
+.auto-style6 {
+	color: #0000FF;
+}
+.auto-style7 {
+	color: #800000;
+}
+.auto-style8 {
+	color: #FF0000;
+}
+.auto-style9 {
+	font-size: medium;
+	color: #008000;
+}
+.auto-style10 {
+	font-size: large;
+	color: #008000;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Make / Submit Astrometry Report to the Minor Planet Center</H1>
+
+<p>This option creates the dataset to be sent to the Minor Planet Center to report astrometric positions. 
+The option creates a .psv file in the directory Occult 4\Asteroids\Results\MPC Files\. 
+with a name structured as:<span class="auto-style6"><br>
+MPC report_20241123_xyz.psv</span><br>where the numbers give the year/month/day 
+the report was generated. and xyz indicates the report gives (x,y,z) 
+coordinates.<p><span class="auto-style2"><strong>Important. </strong>
+</span>Before creating the report, you must ensure that the observations submitted in the previous report have had the MPC number added to the observation <A href="Asteroid%20results%20-%20set%20MPC%20details.htm" >details</a> If this is not done, the previous events will not be marked as having been reported, and will be reported a second time (which the MPC will not appreciate.)
+
+
+<h2>Format of the Report</h2>
+<p>The report is created in accordance with the IAU standard for reporting 
+astrometry - ADES. That standard can be accessed from this form, at the bottom.<h3>The 
+report has 5 sections. The first three are: </h3>
+<p># version=2022<br># observatory<br>
+! mpcCode 275<br># submitter<br>! name <span class="auto-style3">A. Bnnnnn, full 
+address</span><br># measurers<br>! name <span class="auto-style4">C. Dnnnnn</span><br>
+! name <span class="auto-style4">C. Dnnnnn</span><br>
+! name <span class="auto-style4">C. Dnnnnn</span><br># observers<br>! name<span class="auto-style5"> E. Fnnnnn</span><br>! name <span class="auto-style5">E. Fnnnnn</span><br>
+! name <span class="auto-style5">E. Fnnnnn</span><p>The 
+text in color are names ands an address to be included with each report. The 
+names of the <span class="auto-style3">Submitter</span>, and 
+<span class="auto-style7">Measurers</span>, are maintained in the Maintenance tab, 
+User Settings, group <span class="auto-style6"><strong>15 Administrative 
+Functions</strong>. </span> 
+These settings are not distributed by Occult. Whoever has the responsibility to 
+submit reports needs to maintain the list of these names in their copy of 
+Occult.<h3>Observer names</h3>
+<p>The list of observers is created from the observations being reported. The 
+names are strictly Initial + Family name, and is sorted on the family name. 
+Names of observatories or organizations are not allowed, and will usually be 
+identified and excluded. Similarly for appellations such as Mr., Prof., PhD. 
+Compound family names are allowed. While the program endeavors to extract names in the required format, the names should be checked for correctness and format [A. Name]. When the report includes names inconsistent with this requirement, names, a list of such will be displayed on screen 
+- together with the relevant event details. When this occurs, you will need to 
+go to the event, identify the relevant observer, and rectify the observer's 
+name.<br>
+
+<p>This file also contains the lines for measurers. This line is taken from the setting at the end of the User Settings page (which is blank in the distributed version). The names set are the principal individual collecting observations in each of the regional collecting groups.
+
+<p>Also required are the contact person, and acknowledgement email address. This is of the person submitting the report to the MPC. Again, the fields are set in the User Settings file. 
+
+<h3>4th section: telescope details</h3>
+<pre># telescope<br>! design reflector<br>! aperture 0.2<br>! detector CCD</pre>
+These details are fixed. The fields must exist for the MPC processing. The 
+values specified are are completely arbitrary.<h3>5th section - the astrometry</h3>
+<p>The following is an example of the content of the report. The content of each 
+field can be ascertained by reference to the ADES specification.</p>
+<pre>permID    |provID           |mode|stn|obsTime                |raStar       |decStar      |deltaRA |deltaDec|sys    |ctr|pos1     |pos2     |pos3     |rmsRA |rmsDec|rmsCorr|astCat  |shapeOcc|remarks                                            
+         3|                 | OCC|275|2023-11-17T20:35:05.46Z|160.261845792|  1.042970483|  0.0000|  0.0000|ICRF_KM|399|  639.345| 1596.667| 3429.940|0.0083|0.0139|  0.431|  Gaia3E|0       |StarUncert 0.00014, 0.00013; Fit f3;
+         3|                 | OCC|275|2024-06-16T10:32:02.41Z|166.117525823|  9.266559317|  0.0000|  0.0000|ICRF_KM|399|-1395.073|-2792.837|-4193.091|0.0193|0.0444|  0.618|  Gaia3E|0       |StarUncert 0.00014, 0.00014; Fit f4;
+         5|                 | OCC|275|2023-10-23T07:31:18.97Z| 99.739304013| 16.732366064|  0.0000|  0.0000|ICRF_KM|399| 3530.874| -300.213| 2971.399|0.0102|0.0101| -0.002|  Gaia3E|0       |StarUncert 0.00013, 0.00011; Fit c2;
+         6|                 | OCC|275|2019-01-14T03:50:36.90Z| 91.689943206|  7.907712553|  0.0000|  0.0000|ICRF_KM|399| -378.209| -528.869| 3725.668|0.0617|0.0684|  0.593|  Gaia3E|0       |StarUncert 0.00055, 0.00045; Fit f4; RUWE=9.25;
+</pre>
+<p>&nbsp;</p>
+
+<h2>Generating the report
+
+
+</h2>
+<h2>
+
+
+<img src="Asteroid%20observations%20-%20MPC%20report.PNG" width="400">
+</h2>
+<p>For the routine submission of astrometry to the MPC, the left panel of the 
+form should be set as illustrated. The only setting that should be considered 
+for change is the Constraint '<span class="auto-style6"><strong>Limit to before 
+the end of</strong></span>', which is used to exclude events that occurred 
+between the month specified, and today's date. The name of the file that is 
+created, and its location, are as given at the beginning of this page.</p>
+<p class="auto-style8"><strong>Important.</strong> The choice&nbsp; between x,y,z, and RA/Dec, 
+must always be set to <strong>x,y,z </strong>for any astrometry sent to the MPC. The RA/Dec 
+option must not be used.</p>
+<p>The option 'Generate test report for yyyy only', is a test option that 
+generates the report using just the observations of the current year. Not to be 
+used for actually creating a report for submission</p>
+<p>The option &quot;Astrometry only, with extra data' generates a report with no 
+observers listed, but with extra information about teach event. This is not for 
+general use.</p>
+<p>All reports generated are written to Occult 4\Asteroids\Results\MPC Files\. 
+The file name will include extra elements to indicate the basis on which it was 
+created. For example, if it relates to a specific asteroid, or observer name, 
+that asteroid or name will be part of the file name. This is particularly useful 
+when creating an astrometric report for a specific asteroid, for submitting to 
+an orbit computer (such as the Horizons system). An example is</p>
+<p class="auto-style6">MPC report_for_(65803) Didymos_20240720_xyz_skrut.psv</p>
+<p>where the file name indicates that it relates only to the asteroid
+<span class="auto-style6">(65803) Didymos</span>, the fact it is an
+<span class="auto-style6">xyz</span> report, and it is limited to events 
+containing the name of an observer that includes the letters
+<span class="auto-style6">skrut</span></p>
+<p>&nbsp;</p>
+<h2>Submitting the report to the MPC</h2>
+
+<p>When you have created a report and want to send it, the steps (and relevant 
+buttons on this form) are:</p>
+<h3>i. Validate report</h3>
+<p>The button <span class="auto-style6"><strong>Validate report</strong></span> 
+will take you to&nbsp; <a href="https://minorplanetcenter.net/submit_psv_test">https://minorplanetcenter.net/submit_psv_test</a> 
+, which provides a test to confirm the report meets the ADES requirements. </p>
+<h3>ii. Submit the report</h3>
+<p>If the the report passes the test, the button&nbsp; <span class="auto-style7">
+<strong>Submit report </strong></span>will take you to&nbsp;
+<a href="https://minorplanetcenter.net/submit_psv">https://minorplanetcenter.net/submit_psv</a> 
+to submit the reoprt. Follow the instructions on the page.&nbsp; Upon submitting, there will be a delay of several minutes for some initial 
+processing. You will then receive at the email address you specified a report 
+from the address <a href="mailto:vmsops@minorplanetcenter.net">
+vmsops@minorplanetcenter.net</a>. All being well, that email will report
+<span class="auto-style4">....has been accepted for processing by the Minor 
+Planet Center.</span> This report is very important. It contains a <strong>
+Submission ID </strong>(which looks like<strong><span class="auto-style7"> 
+2025-06-00T16:03:33.676_0000GtUU</span>),</strong> and a list of 
+unique <strong>observation ID</strong>s (which look like
+<span class="auto-style7"><strong>LodF2TAu0000GtUU010000006</strong></span>) which are added to the Asteroid Observations file - see 
+next section. You should move the email/copy the content of the email to a 
+location where it can be easily retrieved<br></p>
+<p class="auto-style8"><strong>NOTE. There are certain characteristics of the 
+report as it relates to occultation results, which will result in the submission 
+being rejected unless the individual submitting the report has been authorized by the 
+MPC to submit such reports. </strong>This rejection is not indicated by the test 
+page - only when you submit.</p>
+<h3>iii Check processing status</h3>
+<p>Click <span class="auto-style7"><strong>Submission status</strong></span> to 
+bring up <a href="https://data.minorplanetcenter.net/wamo/">https://data.minorplanetcenter.net/wamo/</a> 
+. WAMO means <span class="auto-style6">Where are my Observations</span>. Paste 
+the Submission ID of a batch into the box, and click Submit. Information on what 
+the report means is given vi links on the page.</p>
+<h3>iv Check observations are in the system</h3>
+<p>You can view the astrometry for any object by clicking
+<span class="auto-style7"><strong>MPC Explorer</strong></span> to bring up
+<a href="https://data.minorplanetcenter.net/explorer/">https://data.minorplanetcenter.net/explorer/</a> 
+From here, specify an object. Then you can view all its astrometry, with 
+residuals for many. Occultation astrometry is under Observatory
+<span class="auto-style8">275.</span>&nbsp; To find these, sort the
+<span class="auto-style7">Observatory</span> column to ascending.</p>
+<p>&nbsp;</p>
+
+
+<h2>Adding publication details to the observations file</h2>
+<p><strong><span class="auto-style10">This is an extremely important step.</span><span class="auto-style9">
+</span><span class="auto-style8">It is used to keep track of which 
+observations have been submitted to the MPC, so that the astrometry from an 
+event is not included in subsequent astrometric reports.</span></strong> Click the button in the
+<span class="auto-style6">Update observations file</span> box. You will first be 
+asked to select the relevant file you have submitted to the MPC. Then the 
+following form will appear:</p>
+
+<img src="Asteroid%20observations%20-%20MPC%20add%20to%20file.PNG">
+<p>This gives two options. </p>
+<ol>
+	<li><span class="auto-style5">Add MPC Observations ID</span>. This records 
+	the date the observations were submitted to, and accepted by, the MPC - 
+	together with the unique Observation ID</li>
+	<li><span class="auto-style5">Add Minor Planet Circular number for the 
+	observations.</span> This adds the MPC number containing the summary of the 
+	observations.</li>
+</ol>
+<p>&nbsp;For both these options, locate the relevant email containing the list 
+of Observation IDs (referred to above). Copy the entire text of that email 
+(making sure all the ID's are included. (The presence of other text does not 
+matter.) then click <span class="auto-style5"><strong>Paste observation ID's
+</strong></span>This will populate the box will all the observation ID's.</p>
+<p>The first option should be done soon after you have received the acceptance 
+report from the MPC. It adds the date of submission, and the unique observation 
+ID, to each observation included in the pasted list. To do this, make sure that 
+option is checked; specify the <span class="auto-style6">Date of submission</span>, 
+and click <span class="auto-style6">Add Observation ID's</span>. A scroll bar at 
+the top of the screen will indicate progress. When the list is fully processed, 
+it will be re-displayed with either a tick or cross after each line, to indicate 
+whether the date and observation ID have been added to the event.</p>
+<p>The 2nd option require keeping a watch on the Minor Planet 
+Circulars to find when &amp; where they are published. The relevant address to 
+retrieve the circulars is:
+<a href="https://minorplanetcenter.net/iau/ECS/MPCArchive/MPCArchive_TBL.html">https://minorplanetcenter.net/iau/ECS/MPCArchive/MPCArchive_TBL.html</a> , with 
+the relevant links being to the MPC######-### in the 2nd column - like<span class="auto-style6">
+</span>
+<a href="https://minorplanetcenter.net/iau/ECS/MPCArchive/2024/MPC_20241115.pdf" style="border-style: none; border-color: inherit; border-width: 0px; margin: 0px; padding: 0px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-variant-numeric: inherit; font-variant-east-asian: inherit; font-variant-alternates: inherit; font-variant-position: inherit; font-variant-emoji: inherit; font-weight: 400; font-stretch: inherit; font-size: 15px; line-height: inherit; font-family: &quot;PT Sans&quot;, Arial, Helvetica, sans-serif; font-optical-sizing: inherit; font-size-adjust: inherit; font-kerning: inherit; font-feature-settings: inherit; font-variation-settings: inherit; vertical-align: baseline; text-decoration: underline; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal;">
+<i style="margin: 0px; padding: 0px; border: 0px; font-style: italic; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; font-optical-sizing: inherit; font-size-adjust: inherit; font-kerning: inherit; font-feature-settings: inherit; font-variation-settings: inherit; vertical-align: baseline;">
+MPC</i><span>&nbsp;</span>177253-179246</a> The date in the first column provides an 
+indication of the likelihood of the observations being in those MPC's</p>
+<p>You can change the MPC details for an event from the observations editor, 
+using the menu option <span class="auto-style6">File... MPC: Allow edit of date and MPC</span>. This will 
+display a group of edit boxes at the right of the form, just above the list of 
+observers</p>
+<h2>Viewing astrometry at the Minor Planet Center</h2>
+<p>The Open MPC Explorer button will open your browser showing the
+<span class="auto-style6">MPC Explorer</span> tool. Here you enter an object's 
+identifier, and then list all reported astrometry for that object.</p>
+<p>Enter the object identification, and press Enter. To view observations, click
+<span class="auto-style6">observations</span>. Wait a little, and a large table 
+will be displayed showing all astrometry or that object. If you want to look at 
+what Occultation Astrometry has been reported, the easiest way is to click the 
+column header <span class="auto-style6">Observatory</span>, and select
+<span class="auto-style6">Sort Ascending</span>. Then scroll down to find
+<span class="auto-style6">observatory code </span><span class="auto-style8">
+<strong>275</strong></span></p>
+<h2>ADES</h2>
+<p>The bottom block provides links to the ADES format specification, and the 
+field values required by that standard.</p>
+</BODY>
+</HTML>

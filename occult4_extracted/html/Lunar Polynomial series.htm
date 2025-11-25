@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Lunar Polynomial</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1><A NAME="idh_7lunarpolynomial"></A><B>Lunar polynomial series</B></H1>
+
+<P>For convenience of use, Occult generates a polynomial expression valid for a 24hr period, by computing the position of the moon at 0, 4.8, 9.6, 14.4, 19.2 and 24hrs, and fitting a 5<SUP>th</SUP> order polynomial to these positions (4<SUP>th</SUP> order for parallax.)</P>
+
+<P>An example display of the series is:</P>
+
+<PRE>Lunar polynomial for 2010 Jul  5
+
+a0    13.9038521   11.6560484   0.91921601
+a1    11.5578319    4.6472255   0.00958632
+a2       3156473     -1815201       129417
+a3        389671      -337959        -4680
+a4         -8660       -20013        -1109
+a5         -4128         -675
+
+Longitude correction = 0.00"
+ Latitude correction = 0.00"
+
+JPL DE423
+</PRE>
+
+<P>The 3 columns of numbers correspond to the lunar right ascension, declination, and parallax &#8211  all in degrees.</P>
+
+<P>Each line gives the term in the series. ‘a0’ is the constant part of the series; ‘a1’ is the term in the first order of time; ‘a2’ is the term in the second order of time, and so on. Time is measured in fractions of a day, and measured in Terrestrial dynamic time. Thus, to compute a position, evaluate the series as:</P>
+
+<P>a0 +a1*t+a2*t<SUP>2</SUP>+a3*t<SUP>3</SUP>+a4*t<SUP>4</SUP>+a5*t<SUP>5</SUP></P>
+
+<P>The next  two lines give the corrections to the lunar ephemeris that have been included. The corrections are zero. <br><I><B>Historical note:</B> corrections used to be applied to refer the ephemeris to the center of figure rather than the center of mass. All computations and limb corrections are now referred to the center of mass - so that these corrections are no longer used</I>.</P>
+
+<p>The final line gives the source of the ephemeris.
+
+</BODY>
+</HTML>

@@ -1,0 +1,258 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Astrometric details for an asteroid observation</Title>
+<style type="text/css">
+.auto-style1 {
+	border: 2px solid #000000;
+	background-color: #66FFCC;
+}
+.auto-style2 {
+	margin-left: 40px;
+}
+.auto-style3 {
+	margin-left: 80px;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Astrometric details for an asteroid observation</H1>
+<!-- Insert Header in above line -->
+<P>The following is an example listing of the astrometry from an event.</P>
+<div>
+	<table class="auto-style1" style="width: 520">
+		<tr>
+			<td>Occultation by (925) Alphonsina on 2019 Oct 23<br>(Deflection has been 
+applied to all asteroid RA and Dec)<br><br>Star details<br><br>Identifier: UCAC4 
+332-176006<br>Gaia id : 4076859064185574528<br>Source of position: Gaia DR2<br>
+Estimated diameter [Gaia] 0.03 mas<br>Concerns: RUWE - None Duplicate source - 
+None<br><br>Magnitudes: Mb 13.22 Mg 12.84 Mr 12.19<br><br>GCRS position at 
+2019.8101 (incl. DR2 frame rotation corrn)<br>RA 18 40 9.146424 Dec -23 40 
+32.07566<br><br>Uncertainties<br>Star position: RA ± 0.39 mas, Dec ± 0.35 mas<br>
+-----------------------------------------------------------------<br>Asteroid 
+position at event time<br><br>Event time : 2019 Oct 23.5010723 ±0.0000017<br>= 
+2019 Oct 23 12h 01m 32.64s ±0.15s<br>Number of chords : 5<br><br>Observed 
+geocentric distance of the shadow:<br>dX = +5131.8 km dY = -3004.8 km<br>-&gt; 
+Observed offset from the star - Apparent position:<br>dRA = +2.29267&quot; dDec = 
+-1.34241&quot; <br>-&gt; Observed offset from the star - J2000 position:<br>dRA = 
++2.28975&quot; dDec = -1.34689&quot;<br>+ Gravitational deflection of the star relative to 
+the asteroid:<br>dRA = +0.00168&quot; dDec = +0.00011&quot;<br><br>-&gt; Asteroid J2000 GCRS 
+position at Event time:<br>RA = 18 40 9.313225 Dec = -23 40 33.42243<br><br>
+Uncertainties<br>Star position: RA ± 0.39 mas, Dec ± 0.35 mas<br>Asteroid fit: 
+RA ± 0.65 mas, Dec ± 0.54 mas<br>Total uncertainties: RA ± 0.76 mas, Dec ± 0.64 
+mas<br>= RA ±0.000055s, Dec ±0.00064&quot;<br>
+-----------------------------------------------------------------<br>Asteroid 
+position at Geocentric conjunction<br><br>Conjunction time : 2019 Oct 23.4993486<br>
+= 2019 Oct 23 11h 59m 03.72s<br>At conjunction<br>Separation 1.9767 ±0.0005 asec, 
+PA 162.349°<br><br>-&gt; Asteroid J2000 GCRS position at Conjunction:<br>RA = 18 40 
+9.190056 Dec = -23 40 33.95932<br><br>Uncertainties<br>Star position: RA ± 0.39 
+mas, Dec ± 0.35 mas<br><br>Time of conjunction : <br>recording uncertainties : ± 
+0.0000017 dy = ± 0.15 secs<br>from Asteroid fit : ± 0.0000006 dy = ± 0.05 secs<br>
+Total : ± 0.0000018 dy = ± 0.16 secs<br>=&gt; ± 1.85 mas along track (in PA 
+72.349°)<br>Cross-track uncertainty : ± 0.54 mas (in PA 162.349°)</td>
+		</tr>
+	</table>
+</div>
+<p>&nbsp;</p>
+<p>The output has three sections. The first is details of the star. The second 
+is the solution for the time of the event. And the third section is the solution 
+for the time of geocentric conjunction.</p>
+<p>If the observation involves one or more satellites, the 2nd and 3rd sections 
+are repeated for each satellite.</p>
+<p>The contents of each section are as follows.</p>
+<h2>Star details</h2>
+<ul>
+	<li>The star identifier used in Occult. It will be one of HIP (Hipparcos), 
+	TYC (Tycho2), UCAC4, or Ghhhhhh.s-ddmmss (a coordinate identifier)</li>
+	<li>The Gaia identifier</li>
+	<li>the Source of the position.&nbsp; As at 2020 most positions are sourced from Gaia 
+	DR2. However stars brighter than about mag 4 are sourced from 
+	Hipparcos 2, and a very small number of stars are sourced from UCAC4</li>
+	<li>the star's estimated diameter, derived using the Gaia Apsis-FLAME 
+	estimate of the radius (in solar radii) and the stellar parallax</li>
+	<li>Whether the RUWE (Renormalized Unit Weight Error) value indicates the 
+	position may be in error</li>
+	<li>whether the Non-duplicate source flag indicates the star might have a 
+	companion</li>
+	<li>the blue, green and red magnitudes</li>
+	<li>the GCRS position of the star at the date of the event. That is, the 
+	position with proper motion and parallax applied. In addition, for star 
+	positions taken from DR2, the position is corrected for the frame rotation 
+	error present in DR2 positions for stars brighter than 12.5</li>
+	<li>the uncertainty in the star position - including the uncertainties from 
+	the frame rotation error correction.</li>
+</ul>
+<h2>Asteroid position at event time</h2>
+<ul>
+	<li>The event time, and uncertainty - expressed as fraction of a day, and in 
+	hh mm ss.ss. [Issues of uncertainty are discussed below]. For most events, 
+	the event time is the average of all observed D and R times of the chords 
+	used in the solution. However:<ul>
+		<li>&nbsp;if the event involved a double star, the event time is based 
+		on the times of the events involving the primary component;</li>
+		<li>if the event involved an asteroid, the event time is based on the 
+		chords of the satellite, not the asteroid. The problem is that the 
+		observed event times for the main body and satellite will usually be 
+		different. This issue is minimized by using the satellite as the primary 
+		reference point, and moving the observed observations for the main body 
+		on the basis of that observed time - on the basis that the motion of the 
+		primary body will be essentially that of the system as a whole, whereas 
+		that of the satellite may not be. However where a satellite ephemeris is 
+		available from Miriade, the motion of the satellite is also allowed for.</li>
+	</ul>
+	</li>
+	<li>the number of observed chords used in the solution</li>
+	<li>the observed geocentric distance (km) of the centre of the shadow, 
+	derived from the fit to the observations.</li>
+	<li>the corresponding offsets in RA and Dec - in the apparent reference 
+	frame (arcsec)</li>
+	<li>those offsets as converted to the J2000 reference frame (arcsec)</li>
+	<li>the gravitational deflection of the star relative to the asteroid 
+	(arcsec)</li>
+	<li>the derived position of the asteroid in the J2000&nbsp; GCRS reference frame. 
+	[<strong><em>Note: strictly speaking, the position is in the the geocentric 
+	reference frame aligned with ICRS, and is not co-moving with the Earth</em></strong>]</li>
+	<li>the uncertainties :<ul>
+		<li>from the star position (including any DR2 reference frame 
+		uncertainties)</li>
+		<li>from the fit of an asteroid profile to the observations</li>
+		<li>the total uncertainties, expressed in mas, and in secs-time and 
+		arcsec</li>
+	</ul>
+	</li>
+</ul>
+<h2>Asteroid position at Geocentric conjunction</h2>
+<ul>
+	<li>Where satellites are involved, each satellite has its own solution.</li>
+	<li>The time of geocentric conjunction - expressed as fraction of a day, and 
+	in hh mm ss.ss. </li>
+	<li>The separations and uncertainty at conjunction (in arcsec), and the 
+	Position Angle from the star</li>
+	<li>The corresponding J2000 GCRS position of the asteroid or satellite. [<strong><em>Note: 
+	strictly speaking, the position is in the the geocentric reference frame 
+	aligned with ICRS, and is not co-moving with the Earth</em></strong>]</li>
+	<li>the uncertainties :<ul>
+		<li>from the star position (including any DR2 reference frame 
+		uncertainties)</li>
+	</ul>
+	</li>
+	<li>the uncertainties<ul>
+		<li>uncertainties in the star position (including any DR2 reference 
+		frame uncertainties)</li>
+		<li>Uncertainties affecting the time of conjunction<ul>
+			<li>recording uncertainties</li>
+			<li>from the fit of an asteroid profile to the observations</li>
+			<li>The total of these uncertainties, expressed as a time 
+			uncertainty (in days or seconds) or the along-track uncertainty in 
+			mas (with the associated position angle)</li>
+		</ul>
+		</li>
+		<li>Uncertainty in the across-track direction - in mas (with the 
+		associated position angle).</li>
+	</ul>
+	</li>
+</ul>
+<p>&nbsp;</p>
+<h1>Sources of uncertainty</h1>
+<h2>Star position</h2>
+<p>The base uncertainty is a combination of the catalogue uncertainty in the 
+star position at catalogue epoch, the uncertainty in the proper motion 
+propagated to the date of the event, and the uncertainty in the parallax as 
+applicable to the date of the event.</p>
+<p>In addition, Gaia DR2 positions for stars righter than mag 12.5 have a frame 
+rotation error that requires correction for both position at epoch and proper 
+motions. Those corrections have their own uncertainties.</p>
+<h2>Time of the event</h2>
+<p>The uncertainty in the time of the event is calculated as the 
+root-mean-square of the uncertainty in the mid-time of each observed chord.</p>
+<p>Unfortunately, for a variety of reasons many observations in the dataset do 
+not have observer-specified uncertainty values. As a result, the uncertainty in 
+the mid-time of an event has been determined using both the reported 
+uncertainties, and estimated uncertainties where uncertainties are not 
+specified. This has been attained using the following scheme, which is a 
+combination of an estimated uncertainty based on certain factors, and an 
+associated weighting.</p>
+<ul>
+	<li>For chords where uncertainties are reported, the mid-time uncertainty is 
+	the average of the D and R uncertainty, with a <strong>weight of 6</strong></li>
+	<li>Where uncertainties are not specified:<ul>
+		<li>For <strong>Video or photometer </strong>observations<ul>
+			<li>if the time source was <strong>GPS, radio</strong> :&nbsp;
+			<strong>0.5 secs</strong> with a <strong>weight of 3</strong></li>
+			<li>if the time source was a <strong>stopwatch</strong> :&nbsp;
+			<strong>0.5 secs</strong> with a <strong>weight of 2</strong></li>
+			<li>for any other time source (<strong>NTP, phone, internal recorder 
+			clock,</strong> other) :&nbsp; <strong>1.5 secs</strong> with a
+			<strong>weight of 1</strong></li>
+		</ul>
+		</li>
+		<li>For <strong>sequential images or driftscan</strong><ul>
+			<li><strong>1.0 secs</strong> with a <strong>weight of 2</strong></li>
+		</ul>
+		</li>
+		<li>For <strong>visual observations</strong> and other observations<ul>
+			<li><strong>1.0 secs</strong> with a <strong>weight of 1</strong></li>
+		</ul>
+		</li>
+	</ul>
+	</li>
+</ul>
+<p>This time uncertainty is expressed in the <strong>At event</strong> solution 
+as an uncertainty in the time of the event. In the <strong>At conjunction
+</strong>solution, it is expressed as a <strong>recording uncertainty</strong>.</p>
+<h2>Asteroid fit</h2>
+<p>Where there are chords sufficient to fit a circle or ellipse, the 
+least-squares solution for that fit flows through from rms uncertainties in the 
+location of the center of that fit to uncertainties in the RA and declination. 
+For the 'at conjunction' solution, the uncertainties in RA and Dec are 
+transformed into uncertainties along-track and across track.</p>
+<p>If the observed chords have been fitted to a shape model, and this fact 
+specified in the solution, the uncertainty in the position of the shadow is set 
+to 0.02 of the nominal asteroid diameter.</p>
+<h3>Situation for 'astrometry only' events</h3>
+<p>Where there are insufficient chords to properly solve for the asteroid size 
+or shape, the location of the center of the shadow is poorly defined. The 
+approach for this situation is markedly different for the 'at event, and at 
+conjunction solutions</p>
+<p>For the <strong>At event </strong>solution, the uncertainty is set at 0.4 of 
+the asteroid's diameter - in both coordinates - and is expressed in mas. In 
+general this relatively large uncertainty supersedes the uncertainty in th event 
+time.</p>
+<p>for the <strong>At Conjunction </strong>solution, the across-track 
+uncertainty is set at 0.4 of the asteroid's diameter, in mas. However the 
+along-track uncertainty is primarily expressed as a time uncertainty, being a 
+combination of two components</p>
+<p class="auto-style2">Firstly, there is the the uncertainty in the event time, 
+as discussed above - and listed as 'recording uncertainties'</p>
+<p class="auto-style2">Secondly, there is an uncertainty, based on 
+the following assessment of the chord lengths;</p>
+<ul class="auto-style3">
+	<li>For the extremely elongated asteroids (216) Kleopatra, (433) Eros, and 
+	(25143) Itokawa, an uncertainty of 0.2 of maximum duration; otherwise</li>
+	<li>for a chord length &gt;0.8 of the expected maximum event duration, an 
+	uncertainty of 0.05 of the full duration</li>
+	<li>for a chord length &gt;0.6 (and less than 0.8) of the expected maximum 
+	event duration, an uncertainty of 0.1 of the full duration</li>
+	<li>for shorter durations - an uncertainty of 0.2 of the full duration</li>
+</ul>
+<p class="auto-style2">The final uncertainty for the asteroid fit is derived as the root-mean-square of these 
+uncertainties.</p>
+<p class="auto-style2">The overall along-track uncertainty is the combination of 
+the recording uncertainty and the chord-derived uncertainty</p>
+<p class="auto-style2">An angular mas equivalent&nbsp; for the combined recording and asteroid fit&nbsp; 
+along-track uncertainties is also provided.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p></p>
+<p></p>
+<p>&nbsp;</p>
+
+
+
+</BODY>
+</HTML>

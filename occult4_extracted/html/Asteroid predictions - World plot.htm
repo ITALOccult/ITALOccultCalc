@@ -1,0 +1,278 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Asteroid - World plot</Title>
+<style type="text/css">
+.auto-style1 {
+	margin-left: 40px;
+}
+.auto-style2 {
+	list-style-type: lower-roman;
+}
+.auto-style3 {
+	color: #0000FF;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Asteroid/Planet occultation - Main prediction</H1>
+<P>This form is the principal form for displaying an occultation prediction, and accessing more detailed predictions.</P>
+
+<P align=center><img src="AsteroidDisplay%20WorldMap.png" width="600">
+<h3>Moving between plots</h3>
+<li>You can step forwards or backwards through the list of events displayed in 
+List and Display simply by using the buttons with the '<strong>&#8678</strong>' and '<strong>&#8680</strong>', or the items under the menu item <B>Move to...</B>. And you can click Exit, or close the form, to cease moving through the file.<li>
+<h3>&nbsp;</h3>
+<li>
+<h3>Earth map</h3>
+<li class="auto-style1">The map of the Earth is drawn from the direction of the star. The sunlit region is indicated by 
+light-pink circles. The line corresponding to sunset (solar zenith distance of 
+90° 50') is marked with a thick orange line. The three dashed orange lines 
+correspond to Civil Twilight (-6°), Nautical Twilight (-12°) and Astronomical 
+Twilight (-18°).<li class="auto-style1">The map of the Earth is oriented in accordance with the time of closest approach of the path to the nominated plot site - which is plotted as a blue '+'. The coordinates of this location are set just above the plot at the boxes for Site Longitude and latitude. When a map is first plotted, the site set in the Selection Criteria is inserted as the site location. You can reset the site location by double-clicking on a location, followed by the button with the '||'.</li>
+<li class="auto-style1">&nbsp;<class="auto-style1"><B>Note</B>: plotting the map on the basis of the site location is very important for two issues
+<ol class="auto-style2">
+	<li>for slow-moving occultations, the path may extend well beyond a hemisphere; you need to select a plot site near the path to bring the path onto the 'visible' side of the Earth; 
+	<li>Similarly, for slow-moving events the location of the terminator is dependent on the time used for the plot. So to get the correct positioning of the terminator 
+and twilight zones, you need to select a plot site near the position along the path of interest.</ol>
+<ol class="auto-style2" start="3">
+	<li>For very slow events (lasting hours, or even over a day: if the duration 
+	to cross the Earth is greater than 1 hour, the Map will be draw with the 
+	longitude of the site on the central meridian of the world plot.</li>
+	<li>For shorter events, the basis of the plot can be swapped using the radio 
+	button 'Time Centered' in the menu bar at the top of the form.</li>
+</ol>
+</li>
+
+<li class="auto-style1">&nbsp;<class="auto-style1">The occultation path on the earth is plotted as two solid lines (the northern and southern limit), and two dotted lines (the location of the limits assuming a 1-sigma displacement of the occultation path. The path location takes into account the Earth's rotation. For slow events the path can appear quite distorted; it can also extend beyond the displayed hemisphere 
+(indeed, can even extend more than 360deg in longitude), or (more rarely) only extend part way across a displayed hemisphere.  Time markers are given at 1 minute intervals (for plots greater than a scale of 1). 5 and 10 minute markers are of greater length.
+
+<li class="auto-style1">&nbsp;<class="auto-style1">The occultation path 'in space' is also shown, terminating at the first  minute before/after the occultation. 
+Where there appears to be a lateral displacement between the path on the Earth, and that 'in space', that is a plotting effect arising from the earth's rotation.
+
+<li class="auto-style1">&nbsp;<class="auto-style1">The plot can be drawn at different scales, using the Plot scale buttons at the top left. The scales vary from 0.1 to 32 (but the Redraw menu item has an additional scale of 0.01). The button with || merely redraws at the same scale.
+When the occultation path misses the earth, the scale of '1' is automatically 
+adjusted on the basis of the minimum distance of the path from the center of the 
+Earth.
+
+<li class="auto-style1">&nbsp;<class="auto-style1">You can plot sites, and site names, using the drop-down boxes at top right 
+	(after disabling the Export buttons from the Menu item Options... Export 
+	buttons). The left box enables you to select a site file. The right box set the criteria for including site names on the plot (using the settings in the site file for each site.)<li><p>
+	
+<h3>Uncertainty ellipse, and star chart</h3>
+	<li class="auto-style1">An uncertainty ellipse is plotted, showing the 1-sigma uncertainty ellipse. It can be re-positioned to the location of the cursor with a left click. [If the position is over the map, you will have to follow the left click by clicking the replot button with the '||'.] You can choose to not plot the ellipse, using the relevant menu item under
+	<B>Options</B>....
+	<li class="auto-style1">A small star chart (2 x 2 deg) is displayed. The occulted star is always in the exact center, surrounded by a grey circle. Where a star has a Bayer letter or Flamsteed number, that is included. The star chart shows the motion of the asteroid by way of a green dashed line. The end of each dash corresponds to 0hrs UT. The line has 5 dashes before the occultation, and one dash afterwards. The line is drawn such that there is no dash on the day of the occultation. You can choose to not plot the star chart, using the relevant menu item under
+	<B>Options</B>....<li><h3>&nbsp;</h3>
+<li>
+<h3>Maps of satellite and ring orbits</h3>
+<p>The presence of moons or rings will be noted at the top of the plot, with 
+whatever information is available. </p>
+<p>Where an asteroid has one or more satellites with 
+sufficiently characterized orbits (radius and orientation), Occult can plot a 
+representation of the satellite system Similarly when an asteroid has a ring 
+system that is similarly characterized. The plot is only included if the menu 
+item 'display asteroid's ring and moon systems' is selected. </p>
+<p>The plots are oriented as a projection onto the Earth, and are compatible 
+with the occultation path as plotted. [The directions N, E and W arev indicated 
+on the plots.] However these plots are not drawn at the same scale as the earth 
+- and the length of the sides of&nbsp; each plot is given at the bottom of each 
+plot. These issues are illustrated in the following example, where the plot for 
+the ring system has a side length of 5200km (a little less than the Earth's 
+radius), while the plot for the moons has a side length of 114,000km - or about 
+20 earth radii.&nbsp; The plots appear like:</p>
+<p>If the asteroid has rings, the plot will include an extra set of path limit 
+lines, corresponding to the nominal limit of where occultations by a ring may be 
+visible. The uncertainty in the location of this limit can be treated as being 
+the same as for the main body.</p>
+<p>When the apparent orbit appears elliptic, the expected times of occultation 
+by the rings are not symmetrical about the time for the main body. To assist in 
+identifying the start and end times needed to cover the ring events as seen at a 
+location, you can generate a list of predictions of reng event times for 
+multiple locations, with the menu item&nbsp; <strong><em>With this event... 
+Asteroid rings contact times for multiple locations</em></strong></p>
+<p class="auto-style1">&nbsp;</p>
+<P align=center class="auto-style1"><img src="AsteroidDisplay%20WorldMap%20RingsMoons.png">
+<p class="auto-style1">&nbsp;</p>
+<h3>Issues when the star's diameter is significant</h3>
+<p>When the star has a significant diameter, the circumstances of the occultation will be 
+affected. The main effect is that the light curves will have a degree of being gradual. However it is possible for an occultation to be an 
+annular event.</p>
+<p>Where the effect of stellar diameter is significant, a light curve will be 
+included in the prediction plot.</p>
+<p>The usual path limits of the occultation are actually the limits of a partial 
+occultation (equivalent to the penumbral limits for a solar eclipse). When the 
+star diameter is significant, the plot will also include lines for the region 
+where the occultation is a 'total' occultation, or an 'annular' occultation. 
+These lines will similarly be included in GoogleEarth plots of the event.</p>
+<p><P align=center class="auto-style1"><img src="AsteroidDisplay%20Umbra%20and%20lightCurve.png" width ="500"></p>
+<p>In this plot, the Magenta dashed lines near the center of the path indicate the path where the occultation
+is annular. The small light curve plot shows the expected light level during the occultation. The scale on 
+the left side is brightness level, on a scale of 0 to 1. The scale on the right side gives the magnitude drop
+(values of 1, 2 & 3 are shown.)</p>
+<h3>Long-duration events</h3>
+<p>If an event occurs near the stationary point in the asteroid's apparent 
+motion, the path on the Earth's surface can become quite complex. It is 
+possible for the path to extend around the earth multiple times. To ensure the 
+path location is accurately predicted for these events, the occultation elements 
+are computed using positions of the asteroid calculated at a time interval 
+commensurate with the total event duration (4 positions at step intervals of 
+2.5, 5, 10, or 20 hours[depending on the overall event duration], rather than 
+the usual step of 1 hour).</p>
+<p><P align=center class="auto-style1"><img src="AsteroidDisplay%20SlowEvents.png" width ="500"></p>
+
+<h3>Header information</h3>
+	<li class="auto-style1">The top line gives the asteroid/object, star identifier, date, and time 
+	range during which the occultation occurs somewhere on the earth. When the 
+	event extends over a day boundary, the date here is always set to the day on 
+	which the event starts, with the end time being an hour greater that 24 
+	hours. 
+	<li class="auto-style1">At the left, details of the star. Magnitudes v 
+	(Visual) and r (Red). Coordinates are J2000, epoch of date. If a correction is applied to the 
+relative position of the asteroid/planet and star, the correction will appear as a change in the star's position.  Note that the precision of the displayed coordinates is generally less than the precision used when the occultation elements were generated.
+	A reliability value is displayed. Usually it is the Gaia RUWE value. However 
+	under certain circumstances a warning is displayed. One of those is for 
+	stars where the position is from the 'old' HIP2 catalogue, with the 
+	possibility that it is a low-precision duplicate of another star in the Gaia 
+	catalogue<li class="auto-style1">Also at top left - the date on which the occultation elements were generated. [This allows people to assess whether the prediction is 'the latest'.]
+	<li class="auto-style1">At top center there are details of certain circumstances, including 
+	details of the moon phase and elongation. Where possible, the estimated 
+	magnitude drop is given in visual. If the Red magnitude of an asteroid is 
+	available (see next dot point) the estimated drop in Red is given. For both, 
+	the equivalent % drop is given in 
+	brackets). Also, 
+	the parameters of the uncertainty ellipse are given - with the axis numbers 
+	being the semi-axes of the ellipse. 
+	<li class="auto-style1">At top right - details of the asteroid, including both the physical and apparent diameter, and the hourly rate of motion. 
+	If the asteroid has 2-color parameters in the file HGsHG1G2.csv, both Visual 
+	and Red magnitudes will be listed. Otherwise only the Visual magnitude. 
+	If the asteroid is contained in the ISAM database of asteroid light curve inversion models, 
+	<B>(in ISAM) </B>will appear after the label <B>Asteroid.</B><li class="auto-style1">
+At&nbsp; bottom right, the basis of the prediction is given. The first component 
+is usually the source of the asteroid position, the 2nd is the basis of the 
+errors. Where the source of the asteroid position is from JPL horizons, the 
+Orbit solution identifier in Horizons is included. The word
+<span class="auto-style3"><strong>Ephemeris</strong></span> appears if the final 
+solution is based on the Horizons ephemeris of the asteroid (rather than Occult 
+generating positions from orbital elements). It indicates the prediction is of 
+the highest level of accuracy.<li><h3>&nbsp;</h3>
+<li>
+<h3>Footer information</h3>
+	<p>At the bottom left of the line that gives the following information<ul>
+		<li>The version of Occult used to generate the plot</li>
+		<li>the source and date of the orbital elements used for the asteroid</li>
+		<li>the basis of the errors in the prediction. In particular, whether 
+		they are 'measured' values, or assumed values</li>
+		<li>if the objects orbit has not been integrated, that fact (applies 
+		mainly to comets)</li>
+		<li>the taxonomic class (other than a main belt asteroid) (click
+		<a href="Asteroid%20Taxonomy.htm">here</a> for the classes displayed).</li>
+	</ul>
+	<h3>Advisory messages</h3>
+At the top right of the plot, immediately under the header, an advisory message can appear indicating one or more of the following:
+	<li>The prediction has come from the LuckyStar or RIO programs<li>The 
+	taxonomic class of the asteroid (The classes that can be displayed are 
+	listed <a href="Asteroid%20Taxonomy.htm">here</a>)<li>The asteroid is listed 
+as a Binary Asteroid candidate on the basis of analysis of Gaia FDR3 astrometry 
+of asteroids. The data shown is the mean orbital separation in km (with 
+uncertainty), the estimated diameter, and the estimated maximum duration. There 
+are always 2 solutions shown. If the separation is greater than 400km, the 
+distance is given as a '?'. For some these, the separations can be over 
+20,000km. The potential distance in path widths can be determined by dividing 
+the distance by the usual asteroid diameter as listed in the event header. <li>The asteroid is known to have one or more moons
+	- with basic details about those moons<li>The star is listed in the Washington Double Star catalog, or indicated as double in other catalogues, or is in the AAVSO Index file of Variable stars.
+
+
+<br>
+	<h3>Optional control buttons</h3>
+	<li>In the menu line there are 5 icons to click on to generate:<ul>
+		<li>a plot in Google Earth 	<img src="google_earth.png">
+<li>the path coordinates <img src="Paths.png">
+<li>a star chart&nbsp;
+		<img src="Stars3.png">
+		<li>a list of pre-point stars <img src="POINT06.png">
+<li>for planetary events, a plot of the planet's 
+		configuration <img src="Planet.png">
+</ul>
+	<br><li>The boxes used to control the plotting of sites can be replaced with a set of 'Export buttons' using a setting in the User settings. These buttons allow you to move through a large file of occultation elements, and copy particular occultation elements to any of 7 files. By this means you can create subset files limited to events visible in a particular region. When you save the elements to a particular subset file, the button is disabled.<br>The subset files have the same path and file name as the occultation elements file - but have ".Export A" through to "G" appended after the extension.  The subset files can be read in the same manner as the original occultation element file.
+</ul>
+<h3>Right-click menu (or 'with this Event')
+<p>Important prediction functionality is accessed using the right-click menu [or the <B>with this Event ..</B> menu item] 
+<P align=center><img src="AsteroidDisplay%20RightClick.png">
+<table columns=3 border=1 align=left>
+<TR><TH NOWRAP>Item</TH><TH>Explanation</TH></TR>
+<TR><TD>Show large star chart</TD><TD>A mapping utility to draw maps at a range of scales centered on the occulted star.</TD></TR>
+<TR><TD>View star in GoogleSky</TD><TD>You can view the occulted star in GoogleSky. This can  be useful to check for close secondary stars. Or in the case of the Nomad catalogue, to confirm that the object is a star and not (for example) a galaxy.
+<p><B>Note</B>: If GoogleSky is already open, clicking on this will take you directly to the star. If it is not open, GoogleEarth will first open; you will be asked if you want to 'Switch toSky' (yes). GoogleSky will open, but it will not zoom onto the star. Either click this option again, or click the item 'ViewGoogleSky.kml' in the 'Places' pane at the left of GoogleSky.</TD></TR>
+<TR><TD>C2A star chart</TD><TD>For those with the C2A planetarium software, plot a star chart.</TD></TR>
+<TR><TD>Show planet appearances</TD><TD>For occultations by a planet or its moons, this draws an image of the planet and its moons, 
+	centered on the star. The image can be animated, so that you can see how the planet and moons move relative to the star. <A href="EphemPlanetGraphic.htm"> Further information</a></TD></TR>
+<TR><TD>Path coordinates</TD><TD>Generates a text listing of the path coordinates on the Earth.</TD></TR>
+<TR><TD>Path distances for multilocations</TD><TD>Generates a listing of observers, their distance from the occultation path and local circumstances, and the probability that the event will occur at that location - using any of the site files.</TD></TR>
+<TR><TD>Planet contact times for multiple locations</TD><TD>For occultations by a planet or its moons, gives the times of Disappearance and Reappearance for all sites in a site file - using any of the site files.</TD></TR>
+<TR><TD>Pre-point stars</TD><TD>Generates a list of stars having a declination very close to that of the occulted star, and a time offset. By pointing the telescope at such a star at the time 
+	offset before the event, the occulted star will drift into the center of the field of view at the time of the occultation.</TD></TR>
+<TR><TD>Compare star catalogue position</TD><TD>Compare the position of the star as listed in several modern catalogues, against the predicted occultation path.  <A href="Maintenance%20-%20Stars%20-%20Compare%20catalogues.htm"> Further information</a></TD></TR>
+
+<TR><TD>List previous occultations of this star</TD><TD>Searches the file of 
+	asteroid occultation observations, and of lunar occultation observations, to 
+	identify any and all instances where the star has been previously observed 
+	in an occultation.</TD></TR>
+
+<TR><TD>List star details through the CDS portal</TD><TD>Provides ready access 
+	to all known details about the star through the Centre des Donees Stellars 
+	web portal </TD></TR>
+
+<TR><TD>Plot star using CDS SimPlay</TD><TD>Generates a star chart using the&nbsp; 
+	Centre des Donees Stellar mapping program</TD></TR>
+
+<TR><TD>Display WDS, Interferometric, Keplar2 and Variable data </TD><TD>Display entries in the Washington Double Star catalog (WDS), and Interferometric Catalog, within about 2 arcmins of the star position. <A href="FileFormat%20WDS%20and%20Interferometric.htm"> Further information</a>. Entries in the AAVSO list of variable stars are also indicated, and a current AAVSO light curve (if one is available) can be obtained from here. <A href="Maintenance%20-%20Stars%20-%20Light%20Curve.htm">(details)</a> </TD></TR></ul></p>
+<TR><TD>Display star's diameter & Fresnel diffraction</TD><TD>Occultations might be non-instantaneous as a result of either the star's diameter, or the effects of Fresnel diffraction. This displays an estimate of these effects.<A href="Maintenance%20-%20Stars%20-%20Diameters.htm">(details)</a> 
+
+<TR><TD>List asteroid IR diameters</TD><TD>Lists the diameter of the asteroid as 
+	determined from the three IR satellite missions IRAS, AKARI and WISE.</TD></TR>
+
+<TR><TD>Display asteroid satellite orbits using Miriade</TD><TD>Generates a 
+	display of the orbits of asteroidal satellites using the Miriade system of 
+	Paris Observatory. As of Jan 2018 the Miriade system is under redevelopment, 
+	and this functionality does not work.</TD></TR>
+
+<TR><TD>Display asteroid ring and moon systems</TD><TD>A toggle to set whether 
+	or not ring systems and moon systems are displayed on the world plot</TD></TR>
+
+<TR><TD>List relativistic displacement</TD><TD>List the displacement (in the 
+	J2000 reference frame) of the asteroid relative to the star - due to 
+	gravitational bending of the star light by the sun.</TD></TR>
+
+<TR><TD>Light curve data</TD><TD>Displays the period and light curve amplitude of the displayed asteroid, using the <A  href="Asteroids%20-%20Light%20Curve%20Data.htm"> Light Curve DataBase</a>.</a> </TD></TR>
+<TR><TD>open link to Miriade models</TD><TD>Opens a link to the Miriade service at Paris Observatory.</TD></TR>
+
+<TR><TD>open link to DAMIT and ISAM shape models</TD><TD>Opens a link to the <B>D</B>atabase of <B>A</B>steroid <B>M</B>odels from <B>I</B>nversion <B>T</B>echniques. 
+	(operated by The Astronomical Institute of the Charles University [<a href="http://astro.troja.mff.cuni.cz]%20in%20Prague.">http://astro.troja.mff.cuni.cz] in Prague.</a>) 
+	and <strong>I</strong>nteractive <strong>S</strong>ervice for <strong>A</strong>steroid
+	<strong>M</strong>odels (ISAM) http://isam.astro.amu.edu.pl</TD></TR>
+
+
+<TR><TD>Show regional weather prediction (16 day limit)</TD><TD>Provides weather 
+	predictions from the 7Timer site</TD></TR>
+
+
+<TR><TD>View in GoogleEarth</TD><TD>View the occultation path in GoogleEarth</TD></TR>
+<TR><TD>Save as GoogleEarth kmz file</TD><TD>Save a kmz file for use with GoogleEarth to display the occultation path.</TD></TR>
+<TR><TD>Save as GoogleMaps HTM file</TD><TD>Create an HTM file for use with GoogleMaps [used to put predictions on a web page.]</TD></TR>
+<TR><TD>Copy</TD><TD>Copies the image to the clipboard</TD></TR>
+<TR><TD>Print Preview</TD><TD>Sends the image to the system Print Preview 
+	function</TD></TR>
+<TR><TD>Print</TD><TD>Prints the plot</TD></TR>
+<TR><TD>Save</TD><TD>Saves the plot. You will be taken to a dialogue where you 
+	specify the file name and path, and the image format.</TD></TR>
+</table>
+
+
+</BODY>
+</HTML>

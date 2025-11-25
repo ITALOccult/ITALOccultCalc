@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Generate Predictions</Title>
+<style type="text/css">
+.auto-style1 {
+	color: #0000FF;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Generate Predictions</H1>
+<h3>Indicating progress</h3>
+When generating predictions, progress is indicated in several ways:
+<li>The current date being computed is displayed at the right, just above the prediction box.
+<li>Two progress bars occur - typically with one being more apparent than the other. One progress bar indicates progress with scanning through the star catalogue to generate occultation elements for the day. The other progress bar indicates progress with going through those occultation elements to generate the predictions for the site.
+<p>Where-ever possible, the program will make use of occultation elements held in memory - rather than re-reading the star catalogue. For example, if you compute predictions for a day, then select any of Grazes, Multi-Site predictions, or World map, you will be taken directly to the form for selecting the star. You can also change sites in the site file, but if you change the site file (and the 'Filter search to sites in file' box has been checked, the occultation elements will be recomputed. [This is because the initial search for occultations does a check of whether an occultation is possible within the region covered by the site file; that region is indicated below the selected site file.] Also, if you change the star catalogue, the occultation elements will be recomputed.
+
+<h2><br>Occultations</h2>
+<P>This provides the primary functionality of the form - the generation of lunar occultation predictions for a single site</P>
+<p>Predictions can be generated for a single day, or for a period. But if the prediction is for more than one day, the 'right-click' functionality that is associated with the predictions is very limited. A right-click function that is available allows you to generate predictions for the selected day so that the full right-click functionality is available. However if you do this, you cannot merely relist the occultations over the date range of the earlier prediction. 
+The prediction would have to be regenerated.
+<p>Most people will want a daily prediction to cover the whole night. This is a particular issue for observers in Europe/Africa, where 0hrs UT occurs near midnight. The daily prediction can be generated for the period covering the whole night by setting the appropriate 'Starting at' value in the <a href="Lunar%20predictions%20-%20set%20dates.htm">'Set UT dates' </a>box. 
+<p>Grazing occultation messages are given, and graze predictions can be generated via the right-click menu. However such graze predictions are restricted to the graze path near the particular site. If you want to predict/map the path across a continent, you should use the Grazes button to generate the prediction.
+<h3>Short output</h3>
+<p>The output can be of two forms - the full form, or a shortened form where the librations, differential corrections, impact parameters and star coordinates are not given - by checking the 'Short Output' box. Note that you do not have to regenerate the prediction. The format change is implemented on the currently displayed set of data.
+<h3>Filter output</h3>
+The output of Occult can be 'filtered' to meet user preferences, using the <A  href="Lunar%20Predictions%20-%20Filter.htm"> Set Output filter</a> menu item. THe filters allow the selection of observing hours, and exclusion of daytime and bright-limb events. The filters also allow the suppression of some or all messages in the predictions. When a filter is applied (by checking the <I>Apply filter </I>box under the <I>Occultations </I>button), the filter will be indicated as an extra line in the prediction header. 
+<BR><B>Important:</b> To avoid inadvertant application of filtering, the filter can only be applied after a full set of predictions has been generated - and it only applies to that data. 
+
+<h2><br>Grazes</h2>
+<P>Generates a grazing occultation prediction for a specified star. This option is only available if the prediction period is a single day.</P>
+<P><B>Important; This option gives you full control over the graze prediction. </B><I>The right-click menu on normal occultations only provides a graze path near the particular site..</I></P>
+<p>Generally a graze prediction involves a star brighter than mag 9. To make selection of the star easier, select an appropriate star catalogue - typically, the XZ < mag 9.</p>
+<p>On selection you will be presented with a form containing a list of possible stars, and the graze prediction parameters. On this form:
+<li>Set the relevant graze limit (north or south)
+<li>Set the start and end longitude to be used for the prediction;
+<li>Set the step interval in longitude;
+<li>Set a nominal site altitude.
+<li>double click on the relevant star for the prediction, or highlight the star, and click return..
+The prediction will be now generated.</p>
+<P>The values set for the graze limit, start and end longitude, and step interval, are retained between sessions. However default values for these parameters can be set in the User Settings form ['Lunar Occultations - grazes' box, 'Graze path settings'] Clicking the 'Reset to Defaults' 
+button will insert these values into the relevant input fields on the form for setting these parameters and selecting a star.</P>
+
+
+<h2><br>Multi-Site for one star</h2>
+<P>Generates multi-site predictions for a specified star. This option is only available:
+<li>if a site file is used for the prediction; and
+<li> the prediction period is a single day.</P>
+<p>Generally a multi-site prediction is only generated for a bright star. To make selection of the star easier, select an appropriate star catalogue - typically, the XZ < mag 4.</p>
+<p>On selection you will be presented with a list of possible stars. Double-click on the desired star, and the prediction will be generated. If you don't want to select a star, click the Return button.
+
+
+<p>The output has two formats: a short line that gives the event time, the 
+altitude of the Sun and Moon, the Cusp angle and the Position Angle; and a 
+longer line that also includes the azimuth of the moon, and the lunar 
+librations. You can set the output to use either one, or both, using the
+<span class="auto-style1"><strong>output</strong></span> button below the 
+Multi-site button. The settings are retained between sessions.<h2><br>World Map</h2>
+<P>Generates a world map showing the occultation path for a specified star. This option is only available if the prediction period is a single day.</P>
+<p>On selection you will be presented with a list of possible stars. Double-click on the desired star and the prediction will be generated. If you don't want to select a star, click the Return button.</p>
+<p>Note - if the star is occulted at your 'home' site, the most convenient way to generate a world map is to use the right-click menu on the site prediction. If the star is known, the most convenient way is to use the 'Predictions of Single objects' function to find the occultation and plot it.</p>
+
+
+
+</BODY>
+</HTML>

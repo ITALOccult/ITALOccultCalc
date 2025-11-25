@@ -15,7 +15,8 @@ IOccultCalc è una libreria completa per astronomi amatoriali e professionisti c
 
 - ✨ **Download automatico** elementi orbitali equinoziali da AstDyS2
 - 🌟 **Query intelligenti Gaia DR3** - scarica solo le stelle necessarie
-- 🛰️ **Propagazione orbitale precisa** usando elementi equinoziali (non singolari)
+- � **Cache locale Gaia DR3** - download una volta, usa offline, 5-10× più veloce
+- �🛰️ **Propagazione orbitale precisa** usando elementi equinoziali (non singolari)
 - 🪐 **Modello N-body completo** - perturbazioni di tutti i pianeti e corpi maggiori
 - 🌍 **JPL DE441 ephemerides** - standard NASA con precisione <100m per pianeti (10-50× meglio di VSOP87)
 - 🔬 **Orbit determination** - miglioramento orbitale con osservazioni astrometriche
@@ -104,10 +105,28 @@ int main() {
 ## 📖 Documentazione
 
 - **[QUICKSTART.md](QUICKSTART.md)** - Guida rapida per iniziare
+- **[docs/GAIA_CACHE_QUICKSTART.md](docs/GAIA_CACHE_QUICKSTART.md)** - 🆕 Sistema cache Gaia DR3 locale
+- **[docs/GAIA_CACHE_SYSTEM.md](docs/GAIA_CACHE_SYSTEM.md)** - 🆕 Documentazione tecnica cache
 - **[docs/GUIDE.md](docs/GUIDE.md)** - Documentazione completa con API reference
 - **[docs/STRUCTURE.md](docs/STRUCTURE.md)** - Architettura della libreria
 
 ## 🎯 Esempi Inclusi
+
+### Gaia Cache System (Local Offline) 🆕
+Download stella cache una volta, usa offline 5-10× più veloce:
+```bash
+# Setup (una volta): scarica fascia principale asteroidale
+./gaia_cache_downloader --mainbelt 15.0
+# Download: ~10 minuti, ~100 MB, ~280K stelle
+
+# Statistiche cache
+./gaia_cache_downloader --stats
+
+# Usa cache (veloce, offline)
+./italoccultcalc preset_large_asteroids_jan2026.oop
+# Query: ~2-5 sec (vs ~15-20 sec online)
+```
+**Vantaggi**: Funziona offline, 5-10× più veloce, nessun rate limiting, risultati deterministici
 
 ### Basic Usage
 Ricerca occultazioni per un singolo asteroide:

@@ -1,0 +1,469 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Asteroid Observations - Fit shape models</Title>
+<style type="text/css">
+#div_content table.standard tr.even td {background: #DDDDDD}
+#div_content table.description td.label {font-weight: bold; padding-left: 3px; padding-right: 3px}
+#div_content table.standard td {background: #EEEEEE; padding-left: 3px; padding-right: 3px}
+#table_layout td {padding: 0px; border: none; vertical-align: top; overflow: hidden}
+
+#div_content table.description td.description {padding-left: 3px; padding-right: 3px}
+
+.auto-style8 {
+	color: #0000FF;
+}
+.auto-style9 {
+	color: #FFFF00;
+	background-color: #0000FF;
+}
+
+.t{unicode-bidi:bidi-override} .t{-webkit-transform-origin:0 100%;font-size:1px;transform-origin:0 100%;white-space:pre} .t{position:absolute} 
+
+.auto-style10 {
+	color: #FF0000;
+}
+
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Asteroid Observations - Fit shape models</H1>
+
+
+
+<h2 class="auto-style9">1. Getting the shape models for analysis</h2>
+<p>There are several ways in which shape models can be displayed with observed 
+chords. Common to all ways is a requirement that the menu item on the Plot form
+<strong>Plot options...Add DAMIT and ISAM shape images</strong> is checked. 
+Additionally, the menu item <strong>Plot Options...
+</strong><em><strong>Show shape model controls on Plot</strong></em> must be checked 
+- as this displays the Shape Model control for managing the addition of shape 
+model data to the event record.</p>
+<p>To achieve this, the Observations editor includes a box in the Asteroid group 
+displaying the number of DAMIT and ISAM shape models that are available. That 
+box looks like:</p>
+<img src="Asteroid%20Observations%20-%20GetModels.PNG">
+<p>Simply click on any of the blue area. Occult will retrieve all the 
+required/available shape models, and set the above two checks</p>
+<h2 class="auto-style9">2. The Shape model control</h2>
+<p>The Shape model control on the plot form facilitates the fitting of shape 
+models and the retention of fits. The control looks like:</p>
+<img src="Asteroid%20observations%20-%20fit%20shape%20models.PNG" width="400"><p>
+or with the uncertainty chords set for shape model fitting<p>
+<img src="Asteroid%20observations%20-%20fit%20shape%20modelsDia.PNG" width="200"><p>
+or, for displaying phase-adjusted versions of a shape model<p>
+<img src="Asteroid%20observations%20-%20fit%20shape%20models%20Phase.PNG" width="400"></p>
+<p>The Shape model control can be moved anywhere around (but inside) the plot 
+form - by simply dragging it with the mouse.</p>
+<p><strong>The tools available on this control in normal mode are:</strong></p>
+<ul>
+	<li>A series of buttons labeled 1 to 6 for both <strong>DAMIT</strong> and<strong> 
+	ISAM</strong> that allow the selection of particular shape models. Buttons 
+	are green when a shape model has been fitted, and plum whena shape model has not been fitted.</li>
+	<li>When a button is been selected, the button will be bright green if a 
+	model has been previously fitted, or pink when a model hasn't previously 
+	been fitted. The button number is also made bold.</li>
+	<li>Many models in ISAM are the same as models in DAMIT. When this occurs, a 
+	small white box with a red number will be next to an ISAM button, giving the number of the DAMIT button 
+	that has the same model</li>
+	<li>A button<strong> Light Curves</strong>, for downloading information 
+	about the dates light curves were obtained to generate the shape model, and 
+	the fit of the shape model to those light curves. <strong>This is only available for 
+	DAMIT models</strong>. The button is greyed out and disabled when an ISAM model is 
+	displayed</li>
+	<li>A box <strong>Source</strong>, which contains the source of the model 
+	being displayed (DAMIT or ISAM). It is set by the program (and forms part of the model fit 
+	data that is retained).</li>
+	<li>A box <strong>ID</strong>, which contains the model identification in 
+	the source. DAMIT models have an identification that is independent of the 
+	asteroid number. For ISAM, the asteroid number is implicitly part of the 
+	identification, and otherwise falls in the range 1 to 6.</li>
+	<li>A box labeled<strong> Surf/Vol.</strong> This gives the ratio of the Surface-equivalent 
+	diameter to the Volume-equivalent diameter of the shape 
+	model, and is fixed by code from the download. [The 
+	Surface-equivalent diameter is always greater than the volume-equivalent diameter.]<br>
+	<ul>By way of further explanation... A diameter is a quantity inherently 
+		associated with a smooth sphere. However an asteroid is an irregular 
+		object, which raises the question of - what is its diameter? There are 
+		two approaches to this issue. A volume-equivalent diameter is the 
+	diameter of a sphere having the same volume as the asteroid. A 
+	Surface-equivalent diameter is the diameter of a sphere having the same 
+	surface area as the asteroid.<em> Prima facie</em>, volume-equivalent 
+	diameters are relevant to assessments of density, whereas surface-equivalent 
+	diameters are relevant to assessments of brightness.</ul></li>
+	<li>A drop-down box labeled <strong>Fit Quality</strong>, to be completed by the user. See 
+	below. If the current displayed value needs to be selected, simply click on the drop-down box. 
+	(There is no need to display the list and select from it.)</li>
+	<li>A box labeled<strong> Ph Corrn</strong>. The value here is automatically completed if the 
+	user adjusts the rotational phase of the asteroid - see below.</li>
+	<li>A button for changing the basis the the uncertainty regions on the plot. 
+	When Green with 'Err', the uncertainties represent the reported event time 
+	uncertainties. When Yellow with 'Dia', the uncertainties are reduced to 
+	match the uncertainty in the chord length. This button will get 
+	automatically cleared whenever the main Editor form is selected (although 
+	the plot won't change until the plot form is selected).</li>
+	<li>Boxes labeled <strong>Minimum dia</strong> and <strong>Maximum dia</strong>, which are set by the user by 
+	clicking the adjacent <strong>Set</strong> button - see below</li>
+	<li>A text box labeled <strong>Version Info</strong> - which gives information about the 
+	model that can be relevant to interpreting the results. The content is 
+	automatically set from the download. See below for its significance.</li>
+	<li>A slider bar for adjusting the size of the asteroid image on the plot. 
+	<span class="auto-style8">If 
+	this slider is to be used, it can be very helpful to check the menu item
+	<strong>Keep form on top</strong> - as otherwise the display will oscillate 
+	between the P<strong>lot Event observations </strong>form display and the
+	<strong>DAMIT and ISAM Shape Models </strong>form display. [Having clicked 
+	that menu item, you can return the form to its normal state by clicking the 
+	menu item <strong>Return form to normal</strong></span>]</li>
+	<li>A <strong>Save/update</strong> button to save the results of the fit of the shape model to the 
+	occultation chords. The label of 
+	the button changes to match the shape model being displayed.
+	When a DAMIT model is selected, and there is a corresponding ISAM model, the 
+	Save/update button with indicate both the DAMIT and ISAM models, and will 
+	save/update both models.&nbsp;&nbsp; <strong>
+	<span class="auto-style10"><ul>IMPORTANT</span></strong><span class="auto-style8">. This 
+	button stores the results of the shape model fit in memory. It does <em>not</em> save 
+	the results in an observations file for the event. The results are only 
+	saved when the observation as a whole is saved or updated. See near the end of this 
+	Help topic page for information about <strong>Saving/deleting the Shape model fits</strong></span></ul><br>
+	</li>
+</ul>
+A model can also be displayed for a range of rotational orientations. This is achieved using the menu item <strong>with Phase models</strong> in the Shape Model display form. When this is selected, the control is changed in the following manner:
+<ul>
+	<li>The buttons for DAMIT and ISAM models are replaced by a series of 
+	buttons labeled 0 to 9 - corresponding to increments in the rotational 
+	orientation. 
+	Button 4 corresponds to the 'zero' point of the phase adjusted models.</li>
+	<li>Selecting a button allows the orientation of the shape model to be 
+	adjusted, to give the best fit. The rotational phase adjustment is displayed 
+	in the <strong>Ph Corrn</strong> box.</li>
+	<li>The functioning of all other items on the control are unchanged.</li>
+	<li>As a general rule, phase adjustments should not be required. See below 
+	for more information.</li>
+	<li>When the control is in the Phase model mode, the usual 'exit' button at 
+	the top right of the control operates to close the Phase mode, and return 
+	the control to its normal mode of functioning.</li>
+</ul>
+
+<h2 class="auto-style9">3. The fitting process</h2>
+<p>The process involves considering each shape model in turn.</p>
+<p><strong>For each shape model</strong></p>
+<ul>
+	<li>two fits of the model to the observed chords are made. One fit is for 
+	the minimum size of the shape model that can reasonably fit the observed 
+	chords, while the other fit is for the largest size of the shape model that 
+	can reasonably fit the observed chords.</li>
+	<li>In making these fits, note that:<ul>
+		<li>the uncertainty in the chord lengths needs to be displayed (menu 
+		item <strong>Plot options... Show error bars</strong>)</li>
+		<li>the location of the center of the shape model will frequently be 
+		different in some degree between the two fits. That is, do not look for 
+		minimum and maximum diameters on the basis of a fixed location of the 
+		shape model relative to the chords - treat the fitting independently.</li>
+	</ul>
+	</li>
+	<li>Make the fit by adjusting one or other (or both) the plot scale of the 
+	shape model (using the slider on the <strong>Shape model contro</strong>l, 
+	or the slider on the <strong>DAMIT and ISAM shape models</strong> form) or 
+	the plot scale of the chords on the Plot form.</li>
+	<li>When satisfied you have identified the minimum size shape model that 
+	fits the chords, click the <strong>Set</strong> button next to the <strong>
+	Minimum dia</strong> box. that will populate the box with the corresponding 
+	volume-equivalent diameter of the asteroid.</li>
+	<li>Repeat for the maximum size shape model, and click the <strong>Set</strong> 
+	button next to the <strong>Maximum dia</strong> box.</li>
+	<li>From the drop-down box for <strong>Fit quality</strong>, select the most appropriate 
+	description of the quality of the fit of the shape model to the observed 
+	chords. The settings are described below. If the value you want is already 
+	displayed, but the text underneath the box is different, simply click 
+	the box. (There is no need to display the list and select from it.)</li>
+	<li>Click the <strong>Save/update model...</strong> button to save the 
+	values on the shape model control<strong><em> in memory</em></strong>. 
+	<span class="auto-style8">[See 
+	near the end of this Help topic page for information about <strong>Saving/deleting the Shape model fits</strong>.]</span></li>
+	<li>Move to the next shape model, and repeat the process.</li>
+	<li>You can go back to models you have already processed, and adjust the 
+	values. The value of each quantity currently held in memory for the selected 
+	shape model is displayed below the various boxes.</li>
+</ul>
+<h3>Making the best fit</h3>
+<p><em><strong>COMMENT</strong> - This section will need to be expanded with experience. Suggestions 
+for advice to give here welcome!</em></p>
+<p>When fitting shape models, it is important to have the observations 
+uncertainty displayed - by checking the menu item on the <strong>Plot form Plot 
+options... Show ERROR bars</strong></p>
+<p>The Control provide the following list of <strong>Fit Quality</strong> 
+settings</p>
+<ul>
+	<li>Not fitted</li>
+	<li>Bad occultation data</li>
+	<li>Model wrong</li>
+	<li>Minimum diameter</li>
+	<li>Diameter but no fit</li>
+	<li>Poor fit</li>
+	<li>Good fit</li>
+	<li>Not constrained</li>
+</ul>
+
+<h3 class="auto-style8">Guidance for these options are:
+
+</h3>
+
+<h4>For events where the chords are a good fit to the shape model:</h4>
+<ul>
+	<li>This situation would require several chords on either side of the 
+	asteroid that are well aligned to the shape model.</li>
+	<li>For the minimum diameter, make a best-fit alignment of the shape model 
+	with the 'innermost' ends of the error bars; and</li>
+	<li>For the maximum diameter, make a best-fit alignment of the shape model 
+	with the 'outermost' ends of the error bars;</li>
+</ul>
+<h4>For events where the chords are a poor fit to the profile</h4>
+<ul>
+	<li>This situation would require several chords on either side of the 
+	asteroid, but those chords do not align well with the shape model.</li>
+	<li>The first step is to ascertain where a rotational phase shift adjustment 
+	might result in a better fit (see the next section). Otherwise, the 
+	discrepancies between the occultation chords and the shape model may be a 
+	combination of 'errors' in both the occultation observations and the shape 
+	models. For these reasons it is appropriate to fit the chords to the shape 
+	model:</li>
+	<li>For the minimum diameter, make a best-fit alignment of the smallest 
+	shape model that fits a relatively large number of the observed chords; and</li>
+	<li>For the maximum diameter, make a best-fit alignment of the largest shape 
+	model that fits a relatively large number of the observed chords</li>
+</ul>
+<h4>Diameter but no fit</h4>
+<ul>
+	<li>
+	There may be times when the occultation chords can be fitted to a shape 
+	model, but cannot be used to draw any meaningful conclusions about the shape 
+	model. Typical situations include having two chords on the same side but 
+	reasonably well spaced. In this situation it is unlikely that any meaningful 
+	conclusions about the shape model can be drawn. However it is quite likely 
+	that the diameter of the asteroid can be determined - particularly if the 
+	two (or however many ) chords align with the shape model.</li>
+	<li>
+	The situation of having two chords on opposite sides of the asteroid 
+	would normally be covered by Good or Poor fit.</li>
+	<li>For the minimum diameter, make a best-fit alignment of the smallest 
+	shape model that fits a relatively large number of the observed chords; and</li>
+	<li>For the maximum diameter, make a best-fit alignment of the largest shape 
+	model that fits a relatively large number of the observed chords</li>
+</ul>
+<h4>Minimum diameter</h4>
+<ul>
+	<li>This most commonly arises when there is a single chord, or several closely spaced chords</li>
+	<li>Fit the observed chord along the longest transverse of the 
+	shape model, with the edge of the shape model aligned with a point about 2/3 
+	of the distance from the event location, towards the 'innermost' end of the 
+	error bars.</li>
+</ul>
+<h4>For events where the shape model is wrong</h4>
+<ul>
+	<li>normally this would only be set if there is another shape model that 
+	clearly fits the event chords. When this quality is set, the maximum 
+	and minimum diameters cannot be set.</li>
+	<li>This setting is not about whether one model is preferable to another. 
+	Rather it is an indication that the shape of the shape model is totally 
+	inconsistent with its actual shape </li>
+	<li>If all the available shape models clearly do not match the 
+	observed chords in any meaningful way, it is appropriate to select <strong>
+	Model wrong</strong> for all shape models.</li>
+</ul>
+<p><strong>Bad occultation data</strong></p>
+<ul>
+	<li>This is used when there are problems with the occultation data which 
+	cannot be reliably resolved (such as by excluding obviously discordant 
+	chords, or applying time shifts to correct obvious time base errors)</li>
+	<li>This issue is more common before ~2000, when the majority of 
+	observations were visual. Time base errors can also be associated with NTP 
+	(Network Time Protocol)</li>
+	<li>When it is apparent that the occultation data has unresolved problems, 
+	maximum and minimum diameters cannot be set. Essentially the occultation 
+	observation is excluded form any further analysis that might be undertaken.</li>
+</ul>
+<h4>Not constrained</h4>
+<ul>
+	<li>this is used when ever the chords are insufficient to place any 
+	reasonable constraints on the size of the asteroid. Typical situations are:<ul>
+		<li>a single chord which is shorter than about 60% of the asteroid's 
+		nominal diameter. However care needs to be exercised when the shape 
+		model is highly elongate, as a short chord fitted to a short 
+		cross-section may give a realistic diameter.</li>
+		<li>several chords located on one side of the asteroid, with it being 
+		possible to fit the chords using greatly different diameters for the 
+		asteroid. normally this would only be set if there is another shape model that 
+	clearly fits the event chords. When this quality is set, the maximum 
+	and minimum diameters cannot be set.</li>
+	</ul>
+	</li>
+</ul>
+<h4>Not fitted</h4>
+<ul>
+	<li>For events from about 2021, this setting is only present when no fit has 
+	been made to a shape model. Prior to 2021, this setting was also applied 
+	when the fit was <strong>Not constrained</strong></li>
+</ul>
+<h3>Rotating the Shape model</h3>
+<p>In certain circumstances it may be appropriate to consider whether the shape 
+model would fit better if the rotational phase was adjusted. Changing the 
+rotational phase is only justifiable if:</p>
+<ul>
+	<li>the time between the event and the observations used to create the shape 
+	model is large - typically &gt;10 years;</li>
+	<li>the light curve variations are generally small; and/or</li>
+	<li>the shape model is heavily dependent on 'scattered' brightness measures 
+	rather than a continuous light curve measurement. That is, observations from 
+	Lowell, USNO, Catalina or Gaia</li>
+</ul>
+<p>It is generally useful to 
+have the axis of rotation of the asteroid displayed. This can be done by checking the menu item on the <strong>
+DAMIT and ISAM shape models </strong>form&nbsp; <strong>...with Model image... Include rotational 
+axis</strong></p>
+<p>You can assess whether it is appropriate to vary the rotational phase for any shape model 
+in <strong>DAMIT</strong> by clicking <strong>Light curves </strong>on 
+the <strong>Shape model control</strong> on the Plot form, or the menu items
+<strong>with Model image...&nbsp; List DAMIT parameters and light curves</strong>, 
+and <strong>with Model image...&nbsp; Display model fit to light curves (DAMIT).
+</strong>These will provide details of the light curve data, and show the fit of 
+the shape model to the observed light curve.</p>
+<p>The display of phase-adjusted shape models must be done from the <strong>
+DAMIT and ISAM shape models</strong> form. Select the shape model for which you 
+want a series of phase-adjusted shape models (either DAMIT or ISAM). Then from 
+the menu item&nbsp; <strong>with Phase models...</strong> click the relevant 
+step intervals. This will display 10 phase models at the specified 
+step interval. </p>
+<p><br><strong>Hint 2</strong>. You can change the zero-point of 
+the phase-offset series using the <strong>Zero phase</strong> up-down control on 
+the <strong>
+DAMIT and ISAM shape models</strong> form. 
+This can be particularly useful if you start with a coarse set of phase 
+models, and want to have a closer look at a series of models near a particular 
+offset.</p>
+<p>Where there are multiple occultation events for the asteroid, one would 
+expect any phase adjustment to be associated with a change in the rotational 
+period. That is, the adjustment should vary linearly with time. The <strong>
+Adjust rotation</strong> control on the <strong>DAMIT and ISAM shape models</strong> form allows the user to apply changes to the rotational period 
+to assess whether there is a basis to adjust the rotational phase.</p>
+<p>To return to the selection of shape models - on the <strong>DAMIT and ISAM 
+shape models</strong> form, either <br>* click the usual <strong>Exit</strong> 
+button at the top right of the Shape model control; or<br>* click the menu item with <strong>Phase 
+models... Close phase model display control</strong></p>
+<h3>The DAMIT Quality values</h3>
+<p>
+<table class="standard description">
+	<tr class="even">
+		<td class="label">&nbsp;</td>
+		<td class="description">The DAMIT system incorporates a Quality Factor<strong> 
+		QF</strong> that provides some information about the reliability of the 
+		derived shape model The value ranges&nbsp; between 0 and 5. However 
+		for many of the older models a value is not yet assigned. The scale, as 
+		set out on the DAMIT site, is 
+		as follows:<br><strong>5</strong> – &quot;ground-truth&quot; models reconstructed 
+		from images obtained by spacecraft (usually not included in DAMIT but 
+		available through PDS);<br><strong>4</strong> – models based on a large 
+		photometric data set and disk-resolved data and/or stellar occultations, 
+		the pole ambiguity is resolved, they should well correspond to the real 
+		shape of the asteroid;<br><strong>3</strong> – reliable models based on 
+		large photometric data sets;<br><strong>2</strong> – models 
+		reconstructed from only few dense light curves combined with sparse 
+		data, the shape is not very certain;<br><strong>1</strong> – coarse 
+		shape models based solely on sparse data, large errors both in the shape 
+		and pole direction;<br><strong>0</strong> – just one possible model out 
+		of many. <br><strong>n/a</strong> - no uncertainty value is available 
+		for this model.</td>
+	</tr>
+</table>
+</p>
+<p>Regard should be had to the values (when available) when trying to identify 
+the shape model that best fits the observed chords. Note that 'sparse data' is a 
+reference to single point photometry from several observatories made over many 
+years, in contrast to the continuous monitoring of an asteroid for many hours to 
+obtain a light curve on a single night - this being repeated with the asteroid 
+being at differing locations in its orbit</p>
+<h3>The ISAM version information</h3>
+<p>The version field can contain the following acronyms:</p>
+<p>KOALA : Knitted Occultation, Adaptive-optics and Light-curve Analysis.<br>
+SAGE : Shaping Asteroid models using Genetic Evolution </p>
+<div class="t m0 x5 h9 y24 ff2 fs4 fc0 sc0 ls5 ws3e">
+	Knitted Occultation, Adaptive-optics, and Lightcurve</div>
+<div class="t m0 x5 h9 y49 ff2 fs4 fc0 sc0 ls5 ws3f">
+	Analysis</div>
+<h3><strong>Dealing with poor occultation observations</strong></h3>
+<p>It is inevitable that from time-to-time users will have to deal with an event 
+where the observed chords do not match any of the available shape models. Issues 
+to be considered are:</p>
+<ul>
+	<li><strong>The validity of the shape model(s).&nbsp; </strong>
+	<ul>
+		<li>For a DAMIT model with a quality factor of 4 or 5, the model should 
+		be highly reliable. As a result, any mismatches between the occultation 
+		chords and the shape model is reason to have a very close look at the 
+		occultation observations - on the basis that the cause of mismatch will 
+		most likely (but not always) be with the occultation observations.</li>
+		<li>For DAMIT models with Quality factors of 3, any significant mismatch 
+		could be caused by either inadequacies in the shape model, or erroneous 
+		occultation data</li>
+		<li>For DAMIT models with a quality factor 0, 1 or 2 - the starting 
+		point is that the occultation data is likely to be more reliable than 
+		the shape model.</li>
+	</ul>
+	</li>
+	<li><strong>Erroneous occultation observations<br></strong>Erroneous 
+	occultation results are an infrequent but regular occurrence. Sources of 
+	error include<ul>
+		<li>&nbsp;<strong>poor time base</strong>. The most reliable time base 
+		(as at 2018) is a video-inserted GPS-sourced time stamp on each video 
+		frame. Other time sources can have a range of issues with uncertainties of 
+		differing magnitude. When the position (but not length) of an observed 
+		chord is inconsistent 
+		with other observed chords, it will usually be appropriate to make 
+		enquiries about the time 
+		base that was used.</li>
+		<li><strong>visual observations</strong>. Before 2000, the majority of 
+		observations were made visually, whereas by 2010 the majority are made 
+		using video or the like. Visual observations have issues of  
+		reliability arising from observer tiredness and the need to concentrate for 
+		long periods of time, as well as the need to apply Personal Equation 
+		(PE) - with PE usually severely underestimated for the D, and somewhat 
+		underestimated for the R. Asserted PE's of 0.5 sec or less should be 
+		treated skeptically.</li>
+		<li><strong>event only marginally visible</strong>. The reliability of 
+		an observation can be adversely affected if the star is barely visible, 
+		or there are significant atmospheric disturbances or cloud, or if the 
+		magnitude drop is very small.</li>
+		<li><strong>Observer monitors the wrong star</strong> This is relevant 
+		for Miss chords which are inconsistent with adjacent chords that 
+		record an occultation event.</li>
+	</ul>
+	</li>
+</ul>
+<h2 class="auto-style9">4. Saving/deleting the Shape model fits</h2>
+<p>Shape model fits are saved/retained in the following ways:</p>
+<ul>
+	<li>If you are working with an individual file for an event, by saving that 
+	event after having made the fits(s)</li>
+	<li>If you are working with the <strong>Historical Observations</strong> file, by updating 
+	the event in that file</li>
+</ul>
+<p>You can view the details of the shape model solutions from the <strong>
+Observations Edito</strong>r, using the menu item <strong>Shape models... List current-event shape model solutions</strong>.&nbsp; If you have 
+inadvertently created extra shape model solutions over that which is 
+appropriate, you can delete these using the <strong>Observations editor</strong> 
+menu item <strong>Shape models... Delete current-event shape model solution(s)</strong>. 
+Simply check the entries to be deleted, and click <strong>Delete</strong>.</p>
+<p>Occasionally a shape model will be deleted from DAMIT or ISAM, and solutions 
+for those models should be removed - using the delete function. The presence of 
+such models will be indicated on Observations Editor form, where shape model 
+fitting information is displayed. </p>
+
+
+
+</BODY>
+</HTML>

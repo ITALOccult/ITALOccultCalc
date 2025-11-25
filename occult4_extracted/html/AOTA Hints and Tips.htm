@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Hints and Tips</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<h2>AOTA Help topics</h2>
+<a href="AOTA%20Overview.htm">Overview and form layout</a><br><br>
+<a href="AOTA%20Read%20and%20integrate.htm">Tab 1. Read, Integrity, Set time, Bin and Normalise</a><br>
+<a href="AOTA%20Fourier.htm">Tab 2A. Fourier plot</a><br>
+<a href="AOTA%20Short.htm">Tab 2B. Short event check</a><br>
+<a href="AOTA%20Find%20events.htm">Tab 3. Find events</a><br>
+<a href="AOTA%20Select%20to%20analyse.htm">Tab 4. Select event to analyse</a><br>
+<a href="AOTA%20Analyse.htm">Tab 5. Analyse</a><br>
+<a href="AOTA%20FinalTimes.htm">Tab 6. Camera corrections, final results</a><br><br>
+<a href="AOTA%20Integrity.htm">Integrity check</a><br>
+<a href="AOTA%20Integration%20and%20binning.htm">Integration, binning & normalisation</a><br>
+<a href="AOTA%20Set%20time%20scale.htm">Set time scale</a><br>
+<a href="AOTA%20Verify.htm">Verify event times</a><br>
+<a href="AOTA%20VTI%20info.htm">VTI information</a><br><br>
+<a href="AOTA%20Hints%20and%20Tips.htm"><B>Hints and Tips</B></a><br>
+
+
+<H1>AOTA - Hints and Tips</H1>
+
+<h3>Short-duration events</h3>
+For short-duration events the automatic setting of the measurement region is unlikely to work properly. Users should manually set the measurement regions on Tab 
+5, and click the <B>Get Event location </B>button.
+
+<h3>The occultation is barely evident in the signal</h3>
+For low signal-to-noise events, reliable identification of the event can be difficult, with the uncertainties large. The best approach is to improve the signal-to-noise by binning the observations. Go to Tab 1, click the <B>Binning/Integration settings </B>button and increase the bin size. As a simple rule, doubling the number of measurements that are binned will improve the signal-to-noise by a factor of 1.4.
+<p>Some may be concerned that binning will result in a loss of timing precision. Generally speaking, this is not the case. In a low SN signal, the uncertainty is necessarily large because the event is ill-defined. Increasing the SN such that the event is clearly defined reduces the uncertainty in the context of the binned measurements. However increasing the bin size more than necessary will result in loss of precision.
+
+<h3>Why does the solution change if I leave and then return to Tab 4 Analyse?</h3>
+The calculation of the uncertainty uses a statistical approach called Monte Carlo. This approach takes the 'theoretical' signal, applies noise consistent with the noise in the observed signal, and resolves for the best fit. This is done many times AOTA allows between 100 and 2000 trials). The nature of this process is such that the results of any set of trials is no exactly reproducible., and this can lead to changes in the uncertainty ranges and the mid-time of the event. This effect can be reduced by increasing the number of trials, but this slows down the evaluation process.
+
+<h3>When finding an event at Tab 3, how long should I search?</h3>
+AOTA will automatically stop if it thinks it may have found an event - and ask whether you want to stop or continue searching. For events that are clearly evident in the light curve, there is usually nothing to be gained by searching for longer events.
+
+<p>For occultations that exceed the default duration of 10 secs set in this form, you may need to return to this form and set a longer duration
+
+<p>For events that are likely Miss events, have a close look at the cross-correlation curve at the bottom of the plot. If this region merely shows a number of sharp spikes, some perhaps protruding lightly above the bottom region, then it is unlikely that searching for wider events will result in any valid identifications. Indeed, searching for wider possibilities usually has the effect of generally increasing the height of the cross-correlation curve, and at the same time blurring out any spikes.
+ 
+<p>If the cross-correlation has identified a real event (evidenced by a triangular rise in the cross-correlation curve), continuing the search for wider possibilities may result in the identified event being 'lost' in a general increase in the cross-correlation curve values as wider values are considered. That is, when an event is clearly found, do not continue the search further unless you have a good reason.
+
+<p><h3>I'm analysing a short event, and the fitted light curve does not go to the bottom of the signal</h3>
+For short-duration events you will probably need to adjust the size of the <B>Points outside of transition</B>. This setting is used to determine the average value of the signal before and after the transition. Usually this number should be set to a reasonably large number, so that a good average value is obtained. However for short duration events this setting needs to be a small number - preferably no larger than the width of the event.
+
+<br>
+<h3>I think I have a very short event - just one or two frames long. How do I 
+know if its real, or whether I should report it?</h3>
+
+Go to Tab 2B Short events.
+This will provide a check of whether a very short event is a plausible 
+occultation. For very short events, it can be very difficult to be certain that 
+it is an occultation. However if an occultation is assessed as being plausible, 
+it should be reported.&nbsp; <br>
+<h3>I used an integrating camera. Will I get improved measurements if I DON'T bin the measurements?</h3>
+When you use an integrating camera, it is important that you bin all the measurements made during the integration period into a single bin. Failing to do this will lead to an incorrect assessment of the video.
+
+<p>Why? With most integrating cameras, the frames output during an integration period are identical (apart from read-out noise). So you have multiple identical data points during the integration period. Correspondingly, the time to be associated with each frame should be the same - but by displaying the frames individually, you are in fact treating them as having a different time. And this leads to an error in the determination of the event time. Additionally the fitted light curve will fit a transition over the spread of identical data points - leading to an erroneous determination of the in the event time uncertainty.
+
+<p>In short, if you have used an integrating camera, make sure you bin the individual measurements to match the integration period.
+
+<p><B>NOTE</B> There are some integrating cameras that operate on the basis of a running average. A running average has the effect of smearing everything. To measure videos recorded with such cameras, you should still bin according to the number of frames that are being integrated. However you can position the start of a bin at any location - there is no requirement to match the start of a bin with the start of an integration period.
+
+<p>&nbsp;</p>
+<h2>Guidance from Eric Frappa</h2>
+<p>1) In AOTA, you almost always have to review and manually set the zones of 
+transition (in yellow) in tab 5, &quot;adjust regions&quot;, with enough points on each 
+side of the actual transitions, allowing AOTA to calculate the uncertainties 
+based on the local noise of the curve. To set these zones, just click on the 
+curve when you are in tab 5, then the corresponding points will fill the 4 
+fields in the &quot;adjust regions&quot; window. <u>The 2 yellow zones have to include 
+points at full level and points at occultation level. </u>The rule, most of the 
+time, is that the calculated uncertainties (red lines) should never touch a 
+yellow border. Don't be fooled by the words &quot;just before&quot; and &quot;just after&quot;. They 
+don't mean that you have to frame strictly the start and end of the transition. 
+In this case, the result would be forced. On the contrary, make the yellow zones 
+large enough (this can be limited sometimes at the occultation level when the 
+event is short). <br><br>2) When setting the zones of transition and when the 
+drop is not at the background, don't choose the same point for the 2nd and 3rd 
+points, this to prevent AOTA making the bottom of the fit on the background 
+instead of on the occultation level. Shift the point by at least one value for 
+very short events - and when you have a large event, ensure the blue zone in the 
+middle to be large enough to allow a good average of the bottom level of the 
+occultation. <br><br>3) The blue zone is controlled by the &quot;# points outside of 
+transition&quot; in &quot;Adjust regions&quot; and is used to measure locally the mean full and 
+occultation levels. Use its extent intelligently according to the state of the 
+light curve outside the event (avoid when possible unrepresentative levels such 
+as gust of wind, outliers, etc). <br><br>4) When you click on &quot;get event 
+locations&quot;, if the fit does not match the occultation (ingress, egress and 
+occultation level) and the yellow zones are different than the ones you choose 
+(assuming that you have set them correctly), just move back and forth the &quot;# 
+points outside of transition&quot; value and everything should be back to normal. <br>
+<br>5) Always in tab 5, the histogram &quot;chi2 - for different transitions&quot; gives 
+you the best transition for D and R. For that, click on the highest rectangle in 
+the histogram. However, use only transitions of type 1 or 2 - not more - unless 
+you have a good reason to think that the transition is really gradual. Noise can 
+often mimic a gradual transition and using such a fit (3 or more) can lead to 
+times with small uncertainties where the result would require large ones because 
+of the noisy event. <br><br>6) Each click on the selected green rectangle in the 
+chi2 histogram runs a Monte Carlo analysis, which allows you to test different 
+solutions independently for D and R. The statistical nature of the analysis 
+gives a range of different results, which is normal. Try multiple clicks on the 
+green rectangle and, when possible, prefer the most symmetrical solution around 
+the apparent transition. <br></p>
+
+</BODY>
+</HTML>

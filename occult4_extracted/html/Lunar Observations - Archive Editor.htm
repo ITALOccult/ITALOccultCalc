@@ -1,0 +1,255 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title></Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1 align = center>Lunar occultations - Archive editor</H1>
+
+This form is intended to provide basic functions for editing and manipulating occultation reports that have been placed into the archive format. 
+
+<p>Editing changes made in this editor are made <B>directly to the file being edited</B>. Users are advised to use the editor on a 'working copy' of a file, since there is no 'undo' function to fix up unintended changes.
+
+<p>The editor provides four sets of functionality, by the radio buttons at the top left of the editor:<ol>
+<li>General editor - provides functionality to edit the time and object  for any single event</li>
+<li>Site editor - provides functionality to edit site details for all instances of that site</li>
+<li>Doubles editor - provides functionality to edit double star details for all events involving a specified star</li>
+<li>Graze editor - for editing graze observations - yet to be provided....</li></ol>
+
+<h3>Form menu items</h3>
+<li><B>Save</B>, and <B>Append</B>, will save or append the events listed to a file.
+<li><B>with Checked List</B> operates when a checked list is displayed. Options allow for all boxes to be checked, or cleared. Or for the selection to be inverted.
+
+<h1 align = center><br>General editor</h1>
+The main functions of the editor are provided by the buttons across the top of the form. The functionality beklow the tyop of the form relates SOLELY to the <B>Edit Events </B>button, and are discussed under that heading.
+
+<h2>Autocorrect Archive file</h2>
+This function was designed primarily for processing the data files of Royal greenwhich Observatory, and ILOC. However it is used against any archive file to identify and flag any erroneous observations, and make corrections where possible.
+
+<p>On selection, the user must specify the file to be processed. The processed file is written to the same directory with the same file name preceded with "C_".
+
+<p>The routine reduces each event in the file. If the residual indicates the existence of an error, the routine attempts to identify the correction that needs to be made using the following algorithm.
+<ul type=a>
+<li>Correction is only investigated if the limb corrected residual is <4" (or a graze event)<br><br>
+
+<li>For each possible date/time or location, compute altitudes of the Moon and Sun. If the Moon
+   altitude is &lt0, or sun altitude&gt0, the particular date/time/location combination excluded.<br><br>
+
+<li> Assume time is correct. Identify all stars within 2" of the limb-corrected limb with a 
+  phase [D/R]corresponding to the event. Magnitude of stars limited as:
+<table columns=3 border=1>
+<TR><TH NOWRAP>elong</TH><TH>Mag</TH></TR>
+<TR><TD>&lt 126</TD><TD>10</TD></TR>
+<TR><TD>&lt 137</TD><TD>  9</TD></TR>
+<TR><TD>&lt 160</TD><TD>8</TD></TR>
+<TR><TD>&lt 177</TD><TD>7</TD></TR>
+<TR><TD>&gt 177</TD><TD>10 (to pick up eclipses)</TD></TR>
+<TR><TD>Bright limb</TD><TD>4</TD></TR>
+</table>
+<p> If more than one star is listed, take the brightest star.<br><br>
+
+
+<li>If no match at c, vary the time of the event as follows:
+<table columns=3 border=1>
+<TR><TH NOWRAP></TH><TH></TH></TR>
+<TR><TD>Minute</TD><TD>-20 to +20 minutes </TD><TD>Day and hour as recorded</TD></TR>
+<TR><TD>Hour</TD><TD> -12 to +12 hrs </TD><TD>Day and Minute as recorded</TD></TR>
+<TR><TD>Day</TD><TD> -6 to +6 days  </TD><TD>Hour and minute as recorded</TD></TR>
+<TR><TD></TD><TD></TD></TR>
+<TR><TD></TD><TD></TD></TR>
+<TR><TD></TD><TD></TD></TR>
+ </table>
+If the limb corrected residual is less than 2", correct the time accordingly.<br><br>
+
+
+<li> If no match at d, check for the major planets Mercury to Neptune, plus Jupiter 1-IV (Io, Europa, Ganymede & Callisto), and Saturn VI (Titan).Treat as a match if the limb-corrected residual is &lt5". <br><br>
+
+
+<li>If no match at e, try changing the signs of the site longitude and latitude. Treat as a 
+   match if the limb-corrected residual is &lt2")<br><br>
+
+
+<li>If still no match, redo a match to other stars, using the following limits:
+<table columns=3 border=1>
+<TR><TH NOWRAP>elong</TH><TH>Mag</TH></TR>
+<TR><TD>&lt 126</TD><TD>12</TD></TR>
+<TR><TD>&lt 137</TD><TD>11</TD></TR>
+<TR><TD>&lt 160</TD><TD>10</TD></TR>
+<TR><TD>&lt 177</TD><TD>9</TD></TR>
+<TR><TD>&gt 177</TD><TD>13 (to pick up eclipses)</TD></TR>
+<TR><TD>Bright limb</TD><TD>5</TD></TR>
+</table><br><br>
+
+<li>The Edit flag at column 74 of the Archive format is automatically set as follows:
+<ul><li>Residual &lt4" - no flag
+<li>Event date/time corrected - 'A'
+<li>Star identifier changed (or unknown star identified) - 'B'
+<li>Site location changed - 'D'
+<li>Residual &gt 4" - 'Y' 
+</ul>
+</ul>
+
+
+<h2><br>Edit Events</h2>
+This option provides for manual editing of events to try to identify obvious errors in the observations.
+<p>The routine operates by loading some or all events of a file into the editor for analysis. When a correction is 'made', the correction is written directly to the file, as well as the event line in the editor. 
+<p>Four options are provided for loading observations into the editor:<ul>
+<li><B>Unconsidered events [U, Y]</B>. If the file has been passed through the AutoCorrect routine, all events with a residual greater than 5" will be marked with a 'Y'. And any star that has not been identified will be marked with a 'U'. This option loads all such events. When a manual edit is conducted and an event considered in detail, it is expected that the flag will be changed to something else. Consequently this option is used to provide a list of all events that have large residuals that haven't been investigated in detail. Note that the majority of events with residuals less than 100", and especially less than 20", will not have been considered in detail - as mostly they involve an unrectifiable timing error or a bad observation. </li>
+<li><B>Unresolved events</B> - this loads only those events which have been considered in a manual review, and no satisfactory explanation for the large residual has been determined. That is events marked S, T, U, W, X, Y or Z in the Flag column.
+<li><B>All events</B> - some or all of the entire file is loaded into the editor. This enable the user to investigate any event or group of events in the file.<br> To limit the data loaded, you can limit the data by year, or year + month, using the boxes provided. If year is clear, the whole file is loaded. If Year is specified, but not month - the specified year will be loaded. If year + month is specified, just that year and month. [Do NOT use leading zero on the month.] If month is specified without the year the filter will include those events where the number is matched in either the year or month fields.] 
+<li><B>Corrected events</B> - this loads only those events which have been corrected with a satisfactory residual. That is events marked A, B, C, D, E F or G in the Flag column.<br>
+When a site has been edited in the Site Editor, it may be appropriate to review all events from that site. The check box <B>D to G only</B> limits the events that are loaded to those where site details have been edited. Specifying an ILOC or RGO site code will limit the events to those sites containing those characters in the code. (Data entry in the box can be upper or lower case.) For ILOC codes, be careful about hasving the correct number of spaces, and a leading zero <I>if</I> that is included in the ILOC code.
+</ul>
+<p>You can save/append the observation in the list to a separate file. This allows you to create a file containing just those events that have been corrected, or are unresolved.
+
+<p>To edit an event, you first highlight the event in the list box. This will populate the fields at the bottom of the form, and display the reduction of the event. The reduction line includes the altitude of the sun and moon, the %illumination of the moon, the star magnitude, and the telescope aperture. These parameters assist in identifying the nature of any problems. For example, if the Moon's altitude is negative, most likely there is a major error in the date or time of the event! Similarly if the Sun's altitude is positive. A large residual might be attributed to glare if the moon was near 100% illuminated and the telescope aperture was small.
+
+<p>The editor provides a number of tools to assist in resolving problem observations:<ol>
+<li><B>Retrieve original data</B>. After editing trials, you may lose track of what the actual observation was. Click this button to restore the original data to the editor. [NOTE. If the event contains a valid data edit - such as a site edit, this button will retrieve all original data. To retrieve the data with that previous edit, just click the event in the list]
+<li><B>Compute</B>. This button does a reduction based on the current set of parameters. [For many changes it is called automatically]
+<li><B>Prediction</B>. This button generates a set of occultation predictions for the currently-specified date and site location. Very useful for identifying odd timing errors, and events involving an unidentified star that also has a timing error. 
+<li><B>Plot site in GoogleEarth</B>. this provides a quick check about whether the site location is plausible, by plotting it in GoogleEarth. typical indicators are: site in the sea, on the side of a mountain, or nowhere near the geographical place indicated in association with the site.
+<li><B>Put site in editor</B>. This button retrieves ALL observations from the particular RGO or ILOC site, and places them in the observations editor. From there you can:<ol type = a>
+<li>reduce all the observations, and look for any systematic errors. If most residuals are OK, the the problem is with the particular event. if a group of observations on a particular day have large residuals, there may be a common timing error on that day. If there are a group of observations with poor residuals, it is possible they have been allocated to the wrong station code. If all observations have poor residuals, an error in site coordinates is likely. 
+<li>plot the lunar limb for some or all of the events in GoogleEarth. The common intersection of the limbs will indicate the approximate location of the actual observation site (to within about 2 or 3 km). If that location differs from the site location, scan through the list of ILOc or RGO sites to identify any sites near that location.</ol>
+<li><B>Identify stars</B>. this invokes the same routine as used in the observation editor to identify possible stars - except that it shows stars that are at a greater distance.
+</ol>
+
+<p>Establishing the correction to be applied is a matter of trial and error. In the context of historical observations that involved handwritten reports, a range of errors are clearly derived fronm a misreading of the report. issues such as misreading 1 and 7, 3 and 8, 7 and 2, and so on. Also errors of one hour are common (summer time effects), multiple hours (local time rather than UT) 1 day (incorrect conversion from local to UT). The largest correction in the historical dataset was one event which was in error by 1000 years... 
+
+<p>Site location errors are identified by reference to the results of several observations from the one site. Sometimes the error is a transposition of digits in the coordinates. For ILOC observations, the error is more commonly an incorrectly specified site code. Ploting the lunar limb for events from the site on GoogleEarth readily identifies the approximate observing location. And if the events were observed from several different locations, this is also apparent. [For example, ILOC site SR1K1   1 contained observations from 7 different locations - none of which corresponded to the site coordinates of SR1K1.]  [For this reason, it is important to confirm whether the correction is to apply to all events, or just some.] When site coordinates are adjusted, it is recommended that the events from the adjusted site are brought up into the general editor, and run through looking for other errors affecting a small number of events. In this way, some events can be validly adjusted for site location, time/date AND star number!
+
+<p>The most difficult errors to resolve are those involving two errors - typically the wrong star number and the wrong time. It can help to generate predictions for the site on the relevant day, or month, and scan through the list for relevant matches.
+
+<p>It may be that the indicated star is quite bright - suggesting that the star identification may be correct. For such events, a useful approach is to generate a list of occultations of that star for several years surrounding the reported date, and plotting all those events [using the Predictions of Single Objects option in Occult] - identifying those events that occurred in the observer's region.
+
+<p>In adjusting the time, the program deliberately restricts the ability to correct for time intervals less than one minute. The validity of a correction is largely established by the coincidence of a small residual - but this check only exists if the time increment between alternatives gives rise to large differences in the residuals.  Thus while the use of 30-sec stop watches was common, and there are a quite a few events in the historical file that could be in error by 30 secs - no observation has been corrected by 30 secs as the validity of the correction is too doubtful. However an ability to correct the Seconds field is provided to deal with situations where the whole time entry is displaced by one column, or (for certain old observations) the reported time was sidereal time rather than UT.
+
+<p>In determining the correction, the event phase of Disappearance or Reappearance is assumed to be correct. However when trying to identify a possible star, the option exists to treat a D as an R, or vice-versa. no provision is made to change the reported event code.
+
+<p>When a relevant correction has been identified, you make the correction using the box at the bottom right of the form. Firstly, you select the option button that best identifies the scope of the correction made, then click 'Correct file'. This will make the correction (including the selected code) in the source file, as well as in the list in the editor. 
+
+<p>Similarly if the observation cannot be resolved, select the best reason, and correct the file. By setting the flag you ensure that (i) the event can be easily retrieved at a future date for further investigation, and (ii) the event can be excluded from any plots of events (for example, on graze profiles.)
+
+<p>A facility is also provided to mark an event as a graze event, and specify a relevant graze number. This is pending a full graze editor. <I>Note: the functionality cannot undo a graze marking.</I>
+
+
+<H2><br>Sort Archive file</h2>
+Following editing, the observations in an Archive file may not be in chronological order. This option sorts an archive file into date order. 
+<p>On clicking, select the Archive file to be sorted. The sorted file will be located in the same directory, and with the same file name - but preceded with 'S_'.
+
+<H2><br>Merge and Sort Archive files</h2>
+This option is used to combine the individual archive-format files created from several (or many) individual observation reports. The individual files are assumed to exist in the same directory.
+<p>On clicking, the first step is to specifty the destination file. This can be in any location, and any name, of your choosing. However the program will not allow you to overwrite an existing file.
+<p>The next step is the selection of the files to be merged. In the dialogue box select the directory containing the files, and then select ALL the files to be merged (the dialogue will allow you to highlight multiple files).
+<p>When the files have been selected, press Open. The program will now merge the files into the specified destimation file. The program will then open that file and sort the observations chronologically - writing them to the specified file, but with the name preceded with 'S_'.
+
+<h2><br>Reduce Archive File</h2>
+This option reduces all the observations in a selected Archive file, writing them to a file of the same path and name - but preceded by ''R_'.
+<p>To identify potential problems with the site coordinates for ILOC or RGO sites, it is useful to have the output sorted by SiteIdentification. Check the <B>Output by site ID </B>box to have the output file sorted by site ID. [This does not 'work' for events which do not have an RGO or ILOC site identifier.]
+
+
+<h1 align = center><br>Site editor</h1>
+This provides functionality to edite site details for ILOC and RGO sites, and apply them to all sites in one or more files. The basic approach is: <ul>
+<li>Read all events for the site that are to be changed - across multiple files
+<li>Adjust the site details
+<li>Apply the corrections
+</li>Note that while Occult maintains two files of site details (Archive RGO sites.dat, and Archive ILOC Sites.dat), these are created from the observation files. This editor function does not change these files. They must be recreated from the <B>View/Analyse historical occultations</B>... under the menu item <B><I>Site statistics </I></B>.</ul>
+
+<h2><br>List Events from Site</h2>
+Select whether tye site has an RGO or ILOC site identifier, and then specify the site. For ILOC sites, in the third box, leading characters are significant. 01 is different to 1. for ILOC sites the alpha-characters can be entered as either upper or lower case.
+<p>Click <B>List Events from Site </B>to select the files to read. Make sure the files selected cover all events observed from the site. all events will be listed.
+
+<h2><br>Edit functionality</h2>
+The data items are presented in 5 groups, which cann be individually included in the resulting edit by checking the associated box to Correct that data item. The items are:<ul>
+<li><B>Site coordinates</B>: longitude, latitude, horizontal datum, altitude, and vertical datum. Below this region is a display of the originally specified coordinates, the currently specified coordinates, and the proposed edited coordinates.
+<li>the <B>Observer's name</B>. The existing name is displayed above the box.
+<li><B>Site name/location</B>. The existing name is displayed above the box.
+<li>[ILOC only]<B>Telescope</B> details
+<li>[ILOC only] <B>Site identifier.</B> this allows a site identifier to be changed.
+<li>[ILOC only] A button to <B>retrieve the site details </B>for the specified new site. this is used when the ILOc site identifier is in error, and a different site is appropriate. click this button, and various data fields are populated with the data for the correct site. (and the check boxes are checked.)
+</ul>Additionally a button is provided to retrieve the <I>site coordinates </I>for the initially specified site - so that you can 'undo' any edits made to the coordinates.
+<p>You can display the previous and the prioposed csite location on GoogleEarth using the <B>Display old and new in googleEarth </B>button.
+
+<h2><br>Update the sites</h2>
+When you are satisfied with the changes to the site details, click Update site details. This will update the site details for each listed event.
+
+<h1 align = center><br>Doubles editor</h1>
+The purpose of this editor is to add the WDS component code to events. The basic approach is:<ol>
+<li>Specify the star
+<li>Read all events involving the star. This can be limited to one file, or multiple files.
+<li>As the highlight moves from one event to the next, the event is reduced, with the result being displayed under the list.
+<li>You can add the component code to one event at a time, or to many events. the Check boxes in the list control which events get edited, and the Apply this WDS component... box implements the amendments to the file (and displayed list)</ol>
+
+
+<h1 align = center><br>Graze editor</h1>
+The graze editor has a wide range of functions to edit aspects of grazes.
+
+<p>The basic operation is:
+<li>Use the <B>Select Archive file to edit </B>button to select the file to edit
+<li>If there is no index file of grazes in the Archive file, you will be asked 
+if you want to create a 'local' index file - select Yes (But do not specify a 
+file name for the index file)<li>The drop-down box immediately below will now list all graze events in the file. Select any graze, and all events from that graze, PLUS all occultations of that star observed on that date, will be listed for editing.
+<li>When a graze is selected, all events tagged as a graze event are placed in the Observations editor, reduced, and plotted against the lunar profile. Buttons at the bottom-left allow you to place events in the editor on 3 different bases.
+
+<h2>Editing functions</h2>
+<ol>
+<p><B><I>The following editing functions operate on the events displayed for a particular graze selected from the current file.
+</I></B>
+<li><B>Large residuals</B>. This functionality is intended to exclude clearly invalid graze observations from being used to plot graze profiles. It will calculate the residuals for all displayed events, and tag those that are greater than a specified amount. This amount can be specified by reference to the Watts profile, or to the smooth-limb. [You should set the amount after having plotted the graze data, and assessed which events are clearly invalid] <ul>
+<li>the <B>Find and check </B>button does the calculation, and checks the boxes
+<li>you can manually check and uncheck any box
+<li> when satisfied, click the <B>Set Checked as invalid observations [I] </B>button. This will tag all these events as being 'invalid - but will indicate they events should not be deleted from the file.
+<li>if you want to remove the 'invalid' flag - check all events that you want to clear the 'invalid' flag, then click the <B>Clear Duplicates and Large Residual flags from checked </B>button.</ul>
+
+<li><B>Duplicate events</B>. This functionality is intended to exclude duplicate graze observations from being used to plot graze profiles. The identification of being duplicate requires manual inspection, with manual setting of the check boxes.<ul>
+<li>you can manually check and uncheck any box
+<li> Click the <B>Set Checked as Duplicates that can be deleted [D] </B>button to tag all the checked events as being Duplicates, which can at some future date be removed from the file as a result of this coding. 
+<li> Click the <B>Set Checked as Duplicates but not to be deleted [K] </B>button to tag all the checked events as being Duplicates, but which should remain in the file for future reference.
+<li>if you want to remove the 'Duplicate' flag - check all events that you want to clear the 'Duplicate' flag, then click the <B>Clear Duplicates and Large Residual flags from checked </B>button.</ul>
+
+<li><B>Mark as 2nd limit</B>.  A small number of graze events were observed at both the northern and southern limit. This option allows an event to be tagged as being for the 2nd limit. Either limit can be flagged as the 2nd limit - but events within the graze need to be treated consistently.
+
+<li><B>Scope, Names</B> this allows the addition (or correction) of telescope details, Observer name, and observer location. Select any instance of an event from a site that needs correcting, and click <B>Check all events with the same Source, Site and Observer as the first checked event</B>. This will check all events to be corrected, and will populate the various data boxes with the current data. edit the data fields as required, and click<B> Update</B>. Note that the <B>Graze - addition of ...</B>flag in col 70 will be set to <B>G</B>.
+
+
+<li><B>Site co-ordinates</B> This allows correction of site coordinates in a graze. Select any instance of an event from a site that needs correcting, and click <B>Check all events with the same Source, Site and Observer as the first checked event</B>. This will check all events to be corrected, and will populate the coordinate boxes with the current coordinates. Adjust the coordinates as required, and click<B> Update</B>. Note that the <B>Observation validity code </B>in col 74 will be set to <B>D</B>.
+
+<li><B>Set event code</B> This allows the event code to be set. Check the evnts thta are to have a new event code applied, and select the relevant event code from the drop-down box.
+
+<li><B>Set Graze Flag</B> This allows you to tag selected events as being a graze event - or to clear the graze tag. 
+
+<li><b>Set double info</b> This allows the WDS flag to be set for the checked events. Use the menu item with checked list... invert selection to invert the selection - to make it easier to select events to mark as the other component..
+
+<p><B><I>The following editing functions operate on the complete file that has been selected for graze edit
+</I></B>
+<li><B>ReNumber grazes</B>. This scans through the file and allocates a graze identifier to the events in each graze. the graze identifier is based on the year, plus a sequential number within that year. [After re-numbering the grazes, the 'Local Graze Index.dat' file associated with the Archive file should be deleted - and recreated by re-loading the Archive file.]
+<li><B>Tag all grazes</B>  This scans through the file to identify all occultations that occur within 4.5 deg of the tangent point (that is, a CCT angle between 85.5 and 94.5), and tags them as graze events. This ensures that all events that occur under graze circumstances are identified - even if the observer did not set out to observe  a graze.
+
+
+<p><B><I>The following editing functions operate on a complete file - ignoring the file selected for graze edit</I></B>
+<li><B>Datums generally</B>. This has two options <ul>
+<li><B>Find 'zero' datums</B>. This will scan through the file selected on clicking the option, and list all events where the datum code is zero. On the assumption that a zero datum is a data error, this enables the datum to be corrected to a valid datum. Check those events that you want to set to a particular datum. Select the datum from the list, then click the <B>Set checked to selected datum </B>button.
+<B>IMPORTANT This edit changes both the current datum and the 'original' datum. If you select the wrong datum, you need to re-check the same set of observations, and set the correct datum (or set it back to the zero datum). Once you have removed the set of observations from display, there is no way of going back - <I>unless you have maintained a copy of the unamended file</I>. 
+</B>
+<li><B>Find Soma events - ellipsoid</B>. In collecting grazes, Mitsuru Soma recognized that there was the porential for vertical heights obtained from GPS measurements could be referred either to Mean Sea Level, or to the ellipsoid. Within the limits of the old '76' report format, Mitsuru maintained a distinction between the vertical datums by using WGS84 if the vertical datum was the ellipsoid, and the national WGS-based datum if the vertical datum was MSL.
+In the conversion used to create the Archive files, this distinction was not carried over - all heights were set as referenced to MSL. The <B>Find Soma events - ellipsoid </B>button identifies all events in the relevant Archive file that was sourced from Soma and meets the conditions for the datum being set to Ellipsoid. The <B>Set vertical Datum on checked to 'E- Ellipsoid' </B>button sets the vertical datum on all checked items to Ellipsoid. However it seems possible that some grazes that meet the soma criterion in fact had the datum reported on an MSL basis - and the <B>Set vertical Datum on checked to 'M - MSL' </B>button sets the vertical datum on all checked items to MSL.
+NOTE In distinction to the 'find zero datums' item above, the editing of this item is limited to a set of events that will always be retrievable using the <B>Find Soma events - ellipsoid</B> button.</ul>
+
+<p><p><B><I>The following two functions exist in code, but are not enabled as they should not be required:
+</I></B><li><B>Null seconds  </B> The <B>Find events & check </B>button will scan through the displayed list to find any events where the seconds of time are blank. The <B>Set seconds on checked to ' 0.   ' </B> button will set the seconds field to 0.
+<li><B>Telescope codes</B>. This scans through a selected file and lists all events with anomalous telescope codes. The AutoCorrect button then applies a correction to normalise the data items. The corrections that are applied are:<ul>
+<li><b>Telescope type</B>. Any of  * ? . - changed to &lt &gt; B =&gt R, L =&gt N. Anything else that is not &lt &gt R N C O  =&gt O;
+<li><B>Mount, Drive</B>. Any of * ? . - changed to &lt &gt; Drive N =&gt M; The fields for Drive and Mount are swapped if Mount = D or M and Drive = E or A. Mount+Drive of EA or DM set to &lt  &gt. </ul>
+
+
+
+
+
+</BODY>
+</HTML>

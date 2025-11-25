@@ -1,0 +1,474 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Occelmnt files</Title>
+<style type="text/css">
+.auto-style1 {
+	border: 1px solid #000000;
+	background-color: #CCFFCC;
+	margin-right: 159px;
+}
+.auto-style2 {
+	border: 1px solid #000000;
+}
+.auto-style3 {
+	margin-bottom: 0;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1><A NAME="idh_4overview">Occelmnt files</A></H1>
+<!-- Insert Header in above line -->
+<P>These files maintain the occultation elements for occultations by asteroids 
+and planets. Two formats are supported. An XML format that allows for variable 
+field length, and a fixed field format. The fixed field format will 
+eventually be removed, as certain data elements are not supported in this format.</P>
+<h1>XML format</h1>
+<P>The structure of the xml file is:</P>
+<P>&lt;Occultations&gt;<br>&nbsp; &lt;Event&gt;<br>&nbsp;&nbsp;&nbsp; &lt;Elements&gt; source, 
+duration, year, month, day, UT at closest, x,y,dX, dY, d2X, d2Y, d3X, 
+d3Y&lt;/Elements&gt;<br>&nbsp;&nbsp;&nbsp; &lt;Earth&gt; SubstellarLong, SubstellarLat, 
+SubsolarLong, SubsolarLat,JWST&lt;/Earth&gt;<br>&nbsp;&nbsp;&nbsp; &lt;Star&gt; Identifier, RA, 
+Dec, Mb, Mv, Mr, dia, double star code, K2 flag, Apparent RA, Apparent Dec,MagDropsAdjusted_NearbyStars,BrightNearbyCount, 
+TotalNearbyCount&lt;/Star&gt;<br>&nbsp;&nbsp;&nbsp; 
+&lt;Object&gt; number, name, magnitude, diameter, distance, #rings, #moons, dRA, 
+dDec, Taxonomy, DiameterUncertainty, PlanetMoonInPlanetShadow, MagV_Asteroid, 
+MagR_Asteroid&lt;/Object&gt;<br>&nbsp;&nbsp;&nbsp; &lt;Moons&gt; <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;Moon&gt;Name, diameter, distance, PA&lt;/Moon&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+...... iterated for all moons around the asteroid<br>&nbsp;&nbsp;&nbsp; &lt;/Moons&gt;<br>&nbsp;&nbsp;&nbsp; &lt;Orbit&gt;equinox, MA, yr, month, day, peri, 
+node, i, e, a, q, H0, Coeff LogR, G&lt;/Orbit&gt;<br>&nbsp;&nbsp;&nbsp; 
+&lt;PlanetPhysical&gt; [Planet ID, Moon ID,] % illumination, PAlimb, phase angle, 
+planetocentric dec of Earth, PA of planet's pole&lt;/PlanetPhysical&gt;<br>&nbsp;&nbsp;&nbsp; 
+&lt;Errors&gt;in Pathwidths, major axis, minor axis, PA, 1 sigma in star/asteroid 
+posn&lt;/Errors&gt;<br>&nbsp;&nbsp;&nbsp; &lt;ID&gt;ID&lt;/ID&gt;<br>&nbsp; &lt;/Event&gt;<br>
+&lt;/Occultations&gt;</P>
+<P>The tag &lt;Occultations&gt; delimits the file</P>
+<P>The tag &lt;Event&gt; delimits the data for an event</P>
+<P>Within an event, the tags &lt;Moons&gt;, &lt;Orbit&gt; and &lt;PlanetPhysical&gt; will only be 
+present when appropriate</P>
+<P>Within a data element, individual items are stored as comma-separated-values</P>
+<P>&nbsp;</P>
+<P>Format amended Sept 2021 - to add NearbyStars in the &lt;Star&gt; line<br>Aug 
+2024. Asteroid magnitudes in V and R added in the &lt;object&gt; line</P>
+<P>&nbsp;</P>
+<table class="auto-style1" style="width: 90%">
+	<tr>
+		<td class="auto-style2" style="width: 109px">
+		<h2>Tag</h2>
+		</td>
+		<td class="auto-style2" style="width: 748px">
+		<h2>Data items</h2>
+		</td>
+	</tr>
+	<tr>
+		<td class="auto-style2" style="width: 109px"><strong>Elements</strong></td>
+		<td class="auto-style2" style="width: 748px">
+		<p><strong>The Besselian elements of the occultation event</strong></p>
+		<ul>
+			<li>Source - of orbit for the object, and date the prediction was 
+			generated</li>
+			<li>Duration - maximum, in secs</li>
+			<li>year - of event</li>
+			<li>month - of event</li>
+			<li>day - of event</li>
+			<li>UT of closest approach - to centre of the Earth</li>
+			<li>X, Y - the X and Y coordinates at the time of closest approach 
+			(Earth radii)</li>
+			<li>dX, dY - the rate of change in X and Y at the time of closest 
+			approach (Earth radii per hour)</li>
+			<li>d2X, d2Y- the 2nd order rate of change in X and Y at the time of 
+			closest approach</li>
+			<li>d3X, d3Y- the 3rd order rate of change in X and Y at the time of 
+			closest approach</li>
+		</ul>
+		</td>
+	</tr>
+	<tr>
+		<td class="auto-style2" style="width: 109px"><strong>Earth</strong></td>
+		<td class="auto-style2" style="width: 748px">
+		<p><strong>Information about the Earth's orientation</strong></p>
+		<ul>
+			<li>Substellar Longitude, at UT of closest approach (deg)</li>
+			<li>Substellar Latitude (of date) at UT of closest approach&nbsp; (deg) </li>
+			<li>Subsolar Longitude at UT of closest approach&nbsp; (deg)</li>
+			<li>Subsolar Latitude at UT of closest approach&nbsp; (deg)</li>
+			<li>For JWST. 1=true, 0=false. If true, prediction is for the 
+			location of the James Webb Space Telescope.</li>
+		</ul>
+		</td>
+	</tr>
+	<tr>
+		<td class="auto-style2" style="width: 109px"><strong>Star</strong></td>
+		<td class="auto-style2" style="width: 748px">
+		<p><strong>Information about the star</strong></p>
+		<ul>
+			<li>Identifier - a star catalogue identifier</li>
+			<li>RA - Right Ascension, BCRS position (that is, ICRS reference 
+			frame 2000, epoch of event, no parallax applied), decimal hours</li>
+			<li>Dec - Declination - BCRS position, decimal degrees</li>
+			<li>Mb - Blue magnitude</li>
+			<li>Mv - Visual magnitude</li>
+			<li>Mr - Red magnitude</li>
+			<li>dia - stellar diameter in mas</li>
+			<li>double star code.&nbsp; 0 = none, 1 = WDS, 2 = double in other 
+			sources (4th Interferometric, or star catalogue flag), 4 = Variable 
+			star (listed in AAVSO Index file). Values are cumulative</li>
+			<li>K2 flag. K if it is a K2 star, blank otherwise</li>
+			<li>RA - Apparent Right Ascension of date</li>
+			<li>Dec - Apparent declination of date</li>
+			<li>MdropV - Magnitude drop in Mv at occultation</li>
+			<li>MdropR - Magnitude drop in Mr at occultation</li>
+			<li>Magnitude drops adjusted for nearby stars. 0=false, 1 = true. Has regard to all stars within 4"</li>
+			<li>Number of bright nearby stars. Stars within 15&quot; of the target 
+			star which are more than 2.0 magnitudes brighter. Set to -1 if a 
+			check for nearby stars has not occurred.</li>
+			<li>Number of all nearby stars. Stars within 15" which are brighter than 
+			[target star mag +1.5]. Set to -1 if a check for nearby stars has 
+			not occurred.</li>
+		</ul>
+		</td>
+	</tr>
+	<tr>
+		<td class="auto-style2" style="width: 109px"><strong>Object</strong></td>
+		<td class="auto-style2" style="width: 748px">
+		<p><strong>Information about the occulting object</strong></p>
+		<ul>
+			<li>number - for asteroid, the sequential asteroid number. For the 
+			major planets of their moons, this field has the form PxMyy, where x 
+			is the planet number, and y is the moon number </li>
+			<li>name </li>
+			<li>magnitude</li>
+			<li>diameter - in km - augmented by the star's diameter. The 
+			asteroid's actual diameter is:<br>
+			<ul>asteroidDiameterAugmentedByStarDia - StellarDiameter_mas / 3,600,000 
+			/ Radian * AsteroidDistance * 1.496e8; </ul></li>
+			<li>distance - in AU</li>
+			<li>#rings - the number of rings around an asteroid [not set 
+			for planets]</li>
+			<li>moons - the number of moons around an asteroid [not set for 
+			planets]</li>
+			<li>dRA - hourly rate of change in RA - s/hr (used only in header of 
+			event plot)</li>
+			<li>dDec - hourly rate of change in Dec- &quot;/hr (used only in header 
+			of event plot)</li>
+			<li>Taxonomic class.&nbsp; Details of possible values are given
+			<a href="Asteroid%20Taxonomy.htm">here</a></li>
+			<li>Diameter uncertainty - in km</li>
+			<li>Planet Moon in Planet shadow. 0 = false, 1 = true. Set for the 
+			main moons of Jupiter and Saturn, for when the occultation event 
+			occurs while the satellite is eclipsed, but not occulted by, or 
+			transitting, the planet. [Events when the satellite is behind or in 
+			front of the planet are automatically excluded.]</li>
+			<li>MagV_Asteroid. The V magnitude of an asteroid computed using 
+			either the HG, or sHG1G2 systems using values for the g and r bands</li>
+			<li>MagR_Asteroid. The R magnitude of an asteroid computed using 
+			either the HG, or sHG1G2 systems using values for the g and r bands</li>
+		</ul>
+		</td>
+	</tr>
+	<tr>
+		<td class="auto-style2" style="width: 109px"><strong>Moons</strong></td>
+		<td class="auto-style2" style="width: 748px">
+		<p><strong>Information about asteroidal moons</strong></p>
+		This group contains a series of tags &lt;Moon&gt;&nbsp;&nbsp; &lt;/Moon&gt; for each 
+		of the known moons of the asteroid. This entry/group is only given if 
+		moons are present. The reference plane for the orbital elements is the 
+		J2000 ecliptic. The data in each tag line is:<ul>
+			<li>Name of the moon</li>
+			<li>diameter of the moon, in km</li>
+			<li>semimajor axis of the moon's orbit (in km). For a large 
+			number of moons, this distance is based on single-epoch 
+			observations, and is not equivalent to the radius of the orbit</li>
+			<li>orbital period (days)</li>
+			<li>eccentricity of the orbit</li>
+			<li>inclination of the orbit </li>
+			<li>epoch (JD)</li>
+			<li>Mean anomaly at epoch</li>
+			<li>longitude of pericenter</li>
+			<li>longitude of ascending node</li>
+		</ul>
+		</td>
+	</tr>
+	<tr>
+		<td class="auto-style2" style="width: 109px"><strong>Orbit<br></strong>
+		</td>
+		<td class="auto-style2" style="width: 748px">
+		<p class="auto-style3"><strong>Information about the orbit of an asteroid</strong></p>
+		Note - the orbital elements given here are low-precision, used to plot 
+		the motion of the object on star charts.<ul>
+			<li>Equinox of the orbit</li>
+			<li>MA - the Mean Anomaly at the epoch</li>
+			<li>yr - epoch year</li>
+			<li>month - epoch month</li>
+			<li>day - epoch day</li>
+			<li>perihelion - longitude of (deg)</li>
+			<li>node - longitude of (deg)</li>
+			<li>i - longitude of (deg)</li>
+			<li>e - orbital eccentricity</li>
+			<li>a - semimajor axis (AU)</li>
+			<li>q - perihelion distance (AU)</li>
+			<li>H0 - magnitude constant H0</li>
+			<li>Coeff LogR - coefficient of Log (R) in standard magnitude 
+			formula (used for comets)</li>
+			<li>G - slope coefficient in standard magnitude formula for 
+			asteroids.</li>
+		</ul>
+		</td>
+	</tr>
+	<tr>
+		<td class="auto-style2" style="width: 109px"><strong>PlanetPhysical</strong></td>
+		<td class="auto-style2" style="width: 748px">
+		<p><strong>Information about a Planet (not present for an asteroid or 
+		moon)</strong></p>
+		<ul>
+			<li>% illumination - the percent illumination of the planetary disk</li>
+			<li>PA limb - the PA of the mid-point of the planet's bright 
+			limb</li>
+			<li>phase angle - the phase angle of the planet</li>
+			<li>Planetocentric declination of Earth - the latitude of the 
+			earth as seen from the planet. Used to correct contact times for the 
+			apparent oblateness of planets</li>
+			<li>PA of planet's pole - used to correct contact times for 
+			the apparent oblateness of planets</li>
+		</ul>
+		</td>
+	</tr>
+	<tr>
+		<td class="auto-style2" style="width: 109px"><strong>Errors</strong></td>
+		<td class="auto-style2" style="width: 748px">
+		<p><strong>Information about prediction uncertainties</strong></p>
+		<ul>
+			<li>in Path widths - uncertainty of path location expressed as a 
+			fraction of the path width</li>
+			<li>major axis - the major axis of an uncertainty ellipse, in arcsec</li>
+			<li>minor axis- the minor axis of an uncertainty ellipse, in 
+			arcsec</li>
+			<li>PA - the PA of the major axis of the uncertainty ellipse</li>
+			<li>1 sigma in star/asteroid position - in arcsec</li>
+			<li>Error basis - string that sets out the basis of the error value. 
+			Typical strings are<br>* Star+Assumed (error for asteroid/planet 
+			assumed)<br>* Star+PEU (Star uncertainty together with Peak Ephemeris 
+			Uncertainty for asteriod)<br>* Known errors (errors for star and 
+			asteroid known)<br>* Assumed (the total uncertainty is an assumed 
+			value)</li>
+			<li>Reliability value (Usually the RUWE. Other values that can occur 
+			are<br>&nbsp; -1 = not set<br>&nbsp; -2 = Hip star position 
+			definitely unreliable, from UBSC<br>&nbsp; -3 = Hip star is in UBSC)<br>&nbsp; 
+			-4 = Position is from Hip2 catalogue; because of limitations with 
+			matching to Gaia, the star may be a low-precision duplicate of 
+			another star in the Gaia catalog.&nbsp; </li>
+			<li>Duplicate Source (0 = no, 1 = yes, -1 = not set)</li>
+			<li>Non-GAIA proper motion (0 = no, 1 = yes, -1 = not set)</li>
+			<li>Proper motion added to Gaia using UCAC4 position at 2000. (0 = 
+			No, 1= yes, -1 = not set</li>
+		</ul>
+		</td>
+	</tr>
+	<tr>
+		<td class="auto-style2" style="width: 109px"><strong>ID</strong></td>
+		<td class="auto-style2" style="width: 748px">
+		<h4>Identifiers</h4>
+		<ul>
+			<li><strong>A unique identifier for the event</strong>, 
+		used to eliminate duplicates when displaying. For asteroids, the ID is 
+		formed as yyyymmdd_xxxxxx, made up as the date of the event, plus end 
+		section of star ID. For planets, the ID is formed as yyyymmddPPPnnnn, 
+		made up as the date of the event, the first 3 characters of the planet 
+		or moon name, and the last 4 characters of the star identifier. Where 
+		the star is a TYC star, the third number group is ignored for this 
+		purpose.</li>
+			<li>The Modified Julian Date of the date of the prediction 
+			calculation.</li>
+		</ul>
+		</td>
+	</tr>
+</table>
+<P>&nbsp;</P>
+<h1>Fixed field format</h1>
+<P>This format is now (2021) only used for OccultWatcher feeds.</P>
+<P>Each entry involves 10 lines - plus an empty line at the end. The length of 
+an entry (including the CR LF sequence at the end of each line) is 540 bytes. The data on 
+each line is as follows, in ASCII:</P>
+
+<B>Line 1 - Date of the event</B>
+<table columns=3 border=1>
+<TR><TH NOWRAP>Field Definitions</TH><TH>Content</TH></TR>
+<TR><TD>1 - 4</TD><TD>Year</TD></TR>
+<TR><TD>6 - 8</TD><TD>Month</TD></TR>
+<TR><TD>10-11</TD><TD>Day</TD></TR>
+</table>
+
+<br><B>Line 2 - Name of asteroid/planet</B>
+<table columns=3 border=1>
+<TR><TH NOWRAP>Field Definitions</TH><TH>Content</TH></TR>
+<TR><TD>0 - 6</TD><TD>First 6 characters are (i) the number of the asteroid, or 
+	(ii)<strong> </strong><strong>P</strong>x<strong>M</strong>yy, where x is 
+	the planet number, and y is the moon</TD></TR>
+<TR><TD>7 -21</TD><TD>Name of the object</TD></TR>
+</table>
+
+<br><B>Line 3 - UT at closest approach</B>
+<table columns=3 border=1>
+<TR><TH NOWRAP>Field Definitions</TH><TH>Content</TH></TR>
+<TR><TD>0 - 11</TD><TD>ASCII string giving UT in h m s.</TD></TR>
+</table>
+
+<br><B>Line 4 - Star details</B>
+<table columns=3 border=1>
+<TR><TH NOWRAP>Field Definitions</TH><TH>Content</TH></TR>
+<TR><TD>2 - 5</TD><TD>Mv</TD></TR>
+<TR><TD>9 - 20</TD><TD>RA   hh_mm_ss.sss    (for J2000, at epoch)<br><B>NOTE</B>. Value is rounded to 0.001s. Line 10, cols 70-71 contains the correction to give an extra decimal place.</TD></TR>
+<TR><TD>21 - 32</TD><TD>Dec   -dd_mm_ss.ss   (for J2000, at epoch))<br><B>NOTE</B>. Value is rounded to 0.01". Line 10, cols 72-73 contains the correction to give an extra decimal place.</TD></TR>
+<TR><TD>33 - 52</TD><TD>Full star identifier</TD></TR>
+<TR><TD>53 - 58</TD><TD>Mb (or Mr if NOMAD is used)</TD></TR>
+</table>
+
+<br><B>Line 5 - asteroid motions</B>
+<table columns=3 border=1>
+<TR><TH NOWRAP>Field Definitions</TH><TH>Content</TH></TR>
+<TR><TD>0 - 3</TD><TD>asteroid magnitude</TD></TR>
+<TR><TD>4 - 10</TD><TD>diameter (km). If the star diameter is non-zero (Line 10 Col 67), this value is enlarged to include the effect of the stellar diameter - such that the edge of the path corresponds to the outer region of the penumbral zone formed by the stellar diameter.</TD></TR>
+<TR><TD>11-17</TD><TD>max duration (secs)</TD></TR>
+<TR><TD>18-25</TD><TD>geocentric distance (AU)</TD></TR>
+<TR><TD>26-35</TD><TD>hourly change in RA (secs time)</TD></TR>
+<TR><TD>36-45</TD><TD>hourly change in dec (arc sec)</TD></TR>
+</table>
+
+<br><B>Line 6 - substellar/subsolar locations</B>
+<table columns=3 border=1>
+<TR><TH NOWRAP>Field Definitions</TH><TH>Content</TH></TR>
+<TR><TD>0 - 8</TD><TD>substellar longitude (deg) in J2000 reference frame<p><B>IMPORTANT</B>.<em> This value is 
+	derived using the J2000 position of the star, and apparent sidereal time</em>. When used you must add the difference between the Star's apparent RA and its J2000 RA</TD></TR>
+<TR><TD>9 -16</TD><TD>substellar latitude (deg) in J2000 reference frame<p><B>IMPORTANT</B>. 
+	<em>This value is derived using the J2000 declination of the star.</em> To position the fundamental plane you need to use the apparent declination of the star.</TD></TR>
+<TR><TD>17-25</TD><TD>subsolar longitude (deg))<p><B>IMPORTANT</B>. This value is based on the  position of the sun on the mean equinox of date. 
+	<em>No correction is required when using this value.</em></TD></TR>
+<TR><TD>26-33</TD><TD>subsolar latitude (deg)<p><B>IMPORTANT</B>. This value is based on the  position of the sun on the mean equinox of date. 
+	<em>No correction is required when using this value.</em></TD></TR>
+</table>
+
+<br><B>Line 7 - Besselian elements</B>
+<table columns=3 border=1>
+<TR><TH NOWRAP>Field Definitions</TH><TH>Content</TH></TR>
+<TR><TD>0 - 7</TD><TD>UT at closest approach (decimal hours)</TD></TR>
+<TR><TD>8 - 16</TD><TD>X coords of shadow at closest approach</TD></TR>
+<TR><TD>17-25</TD><TD>Y coords of shadow at closest approach</TD></TR>
+<TR><TD>26-34</TD><TD>hourly change in X</TD></TR>
+<TR><TD>35-43</TD><TD>hourly change in Y</TD></TR>
+<TR><TD>44-52</TD><TD>second-order hourly change in X</TD></TR>
+<TR><TD>53-61</TD><TD>second-order hourly change in Y</TD></TR>
+</table>
+
+<br><B>Line 8 - For Asteroids, osculating elements for a 10-day ephemeris date closely preceding the event (angular elements in degrees) </B>
+<table columns=3 border=1>
+<TR><TH NOWRAP>Field Definitions</TH><TH>Content</TH></TR>
+<TR><TD>0 - 7</TD><TD>Equinox</TD></TR>
+<TR><TD>8 -17</TD><TD>Mean anomaly</TD></TR>
+<TR><TD>18-21</TD><TD>epoch year</TD></TR>
+<TR><TD>22-23</TD><TD>epoch month</TD></TR>
+<TR><TD>24-31</TD><TD>epoch day</TD></TR>
+<TR><TD>32-41</TD><TD>perihelion</TD></TR>
+<TR><TD>42-51</TD><TD>node</TD></TR>
+<TR><TD>52-61</TD><TD>inclination</TD></TR>
+<TR><TD>62-71</TD><TD>eccentricity</TD></TR>
+<TR><TD>72-81</TD><TD>semi-major axis</TD></TR>
+<TR><TD>82-91</TD><TD>perihelion distance</TD></TR>
+<TR><TD>92-95</TD><TD>Mag const. H0</TD></TR>
+<TR><TD>96-99</TD><TD>Mag factor of Log(R)</TD></TR>
+<TR><TD>100-103</TD><TD>Mag constant G</TD></TR>
+</table>
+
+<br><B>Line 8 Alt - For Planets </B>
+<table columns=3 border=1>
+<TR><TH NOWRAP>Field Definitions</TH><TH>Content</TH></TR>
+<TR><TD>0 - 2</TD><TD>the identifier P, the planet number, and a space</TD></TR>
+<TR><TD>3 - 8</TD><TD>PA of bright limb</TD></TR>
+<TR><TD>9 -15</TD><TD>phase angle</TD></TR>
+<TR><TD>16-22</TD><TD>planetocentric declination of Earth</TD></TR>
+<TR><TD>23-29</TD><TD>PA of planet's pole.</TD></TR>
+<TR><TD>30-103</TD><TD>Blank</TD></TR>
+</table>
+
+<br><B>Line 8 Alt2 - PxMyy   Moons </B>
+<table columns=3 border=1>
+<TR><TH NOWRAP>Field Definitions</TH><TH>Content</TH></TR>
+<TR><TD>1</TD><TD>Planet number</TD></TR>
+<TR><TD>3 - 5</TD><TD>Moon number</TD></TR>
+<TR><TD>5 - 103</TD><TD>Blank</TD></TR>
+</table>
+
+<br><B>Line 9 - For Asteroids - the identifier RATE, followed by the change in the elements over the following 10-day period  (angular elements in degrees/10 days).</B>
+<table columns=3 border=1>
+<TR><TH NOWRAP>Field Definitions</TH><TH>Content</TH></TR>
+<TR><TD>0 - 3</TD><TD>"RATE"</TD></TR>
+<TR><TD>4 -13</TD><TD>Mean anomaly</TD></TR>
+<TR><TD>13-22</TD><TD>perihelion</TD></TR>
+<TR><TD>23-31</TD><TD>node</TD></TR>
+<TR><TD>32-40</TD><TD>inclination</TD></TR>
+<TR><TD>41-50</TD><TD>eccentricity</TD></TR>
+<TR><TD>51-60</TD><TD>semi-major axis</TD></TR>
+<TR><TD>61-70</TD><TD>perihelion distance</TD></TR>
+</table>
+
+<br><B>Line 9 Alt - For Planets and Moons</B>
+<table columns=3 border=1>
+<TR><TH NOWRAP>Field Definitions</TH><TH>Content</TH></TR>
+<TR><TD>0 -70</TD><TD>Blank</TD></TR>
+</table>
+
+<br><B>Line 10 - Name of asteroid/planet</B>
+<table columns=3 border=1>
+<TR><TH NOWRAP>Field Definitions</TH><TH>Content</TH></TR>
+<TR><TD>0-4</TD><TD><B>Flag</B><br>
+<B>Meas </B>= measured value of error ellipse passed through from Auto-update calculation<br>
+<B>Added </B>= values manually added<br>
+<B>Assum </B>= Assumed values included at calculation<br>
+blank = not used</TD></TR>
+<TR><TD>5 -10</TD><TD>Major axis of error ellipse (arcsecs)</TD></TR>
+<TR><TD>11-16</TD><TD>Minor axis of error ellipse (arcsecs)</TD></TR>
+<TR><TD>17-22</TD><TD>PA of major axis of error ellipse</TD></TR>
+<TR><TD>23-28</TD><TD>Width error of path (in path widths). Where the stellar diameter (col 67) is non-zero, this value is based on the enlarged asteroid diameter, and corresponds to the location of the 1-sigma limit as displaced outwards by the stellar radius.</TD></TR>
+<TR><TD>29-34</TD><TD>1-Sigma error in star/asteroid position</TD></TR>
+<TR><TD>35</TD><TD>Number of rings</TD></TR>
+<TR><TD>36</TD><TD>Number of moons</TD></TR>
+<TR><TD>37-40</TD><TD>Diameter of first moon (km)</TD></TR>
+<TR><TD>41-46</TD><TD>Distance of first moon (km)</TD></TR>
+<TR><TD>47-50</TD><TD>not used <em>(was reserved for PA of first moon)</em></TD></TR>
+<TR><TD>51-54</TD><TD>Diameter of 2nd moon (km)</TD></TR>
+<TR><TD>55-60</TD><TD>Distance of 2nd moon (km)</TD></TR>
+<TR><TD>61</TD><TD>not used <em>(was reserved for (PA of 2nd moon)</em></TD></TR>
+<TR><TD>62</TD><TD>Star reliability - RUWE value. ASCII value is 48 + RUWE*20, 
+	with an upper limit of 3.95 on RUWE. If RUWE has not been set, the ASCII value 
+	is 32.</TD></TR>
+<TR><TD>63</TD><TD>Magnitude drop in V. ASCII value is 48 + 10*MagDrop, with a 
+	maximum value of 127 (= mag drop of 7.9)</TD></TR>
+<TR><TD>64</TD><TD>Magnitude drop in R. ASCII value is 48 + 10*MagDrop, with a 
+	maximum value of 127 (= mag drop of 7.9)</TD></TR>
+<TR><TD>65</TD><TD>Information for nearby stars. Basic format at bit level is 
+	xyyzzz00, where x is flag for whether mag drops have been adjusted, yy is 
+	the number of nearby bright stars (stars more than 2 mags brighter than the 
+	target, limited to 3) and zzz is the total number of nearby stars (limited 
+	to 7). Radius limit is 15&quot;. 
+	Mag limit - brighter than target star +1.5, Bright star limit - target star 
+	-2; mag adjustment - for all stars within 4&quot;. To avoid any issues with 
+	reading the file as ASCII text, 48 is added to this value. That is, to 
+	decode, convert the character to its ASCII value, subtract 48, then extract 
+	the bit values.</TD></TR>
+<TR><TD>66</TD><TD>Flag for star being a Kepler2 target star. [K if target, blank otherwise}</TD></TR>
+<TR><TD>67-68</TD><TD>Diameter of the star. Units of milli-arcsec</TD></TR>
+<TR><TD>69-70</TD><TD>Correction to RA from Line 4, to give full precision star RA. Units of 0.0001s</TD></TR>
+<TR><TD>71-72</TD><TD>Correction to Dec from Line 4, to give full precision star Dec. Units of 0.001"</TD></TR>
+<TR><TD>73</TD><TD>Reserved for error codes
+<TR><TD>74</TD><TD>Double star code. 0=none, 1 = WDS, 2= double in other sources (4th interferometric, or star catalogue flag), 4 = Variable star (listed in AAVSO Index file). Values are cumulative</TD></TR>
+<TR><TD>75-82</TD><TD>MJD of date of prediction calculation (ddddd.dd)</TD></TR>
+<TR><TD>83-97</TD><TD> a unique ID for the event, used to eliminate duplicates when displaying. For asteroids, the ID is formed as  yyyymmdd_xxxxxx, made up as the date of the event, plus end section of star ID. For planets, the ID is formed as  yyyymmddPPPnnnn, made up as the date of the event, the first 3 characters of the planet or moon name, and the last 4 characters of the star identifier.</TD></TR>
+</table>
+<P></P>
+
+</BODY>
+</HTML>

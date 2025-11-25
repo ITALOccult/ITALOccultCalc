@@ -27,6 +27,23 @@ italoccultcalc config.json
 italoccultcalc config.oop
 ```
 
+**Opzioni disponibili:**
+```bash
+-v, --verbose    Mostra progresso dettagliato con % e nomi asteroidi
+-h, --help       Mostra aiuto
+```
+
+**Esempio con output verboso:**
+```bash
+italoccultcalc -v preset_large_asteroids_jan2026.oop
+```
+
+Output verboso mostra:
+```
+[100%] (324) Bamberga
+[100%] Analisi (10) Hygiea vs 1000 stelle
+```
+
 ### 2. ioccultcalc_search - Ricerca Occultazioni
 
 Ricerca occultazioni per periodo specifico.

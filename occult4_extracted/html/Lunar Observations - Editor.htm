@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Observations - Editor</title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Observations editor </h1>
+<P>The observations editor is the tool for recording new observations in the IOTA2009 format, and analysing old observations. 
+<p>The editor can read a number of 'old' formats of occultation reports [Including the '76' format], but writes all reports into either the IOTA2009 format, or a specific ILOC compatible format that includes the full year in the report.
+<p>To deal with reports created outside of the Occult editor, star numbers are checked (& automatically converted when required) to be in the heirarchy of ZC, SAO, XZ. Also where only one of the Method items has been completed, the progam ensures the first method item is used in preference to the second. 
+
+<H1><br>Structure of the observation editor</h1>
+<Font Size =4>The observation editor has 4 pages:
+<li>a page for viewing a formatted report <a href="Lunar%20observations%20-%20DisplayReport.htm">details</a>
+<li>a page for editing the Header <a href="Lunar%20observations%20-%20Header.htm">details</a>
+<li>a page for editing site details and observer names <a href="Lunar%20observations%20-%20Sites%20and%20names.htm">details</a>
+<li>a page for editing the observations <a href="Lunar%20observations%20-%20Events.htm">details</a></ul>
+</Font Size =3>The ability to submit the report, to view observer site locations, and to reduce observations, is available from all four pages.
+<p>The ability to submit a report with respect to a double star occultation (to be combined with other observers to derive an accurate position angle and separation.) 
+<p>Functionality to support the reduction and archiving of observations by regional collectors is provided on the form that is shown when observations are reduced.
+
+<H1><br>Editor functions</h1>
+<h2>To create a new occultation report</h2>
+Click the <B>File..  New</B> menu item. A new report is created.
+
+<h2><br>To open/display an existing report</h2>
+<p>For observations in a file:<br>
+Click the <B>File... Open</B> menu item, and select the relevant file
+<br><br>For observations on the ClipBoard (e.g. copied from an email message)<br>
+Copy the entire observation report<br>
+Click the <B>File... Paste</B> menu item.
+
+<h2><br>To merge an existing report with a report in the editor</h2>
+<p>Occult can combine reports into a single report. This is particularly useful for graze reports where you can combine reports from different observing teams into a single report for joint analysis.
+<p>When reports are merged, the sites and observer names are compacted into contiguous series, and the events are sorted by time. After merging, it may be appropriate to sort the observations by site and then renumber the events.
+<p>For observations in a file:<br>
+Click the <B>File... Import and merge</B> menu item, and select the relevant file
+<br><br>For observations on the ClipBoard (e.g. copied from an email message)<br>
+Copy the entire observation report<br>
+Click the <B>File... Paste and merge</B> menu item.
+
+<h2><br>To Save a report</h2>
+Options to <B>Save</B>, and <B>Save as... </B>are provided under the <B>File... menu</B>. The format of the save is the IOTA2009 format.
+<br>You can save in the 'old' format, using the <B><I>Save   [old format]</I></B>, and <B><I>Save as...   [old format]</I></B>  under the <B>File... menu</B>. Note that if you load a file written in the IOTA2009 format, and then use <B><I>Save   [old format]</I></B> to save that file, you will overwrite the new-format file with an 'old-format' file - and that may result in loss of some data.
+
+<h2><br>To verify data entry</h2>
+Click the <B>File... Verify data entry</B> menu item. This will perform a data validation check of the current data. This data check is also done whenever a file is loaded, merged, or pasted. <A href="Lunar%20Observations%20-%20Data%20Verification.htm" >Details</a>
+
+<h2><br>To identify unidentified stars</h2>
+When working with a file that contains unidentified stars, or stars identified by star numbers that are not ZC, SAO ar XZ numbers (or planet or asteroid numbers), click the <B>File... Identify unidentified stars</B> menu item. For each such entry possible stars are listed for selection. <A href="Lunar%20Observations%20-%20Identify%20unidentified.htm" >Details</a>
+
+<h2><br>To report the observations</h2>
+<p>Click the <B>Submit report...  Submit report</B> menu item. Make sure you are connected to the Internet. You will be asked to confirm that you want to report the obervations, and then taken to a form where you select the address to report the observations. <a href="Lunar%20observations%20-%20Submitting.htm">Details</a> <B>Note </B>- the ability to email observations from Occult assumes you have an email account with your ISP, using an 'SMTP' server. If you use a browser-based email service (such as Hotmail or GoogleMail), you will have to manually create the email and attach the observation file.
+<p>The Email addresses used to report observations may change over time. Click the <B>Submit report...  Download current Email reporting addresses</B> to retireve the current reporting address.. 
+
+
+
+
+<h2><br>GoogleEarth functions</h2>
+<h3>View current site locations</h3>
+<p>You can easily check for any data entry errors in site coordinates by plotting the sites in GoogleEarth. To do this, simply click the menu item <B>Google Earth     Plot current sites</B>. the sites are converted from the Horizontal datum specified in the report to the WGS84 datum before plotting.
+<p>The relevant <B>.kmz </B>file is 'ViewGoogle.kmz', and is located in the <I>Autogenerated Asteroids </I>subdirectory.
+
+<h3>Plot moon limb</h3>
+<p>You can plot the limb of the moon on the Earth at the time of some or all of the events in the report. The limb is corrected for the Watts limb (including the <I>Morrison & Appleby</I> corrections). The menu provides choices to plot the first 10, 20 or 50 events, or all events. under <B>Google Earth     plot moon Limb - first xx events</B>.  There is also a data-rentry field in the drop-down menu to specify the approximate altitude of the site of interest. Note that each limb plot can involve up to 1,800 longitude/latitude coordinate pairs. Consequently if a large number of events are plotted, it will take a little time to generate the correspondingly-large kmz file, and GoogleEarth will become sluggish in its operation. 
+
+The observing site for the events will be located at the common intersection of all the limb plots. The limbs do not intersect at a common location - but over a region of 2 or 3 km - mainly for the following two reasons: <ul>
+<li>The limb is drawn assuming the site has an altitude of zero meters. If the event was observed at a low altitude, the limb may be displaced by (site altitude)/tan(moon altitude)
+<li>The limb is drawn on the basis of the Watts charts, and will typically differ from the actual profile by several hundred meters. In some regions it may differ by several km.</ul>
+
+Generally the site will be near the centroid of the intersection points.
+
+<p>You can selectively turn plotted limbs on or off in the <I>Places, Temporary Places </I>area of the GoogleEarth form. Note that if the lunar limb is not entirely on the Earth, it will be created as two arcs, separated at a PA of 0 deg, and starting/ending where the limb leaves the Earth. The icons are colour coded to match the colour on the plot. Because of this issue, clearing the first of the two icons might not remove the limb in the region of interest - you may need to click the other icon.
+
+<p>This functionality is especially useful for investigating a report where you suspect the site location might be in error, If the limbs all intersect at a common location, the true site location is in that region (and typically this will identify an obvious error in the specified site coordinates - such as digit transposition. However if the limbs are scattered, it may be assumed that there is some other error infecting the observations - such as an error in the time.
+
+<p>The relevant <B>.kmz </B>file is 'Moon Limb Plots.kmz', and is located in the <I>Observations</I> subdirectory.
+
+<h2><br>LiMovie</h2>
+The <A href="http://www005.upp.so-net.ne.jp/k_miyash/occ02/limovie_en.html" target = _blank>LiMovie tool</a> 
+generates plots of occultation light curves., and includes functionality to copy the light curve to the clipboard - but no functionality to save it. This menu item will save the image copied to the clipboard from LiMovie (or any image copied to the clipboard from any other program).
+
+<h2><br>To reduce and display the observations</h2>
+<p>Click the <B>Reduce and Plot </B>button.
+
+<h3><br>ConvertOldGrazeFiles</h3>
+<p>If Administrator access is enabled, the menu will show a dis-abled item <B>ConvertOldGrazeFiles</B>. This is a place-holder for a routine that converts the graze files of earlier versions of Occult to the IOTA2009 format, and should be ignored.</p>
+
+
+<H2><br>Y2K issues</h2>
+<p>The files of ordinary and grazing occultations maintained in Occult include observations as far back as 1623. The report format used by ILOC (and variants such as the '76 report format) only include the last two digits of the century year. This data structure is a classic Y2K problem, and is incompatible with maintaining a database extending over several centuries. For this reason, Occult uses a variant of the ILOC format that includes the full year number.
+<p>When an old ILOC or '76 report is read into Occult, it is necessary to complete the year number. The digits to be added are set in the User settings, under the box 'Lunar occultation 
+reports'. The value is normally set at '20'. But if you are reading an old report, it may be necessary to change the value to '19'
+
+<!--
+<h2><br>Administrator Functions</h2>
+<p>The form also provides two administrator functions under the File menu item - for handling the collection and management of lunar occultation observations. Users should not use these two administrator functions. 
+-->
+
+</BODY>
+</HTML>

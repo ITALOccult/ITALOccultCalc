@@ -1,0 +1,179 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Baily Beads</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Baily Bead identifications</H1>
+
+<h2>Overview of Baily Beads - identification</h2>
+
+<p>This routine enables the identification of the lunar features that give rise to a Baily Bead during solar eclipses. Typically, Baily Beads will be recorded on a medium such as a video recording, together  with a time signal. The times of individual events (bead forming/disappearing/breaking/merging) is deduced by replaying the video recording. However, the lunar features that caused each event are not easily identifiable - particularly since typically the camera is not in a well-defined orientation with respect to the lunar pole, and the details of the observed beads can be quite sensitive to site location.
+
+<p>The program provides an animation of a solar eclipse to facilitate bead identification. Input quantities are the site co-ordinates of the observer, and the date and time of the eclipse. The animation can be adjusted to more closely replicate the observed beads by applying a correction to the relative declinations of the Sun and Moon.
+
+<p>The animation can be saved as an animated GIF file. The animation parameters are set under <I>Animated GIF....  Animated-GIF settings</I>, and the file created using <I>Animated GIF... Create animated-GIF</I>. Guidance on the issues with creating an animated GIF file are given <A href="Animated%20GIFs.htm" >here</a>.
+
+
+<p>The limb can be plotted at various scales. The plot can be incremented or decremented by small periods of time, to better identify the formation of a feature. Also, the plot can be set to give an animation over a period of time.
+
+<p>Features are identified by pointing with the mouse - the Watts Angle of the pointer being continuously displayed.
+
+<p>The Plot Scale controls the scale of the image of the eclipsed sun. If the scale is 0.4 or smaller, the image is of the whole sun. Otherwise it is an enlarged portion of the solar limb.
+
+<p>To see a demonstration of the program, use the following data for a site near the northern limit of an annular eclipse observed near Geraldton, Western Australia
+<table columns=3 border=1>
+<TR><TH NOWRAP></TH><TH></TH></TR>
+<TR><TD>Date</TD><TD>1999  2  16</TD></TR>
+<TR><TD>Universal time:</TD><TD>7  28  0</TD></TR>
+<TR><TD>Longitude:</TD><TD>114  53 02.0</TD></TR>
+<TR><TD>Latitude</TD><TD>-28 51 31.8</TD></TR>
+<TR><TD>Altitude</TD><TD>80</TD></TR>
+<TR><TD>Central Watts Angle</TD><TD>180</TD></TR>
+<TR><TD>Declination offset</TD><TD>0</TD></TR>
+</table>
+
+<pPClick <B>Plot </B>to see the solar limb, with a single bead. Note how, when the cursor is moved around the plot, the display shows the Watts Angle, and height above the <I>mean </I>lunar limb, of the cursor. To see this better, change the Scale to 5, Click <B>Plot </B>again, and follow the irregular lunar limb with the cursor. 
+
+<p>Place the cursor on an interesting point on the display, such as in the location of a bead. Note the Axis Angle, and height are displayed next to the cursor. Click the mouse, and note the detailed display of the lunar limb, with the solar limb, that appears. Change the size of the detailed display (by dragging its borders), and note how the display is redrawn.
+
+<p>Now set Scale to 1, and click <B>Plot </B>again. Set <B>Step size (secs)</B> under <B>Change Time</B> to 4. Repeatedly click <B>+ </B> to see how beads form (after 3 clicks - 12 secs). 
+
+<p>Finally, set <B>Step size</B> under <B>Animation </B>to 1. Set <B>Duration </B>to 60. Reset the <B>UTC </B>time to 7  28  00. Check <B>Animation on</B>. Click <B>Start movie</B>, and watch how the 
+Baily beads form and disappear over the 1-minute interval. 
+
+
+<h2>Form control</h2>
+<p>Baily beads analysis potentially requires viewing of several forms at the same time. To aid with this, each form has a menu item to force the form to '<B>Stay on top', </B>so that other forms will not 
+obscure the form. If the form has this status set, the menu item will change to <B>Return to normal</B>. Similarly the main form has a menu item <B>Show... </B>to display forms that have been closed. 
+ 
+<h2>Date and site details</h2>
+<p>To set the program to identify Baily Beads, you must first specify the date, and observer co-ordinates. This is done in the frame called <B>Date & Site</B>. The parameters to enter are:<ul>
+<li>Year, month day of the eclipse
+<li>Site longitude (measured +'ve to the East), latitude, datum, and altitude
+<li>Whether to draw as a mirror image [For optical systems that use mirrors, image reversal will occur. If there are an odd number of reflections, check the <B>Draw as mirror image</B> box, to reverse the plot to correspond to the viewed image. Where the image is viewed on a projection screen, the screen should be treated as a reflection. <I>[Example: for a projection screen image produced using a Newtonian reflector, the reflections are (1) the primary mirror, (2) the secondary mirror, and (3) the projection screen - which is an odd number of reflections.]
+</I></ul>
+
+
+<h2>Time details</h2>
+<p>The time of the plot is specified in the <B>Time for the plot</B> frame. Enter here the Hour, minute and second for the plot time (in UT).
+
+<p>The time of the plot can be changed by manually entering a new Universal time. However, to assist entering a new time, specify a <B>Step size (secs)</B> under <B>Change Time</B>. Then the time can be incremented or decremented by this amount by clicking the <B>+ </B>or <B>-</B> buttons. The <B>Step size </B>can be any value, including decimal fractions of a second.
+
+
+<h2>Plot Parameters</h2>
+<p>Under this frame the user can set a number of parameters to adjust the plot. The parameters are:<ul>
+
+<li>The <B>Central Axis angle</B>. The main plot as the axis angle specified here located at the top centre of the plot. Use this to orient the main plot so that the region of interest is centred - particularly important for large magnifications.
+<li>The <B>Scale </B>sets the size of the main plot. If the <B>scale </B>is set to 0.6 or less, the plot is of the whole image.
+<li>The relative <B>Offset </B>positions of the Sun and Moon can be adjusted in Right Ascension, and Declination. The offset is in arc secs., and is applied in the sense of position of moon from sun.
+<li>A <B>Correction to the solar radius at unit distance</B> can be applied. The correction, in arcsecs, is of the solar radius at mean distance.
+<li>The check-box <B>Add profile correction</B> specifies whether the corrections to the Watts datum determined by Appleby & Morrison are applied.</ul>
+
+<h2>To draw the eclipse</h2>
+<p>Click <B>Plot </B>to see a plot of the eclipse.
+
+<p>The <B>Librations and Moon-Sun offset</B> frame at the bottom left displays;<ul>
+<li>The topocentric librations of the moon in longitude (l), latitude (b), and PA of lunar axis (C); and
+<li>The x,y co-ordinates of the centre of the Sun from the centre of the Moon, in arc secs (Y +'ve to true north)</ul>
+
+<p>The Cursor location frame at the bottom right displays the Axis angle, and height of the mouse cursor, relative to the lunar limb when the cursor is on the main plot..
+
+<p>When the cursor is on or near the displayed limb, a ToolTip text shows the Axis Angle at that point, and the height of the cursor above the lunar limb. 
+
+<p>The eclipse can also be displayed as an Animationidh_6BBMovie - see below.
+
+
+<h2>Drawing a detailed plot</h2>
+<p>The detailed plot of the lunar profile is drawn in a separate window which at start-up appears at the bottom of the screen (and always stays on top.) To draw a detailed profile, click at the relevant point on the limb of the main plot. A detailed plot centred on that point will now be drawn.
+
+<p>To adjust the width of the lunar limb covered by the plot, select the relevant width under the menu item <B>Axis Angle range</B>…. Widths between 4 and 180 degrees are available.
+
+<p>Dragging the border changes the size of the window. 
+
+<p>If the Animation effect is enabled, or the time is incremented or decremented, the plot on the window is changed accordingly. However the location of the plot along the limb is not changed.
+
+
+<h2>Displaying limb heights</h2>
+<p>The height of the lunar limb, the solar limb, and the difference between the heights, can be displayed as text. Position the cursor at the location of interest, and click the RIGHT mouse button. A form will display the heights for axis angles of +/- 1 degree of the cursor location, at intervals of 0.1 deg.
+
+
+<h2>Recording events</h2>
+<p>Bead identifications are displayed in a small rectangular form, which also stays on top. When a site is selected, previous identifications are displayed in this form. 
+
+<p>To record the identification of an event:<ul>
+<li>Select the time of the event
+<li>Display a detailed plot of the limb at the expected location of the event
+<li>Place the cursor on the point on the lunar limb that causes the Baily bead event that occurred at the plot time. 
+<li>Click the LEFT mouse button. </ul>
+<p>On the Bead identification form, the plot time, Axis angle of the event, and the profile height (scaled to the apparent diameter of the moon, and incorporating the correction for the offset between centre of mass and figure) are entered at the end of the list on the form.
+
+<p>Events on the form can be sorted, either by time or by Axis angle, by selecting the appropriate sort under the menu item <B>Sort/delete data</B>.
+
+<p>An entry can be deleted from the list. Select the entry, then the menu item <B>Delete...  selected</B>. You will be asked to confirm before the entry is deleted. 
+
+<p>Data should be periodically saved using the menu item <B>File... Save</B>. If the program is exited, or a new site selected, while some data has not been saved, a prompt will occur. 
+
+
+<h2>Plotting recorded events</h2>
+<p>Any event in the list of recorded events can be plotted by double-clicking on the event. Both the main plot, and the detailed limb plot, will be centred on the axis angle of the selected event.
+
+
+<h2>Analysing the events</h2>
+<p>Next to each event in the form that records the events is a check box. This is used to identify those events to be used to analyse the identifications to solve for the 3 basic parameters - the correction to the longitude, latitude and radius of the Sun, assuming the longitude, latitude and radius of the moon are correct. The solution is performed by a least-squares fit to computed residuals. In computing the residuals, the program derives the lunar profile height using the Axis Angle identified against the event. (Note: it does not use the height as recorded in the form). Corrections to the profile are applied if the relevant check-box in the <B>Plot parameters</B> box is checked. 
+
+<p>To compute the residuals, click the menu item <B>Solve </B>at the top of the form that records the data. The results of the analysis are displayed at the top of that form.
+
+<p>The status of the check boxes is saved whenever the recorded observations are saved. When that site is re-loaded at a future session, the program will compute the residuals at that time.
+
+<p>To help with the identification of beads, it is suggested that several (at least 3) unambiguous events be initially identified. Record these events, and solve for the residuals. Then enter these residuals in the relevant fields in the <B>Plot parameters</B> box, so that subsequent plots are aligned closer to the observations. Repeat this process as more events are reliably identified.
+
+<h1>Saving / retrieving site details and observations</h1>
+
+<h3>To save the observations and site details</h3> <ul type=1>
+<li>Enter the following items of data:<ul>
+<li>Year, month day and hour of the eclipse
+<li>The site name</ul>
+<li>Preferably, also enter:<ul>
+<li>Site longitude, latitude, datum and altitude
+<li>Mirror image setting
+<li>Central Axis angle
+<li>Magnification
+<li>RA and Declination offsets
+<li>Correction to the solar radius
+<li>Whether the profile correction is to be applied.</ul></ul>
+
+<p>The details are stored in the following way:<ul>
+<li>a subdirectory is created in the directory <B>\occult\Observations</B> called  <B>Eclipse yyyy mmm dd</B>, where yyyy mmm dd is the date of the eclipse.
+<li>within that directory, a file is created having the <B>Site name</B> as the file name. If the file exists, you will be asked to confirm whether you want to overwrite the file.</ul> 
+<p><B>Note</B>. The file contains all the site details and all observations.
+
+<h3>To load a file:</h3><ul>
+<li>Select the menu item <B>File... Open</B>
+<li>Select the directory corresponding to the date of the eclipse
+<li>Select the relevant site from the list of files in that directory.</ul>
+
+<h1>Animation</h1>
+
+<p>To view an animation of Baily Beads during an eclipse<ul>
+
+<li>In the animation box, check the <B>Animation On </B>check box
+<li>Set the <B>Central Axis Angle</B> to a value that corresponds to the region of the moon where the 2nd or 3rd contact occurs. If in doubt, set the magnification to a low value (e.g. 0.5), plot, and use the cursor to find the appropriate watts angle.
+<li>Set the time for the start of the animation, in the <B>UTC </B>fields.
+<li>Set the time interval between each plot (in secs), in the <B>Step size</B> field under <B>Animation</B>. Decimal fractions of a second are allowed.
+<li>Set the duration of the animation (in secs), in the <B>Duration </B>field. <B>Note</B>. When this field is non-zero, the button labeled <B>Plot </B> is re-labeled to <B>Start Movie</B>
+<li>Click <B>Start Movie </B>to start the animation.</ul>
+
+<p>During the animation:<ul>
+<li>The <B>seconds </B>of the current display, reference to the Hour and Minute listed in the Universal time fields, is displayed in the button labeled <B>Stop</B>. Clicking that button will stop the animation.
+<li>Clicking the <B>Pause </B>button will halt the animation. The animation can be resumed where it was paused from, by clicking the <B>Resume </B>button. Or it can be resumed 10 steps previous, by clicking the <B>Resume 10 steps back </B>button. While the parameters on the form may be modified during a pause, the changes will only have effect when the animation is re-run. The changes will not occur when the animation is resumed.
+<li>If the detailed window is displayed, the location of the solar limb on that display is updated.</ul>
+<p>In the animation box is a disabled check box for <B>Auto save</B>. This is not yet functional. The intention is to add the capability to save the graphic output as an animated GIF.
+
+</BODY>
+</HTML>

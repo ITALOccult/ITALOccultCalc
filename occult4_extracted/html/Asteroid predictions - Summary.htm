@@ -1,0 +1,178 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Asteroid - Summary</Title>
+<style type="text/css">
+.auto-style1 {
+	color: #FF0000;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1 class="auto-style1">This topic is for a legacy function that will be 
+removed.</H1>
+<p class="auto-style1">The legacy functionality relied on the occultation 
+elements being held on disk with a fixed-length record structure - with the data 
+for any one event being read from disk. The fixed-length record structure 
+prevented easy modifications to incorporate extra data elements - and as a 
+result became a barrier to the development of improvements to Occult. The 
+replacement approach maintains all the prediction data in memory, allowing for 
+easier access and filtering; it uses variable length .csv files and .xml files 
+for holding relevant data.</p>
+<H1>Asteroid - Summary of events</H1>
+<p>The summary display is a convenient way of accessing events that meet the selection 
+criteria set by the user. The summary list enables you to go directly to events of interest and generate the full range of prediction options for those events. Additionally, the summary page provides tools to:<ul>
+<li>plot 'all' the occultation paths against a regional map, and
+<li>automatically generate prediction files for all events listed on the summary - for inclusion on web pages and the like.</ul>
+
+<P>There are two forms of summary pages<ul type=1>
+<li>a Global Summary of events, in which local circumstances are not a consideration - that is, the selection criteria of the observer's longitude/latitude and the minimum distance from the star are ignored, and
+<li>a Local Summary of events, where local circumstances are considered.</ul>
+<p>The Global Summary is particularly useful for events with high uncertainty in path location (e.g. TNO predictions) or for occultations by planets - where the path location is large. The summary listing for the two summaries is shown below - using a combination of asteroid an planet predictions. Comparing the Global and 
+Local Summaries - the left-half is identical, but the right half provides different information.
+
+
+<h3>Example listing of a Global Summary of Events</h3>
+<pre>
+Global summary of events
+
+     Date       U.T.    Diameter   Durn  Star  Mag-Drop Elon  %      Star         d     Planet           Shape Min           R.A. (J2000)  Dec.            Rec
+   y   m  d    h   m     km   "   sec/m   mag   V    R     o Ill     No.               No Name                  D   Error   h  m   s      o  '   "           #
+2012 Apr  8    8  0.2    55 0.006   8.5s 13.2  7.1  7.1  120     UCAC2 23171710    120061 2003 CO1             0.00  1.09  17 11 37.706 -21 38 41.17         5
+2012 Apr  8    8  7.5   142 0.071  11.1s 12.5  0.6  0.6   98     2UCAC 22091680       196 Philomela      DA+IS 0.62  0.02  18 46 41.941 -24 17 57.83         6
+2012 Apr  8   13 13.8    18 0.010   1.5s 10.1  5.9  5.5  100     HIP  91652          2288 Karolinum            0.58  0.02  18 41 24.688 -23 55 20.93         7
+2012 Apr  8   15 26.5   219 0.114  39.8s 12.0  1.2  0.8  110     TYC 7890-01339-1     702 Alauda        :      0.64  0.01  17 51 47.936 -39 22 35.25         8
+2012 Apr  8   16 10.7    43 0.031   9.1s 10.1  3.3  3.7  120     TYC 6237-00242-1     125 Liberatrix     DA+IS 0.32  0.01  17 15 22.709 -17  9 13.54        10
+
+2012 Feb  7   17 43.0  3130 0.840   130s  9.7 0.02 0.03   75     TYC 0633-00535-1u        Europa (II)          0.39  0.00   2  6  1.143  11 39 10.55        38
+2012 Feb  8    7 37.4  3643 0.976   139s  9.7 0.02 0.03   74     TYC 0633-00535-1u        Io (I)               0.31  0.00   2  6  1.143  11 39 10.55        33
+2012 Feb 20    1 43.7   397 0.060  20.1s 10.9  2.2  2.0  122     TYC 5553-00908-1u        Mimas (I)            0.20  0.00  13 52 20.444 - 8 43 17.58        49
+2012 Mar  8   23 26.4142796 35.36  73.1m  8.7 0.00 0.00   50  99 HIP  11271               Jupiter              1.06  0.00   2 25  9.222  13 24  9.05        31
+2012 Mar  9    5  7.1  3130 0.775  88.6s  8.7 0.07 0.05   49     HIP  11271               Europa (II)          1.16  0.00   2 25  9.222  13 24  9.05        39
+
+
+</pre>
+<h3>Example listing of a Local Summary of Events</h3>
+<pre>
+Event Summary for Longitude 149.00   Latitude -34.96
+
+     Date       U.T.    Diameter   Durn  Star  Mag-Drop Elon  %      Star         d     Planet           Shape Alt  Dist Sun Proba-   Moon       R.A. (J2000)  Dec.           Rec
+   y   m  d    h   m     km   "   sec/m   mag   V    R     o Ill     No.               No Name                   o   km  Alt bility ill Elon   h  m   s      o  '   "           #
+2012 Apr  9   12 12.6    62 0.035   7.3s 11.0  4.4  4.3  141     TYC 1437-00852-1    1558 Jarnefelt             37    44       38%   89   75  11 18 40.696  18 11 30.15        19
+2012 Apr 12   12 45.5    17 0.013   1.6s  6.3  9.3  9.0  155     HIP  58002       V  1638 Ruanda                55     4       20%   60  103  11 53 50.243   0 33  7.65        42
+2012 Apr 13   15 28.1    12 0.011   1.1s  9.4  6.7  7.1  111     TYC 6847-00311-1    2867 Steins                47   248        0%   48   25  18 11 35.432 -26  7  8.93        48
+2012 Apr 15   12  1.1    45 0.057   6.3s 11.7  0.9  0.9  135     UCAC2 11583294       132 Aethra         DA+IS  44   274        0%   29   81  15 35 43.983 -47  0 50.82        60
+2012 Apr 15   15 32.0    45 0.057   6.2s 12.4  0.6 0.41  135     TYC 8300-00463-1     132 Aethra         DA+IS  76   475        0%   28   83  15 35 36.150 -46 59 27.13        62
+
+2012 Mar 31    9 26.1 12244 24.90   627s  8.2 0.00 0.00   46  49 HIP  16668               Venus                  5 10482        0%   56   51   3 34 30.313  22 45 33.71        14
+2012 Apr 25   11 17.7  6794 10.40  30.7m  9.4 0.00 0.00  119  92 TYC 0841-00857-1u        Mars                  41  2843      100%   15   74  10 27 56.058  12  4 47.83        25
+2012 Aug  4    9 38.2  6794  5.68   226s  9.5 0.00 0.00   65  90 HIP  63895               Mars                  36  1687      100%   94  143  13  5 41.273 - 7  9 33.64        27
+
+</pre>
+
+The information provided in the table is as follows:
+
+<table columns=2 border=1>
+<TR><TH NOWRAP>Column</TH><TH>Comments</TH></TR>
+<TR><TD>Date and UT</TD><TD>The UT date and time of closest approach <B>to the specified site</B> [that is, the time listed her does depend on the site location, for both Local and Global summaries].</TD></TR>
+<TR><TD>Diameter : km, &quot;</TD><TD>The diameter of the object - both the physical diameter in km, and the apparent diameter in arcsec. For the planets, the equatorial diameter is listed.</TD></TR>
+<TR><TD>Duration </TD><TD>This column gives the predicted maximum duration, in seconds or minutes. The value ranges for the different formats are:
+<table columns=2 border=0>
+<TR><TD>&lt; 100 secs</TD><TD>ss.s</TD></TR>
+<TR><TD>100 - 999 secs  </TD><TD>sss</TD></TR>
+<TR><TD>1000 - 5999 secs </TD><TD>mm.m</TD></TR>
+<TR><TD>&gt; 6000 secs</TD><TD> mm</TD></TR>
+</table></TD></TR>
+<TR><TD>Star mag</TD><TD>star magnitude - visual</TD></TR>
+<TR><TD>Mag drop V</TD><TD>magnitude drop at occultation - based on visual 
+	magnitude</TD></TR>
+<TR><TD>Mag drop R</TD><TD>magnitude drop at occultation - based on the star's
+red magnitude, and an asteroid color (B-V) of 0.83. This may be a better guide for CCD observers</TD></TR>
+<TR><TD>Elong</TD><TD>The solar elongation of the star, in degrees</TD></TR>
+<TR><TD>% ill</TD><TD>This is given only for occultations by the major planets, it is the percent illumination of the planet. This is a critical quantity for Mercury and Venus, and important for Mars.</TD></TR>
+<TR><TD>Star number</TD><TD>The catalogue number of the star being occulted. This number should be used when reporting any observations. </TD></TR>
+<TR><TD>d</TD><TD>A flag to indicate there is double star information available, variable star information, or that the stellar diameter is significant. The flags are:<ul>
+<li><B>W</B> the star is listed in WDS
+<li><B>D</B> the star is a double from some a source (such as the Interferometric catalogue). It may or may not be listed in WDS
+<li><B>V</B> the star is a variable star. (It may also be a double star)
+<li>If the flag is one of <B>s</B>, <B>w</B>, <B>d</B> or <B>v</B>, this indicates that stellar diameter is at least 1 mas - and will therefore have an effect on the occultation.  The codes <B>w</B>, <B>d</B> or <B>v</B> indicate the star is also listed in one of the catalogues as per the capital letter equiavalent.</TD></TR>
+<TR><TD>Planet number Name</TD><TD>For asteroids - the asteroid number, and asteroid name/identifier
+<br>For the major planets - the planet's name
+<br>for planetary moons - the moons name and number (in roman numerals)
+<br><br><li>If an asteroid has a moon, a colon '<B>:</B>' is placed at the end of the name field. If it has rings, a '<B>¤</B>'. And if it has both, an asterisk.
+<li>For Jupiter, Saturn, Uranus and Neptune, the ring symbol '<B>¤</B>' is included.
+<TR><TD>Shape</TD><TD>For asteroids, indicates whether the asteroid is included in <B>DAMIT</B>, <B>ISAM</B>, or both (<B>DA+IS</B>)</TD></TR>
+</table>
+
+<h3>Columns for Global summary of events</h3>
+<table columns=2 border=1>
+<TR><TH NOWRAP>Column</TH><TH>Comments</TH></TR>
+<TR><TD>MinD</TD><TD>The minimum distance of the center of the occultation path from the center of the Earth</TD></TR>
+<TR><TD>Error</TD><TD>The uncertainty in the location of the path, in Earth radii</TD></TR>
+<TR><TD>RA   Dec</TD><TD>The J2000 coordinates of the star</TD></TR>
+<TR><TD>Rec #</TD><TD>The record number of this event in the file of occultation elements. It is used to enable direct access to the elements for generating further information for the event (and has no other purpose). </TD></TR>
+</table>
+
+<h3>Columns for Local summary of events</h3>
+<table columns=2 border=1>
+<TR><TH NOWRAP>Column</TH><TH>Comments</TH></TR>
+<TR><TD>Alt</TD><TD>The altitude of the star at the time of the occultation</TD></TR>
+<TR><TD>Dist </TD><TD>This column gives either the distance to the path in km, or the minimum separation in arc secs - depending on whether the selection 
+	criteria uses distance in km or separation in arc secs. If both selection criteria are checked, the distance will be in arcsecs.</TD></TR>
+<TR><TD>Sun Alt</TD><TD>The altitude of the sun at the time of occultation. Only given if the Sun's altitude is higher than -9 deg,</TD></TR>
+<TR><TD>Probability</TD><TD>This is an estimate of the probability of the occultation 
+	occurring at the particular location. 
+<p>For predictions based on Steve Preston's Future.dat file, or generated using Astorb and either UCAC2 or the NOMAD catalogue, the probability estimate is reliable. Predictions based on the internal Tycho2 catalogue have assumed errors for the star positions, degrading he accuracy of the probability estimate. Predictions generated with MPCORB have assumed errors for the asteroid position, with a significant degrading of the value of the probability estimate.</TD></TR>
+<TR><TD>Moon ill, Elong</TD><TD>The percent illumination of the moon, and the elongation of the star from the moon.</TD></TR>
+<TR><TD>RA   Dec</TD><TD>The J2000 coordinates of the star</TD></TR>
+<TR><TD>Rec #</TD><TD>The record number of this event in the file of occultation elements. It is used to enable direct access to the elements for generating further information for the event (and has no other purpose). </TD></TR>
+</table>
+
+<h2>Control functions</h2>
+<h3>Display event</h3>
+<li>You can display any event by double-clicking on the line. If the menu item <B>with Predictions... Auto-display of plot </B>is checked, merely 
+highlighting the line will result in it being displayed.
+<li>When the event is displayed, you can access all the  prediction options available from the right-click menu on the plot.
+<h3>Sort</h3>
+<p>The list of events can be sorted by any of Date, Diameter (km), Diameter (apparent), duration, Star magnitude, magnitude drop, elongation, distance, probability, name, number or star number. the list as 
+initially displayed is sorted by date.
+
+<p>The option <B>Exclude events included in FUTURE.DAT </B> excludes from the listing any events included in the downloaded version of the Future.dat file that is on the computer. This is particularly for generating a feed for OccultWatcher - it prevents the feed including events that are already included in Future.dat. [Note - if applied when displaying the Future.dat file, not all events will disappear - due to some different star formats in Future.dat.]
+
+<h3>Stars occulted more than once</h3>
+<p>A list of stars that are occulted more than once can be obtained under the menu item <B>Sort   List stars occulted more than once</B>. This is most relevant when predictions for a whole year are generated.
+
+<h3>Abbreviated output</h3>
+<p>This option (under with Predictions...) truncates the summary line - excluding all data 
+fields after the planet name (but the Rec # field is retained.)
+
+<h2>Regional plot of occultation paths</h2>
+<P align=center><img src="Multipath%20Plot.png">
+<p>You can plot a regional map showing the paths of all occultations in the summary listing that occur in that region - by clicking the <B>with Predictions.., Plot paths on a map</B>. Click <A href="Asteroid%20predictions%20-%20Multipath%20plot.htm">here</a> for details. <B>Note </B>For this functionality you can set up to 8 pre-defined plotting regions in the User Settings.
+
+
+<h2>Auto-generation of prediction files</h2>
+<p>The summary list provides functionality to automatically generate prediction files for all events listed on the 
+summary. This function is particularly designed for those creating web pages, including those creating feeds for <A href="OccultWatcherFeed.htm">OccultWatcher</a>.
+<p><B>IMPORTANT  </B>To use this option, you must enable it from the <B>User Settings</B>, in the box <B>Asteroid occultations - Search and display</B>. You must check the box<B> Enable generation of output files</B>, and then check those files that you want to have generated. To include city locations in the Occult map, you need to specify the site file in the <B>User Settings</B>.
+
+<p>You should check <B>Exclude events included in FUTURE.DAT</B> under <B>Sort</B>, to exclude events that are already included in Future.dat.
+
+<p>The Autogenerate function works as follows<ul type=a>
+<li>The output files are written to the directory <B>Occult\AutoGenerated Asteroids.
+</B><li>The site file used to generate the Multisite prediction file is that specified at the top of the form;
+<li>The site file used to plot cities on the Occult maps is that specified in the <B>User Settings</B>;
+<li>An index of the events generated is written to the file FileIndex.txt. each entry is a text identifier of the event, followed by a unique identifier;
+<li>A series of control files is written to the subdirectory MJD. The file has the name of the unique identifier, and contains the Modified Julian day number of the date the relevant occultation element file was created.<br>Before creating a set of output files for an event, the program checks to see if there is a corresponding file in the MJD directory. If the file exists, the program compares the creation date of the current occultation elements with the date stored in the check file - and only generates output if the elements creation date is later than that stored in the check file. [This means that, for example, you can generate a summary using Steve Preston's Future.dat file, and the 
+Autogenerate function will only create files for new or revised occultation elements.]
+<li>If you are using an updated Sites file to generate multisite predictions, you can check the <B>Site file has been updated </B>box. This will result in the output files for that event being regenerated.</ul>
+<p>See <A href="OccultWatcherFeed.htm">here</a> for more information on creating occultation feed for OccultWatcher, and <A href="GoogleMapsHelp.htm">here</a> for more information on creating a web page with GoogleMaps.
+
+
+</BODY>
+</HTML>

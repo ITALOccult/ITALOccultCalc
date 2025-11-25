@@ -1,0 +1,826 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Asteroid Observations - Solve double stars</Title>
+<style type="text/css">
+.auto-style1 {
+	text-decoration: underline;
+}
+.auto-style2 {
+	color: #FF0000;
+}
+.auto-style7 {
+	color: #0000FF;
+}
+.auto-style8 {
+	margin-left: 40px;
+}
+.auto-style9 {
+	margin-left: 80px;
+}
+.auto-style10 {
+	color: #800000;
+}
+.auto-style11 {
+	list-style-type: lower-alpha;
+}
+.auto-style12 {
+	color: #5F015F;
+}
+.auto-style13 {
+	color: #065906;
+}
+.auto-style14 {
+	font-size: medium;
+}
+.auto-style15 {
+	color: #008000;
+}
+.auto-style16 {
+	font-size: x-small;
+}
+.auto-style17 {
+	font-size: x-small;
+	color: #065906;
+}
+.auto-style18 {
+	color: #085908;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Asteroid Observations - Solve double stars</H1>
+
+
+
+<h2 class="auto-style2">Introduction - <em>essential</em> reading</h2>
+<p>A double star detection will most commonly appear as steps in the drop and 
+rise in the light curve. Occasionally it may appear as two separated drops in 
+the light curve (with the drops being smaller than expected). In both cases, the 
+observer has recorded two occultation chords - one for each component of the 
+double star. The lengths of the two chords, combined with the asteroid's 
+diameter, gives the separation of the two components in the across-path 
+direction. The time displacement between the two chords gives the along-path 
+separation of the two components. From these separations, the 
+double star parameters of Separation and Position Angle can be determined.<p>However, a single 
+observer observation does not provide enough information to derive a definitive 
+solution. The reasons (assuming the chords are shorter than the asteroid's 
+diameter) are:<ul>
+	<li>For the main component, the chord can be fitted on either side of the 
+	asteroid - giving 2 possible locations;</li>
+	<li>For the 2nd component, its chord can similarly be fitted on either side 
+	of the asteroid - giving 2 possible locations</li>
+</ul>
+<p>As a result, there are 4 combinations of the locations of the two chords - 
+giving <span class="auto-style1"><em>four solutions </em></span>for separation and PA.<p>The number of solutions is reduced 
+if the location of one or both of the chords can be limited to a particular side 
+of an asteroid. For example:<ul>
+	<li>if there are multiple chords for one component, those chords can be 
+	fitted to a specific side of the asteroid. If the other component 
+	only has a single chord, there is an ambiguity in the side of the asteroid 
+	that this chord passes - resulting in <span class="auto-style1"><em>two solutions</em></span>.</li>
+	<li>if there are multiple chords for both components, both sets of those 
+	chords can be fitted to a specific side of the asteroid. This removes all 
+	ambiguity in the relative location of the chords, and leads to 
+	<span class="auto-style1"><em>a single 
+	solution</em></span>.</li>
+</ul>
+<p>There are three other instances where the location of (typically, single) 
+chords can be constrained to a specific location. They are:<ul>
+	<li>the presence of a true 'Miss' observation of a particular component, which can 
+	only be explained if the location of the positive chord for that component 
+	was on the same side of the asteroid - and could not be on the other side. 
+	[Note: for an 'undetected' observation to be treated as a Miss observation, there must be confidence that the 
+	'undetected' 
+	observation was of the correct target, and that there was adequate signal to 
+	detect an occultation if one had occurred.]</li>
+	<li>the length of the chord is about equal to, or greater than, the 
+	asteroid's diameter - in which case it is taken that there is a single 
+	location for that chord - which is aligned with the center of the asteroid.</li>
+	<li>Two observers record an occultation - one records the primary star 
+	(only), and the other records the companion star (only). If the separation 
+	between the two observed chords is less than the diameter of the asteroid, 
+	the locations of the chords against the asteroid are constrained so that the 
+	asteroid was not located between the two chords - otherwise at least one of 
+	the observers would have recorded events from both components. [An example 
+	is <span class="auto-style10">2023 Jun 26, by (1330) Spiridonia</span>]. For 
+	these events, the solution is best visualized by having the Plot option
+	<span class="auto-style7"><strong>&nbsp;ALIGN primary and secondary star 
+	events</strong></span>&nbsp; unchecked. [You may have to uncheck this option 
+	several times during the analysis, as the program will frequently set this 
+	option when solving a double star.] This is a plot of the event with that 
+	setting unchecked. The plot shows the relative path locations; 2 is the 
+	primary component, 1 is the secondary. As can be seen, the asteroid will not 
+	fit between the two paths. As a result, the chords are limited to being on 
+	opposite sides of the asteroid, giving a single solution.<br>
+	<img Align=Middle Src="AsteroidObservations_Double1ofeach.png" width="300"><br></li>
+</ul>
+<p>Two further consideration are:<ul>
+	<li>The closeness of the chords. When the 
+separation between multiple chords is a small fraction of the asteroid's 
+diameter, it is normally not possible to assert those cords definitely passed on a 
+particular side of the asteroid. That is, despite there being multiple chords, 
+there may still be ambiguity over which side of the asteroid those paths 
+crossed.</li>
+	<li>The uncertainty in the length of the chords. You must avoid focusing 
+	entirely on the reported event time. Rather you must have regard to the 
+	time uncertainties at the D and R points. Uncertainties that are a large fraction 
+	of the asteroid's diameter generally prevent any conclusions about the side 
+	of the asteroid. Also, when you have 1 chord with very small time uncertainties, 
+	and another chord with very large uncertainties, the time uncertainties in that 
+	chord may prevent it from resolving which side of the asteroid the first 
+	chord passed.</li>
+</ul>
+<p>Sometimes an observer will record a step event on only one side of 
+their light curve (that is, only on the D or only on the R. The usual explanation for this situation is that both 
+components were occulted at the same time on the other side of the light curve - 
+with the solution being computed on that basis. However if the magnitude 
+difference is large, a small step visible at the bottom of a light curve may be 
+invisible or obscured&nbsp; in the noise at the top of the light curve.<p class="auto-style7">
+<span class="auto-style2"><strong>Important:</strong></span> <strong>the light 
+curve from a single observer is incapable of determining which side of the 
+asteroid the chords of either component of the double star passed. That 
+determination can only be achieved when there are observations from multiple observers 
+positioned across the occultation path. </strong>
+<p><strong><em>Much of the functionality in the 
+double star solution is associated with dealing with these three different 
+solution types.</em></strong><h3 class="auto-style18">Occultation of only one 
+component</h3>
+<p>A further possibility is when the asteroid occults just one component of a 
+double star. This is evidenced by the observed light curve drop being 
+significantly less that the expected light drop. 
+<p><span class="auto-style2"><strong>IMPORTANT.</strong></span> To justify the 
+use of the <strong>One component only</strong> 
+option, the change in the light curve from predicted must be significant. As a 
+general rule, a difference that is greater than 20% of the full light level. 
+This also means that this category will only apply when the magnitude drop is 
+large; it is not easy to justify if the predicted magnitude drop is less than 
+50%. An important reason behind this is that the observation does not provide a 
+direct measurement of the other star, which means there is an inherent 
+uncertainty in its brightness.<h3>Further reading</h3>
+<p>&nbsp;<span class="auto-style12"><strong>Journal of Double Star Observations</strong></span>, 
+<em><strong>V6 N1</strong></em> in the 
+Appendix to the article<A  href="http://www.jdso.org/volume6/number1/herald.pdf "  target=_blank> 
+New double stars from asteroidal occultations, 1971-2008</a>
+<p>&nbsp;<h2 class="auto-style13">Summary of the process</h2>
+<p>The steps involved in determining the double star parameters are:<ul>
+	<li class="auto-style14"><a href="#Steps"><span class="auto-style2">Preliminary:</span> Associate the light curve falls and rises with the relevant component of the star.</a></li>
+	<li class="auto-style14"><a href="#Brightness"><span class="auto-style2">Step 1: 
+	</span>Set the relative brightness</a></li>
+	<li class="auto-style14"><a href="#SolutionType"><span class="auto-style2">Step 2:</span> Select solution type</a></li>
+	<li class="auto-style14"><a href="#SelectSolution">
+	<span class="auto-style2">Step 3: </span>Sequentially select the solution # within the solution type</a></li>
+	<li class="auto-style14"><a href="#Solve1"><span class="auto-style2">Step 4a:</span> Determine the separation and PA - one solution events</a></li>
+	<li class="auto-style14"><a href="#Solve2"><span class="auto-style2">Step 4b:</span> Determine the separation and PA - two solution events</a></li>
+	<li class="auto-style14"><a href="#Solve4"><span class="auto-style2">Step 4c:</span> Determine the separation and PA - four solution events</a></li>
+    <li class="auto-style14"><a href="#Solve1Only"><span class="auto-style2">Step 4d:</span> Determine the separation and PA - One component only</a></li>
+
+	<li class="auto-style14"><a href="#Shapes"><span class="auto-style2">Extra:</span> Effect of Shape Models</a></li>
+</ul>
+<p>&nbsp;<p>&nbsp;
+<a id="Steps"><h2>Pre-analysis step. Associate the light curve falls and rises with the 
+relevant component of the star.</h2>
+<p>This step is critical. You cannot deduce the properties of the double star 
+without first identifying those light curve drops and rises with one or other 
+component of the star 
+
+<p>If we identify the two components of a double as A for the brighter star, and 
+B as the fainter star, the possible sequences of events are:<ul>
+	<li>A-B-B-A, 
+</li>
+	<li>B-A-A-B, </li>
+	<li>A-B-A-B, </li>
+	<li>B-A-B-A, </li>
+	<li>A-A&nbsp;&nbsp; B-B, </li>
+	<li>B-B&nbsp;&nbsp; A-A</li>
+</ul>
+<p>Additional to these possibilities is the situation where where the D light 
+curve has a step, and the R does not; or conversely the D not having a step but the 
+R having a step. The explanation for this occurrence is that the 
+occultations of the two components weresimultaneous at that time.<p>When you have 
+multiple observers located across the path, <span class="auto-style2"><strong>do 
+not assume that the sequence of events is the same for all observers</strong></span>. 
+It is quite possible for one observer to have a sequence like A-B-B-A, and 
+another observer have A-B-A-B. The reason is that the sequence depends upon the 
+PA/separation of the components, the size/shape of the asteroid, and the 
+location of the chords against the asteroid profile. The sequence <strong><em>
+must</em></strong> be determined for each observer.<p>
+When the brightness of both components is very similar, it may be difficult to 
+match the steps to the A and B stars. To resolve this, one issue to consider is the duration 
+between the first drop and the last rise. If&nbsp; the length of the 
+corresponding chord is significantly longer than the expected diameter of the asteroid, you 
+can assume the first drop and the last rise do 
+not relate to the same star. If you can't make that assessment, the number of 
+double star solutions is, in principle, doubled. This situation should be very rare, and Occult 
+does not handle it. In this situation simply make an association based on your 
+best guess (however unsatisfactory this might be) - and in any publication of 
+the discovery, note this issue.<p>
+Normally, you would take the brighter component as being the 'usual' star in the 
+occultation, and the fainter component being the '2nd star'. However in the 
+two-solution approach discussed below, there are situations where the fainter 
+component is taken as the main star, and the brighter as the 2nd star.<p>&nbsp;<h2>
+Special controls for the double star solution</h2>
+
+<p>When an event involves a double star, an extra 'floating' panel appears that 
+provides extra fields for the double star solution(s). That panel can be dragged 
+around the plot form. That panel looks like:<p><br>
+
+<img Src="Asteroid%20Observations%20-%20Doubles.png"width="300" Align=Middle> 
+
+<p>This panel has 5 groups:<ul>
+	<li>Set relative brightness</li>
+	<li>Select solution type</li>
+	<li>Set 
+solution, and </li>
+	<li>Solve solution. </li>
+	<li>Publication details</li>
+</ul>
+<p>These groups take you through the process for deriving 
+double star details from the occultation observation. Each group will be 
+explained in order of use..<p>The controls specific to the double star 
+solution are:<ul>
+	<li>The group <span class="auto-style7"><strong>Double stars - show</strong></span>, 
+	is enabled.&nbsp;
+	<img Align=Middle Src="Asteroid%20Observations%20-%20DoublesComponents.png"width="250">&nbsp;
+	This allows you to choose which set of chords of the event 
+	are to be shown. The options are (i) the chords for both components, (ii) 
+	only the chords for the main (primary) component, (iii) only the chords for 
+	the 2nd star (companion) component. When either primary or secondary are 
+	selected, the automatic solution capabilities are limited to those chords. 
+	When 'both' is selected, the automatic solution considers all chords, and 
+	can include the double star parameters of <strong>separation</strong> &amp;
+	<strong>PA</strong> in that solution.</li>
+	<li>Related to this setting is the <span class="auto-style10"><strong>Plot 
+	options... Align primary and secondary star events</strong></span><strong>. 
+	</strong>When this is 
+	checked, there will be single ellipse displayed, and the chords for the two 
+	components displaced in accordance with the current <strong>separation</strong> 
+	and <strong>PA</strong> values. When this is not checked, the two chords of 
+	an observer for the two components will overlie each other, and there will 
+	be two ellipse drawn displaced in accordance with the current <strong>
+	separation</strong> and <strong>PA</strong> values. This setting is retained 
+	between sessions.</li>
+	<li>On the <strong>Double Star panel,</strong> there are two check boxes 
+	near the bottom to set whether the <strong>Separation</strong> and <strong>
+	PA</strong> are to be included in an automatic solution. These check boxes 
+	function the same as the check boxes for the usual parameters of the 
+	location and axes of a fitted ellipse.<br>To perform an automatic solution 
+	of all parameters, make sure these two boxes are checked, as well as the 
+	boxes for the location and size of the fitted ellipse. Then use the 
+	automatic solve button you would use for a normal event (ay the top of the 
+	plot form)</li>
+	<li>On the <strong>Double Star panel</strong> in the <strong>Solve solution 
+	#n </strong>box, there is an additional automatic solve button. <img Align=Middle Src="Asteroid%20Observations%20-%20DoublesAutoSolve.png"width="30"> This button 
+	is limited to solving the <strong>separation</strong> and <strong>PA</strong> 
+	of the companion star. This means that after you have made a satisfactory 
+	fit to the main star, you can automatically fit the companion star to that 
+	same fit. For a one-solution event, you can then reliably move to a full 
+	automatic solution using the automatic solve button at the top of the form, 
+	with the relevant check boxes for the position and size of the fitted 
+	ellipse being set as required. This gives you a final solution based on a 
+	best fit to ALL the chords, not just one or other component chords.</li>
+</ul>
+<p>There are a number of other controls on the <strong>Double Star solution</strong> 
+form that will be detailed below.
+<a id="Brightness">
+<h2>Step 1. Set the relative brightness</h2>
+<p>The relative brightness of the two components is needed for correctly reporting the astrometry. 
+Why is this? Almost always, the double stars detected in an occultation are 
+'discoveries' with separations that are two small to be resolved in the Gaia 
+astrometry. That is, the Gaia position for these stars refers to the 
+photo-center of the two stars, whereas the occultation analysis is centered on 
+the position of just one of those components. So when we report the astrometry for the 
+asteroid, we need to match the <strong>photocenter </strong> of the two stars we have 
+detected with the Gaia catalog position. This is computed using the 
+relative brightness of the two components.<p>The relative brightness also provides the magnitudes of 
+the two components, which are required for publishing the double star discovery. 
+This step of publishing will be discussed later. However publication is 
+essential in order for the double star discovery to be incorporated the Washington Double Star catalog 
+(WDS), and/or the 4th Interferometric Catalog. 
+<p>The process of determining the relative brightness is quite straight-forward. 
+The process does not rely upon or use any magnitude values generating 
+by current light curve analysis software. Rather it is simply based on the 
+relative light-level changes that occur for the two stars. The required light 
+levels might be obtained fro a light curve measuring tool. But equally valid 
+values can be obtained by displaying the light curve on the computer monitor, 
+and holding an ordinary ruler against the monitor to measure the height of the 
+light level changes.&nbsp;<p>The 
+brightness ratio that is required is simply the ratio of the light curve drops at either the D or the 
+R. Preferably you measure this at both the D and R, and then average the two 
+values. In this process, there is no issue about whether or not the light curve 
+drops to zero light level. It is simply the ratio's of the light curve drops.<h4>&nbsp;An 
+example to illustrate the process:</h4>
+<p class="auto-style8">Assume the 
+following light curve levels: before the event&nbsp;1340; at the step on the D&nbsp; 870, 
+at bottom of the D 600, at bottom of the R&nbsp; 580, step on rise of R 1100, 
+full light at R 1390. Identifying the brighter component as A, and the fainter 
+as B<ul class="auto-style9">
+	<li>The light drops at D are 1340-870 = 470, and 870-600 = 270. Sequence 
+	is A-B</li>
+	<li>The light rises at R are 1100-580 = 520, and 1390-1100 = 280. 
+	Sequence is A-B</li>
+</ul>
+<p class="auto-style8">So overall the sequence is A-B-A-B. The D and R for the bright star 
+correspond to the first drop and the first rise.<p class="auto-style8">There are 
+two fully equivalent ways you can 
+enter these results into the first panel of the Double Star panel:<ul class="auto-style9">
+	<li>Brightness 
+ratio at D is 470/270 = 1.70. Brightness ratio at R is 520/280 = 1.90. The 
+	average Average is 1.8. Enter 
+this in the top box in the 2nd column. This will set corresponding values in the 
+boxes in the first column, with the top box always being 100. The two boxes in 
+the right column will display the magnitudes of the two components.</li>
+	<li>Sum the height values for the A star, and for the B star.&nbsp; That is 
+	470+520 = 990, and&nbsp; 270 + 280 = 550. Enter 990 into the top box in the 
+	left column, and 550 into the bottom box in the left column. The top box in the center column will display the 
+ratio (which will be 1.90). The two boxes in the right column will display the magnitudes of the two 
+components. <span class="auto-style7"><strong>NOTE</strong></span>:
+	<span class="auto-style7"><em>the value that is saved is the ratio (top box 
+	in the middle column). The values you might have entered in the left column 
+	are not saved. When the event is re-opened, the values in the left column 
+	will have 100 in the top box, and the corresponding ratio value in the 
+	bottom box.</em></span></li>
+</ul>
+<p class="auto-style8">If you only have values from one 
+of the D or R, you use just those values in these steps.<p class="auto-style8">
+Usually the 'A' star will be the brighter component, and the ratio will be 
+greater than 1. However in the 2-solution situation, the A star might need to be 
+the fainter component. In this situation, the ratio will be less than 1.<p class="auto-style8">
+The form also requests an entry for the uncertainty in the ratio value. This 
+flows through to an additional uncertainty in the reported astrometry.<p class="auto-style8">
+The displayed magnitudes are derived using the ratio value, and the star 
+magnitude as listed on the Observation Editor form in the star details.<p>&nbsp; 
+<p>Normally the identification of the components of a double star has the 
+fainter star as the 2nd star. However, for a single-chord detection of a double 
+star has the length of one component aligning with the center of the asteroid,
+<strong>Solution methodology- Scenario 2</strong> (see below) is enlivened - as 
+there is only one location to place that chord - leading to two solutions rather 
+than 4. This requires specifying the component responsible for that chord as the 
+primary star, even if it is the fainter of the two components. When the primary 
+star is fainter than the companion star, the Brightness ratio remains as 
+Brightness drop of the main star / brightness drop of the 2nd star, which will 
+be less than 1. This ensures the reported astrometric position is appropriately 
+located between the locations of the two components.<h3>&nbsp;
+</a>One component only events</h3>
+<p>The light settings are set as described above, with the following settings:<ul>
+	<li>Measure the light drop of the occulted star - and enter that for the 
+	Main star</li>
+	<li>Measure the light drop from the bottom of the light curve drop to the 
+	expected drop level for the occultation. Enter that as the 2nd star<a id="SolutionType"></li>
+</ul>
+<h2>Step 2. Select the 
+solution type</h2>
+<p>This selection is critical to deriving the double star solution(s). The 
+critical underlying issue is: 
+<p class="auto-style8"><span class="auto-style7"><em>for each component, do I 
+know which side of the asteroid the corresponding chords passed</em></span>.<p>
+To determine this:<ul>
+	<li>In the <span class="auto-style7"><strong>Double stars - show</strong></span> 
+	box, select <strong>Primary</strong>. This will display the chords for the 
+	main star. Looking at those chords, and having regard to the uncertainties 
+	at the D and R, can you be certain that those chords must have been located 
+	on one particular side of the asteroid. If you are certain that this is the 
+	case, you have established that there will be only one solution for the 
+	location of that component relative to the asteroid. Otherwise there can be 
+	two solutions.</li>
+	<li>Repeat this, using <span class="auto-style7"><strong>Double stars - show</strong></span> 
+	box, select Secondary. Ask the same question - are the chords limited to 
+	being on one side only of the asteroid (one solution), or can they be on 
+	either side (2 solutions).</li>
+</ul>
+<p>In making these assessments, it is important to remember the effect of Miss 
+chords. The presence of a miss chord near a positive chord will likely limit the 
+location of the chord to one side of the asteroid (&amp; hence just one solution) - 
+on the basis that if the chord was on the other side, the Miss chord should have 
+recorded a positive event. However to use the Miss event in this manner, you 
+need to be confident that an event would be apparent in that light curve had an 
+event occurred.(which is not always the case). </p>
+<p>This assessment leads to the solution type to be followed for the event. The 
+three options are:</p>
+<ol>
+	<li><strong>One solution.</strong> This applies where you can be certain 
+	about which side of the asteroid each star passed. That is, you can 
+	individually locate the chords of the main star, and separately the 
+	companion star, against the asteroid. This situation leads to a single 
+	solution with (usually) it being possible to do an automatic solution 
+	involving both sets of chords, to set the best fit for all parameters.</li>
+	<li><strong>Two solution</strong>. This applies when you can be certain 
+	about which side of the asteroid one component passed, but not the other 
+	component. This enables a unique location for the chords of one component, 
+	and two locations (one on each side of the asteroid) for the other component 
+	- leading to two solutions.<br>There are two important issues associated 
+	with this situation.<ol class="auto-style11">
+		<li>The astrometric solution needs to be based on the component where we 
+		are certain about which side of the asteroid it passed. This will often 
+		be the fainter of the components. In this situation, you need to go to 
+		the main part of the observations editor, and change the observation 
+		settings for each observer so that the '2nd star' box is clear for the 
+		component where the location is certain, and 2nd star is set for the 
+		component where the location is uncertain - irrespective of which is the 
+		brighter component.&nbsp; And if the consequential '2nd star' is 
+		brighter than the main star, the relative brightness ratio in step one 
+		will consequentially be less than 1.</li>
+		<li>If the chord(s) for the '2nd star' are similar to, or greater than, 
+		the asteroid's expected diameter, that fact alone constrains that chord 
+		to being aligned with the center of the asteroid. As a result, instead 
+		of there being two solutions for the location of the 2nd star, there is 
+		in effect only one solution. In this situation, use the <strong>One 
+		solution</strong> option.</li>
+	</ol>
+	</li>
+	<li><strong>Four-solution.</strong> This applies when there is uncertainty 
+	in the location of both components relative to the asteroid. Most commonly 
+	this arises with events observed by a single observer. With both locations 
+	being uncertain, there are 4 possible solutions.<br>There are two important 
+	issues associated with this situation.<ol class="auto-style11">
+		<li>The astrometric solution has to have regard to the uncertainty in 
+		the location of both components. To this end, a separate setting <strong>
+		<em>Set Offsets</em></strong> is required, as described below.</li>
+		<li>If the chord(s) for one of the components is similar to, or greater 
+		than, the asteroid's expected diameter, that fact alone constrains that 
+		chord to being aligned with the center of the asteroid. As a result, 
+		instead of there being two solutions for the location of the <strong>2nd 
+		star</strong>, there is in effect only one solution. However there 
+		remains two solutions for the other component. In this situation, use 
+		the Two<strong> solution</strong> option, with the component with the 
+		chord greater than the asteroid diameter being the main component, and 
+		the other component being the <strong>2nd star</strong> component - irrespective of their 
+		magnitudes.</li>
+	</ol>
+	</li>
+</ol>
+<p>Having decided the solution to be used, select that solution type. This will 
+limit the options available in the <strong>Set Solution</strong> box to those 
+which are relevant to the solution type. Also, when four-solution is selected, 
+the Solve Solution box will include an extra group of elements that are specific 
+to this solution type. </p>
+<p>Note that unless the event is a '<strong>One component only</strong>' event, 
+the <strong>One component only</strong> solution type is disabled</p>
+<h3 class="auto-style7">One component only</h3>
+<p>Where the occultation is of only one component of a double star (which is 
+determined by the magnitude drop not being as deep as expected). This situation 
+requires all +'ve chords to have the reduced drop.&nbsp; </p>
+<ul>
+	<li>The event Qualifier of Companion (2nd) star must be checked for all 
+	positive events.</li>
+	<li>The Double Star solution form will<ul>
+		<li>Set the solution type to One component only. All other solutions are 
+		disabled.</li>
+		<li>set a separation equal to 33% of the apparent angular diameter of 
+		the asteroid, using its nominal diameter. This value represents the 
+		approximate minimum separation of the components. The maximum separation 
+		is unknown</li>
+		<li>set a PA for the component, between 0 and 180 deg</li>
+	</ul>
+	</li>
+</ul>
+<a id="SelectSolution">
+<h2>Step 3. Select the solution to be solved</h2>
+<p>This group is used to select, within the number of possible solutions, the 
+solution that is to be displayed and/or solved. Each option has a background 
+color, and the controls in the Solve solution group have the same color as the 
+selected solution.</p>
+<p>Under each option, the current solution for that option is displayed</p>
+<p>Solution options for solutions greater than the selected solution type are 
+disabled, and the solution parameters under those options are set to&nbsp;
+<span class="auto-style2">-.-°</span></p>
+<p>&nbsp;</p>
+<a id="Solve1">
+<h2>Step 4. Determine the Separation and PA for the selected solution</h2>
+<h3>Preliminary explanation</h3>
+<p>Underlying the three solution types is the issue of relating the over-all 
+position of the asteroid relative to the star. The issue is that usually our 
+double star discoveries relate to stars which have not been resolved by Gaia - 
+which means the Gaia position is of the photocenter of the two components, not 
+just one component.</p>
+<p>Where the chords of both components of the star relative to the asteroid are 
+well defined, the&nbsp; position of the asteroid relative to the photocenter of 
+the stars is a simple proportion based on the relative brightness of the stars</p>
+<p>Where the chords&nbsp;of only one component of the star is well defined, the 
+position of the asteroid relative to the photocenter is a proportioning between 
+the position relative to the 'known' component, and the average of the two 
+solutions determined by the fit of the other chords.</p>
+<p>Where the positioning of the chords of both components are not well-defined, 
+the astrometry is an average of all the solutions. This average is determined by 
+first deriving the location of the average position for one component (which is 
+achieved by a function referred to below as <strong>Component 1</strong>). The
+<a id="Solve18">
+position of the asteroid relative to the photocenter is a proportioning between 
+this average position for the first component, and the average of the two 
+positions of the other component relative to this average position for the first 
+component.
+</p>
+<h2 class="auto-style15">
+<a id="Solve10">
+Step 4a.</a>&nbsp; Solution methodology -&nbsp; one solution events</h2>
+<ul type = a>
+	<li>
+	Using the <span class="auto-style7">Double stars - show group</span>, display just the primary events. Make sure the boxes for solving for PA and 
+Separation at the bottom of the <span class="auto-style7">Double star solution
+	</span>panel are not checked. Then use the usual automatic solve button at 
+	the top of the Plot form to generate an asteroid ellipse that fits those 
+	chords.
+	<li>
+<a id="Solve9">
+	Using the <span class="auto-style7">Double stars - show group</span>, display
+	</a>just the secondary events. This step is best done with the Menu item
+	<a id="Steps0"><span class="auto-style10"><strong>Plot options... Align 
+	primary and secondary star events</strong></span><strong> </strong>set to 
+	True</a>. In the Solve solution group, set the check boxes for solving for the PA and separation. Now align the 
+	the 2nd star events with the ellipse that was determined in step (a). Typically you 
+	would start off manually setting a PA and separation to get the 2nd star 
+	events in the approximate position. Then&nbsp; click the Automatic solve 
+	button that is located in the Solve solution group. <img Align=Middle Src="Asteroid%20Observations%20-%20DoublesAutoSolve.png"width="30">&nbsp; 
+	Multiple clicks will be required, and you can watch the 2nd star chords move 
+	to match the ellipse that has been fitted to the main star chords. before doing an automatic fit. Typically you 
+	will not get a perfect fit of the ellipse to the secondary events, because 
+	they occurred at different points around the asteroid limb.<li>The next step is to display both ellipses, and both sets of events, to check 
+that the allocation of events as between the primary and secondary is correct. 
+	This is best done with the Menu item <a id="Steps1">
+	<span class="auto-style10"><strong>Plot options... Align primary and 
+	secondary star events</strong></span><strong> </strong>set to</a> False. 
+	This will show two ellipses displaced by the set separation and PA, and you 
+	will be able to identify where the limbs of those ellipses crosses the 
+	chords of each observer. This can be particularly important in situations where 
+	it would be expected that an observer would have seen events for both 
+	components, but only one was reported - as you can associate that one event 
+	with the correct ellipse/component. 
+Also watch out for situations where the observer has reported what is in effect 
+a mid-time for a combined primary &amp; secondary event; such observations need to 
+be excluded from the solution (by zero-weighting them) - as they do not 
+represent either the primary event or the secondary event (and therefore would 
+distort the solution of either).
+	<li>Once you are satisfied that the observations have been correctly attributed 
+to the relevant components, you can proceed to the final solution. There are two 
+approaches to the final solution:<ul type = i>
+<li>It is usually appropriate to combine all the observations into a single 
+least squares solution using the  <img Align=Middle Src="Asteroid%20Observations%20-%20DoublesNormalAutoSolve.png"width="30"> 
+Automatic solve button. This has the advantage of combining the observations of 
+both components to derive the shape and location of the asteroid. When doing 
+this, select (as usual) as many of the 7 parameters (X &amp; Y of position, major &amp; 
+minor axes, orientation of ellipse, PA and separation of the double star) that 
+result in a convergent solution. <li>Occasionally the number of observations of 
+		the 2nd star can be insufficient to allow a least-squares solution for 
+		all 7 parameters to be solved. When this occurs, simply repeat step (b) 
+		above to derive the separation and PA of the 2nd star.&nbsp; 
+		<li>Note that if there 
+is only one chord for the secondary star, you should be proceeding under the 
+		2-solution approach.</ul>
+	</ul>
+
+<a id="Solve2">
+<h2>
+<a id="Solve11">
+<span class="auto-style15">
+<a id="Solve12">
+Step 4b.</a>&nbsp; Solution methodology -&nbsp; two solution events</span></a></h2>
+<ul type = a class="auto-style9">
+	<li>Set the <strong>Solution</strong> under <strong>Step 3</strong> to <strong>#1</strong>. 
+	<span class="auto-style7"><strong>Make sure the 
+	the star for which the chords can be positioned on a 
+	particular side of the asteroid is set to be the 'main' star </strong>
+	</span>.<em> <span class="auto-style13">If it is the fainter star of the pair, make 
+	sure the identification of the events by the observers has the brighter star 
+	set as the 2nd star, and the fainter star has the '2nd star' unchecked.</span></em>
+	<span class="auto-style2"><strong>This 
+	approach is essential for deriving the astrometry from the observation.</strong></span><li>Display just the primary events. 
+<a id="Solve15">
+	Make sure the boxes for solving for PA and Separation at the bottom of the <span class="auto-style7">Double star solution
+	</span>panel are clear (that is, not checked). Then use the usual  <img Align=Middle Src="Asteroid%20Observations%20-%20DoublesNormalAutoSolve.png"width="30"> 
+	Automatic solve button at 
+	the top of the Plot form to generate a fit to those 
+	chords in the usual manner. </a>This may vary from fitting a circle of the 
+	assumed diameter to a small number of chords, to doing a full ellipse fit 
+	solution. 
+	<li>Display just the secondary event(s). Check t<a id="Solve16">he boxes for 
+	solving for PA and Separation at the bottom of the <span class="auto-style7">Double star solution
+	</span>panel.</a>&nbsp;Use the Automatic solve button that is located in 
+	the Solve solution group <img Align=Middle Src="Asteroid%20Observations%20-%20DoublesAutoSolve.png"width="30">&nbsp; 
+	to align the 2nd star events to one side of the ellipse determined under (b) Typically you 
+should start off manually adjusting the PA and separation until you get the 
+ellipse in the approximate position before doing an automatic fit. This gives 
+	you the first solution.<br><span class="auto-style2"><em><strong>If at this step you 
+	find that the 2nd star chord(s) can only be located at the widest part of 
+	the asteroid, the position of that chord(s) is constrained by that fact. In 
+	this situation, change the solution type (Step 2) to One Solution, and 
+	proceed under Step 4a.</strong></em></span><li>Set the <strong>Solution</strong> under 
+	<strong>Step 3</strong> to
+	<strong>#2</strong>.<li>By adjusting the separation and PA,
+	move the location of the 2nd star event chord(s) to 'the other side' of the 
+	asteroid ellipse. Usually this can be achieved by simply adding or 
+	subtracting 180 from the PA.<li>repeat step (c) above for the re-located chord.&nbsp; 
+	If it moves to the solution found at (c), move the chords further away from 
+	the center of the asteroid, on the side where the chords need to fit. Once 
+	the chord(s) has been fitted, the second solution has been found.<li>If you 
+	go to the <strong>Set Soln</strong> box - alternatively clicking the <strong>#1</strong> &amp; 
+	<strong>#2</strong> buttons will 
+	display the two solutions</ul>
+<a id="Solve4">
+For two-solution events, the chord(s) from the 2nd star events are incapable of improving the profile 
+	of the asteroid. As a result, <span class="auto-style2"><em><strong>do not use t</strong></em></span><span class="auto-style2"><a id="Solve17"><em><strong>he 
+usual  <img Align=Middle Src="Asteroid%20Observations%20-%20DoublesNormalAutoSolve.png"width="30"> 
+Automatic solve button at the top of the Plot form</strong></em></a><em><strong> when the plot is 
+set to show both stars</strong></em></span>. If used, the results will not be improved 
+- and in some circumstances its use would seriously degrade the solution</a>.<h2>
+<a id="Solve13">
+<span class="auto-style15">
+<a id="Solve14">
+Step 4c.</a>&nbsp; Solution methodology -&nbsp; four solution events</span></a></h2>
+<p>This scenario most frequently arises when there is only one observed chord - 
+with the observer recording stepped events. It also arises with two or more 
+closely-spaced chords, or two or more chords with large uncertainties. It is more complicated than (1) and (2), in that the location of 
+the center of the asteroid relative to the chords of each of the two components 
+is not uniquely defined. As a result, the astrometric solution involves an 
+average of the positioning of the chords for one component, AND an average of 
+the positioning of the chords for the other component.
+<a id="Solve19">
+The <a id="Solve20">
+position of the asteroid relative to the photocenter is derived as a 
+proportioning between </a>t</a>he average positions of both components. The methodology is:</p>
+<ul type = a>
+	<li>Preliminary step. You will need to access the usual controls for fitting 
+	a circle or ellipse to a chord. When the <strong>Set Chords</strong> button 
+	is clicked, the double star solution form will be disabled, and you will not 
+	be able to move it. So move it to a location where it does not cover the 
+	usual controls you need to fit the chords.<li>If the <strong>Set Chords</strong> button is 
+	flashing, you have not set the chords. In this situation you will not be 
+	able to set the separation and position angle, or do any other solving, 
+	until you have set the chords. If its not flashing, the chords have been 
+	previously set; you can re-do those chords by clicking the <strong>Set 
+	Chords </strong>button.<li>Click the <strong>Set chords </strong>button. This will bring up a form that looks like:<br>
+	<br>
+	<img Align=Middle Src="Asteroid%20Observations%20-%20DoublesOffsets.png" width="300"><br>When this form is displayed:<br><ul><li>the<strong> 
+	Double Star solution</strong> panel is disabled; </li><br><li>the autosolve check boxes 
+		at the bottom of that panel are cleared;</li><br><li>the <strong>Double star - show</strong> group 
+	is disabled - but with it set to show the primary (main) star;</li> and<br><li>
+		in the <strong>Find best fit</strong> group at the top right of the plot 
+		for, the check boxes for <strong>X</strong>, <strong>Y</strong> and<strong> Circular</strong> 
+		are checked, and the check box for <strong>Major Axis</strong> is cleared</li></ul><li>Usually there is no basis to treat the asteroid as 
+	being anything other than circular, and leave the check box for <strong>
+	Circular</strong> set. For the asteroid's diameter, you would normally you 
+	would use the usual '<strong>Assumed diameter</strong> of the asteroid - and 
+	have that check box set. <li>
+	On the Plot form, use the usual processes to fit the observed chord 
+	to the upper (northern) half of the asteroid. Then on the<strong> Set 
+	double-star offsets</strong> form, click the button <strong>North chord</strong>.<li>
+	Repeat step e, fitting the chord to the lower (southern) half of the 
+	asteroid. Then on the<strong> Set double-star offsets</strong> form, click 
+	the button <strong>South chord</strong>. 
+	<li>Now click the <strong>Set the Offsets and Close </strong>button. This will<ul type = a>
+		<li>combine the data from (e) and (f), and transfer the required values 
+		to the<strong> Set double-star offsets</strong> form - where they are 
+		displayed in two boxes at the bottom of the <strong>Solve Solution</strong> 
+		group. The values in those boxes are color coded to match the color 
+		coding in the <strong>Set Soln</strong> group.<li>clear the check boxes for 
+		<strong>Center X</strong>, <strong>Center Y</strong> and <strong>Major Axis 
+		(km).</strong> <span class="auto-style2"><em><strong>Do not check those 
+		boxes.</strong></em></span><li>enable the <strong>Double star - show</strong> 
+		group,&nbsp; with it set to show the 2nd star;</li><li>in the <strong>
+		Solve Solution</strong> group, set the check boxes for <strong>Sepn
+		</strong>and <strong>PA</strong>; and</ul>
+	Clicking between the 4 possible solutions should result in the asteroid 
+	circle moving, but always fitting the primary star chords.<li>Select the solution radio-button to be for
+	<strong>Solution #1 </strong>Adjust the PA and Sep controls to fit that 
+	chord(s) to the asteroid circle. <span class="auto-style2"><strong><em>DO NOT ADJUST THE POSITION OR SIZE OF THE 
+	ASTEROID ITSELF</em></strong></span>!&nbsp; When you are near to a fit,&nbsp; 
+	use the Automatic solve button that is located in the <strong>Solve solution</strong> 
+	group <img Align=Middle Src="Asteroid%20Observations%20-%20DoublesAutoSolve.png"width="30">&nbsp; 
+	to complete the fit. You have now made the first solution.<li>Select the solution radio-button to be for
+	<strong>Solution #2</strong>. The asteroid circle should<strong> not</strong> 
+	have moved in location. As in (h), adjust the PA and separation of the companion star
+	<span class="auto-style7">so that the chord passes on the other side of the asteroid to the chord of 
+	the first fit.</span> Once you have fitted 
+	this chord, you have obtained the 2nd solution.<li>Select the solution radio-button to be for
+	<strong>Solution #3</strong>. This will result in the location of the 
+	asteroid circle moving to be consistent with the 'other' possible 
+	location of the primary star chord. Again, and without adjusting the 
+	positions and size of the asteroid itself , adjust the PA and Sep controls 
+	to fit that chord(s) to the asteroid circle. Once you have fitted this 
+	chord, you have obtained the 3rd solution.<li>Select the solution radio-button to be for
+	<strong>Solution #4</strong>. Repeat step (j) in respect of this circle 
+	location and&nbsp; chord. Once you have fitted this chord, you have obtained 
+	the 4th solution.</ul>
+<p>This completes the solution for four-solution events. You can display the 
+chord locations for the four solutions by firstly setting the <strong>Double star - show</strong> 
+group to display both components. Then simply click the relevant button in the
+<strong>Set Soln </strong>group. Also, the Separation and PA for the solutions 
+are displayed under each button.</p>
+<a id="Solve1Only">
+<h2 class="auto-style18">Step 4d.</a>&nbsp; Solution methodology -&nbsp; one component only</h2>
+
+<p>In this scenario,
+the separation an position angle are automatically set. The separation is set at 
+67% of the asteroid's nominal radius (in mas), and the PA is set as a normal to 
+the chords - within the range of 0 to 180 degrees. These settings cannot be 
+changed.
+</p>
+<p>The separation setting is used to report a separation distance that is <em>
+greater</em> than the specified value. The separation is set to less than the asteroid's radius, in consideration of 
+the location of the chord relative to the center of the asteroid is not well 
+defined, and the unseen companion could be on either side of the asteroid. 
+Similarly, the PA is used to report an approximate PA of the companion (with a 
+180 deg ambiguity). The PA is set to be normal to the chords; if the actual PA 
+was in the direction of the chords, occultations of both components would be 
+expected. While the value appears on the form as a precise value, the reported 
+parameters for the star has thew PA rounded to the nearest 10 deg.</p>
+<h2>Step 5&nbsp; Enter publication details</h2>
+<p>This is for reference, and administrator use. It is important that double 
+star discoveries are published, so that the double star gets entered into either 
+the Washington Double Star catalog, or the 6th Interferometric catalog. To 
+achieve this, the discovery MUST be published in a relevant journal, with USNO 
+specifying the Journal of Double Star Observations (<a href="https://doublestarsjournal.org/index.php/jdso">JDSO</a>) 
+is the most appropriate. Observations are submitted via
+<a href="https://doublestarsjournal.org/index.php/jdso/about/submissions">JDSO 
+submissions</a>. To do this, you must&nbsp;
+<a href="https://doublestarsjournal.org/index.php/jdso/login">Log in</a>. If 
+this is your first time, you will need to
+<a href="https://doublestarsjournal.org/index.php/jdso/user/register">Register</a>.</p>
+<p class="auto-style8">[<span class="auto-style10">Prior to 2025, the 
+organization was at</span><span class="auto-style7"> </span>
+<a href="http://www.jdso.org/">JDSO - old</a><span class="auto-style10">, with 
+volumes 1 to 20 of the journal being at </span>
+<a href="http://www.jdso.org/archives.xml">JDSO archive</a>
+<span class="auto-style10">- at least until they are moved to the new site.</span>]</p>
+<p>The details to be entered into the bottom of the form are (i) the date of 
+submission to the JDSO - so that this fact is recorded to prevent double 
+submissions; and (ii) when the publication occurs, to give a reference in the 
+JDSO of where is is published. As shown on the form above, that reference is 
+conveniently in the form of&nbsp; <span class="auto-style10">Volume, Issue, page</span>, 
+such as<span class="auto-style18"> <strong>Vol 6, #1, pg 90</strong></span></p>
+<p>The fields are set to Read Only, so that users can copy the data is required. 
+To edit those field, the user must have Administrator Settings set, so that they 
+can check the 'Edit' check box. The fields can be edited when they have a light 
+green color. They are read Only when they have a light red color.</p>
+<p>At this time, there is no automation of setting the data in these fields. The 
+data has to be set manually by whoever is processing the double star submissions.</p>
+<a id="Shapes">
+<h2>Effect of Shape models</h2>
+<p>The above processing solves the double star parameters - including 
+uncertainty values - on the basis of a fit to an ellipse. However there are 
+inherent limitations in the validity of the solution, given that asteroids are 
+typically irregular objects that at best approximate an elliptic profile.</p>
+<p>Where a shape model exists, a solution using a shape model can be derived for 
+one-solution or two-solution events - but not three-solution events. The approach is to follow the relevant 
+methodology. However instead of using the automatic fitting of the 
+chord to the ellipse, the user needs to manually fit the chords to the shape 
+model profile - and have some confidence that the diameter of the asteroid is 
+determined by the fit of the chords to the shape model.</p>
+<p>In many instances there will be more than one possible shape model. Occult 
+does not have the capability to retain double star solutions for each shape 
+model possibility. Where more than one shape model provides a reasonable fit to 
+the observed chords, the user needs to undertake an investigation of past 
+occultation results involving that asteroid - to determine which of the several 
+shape models is in fact the 'correct' shape model. Having done that, the double 
+star solution is derived using that shape model.</p>
+<h2>&nbsp;</h2>
+<h2>Saving/exporting/importing/deleting the double star solutions</h2>
+<p>The double star solution is saved/retained in the following ways:</p>
+<ul>
+	<li>If you are working with an individual file for an event, by saving that 
+	event after having made the solution(s)</li>
+	<li>If you are working with the <strong>Historical Observations</strong> file, by updating 
+	the event in that file</li>
+	<li>By exporting the event, using the<strong> Observations Editor</strong> menu item
+	<strong>Export/Import... Export all solutions for current event</strong></li>
+</ul>
+<p class="auto-style9"><span class="auto-style17">The export function allows 
+the double star solution to be maintained separate from any observations file. 
+In particular, it potentially allows for the task of solving for double star solutions to be 
+distributed, with the exported file being sent to whoever is maintaining a 
+central file for importing and adding to that central file. The format of the 
+exported double star solution file is set out </span>
+<a href="FileFormat%20AsteroidObservations.htm"><span class="auto-style17">at the end of here</span></a><span class="auto-style13"><span class="auto-style16">. The file name is 
+system-fixed (made up of asteroid number, name, event date, and 'Doubles'), with the file being located in the 
+</span> 
+<strong><span class="auto-style16">Occult 4</span></strong><span class="auto-style16">  subdirectory 
+</span> <strong><em><span class="auto-style16">Imports_Exports</span></em></strong><span class="auto-style16">. 
+</span> </p>
+<p class="auto-style9"><span class="auto-style16">The corollary to the Export function is the Import function, whereby double star solution(s) can be imported from a file located in the
+</span>
+<strong><em><span class="auto-style16">Import_Export</span></em></strong><span class="auto-style16"> directory. Import is from the 
+</span> <strong>
+<span class="auto-style16">Observations Editor</span></strong><span class="auto-style16"> using the menu item 
+</span> <strong><span class="auto-style16">Double 
+	Star... Import current-event double star solutions. </span> </strong></span>
+<span class="auto-style16"><span class="auto-style13">Occult will look for a file having the required system 
+name. If double star details are already present for the event, you will be 
+warned before import occurs. Note that an import will overwrite all double star 
+solutions currently in memory for that event.</span>&nbsp;</span></p>
+<p>The number of double star solutions is indicated in the box that has the 
+buttons for selecting a solution. You can view the details of the solutions from 
+the <strong>Observations Edito</strong>r, using the menu item <strong>Solutions... List current-event double star solutions</strong>.&nbsp; If you have 
+inadvertently created extra double star solutions over that which is 
+appropriate, you can delete these using the <strong>Observations editor</strong> 
+menu item <strong>Solutions... Delete current-event double star solution(s)</strong>. 
+Simply check the entries to be deleted, and click <strong>Delete</strong>.</p>
+<p></p>
+
+
+
+</BODY>
+</HTML>

@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Asteroid Results Overview</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1><A NAME="Asteroid Results Main"></A>Minor Planet Occultation Observations - Overview</H1>
+<!-- Insert Header in above line -->
+<h2>Add / Edit / Plot observed Asteroidal Occultations</h2>
+<P>This is the main function on this form. It provides an editor to record and analyze observations. Included is a file of historical observations - with over 1000 separate events.</P>
+
+The observations editor can make use of Asteroidal shape models which are available on DAMIT and ISAM web sites. However if either of those web sites is 'down', the functionality of the editor can become very slow. A tool is provided to establish whether those sites are currently on-line. The editor will only attempt to access the shape models if the relevant check box is ticked. [Note - if either DAMIT or ISAM is 'down', the check can take in excess of 20 seconds - and double this if both sites are down.] The result of that check is applied to all three locations where the check is provided.
+
+<H2>Analysis tools</h2>
+<h3> AOTA</h3>
+Asteroidal Occultation Timing Analyser. A tool for analysing a light curve as measured by either LiMovie or Tangra, detecting possible events, and deriving the event times and uncertainties.
+
+<h3>Star diameter analyser</h3>
+This is a tool for analysing multiple light curves from an occultation to derive the diameter of the occulted star.
+
+<h3>Light curve simulator</h3>
+A tool to derive a 'theoretical' light curve taking into account the star's apparent diameter. The simulator allows the user to draw an asteroid shape, and plot the star path anywhere across the asteroid.
+
+<h2>Light curves</h2>
+<h3>Report</h3>
+A tool for reporting the light curve of an asteroidal occultation. [The tool for reporting the light curve from a lunar occultation is part of the Lunar Occultation Observations Editor]
+<h3>View</h3>
+A tool for viewing past light curves held in Occult. It also allows you to view light curves you have prepared but not yet submitted.
+
+
+<h2><br>Summary Lists</h2>
+<h3>Observed diameters</h3>
+<p>Displays a list of diameters of asteroids determined from asteroid occultations. The information provided is:<ul>
+<li>Asteroid number and name</li>
+<li>Major axis and uncertainty</li>
+<li>Minor axis and uncertainty</li>
+<li>Observed PA of the major axis</li>
+<li>Quality of the fit. 3 = Excellent; 2 = good; 1 = poor</li>
+<li>Date of the event</li>
+</ul></p>
+<p>The solution assumes that the shape of the asteroid can be approximated by a tri-axial ellipse. The derived diameters are not the axes of that ellipse, but of the projected outline of the ellipse. </p><p>The list can be sorted by a number of fields, to better display the information.</p>
+
+<h3>Double Star discoveries</h3>
+<p>Displays the details of all close double stars derived from asteroid occultations - most of which are new discoveries. The information provided is<ul>
+<li>Star identifier</li>
+<li>Separation, and formal uncertainty, in milli-arcseconds</li>
+<li>PA, and uncertainty</li>
+<li>Date of the observation</li>
+<li>Asteroid involved in the occultation</li>
+</ul></p>
+
+<h3>Derived asteroid positions</h3>
+<p>Displays a list of astrometric positions derived from asteroid occultations. The positions are given as offsets from the star. The information provided is:</p><ul>
+<li>Asteroid number and name</li>
+<li>Time of geocentric closest approach, and uncertainty. Reporting precision is 0.01 seconds</li>
+<li>Geocentric separation from the star at closest approach, and uncertainty. Reporting precision is 0.0001"</li>
+<li>PA of the asteroid relative to the star at minimum separation. Reporting precision 0.001 deg</li>
+<li>RA and Dec of the star, J2000, corrected for proper motion to the event date, and for parallax when known.</li>
+<li>Source catalogue for the positions (Hip = Hipparcos, U2 = 2UCAC, Ty2 = Tycho2)</li>
+<li>Number of occultation chords used to derive the position.</li>
+</ul>
+
+<h3>Events involving distant asteroids</h3>
+<p>Displays a list of occultations where the heliocentric distance of the asteroid at the time of the occultation was greater than 4 AU.</p>
+
+<h3>Generate Graphics files for Many events</h3>
+<p>Automatically generate a graphic of all occultations where there has been a fit of an ellipse to the observed chords.</p>
+
+<h3>Observations by an observer</h3>
+<p>Provides a utility to identify all events observed by an observer. Operates by specifying a search string (no wild cards), and identifying all events containing that string in the field that specifies the observer's name and location.</p>
+
+
+
+<h2><br>Maintain observations file</h2>
+<p>The set of functions given here are maintenance functions for the file of historical observations. Most users will have no need to use them</p>
+
+<h3>Sort observations file</h3>
+<p>New observations added to the historical file are added sequentially to the end of the file. This function sorts the historical file into date order.</p>
+
+<h3>List events on same day, by same asteroid</h3>
+<p>This function is used to identify duplicate entries in the historical file. 
+To function, the file must have been sorted into date order. Note that there are several instances where an asteroid has occulted two different stars on the same day. Also there is one instance (as at 2007) of a double asteroid occulting a star. Potential duplicate entries are marked with an asterisk.</p>
+
+<h3>Re-index Observations file</h3>
+<p>Occult maintains an index of observations in the file. This function re-creates that index. In normal use, this function should not be required.</p>
+
+<h3>List poor star positions</h3>
+<p>This option generates a list of events where there might be a problem with the star position.</p>
+
+<h3>Run data validity check on Historical file</h3>
+<p>[<I>For Administrator use</I>] This option creates a file that contains all data lines from the Observations file where data elements fall outside the valid range for that item. Each line is preceded by a line that contains the event identification, and tags to identify the field(s) that is outside range. The file created is called <B>AsteroidObservations.val</B>, and is located in the Resource Files directory. </p>
+
+<h1><br>'Official' reports  [For administrator use only]</h1>
+<p>This set of routines is used in association with reporting and archiving asteroid observations. They are NOT for general use.</p>
+
+<h3>Make short MPC report</h3>
+<p>Generates a report of astrometric positions for submission to the Minor Planet Center, together with a list of observer names. <A href="Asteroid%20results%20-%20create%20MPC%20report.htm" >details</a> </p>
+
+<h3>Add MPC details</h3>
+<p>Once the Minor Planet Center has published the observations (in the Minor Planet Circulars Supplement) and the observation summary (in the Minor Planet Circulars), this option is run to add the Minor Planet Circular number, and publication date, to the file of historical observations. <A href="Asteroid%20results%20-%20set%20MPC%20details.htm" >Details</a> 
+<p><B>Important</B>. Make sure you select the correct report for running this function - to avoid placing the MPC number and date against the wrong events. It might be appropriate to rename the file (with a leading '_', for example) after the update has been run - to prevent the file from being listed for selection.
+
+<h3>eMail report</h3>
+<p>This provides functionality to email the 'short MPC report' to the Minor Planet Center in a plain-text format.</p>
+
+<h3>Make MPC report [new format]</h3>
+<p>The Minor Planet Center is slowly changing its systems to use a new report format. This option creates the MPC report in accordance with the 'new' format. This format is not yet operations at the MPC [Feb 2008]</p>
+
+<h3>NASA PDS Archive files</h3>
+<p>The historical file of observations is annually archived in NASA's Planetary Data System - small bodies node. This option creates the files needed for the archive. The files are created in the directory  Occult 4\Asteroids\Results\PDS Files
+<p>The PDS system also archives the graphic representations of events. these can be generated using the <A href="Asteroid%20Results%20-%20Asteroid%20profiles%20-%20plot%20all.htm"><B><I>Generate Graphics files for Many events</I></B> </a> option.  The files are created in a user-specified directory.
+
+<p>The archive can accessed  at <A HREF="http://www.psi.edu/pds/resource/occ.html"  target=_blank> PDS Occultation archive</A>
+
+</p>
+
+
+
+
+</BODY>
+</HTML>

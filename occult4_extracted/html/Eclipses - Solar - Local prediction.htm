@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Solar eclipse - local prediction</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Solar eclipse - local prediction</H1>
+
+<p>To generate a prediction enter the site co-ordinates at the top of the form. Longitude (in degrees and decimal minutes) east of Greenwich, Latitude (in degrees and decimal minutes), and 
+Altitude. Optionally, specify the site name to appear at the top of the predictions.
+
+<p>If the LOLA lunar limb database is installed, a check box <B>Apply limb corrections & include Baily Beads times </B>is enabled, to control whether or ot the limb corrections are applied.
+
+<p>Having entered the co-ordinates, generate the prediction with the menu item <B>Compute prediction</B>.  If limb corrections are being applied, a scroll bar will indicate progress in generating the lunar profile. Once generated, that profile is used for any sites that are located within 2 degrees of that initial location; otherwise a new lunar limb will be generated.
+
+<p>You can move to the forms for generating multilocation prediction, the path coordinates, or the detailed map, using the menu item <B>Detailed predictions</B>.
+
+<p>You can generate and save the lunar limb for the currently set location under the menu item <B>Detailed predictions</B>. The file is saved in the <B>Predictions </B>subfolder, with a file name  of MoonLimb_yyyyMMMddLongxxxLatyyy.txt. The first two lines of the file give details of the date/time/location, and librations. Following are 360 lines for each degree in Axis angle, with each line having 100 values of the topocentric limb height at 0.01° in Axis angle and a height resolution of 0.01"
+
+<h2>Example prediction - with LOLA lunar limb installed</h2>
+<pre>S O L A R     E C L I P S E     P R E D I C T I O N   for 2017 Aug 21 
+                    Nashville
+ East Longitude - 86 48.60
+       Latitude   36  8.60
+       Altitude  0 m.
+
+         TT-UTC  68.2 secs    Prediction basis: DE430
+        UT1-UTC  -0.4 secs    &#916T [= TT-UT1]  68.6 secs
+
+Event               UTC       P.A.   alt.      Differential Corrections
+                  h  m  s       o      o          A       B       C
+First Contact    16 58 29     294     63         2.15   -0.71   -0.03
+Baily beads @2nd 18 27 15  
+Second Contact   18 27 26.2   167.1       
+Maximum Eclipse  18 28 23             64         2.06   -1.33    0.00
+Third Contact    18 29 14.9   253.6       
+Baily beads @3rd 18 29 26  
+Last Contact     19 54  2     114     53         1.59   -1.69    0.02
+ [2nd and 3rd contacts are based on the lunar limb derived from LRO LOLA]
+
+Magnitude of Maximum Eclipse 1.031
+
+
+At Maximum Eclipse
+Distance from Centre of eclipse   -0.006114     102.2   230.0    0.07
+             Shadow Radius   L2   -0.008114
+           Shadow movement    n    0.363613
+
+Planetary elongations
+Mercury 10° E    Venus 34° W    Mars 8° W    Jupiter 51° E    Saturn 112° E
+
+
+Differential Corrections:
+Units: for Contact Times - seconds; Distance - 0.000001
+A and B - per arc minute, C - per km in altitude</pre>
+
+<h2>Example prediction - no LOLA lunar limb</h2>
+
+
+<pre>S O L A R     E C L I P S E     P R E D I C T I O N   for 2017 Aug 21 
+                    Selected location
+ East Longitude - 86 48.60
+       Latitude   36  8.60
+       Altitude  0 m.
+
+         TT-UTC  68.2 secs    Prediction basis: DE430
+        UT1-UTC  -0.4 secs    &#916T [= TT-UT1]  68.6 secs
+
+Event               UTC       P.A.   alt.      Differential Corrections
+                  h  m  s       o      o          A       B       C
+First Contact    16 58 29     294     63         2.15   -0.71   -0.03
+Second Contact   18 27 30     163       
+Maximum Eclipse  18 28 23             64         2.06   -1.33    0.00
+Third Contact    18 29 15     245       
+Last Contact     19 54  2     114     53         1.59   -1.69    0.02
+
+Magnitude of Maximum Eclipse 1.031
+
+
+At Maximum Eclipse
+Distance from Centre of eclipse   -0.006114     102.2   230.0    0.07
+             Shadow Radius   L2   -0.008114
+           Shadow movement    n    0.363613
+
+Planetary elongations
+Mercury 10° E    Venus 34° W    Mars 8° W    Jupiter 51° E    Saturn 112° E
+
+
+Differential Corrections:
+Units: for Contact Times - seconds; Distance - 0.000001
+A and B - per arc minute, C - per km in altitude
+
+</pre>
+
+<h2>Explanation of the prediction</h2>
+
+<h3>Header</h3>
+<li>The header contains the site name and the co-ordinates that were used to generate the prediction.
+
+<li> The next block gives the value of the time corrections [TT-UTC and UT1-UTC, or deltaT for historic and far future eclipses] used to generate the predictions. The correction UT1-UTC is only given for events after about 1970, and for a maximum of 10 years into the future (where it is an estimate value). Also given is the uncertainty in the deltaT correction (if it is greater than 1 second).
+
+<h3>Event details:</h3><ul>
+<li>The UTC - at the start and end of partial eclipse, start and end of annular or total eclipse (if occurs at the site), and at maximum eclipse (providing the Sun is above the horizon at those times). If the event occurs on the day preceding or following the date of the prediction, a '-' or '+' (respectively) occurs immediately after the predicted time.
+
+<li>If the LOLA lunar limb is installed:<ul>
+<li>the times of 2nd and 3rd contacts are corrected to refer to the actual lunar limb, with the times being given to 0.1 secs.
+<li>two extra times are given: <B>Baily Beads @2nd</B>, and <B>Baily Beads @3rd</B>. These times give an indication of when Baily Beads should become prominent leading up to, and after, central eclipse. In the case of a broken annular eclipse (i.e. an eclipse that is intermediate between a fully annular eclipse, and a fully total eclipse). these times indicate the start and end of the broken annular phase.
+</ul>
+<li>The position angle of contact - at start and end of partial eclipse, and start and end of annular or total eclipse. When the LOLA lunar limb is available, the position angles correspond to the bottom of the valley, or the top of the mountain, that forms the relevant contact time - and is given to 0.01&#176.
+
+<li>The altitude of the sun - at start and end of partial eclipse, and at maximum eclipse;
+
+<li>Differential corrections to the times of start and end of partial eclipse, and of maximum eclipse. The differential corrections are in units of:<ul>
+A - seconds per arc-min change in longitude (+'ve to the east)<br>
+B - seconds per arc-min change in latitude (+'ve to the north)<br>
+C - seconds per 1-km change in altitude (+'ve up).</ul>
+
+<li>If sunrise or sunset occurs while the eclipse is in progress, an additional line will appear [at the beginning (for sunrise) or at the end (for sunset)] giving the UT of sunrise or sunset, and the magnitude of the partial eclipse at that time. For this purpose, sunrise/sunset is taken to occur when the refracted position of the CENTRE of the sun is on the horizon. [<B>Note</B>. The time of sunrise/sunset is imprecise because of the variable effects of refraction. Additionally, unless the sun is being viewed over the sea, the horizon will be affected by local geographic conditions.]
+
+<li>A block giving details for the time of <B>maximum eclipse</B>:<ul>
+<li>The distance from the centre of the path (in earth radii, in the Besselian plane), and differential corrections for that distance. [The differential co-ordinates are in units of 0.000001 Earth radii.]
+
+<li>A line giving the solar elongations of the planets.
+
+<li><I>If the site is no more than about 60 km outside the limits of the central eclipse path:</I><ul>
+<li>the radius of the central shadow (called L2); and
+<li>the rate of motion of the shadow (called n).</ul>
+
+<li>The magnitude of maximum eclipse.  [Note: The magnitude is computed as the fraction of the solar diameter that is obscured by the moon. During central eclipse, this value equals (diameter of moon / diameter of sun) - irrespective of location across the center path.]</ul>
+
+<li>The ephemeris used to generate the prediction. Outside the period 1600 - 2200, the prediction is based on DE200 [using VSOP87A for the Sun, and Chapront for the Moon]. Between 1600 and 2200, the prediction basis will depend on the JPL ephemeris that has been downloaded.</ul> 
+
+<h3>Using the Differential Corrections</h3>
+<p>The differential corrections allow for the prediction to be adjusted 'in the field' for changes in the observer's site location. <ul>
+<li>For event times, simply multiply A by the change in longitude from the prediction site (measured east, in arc-mins), B by the change in latitude from the prediction site (measured north, in arc-mins) and C by the change in altitude (in km). The sum of these three products is the correction in secs to the event time.
+<li>For the distance from the centre of the path, the process is the same.</ul>
+
+<p><I>For sites close to the central eclipse path, the times of second and third contacts can be computed using the following steps:</I><ul>
+<li>Compute the time of maximum eclipse for the site.
+<li>Compute the distance of the site from the centre of the eclipse - call that distance D.
+<li>If the magnitude of D is greater than L2, no central eclipse will occur. Proceed no further.
+<li>The correction (in seconds) to the time of maximum eclipse, to obtain the time of second and third contacts, is computed as:<br>
+3600 * SQR(L2*L2 - D*D) / n<br>
+Subtract this from the time of maximum eclipse to obtain the time of second contact; add to obtain the time of third contact.<br>
+Note that the eclipse is a total eclipse if L2 is -'ve, and an annular eclipse if L2 is +'ve.  </ul>
+
+<h3>Calculating the Baily Bead times</h3>
+The Baily Bead times correspond to the time of coincidence of the solar limb with circles circumscribing the top of the lunar mountains, and the bottom of the valleys. The mathematical approach for computing these times is the same as for the usual smooth-limb Besselian methodology for computing central eclipse contact times. 
+<p>The circle that circumscribes the bottom of the valleys, or the top of the mountains is generated as follows:<ul type=i>
+<li>locate the lowest point around the entire limb;
+<li>locate the lowest point within a range of ±70° of the point opposite the first point;
+<li>locate the lowest point within ±70° of the point intermediate the first two points – on the side with the greatest angular separation, and:
+<li>using standard expressions, determine the parameters of the circle that goes through those three points. </ul>
+Generally speaking, the two circles are non-concentric with each other, or the smooth-limb moon. In broken annular eclipses the Baily Beads time will usually be determined by the larger circle when the solar radius less than the mean lunar radius, and the inner circle when it is larger. However when the solar radius is very close to the mean lunar radius, it might be possible for one contact to be defined by one circle, and the other contact by the other circle. 
+<p>The Baily Beads time has particular relevance for broken annular eclipses. For the typical total or annular eclipse they give a general indication of when Baily Beads will be prominent – but not a precise time. [Baily beads can form at the end of the limb cusp many minutes before/after central eclipse.] In this sense the Baily Beads time does not have the intellectual satisfaction of relating to a precisely-defined observable phenomena – except in limiting cases of broken annular eclipse. While these times have clear relevance to broken annular eclipses, it remains to be seen whether eclipse observers will find these extra prediction times to be useful for annular and total eclipses.
+
+
+</BODY>
+</HTML>

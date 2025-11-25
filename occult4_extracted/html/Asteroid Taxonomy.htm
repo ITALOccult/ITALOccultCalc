@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Asteroid Taxonomic classes</Title>
+<style type="text/css">
+.auto-style1 {
+	border: 2px solid #000080;
+}
+.auto-style2 {
+	border: 1px solid #800000;
+}
+.st{line-height:1.4;word-wrap:break-word}.s .st em{color:#6a6a6a}em{font-weight:bold;font-style:normal}</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>AsteroidClasses.csv</H1>
+<P>This file contains the taxonomic classification of asteroids. This 
+classification can be used to filter searches and observations, and is displayed 
+on predictions. </P>
+<P><strong>NOTE: </strong>The file only contains numbered asteroids. That is, 
+Occult does not provide taxonomy for unnumbered asteroids.</P>
+<P>The file in Occult of taxonomic classes is created from the lists at the 
+Minor Planet Center web site, using the button on the Maintenance tab (under 
+Maintain certain data files) <strong>Download and create file of Asteroid 
+classes</strong>. This would generally be an administrator-type process, with 
+the resulting file uploaded to the IOTA web site for downloading via the usual
+<strong>General downloads</strong> button (under item #9). However users can 
+generate the file themselves if they so wish.</P>
+
+
+
+<p>The file <strong>AsteroidClasses.csv</strong> has the following structure:</p>
+<table class="auto-style1" style="width: 180">
+	<tr>
+		<td class="auto-style2" style="width: 117px">Asteroid number</td>
+		<td class="auto-style2" style="width: 29px">Class</td>
+	</tr>
+</table>
+<p>The possible values for the classes are:</p>
+<table class="auto-style1" style="width: 700">
+	<tr>
+		<td class="auto-style2" style="width: 98px"><strong>Class</strong></td>
+		<td class="auto-style2"><strong>Characteristic (from the Minor Planet 
+		Center)</strong></td>
+	</tr>
+	<tr>
+		<td class="auto-style2" style="width: 98px">Amor</td>
+		<td class="auto-style2">Amors have perihelion distances between 1.0 and 
+		1.3 AU</td>
+	</tr>
+	<tr>
+		<td class="auto-style2" style="width: 98px">Apollo</td>
+		<td class="auto-style2">Apollos have perihelion distances less than 1.0 
+		AU and semimajor axes greater than 1.0 AU</td>
+	</tr>
+	<tr>
+		<td class="auto-style2" style="width: 98px">Aten</td>
+		<td class="auto-style2">Atens have semimajor axes less than 1.0 AU</td>
+	</tr>
+	<tr>
+		<td class="auto-style2" style="width: 98px">Centaur</td>
+		<td class="auto-style2">Centaur objects have perihelia beyond the orbit 
+		of Jupiter and semimajor axes inside the orbit of Neptune</td>
+	</tr>
+	<tr>
+		<td class="auto-style2" style="width: 98px">Trojan</td>
+		<td class="auto-style2">Asteroids<span class="st" data-hveid="79" data-ved="0ahUKEwi-mpaBjKTZAhVGl5QKHcG2BxUQ4EUITzAD"> 
+		sharing an orbit with a planet, but which are located at the leading 
+		(L4) and trailing (L5) Lagrangian points (that is, 60° ahead or behind). 
+		Most Trojans are Jupiter Trojans (about 4800 as at 2018), but there are 
+		also 5 numbered Trojan asteroids for Mars, and two for Neptune.</span></td>
+	</tr>
+	<tr>
+		<td class="auto-style2" style="width: 98px">TNO</td>
+		<td class="auto-style2">Transneptunian objects (TNOs) have orbits with 
+		semimajor axes beyond the orbit of Neptune. Some of these objects, 
+		generally assumed to be in librations with Neptune, have perihelion 
+		distances inside the orbit of Neptune</td>
+	</tr>
+	<tr>
+		<td class="auto-style2" style="width: 98px">PHA</td>
+		<td class="auto-style2">Potentially Hazardous Asteroids. Objects with H 
+		brighter than or equal to V = 22.0 (equivalent to a diameter &gt;100m) and 
+		an Earth MOID (Minimum Orbit Intersection Distance) less than 0.05 AU. 
+		Look
+		<a href="https://en.wikipedia.org/wiki/Minimum_orbit_intersection_distance" target="_blank">
+		here</a> for an explanation of MOID</td>
+	</tr>
+</table>
+<p>&nbsp;</p>
+<p>The attribute PHA is always additional to another attribute (Amor, Apollo or 
+Aten), and is listed 
+like <strong>Apollo + PHA</strong></p>
+
+
+
+</BODY>
+</HTML>

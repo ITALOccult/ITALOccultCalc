@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Select objects</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Select objects for predictions</H1>
+<p align=center><img src="SetObjects.png">
+<P>The users can indicate whether the predictions should include:
+<li> Stars
+<li>Planets, or
+<li>Asteroids</P>
+Additionally the user can restrict the events to
+<li>Grazes only, and
+<li>Double stars only
+
+<p>Usually predictions would include both stars and planets.</p>
+<p>If you just wanted predictions of occultations of planets, you would just include planets.</p>
+<p>You can include asteroids in your predictions. But there are a number of issues:<ul type 1>
+<li>You must have edited the User file of asteroid orbital elements used for lunar occultation predictions to make available current orbital elements- see <a href="User%20Asteroids%20edit.htm">here</a>.
+<li>There are not many asteroids that are bright enough to be observed in lunar occultations. And while there is no limit on the number of asteroids that can be included, adding many asteroids will seriously slow the prediction process. You should generally keep the number of asteroids to a minimum - for example, less than 20 (or less than 10).
+<li>To generate a prediction, the orbit of the asteroid has to be integrated to the relevant date. This takes time, and requires access to files of (x,y,x) coordinates of the planets for the intervening period. If generating predictions for a date more than 5 years in the future, or in the past, you should exclude asteroids from the search - unless the prediction is specifically for an asteroid.
+</ul>
+
+<p>You can limit the output to just a list of graze messages. The primary purpose is to generate a list from which you can select events for more detailed predictions using the Grazes button. If you want to generate predictions for several of these grazes, you should consider copying the list to something like NotePad to refer to while generating the further predictions. 
+
+<p>You can limit the output to just a list double stars, to highlight high-priority events to observe.
+
+</BODY>
+</HTML>

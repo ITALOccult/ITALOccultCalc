@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Tab 6. Fourier plot</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<h2>AOTA Help topics</h2>
+<a href="AOTA%20Overview.htm">Overview and form layout</a><br><br>
+<a href="AOTA%20Read%20and%20integrate.htm">Tab 1. Read, Integrity, Set time, Bin and Normalise</a><br>
+<a href="AOTA%20Fourier.htm">Tab 2A. Fourier plot</a><br>
+<a href="AOTA%20Short.htm">Tab 2B. Short event check</a><br>
+<a href="AOTA%20Find%20events.htm">Tab 3. Find events</a><br>
+<a href="AOTA%20Select%20to%20analyse.htm">Tab 4. Select event to analyse</a><br>
+<a href="AOTA%20Analyse.htm">Tab 5. Analyse</a><br>
+<a href="AOTA%20FinalTimes.htm">Tab 6. Camera corrections, final results</a><br><br>
+<a href="AOTA%20Integrity.htm">Integrity check</a><br>
+<a href="AOTA%20Integration%20and%20binning.htm">Integration, binning & normalisation</a><br>
+<a href="AOTA%20Set%20time%20scale.htm">Set time scale</a><br>
+<a href="AOTA%20Verify.htm">Verify event times</a><br>
+<a href="AOTA%20VTI%20info.htm">VTI information</a><br><br>
+<a href="AOTA%20Hints%20and%20Tips.htm"><B>Hints and Tips</B></a><br>
+
+<H1>AOTA: Tab 2. Fourier plot</H1>
+Under Tab 2 you can view a plot of the Fourier transform of the displayed light curve. The purpose of this plot is to detect whether there is any periodic or systematic noise (as distinct from random noise) that might affect the measurement of the light curve.
+
+<p>The Fourier transform is generated when the light curve is initially processed within AOTA, and subsequently whenever the light curve is binned within AOTA. The Fourier transform is performed on the light curve as binned.
+
+<p>The Fourier analysis is performed using a Fast Fourier Transform. The algorithm used assumes the number of data points in the light curve is a power of 2. In the usual case where the length of the light curve is not a power of 2, the light curve is padded out to the next largest power of 2 using the average value of the light curve. [This padding-out can result in some 'false' broad harmonics in the Fourier results.]
+
+<p>The results of the Fourier transform are presented as a bar-chart plot of the frequencies present in the light curve. The light curve being analysed, and the bin size within AOTA, are displayed across the top of the plot. The number of bars in the plot depends on the number of data points in the light curve. The height of the bars gives a relative representation of the strength of the signals at the different frequencies. The frequency of the plot is given at the bottom of the plot, in units of measurement intervals per cycle. (For example, a signal location at 20 measurement intervals per cycle will have a period of 20 measurement points along the displayed plot). The scale is non-linear, with markers at the locations numerically half-way between labeled markers.
+
+<p>When studying Fourier transforms, care must be taken to recognise the presence of harmonic interactions. That is, a peak in the Fourier transform may be a multiple/fraction of another peak, or be the result of the interaction of two other peaks &#8211 and not be a unique signal in its own right.  
+
+<p>All plots of the Fourier transform of an occultation signal will be characterised by a very high initial peak - representing a constant signal at a non-zero height. For an occultation light curve with relatively little noise, the Fourier transform will be characterised (from left to right) by a relatively short section of rapidly reducing bar heights, followed by a long tail of low bar heights. A signal that is affected by strong noise will have a rapidly reducing height, with the remainder of the curve being somewhat higher than for a light curve with low noise.   Sometimes the Fourier transform will show broad oscillations in the height of the bars across the transform - which indicates the noise is not truly random, but the light curve can usually be analysed on the basis of the noise being random noise. A signal that is affected by strong non-random noise (such as a star signal drifting across a CCD chip with micro lenses on the pixels) will be characterised by strong narrow peaks at certain frequencies. 
+
+<p>These effects are best illustrated in the following examples.
+
+
+<h2> Example 1. A fairly good signal</h2>
+<img src="AOTA_Fourier_Ex1.png">
+<p>This plot is typical for a good signal. The bars at the far left are high but rapidly reducing, while for the remainder of the plot the bars slowly reduce in height.
+  
+<p>This particular plot shows a cyclical variation in height towards the left hand end. However there are no sharp peaks in those variations - indicating that they are caused by random noise. This light curve can be reliably measured on the basis that the noise in the signal is random noise.
+
+
+<h2> Example 2. A very noisy signal</h2>
+<img src="AOTA_Fourier_Ex2.png">
+<p>This signal is very noisy. However the Fourier transform shows a scatter of frequencies at a uniformly low height across the Fourier spectrum. There are two small sharp peaks (at about 140 and 240) which suggests there may be a small amount of structured noise - but not enough to be concerned about. This light curve can be reliably measured on the basis that the noise in the signal is random noise.
+
+
+<h2> Example 3.  A light curve that appears to show regular variations</h2>
+<img src="AOTA_Fourier_Ex3.png">
+<p>This light curve has the appearance of showing some sort of regular variation. The Fourier transform shows the region of relatively high bars at the left of the plot being considerably wider than in the other examples. This is consistent with there being some long-period variations in the light level. However there are no sharp peaks within this region, and the remainder of the plot has bars of low height. The Fourier plot is consistent with the variations in the light curve being caused by random noise, and the light curve can be reliably measured on this basis.
+
+<h2> Example 4. A noisy, cloud-affected signal</h2>
+<img src="AOTA_Fourier_Ex4.png">
+<p>In this example the signal is quite noisy, and has a wide dip in it that is probably caused by variation in atmospheric transparency (such as cloud). The Fourier transform shows a signal where the heights for most of the frequencies are relatively small, and taper off as the period gets shorter - fully characteristic of random noise. This light curve can be reliably measured on the basis that the noise in the signal is random noise.
+
+
+<h2> Example 5. <font color=Red>A problem signal</font></h2>
+<img src="AOTA_Fourier_Ex5.png">
+<p>This signal is of a star trailing across a video camera which uses a CCD chip that has microlensing. The signal has clear oscillations, although in practice these might be partly hidden by noise. The Fourier transform shows very sharp peaks - in this case, with periods of about 33 and 105 measurement frames. Note that the periodicity at 105 measurement intervals is clearly visible in the light curve, whereas the 33-interval signal is not so easy to see. Note also that the broad peaks at around 8.7, 11.4, 17 and 50 are likely to be harmonics of the other two signals.
+<p>A Fourier transform plot like this is a strong alert to there being a systematic problem with the light curve that will compromise the accurate determination of the event times. Indeed, this light curve <B><I>cannot </I></B>be reliably measured at full timing precision because the Fourier analysis clearly shows that the major source of noise is periodic noise &#8211 with an increase in the uncertainty of the event time being inevitable.
+While it is possible to process the light curve to remove such systematic signals, at this time AOTA does not provide that facility as the effects of such removal on the derived event time and uncertainty has not yet been established.
+
+</BODY>
+</HTML>

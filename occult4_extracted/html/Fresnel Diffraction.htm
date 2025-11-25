@@ -1,0 +1,254 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Fresnel diffraction</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Fresnel Fringes & Penumbra </H1>
+<p>[Raymond Dusser provided a major contribution to the following discussion.]
+<p>Sample Fresnel light curves for small asteroids are <A href="Fresnel%20light%20curves.htm">here</a>
+
+
+<p>Fresnel diffraction is the diffraction of light at the edge of an obstruction object. Fresnel diffraction is characterised by two effects:<ul>
+<li>A fringe pattern on the outside of the edge of the obstructing object (where the light should be unobstructed) diffraction. The  intensity of the fringe pattern rapidly increases as the edge is approached. Also the spacing of the fringes is very colour-dependant.
+<li>A spilling of light inside the edge of the obstructing object (where the light should be fully obstructed.)</ul>
+<p>In occultation observations (both lunar and asteroidal), as a general rule:<ul>
+<li>the fringe pattern is only visible using fairly high-speed photometry in filtered light
+<li>the spilling of light is only visible when the star is very bright, and the photometry is sufficiently fast for the geometry of the event (it is easier to see in grazing occultations than 'head-on' occultations).</ul>
+<p>The following provides a detailed outline of Fresnel diffraction.
+
+<h2>The mathematics of Fresnel Diffraction</h2>
+<p>The following is the mathematics relating to the principal effects of Fresnel diffraction. It is not a full treatment, and those interested in the full mathematics of Fresnel Diffraction should refer to any standard text book on optics that discusses Fresnel Diffraction and the “Cornu Spiral”.
+
+<p>A more detailed &amp; authorative discussion than that below is
+<a href="https://articles.adsabs.harvard.edu/full/1987AJ.....93.1549R">Stellar 
+Occultations by Small Bodies : Diffraction effects</a>, by F. Roques, M.&nbsp; 
+Moncuquet &amp; B. Sicardy. Also, the discussion/explanation&nbsp;
+<a href="http://spiff.rit.edu/richmond/occult/bessel/bessel.html">Diffraction 
+effects during a Lunar Occultation</a>, by Michael Raymond,&nbsp; is very 
+useful.<p>The basic parameter of Fresnel Diffraction is the Fresnel unit u:<br>
+
+        u =<img src="Fresnel%20Eqn00.png">
+
+<p>where :
+<li>D is the distance from the occulting edge to the place of observation; and
+<li>l is the wavelength of the light.</li>
+with both being expressed in the same unit of length (e.g. metres).
+
+<p>This can be rewritten with u in arcsecs, as:<br>
+        u” =<img src="Fresnel%20Eqn0.png"> 
+
+<p>where:
+<li>p is the parallax of the occulting body (in arc secs); and
+<li>l is the wavelength of the light in nanometers.
+
+<p>The value of u for a range of objects [assuming the wavelength l is 600nm - orange light] is as follows (expressed both as a distance on the earth, and the angle subtended at the distance of the occulting object):
+
+<pre>
+Object	distance(km)	u(m)	u ”	
+Moon	385000		11 m 	5.7 masec	
+1AU	149597800		211 m 	0.29 masec	
+2 AU	299195600		300 m 	0.20 masec	
+3 AU	448793400		367 m 	0.17 masec	
+4 AU	598391200		423 m 	0.15 masec	
+20 AU	2991960000	943 m	0.065 masec	
+</pre>
+
+<p>All fringes are outside the geometrical shadow. Starting from the edge of this geometrical shadow, the nth Bright crest is at   Bn = <img src="Fresnel%20Eqn1.png">. Thus we find:<br>
+B1 = 1.225 u<br>
+B2 = 2.345 u<br>
+B3 = 3.082 u<br>
+B4 = 3.674 u<br>
+B5 = 4.183 u<br>
+
+<p>The nth dark trough is at   Dn =<img src="Fresnel%20Eqn2.png">.  Thus we find:<br>
+D1 = 1.871 u<br>
+D2 = 2.739 u<br>
+D3 = 3.391 u<br>
+D4 = 3.937  u<br>
+D5 = 4.416 u<br>
+
+<p>It may be noted that (unlike interference diffraction between two sources), the fringes in Fresnel diffraction  are not uniformly spaced. Also in white light the fringes are coloured - since the Fresnel unit  u  is some 32% larger at 700nm (red) than at 400nm (violet).
+
+<p>The intensity of light at the nth bright crest Bn is<br>
+
+<img src="Fresnel%20Eqn3.png">
+
+<p>and the intensity of light at the nth dark trough Dn is<br>
+
+<img src="Fresnel%20Eqn4.png">
+
+<p>where Io is the intensity of light from the unocculted star.
+
+<p>Thus, starting outside from the edge of geometrical shadow, one can find :<br>
+- at 1.22 u, B1 with 1.40*Io, an increase of 40% of regular light intensity.<br>
+- at 1.87 u, D1 with 0.77*Io, 23% under the regular light intensity, a 45% drop from the preceding crest B1.<br>
+- at 2.35 u, B2 with 1.20*Io, an increase of 56% from the preceding trough D1.<br>
+ etc...
+
+<p>For the inside of geometrical shadow, the light intensity decreases asymptotically like 1/u² . But, if the outline of the occulting body is circular, at the centre of shadow there is a small bright spot of full light intensity (the Poisson bright spot). It has never been observed, since it is only a few meters wide for an asteroid generally 10 000 times larger.
+
+
+	<p>The light curve (monochromatic) can be sketched as follows:
+<pre>
+1.40	                          **
+                                  *  *
+
+                                 *    *
+                                                **
+
+
+                               *       *       *  *
+    				     
+                                       *                 ** 
+ 1.00-----------------------*----------------------------- * 
+                                        *     *    *     *    *
+          
+                             *                      *   *
+                        
+ 0.84                     *            *   *        **
+          
+                         *  
+ 0.77                                   **
+                          *
+       
+
+                        *
+
+ 0.50                *
+
+
+                     *
+
+                    
+ 0.25            * 
+                  |
+                * |
+                  |
+               *  |  
+            *     |            1             2            3
+ 0 -*--*----------|------------|-------------|------------|--   
+                  |            |             |            |
+                  0           1.22          2.35         3.08
+               GEOMETRICAL             1.87     2.74
+               SHADOW EDGE
+</pre>
+
+<h2>Where is the edge of the geometrical shadow?</h2>
+
+<p>It is easily demonstrated that all the light curves for all wavelengths cross at one point: the edge of geometrical shadow. There, for all wavelengths, the intensity is:<br>
+	0.25 * Io .<br>
+If fringes exist, the observer must find the point where the light intensity is 1/4 of regular light intensity. That means a 1.5 mag drop of the starlight (instead of 0.75 mag drop when penumbra smears the fringes. See below). 
+
+<p>It must be remembered that the light from the occulting body is not diffracted. For example, in the occultation of TYC 0114-01163-1 by (3) Juno on 2005 Nov 05, the occulting body was mag 7.9 and the star mag 11.7. At occultation, the light intensity drop when the star's light is occulted  is a mere 3% of the total light. While the light drop might be detectable, any fringes in the star's light will almost certainly be lost in the noise from the much brighter light from the occulting body.
+
+<p>When the star is <I>not </I>point-like as assumed above, its disc generates a penumbra. Knowing the angular width of the star, it is easy to compute the equivalent diameter of the star at occulting body's distance. This is the width P of the penumbra.
+
+<p>If P is greater than about 0.6 u, the penumbra completely smears the fringes. D1 at 1.87u for one side of the stellar disc, is at the same place as B1 for the other side of the stellar disc.
+
+<p>If the penumbra erases fringes, the geometrical shadow edges are at 50% of the star light flux, a drop of 0.75 magnitude (instead of 1.5mag when there are fringes and no penumbra).
+
+<p>For an example, let us take the occultation of HIP 49669 (alpha Leonis or Regulus) by (166) Rhodope on 2005 Oct 19 . Rhodope was at D = 460 Gm. Then u = 371.48 meters for a 600nm wavelength (good sensitivity for CCD receptors). Regulus angular width is ~1.25mas according to <I>McAlister & al.</I>, then the equivalent diameter at 460Gm is 2787.7 meters or 7.50u . There is no fringes at all, and the edge of the geometric shadow is here at 50% intensity of the Regulus light (a 0.75 mag drop, since the light from the occulting body is &gt mag 14 doesn't have any effect).
+
+
+<h2>Fringe resolution with video systems</h2>
+
+<p>A typical video system has a frame rate of 30 frames/sec (NTSC) or 25 frames/sec (PAL). In order to resolve the fringes, the frame rate must be sufficient to have one frame at the first peak, the next frame at the first valley, and the 3rd frame at the 2nd peak. That is, the frame interval must be less than half the time to move from the first to second peak. Of course, the light needs to be filtered to avoid chromatic blurring of the fringes. Filtering to use red light maximises the fringe separation; also CCD detectors are usually more sensitive to red light than blue light. 
+
+<h3>Lunar occultations</h3>
+<p>For lunar occultations, the radial velocity of the star relative to the lunar limb (RV in occultation predictions) must be less than the following values:<br>
+
+NTSC   0.18”/sec<br>
+PAL   0.15”/sec<br>
+
+<p>These relative velocity values will only occur if the star is near-grazing. If the system uses interlaced frames that can be separately retrieved, these RV values are doubled - in which case fringes would potentially be resolvable in many lunar occultations - subject to noise in the video recording.
+
+<h3>Asteroidal occultations</h3>
+<p>The angular displacement of the first and second fringe for main-belt asteroidal occultations is about 0.20masec. Assuming the occultation is 'head-on', the required motion of the asteroid needs to be less than:<br>
+
+NTSC  &lt3.0 masec/sec  or  &lt10”/hour<br>
+PAL    &lt2.5 masec/sec   or  &lt9”/hour<br>
+[Divide these by about 3 for Kuiper-belt objects.]
+
+<p>This slow rate of motion only occurs in a small percentage of occultations - typically with the asteroid near its 'stationary' point. If the system uses interlaced frames that can be separately retrieved, these rates of motion are doubled - but still only occurs in a minority of occultations. Of course, if the observer is located near the edge of the occultation path, the geometry becomes like a grazing occultation and fringes will be more readily visible. As a rough guide - if the observer is located 70% of the distance from the centre of the actual path to the edge, the above figures are increased by a factor of 1.4. At 90%, a factor of 2.2. That is, video observations made from near the edge of the actual occultation path have a much greater likelihood of being able to record the fringes.
+
+
+<h2>The correct light level at geometrical shadow edge </h2>
+
+<p>The distance from the geometrical edge of the shadow for a point source to the first bright fringe is approximately the same as the distance between the first and second fringes. It should also be noted that for a point source, 50% intensity level occurs at about 0.35 Fresnel units on the illuminated side of the Fresnel curve. Accordingly the <I>maximum </I>error that can be introduced by making the measurement at the 50% level is the time equivalent to 0.35 Fresnel units. For video recordings, this will almost always be less than the frame resolution - except possibly for grazing events, or asteroidal occultations where the asteroid motion is VERY slow. Consequently if the video frame rate is insufficient to resolve the first fringe from the first valley, it is also insufficient to distinguish between the light level at 25% and at 50% for a point source. This means that if there is any definite fading in the light curve such that there is a measurable difference between the 25% and 50% level, the cause is stellar diameter and the relevant light drop to measure as the edge of the shadow is 50%. So in practice, video observers should time the event at the 50% level - unless their time resolution is sufficient to resolve the first fringe from the first valley (assuming the fringe was visible.) 
+
+
+<p>If the recording system has a high enough time resolution, the following will assist in deciding whether to use the 25% or 50% light level.<ul>
+
+<li>The occultation of TYC 6966-00048-1 by (22) Kalliope on 2005 Nov 05. The circumstances are: <ul>
+<li>The star has a V mag of 11.0
+<li>(22) has a V mag. = 11.4
+<li>The combined V mag  = 10.4, and the predicted magnitude drop is 11.4 - 10.4 = 1.0.</ul>
+
+<li>If fringes exist, the shadow edges are to be found when the star light falls to 25% of the star's contribution. [At 25%, the star's mag would be 12.5, the combined light from star and asteroid is 11.1 mag, and the mag drop is 11.1 - 10.43 = 0.7 mag drop.]
+
+<li>If fringes do not exist (having been erased by the penumbra), the shadow edges are to be found when the star light falls to 50% of the star's contribution. [At 50%, the star's mag would be 11.8, the combined light from star and asteroid is 10.8 mag, and the mag drop is 10.8 - 10.4 = 0.4 mag drop.]
+
+<li>Other occulting situations are intermediary, when a narrow penumbra only lightly smears the diffraction fringes. It has been a way to measure small angular diameters of stars since the pioneering work of <I>A. Arnulf </I>in Compte-rendus de l'Academie des Sciences (Proceedings of Academy of Sciences), Paris, 1936. Recording photographically the two first fringes when Regulus was occulted by the moon, he deduced a preliminary result of 1.8mas (now believed to be oblate, 1.25mas x 1.65mas).</ul>
+
+<p>If a good recording of an occultation is made with a time resolution sufficient to show fringes (assuming they exist), the recording can be analysed to derive the diameter of the star, and even the light distribution across the face of the star.  The mathematical process to do this is called 'deconvolution' - and a discussion of this is beyond the scope of the present discussion. Note that unless the recording was made using light filtered to a colour band, useful information will be lost because of the colour smearing of the fringes.
+
+
+<h2>Distinguishing Fresnel diffraction from noise in video recordings</h2>
+<p>Any measurement of Fresnel diffraction requires an understanding of the effects of noise. The following is not a full discussion of the issue. It merely highlights some of the issues.
+
+<h3>Statistical noise</h3>
+Any signal will contain statistical noise. This is evident in short-term variations in the measurement. In typical video recordings, the signal will vary significantly from one frame to the next. The amplitude of this variation is the size of the noise (N). [Strictly, the noise is the RMS of the variations.] The size of the drop in the signal when the occultation occurs is referred to as the signal (S). Issues that flow from this are:<ul>
+
+<li>The height of the first fringe is 0.4 above the mean light level. If the S/N ratio is less than 2.5, that fringe is indistinguishable from the noise. That is, a S/N ration of <I>at least</I> 3 is required to detect any fringe phenomena (assuming the time resolution is sufficiently great).
+
+<li>Where the size of the drop in the signal is much greater than the noise (e.g. S/N >5), the time of the occultation can generally be associated with a single video frame - an the timing accuracy is potentially +/- half the frame interval.
+
+<li>When the size of the drop in the signal  is small (e.g. S/N <1), it is impossible to distinguish the actual point of the occultation from the noise. The occultation may be clearly detected, in the sense that the light has clearly dropped, but the timing uncertainty will be many frame intervals.
+
+<li>Statistical noise varies as the square root of the measurement signal. The noise can be reduced by combining adjacent pairs (or triples) of measurements. While this has the effect of halving the time accuracy, it in fact better represents the real timing precision when the signal is noisy.</ul>
+
+<h3>Timing issues</h3>
+Video systems take a series of 'snap-shots' that are separated by the frame interval. In interlaced video systems, there are in fact two snapshots in the frame interval. The video recording does not contain any information of event timing within the snap-shot interval. 
+
+<p>If an occultation occurs part-way through a frame, the total light from the star will be reduced from the maximum in proportion to when the occultation occurs in the frame interval. However many (most?) video cameras control the exposure by only recording light for a small portion of the frame interval. Consequently unless the observer is confident that the exposure is occurring throughout the entire frame interval, it is not possible from a single frame to determine whether a partial light drop is due to a single drop part-way through the frame, or a drop of illumination during the whole of the frame.
+
+<p>The situation is illustrated in the following diagram. Graph 1 shows a graph of a stars actual light intensity. The vertical lines indicate the frame intervals. And if the camera is collecting the maximum number of photons, they will be collected over the whole interval. And if the camera is only collecting photons for a portion of the frame interval, the boxes indicate the portion of the frame where the photons are collected.
+
+<P align=center><img src="Fresnel%20Plot%20-%20timing.png">
+
+
+<p>Graph 2 illustrates the light measures obtained from the first graph, where the photons are collected over the whole frame interval.
+
+<p>Graph 3 illustrates the light measures obtained from the first graph, where the photons are only collected over the portion of the frame interval corresponding to the location of the box.
+
+<p>As can be seen, the two measured light curves have significant differences. Importantly, it is possible to use the intermediate light intensities in graph 2 to derive a precise event time. However this is not the  case for graph 3.
+
+
+<h2>Further reading</h2>
+
+<p>Some examples are fully described and computed in these papers :
+<li>Francoise Roques et al. "<I>Stellar occultations by small bodies: diffraction effects</I>"  <B>AJ</B>, vol.93 #6 June 1987 pg 1549<A href="http://articles.adsabs.harvard.edu/cgi-bin/nph-iarticle_query?1987AJ.....93.1549R&amp;data_type=PDF_HIGH&amp;whole_paper=YES&amp;type=PRINTER&amp;filetype=.pdf"> here</a>
+<li>Francoise Roques et al. "<I>A detection method for small KBO</I>" <B>Icarus </B>147, 2000, pg 530 (more detailed study)
+
+
+<p>A further guide to whether the observation relates to angular diameter is to estimate the angular diameter from the star's colour and magnitude. The following are some recent papers on this issue:
+
+<li>G.T. Van Belle, "Predicting angular sizes", <I>PASP </I><B>111</B>, 1515--1523 (1999)
+<A href="http://calys.obspm.fr/~sicardy/biblio_occ/van_Belle_angular_size.pdf" target=_blank>here</a>
+
+
+<li>P. Kervella et al. , "The angular sizes of dwarf stars and subgiants", <I>A.&A. </I><B>426</B>, 297--307 (2004)
+<A href="http://calys.obspm.fr/~sicardy/biblio_occ/kervella_angular_sizes.pdf" target=_blank>here</a>
+
+
+
+
+
+</BODY>
+</HTML>

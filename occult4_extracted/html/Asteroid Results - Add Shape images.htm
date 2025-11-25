@@ -1,0 +1,34 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Adding Shape images</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Adding Shape images to reduction plot</H1>
+
+<h3>Adding a shape model plot  </h3>
+The DAMIT and  ISAM shape models must be genedrated for a time close to the event. On the Plot form, the menu item <I><B>Plot options... Add DAMIT & ISAM shape models </B></I>must be checked.</ul> This results in all available DAMIT and ISAM shape models for the time of the event being generated and downloaded. Once downloaded, you can display each model by simply clicking the model buttons at the top of the form. Details on the Shape model downloads form are given <a href = "Asteroids%20-%20DAMIT.htm">here</a>.
+
+<h3>General issues </h3>
+<ul type =1><li>The DAMIT and ISAM images as downloaded are drawn at different scales. The form for managing the shape models includes a slider for changing the scale of the ISAM model relative to the DAMIT model so that the shape models are drawn at the same size on the Occult pots. The default value for this scale is 1.65, and is marked on the scale.
+<li>The position of the observed points relative to the asteroid shape model are adjusted using the slider bars at the right and bottom of the plot area. The scale of the plot is adjusted to match the scale of the asteroid shape model using  the Plot scale slider located above the list of observers. Clicking on the sliders will result in small adjustments of those controls.
+<li>You can control which model is displayed, and its size, from the Plot form by selecting the menu option <B>Plot options... <I>Show Shape model controls on plot.</i></b>
+<li>When adjusting the image size to match the shape model, it is useful to use the drawn asteroid profile - and adjust the Plot scale slider to match the size of the asteroid profile to the size of the shape model. Fine adjustments are sometimes best made by changing the overall form size.
+<li>when fitting a shape model to the observations, you need to allow for the uncertainty in the rotational orientation of the asteroid at the time of the event, caused by uncertainty in the period of rotation. In the box below the date fields there are controls to change the rotational period, in units of 0.000001 hrs, and 0.00001hrs - together with option buttons to select whether the change is positive or negative. Next to these controls, the adjusted period for the displayed model will be indicated. The time offset for downloading the correctly orientated model is given in the box labelled <B>&#948  Min</B>.
+<p>The effect of a 1-unit change in the last digit of the rotational period at the time of the event is indicated below the button for downloading models. This value depends on the time from the epoch for the rotational position to the event time; changes to the rotational period that gives a time adjustment that is many many times larger than this uncertainty value are unlikely to be justified.  Specific points to note are:<ul type =a>
+<li>the actual uncertainty is presumably several digits in the last displayed digit;
+<li>for ISAM asteroids, it would appear that if the last digit of the period is a '0', that digit is not displayed in the ISAM system - and this can give rise to a 'false' uncertainty estimate that is much greater than for other models. Accordingly if the uncertainty for other models is much smaller, use the smaller values.</ul>
+<p>To correct the rotational period, change the period correction using the drop-down boxes on the<B> DAMIT and ISAM </B>form, looking for a rotational orientation of the shape model that best fits the occultation observations. Where there are several occultation events for the same asteroid, the period adjustment needs to be consistent between the events. The settings for the period adjustment will remain when you select other events involving the same asteroid - but will be reset to zero idf the asteroid is changed.
+<p>When using a DAMIT shape model, you can directly determine the mean diameter of the asteroid, by selecting the menu item<B> Plot options... Show MEAN DIAMETER indicator [DAMIT]</B>. This will show a scale line at the bottom of the plot representing the mean diameter associated with the displayed DAMIT shape model - when the occultation chords are fitted to match the shape model, simply read the mean diameter value from abvove this scale line. Two 'mean diameters' are shown. One is the diameter of a sphere having the same Volume as the shape model, while the other is the diameter of a sphere having the same Surface Area as the shape model. The larger diameter is associated with the sphere having the same Surface Area. The value of the two mean diameters, in KM, is displayed above (Volume) and below (Surface area)  the line - but those values have meaning only when you have fitted the shape model to the observed chords!
+
+<P>When using ISAM shape models, you have the option to display the axis of rotation, using the menu option on the DAMIT and ISAM form, - <b>with Model image... Show rotational axis [ISAM].</b>. This can be very useful for assessing the likely effect of changes in rotational orientation when you change the period.
+<li>If the reduction plot is printed, the shape model will almost certainly not align with the plotted points... This has to do with how the shape model image is scaled and positioned on the overall image. To print the plot showing the fitted shape model, first use <B>with Plot... save </B>, and then print the image that has been saved, Alternatively, use <B>with Plot... copy</b>, and copy the image into your favourite drawing/imaging program from where it can be printed.
+</ul>
+
+</BODY>
+</HTML>

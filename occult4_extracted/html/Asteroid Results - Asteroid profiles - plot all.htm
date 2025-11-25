@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Asteroid profiles - plot all</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Asteroid profiles - plot all</H1>
+
+<p>This form is used to create a set of image files for selected asteroid occultations. Note that while the form is enabled, you will not be able to access other functions in Occult.
+
+<h3>Selecting the events</h3>
+The selection of events is the same as the selection of events in the Observations editor. Except that all the events satisfying the criteria are presented in a list, rather than a drop-down box. That is, use the option buttons and drop down boxes to select a range of asteroids; those asteroids will be listed, and the output will be based on that list.
+
+<h3>Quality limit</h3>
+The routine only generates a graphic output for those events which have at least the specified quality value.
+<p>Selecting a value in the list has the effect of including all events which have that quality value, or a higher quality value. For example, selecting 'good' will result in the output of events that are marked as both Good, and Excellent.
+<p>The output plots vary according to the quality in the following manner:<ul>
+<li><I><B>Excellent </B></I>- are plotted with no ellipse, and no observed chords
+<li><B><I>Good </I></B>- plotted with an ellipse, but no observed chords
+<li><I><B>Poor</B></I>, and <I><B>Time Only</B></I> - plotted with an ellipse, and showing the observed chords as lines.</ul>
+
+<h3>Output directory, and file names</h3>
+The program generates a file for each event. The file name is made up of the asteroid number, name, and event date. The form allows you to specify a directory to save the files. You should consider creating new directories as needed.
+
+<h3>File format</h3>
+This sets the file format used for the images. The NASA PDS archive prefers JPEG. 
+
+<h3>Set image size</h3>
+The image size of the output files is selected form the 4 options in the dop-down box. Note that the file size varies approximately as follows:
+<table columns=3 border=1>
+<TR><TH NOWRAP>Dimension</TH><TH>Relative Size</TH></TR>
+<TR><TD>480 x 480</TD><TD>1.0</TD></TR>
+<TR><TD>640 x 640</TD><TD>2.0 </TD></TR>
+<TR><TD>768 x 768</TD><TD>2.5</TD></TR>
+<TR><TD>1024 x 1024</TD><TD>4.5</TD></TR>
+</Table>
+
+<h3>Plot in B&W or color?</h3>
+This choice is set in accordance with the currently set mode for plotting in B&W or color. To set this, draw a single event in the Observations Editor, setting the Colour/B&W choice as required. Then generate the present output.
+
+<h3>Create the plots</h3>
+If the Asteroid Observations Editor is open, you will be asked if it is OK to close it. If it is not closed, the routine will not proceed.
+<p>As the files are generated, the plot form will display the current event being plotted. However when this routine is running, the plot area is set by the image size setting, rather than the size of the plot form. As a result, the plot area may look different from usual.
+
+
+
+</BODY>
+</HTML>

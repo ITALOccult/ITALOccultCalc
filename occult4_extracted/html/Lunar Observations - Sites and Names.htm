@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Observations - Sites and Names</title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Edit sites and names</h1>
+<P>This part of the Editor is used to edit/manage the details associated with a site, and observer/recorder names.</P>
+
+<H1>Sites and Telescopes</h1>
+<p align=center><img src=LunarSites.png>
+<h2>Location</h2>
+<p>Enter here the site location. The longitude and latitude can be entered in either dms, dm.d or d.dd formats - using the relevant radio buttons  - although the report will record the coordinates in dms format. The desired level of precision for the three formats are:
+<table columns=3 border=1>
+<TR><TH NOWRAP>format</TH><TH>Desired</TH><TH>Acceptable</TH></TR>
+<TR><TD>dms</TD><TD>0.1"</TD><TD>1"</TD></TR>
+<TR><TD>dm.m</TD><TD>0.002'</TD><TD>0.01'</TD></TR>
+<TR><TD>d.ddd</TD><TD>0.00003deg</TD><TD>0.0001deg</TD></TR>
+</table>
+<p>Note: Site coordinates will only be stored at a precision of 0.1". Coordinates at a purported accuracy of 0.01" will be rounded up [unless the check-box 'Coordinates are high-precision (surveyed)' has been checked.]
+ <p>Select the horizontal datum from the drop-down box (which lists about 80 datums). Preferred datum is WGS84. The datums are presented in 3 groups. If at all possible, specify a datum in the first group. A datum from the 2nd group is acceptable - although WGS84 is to be preferred. Datums in the third group should not be used for new observations. They are included for historical observations only.
+<P><b> IMPORTANT </b> If using a GPS unit, make sure you do not change it to display coordinates on an 'old' datum.
+
+<p>Specify the Altitude. It can be either meters of feet (using the radio button), but is stored in meters. Even when using WGS84 for latitude and longitude, you should report heights with reference to Mean Sea Level (msl).  The form includes an option to specify the height as being referenced to the spheroid (which implicitely is the WGS84 spheroid) - but the preferred height is MSL.
+<p><B>IMPORTANT</B>. By international agreement, the 'standard' reference datum for altitude is MSL. Most GPS units display altitudes as MSL - even when the 'horizontal' datum is set to WGS84. Some GPS units allow you to output a spheroid height - but you should set it to output MSL heights. The spheroid height should only be used if the GPS unit only outputs spheroid altitudes.
+
+<h2>Telescope</h2>
+<p>Specify the aperture in cm. Usually the closest cm is sufficient.
+<p>Specify the focal length in cm - usually to the closest cm. Remember that the focal length can be found by multiplying the aperture by the f-ratio.
+<p>Select the type of telescope from the drop-down box. [Note - you cannot manually enter your own description]. Select the description closest to your telescope. The following is a more complete list:. <ul>
+<li>Refractor  - includes Achromatic, Apochromatic, binoculars, and camera lenses
+<li>Newtonian reflector - includes Dobsonian, Schmidt-Newtonian, Maksutov-Newtonian, Jones-Bird, Schiefspiegler
+<li>Cassegrain - includes Schmidt-Cassegrain, Maksutov, Ritchy-Chretien, Dall-Kirkham</ul>
+
+<p>Select the type of mounting from the drop-down box. [Note - you cannot manually enter your own description]. Dobsonian, and most commercial GoTo telescopes are Altazimuth mounted.
+<p>Select whether the telescope was driven or not from the drop-down box. [Note - you cannot manually enter your own description].
+
+<h2>ILOC codes</h2>
+<p>The system of codes used by ILOC for stations, telescopes and observers was effectively discontinued in about 2006. This data item is not included in the IOTA2009 format.
+
+<h2>Editing tools</h2>
+Buttons allow you to perform the following actions:
+<table columns=3 border=1>
+<TR><TH NOWRAP>Button</TH><TH>Function</TH></TR>
+<TR><TD>Add as new site</TD><TD>Creates a new Site entry based on the details entered, allocating a site letter to the site.</TD></TR>
+<TR><TD>Replace selected</TD><TD>Replaces the site highlighted in the list of sites with the details entered.</TD></TR>
+<TR><TD>Set selected as default</TD><TD>Stores the details of the site as a Default site. Typically this would be for the observer's usual observing location. The current default value is displayed as a tooltip.</TD></TR>
+<TR><TD>Add default as new site</TD><TD>Inserts the Default site as a new site, allocating a site letter to the site. The current default value is displayed as a tooltip.</TD></TR>
+<TR><TD>Delete selected</TD><TD>Deletes the selected site from the list of sites. <B>Note</B>: a site cannot be deleted if it is associated with an event in the editor.</TD></TR>
+<TR><TD>ReNumber</TD><TD>This is used to re-assign site letters to the sites - particularly after sorting, or deleting a site. The site identifications associated with any events in the editor are updated in the process.</TD></TR>
+</table>
+<h3>Sorting</h3>
+<p>Buttons are also provided to sort the list of sites by their allocated letter (number), longitude or latitude, or to move an individual site up or down in the list. If the order of the sites is changed, it may be appropriate to ReNumber the sites. This can be particularly useful for graze reports - where data can be entered as reports are received, and subsequently sorted so that the sites are in the same order as the placement of the observers across the graze path.
+
+<h2><br>Checking site locations</h2>
+<p>If you have GoogleEarth installed on the computer, you can easily check for any data entry errors in site coordinates by plotting the sites in GoogleEarth. To do this, simply click the menu item <B>Display sites in GoogleEarth</B>.
+
+
+<h1><br>Names of observers</h1>
+<p>In this part of the form, enter the name of the observers, and their email address. The email address allows reductions to be sent directly to the observer, and allows a graze organiser to send emails from within Occult to individual observers. Email addresses are not archived.
+<p>If the name is entered as a single initial plus family name, the sort function can sort on the basis of the whole name, or just the family name.
+<p>The system of codes used by ILOC for stations, telescopes and observers was effectively discontinued in about 2006. This data item is not included in the IOTA2009 format. Similarly, the IOTA2009 format does not include 'recorders'.
+
+<h2>Editing tools</h2>
+Buttons allow you to perform the following actions:
+<table columns=3 border=1>
+<TR><TH NOWRAP>Button</TH><TH>Function</TH></TR>
+<TR><TD>Add as new name</TD><TD>Creates a new Name entry based on the details entered, allocating a letter to the name.</TD></TR>
+<TR><TD>Replace selected</TD><TD>Replaces the name highlighted in the list of names with the details entered.</TD></TR>
+<TR><TD>Set selected as default</TD><TD>Stores the name as a Default name. Typically this would be 'your' name. The current default value is displayed as a tooltip.</TD></TR>
+<TR><TD>Add default as new name</TD><TD>Inserts the Default name as a new name, allocating a letter to the name. The current default value is displayed as a tooltip.</TD></TR>
+<TR><TD>Delete selected</TD><TD>Deletes the selected name from the list of names. <B>Note</B>: a name cannot be deleted if it is associated with an event in the editor.</TD></TR>
+<TR><TD>ReNumber</TD><TD>This is used to re-assign letters to the names - particularly after sorting, or deleting a name. The name identifications associated with any events in the editor are updated in the process.</TD></TR>
+</table>
+<h3>Sorting</h3>
+<p>Buttons are also provided to sort the list of names by their allocated letter (number), by the full name, or by the family name (that is, by ignoring the first two characters in the name), or to move an individual name up or down in the list. If the order of the names is changed, it may be appropriate to ReNumber the names. This can be particularly useful for graze reports - where data can be entered as reports are received, and subsequently re-ordered so that the names are in the same order as the placement of the observers across the graze path.
+
+</BODY>
+</HTML>

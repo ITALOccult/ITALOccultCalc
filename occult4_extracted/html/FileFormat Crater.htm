@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Crater</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1><A NAME="idh_4overview">Crater.dat, Crater.bin</A></H1>
+<!-- Insert Header in above line -->
+
+<B>CRATER.DAT </B> contains co-ordinates of craters, and their diameter in km. The file is used to plot craters on a simple map of the moon. The data is in the form:<ul>
+
+aabbccNNNNNNNNNNNNNNNN</ul>
+
+where <ul>
+<li>aa is the longitude (0.1 deg)</li>
+<li>bb is the latitude (0.1 deg)</li>
+<li>cc is the diameter (km)</li>
+<li>NNNNNNNNNNNNNNNN is the name of the crater.</li></ul>
+all held as 2-byte signed integer.
+
+<p><B>CRATER.BIN</B> is an expanded file that can be used for reductions of crater timings during lunar eclipses, as well as plotting craters on a simple map of the moon.  contains co-ordinates of craters, and their diameter in km. The file is used to plot The data is in the form:<ul>
+
+aabbccNNNNNNNNNNNNNNNNNNNNT</ul>
+
+where <ul>
+<li>aa is the longitude (0.1 deg)</li>
+<li>bb is the latitude (0.1 deg)</li>
+<li>cc is the diameter (0.1 km)</li>
+<li>NNNNNNNNNNNNNNNNNNNN is the name of the crater.
+<li>T</li> is the type of feature. C = Crater, M = mountain, P = point</ul>
+aa, bb, and cc are held as 2-byte signed integers. Divide by 10 to get the values in deg and km.
+
+If Crater.bin is present, and the version of Occult uses Crater.bin, crater.bin will be used for plotting the map of the moon. Otherwsise Crater.dat will be used
+
+</BODY>
+</HTML>

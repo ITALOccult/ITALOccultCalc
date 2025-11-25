@@ -23,6 +23,7 @@ output.
         .format = 'JSON'
         .verbosity = 2
 
+
 perturbations.
         .planets = .TRUE.
         .relativity = .TRUE.
@@ -47,6 +48,13 @@ filtering.
         .min_magnitude_drop = 0.5   ! Delta mag minimo
         .min_altitude = 20.0        ! Altezza minima gradi
         .sun_elevation_limit = -12.0 ! Crepuscolo astronomico
+
+observer.
+        .latitude = 41.9028         ! Roma - latitudine
+        .longitude = 12.4964        ! Roma - longitudine
+        .elevation = 20.0           ! metri slm
+        .max_distance_km = 700.0    ! Distanza massima dalla traccia (km) - 700km da Roma
+        .min_mag_drop = 0.3         ! Variazione magnitudine minima - calo > 0.3 mag
         .moon_separation_min = 30.0 ! Separazione Luna gradi
 
 scoring.
@@ -58,6 +66,13 @@ scoring.
 performance.
         .parallel_threads = 8
         .use_openmp = .TRUE.
+
+gaia.
+        .use_local_cache = .TRUE.       ! Usa cache locale invece di query online
+        .cache_directory = '~/.ioccultcalc/catalogs'  ! Directory cache
+        .auto_download = .FALSE.        ! Download automatico regioni mancanti
+        .max_magnitude = 15.0           ! Magnitudine massima cache
+        .healpix_level = 6              ! Livello HEALPix (6 = ~0.8°)
 
 ! Criteri di selezione asteroidi (diameter > 5 km)
 ! Database JPL verrà interrogato automaticamente con questi filtri

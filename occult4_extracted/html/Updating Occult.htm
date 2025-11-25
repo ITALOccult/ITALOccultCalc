@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Updating Occult</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Updating Occult</H1>
+<P>Effective with version 4.0.8.18, Occult has an inbuilt updater process.<br>
+<p>A list of the updates for each version of Occult can be displayed from the menu item <i>Program updates... List version changes</i>.
+<p> The updater works in the following manner.<ul>
+<li><B>For those with a permanent internet connection. </B>At start-up, the program will check the <B>Iota </B>site for the existence of an update. If an update is available, that fact will be displayed at the bottom-left of the main form. To perform an update, double-click on the message. <b><br>Note</b> There is a user setting to specify whether this check is done at every start-up, or only when a certain period of time has elapsed since the last automatic check for updates. Available options are Every start-up,  Daily, Weekly, Monthly, Yearly, or Never. The default setting is Monthly.<br><br>
+<li><B>For those who connect to the internet on an 'as needed' basis. </B>Connect to the internet, and then click the menu item <I>Program updates...  Check for updates</I>
+</ul>
+<p>Occult will conduct some checks to make sure the update can proceed. Those checks are:<ul>
+<li><B>Is there more than one instance of Occult running? </B>The update cannot 
+proceed if there are several instances of Occult running. You will need to close all instances other than the one which you are using to perform the update.<br><br>
+<li><B>Is OccultWatcher running - and if so, has the OccultTools function been used in the current session? </B>OccultTools uses the Occult program for its functionality. If that functionality has been used in the current session, 
+Occult Watcher will need to be closed before the update can proceed. (It will be automatically restarted when the update is complete.)<br><br>
+<li><B>Is Tangra running?</B> If Tangra is running and the OccultTools for Tangra 
+add in function (that accesses AOTA from Tangra) been used in the current session, the update will fail. For this reason, Occult will check if Tangra is running - and if so you will be advised, and given the option of either closing Tangra, or aborting the update.
+</ul>
+If the update process can proceed, Occult will download the update file, and then close. The updated program files will then be put in place, and the new version of Occult will start. 
+
+<h2>Program replacement, and beta version for testing</h2>
+The <I>Program updates</i> menu item has three additional options.<ul>
+<li><b>List version changes</b>. This displays the latest list of changes to the program, by version number.
+<li><b>Update/revert program to latest release version - vA.B.C.D</b>. The menu item displays the release version that is available.
+This allows the user to download and install the current release version of Occult - irrespective of what version is currently being used. This is useful for replacing a beta version of Occult, or for replacing a corrupted copy of Occult. 
+<li><b>Update program to  latest beta version - vA.B.C.D</b> The menu item displays the beta version that is available.
+This option allows users to use the latest beta version of Occult. 
+</ul> 
+
+<h2>Notes</h2>
+1. This update process only updates the program files (including the Help file, and the list of changes in the updates. Updates of data files must be made using the Downloads page of Occult.
+<p>2. The update process uses a directory called <B>Updates </B>in the Occult 4 directory structure. <B>Do not use that directory for any other purpose.</B>
+<p>3. All files to be replaced by an update are renamed by adding the extension '.old', rather than being overwritten or deleted. This means that the previous version can be restored if needed. 
+<p>&nbsp;<h2>Reverting to a previous version of Occult</h2>
+<p>Starting with Version 4.12.13.1, the downloaded .zip file containing the 
+update files is saved in the subdirectory<strong> \Updates.</strong> The file names are either OccultUpdate, or OccultUpdateBeta, followed by the 
+version number. For example,
+<strong>OccultUpdate v4_12_13_0.zip </strong>If a particular update file has 
+been downloaded more than once, the subsequent copies will be numerically 
+labeled, like <strong>OccultUpdate v4_12_13_0 [3].zip</strong>.</p>
+<p>These files allow you to revert to a previous version of Occult. To do tis, 
+simply unzip the relevant version file, and copy the contents into the Occult 
+main directory - replacing the files of the same name. Similarly, you can revert 
+to your latest downloaded version by repeating this with the relevant .zip file.</p>
+<p>The number of update .zip files held in the <strong>\Updates</strong> 
+subdirectory is listed as a line in the menu item <strong>Updates...</strong></p>
+<p>&nbsp;</p>
+<h2>Technical details</h2>
+The update process relies on the file <I>downloadcontrol.txt</I> that is located on the download site for Occult. That file must contain a line like:<ul>
+&ltOccult&gt4.0.8.19</ul>
+where the numbers after the bracketed text is the version number of Occult that is contained in the download.
+<p>The update file is a zip file called OccultUpdate.zip. The files included in the zip file are:<ul>
+
+	<li>AutoAsteroidPrediction.exe<br>AutoAsteroidPrediction.exe.config<br>
+	DotNetZip.dll<br>LightCurveSimulator.chm<br>Occult.chm<br>Occult.exe<br>
+	Occult.exe.config<br>Occult.SDK.dll<br>OccultUpdater.exe<br>
+	OccultUpdater.exe.config<br>OccultUtilities.dll<br>
+	OccultUtilities.dll.config</li>
+</ul>
+Existing files are only replaced by a  downloaded file if the downloaded file is more recent than the existing file.
+
+
+</BODY>
+</HTML>

@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Asteroid observations by an Observer</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Display asteroid observations by an Observer</H1>
+<P>This form is provided to assist observers with identifying their past 
+observations. Also, to identify observations made by an observer when there is a 
+need to edit their observations.<P>Apart from identifying observations by the 
+observer's name, the form has three specific selection criteria - NTP for 
+observations relying on NTP as the time source. Phone for using a telephone 
+(mobile or fixed) as the time source, and Electronic for observations made using 
+small aperture self-aligning telescopes with an electronic detector).<P> In the box at the top of the form, enter a string of characters contained in the observer's name (or 
+perhaps location). Generally you should use a short string in preference to a long string - to 
+minimize the consequences of data entry errors in the person's name. Similarly, select a string of characters in the family name - avoid first names (which may be converted to initials) and avoid using initials (which may or may not have a period after the initial). Note that the search is case insensitive.
+
+<h2>Example</h2>
+<pre>
+ Counts         Asteroid             Date             Star
+ Pos  Stn ref  Name and location                     Longitude    Latitude    Alt.
+==================================================================================
+              P2M00 Venus           1970 Sep 25      HIP 72217
+   1    1   1  D. Herald, at Melbourne in AU      +145  6 17.6  -37 50  1.3    85
+
+              P4M00 Mars            1971 Jul 24      UCAC4 348-194074
+   2    2   1  D. Herald, at Monash:melbourne in AU+145  7 49.0  -37 54 37.0   100
+
+                 18 Melpomene       1981 Aug  7      HIP 109869
+   3    3   1  D. Herald, at Mt Stromlo Obs:act in AU+149  0 18.4  -35 19 20.4   772
+
+                210 Isabella        2003 Apr 21      Tycho2 6154-00401-1
+   -    4   1  D Herald, at Cooma:nsw in AU       +149 10 22.5  -36 14 33.1   858
+
+                124 Alkeste         2003 Jun 24      HIP 57757
+   4    5  15  D Herald, at Lakes Entrance:vic in AU+148  3 53.3  -37 51  5.8     7
+
+
+               1036 Ganymed         2011 Sep  3      Tycho2 4022-01356-1
+   -  181   1  P Maley, at Barstow in TX          -103 22 27.9  +31 26 22.6   779
+ 129  182   2  P Maley, at Pecos in TX            -103 32 56.   +31 24 32.1   801
+   +  183   3  P Maley, at Pecos in TX            -103 38 27.   +31 26 30.9   831
+   -  184   4  P Maley, at Pecos in TX            -103 43 13.4  +31 20 57.4   706
+</pre>
+ 
+<p>The output provides a block of two or more lines for each event where the observer filed matches the search string. 
+<li>The first line identifies the event - asteroid number and name, date [yyyy mm dd] and star number.
+<li>Subsequent lines in each event block lists each observer that matches the search string - giving the name, longitude, latitude and altitude.
+<li>At the start of each observer line there are 3 numbers:
+<ul><li>
+	Pos -
+a sequential count of events where the observer recorded one or more <strong>pos</strong>itive observations. If the observer 
+	rcorded more than one positive observation at that 
+event, those subsequent lines are indicated with a <strong>'+'.</strong> All Miss 
+observations by the observer are indicated with a <strong>'-'</strong><li>
+	Stn -
+a sequential count of the number of <strong>st</strong>atio<strong>n</strong>s set up by the observer<li>
+	ref -
+the observation <strong>ref</strong>erence number in the Event observation data held in Occult.</ul>
+<p>In the above example, the last block shows an event where the observer 
+recorded 2 positive events, and 2 Miss events (the 1st being numbered; the 2nd 
+being indicated with the '+').</p>
+<p>The list can be copy, printed or saved using the File... menu item</p>
+<p>At the end of the listing of sites by event, there is a listing of 'unique' 
+sites used by the observer. </p>
+<p>An example of such a listing is:</p>
+<pre><br>8 Unique locations (Separation greater than 50 meters)<br><br>Longitude 
+Latitude<br>+ 22 35 11.5 +37 15 34.7 Sites [ 3] 8, 4, 5, <br>+ 22 56 41.5 +37 31 13.4 Sites [ 1] 11, <br>+ 22 56 44.8 +37 31 13.6 Sites [ 1] 1, <br>+ 23 15 59.8 +38  4 44.9 Sites [ 1] 12, <br>+ 23 16 42.3 +38 10  4.4 Sites [ 3] 6, 9, 10, <br>+ 23 17  8.3 +38  9 16.0 Sites [ 1] 7, <br>+ 23 20 47.3 +37 30 35.4 Sites [ 1] 2,
+<br>+ 23 48 20.0 +38 35 38.0 Sites [ 1] 3, </pre>
+<p>The number in [ ] is the total number of observations made from that site, 
+and the following numbers identify the corresponding Stn numbers in the listing 
+by event. Sites are treated as being the same if they are within 50 meters of 
+the first-listed site at that location.</p>
+<p>The list of unique sites can be plotted in Google Earth using a button at the 
+top of the form. This can assist in identifying possible transcription errors in 
+site coordinates.</p>
+<p>For observations made using the Electronic scope system, the listing includes five 
+additional summary lists:</p>
+<ul>
+	<li>PART 1 Electronic observations by Observer name</li>
+	<li>PART 2 Electronic observers with 2 or more POSITIVE observations</li>
+	<li>PART 3 Electronic observers with 1 POSITIVE observation</li>
+	<li>PART 4 Electronic observers with more than 1 observation - positive or 
+	negative</li>
+	<li>SUMMARY<br></li>
+</ul>
+
+<h2>Displaying sites in Google Earth
+</h2>
+There can be times where it is useful to plot all the site used by an observer in Google Earth. For example, such a plot can indicate inconsistencies in past site coordinates. It can also be used to quickly identify a previous site location near where one might want to travel to observe an event.
+
+To plot all past observing sites in Google Earth, simply click the menu item  with 
+<strong>List... Plot sites in GoogleEarth</strong>.<p>The labels on the GoogleEarth plot have two components separated by a slash (/). The first component is the sequential number used in the displayed list of sites. The second number is the record number in the relevant past event - again, as used in the displayed list of sites.</p>
+
+</BODY>
+</HTML>

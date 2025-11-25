@@ -1,0 +1,1549 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<!-- Sitemap 1.0 -->
+</HEAD><BODY>
+<UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Overview">
+		<param name="Local" value="html/Overview.htm">
+		<param name="ImageNumber" value="37">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Occult v4 - Overview">
+			<param name="Local" value="html/Overview.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Directory structure">
+			<param name="Local" value="html/Directory%20structure.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Updating Occult">
+		<param name="Local" value="html/Updating%20Occult.htm">
+		<param name="ImageNumber" value="13">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Copyright issues">
+		<param name="Local" value="html/Copyright.htm">
+		<param name="ImageNumber" value="17">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Recent changes ">
+		<param name="Local" value="html/RecentChanges.htm">
+		<param name="ImageNumber" value="11">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Win 11 issues">
+		<param name="Local" value="html/Win11Issues.htm">
+		<param name="ImageNumber" value="17">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Form appearance">
+		<param name="Local" value="html/Form%20Appearance.htm">
+		<param name="ImageNumber" value="17">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="First-time user - examples">
+		<param name="New" value="1">
+		<param name="ImageNumber" value="27">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Lunar occultation predictions">
+			<param name="Local" value="html/Demo%20-%20Lunar%20predictions.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Lunar occultation observations">
+			<param name="Local" value="html/Demo%20-%20lunar%20observations.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Asteroid occultation predictions">
+			<param name="Local" value="html/Demo%20-%20Asteroid%20predictions.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Asteroid occultation observations">
+			<param name="Local" value="html/Demo%20-%20asteroid%20observations.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Eclipse predictions">
+			<param name="Local" value="html/Demo%20-%20Eclipse%20predictions.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Satellite predictions">
+			<param name="Local" value="html/Demo%20-%20Satellite%20predictions.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Asteroid predictions">
+		<param name="Local" value="html/AsteroidSearch%20Overview.htm">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Asteroid predictions - main form">
+			<param name="Local" value="html/AsteroidSearch%20Overview.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Asteroid diameters - edit">
+			<param name="Local" value="html/Asteroid%20predictions%20-%20EditDiameters.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Binary asteroids - edit">
+			<param name="Local" value="html/Asteroid%20predictions%20-%20EditBinaryAsteroids.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Miriade solutions">
+			<param name="Local" value="html/Asteroid%20predictions%20-Miriade%20solutions.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Asteroids with rings - edit">
+			<param name="Local" value="html/AsteroidsWithRings.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Site editor">
+			<param name="Local" value="html/Site%20editor.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Mutual events">
+			<param name="Local" value="html/Asteroid%20predictions%20-%20Mutual.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Search">
+			<param name="ImageNumber" value="21">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Convert Astorb or MPCOrb">
+				<param name="Local" value="html/Maintenance%20Convert%20Astorb.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Search">
+				<param name="Local" value="html/Asteroid%20predictions%20-%20Search.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Select asteroids for search">
+				<param name="Local" value="html/Asteroid%20predictions%20-%20Select%20for%20search.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Edit user asteroids">
+				<param name="Local" value="html/User%20asteroids%20Edit.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="pasting elements from Horizons">
+				<param name="Local" value="html/User%20asteroids%20Horizons.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Edit user star">
+				<param name="Local" value="html/User%20star%20editor.htm">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="List and Display">
+			<param name="ImageNumber" value="21">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Accuracy issues - bright stars">
+				<param name="Local" value="html/Asteroid%20predictions%20-%20Bright%20star%20accuracy.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Light curve data">
+				<param name="Local" value="html/Asteroids%20-%20Light%20Curve%20Data.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Light curve simulator">
+				<param name="Local" value="html/Asteroid%20predictions%20-%20LightcurveSimulator.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Path coordinates">
+				<param name="Local" value="html/Asteroid%20predictions%20-%20path%20coordinates.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Path - No topographic">
+				<param name="Local" value="html/Asteroid%20predictions%20-%20path%20NoTopo.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Multilocation path distances">
+				<param name="Local" value="html/Asteroid%20predictions%20-%20Multilocation.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Multipath plot">
+				<param name="Local" value="html/Asteroid%20predictions%20-%20Multipath%20plot.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value=".. by planet - Contact times">
+				<param name="Local" value="html/Asteroid%20predictions%20-%20Planet%20contact%20times.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value=".. by planet - Visibility">
+				<param name="Local" value="html/Saturn%202006%20Jan%2025%20analysis.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="List and Display">
+				<param name="Local" value="html/Asteroid%20predictions%20-%20ListAndDisplay.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Edit Regions for List &amp; Display">
+				<param name="Local" value="html/Asteroid%20predictions%20-%20Edit%20regions.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Pre-point stars">
+				<param name="Local" value="html/Asteroid%20predictions%20-%20prepoint%20stars.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Relativistic deflection">
+				<param name="Local" value="html/Asteroid%20predictions%20-%20realativity.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Select for Display">
+				<param name="Local" value="html/Asteroid%20predictions%20-%20Select%20for%20Display.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Star diameter, Fresnel diffraction">
+				<param name="Local" value="html/Asteroid%20predictions%20-%20StarDiameters.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Summary listing">
+				<param name="Local" value="html/Asteroid%20predictions%20-%20Summary.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="World plot">
+				<param name="Local" value="html/Asteroid%20predictions%20-%20World%20plot.htm">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="OccultWatcher">
+			<param name="ImageNumber" value="21">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Creating a feed for OccultWatcher">
+				<param name="Local" value="html/OccultWatcherFeed.htm">
+				</OBJECT>
+		</UL>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Asteroid observations">
+		<param name="Local" value="html/Asteroid%20Results%20Overview.htm">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Reduction methodology">
+			<param name="Local" value="html/Asteroid%20results%20-%20Methodology.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Asteroid observations - main form">
+			<param name="Local" value="html/Asteroid%20Results%20Overview.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Asteroid diameters - list">
+			<param name="Local" value="html/Asteroid%20Results%20-%20DisplayDiameters.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Asteroid diameters - measure">
+			<param name="Local" value="html/Asteroid_MeasureDiameter.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Observed chord lengths - list">
+			<param name="Local" value="html/Asteroid%20Results%20-%20Chord%20lengths.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Astrometric positions - list">
+			<param name="Local" value="html/Asteroid%20Results%20-%20Astrometric%20positions.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Astrometric details">
+			<param name="Local" value="html/Asteroid%20Results%20-%20Astrometric%20details.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Double stars - list">
+			<param name="Local" value="html/Asteroid%20Results%20-%20DisplayDoubleStars.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Observations by an observer - list">
+			<param name="Local" value="html/Asteroid%20Results%20-%20ObservationsByObserver.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Statistics">
+			<param name="Local" value="html/Asteroid%20Statistics.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Plot &amp; Save all profiles">
+			<param name="Local" value="html/Asteroid%20Results%20-%20Asteroid%20profiles%20-%20plot%20all.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Poor star positions">
+			<param name="Local" value="html/Asteroid%20Results%20-%20PoorStarPosns.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Distant asteroid events - list">
+			<param name="Local" value="html/Asteroid%20Results%20-%20DisplayTNOasteroidevents.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Fresnel diffraction">
+			<param name="Local" value="html/Fresnel%20Diffraction%20-%20asteroids.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Star diameter analyser">
+			<param name="Local" value="html/Asteroid_StarDiameterAnalyser.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Asteroid light curve data">
+			<param name="Local" value="html/Asteroids%20-%20Light%20Curve%20Data.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Light curve report">
+			<param name="Local" value="html/Lunar%20Observations%20-%20Light%20curve%20report.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="DAMIT &amp; ISAM shape models">
+			<param name="Local" value="html/Asteroids%20-%20DAMIT.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Adding Shape images">
+			<param name="Local" value="html/Asteroid%20Results%20-%20Add%20Shape%20images.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Observations Editor">
+			<param name="ImageNumber" value="21">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Editor">
+				<param name="Local" value="html/AsteroidEditor%20-%20Editor.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Country codes">
+				<param name="Local" value="html/CountryCodes.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Export/Import">
+				<param name="Local" value="html/AsteroidEditor%20ExportImport.htm">
+				<param name="ImageNumber" value="23">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="eVscope">
+				<param name="Local" value="html/AsteroidObservations%20-%20eVscope.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Plot observations">
+				<param name="Local" value="html/AsteroidEditor%20-%20Plot%20observations.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Solve doubles">
+				<param name="Local" value="html/Asteroid%20Results%20-%20solve%20doubles.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Satellites/binary asteroids">
+				<param name="Local" value="html/AsteroidEditor-Satellites.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Estimate binary orbit size">
+				<param name="Local" value="html/Asteroids%20-%20estimate%20binary%20orbit.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Companion identifier">
+				<param name="Local" value="html/Asteroid%20Companion%20ID.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Fit shape models">
+				<param name="Local" value="html/Asteroid%20Results%20-%20fit%20shapes.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Closest Miss times">
+				<param name="Local" value="html/AsteroidEditor%20-%20ClosestMissTimes.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Star diameter analysis">
+				<param name="Local" value="html/FileFormat%20StarDiameterAnalysis.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Gaia-Horizons mags">
+				<param name="Local" value="html/Gaia-Horizons%20Mags.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Prediction offsets">
+				<param name="Local" value="html/AsteroidEditor%20-%20Prediction%20offsets.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Relative path distances">
+				<param name="Local" value="html/AsteroidEditor%20-%20Path%20distances.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Time base offsets">
+				<param name="Local" value="html/AsteroidEditor%20-%20TimeBase%20offsets.htm">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="AOTA">
+			<param name="ImageNumber" value="21">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Overview, layout">
+				<param name="Local" value="html/AOTA%20Overview.htm">
+				<param name="ImageNumber" value="9">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Read, integrate/bin">
+				<param name="Local" value="html/AOTA%20Read%20and%20integrate.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Fourier plot">
+				<param name="Local" value="html/AOTA%20Fourier.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Short event check">
+				<param name="Local" value="html/AOTA%20Short.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Find events">
+				<param name="Local" value="html/AOTA%20Find%20events.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Select for analysis">
+				<param name="Local" value="html/AOTA%20Select%20to%20analyse.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Analyse">
+				<param name="Local" value="html/AOTA%20Analyse.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Camera, Times">
+				<param name="Local" value="html/AOTA%20FinalTimes.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Integration/binning, normalisation">
+				<param name="Local" value="html/AOTA%20integration%20and%20binning.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Integrity check">
+				<param name="Local" value="html/AOTA%20Integrity.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Set time scale">
+				<param name="Local" value="html/AOTA%20Set%20time%20scale.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Verify times">
+				<param name="Local" value="html/AOTA%20Verify.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="VTI info">
+				<param name="Local" value="html/AOTA%20VTI%20info.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Hints and Tips">
+				<param name="Local" value="html/AOTA%20Hints%20and%20Tips.htm">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Administrator functions">
+			<param name="ImageNumber" value="41">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Create MPC report">
+				<param name="Local" value="html/Asteroid%20Results%20-%20create%20MPC%20report.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Set MPC details">
+				<param name="Local" value="html/Asteroid%20Results%20-%20set%20MPC%20details.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Upload astrometric results">
+				<param name="Local" value="html/Asteroid%20Results%20-%20email%20astrometry.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Archiving at PDS">
+				<param name="Local" value="html/PDSarchiving.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="PDS Headers - manage">
+				<param name="Local" value="html/Asteroid%20Results%20-%20PDS%20headers.htm">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Program">
+			<param name="ImageNumber" value="42">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Programming Notes">
+				<param name="Local" value="html/Asteroidal%20Observations%20Programming.htm">
+				</OBJECT>
+		</UL>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Eclipses and transits">
+		<param name="Local" value="html/Eclipses%20Overview.htm">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Eclipses - main form">
+			<param name="Local" value="html/Eclipses%20Overview.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Solar Eclipses">
+			<param name="ImageNumber" value="21">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="World map">
+				<param name="Local" value="html/Eclipses%20-%20Solar%20-%20WorldMap.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Planet conjunctions">
+				<param name="Local" value="html/Eclipses%20-%20Solar%20-%20Planet%20conjunction.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Detailed map">
+				<param name="Local" value="html/Eclipses%20-%20Solar%20Detailed%20map.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Local prediction">
+				<param name="Local" value="html/Eclipses%20-%20Solar%20-%20Local%20prediction.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Besselian elements">
+				<param name="Local" value="html/Eclipses%20-%20Solar%20Elements.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="MultiLocation predictions">
+				<param name="Local" value="html/Eclipses%20-%20Solar%20-%20Multilocation.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Central line; Path coordinates">
+				<param name="Local" value="html/Eclipses%20-%20Solar%20-%20Path%20coordinates.htm">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Lunar eclipses">
+			<param name="ImageNumber" value="21">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Lunar Eclipses">
+				<param name="Local" value="html/Eclipses%20-%20Lunar.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Planet conjunctions">
+				<param name="Local" value="html/Eclipses%20-%20Solar%20-%20Planet%20conjunction.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Besselian elements">
+				<param name="Local" value="html/Eclipses%20-%20Lunar%20Elements.htm">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Transits">
+			<param name="ImageNumber" value="21">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Transits">
+				<param name="Local" value="html/Eclipses%20-%20Transits.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="MultiLocation predictions">
+				<param name="Local" value="html/Eclipses%20-%20Transits%20-%20mutilocation.htm">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Baily Beads">
+			<param name="ImageNumber" value="21">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Baily beads analysis">
+				<param name="Local" value="html/Baily%20Beads%20-%20main.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Baily bead - results">
+				<param name="Local" value="html/Baily%20bead%20results.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Baily beads limb plot">
+				<param name="Local" value="html/Baily%20beads%20limb%20plot.htm">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Crater timing reductions">
+			<param name="Local" value="html/Crater%20Timings.htm">
+			<param name="ImageNumber" value="21">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Ephemerides">
+		<param name="Local" value="html/Ephemerides%20Overview.htm">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Ephemerides - main form">
+			<param name="Local" value="html/Ephemerides%20Overview.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Asteroid ephemeris">
+			<param name="Local" value="html/EphemAsteroids.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Asteroid Shape models">
+			<param name="Local" value="html/Asteroids%20-%20DAMIT.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Asteroid Satellite ephemeris">
+			<param name="Local" value="html/Asteroid%20binary%20ephemeris.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Calendar">
+			<param name="Local" value="html/EphemCalendar.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Central Meridians - Mars, Jupiter &amp; Saturn">
+			<param name="Local" value="html/EphemCentralMeridians.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Comet ephemeris">
+			<param name="Local" value="html/EphemComet.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Conversions, Earth Orientation parameters">
+			<param name="Local" value="html/EphemConversions.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Datum Conversion, Geoid height">
+			<param name="Local" value="html/Ephem%20Datum%20Conversions.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Diary of Astronomical Phenomena">
+			<param name="Local" value="html/EphemDiary.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Distances">
+			<param name="Local" value="html/EphemDistances.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Magnitude calculator">
+			<param name="Local" value="html/EphemMagnitudeCalculator.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Moon - rise and set times">
+			<param name="Local" value="html/EphemRiseSetMoon.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Moon phases, perigee and apogee">
+			<param name="Local" value="html/EphemMoonPhases.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Object altitude, Rise/set times">
+			<param name="Local" value="html/EphemObjectAltitude.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Planets - mutual conjunctions">
+			<param name="Local" value="html/EphemMutualConjunctions.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Planets - rise and set times">
+			<param name="Local" value="html/EphemRiseSetPlanets.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Planet ephemerides">
+			<param name="Local" value="html/EphemPlanets.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Planets and Moons - graphic">
+			<param name="Local" value="html/EphemPlanetGraphic.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Satellite positions">
+			<param name="Local" value="html/EphemSatellites.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Sidereal time, Solar transit, Ecliptic, and JD">
+			<param name="Local" value="html/EphemSidereal.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Shape model demo">
+			<param name="Local" value="html/ShapeModelDemo.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Star charts">
+			<param name="Local" value="html/EphemStarChart.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Twilight - sun altitudes">
+			<param name="Local" value="html/EphemTwilight.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Light curve editor">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Light curve viewer">
+			<param name="Local" value="html/LightCurve_View.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Light curve editor">
+			<param name="Local" value="html/Light%20Curve%20Editor.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Light curve embargoes">
+			<param name="Local" value="html/Light%20curve%20embargoes.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Lunar predictions">
+		<param name="Local" value="html/Lunar%20Predictions%20Overview.htm">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Lunar predictions - main form">
+			<param name="Local" value="html/Lunar%20Predictions%20Overview.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Lunar polynomial series">
+			<param name="Local" value="html/Lunar%20Polynomial%20series.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="List grazes used in profile">
+			<param name="Local" value="html/Lunar%20Predictions%20-%20List%20grazes%20used.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Display Moon in star field">
+			<param name="Local" value="html/Lunar%20predictions%20-%20Moon%20in%20star%20field.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Site editor">
+			<param name="Local" value="html/Site%20editor.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Edit user asteroids">
+			<param name="Local" value="html/User%20asteroids%20Edit.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Double star codes">
+			<param name="Local" value="html/Double%20star%20codes.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Variable star codes">
+			<param name="Local" value="html/Variable%20Star%20types.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Predictions for single sites">
+			<param name="ImageNumber" value="21">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Predictions">
+				<param name="Local" value="html/Lunar%20Predictions%20-%20Predictions.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Select site for prediction">
+				<param name="Local" value="html/Lunar%20predictions%20-%20Select%20site.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Select star catalogue for predictions">
+				<param name="Local" value="html/Lunar%20predictions%20-%20Select%20star%20catalogue.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Select objects for predictions">
+				<param name="Local" value="html/Lunar%20predictions%20-%20Select%20objects.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Set dates for prediction">
+				<param name="Local" value="html/Lunar%20predictions%20-%20Set%20dates.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Generate predictions">
+				<param name="Local" value="html/Lunar%20predictions%20-%20Generate%20Predictions.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Output filter">
+				<param name="Local" value="html/Lunar%20Predictions%20-%20Filter.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Prediction - column meanings">
+				<param name="Local" value="html/Lunar%20Predictions%20PredictionContent.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Grazes - column meaning">
+				<param name="Local" value="html/Lunar%20Predictions%20GrazeContent.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="MoonMap">
+				<param name="Local" value="html/Lunar%20Predictions%20-%20MoonMap.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Select star">
+				<param name="Local" value="html/Lunar%20predictions%20-%20Select%20star.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="World map">
+				<param name="Local" value="html/Lunar%20Predictions%20-%20World%20map.htm">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Predictions for single objects">
+			<param name="ImageNumber" value="21">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Predictions for single objects">
+				<param name="Local" value="html/Lunar%20Predictions%20-%20Find%20particular%20object.htm">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Predictions for multiple sites and objects">
+			<param name="ImageNumber" value="21">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Generate predictions">
+				<param name="Local" value="html/Lunar%20Predictions%20-%20AutoGenerate.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="BAA and RASC">
+				<param name="Local" value="html/Lunar%20Predictions%20-%20BAA%20RASC.htm">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Graze predictions">
+			<param name="ImageNumber" value="21">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Magnitude visibility table">
+				<param name="Local" value="html/Lunar%20Predictions%20-%20GrazeMagTable.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Graze profile">
+				<param name="Local" value="html/Lunar%20Predictions%20-%20GrazeProfile.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Graze path map">
+				<param name="Local" value="html/Lunar%20Predictions%20-%20GrazePathMap.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="List grazes used in profile">
+				<param name="Local" value="html/Lunar%20Predictions%20-%20List%20grazes%20used.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Select star">
+				<param name="Local" value="html/Lunar%20predictions%20-%20Select%20star.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Watts photos">
+				<param name="Local" value="html/Lunar%20Predictions%20-%20Watts%20photos.htm">
+				</OBJECT>
+		</UL>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Lunar observations">
+		<param name="Local" value="html/Lunar%20Results%20Overview.htm">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Lunar observations - main form">
+			<param name="Local" value="html/Lunar%20Results%20Overview.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Double stars - solve PA and Separation">
+			<param name="Local" value="html/Lunar%20Observations%20-%20Solve%20Doubles.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Fresnel Diffraction - Lunar">
+			<param name="Local" value="html/Fresnel%20Diffraction%20-%20Lunar.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Submitting observations">
+			<param name="Local" value="html/Lunar%20Observations%20-%20Submitting.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Updating download addresses">
+			<param name="Local" value="html/Lunar%20Observations%20-%20Current%20addresses.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Observations editor">
+			<param name="Local" value="html/Lunar%20Observations%20-%20Editor.htm">
+			<param name="ImageNumber" value="21">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Display report">
+				<param name="Local" value="html/Lunar%20Observations%20-%20DisplayReport.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Header">
+				<param name="Local" value="html/Lunar%20Observations%20-%20Header.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Sites and Names">
+				<param name="Local" value="html/Lunar%20Observations%20-%20Sites%20and%20Names.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Events">
+				<param name="Local" value="html/Lunar%20Observations%20-%20Events.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="WDS component">
+				<param name="Local" value="html/Lunar%20Observations%20-%20WDS%20component.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Estimating Signal-to-Noise">
+				<param name="Local" value="html/SignalToNoise.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Data verification">
+				<param name="Local" value="html/Lunar%20Observations%20-%20Data%20Verification.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Identify unidentified stars">
+				<param name="Local" value="html/Lunar%20Observations%20-%20Identify%20unidentified.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Submitting observation report">
+				<param name="Local" value="html/Lunar%20Observations%20-%20Submitting%202.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Double star report">
+				<param name="Local" value="html/Lunar%20Observations%20-%20Double%20star%20report.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Light curve report">
+				<param name="Local" value="html/Lunar%20Observations%20-%20Light%20curve%20report.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Display residuals">
+				<param name="Local" value="html/Lunar%20Observations%20-%20Residuals.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Messages by Graze organiser">
+				<param name="Local" value="html/Lunar%20Observations%20-%20Graze%20organiser.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Observed profile">
+				<param name="Local" value="html/Lunar%20Observations%20-%20Observed%20profile.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="List grazes used in profile">
+				<param name="Local" value="html/Lunar%20Predictions%20-%20List%20grazes%20used.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Limb map">
+				<param name="Local" value="html/Lunar%20Observations%20-%20LimbMap.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Watts photos">
+				<param name="Local" value="html/Lunar%20Predictions%20-%20Watts%20photos.htm">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Historical grazes">
+			<param name="ImageNumber" value="21">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Observed grazes">
+				<param name="Local" value="html/Lunar%20Observations%20-%20ObservedGrazes.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Graze data - sources">
+				<param name="Local" value="html/Graze%20data%20-%20sources.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Missing grazes">
+				<param name="Local" value="html/Lunar%20Observations%20-%20Missing%20grazes.htm">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Historical Occultations">
+			<param name="ImageNumber" value="21">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Observed occultations">
+				<param name="Local" value="html/Lunar%20Observations%20-%20Historical%20occultations.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Event times from altitudes">
+				<param name="Local" value="html/Lunar%20EventTimesFromAltitudes.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Doubles report from Archive">
+				<param name="Local" value="html/Lunar%20Observations%20-%20Doubles%20from%20Archive.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="RGO observer names">
+				<param name="Local" value="html/RGO%20Observer%20names.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="RGO and ILOC corrections">
+				<param name="Local" value="html/RGO%20and%20ILOC%20corrections.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Processing RGO &amp; ILOC graze data">
+				<param name="Local" value="html/Lunar%20Observations%20-%20Historical%20processing.htm">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Star positions from observations">
+			<param name="ImageNumber" value="21">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Solving for star positions">
+				<param name="Local" value="html/Lunar%20Observations%20-%20Solve%20star%20position.htm">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Archiving observations">
+			<param name="ImageNumber" value="41">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Archiving observations - overview">
+				<param name="Local" value="html/Lunar%20Observations%20-%20Archive%20Overview.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Archive editor">
+				<param name="Local" value="html/Lunar%20Observations%20-%20Archive%20Editor.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Archive functions - regional coordinator">
+				<param name="Local" value="html/Lunar%20Observations%20-%20Archive%20Regional%20Coord.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Archiving - Global coordinator functions">
+				<param name="Local" value="html/Lunar%20Observations%20-%20Archive%20Global%20Coord.htm">
+				</OBJECT>
+		</UL>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Satellite phenomena">
+		<param name="Local" value="html/Satellites%20Overview.htm">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Satellites - main form">
+			<param name="Local" value="html/Satellites%20Overview.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Mutual eclipses and occultations">
+			<param name="Local" value="html/SatellitesMutualEvents.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Mutual event light curve">
+			<param name="Local" value="html/SatellitesMutualEvents_LightCurves.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Eclipses transits and occultations with planet">
+			<param name="Local" value="html/SatellitesWithPlanet.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Light Curves">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Report a light curve">
+			<param name="Local" value="html/LightCurve_Report.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="View a light curve">
+			<param name="Local" value="html/LightCurve_View.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Recording Timer">
+		<param name="ImageNumber" value="2">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Recording Timer">
+			<param name="Local" value="html/RecordingTimer.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Maintenance">
+		<param name="Local" value="html/Maintenance%20Overview.htm">
+		<param name="ImageNumber" value="41">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Maintenance - main form">
+			<param name="Local" value="html/Maintenance%20Overview.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Downloads">
+			<param name="Local" value="html/Downloads.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Download control">
+			<param name="Local" value="html/Maintenance%20-%20DownloadControl.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Check installation">
+			<param name="Local" value="html/Check%20installation.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Convert Astorb &amp; MPCOrb">
+			<param name="Local" value="html/Maintenance%20Convert%20Astorb.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Create Gaia catalogue">
+			<param name="Local" value="html/Maintenance%20-%20Create%20Gaia%20catalogue.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Create User catalogue">
+			<param name="Local" value="html/Maintenance%20-%20Create%20User%20catalogue.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="deltaT">
+			<param name="Local" value="html/DeltaT.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Edit asteroid diameters">
+			<param name="Local" value="html/Asteroid%20predictions%20-%20EditDiameters.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="DE Ephemeris versions">
+			<param name="Local" value="html/JPL_DE%20versions.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Edit binary asteroids">
+			<param name="Local" value="html/Asteroid%20predictions%20-%20EditBinaryAsteroids.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Site editor">
+			<param name="Local" value="html/Site%20editor.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Stars - display range">
+			<param name="Local" value="html/Maintenance%20-%20Stars%20-%20display%20range.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Stars - display catalogue entry ">
+			<param name="Local" value="html/Maintenance%20-%20Stars%20-%20display%20details.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Stars - compare catalogues">
+			<param name="Local" value="html/Maintenance%20-%20Stars%20-%20Compare%20catalogues.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Stars - get Gaia DR2">
+			<param name="Local" value="html/Stars%20-%20Get%20GaiaDR2.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Display Orbit from 6th Orbit Catalog">
+			<param name="Local" value="html/Maintenance%20-%20Stars%20-%206thOrbitDisplay.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Stars - AAVSO Light Curve">
+			<param name="Local" value="html/Maintenance%20-%20Stars%20-%20Light%20Curve.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Stars - Diameters">
+			<param name="Local" value="html/Maintenance%20-%20Stars%20-%20Diameters.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Stars - Diameters from Gaia">
+			<param name="Local" value="html/Gaia%20star%20diameters.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Star - UCAC4">
+			<param name="Local" value="html/UCAC4.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="URAT1">
+			<param name="Local" value="html/URAT1.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="User settings">
+			<param name="Local" value="html/User%20settings.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Maintain XZ catalogue system">
+			<param name="ImageNumber" value="41">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Maintain XZ catalogue">
+				<param name="Local" value="html/Maintenance%20-%20XZ%20catalogue%20File%20management.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="XZDoubles Editor">
+				<param name="Local" value="html/XZDoubles%20Editor.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="XZVariables Editor">
+				<param name="Local" value="html/XZVariables%20Editor.htm">
+				</OBJECT>
+		</UL>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Web pages - using Occult to create">
+		<param name="ImageNumber" value="13">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Using GoogleMaps to display predictions">
+			<param name="Local" value="html/GoogleMapsHelp.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Creating a feed for OccultWatcher">
+			<param name="Local" value="html/OccultWatcherFeed.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Miscellaneous">
+		<param name="ImageNumber" value="17">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Animated GIFs">
+			<param name="Local" value="html/Animated%20GIFs.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Constants and Values">
+			<param name="Local" value="html/Constants.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Fresnel diffraction">
+			<param name="Local" value="html/Fresnel%20Diffraction.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Weather predictions">
+			<param name="Local" value="html/Weather%20Maps.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="External access">
+		<param name="ImageNumber" value="39">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="AutoAsteroidPrediction">
+			<param name="Local" value="html/AutoAsteroidPrediction.htm">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="File formats">
+		<param name="ImageNumber" value="11">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Resource files - list">
+			<param name="Local" value="html/Resource%20Files%20list.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="GoogleEarth file locations">
+			<param name="Local" value="html/GooglEarthFileLocations.htm">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Asteroids">
+			<param name="ImageNumber" value="21">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Asteroid diameters">
+				<param name="Local" value="html/FileFormat%20AsteroidDiameters.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Asteroid elements">
+				<param name="Local" value="html/FileFormat%20AsteroidElements.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Asteroid magnitudes">
+				<param name="Local" value="html/FileFormat%20AsteroidMagnitudes.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Binary asteroids">
+				<param name="Local" value="html/FileFormat%20Binary%20asteroids.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Asteroid taxonomy">
+				<param name="Local" value="html/Asteroid%20Taxonomy.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Asteroids with rings">
+				<param name="Local" value="html/FileFormat%20AsteroidRings.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="DWD files">
+				<param name="Local" value="html/FileFormat%20DWD.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Observations">
+				<param name="Local" value="html/FileFormat%20Observations.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Observations XML format">
+				<param name="Local" value="html/FileFormat%20AsteroidObservations.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Shape model index">
+				<param name="Local" value="html/File%20Format%20-%20ShapeModelIndex.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Star diameter analyser">
+				<param name="Local" value="html/FileFormat%20StarDiameterAnalysis.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Occelmnt">
+				<param name="Local" value="html/FileFormat%20Occelmnt%20files.htm">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Planets and satellites">
+			<param name="ImageNumber" value="21">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Crater">
+				<param name="Local" value="html/FileFormat%20Crater.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="DE413 and DE405">
+				<param name="Local" value="html/FileFormat%20DE405_413.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="JPL DE ephemerides">
+				<param name="Local" value="html/JPL_DE.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="DE Versions - using...">
+				<param name="Local" value="html/JPL_DE%20versions.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="J6, J7,...J13 (moons of Jupiter)">
+				<param name="Local" value="html/FileFormat%20J6%20to%20J13.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Maria">
+				<param name="Local" value="html/FileFormat%20Maria.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Moon_yyyy">
+				<param name="Local" value="html/FileFormat%20Moon_yyyy.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="MoonSeries">
+				<param name="Local" value="html/FileFormat%20MoonSeries.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="NCassini, SCassini">
+				<param name="Local" value="html/FileFormat%20Cassini_dat.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Nutation">
+				<param name="Local" value="html/FileFormat%20Nutation.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Satellites - ephemeris sources">
+				<param name="Local" value="html/FileFormat%20SatellitesEphemerisSources.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="U1, U2, U3, U4, U5 (moons of Uranus)">
+				<param name="Local" value="html/FileFormat%20U1%20to%20U5.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="VSOP87a">
+				<param name="Local" value="html/FileFormat%20VSOP87a.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Watts.bin">
+				<param name="Local" value="html/FileFormat%20Watts_bin.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Watts.crn">
+				<param name="Local" value="html/FileFormat%20Watts_Crn.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Watts.lim">
+				<param name="Local" value="html/FileFormat%20Watts_Lim.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Watts Photos">
+				<param name="Local" value="html/FileFormat%20WattsPhotos.htm">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Star catalogues">
+			<param name="ImageNumber" value="21">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Gaia">
+				<param name="Local" value="html/FileFormat%20GAIA.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="GSC Fields">
+				<param name="Local" value="html/FileFormat%20GSC%20Fields.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Gaia doubles">
+				<param name="Local" value="html/Gaia%20doubles.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Hipparcos Index">
+				<param name="Local" value="html/FileFormat%20Hipparcos%20Index.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Kepler2 files">
+				<param name="Local" value="html/FileFormat%20Kepler2.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="PPMXL">
+				<param name="Local" value="html/FileFormat%20PPMXL.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="SAO_XZ">
+				<param name="Local" value="html/FileFormat%20SAO_XZ.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="SAO_ZC">
+				<param name="Local" value="html/FileFormat%20SAO_ZC.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="StarDia">
+				<param name="Local" value="html/FileFormat%20StarDia.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Tycho2">
+				<param name="Local" value="html/FileFormat%20Tycho2.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="UBSC">
+				<param name="Local" value="html/FileFormat%20UBSC.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="User star - Minor planet Search">
+				<param name="Local" value="html/FileFormat%20UserStar_MinorPlanetSearch.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="WDS Discovery codes">
+				<param name="Local" value="html/FileFormat%20WDS%20Discovery%20codes.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="WDS and Interferometric formats">
+				<param name="Local" value="html/FileFormat%20WDS%20and%20Interferometric.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="XZ80Q">
+				<param name="Local" value="html/FileFormat%20XZ80Q.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="XZ_ZC">
+				<param name="Local" value="html/FileFormat%20XZ_ZC.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="XZConfirmations">
+				<param name="Local" value="html/FileFormat%20XZConfirmations.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="XZDoubles Discoveries">
+				<param name="Local" value="html/FileFormat%20XZDoubles%20Discoveries.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="XZDoubles">
+				<param name="Local" value="html/FileFormat%20XZDoubles.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="XZIndex">
+				<param name="Local" value="html/FileFormat%20XZIndex.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="XZVariables">
+				<param name="Local" value="html/FileFormat%20XZVariables.htm">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Lunar observations">
+			<param name="ImageNumber" value="21">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Lunar report">
+				<param name="Local" value="html/FileFormat%20Lunar%20observations.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Lunar Archive - Observations">
+				<param name="Local" value="html/FileFormat%20Lunar%20Archive.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Lunar Archive - Reductions">
+				<param name="Local" value="html/FileFormat%20LunarArchive%20Reductions.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Lunar Archive - VizieR">
+				<param name="Local" value="html/FileFormat%20LunarArchive%20Vizier.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Doubles analysis">
+				<param name="Local" value="html/File%20format%20-%20Lunar%20doubles%20analysis.htm">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Other files">
+			<param name="ImageNumber" value="21">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Bayer &amp; Flamsteed numbers">
+				<param name="Local" value="html/FileFormat%20Bayer.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="ZC_XZ">
+				<param name="Local" value="html/FileFormat%20ZC_XZ.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Constellation boundaries">
+				<param name="Local" value="html/FileFormat%20Constellations.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="DeltaT &amp; DeltaTA">
+				<param name="Local" value="html/FileFormat%20deltaT_deltaTA.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Earth Orientation Parameters">
+				<param name="Local" value="html/FileFormat%20EOP.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Earth2014 topography">
+				<param name="Local" value="html/FileFormat%20Earth2014.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Geodetic datums">
+				<param name="Local" value="html/Datums.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Geoid Heights">
+				<param name="Local" value="html/FileFormat%20Geoid%20Heights.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="GoogleMaps - header/footer/server">
+				<param name="Local" value="html/FileFormat%20GoogleMaps.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Light curves">
+				<param name="Local" value="html/Light%20curve%20format.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="LOLA limb data">
+				<param name="Local" value="html/FileFormat%20LOLA.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Site files">
+				<param name="Local" value="html/FileFormat%20Sites.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="World">
+				<param name="Local" value="html/FileFormat%20World_dat.htm">
+				</OBJECT>
+		</UL>
+	</UL>
+</UL>
+</BODY></HTML>

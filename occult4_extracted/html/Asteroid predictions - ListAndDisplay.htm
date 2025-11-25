@@ -1,0 +1,769 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>List and Display</Title>
+<style type="text/css">
+.auto-style1 {
+	color: #FF00FF;
+}
+.auto-style2 {
+	color: #800000;
+}
+.auto-style3 {
+	color: #800000;
+	font-weight: bold;
+}
+.auto-style4 {
+	margin-left: 80px;
+}
+.auto-style5 {
+	list-style-type: lower-roman;
+}
+.auto-style7 {
+	color: #800000;
+	font-weight: bold;
+	margin-left: 40px;
+}
+.auto-style8 {
+	margin-left: 40px;
+}
+.auto-style9 {
+	color: #0000FF;
+}
+.auto-style10 {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+.auto-style11 {
+	margin-bottom: 0;
+}
+.auto-style12 {
+	color: #3F0909;
+}
+.auto-style13 {
+	color: #FF0000;
+	font-size: medium;
+}
+.auto-style17 {
+	background-color: #FFFF00;
+}
+.auto-style18 {
+	font-size: medium;
+}
+.auto-style19 {
+	color: #FF0000;
+}
+.auto-style20 {
+	margin-left: 120px;
+}
+.auto-style21 {
+	margin-left: 80px;
+	color: #0000FF;
+}
+.auto-style22 {
+	font-size: x-small;
+}
+.auto-style23 {
+	font-size: x-small;
+	font-weight: bold;
+}
+.auto-style24 {
+	font-size: x-small;
+	font-weight: bold;
+	color: #FF0000;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>List and Display</H1>
+<P>This form provides the following functionality<ul>
+<li>Displaying a list of the results of a search just completed
+<li>loading and displaying the results of a search conducted previously, that has been saved to file
+<li>Merging the results of plural searches
+<li>sorting the list of search results by any of 14 parameters
+<li>filtering the list of search results by the application of one or more of 19 criteria
+<li>saving the entire list of events held in memory
+<li>saving just those events that meet the filter criteria.<li>plotting any event in the list, and from that plot accessing the full range of additional prediction information
+<li>automatically generating a range of prediction files (as specified in the User Settings, group 11) for each listed events.
+	<li>generating the files needed for an OccultWatcher feed<li>generating a 
+	<strong>UserAsteroid.csv</strong> file by downloading orbital elements form JPL-Horizons for 
+	each listed event<li>generating a more accurate prediction for a single 
+	event, by right-clicking on it</ul>
+
+<h1 class="auto-style12">Menu strip options</h1>
+<B>File...</B>
+<ul>
+	<li><B>New </B>&nbsp;Clears the memory of any occultation elements</li>
+    <li><B>Open</B> Clears the memory of any occultation elements, and reads a file of occultation elements into memory for display.</li>
+	<li><B>Open and Merge - duplicates removed </B>&nbsp;Adds the events in the file being opened to those events currently in memory, with duplicates being removed.</li>
+	<li><B>Open and Merge - duplicates retained </B>&nbsp;Adds the events in the file being opened to those events currently in memory, with duplicates being retained. THis is useful when comparing predictions made using different sources of star positions or asteroid orbits.</li>	<li><hr></li>
+
+	<li><B>Paste</B>&nbsp;Include the occultation elements of one or more events using Copy &amp Paste functionality</li>
+	<li><hr></li>
+	
+	    <li><strong>Remove selected event</strong> Removes that event from memory</li>
+	<li><B>Remove all unlisted events </B>&nbsp;Removes from memory all events that are not displayed with the current filter settings</li>
+	<li><B>Remove all events (listed + unlisted) </B>&nbsp;Removes all events from memory and display</li>	<li><hr></li>
+
+	<li><B>Copy occultation elements of selected event</B> Copies the occultation elements of a selected event.</li>
+	<li><B>Copy list</B> Copies the displayed list of events to the clipboard as text.</li>
+     <li><hr></li>
+     
+	<li><B>Save listed events Saves the occultation elements of only those events that are displayed, to a file of the user's choice.</B></li>
+	<li><B>Save all events</B> Saves all occultation events currently in memory to a file of the user's choice.
+	</li>
+	<li><strong><a name="OW"></a>Save listed events as a 'Personal' OW feed</strong> Saves the 
+occultation elements of the events in the format needed for OccultWatcher 
+	personal predictions. The method of saving the file depends upon whether 
+	OccultWatcher is running when this function is used.<br>
+	<ul><li>If OccultWatcher is running, the file called <strong>OccelmntSubsetForOW.dat 
+		</strong>will be written directly to the required <strong>OccultWatcher\Personal
+		</strong>directory</li>
+	<li>If OccultWatcher is not running, a file called <strong>OccelmntSubsetForOW.dat</strong> 
+	is written to the Occult subdirectory<strong>
+	</strong><span class="auto-style2">\Generated Files\</span><span class="auto-style1">.</span><strong>
+	</strong>If you are running <span class="auto-style2">OccultWatcher </span>'OW' on your computer, simply 
+copy this file to the OW directory <strong>OccultWatcher\Personal </strong>(making no 
+change to the file name), and the events 
+will be included in <span class="auto-style2">OccultWatcher</span>.</li></ul> This way, you can generate your own list of 
+events specific to your location, and have them appear in
+	<span class="auto-style2">OccultWatcher</span>. 
+	The events will not appear until OccultWatcher has done an update of the 
+	feeds. You can learn more about this option in <span class="auto-style2">OccultWatcher
+	</span>from the <span class="auto-style2">OccultWatcher </span><strong><em>Help 
+	</em></strong>system, under <strong><em>Configuration </em></strong>(towards the end).
+	<li><strong>Create </strong><em><strong>UserAsteroid.csv</strong></em><strong> 
+	file from JPL-Horizons, for all listed events</strong>. Creates a User 
+	elements file using JPL-Horizons, which can then be used to generate 
+	predictions based on JPL-Horizons orbital elements. [This is similar to the 
+	function available in the UserElements editor - see
+	<a href="User%20asteroids%20Edit.htm">User elements editor</a> and
+	<a href="User%20Asteroids%20Horizons.htm">User Asteroids Horizons</a>]<br>The work-flow for 
+	this option is<ul>
+		<li>generate a set of predictions using <strong>MPCORB</strong>, <strong>Astorb</strong>, or 
+		<strong>AstDys-2</strong>. Typically they would be 
+		for a time-limited period of a month or two, appropriate for generating 
+		an OccultWatcher feed or personal predictions</li>
+		<li>use the filter options on the List and display form to limit the 
+		listed events to those that are of potential interest</li>
+		<li>select this option, to create a User file of asteroid elements, by 
+		downloading orbital elements form JPL-Horizons</li>
+		<li>Re-do the search for the time period, but this time check the box on 
+		the Search form <strong>use USER file of elements</strong></li>
+		<li>the resulting search will be based on Horizon elements</li>
+	</ul>
+	</li>
+	<li>When running,
+	<ul>
+		<li>if the estimated download time is greater than 5 minutes, a message 
+		to that effect will be displayed,</li>
+		<li>if the estimated download time is greater than1 hour (or 3600 
+		asteroids) you will not be allowed to proceed</li>
+		<li>&nbsp;the list of events is initially sorted by date, then by 
+		asteroid number, and ends with the list sorted by date.</li>
+		<li>a scroll bar is displayed showing progress; also a notice of which 
+		asteroid is currently being downloaded</li>
+		<li>a <strong>Cancel</strong> button is displayed if you want to cancel 
+		the download part-way through<br></li>
+	</ul>
+	</li>
+	<li><hr></li>
+	<li><strong>Edit list of regions</strong> 
+Opens a <a href="Asteroid%20predictions%20-%20Edit%20regions.htm">form</a> where you can specify and edit the coordinates of multiple regions</li>
+	<li><strong>Set the elevation of the local horizon</strong> Sests the local 
+	horizon for use when filtering on site location</li>
+	<li><hr></li>
+	<li><strong>Plot paths on a map.</strong> Plots the listed paths on a map 
+	generated within Occult. A range of standard longitude/latitude values for 
+	the map can be set in User Settings, group 12.&nbsp; By default, the map 
+	will open with the longitude and latitude limits being 3 degrees on either 
+	side of the location of the site in site filter box.</li>
+	<li><strong>Plot all paths in GoogleEarth.</strong> Will plot the paths in 
+	GoogleEarth. Not available if there are more than 100 paths.</li>
+	<li><strong>Save all paths as GoogleEarth KMZ </strong>Will create a 
+	GoogleEarth KMZ file <span class="auto-style9"><strong>Occult 
+	4\GeneratedFiles\Multipath.kmz </strong></span>. This file can be used to 
+	plot the paths in GoogleEarth. The option is not available if there are more 
+	than 100 paths.</li>
+	<li><hr></li>
+	<span class="auto-style24">These two options are for legacy purposes only. Users should never need to use them
+	</span>
+	<li><em><span class="auto-style23">Save listed events (old format)</span></em><span class="auto-style22"> 
+	Saves the occultation elements of only those events that are displayed, to a 
+	file of the user's choice - using the 'old' format. </span></li>
+	<li><em><span class="auto-style23">Save all events (old format)</span></em><span class="auto-style22"> Saves all occultation events currently in memory to a file of the user's choice 
+	- using the 'old' format.</span><span class="auto-style23"> </span></li>
+	<li><hr></li>
+</ul>
+<h3>Sort Events</h3>
+<p class="auto-style8">Sorts the list of events by any of Date, Diameter (km), Diameter (arcsec), duration, Star magnitude, combined magnitude, magnitude drop Visual, Magnitude drop Red, elongation, distance, probability, name, number or star number. The list as initially displayed is sorted by date.
+</p>
+<ul>
+	<li>
+	<h4>List stars occulted more than once</h4>
+	</li>
+</ul>
+<p class="auto-style8">The last option in the Sort menu list is to list events 
+involving the same star. This is only likely to be relevant when a large number 
+of events are predicted - but it enables the ready identification of events 
+involving the same star. This can be useful for studying characteristics of that 
+star using different occultation events, or for applying positional offsets to 
+the star position based on the first observed event (if such is justified).</p>
+<h3>Generate predictions for all listed events</h3>
+<p class="auto-style8">This menu group automatically generates prediction files for all events listed on the summary. 
+It is particularly designed for those creating web pages, including those creating feeds for
+<A href="OccultWatcherFeed.htm">OccultWatcher</a>. To avoid generating predictions of events that are already contained in Steve Preston's 
+<I>Future.dat </I>and<I> FutureAll540.dat </I>files, check 'Exclude if in Future.dat' in the 4th filter box. {You should ensure you have up-to-date versions of 
+the <I>Future.dat </I>and <I>FutureAll540.dat </I>files.}</p>
+<ul>
+	<li>
+	<h3>Set scale for World maps ( = x.x)&nbsp;&nbsp; =&gt;</h3>
+	</li>
+</ul>
+<p class="auto-style8">This setting is for the scale of the world map that is 
+generated by the autogeneration routines. The drop-down lists provides the 
+available scales - from 1.0 to 8.0. The scale setting is retained between 
+sessions.</p>
+<p class="auto-style8">When the center line of the occultation path misses the 
+Earth, the world map is scaled such that the map shows the occultation path 
+relative to the World - irrespective of the selected plot scale.</p>
+<ul>
+	<li>
+	<h3>Plot the maps Path/Site-centered [xxxx]</h3>
+	</li>
+</ul>
+<p class="auto-style8">When the map scale is greater than 1, the plotted map is 
+centered on one of two bases. The reference point for plotting the map is the 
+site location set in the selection filter box for Visibility - 
+irrespective of whether or not the visibility filter is checked. </p>
+<p class="auto-style8">The map can be centered on that site location, or on the 
+point along the occultation path that is closest to that site location. The 
+current setting is shown in brackets at the end of the menu entry (and the menu 
+item is checked when the setting is 'Path'). The setting is retained between 
+sessions.</p>
+<p class="auto-style8">Anyone using the Autogeneration function should assess 
+which of these two options best meets their needs. There is no material 
+difference when the path passes close to the nominated site. However the 
+difference can be quite significant when the path is located some distance from 
+the nominated site.</p>
+<ul>
+	<li>
+	<h3><strong><span class="auto-style18">Create files&nbsp; [StationSort using 
+	site file =&gt;</span></strong> </h3>
+	</li>
+</ul>
+<p class="auto-style8">This function generates a set of files that can be used 
+to create a web page containing detailed information about each event. One of 
+the files that can be created is a file containing local predictions and path 
+distances for locations in a Site file. The 
+drop-down lists provides an alphabetically-sorted list of available Site files 
+that can be used to generate that output file - including an option of 'None'. The selected site file is retained between 
+sessions - but has to be re-selected each time the function is used.</p>
+<p class="auto-style8"><B><span class="auto-style2">IMPORTANT</span> </B><em>To use this option, you must specify the files you want to have generated under 
+</em> 
+<B><em>User Settings</em></B><em>, in the box </em> <B><em>Asteroid occultations - Search and display</em></B><em>.  To include city locations in the Occult map, you need to specify the site file in the 
+</em> 
+<B><em>User Settings, Group 11</em></B><em> (near the end).
+</em>
+</p>
+<p class="auto-style8"><span class="auto-style3">IMPORTANT -</span><span class="auto-style2"> change 
+introduced with Occult v4.5</span>. <em>The Autogeneration function is automatically enabled on the List and Display form. In the
+</em> 
+<B><em>User Settings</em></b><em> you do not need to check the box</em><B><em> Enable generation of output files</em></B><em> 
+unless you are intend using the old functionality (which is being retained for a period of time.) With Occult v4.5 the intention is that the user adjusts the filter settings (including the Regional filter) to create a list of suitable predictions; there is no option available to select/deselect events on the basis of check boxes.
+</em>
+
+</p>
+<p class="auto-style8">The Autogenerate function works as follows</p>
+<ul type=a class="auto-style4">
+	<li>The output files are written to the directory <B>Occult 4\AutoGenerated Asteroids.</B><li>
+	One of the potential files that is generated <span class="auto-style9">
+	[{xxxx}_Site.txt] </span>gives the mid-time of the event 
+	for each site in a Site file, with the results being sorted by order of distance from 
+	the path. When you click this menu item, a submenu will list all the 
+	available Site files. Click the Site file you wish to use, or 'None' if you 
+	do not want to use a site file.<li>The site file <em>used to plot cities on the Occult maps</em> is that specified in the 
+	<B>User Settings.</B>
+	<li>An index of the events generated is written to the file FileIndex.txt. Each entry is a text identifier of the event, followed by a unique identifier;
+	<li>A series of control files is written to the subdirectory MJD. The file has the name of the unique identifier, and contains the Modified Julian day number of the date the relevant occultation element file was created.<li>Before creating a set of output files for an event, the program checks to see if there is a corresponding file in the MJD directory. If the file exists, the program compares the creation date of the current occultation elements with the date stored in the check file - and only generates output if the elements creation date is later than that stored in the check file. [This means that, for example, you can generate a summary using Steve Preston's Future.dat file, and the 
+Autogenerate function will only create files for new or revised occultation elements.]
+
+
+</ul>
+
+
+<p class="auto-style8">See&nbsp; 
+	<A href="GoogleMapsHelp.htm">here</a> for more information on creating a web page with GoogleMaps.
+
+
+	</p>
+<ul>
+	<li>
+	<p class="auto-style11"><strong><span class="auto-style18">Create files for 
+	</span><span class="auto-style13">Occult Watcher</span><span class="auto-style18"> feed</span></strong> 
+	This option creates the set of files needed to be uploaded to create a feed 
+	of occultation events for <a href="http://www.occultwatcher.net/">Occult 
+	Watcher</a>. If you have negotiated a feed for OccultWatcher, you will need 
+	to periodically upload a set of files in respect of events relevant to that 
+	feed. The first step is to create a list of events in List and Display that 
+	are relevant to the feed you are responsible for. Thereafter the process is:
+	</p>
+	<ul>
+		<li>
+		<p class="auto-style10">Click <strong>Create&nbsp; files for Occult 
+		Watcher feed</strong></p>
+		</li>
+		<li>
+		<p class="auto-style10">Specify an identifier relevant to the feed. For 
+		example, if the feed was called <strong>Antarctic</strong>, and the 
+		predictions covered December 2018, you might specify <strong>
+		Antarctic_2018Dec</strong></p>
+		</li>
+		<li>
+		<p class="auto-style10">The files will now be created in a directory
+		<strong>Occult 4\OWfeeds\{<em>feedname</em>}</strong>, ready to be 
+		uploaded to OccultWatcher</p>
+		</li>
+		<li>
+		<p class="auto-style10">You can vary the filter parameters and re-create 
+		the files without needing to delete previously created files.</p>
+		</li>
+		<li>
+		<p class="auto-style10">You can generate the files for different feeds 
+		(or different date ranges) without losing the previous files, simply by 
+		ensuring you use a different feed identifier. An identifier based on the 
+		'official' identifier plus a date is appropriate.</p>
+		</li>
+		<li>
+		<p class="auto-style10">Periodically, you will need to delete old feed 
+		folders in the OWfeeds directory.</p>
+		</li>
+	</ul>
+	</li>
+</ul>
+<p class="auto-style8">See <A href="OccultWatcherFeed.htm">here</a> for more 
+information on creating occultation feed for OccultWatcher.</p>
+
+
+<ul>
+	<li>
+	<h3><strong>Save all listed events as a 'Personal' OW feed</strong> </h3>
+	</li>
+</ul>
+<p class="auto-style8">This provides the same functionality as the menu item
+<strong>File... Save all listed events as a 'Personal' OW feed</strong>
+<a name="OW2"></a></p>
+
+<h2>Accurate prediction for a selected event</h2>
+<p>Events found when searching over a lengthy period of time, or without using 
+the JPL Horizons search option, may have reduced accuracy because of limitations 
+with the basic numerical integration scheme implemented in Occult. If you 
+identify an event in a list where you want a very accurate prediction, select 
+the event, and then right-click on it. This will enable you to generate an 
+updated prediction for that event.</p>
+<p>Note that this functionality has been superseded by the check-box option on 
+the Search form: <span class="auto-style19">use Horizons ephemeris (predictions will 
+be slow)</span> - which provides for accurate predictions for multiple objects.</p>
+&nbsp;<h1 class="auto-style12">Information displayed</h1>
+<p>The form displays summary information about events in three formats. The primary distinction depends upon whether or not the list is filtered on the basis of being visible from a specified location. If the list is filtered on being visible, the information for occultations by the planets (but not their satellites) include local event times. Examples of the three formats are as follows.
+
+</p>
+<h3>Not filtered on site location</h3>
+<pre>
+     Date       U.T.    Diameter   Durn  Star  Mag-Drop Elon  %      Star         d Rely             Planet           Min        Moon     § &#9673;    R.A. (J2000)  Dec.            Rec
+   y   m  d    h   m     km   &quot;   sec/m   mag   V    R *   o Ill     No.            &lt;1.4          No Name              D   Error Dist ill  &#9790;    h  m   s      o  '   &quot;           #
+2022 Jan  6   23 51.4    17 0.008   3.0s 15.6  3.0  3.1  111     UCAC4 433-056000   0.95        3696 Herald           0.14 ±0.00  164  23      11 35 22.054 - 3 25 32.34         7
+2022 Jan  5   13 27.7    95 0.041  1.99s 15.9 0.05 0.05   22     UCAC4 359-199540   1.00          30 Urania           0.32 ±0.00   17  11 §    20 38 25.020 -18 13  3.31         3
+2022 Jan  7   16 58.2   226 0.018   6.3s 15.4  3.7  3.8   15     UCAC4 359-197654   0.90       10199 Chariklo         1.07 ±0.05   51  30   &#9673;  20 18 53.589 -18 15 33.77         9
+2022 Jan 26    8 11.2    95 0.041  1.91s 12.2  0.8  0.8†  11     UCAC4 375-179406   0.95          30 Urania           0.73 ±0.00   92  41 §    21 20 27.578 -15  7 30.64        35
+2022 Jan 28   14 41.1  1110 0.035  36.5s 15.2  3.8  4.5†  33     UCAC4 373-127758   1.00       50000 Quaoar #1        0.88 ±0.32   20  18  &#9790;   18 25 32.349 -15 28 38.95        37
+2022 Jan 28   14 41.1  1096 0.035  36.1s 15.2  3.8  4.5†  33     UCAC4 373-127758   1.00       50000 Quaoar           0.88 ±0.32   20  18  &#9790;   18 25 32.349 -15 28 38.95        38
+2022 Jan 28   14 41.1   140 0.004   4.6s 15.2  3.8  4.5†  33     UCAC4 373-127758   1.00       50000 Weywot #1        2.08 ±0.32   20  18  &#9790;   18 25 32.349 -15 28 38.95        39
+2022 Jul 19    8 50.1    17 0.006  0.57s 11.7 0.11     ‡  57     G112304.5-040258 K             3696 Herald           0.78 ±0.01  158  63      11 23  4.494 - 4  2 58.46        19
+
+2020 Dec 21    0 46.6  5268 1.228   162s  7.4 0.15 0.10   30     HIP 99314        s 0.95       P5M03 Ganymede (III)   0.36 ±0.00   49  41      20  9 33.497 -20 35 38.73         0
+2020 Dec 21    6 45.3142984 33.28  60.6m  7.4 0.00        30 100 HIP 99314        s 0.95       P5M00 Jupiter          168°- 201°   52  43   &#9673;  20  9 33.497 -20 35 38.73         1
+2020 Dec 24   13 59.9142984 33.15  59.6m  8.9 0.00        28 100 TYC 6323-01760-1 s 0.95       P5M00 Jupiter           60°-  90°   91  74   &#9673;  20 12 36.665 -20 26 36.21         8
+2020 Dec 24   16 47.3  3643 0.845  80.6s  8.9 0.06 0.04   27     TYC 6323-01760-1 s 0.95       P5M01 Io (I)           0.54 ±0.00   92  75      20 12 36.665 -20 26 36.21         9
+2020 Dec 24   18 22.5  3122 0.724  88.5s  8.9 0.07 0.05   27     TYC 6323-01760-1 s 0.95       P5M02 Europa (II)      0.64 ±0.00   93  75      20 12 36.665 -20 26 36.21        10
+
+Note: List limited to events with a probability &gt10%.
+</pre>
+<h3>Filtered on site location, showing an event involving a planet</h3>
+<pre>
+     Event Summary for Longitude 148.95°, Latitude -34.9°  - sorted by Date
+
+     Date       U.T.    Diameter   Durn  Star  Mag-Drop Elon  %      Star         d Rely             Planet           Alt  Az  Dist Sun Moon Proba-  Moon   § &#9673;    R.A. (J2000)  Dec.    
+   y   m  d    h   m     km   "   sec/m   mag   V    R *   o Ill     No.            <1.4          No Name               o   o    "  Alt Alt  bility Dist ill  &#9790;    h  m   s      o  '   "  
+2018 May  7   14 37.9    12 0.021  1.06s  9.4  3.9  3.5  111     TYC 6325-00098-1 s 0.85       P4M02 Deimos (II)       33  96   2.8      17     0%    16  55      19 54  1.823 -22 28 31.37        15
+2018 May  7   14 43.2    12 0.022  1.06s 15.1 0.18 0.12† 111     UCAC4 338-198473   0.90       P4M02 Deimos (II)       34  95   2.3      18     0%    16  55      19 54  2.255 -22 28 25.87        16
+2018 May  7   14 44.4    22 0.039   2.6s  9.4  2.9  2.5  111     TYC 6325-00098-1 s 0.85       P4M01 Phobos (I)        34  95  16.8      19     0%    16  55      19 54  1.823 -22 28 31.37        17
+2018 May  7   14 52.2  6787 11.82   646s  9.4 0.00       111  88 TYC 6325-00098-1 s 0.85       P4M00 Mars              36  94  15.6      20     0%    16  54      19 54  1.823 -22 28 31.37        18
+2018 May  7   14 52.2    23 0.039   2.6s 15.1 0.07 0.05† 111     UCAC4 338-198473   0.90       P4M01 Phobos (I)        36  94  12.4      20     0%    16  54      19 54  2.255 -22 28 25.87        19
+
+2018 Jun 15   10 41.6   396 0.060  12.8s 15.6 0.11 0.07  168     UCAC4 338-152178   0.95       P6M01 Mimas (I)         33  96   0.2             0%   169   4      18 28  0.747 -22 24 52.07         0
+2018 Jun 15   11 13.9   277 0.042  17.2s 13.3  1.5  1.2† 168     UCAC4 339-143497   0.95       P6M07 Hyperion (VII)    40  91   0.5             0%   169   4      18 28 11.724 -22 23 52.49         1
+2018 Jun 15   11 28.0   277 0.042  17.2s 15.7 0.08 0.09‡ 168     G182811.6-222353   1.00       P6M07 Hyperion (VII)    43  90   0.7             0%   169   4      18 28 11.573 -22 23 52.71         2
+2018 Jun 15   13 17.5  1123 0.171  50.9s 14.6 0.03 0.02† 168     UCAC4 338-152036   0.90       P6M04 Dione (IV)        65  67   0.5             0%   168   4      18 27 56.000 -22 24 48.27         3
+2018 Jun 15   17  4.1  1469 0.223  79.3s 15.9 0.03 0.02  168     UCAC4 339-141776   0.95       P6M08 Iapetus (VIII)    60 285   1.0             0%   165   5      18 27 19.376 -22 22 48.16         4
+
+2018 Jun 15   18 41.6120536 Saturn   TYC 6278-00405-1 Mag=9.1 Elong=168° Ill=100%   Local times:  D at 18h 1m 32s PA=231° Alt=48°,  R at 19h 22m 50s PA=121° Alt=31°         5
+2018 Jun 15   19 10.1  1469 0.223  79.3s 15.8 0.04 0.02† 168     UCAC4 339-141728   0.85       P6M08 Iapetus (VIII)    34 265   0.7             0%   164   6      18 27 17.824 -22 22 49.20         6
+
+NOTE: For the Major planets, when the path crosses the site location (see Saturn in the above example), the prediction provides the local times of the D &amp; R events</pre>
+<p>&nbsp;</p>
+<h3>The information displayed in the list is:
+</h3>
+<ul>
+	<li><b>Date,  U.T: </b>The date and time of closest approach. The hierarchy 
+	of the U.T of the event time displayed is:<ol class="auto-style5">
+		<li>if filtered on site location - the time is for the closest approach 
+		to the location; </li>
+		<li>if filtered on the region (Path crosses...) BUT NOT the site 
+		location - the time is for the closest approach to the centre of the 
+		region. </li>
+		<li>otherwise the time is for the closest approach to the centre of the Earth.
+		</li>
+	</ol>
+	</li>
+	<li><b>Diameter: </b>The objects diameter, both in km and arcsec. For the planets it is the equatorial diameter. For Venus the diameter is for the top of the clouds.
+	</li>
+	<li><b>Duration: </b>The expected duration of the occultation on the basis of the diameter, assuming a central occultation. The time is typically given in seconds (s), but fort long events can be given in minutes (m). 
+	</li>
+	<li><b>Star Mag: </b>The visual magnitude of the star. Note that this magnitude may not be a strict V magnitude - depending on the source of the star position.
+	</li>
+	<li><b>Mag-Drop: </b>The expected magnitude drop, on the basis of the star's V and R magnitudes and the magnitude of the occulting object. 
+	</li>
+	<li><strong>*:</strong> a flag  to indicate there are 'nearby' stars that 
+	are brighter than [target star magnitude + 1.0].<ul>‡ = there are stars 
+	within 5&quot;, and the magnitude drop has been corrected to include all such stars.
+	<br>† = there are stars within 15".</ul></li>
+	<li><b>Elon: </b>The solar elongation of the star at the time of the event.
+	</li>
+	<li><b>% Illum: </b>For occultations by the Planets, the percent illumination of the planet. This is of particular importance for Mercury, Venus and Mars.
+	</li>
+	<li><b>Star No. : </b>The star identification number
+</li>
+	<li><b>d : </b>A flag to indicate there is double star information available, variable star information, or that the stellar diameter is significant. The flags are: 
+	<ul>
+		<li>W the star is listed in WDS 
+</li>
+		<li>D the star is a double from some source (such as the Interferometric catalogue). It may or may not be listed in WDS 
+		</li>
+		<li>V the star is a variable star. (It may also be a double star) 
+</li>
+		<li>If the flag is one of s, w, d or v, this indicates that stellar diameter is at least 1 mas - and will therefore have an effect on the occultation. The codes w, d or v indicate the star is also listed in one of the catalogues as per the capital letter 
+		equivalent</li>
+	</ul>
+	</li>
+	<li><strong>Rely</strong> The reliability of the star position (RUWE in 
+	GAIA), Values &lt;1.4 indicate the star position is reliable. For larger values 
+	there may be questions about the reliability of the position. Similarly if 
+	no value is given. A value of 0.0 is usually associated with a lack of 
+	proper motion, and as a result the position of the star has significant 
+	uncertainty.</li>
+	<li><b>Planet No  Name: </b>The identification of the occulting object. For asteroids, it is the asteroid number and its designation. For planets it is the name of the planet or moon. The identification numer used is of the form PxMyy, where X is the planet number, and yy is the number of the moon in the system of that planet.
+	</li>
+</ul>
+<p class="auto-style7">For Events not filtered on site location:</p>
+<p class="auto-style21"><strong>For asteroids and Satellites of the major 
+planets</strong></p>
+<ul class="auto-style20">
+	<li><b>MinD: </b>The minimum distance from the center of the Earth, in Earth radii
+	<li><b>Error: </b>The uncertainty in the minimum distance
+</ul>
+<p class="auto-style21"><strong>For Major planets</strong></p>
+<p class="auto-style20">The approximate longitude range from which the 
+occultation is visible</p>
+<p class="auto-style7">For Events filtered on site location:</p>
+<ul class="auto-style4">
+	<li><b>Alt: </b>The altitude of the star at the time of closest approach
+	as seen from the location
+	</li>
+	<li><strong>Az:</strong> The azimuth of the star at the time of closest 
+	approach</li>
+	<li><b>Dist: </b>The apparent minimum separation of the star and object, in arc secs
+	</li>
+	<li><b>Sun Alt: </b>The altitude of the sun at the time of the event. It is only given if the Sun's altitude is higher than -12 deg.</li>
+	<li><b>Moon Alt: </b>The altitude of the moon at the time of the event. It is only given if the moon's altitude is higher than -2 deg.</li>
+	<li><b>Probability: </b>The nominal probability that an occultation might be observed from that location.</li>
+</ul>
+<ul>
+	<li><b>Moon  Elon  Illum: </b>The elongation  of the moon from the star, and its percent illumination.
+	</li>
+	<li><b>§ : </b>A flag to indicate a shape model is available for the asteroid. 
+	</li>
+	<li><b>&#9790 : </b>A flag to indicate the presence of asteroidal moons
+</li>
+	<li><b>&#9673 : </b>A flag to indicate the presence of asteroidal rings
+</li>
+	<li><b>RA  Dec : </b>The star's coordinates on the J2000 equinox.
+</li>
+	<li><b>(final column) : </b>A reference number to link the displayed event to the events in memory
+	</li>
+</ul>
+<p>When the events are filtered by a site location, and an occultation by a planet occurs at that site, the event line gives contact times at that location. The information for Date, UT and Diameter in km is the same as for other lines. Thereafter the information given is:
+</p>
+<ul>
+	<li>The name of the planet
+</li>
+	<li>The star identification
+</li>
+	<li>Visual magnitude of the star
+</li>
+	<li>Solar elongation of the star
+</li>
+	<li>%illumination of the planet
+</li>
+	<li>For the Disappearance event, the time, PA on the planetary limb, and altitude of the star
+	</li>
+	<li>For the Reappearance event, the time, PA on the planetary limb, and altitude of the star
+
+	</li>
+</ul>
+<h1 class="auto-style12">Filter options</h1>
+<p>The event list can be filtered on a range of options, using check boxes at the top of the form. The status of those check boxes is retained between sessions.
+</p>
+<p>To filter the list, set the check boxes, then click <B>List events</B>.
+</p>
+<p>The various filters that can be applied are:
+</p>
+<p>=================================================
+</p>
+<P align=left><img src="ListDisplayFilter_Site.png"><br></p>
+<p>Filter on whether or not the event is visible from the specified location.
+Includes events if, at the specified location and time of closest approach to that location 
+</p>
+<ol class="auto-style5">
+	<li>For stars brighter than mag 4, the only criterion is that the asteroid must be at least 1 deg above the horizon
+	</li>
+	<li>For stars fainter than mag 4 - no events if the sun's altitude is greater than -1 deg. And no events if the asteroid's altitude is less than 5 deg and the sun's altitude greater than -9 deg.
+	</li>
+	<li>A general star faintness test applied for varying altitudes of the sun. The limits are 4.0 @ -1°, 7.9 @ -4°, 10.5 @ -6°, 13.2 @ -8, 15.8 @ -10°   
+	</li>
+</ol>
+<p>The latitude/longitude values are retained between sessions. You can use the<A  href="Site%20editor.htm"> site files</a> to insert the coordinates of a selected site, by clicking the <b>Select site</b> button.(This 
+also sets the telescope aperture in the next filter group.) This will also allow you to insert your home site location (set in the User Settings) by clicking the <B>Home </B>
+button on the form that appears to select from the site files.
+<p>The longitude and latitude values here are also used as the default site location for plotting the occultation maps.
+<p><strong><em>If this filter is selected,</em></strong> you can also set
+<ul>
+	<li>the probability of the event occurring at the specified site location</li>
+	<li>the distance of the path from the location <strong><em>(km) OR</em></strong> the minimum distance of the asteroid from the star, 
+and the altitude at that location The path distance is intended to limit events to those where the observer is prepared to travel to the occultation region. However the distance calculation is approximate, and becomes unreliable when the distance is of the order of 1000km or more or the star is at low altitude. 
+	</li>
+	<li>the sky-separation of the star and asteroid. This may be more relevant for filtering events that might occur at the home location.
+	</li>
+	<li>exclude events that occur below a specified altitude at that location.</li>
+</ul>
+<p>You can also filter on the basis of your local horizon. 
+This allows you to include the effects of trees, buildings, mountain 
+ranges, and the like. For this filter to be functional, you need to set your 
+local site horizon. You do this from the Menu bar - <strong>File... Set the elevation of 
+local horizon</strong>. This will bring up the form:<p>
+
+<img src="ListDisplayFilter_LocalHorizon.png"><p>
+Simply set the horizon altitude (in degrees) that you want to apply for the azimuth range above each entry. To retain 
+the settings, simply click <strong>Save &amp; Exit</strong>. <strong>Undo all 
+changes </strong>will return all fields to the value they had when the form was 
+opened. <strong>Set all elevations to zero</strong> does just that!. And <strong>
+Exit with no changes </strong>quits the form without saving any changes.<p>
+&nbsp;<p>
+&nbsp;=================================================
+ 
+<P align=left><img src="ListDisplayFilter_Various.png"><br>
+<p>Filter on any of the following parameters:
+<ul>
+	<li>the expected magnitude drop
+</li>
+	<li>the star magnitude
+</li>
+	<li>the expected maximum duration of a central occultation
+</li>
+	<li>the diameter of the occulting asteroid (including the moons of major planets)
+</li>
+	<li>the solar elongation of the star. Usually only events involving a quite 
+	bright star cab be observed at solar elongations less than 20°
+</li>
+	<li>The capabilities of your optical recording system. You can specify the 
+	telescope's aperture (up to 95 cm) and whether or not you are using a camera 
+	where you can set the exposure duration (including integrating cameras). 
+	These will be set on the basis of settings in the Site file (if you use that 
+	option in the previous group). <br>
+	<span class="auto-style9">This test works on the basis (assumption) that a 20cm telescope, using an exposure of 0.037 secs (half-way between PAL and NTSC video frame rates), can reliably record a star at magnitude 12.0 under reasonable conditions. Changes in the aperture appropriately changes the magnitude limit. If the exposure can be varied, the magnitude limit is set such that at at least 3 exposures can be taken during the maximum duration. If the predicted magnitude drop is less than 0.5 mags, a larger number of exposures must be possible during the maximum duration.
+	</span>
+</li>
+</ul>
+<p>=================================================
+</p>
+<P align=left><img src="ListDisplayFilter_Region.png"><br></p>
+<p>This filter identifies those events where the occultation path (as defined by its limits) crosses into a 'quadrilateral'. This filter is new to Occult 4.5.
+</p>
+<p>The purpose of this filter is to identify all occultation events that might occur in a region. That region might be defined by the various locations of a group of observers, or by the region an observer is prepared to travel to observe events.
+</p>
+<p>This filter will exclude all events where at least some of the path does not pass across the defined 
+quadrilateral. However it does not test for the Sun's altitude or the objects altitude - you need to apply a different filter for those.
+</p>
+<p>To set the filter, the user needs to specify the four corners of the quadrilateral area defining the region. Those coordinates are specified as 
+latitude/longitude coordinates, in degrees. There is no requirement for the 
+quadrilateral to be in any way regular in shape. To assist in specifying the coordinates, the box indicates the traditional directions of NW, NE, SW and SE - but in fact the ordering of the four corners of the quadrilateral is irrelevant.
+</p>
+<p>The region can be specified by manually entering the coordinates of the four 
+corners of the quadrilateral. However, more conveniently you can specify multiple 
+quadrilaterals by using the Menu option
+<a href="Asteroid%20predictions%20-%20Edit%20regions.htm">File... Edit list of regions</a>, 
+and select any of the regions you have created from the drop-down list of regions 
+at the top of this filter box.</p>
+<h3>Using the Region filter</h3>
+<p>The region filter can be used in several different ways:</p>
+<ol>
+	<li>For personal 
+predictions, you can specify a relatively small quadrilateral surrounding your 
+home site, to create a filter that identifies events that come close to you.</li>
+	<li>For personal predictions, you can specify a quadrilateral surrounding your 
+home site, taking into account roads &amp; topography where you might be prepared to 
+travel. This will create a filter that identifies event that cross the region 
+you are prepared to travel to - rather than just being close to you.</li>
+	<li>&nbsp;For 
+creators of feeds for OccultWatcher. You can set up a region that matches the 
+distribution of observers in your part of the world.</li>
+	<li>For creators of feeds 
+for OccultWatcher - where you have discrete groups of observers. By way of 
+Example, in Australia/New Zealand region, there are groups of observers in 
+Western Australia near Perth, in South-Eastern Australia 
+(Melbourne/Canberra/Sydney), in North-Eastern Australia (Brisbane/Townsville), 
+and New Zealand. To create an optimal feed, what one can do is:</li>
+</ol>
+<ul class="auto-style4">
+	<li>specify regions for each of the several locations</li>
+	<li>run the search for the desired time interval</li>
+	<li>select a first region using the File... Select Region... submenu, and 
+	filter the events for that region (applying any other filters as 
+	appropriate). Then Save the list using the <strong>Save listed events</strong> 
+	button&nbsp; (or the equivalent menu item).</li>
+	<li>select a second region using the File... Select Region... submenu. Then 
+	Save the list using the <strong>Save listed events</strong> button </li>
+	<li>Repeat for each of the regions</li>
+	<li>Now, using <strong>File... Open</strong>, open one of those saved files. 
+	[This will result in the loss of the overall search results, unless you have 
+	saved them.]</li>
+	<li>Then, using <strong>File... Open and Merge</strong>, open each of the 
+	remaining files you have saved. </li>
+</ul>
+<p>This will give you a list of all events that cross one or more of your 
+selected regions (with any duplicate entries being removed), from which you can 
+create an optimized OccultWatcher feed.<p>=================================================
+<P align=left><img src="ListDisplayFilter_Special.png"><br>
+<p>Filter on any of the following parameters:
+<ul>
+	<li>Occultations by a specified major planet. [The moons of a specified planet are also incuded]
+	</li>
+	<li>asteroids having a shape model
+</li>
+	<li>asteroids known to have moons
+</li>
+	<li>asteroids known to have rings
+</li>
+	<li>Events where the path uncertainty is less than a specified multiple of 
+	the Earth's radius. The allowable range is 0.2 to 4.0 Earth radii. This 
+	option is essentially for use with predictions of TNO objects (such as 
+	LuckyStar and RIO), where initial predictions can have a path uncertainty of 
+	many Earth radii - allowing the identification of events which have a better 
+	probability. of being observed.</li>
+	<li>Exclude events if they are contained in Steve Preston's 'Future.xml' or 'FutureAll.xml' prediction files. This option avoids duplication with the Steve Preston predictions. It is particularly significant for those creating prediction feeds for OccultWatcher, where it is desirable to avoid duplicate predictions. Note that the exclusion is dependant upon the star identification - and duplicate events may not be detected if different star catalogues or number formats are used.
+
+	</li>
+</ul>
+<p>=================================================
+</p>
+<P align=left><img src="ListDisplayFilter_Names.png"><br></p>
+<p>Filter on any of the following parameters:
+</p>
+<ul>
+	<li>The number of the asteroid; only asteroids with this number are 
+	displayed</li>
+	<li>The name of asteroids <I>contains </I>the specified characters.
+
+	For example, if 'eral' is entered here, the output would be limited to the 
+	asteroids 300 Ger<span class="auto-style17">aldi</span>na and 3696 H<span class="auto-style17">eral</span>d. 
+	The field is case-insensitive.</li>
+	<li>The taxonomic class of the asteroid. The classes and their definitions 
+	are given <a href="Asteroid%20Taxonomy.htm" target="_top">here</a>
+</ul>
+<p>=================================================
+</p>
+<P align=left><img src="ListDisplayFilter_Dates.png"><br></p>
+<ul>
+	<li>Filter for events that occur between the two specified dates.
+</li>
+	<li>Specify whether in the listing, the displayed magnitude is of the star 
+	alone, or star + asteroid.</li>
+</ul>
+<p>=================================================
+
+</p>
+<h2>Issues particular to binary asteroids in Miriade</h2>
+Where a search includes a binary asteroid with an ephemeris available at the IMCCE 
+<a href="http://vo.imcce.fr/webservices/miriade/">Miriade</a> system, Occult will generate predictions for each component, and for each available solution. The following table is an example 
+list of events generated by Occult.
+
+<pre>     Global summary of events - sorted by Date
+
+     Date       U.T.    Diameter   Durn  Star  Mag-Drop Elon  %      Star         d     Planet             Min          Moon   § &#9673;    R.A. (J2000)  Dec.     
+   y   m  d    h   m     km   "   sec/m   mag   V    R     o Ill     No.               No Name              D   Error Elon ill  &#9790;    h  m   s      o  '   "  
+2018 Mar  9   20 18.2   219 0.068   5.1s 14.6  .35  .39   21     4UC 456-000887       107 Camilla          0.35 ±0.04    0   0 §&#9790;    0 41  2.092   1  0 41.94         0
+2018 Mar  9   20 18.2   254 0.079   5.9s 14.6  .35  .39   21     4UC 456-000887       107 Camilla #1       0.35 ±0.04    0   0 §&#9790;    0 41  2.092   1  0 41.94         1
+2018 Mar  9   20 18.2    15 0.005   0.3s 14.6  .35  .39   21     4UC 456-000887       107 S2001-107-1 #1   0.27 ±0.04    0   0 §&#9790;    0 41  2.092   1  0 41.94         2
+2018 Mar  9   20 18.2     8 0.002   0.2s 14.6  .35  .39   21     4UC 456-000887       107 S2016-107-1 #1   0.43 ±0.04    0   0 §&#9790;    0 41  2.092   1  0 41.94         3
+2018 Mar  9   20 18.2   211 0.065   4.9s 14.6  .35  .39   21     4UC 456-000887       107 Camilla #2       0.35 ±0.04    0   0 §&#9790;    0 41  2.092   1  0 41.94         4
+
+2018 Mar  9   20 18.2    15 0.005   0.3s 14.6  .35  .39   21     4UC 456-000887       107 S2001-107-1 #2   0.27 ±0.04    0   0 §&#9790;    0 41  2.092   1  0 41.94         5
+2018 Mar  9   20 18.2     8 0.002   0.2s 14.6  .35  .39   21     4UC 456-000887       107 S2016-107-1 #2   0.43 ±0.04    0   0 §&#9790;    0 41  2.092   1  0 41.94         6
+2018 Mar  9   20 18.2   254 0.079   5.9s 14.6  .35  .39   21     4UC 456-000887       107 Camilla #3       0.35 ±0.04    0   0 §&#9790;    0 41  2.092   1  0 41.94         7
+2018 Mar  9   20 18.2    15 0.005   0.3s 14.6  .35  .39   21     4UC 456-000887       107 S2001-107-1 #3   0.27 ±0.04    0   0 §&#9790;    0 41  2.092   1  0 41.94         8
+</pre>
+Features to note in this list are:
+
+
+<ul>
+	<li>The system has three components: Camilla, S2001-107-1, and S2016-107-1</li>
+	<li>The Miriade system has three different orbit solutions (represented by 
+	#1, #2 and #3). However orbit solution #3 is only available for two 
+	components.</li>
+	<li>One entry is unqualified by a # symbol. [It need not be the first 
+	entry.] This entry is based on the normal ephemeris for the asteroid, having 
+	no regard to any information from the Miriade system. For systems where the 
+	satellites are small compared to the primary, the prediction for this 
+	unqualified event will almost certainly be the same as for the events 
+	qualified by #1, #2 etc. However in systems where the masses of the two 
+	components are similar, each component will be offset from the system's barycenter 
+	such that the unqualified prediction will unreliable.</li>
+</ul>
+<p>Each event in such lists are treated as entirely different events, and all 
+the usual outputs are available in the usual manner by clicking on an event. </p>
+<p>However there may well be special interest in binary asteroid events, and the 
+following provides some guidance about how you might select &amp; display relevant 
+entries. In all instances, if you have a search covering multiple events, the 
+starting point will be to use the Date filter to limit the output to the 
+relevant date, and the asteroid number filter (but not name) to limit the list 
+to the one event and asteroid system.</p>
+<ul>
+	<li>To select events for a particular solution: In the filter for <strong>
+	Asteroid name contains</strong>, enter the solution tag (and nothing else). 
+	In this case, the options are #1, #2 or #3</li>
+	<li>Having limited the list to a single solution, you can sensibly plot the 
+	paths of all components for that solution in Google Earth, using the menu 
+	item&nbsp; <strong>File... Plot all paths in GoogleEarth</strong>.</li>
+	<li>Similarly, you can create a .KMZ file including the paths of all 
+	components for that solution (which can then be distributed or used on a web 
+	site), using <strong>File.... Save all paths as GoogleEarth KMZ file</strong></li>
+</ul>
+
+
+</BODY>
+</HTML>

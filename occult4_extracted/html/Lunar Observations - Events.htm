@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Observations - Events</title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Edit events</h1>
+<P>This form is used to add and edit occultation events.</P>
+
+<h2>Data limits</h2>
+<p>The report form can handle:<ul>
+<li>over 100 Sites, and 100 Observer names (using letters A...Z, a...z, and ANSI characters &gt192)
+<li>any number of events. Events are numbered in the range 1 to 999 - but subsequent events restart the numeration at 0. There is no difficulty with the report containing several hundred events.</ul>
+
+<h2>Event time and type</h2>
+<p align=center><img src=LunarEventTimes.png>
+<p>Use the radio buttons to identify the type of event.
+<h3>Entering the event time</h3>
+<p>Enter the date and time of the observation.  Use the 'Today' button to insert the current UT date. For seconds, the desired/expected precision is:
+<li>visual observers - 0.1s
+<li>video observers - 0.01s
+<li>for grazing occultations (but not ordinary occultations), a precision of 1s is <I>acceptable</I> (but not desirable).
+<p>For events that are gradual, give the time at 50%  light level - on the assumption that the cause is stellar diameter rather than Fresnel diffraction. [Note for visual observers: 50% light level is a 0.75 mag difference. For a Disappearance event, this occurs when you <I>first </I>notice a reduction in 
+brightness of the star rather than when you last saw the star. Similarly, for a R event, the time is when the star has almost reached full brightness.] Include any further details in the Comments field.
+<p>Note: if fresnel diffraction is the cause of the event being gradual, the relevant light level is 25% illumination. For visual observers Fresnel diffraction will only be observed at grazes of bright stars such as Spica and Regulus. [Aldebaran and Antares will be gradual because of the star's diameter.] 
+
+<h3>Corrections when using Video cameras and VTIs</h3>
+Video cameras can have internal delays, and VTI's (Video Time Inserter) have some differences in the basis of the time stamp that is applied to the video. Click 'Camera' to bring up a form that displays the corrections to the VTI time to derive the true event time. Specify the video system you are using. Then select the camera type, and the VTI type.
+<p align=center><img src=LunarTimeCorrections.png>
+<p>The corrections are given for evaluation of the video at either Frame rate or Field rate.
+<p>In situations where the light curve changes between full light and occulted light with no intermediate steps, use the 'Event at START...' correction with the frame that <I>started </I>when the light level changed. [That is, use the first frame <I>after </I>the event, not <I>before </I>the event.] Where there is a single intermediate frame at 50% light level (give or take 20%), use the  'Event at MIDDLE..' correction with the frame containing that intermediate light level.
+
+<h3><br>Entering the event type</h3>
+<p>Use the radio buttons to identify the event type.
+ 
+<p>If the event occurs in a grazing Occultation, ensure the <B>'Graze' </B>check box is checked. This box is checked by default if Blink, Flash, Start, Stop, Miss or Other is selected - but can be cleared.
+<p>Notes on some of the options are:<ul>
+<li><B>Blink</B>, and <B>Flash</B>, are for a very short disappearance/reappearance sequence, or a  very short reappearance/disappearance sequence (respectively).The fields have a slightly different meaning depending on whether the observation was visual of video:<ul>
+<li><B>B  Blink</B>. The mid-time of a blink event. Usually only occurs during a graze,                           but can occur in near-graze situations. Duration is specified under 'Circumstances'.<br>
+- (<B>visual</B>) a short disappearance-reappearance - too close to separately time. <br>
+- (<B>video</B>) the light level decreases then returns to full light, with the light level always greater than 25% of full light.
+<li><B> F  Flash</B>. The mid-time of a flash event. Usually only occurs during a graze, but can occur in near-graze situations. Duration is specified under 'Circumstances'.<br>
+- (<B>visual</B>) a short reappearance-disappearance - too close to separately time. <br>
+- (<B>video</B>) the star partially reappears then disappears, with the maximum light level staying below 25% of full light.</ul>
+
+
+<li><B>Started </B>and <B>Stopped </B> indicate when the observer was observing. When interpreting results of observers, it can be useful to know whether adjacent observers were  observing the star at the relevant time. The start and stop times should be specified if there was any break in observing during the expected graze period. However there is no need to include these times in respect of the overall observation if the observation period 
+exceeded the expected graze duration by a minute or more.
+<li><B>Miss </B>is used for a graze observer where no occultation occurred. The time entered should correspond to the time when the star would have been above the 
+highest point on the profile.
+<li><B>Other </B>This choice should not be used if at all possible. If it is used, make sure a Comment is included that explains what is meant. ILOC has used this code in the Archive data to indicate Start and Stop.
+</ul>
+
+<h3><br>Entering the Limb</h3>
+<p>Use the radio buttons to identify the limb.
+<li>When the event occurs against a sunlit feature (e.g. a sunlit peak near the cusp of a crescent moon), record the event as bright limb.
+<li>For an event that occurs during a lunar eclipse in the umbra, specify 'umbra'. But if the event occurs in the penumbra, report the event as a bright limb event, [It may be assumed that if the star is fainter than mag 4.5, an occultation would only be observable if it occurred in the umbra.]
+
+
+<h2><br>Star identification, and residuals</h2>
+<p align=center><img src=LunarStar.png>
+<p>This is the location for recording the identification of the star. The star number can be keyed into any of the boxes and the other boxes will be automatically completed as the star number is entered. Additionally, the event will be reduced with the residuals for the selected star being displayed at the bottom-right of the editor page as the star details and/or event time is entered. For planets and their moons, use the drop down list. 
+<p>For Asteroids, specify the asteroid number (eg, for Ceres, specify '1'). [At this time (2008) the program will not reduce a lunar occultation of an asteroid.]
+<p>For 'Unidentified' stars, check the 'Unidentified star' box. If you are aware of the GSC number for the star, you may enter that number. However that field is essentially for backwards compatibility; the editor does not equate a GSC star with an XZ number, cannot reduce the observation, and the GSC number is not Archived.
+
+<p>While you can manually enter the star number, the preferred way of identifying the star is to use the 'Identify star' button. When that is clicked, a small form will appear, as in the following example:
+
+<p align=center><img src=SelectStar.png>
+
+<p>On this form the following information is displayed:<ul>
+<li>at the top, the event type
+<li>in the box, a list of all stars in the XZ80Q catalogue that are within 30" of the limb of the moon (-'ve values indicating that the star is below the limb of the moon) and of the same event phase (disappearance or reappearance). The list is sorted by absolute distance from the limb. For each star:<ul>
+<li>the star magnitude;
+<li>the PA of the star; and
+<li>the distance from the lunar limb (Res.) If the distance is less than 5", the distance is limb-corrected.</ul>
+<li>An asterisk to indicate those stars that are within 5" of the smooth limb</ul>
+
+<p>To select a star and enter it into the report form, merely double-click on the relevant star. [Click Cancel to return without entering the star identification.]
+
+<p>If you are reporting a 'known' star, the star should appear near the top of the list and have an asterisk next to it. If this is not the case, you should look for a data entry error - such as in the time of the event, the selection of the site, or an error in site coordinates.
+
+<p>If you have observed a star that has not been 'predicted', you should be able to identify the star from the list having regard to the star's magnitude, and the position angle at which the event occurred.
+
+<p>To list all the double star details shown in the Washington Double Star catalogue, or the Fourth Interferometric Catalogue, click the WDS/IF/Var button.
+<p>To list variable star details, click the WDS/IF/Var button. Any variable details will be provided at the end of the list. The AAVSO light curve (if one exists) can be obtained from here. <A href="Maintenance%20-%20Stars%20-%20Light%20Curve.htm">(details)</a> 
+
+<h2><br>Timing methods, Circumstances</h2>
+<p align=center><img src=LunarDetails.png>
+
+<p>In this section a range of parameters are specified. Most items are provided by way of drop-down boxes. 
+You must select the most appropriate item (which for many may be a blank entry). Any attempt to key your own text into one of these fields will be unsuccessful.
+<p>Comments on the various fields are:
+<table columns=3 border=1>
+<TR><TH NOWRAP></TH><TH></TH></TR>
+<TR><TD>Method of Timing and recording</TD><TD>Two almost identical boxes are provided - although usually only one box is needed. Use the first box for the main method. use the second box (if needed) for a subsidiary element. (in practice, the second box is only used very rarely.) 
+<p>The second box has an additional item that might be used in grazes. If an observer's time base is uncertain, it is sometimes possible to correct it by reference to the observations of adjacent observers. In these situations, select 'Time base adjusted (graze)' in the 2nd method box.</TD></TR>
+<TR><TD>Time source</TD><TD>Select the most appropriate from the list. [The list is ordered the methods by decreasing accuracy.]</TD></TR>
+<TR><TD>PE</TD><TD>Required for visual observers - unless the eye-ear method has been used. Typical values are 0.3 to 0.5 for a D, and 0.5 to 0.8 for a R. Experienced observers with easy-to-see stars will have a PE at the lower end of this range. If the star is not easily visible, or the observer is inexperienced, the value will be at the larger end. </TD></TR>
+<TR><TD>PE Application</TD><TD>Indicate what you have done with the PE. Note that the last two options provided are for use with the Archived observations, and cannot be selected for a new observation.</TD></TR>
+<TR><TD>Accuracy</TD><TD>The estimated uncertainty (+/- time range) in the reported time - AFTER any PE has been applied. Usually the uncertainty will be smaller than the PE. For video observers the uncertainty will usually be between +/- half the frame interval, and +/- the frame interval (i.e. between 0.02 and 0.03s for NTSC, and 0.02 and 0.04 for PAL) [half these values if the video is analysed at field level.] But if the Signal-to-Noise ration is below 1, the value for Accuracy will be larger.
+<p>Normally the maximum allowed value for uncertainty is 9.99s. However for observations between 1600 and 1750, the specified uncertainty can be as large as 99.9 secs - to accomodate the actual uncertainties associated with those old observations.</TD></TR>
+<TR><TD>Remarkable circumstances</TD><TD>This provides a list of circumstances that can arise. Select the most appropriate item. Most frequently, the selection will be 'No remarkable circumstances'. If more than one comment is relevent, select the one that has the greatest significance to the accuracy of the observation.</TD></TR>
+<TR><TD>Stability</TD><TD>Stability relates to the steadiness of the atmosphere. It can affect the observation by making the star flicker, or difficult to see because of blurring of the star or moon.</TD></TR>
+<TR><TD>Transparency</TD><TD>Transparence relates to the clarity of the air. As transparency is reduced, the amount of light scattered by the moon increases, and the light from the star decreases. Transparency may be reduced by cloud, smoke, and high atmospheric moisture levels.</TD></TR>
+<TR><TD>Certainty</TD><TD>Indicate here how confident that you actually observed the event. Note that uncertainty in the reported time is dealt with under Accuracy. Consequently you can have situations where you have high certainty that you observed the event but the associated event time has a large uncertainty associated with the recording process. </TD></TR>
+<TR><TD>Double stars</TD><TD>Specify the component of a double star</TD></TR>
+<TR><TD>WDS component</TD><TD>For known double stars, select  the double star component identifier from the drop-down list. For example a simple double star will have components A and B, with the details of that pair being referenced by 'AB' In this field, specify whether the event was for component 'A' or 'B'. <A href="Lunar%20Observations%20-%20WDS%20component.htm" >Identifying the WDS component</a>
+<p>When a component is specified, the separation and PA of that component from the 'occulted' star is given adjacent the box - providing the double star details are available in Occult.
+<p>A full listing of WDS and Interferometric Catalogue entries can be displayed by clicking the small unmarked button - providing you have previously downloaded those catalogues from the Downloads page on the Maintenance tab.</TD></TR>
+<TR><TD>SN</TD><TD>The signal to noise ratio. Important for video observations. As a rough guide, when the signal to noise ration is less than 1, the uncertainty should be increased over the frame-rate value by 1/(SN*SN) <A href="SignalToNoise.htm" >Estimating S/N </a></TD></TR>
+<TR><TD>Light level</TD><TD>For gradual events, indicate here whether the event time has been taken at the 50% level, or the 25% level. 25% light level is appropriate if the gradual event is caused by Fresnel diffraction (which will usually only be observed for bright stars). 50% light level is appropriate when the gradual effect is caused by stellar diameter (which will usually only be observed for stars of spectral type G, K and M.)</TD></TR>
+<TR><TD>Duration (secs)</TD><TD>If the event was gradual, enter the duration of the event here, in secs. Do not enter the interval of a step event here - enter each step as a separate occultation.</TD></TR>
+<TR><TD>Temperature</TD><TD>The temperature, in degrees Centigrade</TD></TR>
+<TR><TD>Comment</TD><TD>This field allows a comment about the observation to be inserted. A comment may assist the regional coordinator with resolving any issues with the observation. Importantly, the comment field is NOT archived with the observations. As a general rule, the comment field should be left blank.</TD></TR>
+</table>
+
+
+<h2><br>Observer identification</h2>
+<p align=center><img src=LunarObserver.png>
+<p>In this location, the site location and the names of the observer and recorder are entered. The site and names are selected from the drop-down boxes, which list all the sites and names that have been entered. If a site or name is not included in the drop-down boxes, you must 
+enter the details in the <B>Sites and Names </B>page. Manually editing the details in the dropdown box will be ineffective.
+<p>In the report, the site details and observer names are identified using the letter code associated with the site or name. The sites and names can be re-ordered and renumbered from the <B>Sites and Names </B>page.
+
+<h2><br>Data verification</h2>
+The Occult editor uses an existing observation as the basis for a new event. This makes data entry easier for grazing occultations (in particular) and multiple events observed on the same night - as many data items will be constant for all events being entered. However there is a risk that the user will forget to update some data items which should vary between subsequent events. Accordinglywhen 'Add as new event' is clicked, certain items are checked for whether they have repeated the data from the existing item - and if so, a warning message is displayed. 
+
+
+
+<h2><br>Edit controls</h2>
+Buttons allow you to perform the following actions:
+<table columns=3 border=1>
+<TR><TH NOWRAP>Button</TH><TH>Function</TH></TR>
+<TR><TD>Add as new event</TD><TD>Creates a new entry based on the details entered. The entry is added at the end.</TD></TR>
+<TR><TD>Replace selected</TD><TD>Replaces the event highlighted in the list with the details entered.</TD></TR>
+<TR><TD>Delete selected</TD><TD>Deletes the selected event  from the list.</TD></TR>
+<TR><TD>ReNumber</TD><TD>This is used to re-assign event numbers, particularly after sorting, or deleting an event. Note: event numbers only exists within the editor - they are not saved with the observations.</TD></TR>
+</table>
+<p>The events can also be sorted using the following controls:
+<p align=center><img src=LunarSort.png>
+
+<table columns=3 border=1>
+<TR><TH NOWRAP>Radio button</TH><TH>Function when Sort clicked</TH></TR>
+<TR><TD>by Number</TD><TD>Sorts the events into their 'original' order as determined by the event number. However if there are more than 999 observations, the event numbers will be duplicated.</TD></TR>
+<TR><TD>by Date</TD><TD>Sorts all events on a strict chronological basis.</TD></TR>
+<TR><TD>by TEL</TD><TD>Sorts events based on the TEL code (that is, by site) - with events for each site being sorted chronologically</TD></TR>
+<TR><TD>by OBS</TD><TD>Sorts events based on the OBS code (that is, by observer) - with events for each observer being sorted chronologically</TD></TR>
+
+</BODY>
+</HTML>

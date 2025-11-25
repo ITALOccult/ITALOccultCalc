@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Overview</Title>
+<style type="text/css">
+.auto-style2 {
+	color: #008080;
+}
+.auto-style3 {
+	color: #000080;
+	font-size: medium;
+}
+.auto-style4 {
+	margin-left: 40px;
+}
+.auto-style5 {
+	color: #FF0000;
+}
+.auto-style6 {
+	color: #800000;
+	font-size: medium;
+}
+.auto-style7 {
+	font-size: medium;
+}
+.auto-style8 {
+	color: #008080;
+	font-size: medium;
+}
+.auto-style9 {
+	text-decoration: underline;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Light Curve Editor</H1>
+<!-- Insert Header in above line -->
+<p><br></p>
+<h2>Edit functionality</h2>
+<img src="LightCurveEdit.png" width="800" border="2"> <br><p>The edit functionality applies to either the main file of light curves, or 
+the set of submitted light curves. These options are invoked when the editor is 
+selected under the Admin functions menu. 
+<p>The box at bottom left 
+<ul>
+	<li>enables you to vary the plot scale from between 0.2 
+and 30, with buttons for some specific values.</li>
+	<li>has the check box<strong> Show time 
+and height,</strong> which enables a balloon display next to the cursor that gives 
+the time, and height above the zero light level.</li>
+	<li>has the check box <strong>Show 
+skipped frames</strong> which will draw the lines as a dashed red line where there is 
+a skipped frame in the recording. However this is based on the light level in 
+the light curve file being exactly zero - and zero can be a valid light curve 
+value. See <strong>Skipped Frames </strong>below for further information.</li>
+</ul>
+<p>&nbsp;<p>At the top left there are three checks that can be done.<ul>
+	<li>check for consistency of SAO and XZ numbers (for lunar occultations)</li>
+	<li>A general check of the data elements</li>
+	<li>check for duplicate light curves</li>
+</ul>
+<p>Each check should be processed separately. Any light curves that have 
+problems will be listed. Double-click on any listed, and the data will be 
+displayed. Or you can display any light curve by its number (given at the bottom 
+left of a light curve plot - the number following a #. This can be obtained by 
+plotting individual light curves, or a group of light curves using <strong>Plot 
+all listed light curves</strong>.<p>The editor will 
+accept changes to any of the fields provided - which cover all the data elements 
+of the event. The one thing you cannot do is to change the light curve data 
+type. That is, you cannot convert between a lunar, and asteroidal, light curve.<p>The numbers given in brown 
+under the fields are the date elements in the file before any editing. 
+They are not strictly aligned with the data entry fields.<p>With the 
+check for general errors - when you select a light curve from the list, you will 
+get a message box that indicates the general area of the data where the error 
+exists.<p>Three buttons are provided to automatically complete some fields. <strong>
+Update XZ </strong>updates the XZ field on the basis of the SAO number. <strong>
+Update SAO</strong> updates the SAO field on the basis of the XZ number. And
+<strong>Get name</strong> updates the asteroid name on the basis of its number.<p>
+The <strong>Get name function </strong>assumes the asteroid is in the file of 
+asteroid elements you currently use for asteroid searches.<p>For planet, and 
+planetary satellites, you cannot enter the objects identifier in the Number 
+field. But you can specify the name in the Name field<p>If the occulted star is a 'G' star, you cannot enter a 
+star number.<p>
+&nbsp;<h2>Skipped frames</h2>
+If the check box <strong>Check for skipped frames</strong> is checked, additional functionality is displayed:<br>
+&nbsp;<img src="LightCurveEditSkipped.png" width="800" border="2"> <br><br>
+Click <strong>List possible light curves</strong>, and a list of events where there is a possibility of there being a skipped light frame that has not been flagged as such, is provided. Make sure the check box for 
+<strong>Show skipped frames </strong>is checked, then double click on each item. The light curve is displayed, and locations where there is a 'possibility' of a skipped light curve is displayed in 
+<span class="auto-style3"><strong>Red</strong></span>. Locations where the light curve is flagged to tag a point as being a skipped frame are displayed in
+<span class="auto-style2"><strong>blue</strong></span>. Use the yellow box to set frames as skipped frames. Once done, click <strong>Accept the revised data </strong>- as for any other edit.
+<br><strong>NOTE</strong>. This functionality will only be needed if the tool 
+for providing the light curve file does not handle skipped frames.<br><br><h2>Saving the edited data</h2>
+<p>After you have edited the data for a light curve, it is processed 
+slightly differently:<p class="auto-style3"><strong>For light curves in the Main file of light curves.</strong><ul>
+	<li>
+	<p class="auto-style4">For edits that do not involve the integration edit: Click 
+the button <strong><span class="auto-style2">Main Light Curves. Accept the revised data</span>.</strong> 
+	This will make changes to the data as held in memory. These changes will be 
+	given effect when you click <span class="auto-style5"><strong>E X I T</strong></span> on the menu bar - where you will be asked if you 
+want to save the changed data. Then, and only then, is the data in the main file 
+of light curves updated.</li>
+	<li>
+	<p class="auto-style4">For edits that&nbsp; involve the integration edit: 
+	<span class="auto-style5"><strong>Important.</strong></span> When the 
+	integration details are changed in the process of using the integration tool, 
+	the light curve data in the Main file is changed. If you click <strong>
+	Update &amp; Close</strong>, the updated light curve data in the Main file will 
+	remain - unless you subsequently click the menu option <strong>Integration... Undo 
+	binning</strong>.
+	<span class="auto-style5"><strong>[Note</strong>: the ability to Undo Binning 
+	is lost if you move to another event to edit.]</span> If you haven't undone the 
+	binning,      those changes will have been included in the data held in 
+	memory,<span class="auto-style7"> </span><span class="auto-style6"><strong>
+	<span class="auto-style9">even if you haven't clicked 
+the button</span> </strong></span> <strong><span class="auto-style8">Main Light Curves. Accept the revised data</span><span class="auto-style7">.</span></strong> 
+	Consequently, if you make changes to other light curves which you want to 
+	save, the light curve for this event will also be saved. </li>
+</ul>
+<p><span class="auto-style3"><strong>For submitted light curves</strong></span>.
+<p class="auto-style4">Click the button <strong>
+<span class="auto-style2">Submitted light curves</span>. Update the submitted file.</strong> When this is 
+selected, the file will be updated. The unedited file will have its extension 
+changed to <strong>.init</strong>, and the edited file will be written as the 
+light curve file. If the check box for excluding the light curve is checked, the 
+light curve file will have its extension changed to .<strong>del&nbsp; </strong>
+[There are no spec ial issues associated with the Integration function.]<p>&nbsp;<br>&nbsp;<h1>
+MENU items</h1>
+
+<h2>Copy the light curve</h2>
+<p>This menu item copies the graphic light curve plot - for its full extent (not 
+just that displayed) for pasting in other software.<p>&nbsp;<h2>
+Changing the integration</h2>
+
+<p>
+
+The menu item Integration has two sub-menu items: <strong>Bin integration blocks</strong>, 
+and <strong>Undo binning</strong>. Only one of these is enabled at any time.<p>
+The <strong>Undo Binning</strong> option is used to undo the binning. It can 
+only been invoked on a light curve being currently edited. If you move to 
+another light curve, and come back to the initial light curve, the ability to 
+undo the binning of that light curve is lost.</p>
+<p>When you select <strong>Bin integration blocks</strong>&nbsp; the following will appear on the form.</p>
+<p><img src="LightCurveEdit_Integrate.png" width="200" border="2"> <br>
+</p>
+<p>If the Editor is being used with a Submitted light curve, the box headed
+<span class="auto-style5">VERY IMPORTANT</span> will not be displayed.<br>
+</p>
+<p>&nbsp;To correct a light curve that has not binned the individual frames for 
+an integration interval, you use the two up/down controls to set the first frame 
+of the first block, and the number of frames to include in that block.<p>When 
+the number of frames is 1 or greater, a series of green vertical lines are 
+drawn. These lines need to be aligned with the first frame within an integration 
+block, like this:&nbsp;
+<p><img src="LightCurveEdit_IntegrateAlign.png" width="250" border="2"> <p>
+
+
+When you have them aligned, click Update &amp; Close, and the light curve will be 
+re-drawn with the data binned in accordance with your settings. Additionally, 
+the time of the first frame, the number of points in the light curve, and the 
+duration, will be adjusted to match.<h2>Viewing the light curve in AOTA</h2>
+
+<p>There may be occasions where it is useful to have the light curve displayed in AOTA. Some examples are:
+<ul>
+<li> plot the light curve as a running average</li>
+<li>assess the light curve for a short event, using the short event tool</li>
+<li>use the event analysis functionality (remembering that issues like camera corrections are presumably incorporated in the light curve data)</li>
+</ul>
+<p>This is achieved by simply clicking the menu item <strong>Display Event in AOTA
+</strong>button at the top right of the form. Thereafter use <strong>AOTA</strong> 
+in the usual manner.</p>
+<p>A .csv file of the light curve (in Tangra format) is written to the Generated 
+Files folder, with the name <strong>csv_from_LightCurve.csv</strong>. Note that 
+this file is overwritten each time a light curve is displayed in AOTA. If you 
+want to have that .csv file for future use, you need to rename it. The file 
+includes basic details of the light curve event.</p>
+
+<p>&nbsp;
+
+</BODY>
+</HTML>

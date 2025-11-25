@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Stars - display details</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Stars - display details</H1>
+
+<p>This allows the user to read the star catalogue information used by OCCULT. The catalogues that can be displayed 
+fall into three groups, as follows:<ol>
+	<li>Stars that are in the ecliptic. That is, ZC, XZ, and SAO stars close to 
+	the ecliptic</li>
+	<li>Stars in the main catalogues used for asteroidal occultation 
+	predictions. That is, stars with Hipparcos, Tycho-2 and UCAC4 numbers, as 
+	well as Gaia stars identified by a coordinate ID</li>
+	<li>Stars in various other catalogues that have been used for asteroidal 
+	occultation predictions, which are generally out-of-date. Assuming the 
+	catalogues have been installed, they are UCAC4, UCAC3, UCAC2, URAT1, PPMXL, 
+	NOMAD and USNO-B1</li>
+</ol>
+<p>When entering a Gaia star by coordinate identification, the format 
+is:&nbsp; <br>&nbsp;&nbsp;&nbsp; hhmmss.s+ddmmss<br>All spaces must be filled. 
+For example an RA of 1h 3m 0.5s is specified as 010300.5
+<p>Checking any of the catalogues under the Asteroidal heading will result in Hipparcos, Tycho2 
+and UCAC4 positions being retrieved from Gaia DR2 wherever possible.<p align=center><img src= "StarCatDisplay.png" >
+ 
+
+<p>If the form is called from the Right-click menu in lunar occultation predictions, the form will open with the relevant star displayed. Otherwise, select the relevant catalogue, enter the star number, then click 'Display details'.</p>
+
+<p>The catalogue information displayed is:<ul>
+<li>The star catalogue numbers, and any names
+<li>J2000 Right Ascension and annual proper motion, epoch if it is not 2000.0, 
+and Gaia catalogue (if sourced from Gaia)<li>J2000 Declination, and annual proper motion in declination, 
+	epoch if it is not 2000.0
+<li>Available magnitudes, spectral type (ZC, SAO and XZ, parallax (Hipparcos only), and the angular diameter <A href="Maintenance%20-%20Stars%20-%20Diameters.htm">(details)</a> (all but UCAC2 stars).
+<li>An option to display entries in the Washington Double Star catalog (WDS), the Interferometric Catalog, and the AAVSO Index file of variable stars, within about 2 arcmins of the star position. If the star is a variable star, the AAVSO light curve (if one exists) can be obtained from here. <A href="Maintenance%20-%20Stars%20-%20Light%20Curve.htm">(details)</a> </ul></p>
+
+<h3>The remaining information is only available for stars in the XZ catalogue</h3>
+<p>If the star is a variable star, basic variable star information is presented. Variable type is as per the General Catalogue of Variable Stars.</p>
+
+<p>If double star information is available, all components are listed, giving 
+<li>name, 
+<li>component identifiers, 
+i>the years of first and last observations, 
+<li>the PA (J2000) and separation for the first and last dates
+<li>the magnitudes of the components.</p>
+If the XZ80Q position of the selected star is a mean position, that will be stated. Also, in the list of components the letter 'M' will precede the star identifiers for any pairing in the system for which XZ80Q uses a mean position.
+<p>FoFollowing that listing is a list of all discoverer codes listed under the name field, and the corresponding discoverer's name. If the star was discovered in an occultation [that is, the double star identifier is OCCxxxx] the observer and date of the discovery and any confirmations are also listed.</p>
+ 
+<p>If orbital elements are known:l>
+<li>ththe elements of all components with known orbits are listed. The elements are:<ul>
+<li>Name and component identifier. In complex systems with plural orbits, the orbits may relate to completely different pairs. The component identifier is critical to identifying the pair.  See, for example, ZC 2302 =  &#946 Scorpii.
+<li>Period - in years
+i>a - semi-major axis, in arc-seconds
+<li>i - inclination of the orbit. If it is less than 90 deg, the motion is clockwise, 
+greater than 90deg is anticlockwise motion
+<li>node - PA of the ascending node of the orbit on the plane of the sky
+<li>T T - date of periastron (in decimal years)
+<li>e - eccentricity of the orbit. Note that this is the true eccentricity of the orbit about the star. The apparent eccentricity of the orbit can be highly affected by the orbital inclination.
+<li>peri - the angular distance measured along the orbit from the ascending node to the periastron.</ul>
+<br><li>The highlighted orbit in the list or orbits is plotted, initially for the current date. Controls on the plot allow you to plot the location of the secondary star for different dates. The increment for the year of the plot is either 100, 10, 1, .1 or .01 years, depending on the orbital period. A scale-line is given at the bottom of the plotul>
+
+
+</BODY>
+</HTML>

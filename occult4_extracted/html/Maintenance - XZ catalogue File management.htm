@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>XZ catalogue File management</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>XZ catalogue File management</H1>
+<P>There are two sections to this function. A user update section, and an 
+Administrator update section.
+
+<h1>User updates</h1>
+<p>From time to time the files of double star <span lang="en-us"></span>details and variable star details, can get updated. When this occurs, it is necessary to update the various versions of the XZ 
+catalogue that Occult uses to generate lunar occultation predictions. The functionality here enables that to occur.
+
+<h2>Updating double star files</h2>
+<p>When an updated Double star catalogue (XZDoubles.dat) is made available, it and any associated files (in particular, XZDoubles Discoveries.dat) should be placed in the <B>Resource Files </B>directory, replacing the existing files.
+
+<p>Then click the <B>Re-index doubles </B>button. It will remove all double star links from the main XZ80 file, and then create new links.
+
+<p>Finally, click the <B>Create catalogue subsets.... </B>button, to recreate the various subset catalogues so that they incorporate the new links.
+
+<h2>Updating the variable star file</h2>
+<p>When an updated Variable star catalogue (XZVariables.dat) is made available, it should be placed in the <B>Resource Files </B>directory, replacing the existing file.
+
+<p>Then click the <B>Re-index variables </B>button. It will remove all variable star links from the main XZ80 file, and then create new links.
+
+<p>Finally, click the <B>Create catalogue subsets.... </B>button, to recreate the various subset catalogues so that they incorporate the new links.
+
+<h1>Administrator Updates</h1>
+<p>The second part of the form allows for manual editing of the double and variable star catalogue files. These functions are provided so that a coordinator can incorporate the results of observations and new discoveries into these files and distribute updated files to users. This functionality is not meant for individual use.
+<h3>Double stars</h3>
+<p>The function <B>Edit XZ Doubles and Occultation discoveries </B>opens a form for comprehensive editing and updating of the double star data using the WDS and Interferometric catalogues. This is described in detail <A  href="XZDoubles%20Editor.htm"> here.</a>
+<p>The function <B><I>Update XZDoubles with latest orbits </I></B>accesses the <A href="http://ad.usno.navy.mil/wds/orb6.html" target = _blank>Sixth Catalogue of Orbits of Visual Binary Stars </a> to retrieve the latest orbits of bimary stars. The downloaded catalogue may be found in the <I>Downloaded Files </I>directory, together with a subset limited to the ecliptic. The file will only be downloaded if the existing version of the file is at least 100 days old. Any unmatched entries will be listed in the file <I>SixthOrbit_notMatched.txt </I>in the <I>Downloaded Files </I>directory.
+
+<h3>Variable stars</h3>
+<p>The function <B>Create new file of variables </B>uses the AAVSO Variable Star index file to create a new file of variable stars - <I>XZVariables.dat</I>. It assumes that you have downloaded the AAVSO file of variables from the Downloads page. The routine will take a small number of minutes to run, as it checks each star in the XZ80 catalogue for a match in the AAVSO Variable star index. The match criteria is an entry within 3.6" in both RA and Dec. - with the limiting factor being the precision of the coordinates of many of the variable stars. When this function has been completed, it is necessary to use the <B>Re-Index Variables </B>button to update the XZ80 file, and then to create the catalogue subsets.
+
+<p>The function <B>Edit XZ Variables </B>opens an editor for manually editing the file of variable stars. However the primary way of updating the file of variables is to create  a new file from teh AAVSO file, rather than manualy editing an existing file.
+
+<p>It is assumed that anyone editing these files will be fully familiar with the data content, which is given at:<br>
+<A href="FileFormat%20XZDoubles.htm">XZDoubles</a><br>
+<A href="FileFormat%20XZDoubles%20Discoveries.htm">XZDoubles Discoveries</a><br>
+<A href="FileFormat%20XZConfirmations.htm">XZConfirmations</a><br>
+<A href="FileFormat%20XZVariables.htm">XZVariables</a>
+
+</BODY>
+</HTML>

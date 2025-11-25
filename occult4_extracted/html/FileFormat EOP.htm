@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Earth Orientation Parameters</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>File format - Earth Orientation Parameters</H1>
+<p>The Earth orientation parameters are held in two files - a historical file <I>EOP_old.dat</I>, and a current file <I>EOP_present.dat</I>.
+
+<p>The format of both files is identical, with the values being stored as binary. The file format is:
+<table columns=3 border=1>
+<TR><TH NOWRAP>Parameter</TH><TH>Format</TH><TH>Meaning</TH></TR>
+<TR><TD>x</TD><TD>signed byte, units of 0.01"</TD><TD>Displacement of the celestial Ephemeris Pole along the Greenwhich Meridian - positive towards Greenwhich</TD></TR>
+<TR><TD>y</TD><TD>signed byte, units of 0.01"</TD><TD>Displacement of the celestial Ephemeris Pole along the -90-deg Meridian - positive towards Canada</TD></TR>
+<TR><TD>dUT1</TD><TD>integer, units of 0.001s</TD><TD>UT1 - UTC</TD></TR>
+</table>
+
+<p>The data provided in the EOP series is as follows:<br>
+<table columns=3 border=1>
+<TR><TH NOWRAP>Period</TH><TH>Data interval</TH></TR>
+<TR><TD>1846 - 1889</TD><TD>0.1 years</TD></TR>
+<TR><TD>1890 - 1961</TD><TD>0.05 years</TD></TR>
+<TR><TD>1962 - now</TD><TD>1 day</TD></TR>
+</table>
+<p><I>EOP_old.dat</I> contains the data prior to 1962. <I>EOP_present.dat</I> contains the subsequent daily series.
+
+<p>Note: dUT1 is (by definition) zero before the introduction of UTC in 1962. 
+
+<p><br>To first order, site coordinates are corrected for polar motion (before generating geocentric coordinates) as follows:
+
+<p> dLatitude = x.cos(longitude) - y.sin(longitude)
+
+<p> dLongitude = (x.sin(longitude) + y.cos(longitude)) * tan(latitude)
+
+
+
+
+
+</BODY>
+</HTML>

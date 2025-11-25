@@ -1,0 +1,174 @@
+<!-- saved from url=(0022)http://internet.e-mail -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Google Maps Creation</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1><A NAME=""></A>Using Occult to create a Google Map<font size="1"> by</font><font size="2"> 
+Derek Breit</font></H1>
+<!-- Insert Header in above line -->
+
+<h2>Introduction</h2>
+<p><B>Occult</B> <b>v4</b> now includes the ability to automatically create a Google Map 
+of all Occultation events. In addition to the well known features of &quot;normal&quot; 
+Google Maps, interactive &quot;offset lines&quot; were created by Geoff Hitchcox of Christchurch, New Zealand. The <b>Offset Lines</b> make these maps very useful for <b>Occultationists</b>.</p>
+
+<p>The following describes how to set up these maps for use on your website.</p>
+<P>To learn more about <B>Google Maps</B>, see <a href="http://maps.google.com/">
+http://maps.google.com/</a> .</P>
+
+<h2>Overview</h2>
+<p>The Google Maps use the predictions from Occult v4 to create a webpage for 
+each event.  These instructions will detail how to create working versions for 
+your website and the various places inside Occult v4 that can create the maps. A 
+proposed method of using the maps to observe occultation events is included.</p>
+
+<h2>Getting the current version of certain files</h2>
+Two files are required by Occult to create the html file used by GoogleMaps. Additionally a javascript file should be located on your server. The files are:
+<li>GoogleMap_FileHeader.txt
+<li>GoogleMap_FileFooter.txt
+<li>GoogleMap_ServerDriver_2.js
+<p>In November 2013 the Application Programmers Interface for GoogleMaps was substantially changed. As a result these three files required significant updating. Current versions of the files as held in the Resource Files directory of Occult can be downloaded from the Downloads page in Occult - see the last item on the Download form of Occult.<p>
+
+<font color=red><B>IMPORTANT</B>. If you have previously edited the files to be specific for your site, make copies of those files before doing the download - as the previous versions will be overwritten.</font>
+
+<h2>Initial set-up</h2>
+<p><b>*WARNING - These maps are very temperamental</b>. Any extra spaces or the 
+wrong character will cause the maps not to function and is very difficult to 
+locate. It is suggested that you contact Derek Breit (
+<a href="mailto:breit_ideas@hotmail.com">breit_ideas@hotmail.com</a> ) BEFORE 
+attempting to edit the maps for your own use.*<pre><font face="Times New Roman" size="3">To edit the Google Maps, you need two files. These will be in the OCCULT 4/Resource Files Directory</font></pre>
+<pre><font face="Times New Roman" size="3">GoogleMap_FileHeader.txt
+GoogleMap_FileFooter.txt</font></pre>
+<p>Opening the GoogleMap_FileHeader.txt file in a text editor provides 
+instructions on getting a &quot;Google Key&quot; and the other steps needed to make the 
+maps work on your web server. They will not be repeated here.<p><b>
+<font size="5">Automatic Generation of Google Maps for Asteroid Events</font></b><p>To enable the automatic generation of the 
+Google Maps .<p>&nbsp;In <B>MAINTENANCE / USER SETTINGS </B>--> <B>Asteroid Occultations - search and display</b><ul><ul>
+<li>check <B>Enable generation of output files</B>
+<li>check <B>GoogleMaps HTM</B>.  [Other files may be selected for personal use.]<br></ul></ul></p>
+
+<h2>Maintaining current orbital elements</h2>
+
+<p><b><u>If you want to display &quot;IOTA events&quot;</u>...</b><p><b>Steve Preston </b>
+maintains a website of asteroid events that he has provided updates for. Steve 
+takes the predictions and all available astrometry (weighted for quality) and 
+provides an &quot;Updated Prediction&quot;. These have proven to be highly accurate 
+predictions and should be the first place to look for Asteroid Occultations that 
+you can observe. 
+<p>&nbsp;&nbsp;&nbsp; In <b>ASTEROID PREDICTIONS</b><ul><ul>
+<li>click <b>future.dat</b>
+<li>click <B>futureAll540.dat </B>and follow the onscreen directions</ul></ul>
+<p>The <b>FutureAll540</b> file contains all events that Steve Preston has been 
+provided from various search sources. These events are good for planning 
+purposes, as they contain all the IOTA EVENTS for the rest of this year, and all 
+of next year..</p>
+<p>The primary file is <b>future.dat . </b>This is the primary events file to 
+use for events near you. The rest of these instructions assume you are using 
+this file.</p>
+<p><b><u>If you want to search for events</u> ...</b><p>(These will be low 
+probability events, i.e. Extra Events)<p>You will need to update the file of asteroid elements at least 
+once a month to account for the latest orbit information. This requires the following steps:<ul TYPE=1>
+<li> Select <B>MAINTENANCE </B>--> <B>Download/Convert Astorb, MPCOrb & IAA </B>.<br><br> 
+<li> In the <B>Download file</B> group, click <B>Astorb </B>.  The download is ~30Mb file. Unzip when prompted. [<B>Note </B>Use ASTORB in preference to MPCOrb].<br><br> 
+<li>Check the <B>Astorb </B>radio button.  Choose desired minor planet size [Currently the 
+'low-probability' events in OccultWatcher feeds use "larger than 4km"]. <br><br> 
+<li> Check <B>Numbered minor planets </B>. [Do not include un-numbered minor planets, as their orbits are poorly determined.]<br><br> 
+<li>Click <B>Convert</B>.  Accept  the default file name and location.</ul></p>
+
+<h2>Generating the GoogleMaps</h2>
+<p>The following is the process for generating the Google Maps.<br><ul Type=1>
+
+<li><B>ASTEROID PREDICTIONS --> [Display predictions]</B> <br>
+Select all properties desired - by checking the relevant box, and setting the relevant values. That is:<ul>
+<li> Set dates for Predictions.  
+<li>Magnitude drop of at least 0.3, 
+<li>Duration of at least 0.3 seconds, 
+<li>Diameter of at least 5km.  
+<li>Set the geographic coordinates to a location at about the midpoint of the area you are servicing with the Feed.  
+<li>Set the 'Distance of Site From Path' to a value that will include events for the area you are servicing with the Feed.  </ul>
+<br>
+
+<li>Now click <B>Local Events Summary</B>. <br>
+Select occlment file (such as Future.dat). A table of events is created.<br><br>
+
+<li> click  "<B>Auto File Generation</B>" at the top of the Summary page, select.   The <B>AutoGenerated Asteroids </B>directory will now be filled with 
+a Google Map for every event shown in the Summary Page.<br>If the "<B>Auto File Generation</B>" button is not at the top of the form, go back to the 'Initial Set-up' above, and ensure <B>Enable generation of output files </B>has been checked.</ul>
+
+<p>The files (not the folders) in the AutoGenerated Asteroid directory are now ready to upload 
+to the server. Once uploaded, they will be immediately available for use by your 
+website visitors.</p>
+<h2>Creating an Index Page for GoogleMaps</h2>
+<p>A small utility has been created by Steve Preston to index the 
+AutoGenerated Asteroid output. Contact Derek at
+<a href="mailto:breit_ideas@hotmail.com">breit_ideas@hotmail.com</a> for a copy. 
+This is not included in the OCCULT v4 download.</p>
+<h2>Updating the GoogleMaps</h2>
+<p>The first time you run the autogenerate asteroids routine, OCCULT populates 
+the Occult/AutoGenerated Asteroids file with all the output files selected 
+previously and displayed in the summary lists, and it creates two folders that 
+track what events were generated when. To update events that have changed due to 
+updated predictions, follow the directions provided earlier to do the following:</p>
+<ul>
+	<li>Update the elements file (Future.dat etc.)</li>
+	<li>Use various parameters to display events to a summary file</li>
+	<li>Click the AutoGenerate button from the Summary form</li>
+</ul>
+<p>Occult will automatically go through the files and determine what was 
+previously generated and the date of the prediction and compare it to the new 
+file. It will generate all the relevant files for any event found to have a 
+newer or more current date.</p>
+<p>To upload these files easily, open the AutoGenerated Asteroids folder and 
+sort the files by date. Select all the files shown to have been created on the 
+day you created them and upload them to the correct folder on your website.</p>
+<p>To easily maintain the AutoGenerated Asteroids folder two things are 
+suggested:</p>
+<ol>
+	<li>When finished with AutoGeneration, and after uploading the results, 
+	delete everything from the AutoGenerated Asteroids folder EXCEPT the two 
+	folders. </li>
+	<li>To keep everything easy to find, only AutoGenerate predictions once a 
+	day. This way you will be able to find all the files you just created by 
+	searching the folder by date.</li>
+</ol>
+<h2>Generating Individual GoogleMaps</h2>
+<p>To generate a single GoogleMap for a single event:</p>
+<menu>
+	<li>Generate and display the event in OCCULT</li>
+	<li>Do one of the following</li>
+	<li>1. Select the relevant menu item &quot;GoogleMap.htm&quot; from the drop down 
+	menus at the top OR</li>
+	<li>2. RightClick to access the menu and then select &quot;GoogleMap.htm&quot;</li>
+	<li>Choose where&nbsp; to save the result. The Suggested place to save these 
+	is the Generated Files folder.</li>
+	<li>When posting to the web, these files will have to be posted to the same 
+	folder on your website as the other GoogleMaps</li>
+</menu>
+
+
+<h2>Additional notes, provided by Geoff Hitchcox</h2>
+<ul type=1>
+<li>A person setting up a web site will need to obtain their own FREE "key" from Google, that allows calling the Google Maps from a "defined" directory on the users website. A "key" can be obtained from:<p>
+
+<A href="http://www.google.com/apis/maps/signup.html"> http://www.google.com/apis/maps/signup.html</a><br><br>
+
+<li>In the HEADER file, the location of the scriptfile "GoogleMap_ServerDriver.js" is given as my New Zealand website, this can be left as is, but it means the file will be uplifted from NZ each time. Because the file "<B>GoogleMap_ServerDriver.js</B>" is included with Occult_v4 (it is located in the Resource Files directory), a user can place it on their own website, however they then need to indicate where this file is to be found, in the HEADER file.</ul>
+
+<p><font color=red><b>IMPORTANT. The following text is retained for general information on the functionality of the required ServerDriver file. Following the November 2013 changes to the GoogleMaps API, the  <I>GoogleMap_ServerDriver.js </I>on Geoff's web site is no longer functional. A version that has been updated to meet the requiremenst of the new API is available for download via the Occult downloads (as part of the GoogleMap downloads). That updated file is called <I>GoogleMap_ServerDriver_2.js</I> </b></font>
+
+<p>"<B>GoogleMap_ServerDriver.js</B>" contains the maths code that provides two main functions (for each map):<ul type=i>
+
+<li>Creates two independant "offset" lines that the user can place on the map. These lines are in a "black pencil colour" and run parallel to the centre of the given path. The user can change the perpendicular distance of the lines from the centre path. If a user gives a "positive" offset, a line is placed on the TRUE RIGHT of the path, in the direction of the shadow travel. A negative offset value places a line on the LEFT of the shadow path. These lines are useful to find geographic locations, that are X km from the centre of the path.
+
+<li>When a user "double clicks" on the map, the geographic coordinates are given at the bottom of the map (in reference to the end of the mouse pointer), and the map is recentred at that geographic location. The perpendicular distance of that geographic location (from the centre of the shadow path) is then given also at the bottom of the map.
+
+
+
+</BODY>
+</HTML>

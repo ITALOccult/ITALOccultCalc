@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Comet ephemeris</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Comet ephemeris</H1>
+<!-- Insert Header in above line -->
+<P>This routine generates ephemerides of all currently-observable comets using the file of comet orbital elements [<B>comet.dat</B>] maintained by the IAU Minor Planet Center.</P>
+<p>In order to generate an ephemeris, you must have a copy of comet.dat. To do this, click the 'Download Comet.dat' button. After a few seconds the file should download. Download this file regularly to make sure that all the latest comets are included.</p>
+<p><B>NOTE:</B> If you have trouble getting a connection to download MPCOrb, read <A HREF="http://cfa-www.harvard.edu/iau/MPCORB.html">MPCOrb database</A>, conduct the test of whether your ISP has properly registered their DNS address - and if not, complain to your ISP. [<I>This 
+is a security issue implemented by Harvard University; ISP's that don't register 
+their DNS are typically used by spammers. If your ISP does not Register its DNS, you might consider changing your ISP.</I>]</p>
+
+<p>To generate predictions:
+<li>select the comet using the drop-down list;
+<li>indicate whether you want the orbital elements displayed with the prediction
+<li>set the start day and hour for the prediction. Note: set the hour (UT) so that the ephemeris is computed for the time of day that you will be viewing the comet.
+<li>set the duration of the ephemeris, in days
+<li>set the ephemeris interval in days.</p>
+<p>Note that the ephemeris is computed on the basis of the osculating elements <i>without</i> any numerical integration of the orbit. You should limit predictions to a year to avoid significant 'errors' in the computed 
+position.</p>
+<p>An illustrative output is:<pre>
+Ephemeris of C/2007 F1 (LONEOS) at 10 hrs UTC   (J2000)
+
+T 2007 Oct 28.7554 TT
+q  0.402378    Peri. 153.7017
+z -0.000413    Node  172.8898
+e  1.000166    Incl. 116.0852
+Ref: MPC 61178
+
+   y  m   d   h  m   s     o  '  "    delta  RSun   Elong  Phase    Mag   "/min  PA
+2007 Oct  1  12  9 38.3   27 39 57    1.459  0.793   31.1   40.7    9.8    1.98  97.2
+2007 Oct  2  12 13 16.3   27 33 28    1.427  0.774   31.3   42.3    9.7    2.08  98.1
+2007 Oct  3  12 17  4.3   27 25 52    1.395  0.754   31.6   44.0    9.5    2.18  99.0
+2007 Oct  4  12 21  2.8   27 16 59    1.362  0.735   31.8   45.8    9.3    2.30 100.0
+2007 Oct  5  12 25 12.7   27  6 36    1.329  0.716   32.0   47.8    9.2    2.42 101.1
+
+2007 Oct  6  12 29 35.0   26 54 30    1.296  0.697   32.2   49.8    9.0    2.56 102.3
+
+</pre></p>
+
+<table columns=3 border=1>
+<TR><TH NOWRAP>Column</TH><TH>Meaning</TH></TR>
+<TR><TD>y m d</TD><TD>The day of the prediction. The hour is listed in the header (10 hrs UT in this example)</TD></TR>
+<TR><TD>h m s</TD><TD>J2000 right ascension</TD></TR>
+<TR><TD>o ' "</TD><TD>J2000 declination</TD></TR>
+<TR><TD>delta</TD><TD>distance from the Earth - in AU</TD></TR>
+<TR><TD>RSun</TD><TD>distance of the comet from the Sun - in AU</TD></TR>
+<TR><TD>Elong</TD><TD>elongation from the Sun (degrees)</TD></TR>
+<TR><TD>Phase</TD><TD>the Sun-Comet-Earth angle (degrees)</TD></TR>
+<TR><TD>Mag</TD><TD>Total magnitude of the comet</TD></TR>
+<TR><TD>"/min</TD><TD>comet's motion - in arcsecs per minute</TD></TR>
+<TR><TD>PA</TD><TD>PA of the direction of the comet's motion.</TD></TR>
+</table>
+
+<p></p>
+<p></p>
+<p></p>
+
+
+</BODY>
+</HTML>

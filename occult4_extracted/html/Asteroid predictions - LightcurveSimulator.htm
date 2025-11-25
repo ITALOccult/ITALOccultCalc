@@ -1,0 +1,210 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Overview</Title>
+<style type="text/css">
+.auto-style1 {
+	color: #FF0000;
+}
+.auto-style3 {
+	color: #008080;
+}
+.auto-style4 {
+	color: #0000FF;
+}
+.auto-style5 {
+	font-size: medium;
+	color: #0000FF;
+}
+.auto-style6 {
+	color: #008000;
+}
+.auto-style7 {
+	color: #000080;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Light curve simulator - asteroidal occultations</H1>
+<!-- Insert Header in above line -->
+<P>The light curve simulator provides a general simulator for asteroidal 
+occultations. While it is particularly useful when the occulted star has a large 
+diameter, it can be used for any occultation event.</P>
+<P>The Simulator is mainly accessed via the form that displays the path of an 
+occultation across the Earth - under the menu item <strong>Options... show Light 
+Curve simulator</strong>. When accessed from here, the required details of 
+the event are automatically passed to the simulator. It may also be accessed 
+from the <strong>Occult main menu, Asteroid Predictions tab</strong> - where default values are 
+used.</P>
+<P>This is a plot of an occultation event involving a star with a large 
+diameter: <span class="auto-style7">2023 Dec 12, (319) Leona occulting 
+Betelgeuse</span>, using a preliminary ellipse for the expected orientation of 
+the asteroid</P>
+
+<img src="Asteroid%20Predictions%20-%20LightcurveSimulator.PNG" width="500">
+
+<p>[The Diameter and Limb Darkening of Betelgeuse have been taken from
+<a href="https://www.aanda.org/articles/aa/abs/2014/12/aa23538-14/aa23538-14.html">
+A&amp;A Volume 572, December 2014, A17&nbsp; Properties of.... Betelgeuse</a>, and 
+the axes of Leona from a preliminary shape model of this asteroid.]</p>
+<p>The<strong> <span class="auto-style5">Across-path</span></strong> plot shows the light curve in a direction 
+across the path. While this plot is always symmetric, its orientation is 
+important for the <span class="auto-style4">Along-path</span> light curve. For this purpose, the plot has the 
+words <strong>LEFT</strong> and <strong>RIGHT</strong> near the bottom of the 
+plot. These indicate the relevant side of the path when viewed along its 
+direction of motion (which in this case is from East to West, such that <strong>
+RIGHT</strong> corresponds to the northern side of the path).</p>
+<p>The <span class="auto-style4">Across-path</span> plot has a red line which 
+can be positioned using the slider under the plot. This is used to set the 
+position of an observer for calculating the <span class="auto-style4">Along-path</span> 
+light curve plot. The number in that line just above the km scale is the 
+distance from the center line, in km.</p>
+
+<p>The <strong><span class="auto-style5">Along-path</span></strong> plot is the expected light 
+curve the observer would see from the across-path location set by the red line. 
+When the asteroid is not represented as a circle, this light curve can become 
+asymmetric, as shown in the above plot. This asymmetry is related to the 
+orientation of the elongate asteroid relative to the path direction. </p>
+<p>The possible shapes of the occultation curve are:</p>
+<ul>
+	<li>For the majority of occultations, the star diameter is effectively zero. 
+	As a result (and ignoring the effects of Fresnel diffraction) the light curve will drop 
+almost vertically to the brightness of the asteroid, with a flat bottom - a <span class="auto-style6"><strong>
+	Total</strong></span> occultation. </li>
+	<li>When the star has an appreciable apparent diameter, three types of 
+	occultations can occur:<ul>
+		<li>If the star has an appreciable diameter, but is still smaller than the 
+asteroid, the light curve will have a gradual decline and rise, with the central 
+portion being at the asteroid light level (typically near zero). This is a <span class="auto-style6">
+		<strong>Total occultation.</strong></span></li>
+		<li>If the star has a diameter that is larger than the diameter of a 
+	circular asteroid, or the largest diameter of a non-circular asteroid, the light curve 
+will have a gradual decline and rise, with the central portion being flat. This 
+		is an <span class="auto-style6"><strong>Annular occultation</strong></span>.&nbsp; 
+		Importantly, when Limb Darkening is 
+present/applied, the bottom of the central region will not be flat, but have a 
+		gentle downward curve.</li>
+		<li>for non-circular asteroids: if the major axis of the asteroid is 
+		larger than the star, and the minor axis is smaller, at maximum 
+		occultation on the center line the star disk will appear to&nbsp; 
+		bisected by the asteroid (that is, with a crescents on both sides of the 
+		asteroid body). This is a <span class="auto-style6"><strong>Bisected 
+		occultation</strong></span>.</li></ul></ul>
+		If the asteroid is 
+non-circular (either an ellipse or a rectangle), the light curve 
+in the <span class="auto-style4">Along-path</span> direction is only symmetrical 
+on the central line. At any other location across the path, maximum occultation 
+does not occur exactly mid-way between the start and end of the event. This is illustrated in the above plot; the location on the
+<span class="auto-style4">Across-path</span> light curve (as set by the 
+slider/red-line) is at the RIGHT (the northern limit for <em>this</em> event) of the total 
+		occultation band, and the minimum of the <span class="auto-style4">Along-path</span> light curve occurs 
+		later than the mid-time of the occultation at that location.
+<p>&nbsp;</p>
+<p>The plot features are:</p>
+
+<h3 class="auto-style1">Across path</h3>
+<strong>Plot details: </strong> 
+<br><li>Diameters of the star and asteroid, in mas, at top center</li><li>the 
+percent light drop, and the magnitude it drops to (the magnitude 
+of both the star and asteroid are included in these light drops)<li>An 
+indication of the relevant side of the path, when setting the slider to generate 
+the <span class="auto-style4">Along-path</span> light curve<br><br><strong>Vertical scale : </strong> 
+<br><li>Left side - illumination, as a fraction of full illumination</li>
+<li>Right side - magnitude drop. Values larger than 3 are not tagged </li>  
+<li>The intervals indicated increase if the vertical scale of the plot is 
+significantly increased<strong>.
+<br><br>Horizontal scale : </strong><br><li>Distance in km from the center line. 
+Depending on whether <span class="auto-style4">distances as Topocentric</span> 
+is checked - the distance is on the <strong>Fundamental plane</strong> (unchecked), or on the 
+<strong>Earth's surface</strong> (checked).</li>
+The intervals indicated increase if the vertical scale of the plot is 
+significantly increased<strong>.</strong>
+
+<h3 class="auto-style1">Along path</h3>
+<strong>Plot details: </strong> 
+<br><li>Diameters of the star and asteroid, in mas, at top center</li>
+<br><strong>Vertical scale : </strong> 
+<br><li>Left side -illumination as a fraction of full illumination</li>
+<li>Right side - magnitude drop. Values larger than 3 are not tagged 
+<li>The intervals indicated increase if the vertical scale of the plot is 
+significantly increased<strong>.<br><br>Horizontal scale : </strong><br><li>Time difference from 
+mid-occultation, in seconds.</li>
+The intervals indicated increase if the vertical scale of the plot is 
+significantly increased<strong>.</strong>
+<p><br></p>
+<h3>Controls below the plot</h3>
+<p>These check boxes control the parameters used to generate the plot. If the 
+simulator is opened from an <strong>event plot,</strong> many of these parameters will be set 
+(including the label above the plots). If it is opened from the <strong>Asteroid 
+Predictions</strong> tab of <strong>Occult</strong>, default values will be set</p>
+<img src="Asteroid%20Predictions%20-%20LightcurveSimulator2.PNG" width="500">
+
+
+<h3 class="auto-style3">Plot parameters</h3>
+
+
+<li><strong>Asteroid motion - mas/sec.</strong> Used to set the time scale in the Along path plot. This 
+rate of motion is used to set the time scale on the Along-path plot. When called 
+from the event Path plot, this field is automatically set and can't be changed. </li>
+<li><strong>Maximum duration</strong> This is a computed value, using the asteroid motion, and the major axis of the asteroid. 
+For elliptic asteroids, the maximum duration occurs when the PA of the asteroid 
+is 90° from the PA of the path.</li>
+<li><strong>show Light level lines.</strong> When checked, light lines are drawn across the plot at several light levels</li>
+<li><strong>show Magnitude lines.</strong> When checked, light lines are drawn across the plot at several magnitude drop levels</li>
+<li><strong>show Distance and Time lines.</strong> When checked, light&nbsp; lines are drawn vertically across the plot at several distances (Across path) and times (Along 
+path). The central line is emphasised.</li>
+<li><strong>distances as Topocentric</strong> When checked, the Across-Path distance scale is adjusted to give an approximate distance on the Earth's surface. When not checked, the distances are on the 'fundamental plane'</li>
+
+
+<h3 class="auto-style3">Star details</h3>
+<li><strong>Diameter (mas)</strong> - the star's diameter. The minimum diameter that can be set is 0.1 mas.</li>
+<li><strong>Limb darkening.</strong> Values can be in the range of -0.10 to +0.80. 
+When there is no limb darkening, the value should be set to 0. Very strong limb 
+darkening would be 0.8. Limb darkening is most relevant to red stars (spectral 
+types K &amp; M), which are also the type of stars most likely to have a diameter 
+sufficiently large for the effects of stellar diameter to be considered. For 
+this reason, the default value of limb darkening is set at 0.05 (not 0)
+<li><strong>Magnitude</strong> - the star's magnitude. Used with the asteroid's magnitude to set the magnitude drop taking into account the relative brightness of the two objects</li>. 
+The magnitude type should be the same for both the star and asteroid - which 
+usually means a V-magnitude should be used for the star.
+
+<h3 class="auto-style3">Asteroid details</h3>
+<li><strong>Model : Ellipse</strong> or <strong>Rectangular.</strong> Options for the shape form to 
+represent the profile of the asteroid at the event. Ellipse is most commonly 
+applicable. Rectangular is intended for asteroids like Kleopatra or Eros. In any 
+event, select a model type most appropriate to the asteroid profile at event 
+time.</li>
+<li><strong>Major axis, km </strong>&amp; <strong>mas.</strong> The diameter of a circle, or the <em>major</em> 
+axis of an ellipse or rectangle, representing the asteroid. Most likely you will 
+know the dimensions in km - and you should enter values on that basis. The value in mas 
+represents the apparent size, and is used for the light curve calculations. The values are linked - such that changing one value will change the other 
+value.<strong> <span class="auto-style1">IMPORTANT. The typical unit for the 
+asteroid size is km; make sure you enter the km values into the left field. The 
+right field - diameter in mas) - will be automatically populated. </span>
+</strong></li>
+<li><strong>Minor axis, km or mas.</strong> The diameter of a circle, or the <em>minor </em>axis of an ellipse or rectangle, representing the asteroid. Other details are as 
+for the Major axis.</li>
+<li><strong>major axis PA°</strong> The position angle of the major axis of the ellipse or rectangle, referenced to the sky plane. This must be set manually.</li>
+<li><strong>PA of path</strong> The position angle of the path direction, referenced to the sky plane. This is set automatically.</li>
+
+<li><strong>Parallax</strong> - the asteroid's parallax. This is used to convert the asteroid diameters between mas and km. When called 
+from the event Path plot, this field is automatically set and can't be changed. </li>
+
+<li><strong>Magnitude</strong> - the asteroid's magnitude. Used with the star's magnitude to 
+compute the magnitude drop taking into account the relative brightness of the two objects.</li>
+
+
+<p>Apart from setting these values to the most reliable values available, you can get an appreciation of the effects of the various parameters by changing them. For example: 
+with an elliptical asteroid of similar diameter to the star, change the PA you can see how the light curve 
+changes as the orientation of the asteroid is changed (hint - hold down the up 
+or down button on the PA control to have it cycle through the full range of 
+values.) Or swap between the 
+Ellipse and Rectangle models</p>
+
+</BODY>
+</HTML>

@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Asteroid Light curve data</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Asteroid Light curve data</H1>
+<P>Light curve data is extracted from the Asteroid Light Curve Database. The entire database may be accessed through the Collaborative Asteroid Lightcurve link<A  href="http://www.minorplanet.info/lightcurvedatabase.html"  target=_blank> CALL </a>. However Occult accesses the data by maintaining a downloaded copy of one of the files in the database - <I>LC_Summary_Pub.txt</I>. Users should update this file from the Downloads page every few months...
+
+<p>The informnation extracted from the Light curve database is:<ul>
+<li>the albedo (for information only)
+<li>the period of rotation; and
+<li>the amplitude of the light curve.</ul>
+
+The period of rotation is also converted into the angular rotation that will occur in a period of 10 minutes, as well as the time take for the asteroid to rotate 5 deg. If the observations extend over a period whereby the asteroid will have rotated more than 5 degrees, careful consideration about the effects of that rotation on the alignment of the observed chords will be required.
+
+<p>The maximum amplitude of the light curve is also converted into an equivalent ratio of the major:minor axes. As a general proposition, an observed profile should not be significantly more elliptic.
+
+<p>The minimum amplitude of variation is also given - for information only. It is not present for all entries. Most importantly it does not place any constraint on the expected ellipticity of any fit.
+
+<h3>Codes</h3>
+The following codes may appear at the start of the line giving the period of rotation:
+<table columns=3 border=1 align=left>
+<TR><TH NOWRAP>Code</TH><TH>Explanation</TH></TR>
+<TR><TD>&lt</TD><TD>    Less than.</TD></TR>
+<TR><TD>&gt </TD><TD>    Greater than.</TD></TR>
+<TR><TD>D </TD><TD>      No numerical value.</TD></TR>
+<TR><TD>S  </TD><TD>     Sideral period, default is no flag and synodic period.</TD></TR>
+<TR><TD>U  </TD><TD>     Uncertain, not the same as ambiguous where one or additional periods are reported. For example, the data did not allow finding a definite period and so the author(s) reported a "best guess.".</TD></TR>
+</table>
+
+
+
+
+</BODY>
+</HTML>

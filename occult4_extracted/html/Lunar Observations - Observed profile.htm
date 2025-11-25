@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Observed profile</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Observed profile</H1>
+
+<p>The reduction profile is plotted slightly differently to the graze prediction profile. In the reduction profile, the smooth limb of the moon is represented by a horizontal straight line.<br>
+
+
+<h2>Basic details of the profile</h2><ul>
+
+<li> the observed event, or graze events, is plotted as a thick circle - Red for D, green for R, grey for other types of events.
+
+<li> the range of Axis Angle, and height, is set from the data plotted. The ranges can be manually changed using the boxes at the top of the form. [<B>Note </B>- the numeric value of the Axis angle at the left must always be less than the Axis Angle at the right.]
+
+<li>the mean limb of the moon - is represented by the horizontal axis. The vertical axis gives the height of the limb or event above the mean limb.
+
+<li>the lunar profile. There are 4 options available, selectable using check-boxes at the top-left of the form.<ul type=1>
+<li>LOLA data points. This plots the altimeter data points from the LRO LOLA, 
+leaving it up to the user's eye to identify the location of the limb. 
+<li>LOLA Hi-resolution profile line. This plots a 'best-fit profile line to the 
+LOLA&nbsp;
+</ul>
+<B>For more information about the LOLA data</B>, see <a href="FileFormat%20LOLA.htm">LOLA data</a>. 
+<br>
+	<li>Observations from past grazes and occultations [optional], plotted using the following coding:<ul>
+		<li>squares - graze events, either visual or instrumental;
+		<li>circles - instrumental observations (eg video, photoelectric);
+		<li>'+' - visual observations</ul>
+	<li>information identifying the star, date, and librations used for the profile prediction. 
+
+	<li>The Axis Angle and height above the mean lunar limb at the location of the cursor, is shown as a tool-tip.</ul>
+</ul>
+
+<h2>Observed graze and occultation data</h2>
+<p>Occult provides the ability to plot observed grazes and occultations against the profile, thereby allowing you to compare your current observations with past observations. The several files of results from past occultations are available as a separate download, with the file for the most recent events being regularly updated.
+<p>The options available to plot past observations are provided under the menu item 'Observed graze and occultation data', and are as follows:
+<table columns=2 border=1>
+<TR><TH NOWRAP>Menu item</TH><TH>Effect</TH></TR>
+<TR><TD>None</TD><TD>No observed data is plotted</TD></TR>
+<TR><TD>P, D[+/- X.Xdeg]</TD><TD>This plots observations according to their value in the P,D reference frame - with the indicated range in the D value.</TD></TR>
+<TR><TD>AA, L[+/- Xdeg], B[+/- Y.Ydeg]</TD><TD>This plots observations according to their value in the AA, L, B reference frame - with the indicated ranges in the L and B values.</TD></TR>
+<TR><TD>Exclude ordinary occultations</TD><TD>If checked, the data from ordinary occultations are included. If not checked, only grazing occultations are included.<br>
+<li>if ordinary occultations are included, the plot takes longer;
+<li>the effects of Personal equation on the uncertainty of the limb height are greater with ordinary occultations
+<li>however ordinary occultations are often the only source of information for the relevant libration.</TD></TR>
+<TR><TD>List grazes used</TD><TD>This provides (on a separate form) a <a href="Lunar%20predictions%20-%20list%20grazes%20used.htm"> list of the grazes used</a> in the plot. This can be useful to compare the librations of a past event with the current event - to assess reliability of the profile prediction.</TD></TR>
+<TR><TD>List current observers</TD><TD>This provides (on a separate form) a list of the observers in the current  report. If you double-click on a name in the list, the observations of that observer will be plotted in yellow. This can be useful for sending a reduction profile to a particular observer, with their observations highlighted.
+<p>Additionally, the path of the star as seen from that observer's location can be plotted, by checking the box <B>Include star path in graze plot</B> at the top of the list of current observers. If the observer reports observations of 
+separate components of a multiple star system, paths will be drawn for up to 5 observed components.</TD></TR>
+<TR><TD>List Historic observers</TD><TD>This list the observers for the historic 
+	observations plotted against the profile</TD>
+<TR><TD>Draw in colour</TD><TD>Controls whether the overall plot is B&W or colour</TD></TR>
+<TR><TD>Show events in colour</TD><TD>The effect of this is limited to printer output. You can retain the colour coding of events when the profile is printed (which otherwise is always B&W).</TD></TR>
+</TR>
+</table>
+
+<p>When a profile is first drawn the settings used for plotting the observed data are taken from the User settings - 'Lunar Occultations - grazes' - 'Reduction profile - Librations for plotting observed data'.
+
+<p>When observed data is plotted, you can:<ul>
+<li>identify the observer and event by placing the cursor on the plotted point. The details are given above the plot. The coding used is:
+Event codings:<ul>
+<li>DD DB DU   - disappearance at the Dark limb / Bright limb / in Umbra
+<li>RD RB RU   - reappearance at the Dark limb / Bright limb / in Umbra
+<li>B F M    - Blink / Flash / Miss
+<li>Reliability codings -  "ok" = certain, "?" = possibly spurious; "??" = almost certainly spurious</ul>
+<li>right-click on a plotted point and you can highlight (i) all events by that observer, (ii) all events involving that 
+particular star, or (iii) all events on that particular day. 
+<li>Additionally, if you double-click on a graze in the List of listed in the <a href="Lunar%20predictions%20-%20list%20grazes%20used.htm"> list of the grazes used</a>, all events in that graze will be highlighted.</ul>
+<li>You can return to the original plot highlighting the 'current' observations by clicking the <B>Re-draw </B>button. 
+
+<h2><br>Interpreting the plotted observations</h2>
+<h3>The libration reference frames</h3>
+A general discussion of the libration reference frames is given with the <a href="Lunar%20predictions%20-%20grazeprofile.htm">graze profile</a> help file topic.
+<p>Past observations should be plotted using the L, B, AA reference frame, using the smaller ranges of possible values. Avoid the P, D reference frame, which shifts data left and right according to perspective.
+
+<h2>Using grazes to determine double star separation and PA</h2>
+Where a graze observation records events form the components of a double star, and the WDS code has been set to A and B for the components. Under these conditions the 'double star control group at the top right of the form is enabled. Also the colors used for the two stars components are different - enabling the events involving a particular component to be identified. The extra functions available are:<ul> 
+<li>check boxes to control whether or not the events involving a particular component are plotted;
+<li>up-down controls to adjust the separation and position angle of the B star relative to the A star, in arcsecs.
+<li>The reduction may already have incorporated a separation and position angle when coputing the residuals. The value so used is pre-set into the up/down controls, and is displayed next to the up/down controls.
+<li>The rate of change in the up/down controls can be varied by double-clicking. When the controls have the normal Window color, they change by 0.1" and 0.2 deg respectively. Double clicking will turn the control background to green - and the change will be 0.01" and 0.01 deg. Double-clicking again will return to controls back to their normal state.</ul>
+
+To use this functionality, adjust the Sep and PA values to bring the profiles determined by the two components into alignment. <I>[<B>Note</B>: the plot is highly stretched in the vertical direction - with 1 deg in Axis Angle corresponding to about 16".]</I>.
+<p>The derived Separation and PA can be copied to the clipboard from with <B>Plot... Copy Double star solution</B>. The copy includs extra information, as illustrated in the folloiwng example:
+<pre>
+R2366
+Double star solution from grazing occultation
+Sep = 2.59"  [predicted 2.79"]
+PA = 275.47°  [predicted 275.77°]
+Date of graze: 1990.13
+Number of events in the graze: 183
+</pre>
+
+
+<h2>Determining limb slope for double star solution</h2>
+<I><B>NOTE. This functionality is largely superceded if the user has the LOLAR lunar limb installed. In this situation the form is merely used to view and confirm the lunar slopes; any slopes measured using this form will be replaced as part of the double star solution process.</B></I>
+<p>The observed profile plot is also used as part of the analysis of double star observations - to measure the slope of the lunar limb at the point of the occultation. The form can be opened from the form for solving double stars.
+
+<p>The form has the following extra features:<ul>
+<li> the Axis Angle of the occultation is indicated by three vertical dotted lines. The central line is the observed axis angle. On either side is a line located approximately 1 arcsecond on either side.
+<li>Place the cursor near the limb at the occultation point, hold down the left button, and move the cursor. A line will be drawn commencine from the point where the button was first clicked. Use this line to measure the gradient of the lunar limb at the point of the occultation. The lunar slope is displayed in the tooltip text.
+<li>When the left button is released, the line will disappear, but the last-measured value of the lunar slope will appear just above the top of the profile plot region. From there, the value can be transcribed to the double star solver.</ul>
+
+
+
+
+</BODY>
+</HTML>

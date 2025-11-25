@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Double star report</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Double star report</H1>
+<P>A lunar occultation of a double star, when observed from significantly different Position Angles against the moon, can allow for an accurate measurement of the Position Angle and separation of the double star. Occult supports the easy reporting of observations for this purpose.
+
+<p>The functionality is contained in the menu of the Lunar Observations editor - as <B>Double star report... Create report for current star</B>. The functionality is only enabled when the <B>Events </B>page of the editor is displayed. The functionality can be used by selecting an event already entered into the editor. It can also be used for an event partly entered - assuming the date, star number, Station and Observer have been entered/selected.
+
+<p>On clicking <B>Double star report... Create report for current star (brighter component)</B>, the program will open the Double Star reporting form. It will populate the form with a range of data relevant to the selected event. Some of this is shown on the form. Not shown are the station and observer details, and the catalogue details of the double star.
+<br><B>IMPORTANT</B>. When creating a double star report, always base it on the brighter component of the pair. If you can't decide which is brighter, use the first event.
+
+<h2>Data entry</h2>
+<h3>Event times</h3>
+Most of the data requred for the report is populated when the report is created. This includes the hour and minute of the occultation, as well as the seconds of the Bright star that is used to create the report. The one data item requiring manual entry is the time difference in seconds for the fainter (second) star. 
+<p>The occultation of the fainter star can be either before or after the brighter star. If it occurs earlier, the time differenbce will be negative. When you enter the time difference, the computed seconds of the event are shown below the box - as a verification that you have entered the time difference correctly. When the event spans a minute, the value displayed under the box is just of the final seconds. For example, let us assume events occurring at 23m 59.3s, and 24m 01.2sec.  If the brighter star was the first star, the time difference would be entered as +1.9, and the value displayed under the box will be 1.2 (not 61.2). Conversely if the brighter star was the second star, the time difference to be entered would be -1.9, and the time displayed below the box will be 59.3 (not -0.7).
+
+<h3>LiMovie Light Curve</h3>
+If you have recorded the occultation by video, you should generate a light curve using the software <A href="http://www005.upp.so-net.ne.jp/k_miyash/occ02/limovie_en.html" target = _blank>LiMovie</a>. When you have measured the video, you can plot the lightcurve within LiMovie. At the bottom of the form displaying the light curve, there is a button <B>Copy to clipboard</B>. Click that button.
+
+<p>Now on the <B>Double Star Report </B>form, click <B>Retrieve LiMovie plot from the Clipboard</B>. This will place the LiMovie graphic into the space on the report form.
+<p><I>You can use this functionality to copy different images into the form. For example, LiMovie can plot a 3-D image of the region surrounding the star, which can be copied to the clipboard, then pasted into the double star report form. However only one graphic can be included.</I>
+
+<p>Additionally, having brought the LiMovie light curve into the report form, you can save it using any of the 5 image formats supported by Occult.
+
+<h3>Message</h3>
+A large box is provided at bottom left, where you can enter any message you want to accompany the report.
+
+<h2>Email addresses</h2>
+The Email address for sending the report is downloaded from the IOTA web site. This will be automatically updated if you are connected to the internet when you start Occult. Otherwise you may need to update the file of Addresses from teh General Downloads page of Occult, under item #10. The address is shown at bottom right - immediately after the area for the light curve graphic. By default that address is not editable, and the box is coloured red. Clicjk the 'Edit Address' next to the box,and the color will change to Green, and you can edit the email address. However the edited email address will not be retained.
+
+You can also copy the email to multiple email addresses - which you specify in the box at bottom right. Rules for formatting the addresses are:<ul>
+<li>The actual address is held within angled brackets. Example... &#60Fred@hisDomain.com>
+<li>As usual, upper and lower case does not affect the email address
+<li>You can precede the email address with an identifier - held between double-inverted-commas. Example... "Fred is fantastic"&#60Fred@hisDomain.com>
+<li>Multiple email addresses must be separated with a semi-colon ( ; ). Example... &#60Bill@iinet.com.au>;"Fred is fantastic"&#60Fred@hisDomain.com>;"&#60Joe@Bigpond.com>
+<li>Commas, colons, and carriage returns are not allowed (and cannot be entered).</ul>
+
+<p>Recognising that reports will typically be sent to the same group of people, the CC email list can be saved as a default list - using the button to the right of the email address block. If you edit the displayed list of email addresses, you can re-insert the default addresses - again using the button to the right of the email address block.
+
+<h2>Viewing, Sending and Saving the report</h2>
+You can view the text content of the report and any message by clicking <B>Preview report</B>.
+<p>The report (with comments) is Emailed to the email addressees by clicking <B>Save and Email double star report</B>. Before attempting to email the report, and any light curve, will be saved. The default directory is \Occult 4\Observations\Doubles, and the default file name is made up of the date and star number. Then the report together with any email message will be emailed.
+
+<p>If you only want to save the report, click <b>Save double star report</b>. This will save the report and any light curve. This may be useful if you need to email the report using your usual email software.
+
+<h2>Sample report</h2>
+The following is an illustration of the report that is created. It does not include the LiMovie light curve that might be included in the report. [The lines showing the position from an orbit are from a different star, and are included for illustration.] 
+<p>
+<pre>
+2008 Oct 11 at 15h 1m
+
+Star = R3308
+Observer =  D. Herald
+Telescope =  36.0cm at  149  3 49.0 -35 23 49.3
+
+Double star details from the XZ catalogue
+Star is the primary of the following pair
+CHR 111       1985 2001: 265.0  69.0:   0.100   0.000:  6.30  8.60: R  3308  ------
+
+Positions from orbit, on event date
+PA = 138.48,  Separation  = 0.027"
+
+Observation details
+Star Mag = 6.15
+   Event = D D
+      PA = 57.663
+      AA = 77.824
+       l = -6.627
+       b = -3.032
+      RV = 0.4688
+   Scale = 1.012
+     CCT = -2.37
+      CA = 76N
+  %Illum = 37%
+     Alt = 31
+      T1 = 4.90
+   T2-T1 = .11
+   * * * * *
+
+
+
+</pre>
+
+
+
+</BODY>
+</HTML>

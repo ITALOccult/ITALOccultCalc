@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Besselian elements - Lunar eclipse</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Besselian elements - Lunar eclipse</H1>
+
+<P>Besselian elements are used to generate a lunar eclipse prediction. The elements are generated as a 2<sup>nd</sup> order polynomial expression. An example display of the series is:
+
+<PRE>Besselian elements for the lunar eclipse of
+2022 Nov 8
+  
+Zero time for hourly series is 10h TT
+delta T = 73.2 secs ±3s,   Ephemeris = DE430
+  
+  X = -1978.74",   Y =   117.45"
+ dX =  1638.33",  dY =   678.84"
+d2X =    -0.53", d2Y =    -0.66"
+Gamma = 0.2569
+  
+             Shadow radii            Moon
+      Oblate   Chauvenet  Danjon    Radius
+(1)   4394.4"   4430.3"   4382.8"    918.8"
+(2)   2456.3"   2453.1"   2444.3"    918.4"
+(3)   2454.5"   2451.6"   2442.8"    918.0"
+(4)   2445.2"   2450.6"   2441.8"    917.7"
+(5)   2445.8"   2449.7"   2440.9"    917.5"
+(6)   2447.8"   2448.2"   2439.4"    917.1"
+(7)   4384.4"   4422.6"   4375.1"    916.7"
+</PRE>
+
+<P>The fundamental plane used for the calculations is located in the sky. The plane is normal to, and centered on, the axis of the Earth's shadow as cast by the Sun &#8212 and passes through the center of the Moon. All coordinates are expressed in arc-secs, being the angular distances as seen from a geocentric position.
+
+<P>The coordinates given are:
+<li>X - the distance of the Moon from the shadow axis in RA, and
+<li>Y - the distance of the Moon from the shadow axis in Declination.
+<br>Each line gives the term in the series. The first line is the constant part of the series; the 2<sup>nd</sup> line gives the term in the first order of time; and the 3<sup>rd</sup> line gives the term in the 2<sup>nd</sup> order of time.Time (t) is measured in hours from the 'Zero time for the series' as given at the start of the elements. To compute a position, evaluate the series as (using the X coordinate as an example):
+<br>X +dX*t+d2X*t<SUP>2</SUP>
+<p>The value of deltaT (and its uncertainty, if greater than 1 sec) used to convert the times to UT is given. Listed at the end of the series is the value of Gamma - the minimum distance of the axis of the umbral shadow from the Earth's center, in Earth radii.
+<p><p>Thereafter follows a table of the shadow radii at each of the contact times. The table gives the radius (in arc-secs) computed using the elliptic shadow, the Chauvenet method, and the traditional Danjon method. The radius for lines (1) and (7) is that of the penumbra, while the remaining lines give the radius of the umbra. Also given is the lunar radius (in arc-secs). 
+<p>It may be observed that while the radii for the Chauvenet and traditional Danjon methods changes monotonically (and by a similar amount), the radii for the Oblate method is generally at a minimum at maximum eclipse. This is a result of the elliptic shape of the shadow.
+
+
+
+
+</BODY>
+</HTML>

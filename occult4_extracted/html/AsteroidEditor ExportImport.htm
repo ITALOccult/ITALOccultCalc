@@ -1,0 +1,199 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Asteroid observations - Export/Import</Title>
+<style type="text/css">
+.auto-style1 {
+	color: #FF0000;
+	font-size: medium;
+}
+.auto-style2 {
+	color: #FF0000;
+}
+.auto-style3 {
+	font-size: x-small;
+}
+.auto-style4 {
+	margin-bottom: 18px;
+}
+.auto-style5 {
+	color: #000000;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Asteroid observations - Export/Import</H1>
+<P class="auto-style1"><strong>This set of functions is provided to facilitate 
+distributed maintenance of the file of Historical observations. They are not 
+intended for general use.</strong></P>
+<P>&nbsp;</P>
+<h1>Overview</h1>
+<P>The file of historical observations requires updating from time-to-time, 
+withe the increased availability of new or revised shape models for asteroids. 
+In addition, there are (at the time of writing) many events where the observed 
+data is in need of review, the derived fit to teh observations needs review, or 
+where 'problems' arose in the process of converting the 'old' fixed-format file 
+of observations to the xml format.</P>
+<P>With almost 4000 events in the file of historical observations, review of the 
+entire file by a single individual is not appropriate. A distributed approach is 
+needed.</P>
+<P>The approach that has been implemented is:</P>
+<P>Individuals (in a coordinated fashion) reviewing a range of events, and 
+recording the results of that review in a file - with the content of that file 
+being generated automatically. This process is referred to hereafter as 
+Exporting or Exported</P>
+<P>A central person reads the data in the Exported files, and (subject to 
+review) updating the main file with the exported data. This process is referred 
+to hereafter as Importing.</P>
+<P>The main data to be automatically exported and imported relates to the 
+solution values, and not data recorded against individual observers. 
+Occasionally it can be desirable to change data for an individual observer 
+(particularly the free text comment field, or fields affected by comments 
+therein). These comments need to be entered manually - both at the export and 
+import stages (with Copy + Paste being available) using a special <strong>
+Comments</strong> form.</P>
+<P>&nbsp;</P>
+<h1>Export processing.</h1>
+<h2>Step 1. Set up an export file</h2>
+<P>Data is exported to a file which is maintained in the Occult/Import_Export 
+folder. You can have multiple versions of an export file. Each file must end 
+with the characters&nbsp;&nbsp; <strong>Export.xml</strong>. One might, for 
+example, have files corresponding to the months in a year - such as 
+2010JanExport.xml, 2010FebExport.xml - such that the content of the file is 
+apparent from its name.</P>
+<P>The files are created from the menu item <strong>1. Create new Export file</strong> 
+The form looks like:</P>
+<P align=center><img src="Export_SetFile.PNG"></p>
+<br>In the first line you enter your name as the Editor. In the second line you 
+enter the characters of the file name to precede <strong>Export.xml</strong>. 
+Below that is a list of existing export files. When entering a file name, if a 
+file of that name already exists it will be highlighted in Red. Note that you 
+must fill out the name of the editor, and a new file name, to leave the form - 
+unless you select <strong>Cancel</strong>.When you creat a new file<P>When you 
+create a new file, it will become the default <strong>Export</strong> file, 
+which will be used in subsequent sessions. When you have multiplke Export files, 
+you can select the file to use&nbsp; with <strong>2. Set Export file</strong>. 
+The form looks like:</P>
+<P align=center><img src="Export_SelectFile.PNG"></p>
+
+<P>Simply check the file you want to use, and click <strong>Accept</strong> (or
+<strong>Cancel</strong> to leave with no changes). The selected file will become 
+the default Export file. It will also appear in the menu list under 
+Export/Import, below <strong>2. Set Export file</strong>. This ensures you will 
+have ready knowledge of the file you are exporting to.</P>
+<h2>&nbsp;</h2>
+<h2>Step 2. Starting an Export session</h2>
+<P>When starting a session for exporting edited data for events, the first step 
+is to open the Comments form. This is done using <strong>3. Open Comments form 
+for current event.</strong> </P>
+<P class="auto-style2"><strong>NOTE. <span class="auto-style5">The Comments form is only intended to be 
+used in the export/import process, and not part of general viewing of an event.</span> 
+As a result, the Comments form must be specifically opened when conducting the 
+export process. <span class="auto-style5">[However its opening during the Import 
+process is automatic].</span></strong></P>
+<P>&nbsp;</P>
+<h2>Step 3. Exporting data - what elements are exported?</h2>
+
+<h3>Step 3a - Comments</h3>
+<P>The comments form provides a free text form for indicated changes to be made 
+to other data relating to the event. For example, cleaning up free-text comment 
+fields. The comments should be sufficient to allow the central person to 
+understand the amendment being suggested, and some level of short-hand is 
+appropriate. <span class="auto-style2">When making 
+comments do not use the ^ character (it is used when creating the export.xml 
+file to indicate the location of line breaks in the comments text) </span>The 
+Comments form will accept pastes.</P>
+<h3>Step 3b - The actual export</h3>
+<p>When satisfied that you want to export the data, undertake the export with
+<strong>4. Export all solutions for current event.
+</strong>If the event is not present in the Export file, the relevant export 
+data will be written to the Export file.</p>
+<p>You will not see what data has been exported unless you have previously 
+exported data for that event to the Export file. When there was a previous 
+export, you will be given a display of what is in the export file, and what will 
+be written to the export file. The following image shows that comparison, and 
+shows the data elements that are exported. Basically, it is all the setting 
+available on the plot of the asteroid event.</p>
+<strong>
+<P align=center><img src="Export%20Fields.PNG"></p>
+
+</strong>
+
+<P>There is no comparison made of the comments before and after the edit...</P>
+<strong>
+<P>&nbsp;</P>
+<h1>Import Processing</h1>
+<h2>Step 1 Select an import file</h2>
+</strong>
+<P>Working on the assumption that the central person has received Export files, 
+and stored them in their Occult 4/Import_Export folder, select the Import file 
+using
+<strong>5. Set Import file.</strong> The form has the same appearance as 
+for selecting the Export file. The selected file becomes the default file for 
+importing data, and the file name appears after the menu item 
+<strong>5. Set 
+Import file</P>
+<P>&nbsp;</P>
+<h2>Step 2. Select an event to edit.</h2>
+</strong>
+<P>To update a file in the Historical file with data contained in an Export 
+file, select the Menu item 
+<strong>6. Select an event in the import file T</strong>his will bring up a form 
+that looks like:</P>
+<strong>
+<P align=center><img src="Export_SelectInputFile.PNG"></p>
+</strong><span class="auto-style3">[This example is deficient in that the names of the asteroids 
+after the first&nbsp; are not listed. In practice, all entries will have the 
+asteroid's name as well as number.]</span><strong>
+</strong>
+
+<P>Select the asteroid to be edited (that is, updated). The last-used selection 
+will be checked whenever you open this form -= making it easier to work through 
+the list from beginning to end.</P>
+<P class="auto-style4">When you have made your selection, click OK. The event in 
+question will appear in the main observations editor.</P>
+<P>&nbsp;</P>
+<h2>Step 3. Make the edits</h2>
+<P>Having selected the event, and with the event open in the editor, select 6. 
+Import solution for the selected event. The following fornm will be displayed, 
+showing the data items in the Export file, and the current corresponding items 
+in the editor.</P>
+
+<P align=center><img src="Export%20Fields%20for%20importing.PNG"></p>
+
+<P>You can selectively apply the edits from the 5 groups according to whether 
+the relevant <strong>Apply.... </strong>&nbsp;check boxes are checked.</P>
+<P>After the edits have been applied, the Comments form will be displayed with 
+any comments that have been made for this event. Revbiew the comments and edit 
+the data in the observations editor as appropriate.</P>
+<P>&nbsp;</P>
+<h2>Step 4. Save the changes</h2>
+<P>The importing process does not immediately change the data in the Historical 
+observations file. The import processing merely changes the data that is held in 
+memory while the event is displayed. If you change the event that is displayed, 
+none of the edits will have been retained.</P>
+<P>To retain the edited data as a permanent change to the historical 
+observations file, the first step is to review the event to make sure the event 
+as edited has been appropriately assessed. Then, and only then, click <strong>
+Update Historical file with the revised event.</strong> This will update the 
+details for the event, and write a revised copy of the <strong>
+Asteroid_Observations.xml </strong>file containing the revised data. Generally, 
+the file written will overwrite an existing version of the file. However if the 
+existing version is dated more than 24 hrs prior to the current write, the 
+previous version will be retained with the appellation like &quot;_pre29-Dec-18&quot;. 
+This means that if yu make a major mistake in editing the main file, you can go 
+back to an earlier version.</P>
+<P>&nbsp;</P>
+
+<strong>
+<P>&nbsp;</P>
+
+
+
+</BODY>
+</HTML>

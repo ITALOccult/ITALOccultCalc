@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Overview</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Resource Files</H1>
+
+<P>The following is a list of all resource files in Occult 4, and their purpose</P>
+
+<table columns=2 border=1>
+<TR><TH NOWRAP>File</TH><TH>Purpose</TH></TR>
+<TR><TD>Gaia</TD><TD>Directory for Gaia star catalogues<TD></TR>
+<TR><TD>Moon</TD><TD>Directory for computed daily polynomial series for moon position</TD></TR>
+<TR><TD>2450000_XYZ.bin (and similar with different first 3 digits)</TD><TD>Contains X,Y,Z coords of planets for 100,000 days - used for numerical integrations</TD></TR>
+<TR><TD>Addresses</TD><TD>Email addresses for reporting lunar occultations</TD></TR>
+<TR><TD>Archive Graze Index.dat</TD><TD>Index file of grazes</TD></TR>
+<TR><TD>Archive Graze List.csv</TD><TD>Index file of grazes</TD></TR>
+<TR><TD>Archive ILOC Observers.dat</TD><TD>List of Observers extracted for ILOC reports</TD></TR>
+<TR><TD>Archive ILOC Sites.dat</TD><TD>List of sites extracted from ILOC reports</TD></TR>
+<TR><TD>Archive Observations 2016_2025.dat</TD><TD></TD>Series of files containing lunar occultation observations, split by year</TR>
+<TR><TD>Archive Observations recent.dat</TD><TD>A working directory of recent observations. Periodiacally revised to incorporate older observations into the main archive files</TD></TR>
+<TR><TD>Archive RGO Sites.dat</TD><TD>List of sites extracted from the RGO reports</TD></TR>
+<TR><TD>AsteroidClasses.csv</TD><TD>Taxonomic classes of asteroids</TD></TR>
+<TR><TD>AsteroidDiameters.bin</TD><TD>Asteroid diameters - weighted mean values 
+	from IR satellites. Added to the asteroid elements when Astorb or MPCorb converted</TD></TR>
+<TR><TD>AsteroidDiametersAll.bin</TD><TD>Asteroid diameters - all the IR 
+	satellite measurements</TD></TR>
+<TR><TD>AsteroidElements.csv</TD><TD>Orbital elements of asteroids, derived from 
+	MPCORB, Astorb or AstDyS-2</TD></TR>
+<TR><TD nowrap>AsteroidObservations.dat, .inx</TD><TD>Observations of asteroid occultations</TD></TR>
+<TR><TD>AsteroidsAlwaysRead.dat</TD><TD>Asteroids to always be included when converting from Astorb or MPCorb</TD></TR>
+<TR><TD>Bayer.bin</TD><TD>Bayer and Flamsteed numbers for stars - used in star charts</TD></TR>
+<TR><TD>BinaryAsteroids.csv</TD><TD>Details of binary asteroids</TD></TR>
+<TR><TD>Constellation Abbrevs.dat</TD><TD>3-letter abbreviations for constellations</TD></TR>
+<TR><TD>Constellation id.dat</TD><TD>Data to identify the constellation for a location</TD></TR>
+<TR><TD>Constellation Lines EW.dat</TD><TD>Start and end of constellation boundary lines running east/west</TD></TR>
+<TR><TD>Constellation Lines NS.dat</TD><TD>Start and end of constellation boundary lines running north/south</TD></TR>
+<TR><TD>Constellation Names.dat</TD><TD>Full constellation names</TD></TR>
+<TR><TD>CRATER.DAT</TD><TD>Coordinates, diameter and names of craters - used in moon map</TD></TR>
+<TR><TD>DE405_413.bin</TD><TD>merged DE413 and DE405 ephemeris</TD></TR>
+<TR><TD>DeltaT.dat</TD><TD>Table of delta T values</TD></TR>
+<TR><TD>DeltaTA.dat</TD><TD>Table of delta TA values</TD></TR>
+<TR><TD>Earth.bin</TD><TD>VSOP84 series for the earth's position</TD></TR>
+<TR><TD>GeoidHeights.bin</TD><TD>Table of height diferences bewtween mean sea level and the WGS84 spheroid</TD></TR>
+<TR><TD>GoogleMap_FileFooter.txt<br>
+GoogleMap_FileHeader.txt<br>
+GoogleMap_ServerDriver.js
+</TD><TD>Files used to create html files for use with Google Maps</TD></TR>
+<TR><TD>GSC Fields.dat</TD><TD>Used to locate Tycho-2 stars, it contains the RA and Dec limits of the GSC fields used in the star number</TD></TR>
+<TR><TD>Hipparcos Index.dat</TD><TD>Gives the record number in the Tycho2 catalogue of all Hipparcos stars.</TD></TR>
+<TR><TD>ILOC Site Statistics.dat</TD><TD>Gives number of observations against each ILOC station code</TD></TR>
+<TR><TD>J6.bin, J7.bin, J8.bin<br>
+J9.bin, J10.bin, J11.bin<br>
+J12.bin, J13.bin</TD><TD>Chebychev polynomial series for Jupiter's satellites 6 to 13</TD></TR>
+<TR><TD>JPL DE405.dat</TD><TD>DE405 ephemeris [optional]</TD></TR>
+<TR><TD>Jupiter.bin</TD><TD>VSOP84 series for Jupiter's position</TD></TR>
+<TR><TD>Kepler2.dat</TD><TD>Ecliptic stars in the kepler2 observing program</TD></TR>
+<TR><TD>MARIA.DAT</TD><TD>Coordinates of the outlines of Marias</TD></TR>
+<TR><TD>Mars.bin</TD><TD>VSOP84 series for Mars' position</TD></TR>
+<TR><TD>Mercury.bin</TD><TD>VSOP84 series for Mercury's position</TD></TR>
+<TR><TD>MoonSeries.bin</TD><TD>Chapront series for the Moon's position</TD></TR>
+<TR><TD>Neptune.bin</TD><TD>VSOP84 series for Neptune's position</TD></TR>
+<TR><TD>Nutation.bin</TD><TD>Nutation series</TD></TR>
+<TR><TD>OBSF.dat</TD><TD>ILOC list of lunar occultation observers</TD></TR>
+<TR><TD>OccultGrazes.dat</TD><TD>Main file of grazing occultation observations</TD></TR>
+<TR><TD>Pluto.bin</TD><TD>Chapront series for Pluto's position</TD></TR>
+<TR><TD>RecentGrazes.dat</TD><TD>File of recentl grazing occultations</TD></TR>
+<TR><TD>RGO Observations yyyy.dat</TD><TD>Lunar occultation observations for a number of years, sourced from RGO</TD></TR>
+<TR><TD>RGO Site Statistics.dat</TD><TD>Gives number of observations against each RGO station code</TD></TR>
+<TR><TD>RGO Sites.dat</TD><TD>Site coordinates for RGO observations</TD></TR>
+<TR><TD>RILOC Observations yyyy.dat</TD><TD>Reduced ILOC occultations for a period</TD></TR>
+<TR><TD>ROccultGrazes.dat</TD><TD>Reduced graze observations</TD></TR>
+<TR><TD>RRecentGrazes.dat</TD><TD>Reduced recent graze observations</TD></TR>
+<TR><TD>RRGO Observations yyyy.dat</TD><TD>Reduced RGO occultations for a period</TD></TR>
+<TR><TD>sao_xz.dat</TD><TD>to go from SAO number to XZ number</TD></TR>
+<TR><TD>Saturn.bin</TD><TD>VSOP84 series for Saturn's position</TD></TR>
+<TR><TD>Tycho2.bin, .inx</TD><TD>Tycho2 star  catalogue and index file</TD></TR>
+<TR><TD>U1.bin, U2.bin, U3.bin,<br>
+U4.bin, U5.bin</TD><TD>Chebychev polynomial series for Uranus' satellites 1 to 5</TD></TR>
+<TR><TD>UCAC_BSS.bin, .inx</TD><TD>UCAC bright star supplement and index file - used for star charts</TD></TR>
+<TR><TD>UCAC2 Index.dat</TD><TD>Index file giving the UCAC2 number at the start of each declination zione in Tycho2</TD></TR>
+<TR><TD>Uranus.bin</TD><TD>VSOP84 series for Uranus' position</TD></TR>
+<TR><TD>UserA.bin, .inx</TD><TD>User star catalogue for asteroid searches</TD></TR>
+<TR><TD>UserMinorPlanetElements.dat</TD><TD>User file of asteroid orbital elements - for asteroid searches</TD></TR>
+<TR><TD>UserMinorPlanetElements_Lunar.dat</TD><TD>User file of asteroid orbital elements - for lunar occultations</TD></TR>
+<TR><TD>UserStar_MinorPlanetSearch.dat</TD><TD>User file of star position - for asteroid searches</TD></TR>
+<TR><TD>Venus.bin</TD><TD>VSOP84 series for Venus' position</TD></TR>
+<TR><TD>World.bin, .inx</TD><TD>Coordinates of sea boundaries, country borders etc, and index file.</TD></TR>
+<TR><TD>xz_zc.dat</TD><TD>link from XZ number to ZC number</TD></TR>
+<TR><TD>xz80.dat, .inx</TD><TD>XZ80Q catalogue and index file.</TD></TR>
+<TR><TD>XZ80index.dat</TD><TD>Linkage from XZ number to record number in XZ80.dat file</TD></TR>
+<TR><TD>XZ80Mag4.dat, .inx</TD><TD>Subset of XZ80 catalogue - brighter than mag 4</TD></TR>
+<TR><TD>XZ80Mag7.dat, .inx</TD><TD>Subset of XZ80 catalogue - brighter than mag 7</TD></TR>
+<TR><TD>XZ80Mag9.dat, .inx</TD><TD>Subset of XZ80 catalogue - brighter than mag 9</TD></TR>
+<TR><TD>XZConfirmations.DAT</TD><TD>Confirmation observations of occultation doubles</TD></TR>
+<TR><TD>XZDoubles Discoveries.dat</TD><TD>Details of discoveries of occultation doubles</TD></TR>
+<TR><TD>XZDoubles.dat</TD><TD>Double stars in XZ80Q</TD></TR>
+<TR><TD>XZNegatives.dat</TD><TD>Details of negative observations of occultation doubles</TD></TR>
+<TR><TD>XZVariables.dat</TD><TD>Variable stars in XZ80Q</TD></TR>
+<TR><TD>ZC.dat, .inx</TD><TD>ZC star catalogue and index file</TD></TR>
+<TR><TD>ZCNames.dat</TD><TD>Names of stars derived from the ZC catalogue</TD></TR>
+<TR><TD>zc-xz.dat</TD><TD>Linkage from ZC catalogue to XZ number</TD></TR>
+</table>
+
+</BODY>
+</HTML>

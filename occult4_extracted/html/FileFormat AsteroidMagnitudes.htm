@@ -1,0 +1,281 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Overview</Title>
+<style type="text/css">
+.auto-style1 {
+	margin-left: 40px;
+}
+.auto-style2 {
+	border-style: solid;
+	border-width: 3px;
+	background-color: #CCFFCC;
+}
+.auto-style3 {
+	border: 1px solid #800000;
+}
+.auto-style4 {
+	color: #0000FF;
+}
+.auto-style5 {
+	font-size: medium;
+}
+.auto-style6 {
+	color: #800000;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Color magnitudes for asteroids</H1>
+<!-- Insert Header in above line -->
+<P>Color magnitude data and phase parameters have been included from the paper 
+<span class="auto-style4"><strong>Combined spin orientation and phase function of asteroids, A&amp;A, 687, A38 (2024</strong></span>)</P>
+<P>The file HGsHG1G2.csv contains the data for 122,369 asteroids numbered 
+between 12 and 622608. The completeness of coverage is:<br>
+<pre>
+	     Range      # missing
+	     1-     20     18  = 90%
+	     1- 10,000    143  = 1.4%
+	     1- 20,000    304  = 1.5%
+	     1- 30,000    649  = 2.2%
+	     1- 40,000   1435  = 3.6%
+	     1- 50,000   2355  = 4.7%
+	     1-100,000  14932  = 15%
+	     1-200,000  86318  = 43%
+</pre>
+<P>In practical terms, the data covers almost all asteroids up to 50,000. The 
+data has been extracted from the paper on the following basis</P>
+<P>* For <span class="auto-style4"><strong>all</strong></span> asteroids covered by the data:</P>
+<P class="auto-style1">the H0 value and uncertainty, and the G value, for the HG magnitude system - 
+in both green and red</P>
+<P>* For <span class="auto-style4">those asteroids where the uncertainty in the associated H0 is less than 0.3 mags</span>:</P>
+<ul>the H0 value and uncertainty, the G1 and G2 values, for the sHG1G2 magnitude 
+system - in both green and red, together with the axis ratio of an oblate 
+spheroid representation of the asteroid and the orientation of its polar axis.
+<p>This data is available for about 40% of the asteroids listed in the table.
+</p>
+</ul>
+<p>The magnitudes of the data are g (green) and r (red) magnitudes. When the 
+magnitudes are calculated, they are converted to Johnson V and R using:</p>
+<p>V = g - 0.03 - 0.42 * (g - r);<br>R = r - 0.51 - 0.15 * (g - r);<br></p>
+
+&nbsp;<p>The data is held in a .csv file called HGsHG1G2_Magnitudes.csv. 
+Columns 1 to 7 are populated for all listed asteroids. The remaining columns are 
+populated by about 49000 asteroids</p>
+<table class="auto-style2" style="width: 700">
+	<tr>
+		<td class="auto-style3" style="width: 113px">column#</td>
+		<td class="auto-style3" style="width: 140px">Parameter</td>
+		<td class="auto-style3" style="width: 752px">Explanation</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 113px">1</td>
+		<td class="auto-style3" style="width: 140px">Asteroid #</td>
+		<td class="auto-style3" style="width: 752px">Asteroid number</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 113px">2</td>
+		<td class="auto-style3" style="width: 140px">H0 green</td>
+		<td class="auto-style3" style="width: 752px">H0 for green color, HG 
+		model</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 113px">3</td>
+		<td class="auto-style3" style="width: 140px">uncertainty</td>
+		<td class="auto-style3" style="width: 752px">Uncertainty in H0</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 113px">4</td>
+		<td class="auto-style3" style="width: 140px">G green</td>
+		<td class="auto-style3" style="width: 752px">G for green color, HG model</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 113px">5</td>
+		<td class="auto-style3" style="width: 140px">H0 red</td>
+		<td class="auto-style3" style="width: 752px">H0 for red color, HG model</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 113px">6</td>
+		<td class="auto-style3" style="width: 140px">uncertainty</td>
+		<td class="auto-style3" style="width: 752px">Uncertainty in H0</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 113px">7</td>
+		<td class="auto-style3" style="width: 140px">G red</td>
+		<td class="auto-style3" style="width: 752px">G for red color, HG model</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 113px">8</td>
+		<td class="auto-style3" style="width: 140px">H0 green</td>
+		<td class="auto-style3" style="width: 752px">H0 for green color, sHG1HG2 
+		model</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 113px">9</td>
+		<td class="auto-style3" style="width: 140px">uncertainty</td>
+		<td class="auto-style3" style="width: 752px">Uncertainty in H0</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 113px">10</td>
+		<td class="auto-style3" style="width: 140px">G1 green</td>
+		<td class="auto-style3" style="width: 752px">G1 for green color, sHG1HG2 
+		model</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 113px">11</td>
+		<td class="auto-style3" style="width: 140px">G2 green</td>
+		<td class="auto-style3" style="width: 752px">G2for green color, sHG1HG2 
+		model</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 113px">12</td>
+		<td class="auto-style3" style="width: 140px">H0 red</td>
+		<td class="auto-style3" style="width: 752px">H0 for red color, sHG1HG2 
+		model</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 113px">13</td>
+		<td class="auto-style3" style="width: 140px">uncertainty</td>
+		<td class="auto-style3" style="width: 752px">Uncertainty in H0</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 113px">14</td>
+		<td class="auto-style3" style="width: 140px">G1 red</td>
+		<td class="auto-style3" style="width: 752px">G1 for red color, sHG1HG2 
+		model</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 113px">15</td>
+		<td class="auto-style3" style="width: 140px">G2 red</td>
+		<td class="auto-style3" style="width: 752px">G2for red color, sHG1HG2 
+		model</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 113px">16</td>
+		<td class="auto-style3" style="width: 140px">R</td>
+		<td class="auto-style3" style="width: 752px">Oblateness of the asteroid</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 113px">17</td>
+		<td class="auto-style3" style="width: 140px">RA pole</td>
+		<td class="auto-style3" style="width: 752px">Right ascension of the 
+		polar axis - degrees</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 113px">18</td>
+		<td class="auto-style3" style="width: 140px">Dec pole</td>
+		<td class="auto-style3" style="width: 752px">Declination of the polar 
+		axis - degrees</td>
+	</tr>
+</table>
+<p></p>
+<p>The main advantage of the paper referenced at the start of this topic is that 
+it gives values for the HG and HG1G2 parameters for 122000 asteroids - a number 
+hugely greater than previously available. In addition, it gives these parameters 
+for two colors - g and r - enabling proper prediction of the color magnitude of 
+an asteroid. It is this issue that has led to this implementation of calculating 
+asteroid magnitudes.</p>
+<p></p>
+
+<h2>Formula for magnitude calculations
+
+
+</h2>
+<p><span class="auto-style6"><strong>The 'old' expression</strong></span> for calculating the magnitude of an asteroid is</p>
+<p>V = H0 + 5 log(r * &#916), where r = distance of asteroid from the sun, and &#916 is the distance of the asteroid from the Earth (all in AU). 
+H0 is the 'absolute' magnitude of the asteroid. That is, it magnitude at a 
+distance of 1 AU from both the Earth and the Sun, and zero phase angle.</p>
+<p>&nbsp;</p>
+<p><span class="auto-style6"><strong>In 1985 the IAU adopted the 'H-G' magnitude system</strong></span>, that adjusted the value 
+of H0 on the basis of the phase angle. That is, the angle at the asteroid 
+between the Sun and Earth. The reason - the brightness of an asteroid 
+depends upon the phase angle (the angle between the Sun and Earth as seen from 
+the asteroid), with significant brightening near opposition. The mean visual magnitude 
+(that is, ignoring rotational variation) of an asteroid, as 
+a function of the phase angle i, is calculated with [<em>see </em>
+<span class="auto-style4"><em>Explanatory Supp.to 
+the AE, 3rd edn, eqn 10.38+</em></span>]</p>
+<p>V = H0 -2.5*log[(1-G)*&#966<sub>1</sub>(i) + G*&#966<sub>2</sub>(i)] + 5 
+log(r * &#916;)</p>
+<p>The value of G is included in the MPCORD, ASTORB and and other sources of 
+asteroid orbits, For almost all asteroids, its value is set at a default value 
+of 0.15. The arguments &#966<sub>1</sub>(i) and &#966<sub>2</sub>(i), where i is the phase 
+angle in radians, are:</p>
+<p>&#966<sub>1</sub>(i) = <sub><span class="auto-style5">e</span></sub>[ -3.33 * tan(i/2)<sup>0.63</sup>]</p>
+<p>&#966;<sub>2</sub>(i) =<sub><span class="auto-style5"> e</span></sub>[ -1.87 * tan(i/2)<sup>1.22</sup>]</p>
+
+
+<p>This approach has been used in Occult since before about 2010. </p>
+<p>&nbsp;</p>
+<p><span class="auto-style6"><strong>In 2010 the IAU adopted the HG1G2 system 
+</strong></span>for asteroid magnitudes. This 
+system provided a better representation of the asteroid's brightness for phase 
+angles less than 20<sup>o</sup> In this system, the magnitude is calculated (with &#947  
+being the phase angle) [<em>see </em><span class="auto-style4"><em>A three 
+parameter magnitude phase function for asteroids, Icarus 209 (2010) 542-555</em></span>] as: </p>
+<p>V = H0 -2.5 log[G1*&#966<sub>1</sub>(&#947) + G2*&#966<sub>2</sub>(&#947) + 
+(1-G1-G2)*&#966;<sub>3</sub>(&#947)] + 5 
+log(r * &#916;)</p>
+<P>The phase parameters &#966<sub>1</sub>, &#966<sub>2</sub> and &#966<sub>3</sub> 
+are calculated using a cubic spline, with the following being the 
+equations used in Occult
+
+<pre>
+            if (PhaseAngleDeg < 30)
+            {
+                phi_1 = 1.00000 - 0.038074 * PhaseAngleDeg + 0.00066616 * PhaseAngleDeg * PhaseAngleDeg - 0.0000045352 * PhaseAngleDeg * PhaseAngleDeg * PhaseAngleDeg;
+                phi_2 = 1.00000 - 0.008615 * PhaseAngleDeg - 0.00020448 * PhaseAngleDeg * PhaseAngleDeg + 0.0000026416 * PhaseAngleDeg * PhaseAngleDeg * PhaseAngleDeg;
+            }
+            else if (PhaseAngleDeg < 60)
+            {
+                phi_1 = 0.96472 - 0.031607 * PhaseAngleDeg + 0.00041137 * PhaseAngleDeg * PhaseAngleDeg - 0.0000019219 * PhaseAngleDeg * PhaseAngleDeg * PhaseAngleDeg;
+                phi_2 = 1.03336 - 0.014730 * PhaseAngleDeg + 0.00003642 * PhaseAngleDeg * PhaseAngleDeg + 0.0000001708 * PhaseAngleDeg * PhaseAngleDeg * PhaseAngleDeg;
+
+            }
+            else if (PhaseAngleDeg < 90)
+            {
+                phi_1 = 0.71776 - 0.016515 * PhaseAngleDeg + 0.00013697 * PhaseAngleDeg * PhaseAngleDeg - 0.0000003975 * PhaseAngleDeg * PhaseAngleDeg * PhaseAngleDeg;
+                phi_2 = 1.09632 - 0.018578 * PhaseAngleDeg + 0.00010638 * PhaseAngleDeg * PhaseAngleDeg - 0.0000002179 * PhaseAngleDeg * PhaseAngleDeg * PhaseAngleDeg;
+            }
+            else if (PhaseAngleDeg < 120)
+            {
+                phi_1 = 0.62639 - 0.013215 * PhaseAngleDeg + 0.00009889 * PhaseAngleDeg * PhaseAngleDeg - 0.0000002565 * PhaseAngleDeg * PhaseAngleDeg * PhaseAngleDeg;
+                phi_2 = 0.96722 - 0.013916 * PhaseAngleDeg + 0.00005259 * PhaseAngleDeg * PhaseAngleDeg - 0.0000000186 * PhaseAngleDeg * PhaseAngleDeg * PhaseAngleDeg;
+            }
+            else
+            {
+                phi_1 = 0.18717 - 0.001746 * PhaseAngleDeg + 0.00000129 * PhaseAngleDeg * PhaseAngleDeg + 0.0000000146 * PhaseAngleDeg * PhaseAngleDeg * PhaseAngleDeg;
+                phi_2 = 1.54239 - 0.028934 * PhaseAngleDeg + 0.00018041 * PhaseAngleDeg * PhaseAngleDeg - 0.0000003737 * PhaseAngleDeg * PhaseAngleDeg * PhaseAngleDeg;
+            }
+
+            if (PhaseAngleDeg < 1) phi_3 = 1.00000 - 0.619807 * PhaseAngleDeg + 0.22905703 * PhaseAngleDeg * PhaseAngleDeg - 0.0318958034 * PhaseAngleDeg * PhaseAngleDeg * PhaseAngleDeg;
+            else if (PhaseAngleDeg < 2) phi_3 = 0.99764 - 0.608391 * PhaseAngleDeg + 0.21606675 * PhaseAngleDeg * PhaseAngleDeg - 0.0279593538 * PhaseAngleDeg * PhaseAngleDeg * PhaseAngleDeg;
+            else if (PhaseAngleDeg < 4) phi_3 = 0.78526 - 0.236734 * PhaseAngleDeg + 0.03023794 * PhaseAngleDeg * PhaseAngleDeg - 0.0014123819 * PhaseAngleDeg * PhaseAngleDeg * PhaseAngleDeg;
+            else if (PhaseAngleDeg < 8) phi_3 = 0.74454 - 0.201102 * PhaseAngleDeg + 0.02133012 * PhaseAngleDeg * PhaseAngleDeg - 0.0007761090 * PhaseAngleDeg * PhaseAngleDeg * PhaseAngleDeg;
+            else if (PhaseAngleDeg < 12) phi_3 = 0.50193 - 0.089906 * PhaseAngleDeg + 0.00616705 * PhaseAngleDeg * PhaseAngleDeg - 0.0001443141 * PhaseAngleDeg * PhaseAngleDeg * PhaseAngleDeg;
+            else if (PhaseAngleDeg < 30) phi_3 = 0.23943 - 0.022094 * PhaseAngleDeg + 0.00069832 * PhaseAngleDeg * PhaseAngleDeg - 0.0000075961 * PhaseAngleDeg * PhaseAngleDeg * PhaseAngleDeg;
+            else phi_3 = 0;</pre>
+
+<p>The number of asteroids with published values of H, G1 and G2 have been very 
+small. </p>
+<p><span class="auto-style6"><strong>In 2024</strong></span>, the paper referred to at the start of this topic, 
+<span class="auto-style6"><strong>added the 
+orientation of a prolate spheroid representing the shape of the asteroid</strong></span> by way 
+of an additional term:</p>
+<p>-2.5 log[1-(1-R)*|cos(&#923;)| ]</p>
+<p>where R is the polar-to-equatorial oblateness of the asteroid, and &#923 is the aspect angle calculated from the equatorial coordinates(&#945,&#948) of the asteroid, and (&#945<sub>0</sub>,&#948<sub>0</sub>) of the polar axis of the asteroid, as</p>
+
+<p>cos(&#923) = sin(&#948)*sin(&#945<sub>0</sub>) + cos(&#948)*cos(&#945<sub>0</sub>)* cos(&#945-&#945<sub>0</sub>)</p>
+<p>The most significant aspect of this paper is that it has used data from 
+various sky survey systems to generate two-color values for H-G and H-G1-G2 for 
+a large number of asteroids.</p>
+<center>************</center>
+
+
+</BODY>
+</HTML>

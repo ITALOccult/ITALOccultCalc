@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Grazing occultations - prediction explanation</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Grazing occultations - prediction explanation</A></H1>
+
+<h2>Sample prediction</h2>
+<P>The following is a sample grazing occultation prediction, illustrating most of the items that can appear in a graze prediction.</P>
+
+<P><pre>Grazing Occultation of    2366dM1      Magnitude 1.1 [Red = 0.1]  v
+   R2366 = Antares = alpha Scorpii
+Date: 2008 May 20 23h 33m,  to  2008 May 21  0h 46m
+
+Nominal site altitude 100m
+
+E. Longit.   Latitude     U.T.    Sun  Moon   TanZ   PA    AA      CA
+   o  '  "    o  '  "   h  m  s   Alt Alt Az          o     o      o
+  25  0  0  -23 49  6  23 33 25       81 251  0.16   9.4   0.21  25.80N
+  30  0  0  -23 54 27  23 51 16       72 257  0.32   6.1 356.88  29.12N
+  35  0  0  -23 24 48   0  7 39       64 257  0.49   3.1 353.92  32.07N
+  40  0  0  -22 24  1   0 22 16       56 255  0.67   0.7 351.45  34.53N
+  45  0  0  -20 56 30   0 35  0       48 253  0.89 358.7 349.50  36.47N
+  50  0  0  -19  6 53   0 45 47       41 251  1.16 357.3 348.04  37.93N
+
+Path coordinates are referred to WGS84 (as used by GPS), with the
+nominal site altitude being referenced to Mean Sea Level.
+
+Projected diameter of star  77 meters
+
+2366 is variable: 
+      2366 = alf Sco, 0.88 to 1.16V, Type LC
+
+2366 is double: 
+  AB 1.0 5.4 2.7" 276.8 (GNT   1) Graze path of B 0.50 km south, and 8.4 secs earlier compared to A
+
+                Librations  Long -1.27   Lat +6.28
+                            P +351.28     D -5.76
+      Illumination of moon  99%-
+        Elongation of Moon  169
+    Vertical Profile Scale  1.87 km/arcsec at mean distance of moon
+   Horizontal Scale Factor  1.23 deg/min
+
+
+At longitude 40.00:
+Limiting Magnitudes for various telescope apertures (in cm)
+      CA\Tdia   5    10    15    20    25    30    35
+    30.5      4.4   5.9   6.6   7.1   7.5   7.7   7.9
+    32.5      4.4   5.9   6.6   7.1   7.5   7.7   7.9
+    34.5      4.4   5.9   6.6   7.1   7.5   7.7   7.9
+    36.5      4.4   5.9   6.6   7.1   7.5   7.7   7.9
+    38.5      4.4   5.9   6.6   7.1   7.5   7.7   7.9
+
+------------------------------------------------------------------------------
+Double star catalogue details
+WDS entries 
+ 
+  RA  Dec Name          Y1   Y2     N  PA  PA   Sep   Sep  M1    M2 
+16294-2626GNT   1      1847 1997  140 273 274   2.6   2.5  0.96  5.4  M1        -010-020          -2611359 NOD  162924.47-262555.0 
+ 
+------------------------------------------------ 
+Interferometric catalogue entries 
+ 
+162924.47-262555.0  alp Sco A                 GNT   1A                  HD 148478    HIP  80763         16294-2626 N   
+    Date       PA              Sep                  M1             M2 
+  1921.300       .      .   <  0.030      .          .      .       .      .       550       6.4   1  Mrr1922  Jmw     
+  1991.25        .      .   X   .         .         1.06    .       .      .       511 222   0.3   1  HIP1997g Thp     
+  1991.25        .      .   S   .         .         1.06    .       .      .       511 222   0.3   1  HIP1997h Thp     
+  1991.25        .      .   <  0.1        .         0.97    .       .      .       511 222   0.3   1  HIP1997e Thp     
+ 
+162924.47-262555.0  ADS 10074                 GNT   1AB                 HD 148478    HIP  80763         16294-2626 N O 
+    Date       PA              Sep                  M1             M2 
+  1989.3037   275.5     .      2.857      .          .      .       .      .       350  20   4.0   1  McA1990  Sch     
+ 
+
+------------------------------------------------------------------------------
+Results of Observer Scan                                    UT
+Site                              Long.   Lat.   Dist.    h  m  s
+Johannesburg                       28.1  -26.2   249km   23 44 32
+
+
+
+</pre></P>
+<H2>Header block</h2>
+<table columns=3 border=1>
+<TR><TH NOWRAP>Line #</TH><TH>Meaning</TH></TR>
+<TR><TD>1</TD><TD>This line gives the star number, and the Visual and Red magnitudes</TD></TR>
+<TR><TD>2</TD><TD>This optional line gives alternative <I>names </I>for the star. The names can  be proper names, Bayer or Flamsteed identifiers. Only given if the star is brighter than mag 5.</TD></TR>
+<TR><TD>3</TD><TD>Gives the date of the event. This line gives the date hour and minute of the first and last point in the prediction. The date will be different if the event extends over a day boundary.</TD></TR>
+<TR><TD>5</TD><TD>Nominal site altitude. To minimise the need to adjust a prediction for the effect of altitude, the prediction can be generated at a 'nominal' altitude representative of altitudes in the likely region for observing the graze.</TD></TR>
+<TR><TD>7, 8</TD><TD>Header text for the prediction.</TD></TR>
+</table>
+
+
+<h2><br>Path prediction</h2>
+<table columns=3 border=1>
+<TR><TH NOWRAP>Column</TH><TH>Meaning</TH></TR>
+<TR><TD NOWRAP>E Longitude</TD><TD>Gives the longitude of a point on the path. The default format is 'd m s'. But you can change the format to 'd mm.m' in the User Settings option under the Maintenance tab - under 'Lunar Occultations - Grazes'.<br><br>In most circumstances the longitude increases 
+	through the prediction. HOWEVER in certain circumstances a graze path will cross a line of longitude at two different latitudes. This will only occur near the beginning or end of a graze path, and only at relatively high latitudes with the moon at a low altitude. When this occurs, the relevant end of the graze path will have a portion where the longitude <I>decreases</I>.
+</ TD></TR>
+<TR><TD>Latitude</TD><TD>Latitude of the graze path at the given longitude - in same format as for longitude.</TD></TR>
+<TR><TD>UT</TD><TD>The UT of mid-graze at tat latitude/longitude. For the day, check line 3 of the header.</TD></TR>
+<TR><TD>Sun Alt</TD><TD>Altitude of the sun (in deg). Only given if the altitude is higher than -9 deg.</TD></TR>
+<TR><TD>Moon Alt</TD><TD>Altitude of the moon at mid-graze</TD></TR>
+<TR><TD>Moon Az</TD><TD>Azimuth of the moon at mid-graze</TD></TR>
+<TR><TD>TanZ</TD><TD>A factor used to adjust the location of the graze path for the site's altitude. If the site altitude is H meters higher than the nominal site altitude used to generate the prediction, the path should moved in the direction of the moon by the distance TanZ * H meters.<br>
+<br>Note that quite often the lateral displacement of the path can be quite small. However observers should be alert to the possibility that the correction is large, in which case it may be best to regenerate the prediction for the actual site altitude.
+<p>IMPORTANT. The graze prediction generated by Occult is fully corrected for the effects of atmospheric refraction at low altitudes. </TD></TR>
+<TR><TD>PA</TD><TD>The Position Angle of the point of mid-graze. PA is measured eastwards around the limb of the moon, from true north.</TD></TR>
+<TR><TD>AA</TD><TD>The Axis Angle of the point of mid-graze. AA is measured 
+	eastwards around the limb of the moon, from the lunar north pole.</TD></TR>
+<TR><TD>CA</TD><TD>The angle from the nearest cusp of the moon. 'N' and 'S' indicate which cusp the angle is measured from. Negative values indicate the event is against the bright limb.<br><br>
+If the graze occurs during a lunar eclipse, this column gives the distance of the star from the center of the umbra using a range of 0 to 105 - where 100 is the umbral radius.</TD></TR>
+</table>
+<p>Note - all path coordinates are referred to WGS84 (as used by GPS), with site altitudes being referenced to Mean Sea Level.</p>
+
+<H2>Grazes of the planets, and the moons of Jupiter and Saturn.</h2>
+<p>When the graze is of a major planet or the moons of Jupiter or Saturn, two graze paths are generated. The first path is preceded with text like:<br>
+<tab><B>Inner limit - <I>object </I>fully obscured</B><br>
+while the second path is preceded with text like<br>
+
+ <B>Outer limit - <I>object </I>just touches the moon
+</B><br><br>
+Between these two lines the planet or moon will be partially obscured by the moon. In computing these lines, no allowance is made for the oblateness of Jupiter and Saturn, nor for the rings of Saturn.</p>
+
+<h2><br>Graze profile</h2>
+The graze profile varies quite significantly along the path. For this reason a graze profile is not automatically generated for a manual prediction. Rather, right-click on a line of interest, and select 'Graze profile [at selected line]'.<br><br>
+A detailed explanation of the graze profile is <A href="Lunar%20Predictions%20-%20GrazeProfile.htm">here</a>
+
+<h2><br>Footer block</h2>
+<table columns=3 border=1>
+<TR><TH NOWRAP>Line #</TH><TH>Meaning</TH></TR>
+<TR><TD>Optional: Star diameter</TD><TD>If the star has a significant apparent diameter, that diameter is given expressed as a distance projected on the Earth's surface in a direction perpendicular to the graze path. If the diameter is more than a meter or two, gradual events are to be expected.</TD></TR>
+<TR><TD>Optional: Variable star details</TD><TD>If the star is variable, the variable star 
+	details are given here.</TD></TR>
+<TR><TD>Optional: Double star details</TD><TD>If the star is double, the details of all components will be given here - including the offset to the graze line for each component. If the star position used for the graze path prediction corresponds to the mean position of the two components, the offsets of each component from the predicted line are given. [Note: since the mean is weighted by brightness, generally the offsets for the two stars will be different.]</TD></TR>
+<TR><TD>Optional: Cassini region graze</TD><TD>If the graze occurs in the Cassini region, notification will appear here. [The criteria for this notice is: P in the range of 353 to 7, or 172 to 188, with D < -1]</TD></TR>
+<TR><TD>Librations</TD><TD>Gives the longitude and latitude librations of the moon. In the next line the P, D libration values for the mid-point of the graze are given.</TD></TR>
+<TR><TD>Illumination of moon</TD><TD>The percent illumination of the moon.</TD></TR>
+<TR><TD>Elongation of moon</TD><TD>The solar elongation, in degrees.</TD></TR>
+<TR><TD>Vertical profile scale</TD><TD>This is a factor that indicates the scale of the lunar profile. there are two factors; the variation in the distance of the moon from the Earth, and the stretching of the profile when it is projected onto the curved surface of the Earth.</TD></TR>
+<TR><TD>Horizontal scale factor</TD><TD>This give the rate of motion of the star along the lunar limb, in degrees of PA per minute.</TD></TR>
+</table>
+
+<h2><br>Visibility table</h2>
+<P>The visibility table indicates the faintest star that will be visible for a given combination of telescope aperture (Tdia) and cusp angle (CA). Five values of CA are given, with the middle row corresponding to mid-graze.<br><br>
+Experience has shown that the values given in this table are fairly reliable for a range of telescope sizes and observer experiences. Generally speaking, if the star is more than a magnitude brighter than the table indicates for the particular telescope/CA combination, the graze will be fairly easy to observe  in 'ordinary' conditions. Experienced observers in good conditions will usually be able to observe to the limiting magnitudes given in the table.<br><br>
+The visibility of a graze can vary significantly along the graze path due to changes in the cusp angle, and the altitude of the moon. The table generated with the prediction is for a point mid-way along the computed path (and the location is 
+indicated above the table). However the table can be generated for any point along the table. Right-click on a line of interest, and select 'Limiting magnitude table [at selected line]'</P>
+
+<h2>Double star catalogue details</h2>
+If the star is flagged as a double star, the full details from the Washington Double Star catalogue, and the 4th Interferometric catalogue, will be listed here.
+
+<h2><br>Observer scan</h2>
+<P><I>Note: The effectiveness of the Observer Scan depends upon the user creating site files containing all observers in a region.</I></P>
+<p>The final part of the prediction is a list of sites where the graze passes nearby. The basis for inclusion in this list is:<ul>
+<li>All sites in the site file used for the prediction are considered;
+<li>A site is listed if the graze passes within the graze travel distance for that site (using the values held in that site file).</ul>
+The date provided are<ul>
+<li> Site name, and its latitude/longitude
+<li> the minimum distance to the graze path; and
+<li> the UT of the time of closest approach</ul></p>
+
+
+</BODY>
+</HTML>

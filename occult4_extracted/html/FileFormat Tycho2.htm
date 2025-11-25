@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<Title>Tycho2</Title>
+</HEAD>
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1><A NAME="idh_4overview"></A>Tycho2  star catalogue</H1>
+<P> <B>Tycho2.bin</B> is the main catalogue used for predicting occultations by asteroids and planets. It is been created from the Tycho2 catalogue and the 2UCAC catalogue. It is structured for highly efficient searching, but does not contain error information for the star positions. For information about how the file was created, see: <A HREF="FileFormat%20Tycho2%20creation.htm">Tycho2 creation</A>
+<BR>
+<BR><P>
+
+<P>The format of the star catalogue is a 27-byte record length random-access file with the following record definition.<BR>
+
+<TABLE  COLS = 3 BORDER=1>
+
+<TR><TH NOWRAP>Bytes</TH><TH>Meaning</TH><TH>Decode with:</TH></TR>
+<TR><TD>0 - 3 </TD><TD>RA in deg. </TD><TD>Stored as a long integer. Decode by dividing by 10<SUP>7</SUP>, and adding 180RA in deg</TD></TR>
+<TR><TD>4 - 7 </TD><TD>Annual Proper motion in RA </TD><TD> stored as single. Units arcsec</TD></TR>
+<TR><TD>9 - 11 </TD><TD> Dec. in deg</TD><TD>Stored as long integer. Decode by dividing by 10<SUP>7</SUP></TD></TR>
+<TR><TD>12 - 15 </TD><TD>Annual Proper motion in Declination </TD><TD>stored as single. Units arcsec </TD></TR>
+<TR><TD>16 - 17 </TD><TD> Parallax </TD><TD>Stored as Integer. Divide by 10<SUP>4</SUP> to give units or arcsec </TD></TR>
+<TR><TD>18 - 19 </TD><TD>Mv </TD><TD>Stored as Integer. Divide by 100. Mv=90.00 when not given in source cat. </TD></TR>
+<TR><TD>20 - 21 </TD><TD>Mp </TD><TD>Stored as Integer. Divide by 100. Mp=90.00 when not given in source cat. </TD></TR>
+<TR><TD>22 </TD><TD>Catalogue ID </TD><TD>Stored as byte. </TD></TR>
+<TR><TD>23 - 26 </TD><TD>Catalogue no. </TD><TD>Stored as Long integer.<BR><BR>
+For Hipparcos stars - number given directly<BR><BR>
+
+For Tycho stars:
+last 5 digits are number in Zone.
+Integer divide by 10<SUP>5</SUP> to get zone number, e.g. 777401412 = TYC 7774 01412<BR><BR>
+
+For USNO-B1 stars, read this number as an Unsigned integer. Then
+<li> Zone = Catalogue number >>21
+<li>Number in zone = Catalogue number  & 0x1FFFFF 
+ 
+</TABLE><BR>
+
+The catalogue ID byte identifies the following information:<BR>
+If <B>ID = 2</B> - star is a Hipparcos star.<BR>
+If <B>ID = 130</B> - star is a UCAC2 star that is not in Tycho2<BR>
+If <B>ID = 135</B> - star is a USNO-B1 star <br><br> 
+
+If <B>ID and 8 is true</B>, the star is a Tycho-2 star, and the following extra parameters apply:<BR><UL>
+<LI>Component number = (ID and 7) +1</LI>
+<LI>If (ID and 16) is true - proper motion not available</LI>
+<LI>If (ID and 32) is true - the Tycho catalogue had separate positions for the components of a double star, but the catalogues used for proper motion only gave a combined position. The position given is based on the separate Tycho positions, using a proper motion derived on the combined position.</LI>
+<LI>If (ID and 64) is true - the Tycho catalogue indicated that the star was a double star with the position being for the photometrically combined object.</LI>
+<LI>If (ID and 128) is true - the star is a Tycho star with co-ordinates taken from UCAC2</LI><BR>
+</UL>
+Occult displays these extra parameters in the following manner:<BR><UL>
+	<LI>TYC 7774 - 01412 - 1    (full number - with component identifier)</LI>
+	<LI>TYC 7774 - 01412 - 1p   (no proper motion)</LI>
+	<LI>TYC 7774 - 01412 - 1s  (separated stars)</LI>
+	<LI>TYC 7774 - 01412 - 1d  (double star, unseparated)</LI>
+	<LI>TYC 7774 - 01412 - 1u  (position derived from 2UCAC)</LI>
+</UL><BR>
+
+<p>If the catalogue is "Goffin.bin", the following additional catalogue definitions apply:<br><ul>
+1 = PPM<br>
+2 = HIP<BR>
+3 = TYC<BR>
+4 =  TAC<BR>
+5 =  CMC<BR>
+6 = ACRS</ul>
+and the star identifiers are given as:<br><ul>
+
+For PPM, HIP, CMC and ACRS - number given directly<p>
+
+For TYC and TAC:<BR><UL>
+<li>last 5 digits are number in Zone.</li>
+<li>Integer divide by 10<sup>5 </sup>to get zone number</li>
+<li>For TAC numbers, a -'ve number indicates a negative zone</li></ul>
+
+E.g. -1205345 = TAC -12 05345<br>
+E.g. 777401412 = TYC 7774 01412<p></ul>
+
+<P>The file <B>Tycho2.inx</B> is an index catalogue to identify field locations within Tycho2.dat. Tycho2.inx is accessed as a random access file of length 4. Each entry in Tycho2.inx is a record number, stored as a long integer.</P>
+
+<P>The data in the index file is held as follows:<BR><UL>
+<LI>For each 1-deg band of declination there are 361 entries - giving a total of 64980 entries to cover the 180 bands from +89 to -89.</LI>
+<LI>Each entry in a band corresponds to a 4min (i.e. 1 degree) increment in RA, from 0h 0m to 24h 0m (i.e. 0deg to 360deg)</LI>
+<LI>The value of the entry is the record number of the first star whose RA is greater (or equal to) the RA increment corresponding to the entry.</LI></UL>
+
+Thus, record 3 will contain the record number of the first star whose declination is in the +89d band, with an RA greater than 0h 08m (i.e. 2deg). Record 364 will contain the record number of the first star whose declination is in the +88d band, with an RA greater than 0h 08m (i.e. 2deg). Record 384 will contain the record number of the first star whose declination is in the +88d band, with an RA greater than 1h 28m (i.e. 22deg)</P>
+
+<P>Particular stars can be found in the file using:<BR><UL>
+<LI>For Tycho star numbers, use <A HREF="FileFormat%20GSC%20Fields.htm">GSC Fields</A> to find the RA and Dec. limits for a scan of the file</LI>
+<LI>For Hipparcos stars, use <A HREF="FileFormat%20Hipparcos%20Index.htm">Hipparcos Index</A> to find the record number (unary-based) in the Tycho2.bin file.</LI>
+<LI>For 2UCAC stars, use <A HREF="FileFormat%20UCAC2%20Index.htm">UCAC2 Index</A> to find the start and end records (unary-based) to conduct the scan in the Tycho2.bin file.</LI></UL>
+
+<p><p>
+<H1>Creating the Tycho2 catalogue</h2>
+
+The following is detail about how the Tycho-2 and Hipparcos catalogues were processed to generate the Tycho-2 catalogue for use in OCCULT.
+
+<h2>Identity and Position processing</h2>
+
+<h3>In Hipparcos catalogue:</h3>
+<p>263 entries had no precise positions. These stars were not cross-referenced from the Tycho-2 catalogue - so their null positions have not been transferred. Most of the 263 stars have entries in the Tycho-2 catalogue.
+
+<h3>In Tycho-2</h3>
+<p>For stars marked "X" in column 14 - ie no proper motion available. Position at epoch (~1991) used. 'Catalogue Name' field OR'ed with 16, to indicate this status.
+
+<p>For stars marked "P" in column 14 - ie photocentric position of double, each component has an entry. The position used is the position at epoch of the component, with proper motion for the combined object being applied to the component to refer the position to J2000.  'Catalogue Name' field OR'ed with 32 to indicate this status.
+
+<p>For stars marked "P" in column 201 - ie photocentric position used for a double star, with the components unresolved (& thus only a single entry.) No manipulation of the coordinates, but the   'Catalogue Name' field OR'ed with 64 to indicate the double status.
+
+<h2>Correlation between Hipparcos & Tycho-2</h2>
+<p>Hipparcos positions were used in place of the Tycho position, in the following circumstances<ul type=1>
+<li>The Hipparcos reference number in Tycho has no component identifier;
+<li>The Hipparcos component identifier in Tycho exactly matches the component identifier in Hipparcos;
+<li>The component identifier in Tycho is either '*' or '-', and Hipparcos refers to a specific component;
+<li>Tycho specifies an 'A' component (with or without others), but Hipparcos uses '*' or '-'  ;
+<li>Tycho identifies more than one component (eg AB), and Hipparcos refers specifically to one of those components; and
+<li>Seven Hipparcos stars (2444, 29737, 39606, 42543, 54976, 71377, and 110766). These stars are flagged as '*' in Hipparcos, but have a specific identifier in Tycho that does not involve an 'A' component. [See item 4 above.]</ul>
+
+<p>Two stars required special treatment.<ul type=1>
+<li>H27000 - flagged as double with '*' in Hipparcos, but separate entries in Tycho Supplement 1 (as components D and E). Entry consists of parallax from Hipparcos; all other details from Tycho.
+<li>H67626 - flagged as double with '*' in Hipparcos, but separate entries in Tycho (with no component identifiers) having no proper motions or parallax. Entry consists of Hipparcos proper motion and parallax, and Tycho positions (moved to J2000) and magnitudes.</ul>
+
+<h2>Magnitude processing</h2>
+<h3>In Hipparcos: </h3>
+<p>Johnson V magnitude given for all but one star (which was a star with no precise position - H120412)
+	
+<p>Johnson B-V given for all but 1281 stars. This was combined with V to give the B magnitude. For another 344 stars, a Johnson B magnitude was derived from the magnitudes VT and BT using the approximate expression:
+<p>		B=.76*BT+.24*VT
+<p>For the remaining 931stars the B, magnitude was set as 90. [No BT magnitude was available for any of these stars.]  
+
+<h3>In Tycho-2</h3>
+<p>The Johnson B and V magnitudes were derived from the BT and VT magnitudes as
+<p>		V=1.09*VT -.09*BT
+<p>		B=.76*BT +.24*VT
+<p>Where one of those magnitudes was not available, no correction was applied to the other magnitude.
+
+<h2>Adding UCAC2 data</h2>
+<p>The catalogue has been modified with the availability (August 2003) of the UCAC2 catalogue, by:<ul>
+<li>replacing the positions/proper motions of all non-Hipparcos stars of magnitude fainter than 9.0 with those from UCAC2; and
+<li>adding UCAC2 stars of magnitude brighter than 12.00 that were not in Tycho2</ul>
+
+<p>The criteria used to replace positions with UCAC2 data were:<ul>
+<li>no replacement if a star in Tycho2 is within 2” of another star, or Tycho2 magnitude brighter than 9.00
+<li>replacement if a UCAC2 star matched the Tycho2 star to better than 1” in RA and Dec; BUT
+<li>no replacement if more than one UCAC star matched the Tycho2 star</ul>
+
+<p>The criteria used to add a UCAC2 star were:<ul>
+<li>magnitude <12.00 on the UCAC magnitude system; and
+<li>if UCAC2 star matched a Tycho2 star to better than 1.8” in each coordinate - not added
+<li>Mv and Mp were both set to the UCAC2 magnitude - which is slightly redder than V.</ul>
+
+
+
+</BODY>
+</HTML>
+

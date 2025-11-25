@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>StarDia.bin</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>StarDia.bin</H1>
+The file of star diameters has been created from a merge of:
+<pre>
+II/224     Catalogue of Stellar Diameters (CADARS)  (Pasinetti-Fracassini+ 2001)
+J/A+A/431/773       CHARM2, an updated of CHARM catalog      (Richichi+, 2005)
+</pre>
+
+Both catalogues provide multiple measures of many stars. The catalogue diameters include the angular diameter, and the physical diameter (in Solar radii).. Also for some objects the diameter is that of a surrounding nebula rather than the star. To create the list of stars used in this file: <ul>
+<li>only angular diameters were used
+<li>if the angular diameter was greater than 0.080", the entry was skipped (on the basis that the diameter was not of the star)
+<li>Entries were taken as relating to the same star if the RA differed by less than 0.07s, the Dec differed by less than 0.7".
+<li>The star diameter was taken to be the simple mean of the diameters of all such entries
+<li>The magnitude was taken to be the simple mean of the specified magnitudes of all such entries. [Some entries did not specify a magnitude.]
+<li>A count was retained of the number of entries averaged to give the star's diameter.
+</ul>About 25% of entries are derived from the CHARM2 catalogue, and 75% from the CADARS catalogue. The extent of duplication between the two catalogues appears to be small.
+
+<h3>File structure</h3>
+The data is contained in a binary file called StarDia.bin. The format of the file is:
+<table columns=3 border=1>
+<TR><TH NOWRAP>Bytes</TH><TH>Content</TH></TR>
+<TR><TD>0 - 3</TD><TD>(float) The RA of the star, in decimal hours</TD></TR>
+<TR><TD>4 - 7</TD><TD>(float) The declination of the star, in decimal degrees</TD></TR>
+<TR><TD>8 - 9</TD><TD>(int16) The magnitude of the star, multipled by 10</TD></TR>
+<TR><TD>10-11</TD><TD>(int16) The diameter of the star in masec, multipled by 10</TD></TR>
+<TR><TD>12</TD><TD>(byte) The number of catalogue entries averaged to give the stellar diameter</TD></TR>
+</table>
+
+
+
+</BODY>
+</HTML>

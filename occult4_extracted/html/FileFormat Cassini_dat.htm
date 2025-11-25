@@ -1,0 +1,28 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Cassini.dat</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Cassini.dat</H1>
+
+<P>The files NCASSINI.DAT and SCASSINI.DAT provide limb data for the north and south Cassini regions respectively. The data has been derived from an analysis of grazes reported to ILOC.
+
+<p>The data is held at 0.5 deg intervals in P, repeating at 1 deg intervals in D. The range (and order) of the data in each file is:
+
+<p>-  NCASSINI.DAT    P from  -7.0 to  +7.0, repeated for D = -2 to -9. The zero-based record number in the file is obtained as  2*(P+7) + 29*(-D-2)
+ 
+<p>-  SCASSINI.DAT    P from 170.0 to 190.0, repeated for D = -2 to -8. The zero-based record number in the file is obtained as  2*(P-170) + 41*(-D-2)
+
+
+<p>The limb height is stored as a single byte, decoded as:
+
+<p>height = 0.025 * (byte - 128)
+
+</BODY>
+</HTML>

@@ -15,7 +15,11 @@ target_link_libraries(test_rwo PRIVATE ioccultcalc)
 add_executable(test_gaia test_gaia.cpp)
 target_link_libraries(test_gaia PRIVATE ioccultcalc)
 
+# Gaia cache downloader - Download locale catalogo Gaia
+add_executable(gaia_cache_downloader gaia_cache_downloader.cpp)
+target_link_libraries(gaia_cache_downloader PRIVATE ioccultcalc)
+
 # Installa la utility
-install(TARGETS occult_calc
+install(TARGETS occult_calc gaia_cache_downloader
     RUNTIME DESTINATION bin
 )

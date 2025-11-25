@@ -1,0 +1,228 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Asteroid diameters</Title>
+<style type="text/css">
+.auto-style1 {
+	border-style: solid;
+	border-width: 2px;
+}
+.auto-style3 {
+	border: 1px solid #0000FF;
+	margin-left: 80px;
+	background-color: #00FFFF;
+}
+.auto-style4 {
+	color: #800000;
+}
+.auto-style5 {
+	font-size: x-small;
+}
+.auto-style6 {
+	color: #0000FF;
+	margin-left: 40px;
+}
+.auto-style8 {
+	color: #0D660D;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Asteroid Diameters</H1>
+<p>Two files of asteroid diameters are provided. Both files are based on 
+Infra-red satellite measurements, supplemented with a small number of TNO 
+asteroid determinations. One file gives a weighted mean diameter, while the 
+other file gives all the available measures (providing there is an associated 
+uncertainty value).</p>
+<p>The satellite missions/results used in these files are:</p>
+<ul>
+	<li>IRAS Minor Planet Survey (mimps). Datsets: diamalb and single, V6 at
+	<a href="https://sbn.psi.edu/pds/resource/imps.html">NASA PDS</a></li>
+	<li>MSX Infrared Minor Planet Survey (mimps). Dataset: mimpsalb - V1 at
+	<a href="https://sbn.psi.edu/pds/resource/mimps.html">NASA PDS</a><br>
+	<span class="auto-style5">The Midcourse Space Experiment 
+(MSX) satellite. (mimps are) of areas of the sky 
+either missed by IRAS or in which the IRAS sensitivity was degraded by confusion.
+	</span></li>
+	<li>AKARI AcuA&nbsp; (<strong>A</strong>steroid <strong>c</strong>atalogue
+	<strong>u</strong>sing <strong>A</strong>kari) Revised - at
+	<a href="http://cdsarc.u-strasbg.fr/viz-bin/qcat?J/A+A/612/A85">VizieR</a></li>
+	<li>NEOWISE Near-Earth Object Wide-field Infrared Survey Explorer, at
+	<a href="https://sbn.psi.edu/pds/resource/neowisediam.html">NASA PDS</a>. 
+	Datasets: centaurs, hildas, jupiter_trojans, mainbelt, neos</li>
+	<li>TNO and Centaur Diameters, Albedos, and Densities, at 	
+	<a href="https://sbn.psi.edu/pds/resource/tnocenalb.html">NASA PDS</a>. 
+	Dataset: V4 </li>
+</ul>
+<p>Together, these sources provide 186036 measures of 125647 asteroids, with 
+numbers up to 522276 (as at June 2018)</p>
+<h3>Binary asteroids - Splitting the diameter into two bodies</h3>
+<p>If an asteroid is discovered to be a binary asteroid (that is, two 
+occultation chords of similar length with each being more than ~50% of the 
+expected diameter of the asteroid), the diameter from these sources is 
+proportioned between the two components on a R<sup>2</sup> basis, not R<sup>3</sup> 
+basis. The reason is (personal communication with NEOWISE team, and applies to 
+all satellite missions):</p>
+<p class="auto-style6">The diameters we determine are effectively the time 
+averaged projected circle-equivalent diameters, although the model under the 
+hood is actually fitting spherical equivalent surface area.&nbsp; Either way, an R^2 
+scaling would be appropriate, caveat any self-heating that we aren't modeling 
+(but would probably be an important component for a close, equal-mass binary).</p>
+<p>As an example. Assume chord lengths of 14 and 12 units, for a total of 26 
+units. These equate to 0.54 and 0.46 of the total chord length. If the diameter 
+is X km, the corresponding diameters are:<br>&nbsp;&nbsp;<span class="auto-style8"><strong>D1 = </strong> <span><strong>X *&#8730;</strong></span><span  style="border-top: 1px solid black"><strong>0.54</strong></span></span>&nbsp; 
+and 
+<span class="auto-style8"><strong>&nbsp;D2 = </strong> <span><strong>X&#8730;</strong></span></span><span  style="border-top: 1px solid black"><span class="auto-style8"><strong>0.46</strong></span></span><br>To compute the associated uncertainties, repeat these calculations using the 
+upper and lower values of the diameter + uncertainty.</p>
+<h2 class="auto-style4">AsteroidDiameters.bin</h2>
+<p>This binary file holds a weighted mean diameter for asteroids in the number 
+range 1 to 550000. The diameters are multiplied by 10, and held as a 2-byte (int16) unsigned integer, 
+with the file position corresponding to the asteroid's number -1. Accordingly an 
+asteroid diameter to 0.1 km can be directly read from the corresponding location in the 
+file with a resolution of 0.1 km (after dividing the integer value from the file 
+by 10).</p>
+<p>Additionally, the file holds the weighted uncertainty in the diameter. The 
+uncertainties are&nbsp; multiplied by 5, and held as a byte, with the file 
+position corresponding to 1100000 plus the asteroid's number -1. Accordingly the 
+uncertainty in&nbsp; the 
+asteroid's diameter can be directly read from the corresponding location 
+in the file with a resolution of 0.2 km (after dividing the byte value from the 
+file by 5).</p>
+<p>The following approach was used to derive the weighted mean.</p>
+<ol>
+	<li>For AcuA, the uncertainty was taken to be the listed uncertainty (the 
+	minimum uncertainty was either 10% or 20% of the listed diameter).</li>
+	<li>For Neowise, the uncertainty was taken to be the listed uncertainty + 
+	10% of the measured diameter (in accordance with the Neowise documentation)</li>
+	<li>For IRA and MSX, the uncertainty was taken to be the listed uncertainty 
+	+ 10% of the measured diameter for asteroids with more than 4 observations, 
+	and the listed uncertainty + 14% of the measured diameter for asteroids with 
+	less than 5 observations.</li>
+</ol>
+The zero-based file format is:<br><br><strong>For diameters</strong><br>
+<table class="auto-style1" style="width: 411px">
+	<tr>
+		<td class="auto-style3" style="width: 57px; height: 27px"><strong>Bytes</strong></td>
+		<td class="auto-style3" style="width: 97px; height: 27px"><strong>Format</strong></td>
+		<td class="auto-style3" style="width: 267px; height: 27px"><strong>
+		Content</strong></td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 57px">0-1</td>
+		<td class="auto-style3" style="width: 97px">int16</td>
+		<td class="auto-style3" style="width: 267px">Diameter x 10 (km)</td>
+	</tr>
+</table>with 660000 entries starting at byte 0<br><br>Values less than zero are the 
+negative of the diameter estimated from the asteroid's H0 absolute magnitude. <br><strong><br>For Uncertainties</strong><br>
+<table class="auto-style1" style="width: 411px">
+	<tr>
+		<td class="auto-style3" style="width: 57px; height: 27px"><strong>Bytes</strong></td>
+		<td class="auto-style3" style="width: 97px; height: 27px"><strong>Format</strong></td>
+		<td class="auto-style3" style="width: 267px; height: 27px"><strong>
+		Content</strong></td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 57px">0</td>
+		<td class="auto-style3" style="width: 97px">byte</td>
+		<td class="auto-style3" style="width: 267px">Uncertainty in dia x 5 (km)</td>
+	</tr>
+</table>with 660000 entries starting at byte 660000<p> for a total file size of 1,980,000 bytes</p><h2 class="auto-style4">&nbsp;</h2>
+<h2 class="auto-style4">AsteroidDiametersAll.bin</h2>
+<p>This file contains weighted measures from each of the satellite missions, 
+giving the asteroid diameter (km), the uncertainty (km), and the source. The 
+zero-based file format is:</p>
+<table class="auto-style1" style="width: 411px">
+	<tr>
+		<td class="auto-style3" style="width: 57px; height: 27px"><strong>Bytes</strong></td>
+		<td class="auto-style3" style="width: 97px; height: 27px"><strong>Format</strong></td>
+		<td class="auto-style3" style="width: 267px; height: 27px"><strong>
+		Content</strong></td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 57px; height: 28px;">0-3</td>
+		<td class="auto-style3" style="width: 97px; height: 28px;">int32</td>
+		<td class="auto-style3" style="width: 267px; height: 28px;">Asteroid number</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 57px">4-5</td>
+		<td class="auto-style3" style="width: 97px">int16</td>
+		<td class="auto-style3" style="width: 267px">Diameter x 10 (km)</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 57px; height: 25px;">6</td>
+		<td class="auto-style3" style="width: 97px; height: 25px;">byte</td>
+		<td class="auto-style3" style="width: 267px; height: 25px;">Uncertainty in dia x 2.5 (km)</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 57px">7</td>
+		<td class="auto-style3" style="width: 97px">byte</td>
+		<td class="auto-style3" style="width: 267px">Source</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 57px">8</td>
+		<td class="auto-style3" style="width: 97px">byte</td>
+		<td class="auto-style3" style="width: 267px">Albedo x 500, range 0 to 
+		0.50</td>
+	</tr>
+</table>
+<p>The values for source are:</p>
+<p>0= from a visiting spacecraft<br>1= Neowise<br>2= AKAR AcuA<br>3= IRAS<br>
+4= MSX mimps<br>5= TNO Centaurs etc</p>
+<p>Note that:</p>
+<p>The diameter is obtained by reading the relevant integer, and dividing by 10 
+(as in AsteroidDiameters.bin). However the uncertainties associated with the 
+various missions are larger, and are decoded by dividing the relevant byte by 
+2.5 - giving a resolution of 0.4km.</p>
+<p>To retrieve the data for a particular asteroid, you need to search the file 
+for the asteroid number (if doing a binary search, once you get a match, go back 
+at least 6 records, and then scan forwards to get the first matching asteroid 
+number.)</p>
+<h2 class="auto-style4">&nbsp;</h2>
+<h2 class="auto-style4">AsteroidDiameters_Indiv.bin</h2>
+<p>This file contains the individual diameters that are provided in <strong>Akari AcuA</strong>, 
+and <strong>NEOWISE.</strong> Decoding the values is the same as for AsteroidDiametersAll</p>
+
+
+<table class="auto-style1" style="width: 411px">
+	<tr>
+		<td class="auto-style3" style="width: 57px; height: 27px"><strong>Bytes</strong></td>
+		<td class="auto-style3" style="width: 97px; height: 27px"><strong>Format</strong></td>
+		<td class="auto-style3" style="width: 267px; height: 27px"><strong>
+		Content</strong></td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 57px; height: 28px;">0-3</td>
+		<td class="auto-style3" style="width: 97px; height: 28px;">int32</td>
+		<td class="auto-style3" style="width: 267px; height: 28px;">Asteroid number</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 57px">4-5</td>
+		<td class="auto-style3" style="width: 97px">int16</td>
+		<td class="auto-style3" style="width: 267px">Diameter x 10 (km)</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 57px; height: 25px;">6</td>
+		<td class="auto-style3" style="width: 97px; height: 25px;">byte</td>
+		<td class="auto-style3" style="width: 267px; height: 25px;">Uncertainty in dia x 2.5 (km)</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 57px">7</td>
+		<td class="auto-style3" style="width: 97px">byte</td>
+		<td class="auto-style3" style="width: 267px">Albedo x 500, range 0 to 
+		0.50</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 57px">8</td>
+		<td class="auto-style3" style="width: 97px">byte</td>
+		<td class="auto-style3" style="width: 267px">Source</td>
+	</tr>
+</table>
+
+
+</BODY>
+</HTML>

@@ -1,0 +1,259 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Asteroid path coordinates</Title>
+<style type="text/css">
+.auto-style1 {
+	margin-left: 40px;
+}
+.auto-style2 {
+	color: #0000FF;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Path coordinates</H1>
+
+
+<P>This form generates the occultation path coordinates. </p>
+<img src="Asteroid%20Predictions%20-%20Path.PNG"width="800" />
+<p>At the top of the form there are 4 boxes of controls. There purposes are:</p>
+<ul>
+	<li><strong>First box</strong> This sets two parameters that apply to both 
+	type of path generation:<br><ul><li><strong>Include when the Sun is Up</strong>. 
+	Typically the path only needs to be generated for where the Sun is below the 
+	horizon. Check this option to generate the entire path<br></li><li><strong>Display extra precision in Time.</strong> Purpose is related to 
+	generating a post-diction point to add to an Observations record of an 
+	event, to provide sufficient time precision when an asteroid is moving fast.</li></ul>
+	<br>
+	<li><strong>2nd box</strong>. This is used for <strong>general</strong> path listing. It 
+	generates the path at a fixed elevation for its entire length. Normally that 
+	elevation will be MSL (Mean Sea Level) - that is, a value of zero. A different elevation (in 
+	meters) can be set. There is also provision for setting the step size in the 
+	coordinate used to generate the location of the path. This applies to both 
+	Longitude and Latitude increments. Where the coordinates are based on time 
+	intervals, you cannot adjust the interval (it is set in seconds as 0.004 * 
+	Coordinate step (in deg) / shadow motion. That shadow motion is typically 
+	the the time to move about 160 km, but can be quite different, as it relates 
+	to the actual motion of the shadow.<br> <br></li>
+	<li><strong>3rd box.</strong> This is used to generate at <strong>topographic</strong> path - 
+	that is, a path that has been corrected for local elevations in the terrain. 
+	This option takes considerably longer to generate than for box 2. However 
+	when plotted in GoogleEarth the location of the path on the actual surface 
+	of the Earth is shown.<br><br>If the prediction has been generated within 
+	Occult, without ensuring the elements used are for the time of the event, 
+	this option will not be available - and a help button is provided with an 
+	explanation of what to do.<br><br>This box includes an option to add 'fence lines'. 
+	That is, lines of equal separation at the Asteroid, expressed in meters. 
+	Such fence lines are used to position observers at greatly different 
+	locations along the path, such that they are position is different distances 
+	across the topographic path. Apart from selecting this option, you specify 
+	the distance between the fence lines, and set the number of fence lines on either side of 
+	the center line. The terms 'Left' and 'Right' relate to the orientation when 
+	the observer is looking along the path in the direction of motion of the 
+	asteroid shadow (that is, the direction of the path for increasing time).
+	<br>
+	<br></li>
+	<li><strong>4th box</strong>. This is for plotting the path in <strong>GoogleEarth</strong>. The plot of the path can be limited to be within a 
+	longitude and latitude range. The values within the 4 controls need to have 
+	signs to indicate East/West &amp; North/South. The values specified in the boxes 
+	must be such that the longitude in the <strong>W</strong> is west of that in 
+	the <strong>E</strong> box, and the value in the <strong>N</strong> box is 
+	north of the value in the <strong>S</strong> box. <br>Additionally, an 
+	option is available to display on the Google Earth map the elevations used 
+	to generate the path location for the center line and both limits.
+	<span class="auto-style2">This option is only available if the longitude and 
+	latitude ranges are no more than 5 degrees</span>. When comparing the 
+	differences between the displayed elevations and those indicated in 
+	GoogleEarth, remember that the dataset used for the elevation corrections 
+	has a resolution of about 1 mile square, such that significant variations in 
+	elevation as shown in Google Earth are averaged out in the data used to 
+	correct the path location.</li>
+</ul>
+&nbsp;<h3>Display of path coordinates</h3>
+<p>An occultation path can be located anywhere on the Earth and oriented in any direction. This creates some difficulties in tabulating the path in latitude/longitude coordinates. The format can be of three different forms and can change between the two of these. The preferred format is uniform increments in longitude. The second preferred format is uniform increments in latitude - and when this occurs, the output often changes to a longitude increment part-way through. The least preferred (and least common) format  presents the path in uniform increments of time. 
+The user has no control over which of these formats is displayed. <P>
+An example of the format for uniform increments in latitude, longitude, and how the change between the two occurs is:
+<pre>
+Occultation of TYC 5824-01366-1 by 1330 piridonia on 2007 Oct 09 
+                  Centre              Star  Star   Sun      Path Limits           Error Limits       Alt
+  E. Longitude   Latitude      U.T.    Alt    Az   Alt    Limit 1    Limit 2    Limit 3    Limit 4   Crn
+      o  '  "     o  '  "    h  m  s     o     o     o    o  '  "    o  '  "    o  '  "    o  '  "
+                                                        Longitude  Longitude  Longitude  Longitude
+    111 46 39    28  0  0   11 31 53    30   124   -19  110 49  9  112 42 32  108 38 29  114 38 18  -1.62
+    108 11  0    26  0  0   11 32 26    29   120   -16  107  7 14  109 12 27  104 40  1  111 18 25  -1.64
+    103 56  5    24  0  0   11 33  3    26   117   -12  102 41 32  105  6 49   99 43 38  107 29  6  -1.66
+                                                         Latitude   Latitude   Latitude   Latitude
+    101  0  0    22 50 19   11 33 26    24   115    -9   23 20 41   22 20 25   24 27 56   21 17 15  -1.65
+     99  0  0    22  8 49   11 33 40    23   113    -7   22 38 44   21 39 20   23 44 57   20 37  2  -1.64
+     97  0  0    21 32  5   11 33 54    22   112    -6   22  1 38   21  2 58   23  6 58   20  1 24  -1.64
+</pre>
+<p>In this format the latitude or the longitude, given at the left applies for the columns of longitude (or latitude) given at the right for the path and error limits.
+
+<p>An example of a prediction where uniform increments of time is used is:
+<pre> 
+OOccultation of TYC 1757-01342-1 by 4615 Zinner on 2007 Oct 13 
+                   Centre              Star  Star   Sun     Path Limit1           Path Limit2           Error Limit1          Error Limit2       Alt
+  E. Longitude    Latitude      U.T.    Alt   Az    Alt                                                                                          Crn
+      o  '  "     o  '  "    h  m  s     o     o     o    o  '  "    o  '  "    o  '  "    o  '  "    o  '  "    o  '  "    o  '  "    o  '  "
+                                                         Longitude  Latitude   Longitude  Latitude   Longitude  Latitude   Longitude  Latitude
+   - 46 55  1    51  6 16    9 30  4    19   285     0 - 47  7 40   51  6 49 - 46 42 18   51  5 42 - 49 41 15   51 10 43 - 43 54  8   50 54 54  -1.33
+   - 48 38 51    52  7  9    9 30 13    20   283    -2 - 48 51  8   52  7 24 - 48 26 30   52  6 52 - 51 20 49   52  8  7 - 45 43 55   52  0 11  -1.34
+   - 50 17 59    53  5 18    9 30 22    21   282    -3 - 50 30  0   53  5 19 - 50  5 55   53  5 15 - 52 56 44   53  3 18 - 47 27 27   53  2  0  -1.34
+   - 51 53 26    54  1 11    9 30 31    22   280    -4 - 52  5 14   54  0 59 - 51 41 33   54  1 20 - 54 29 43   53 56 33 - 49  6  9   54  1  2  -1.35
+   - 53 25 55    54 55  9    9 30 40    23   279    -5 - 53 37 34   54 54 46 - 53 14 12   54 55 29 - 56  0 22   54 48 11 - 50 41  4   54 57 45  -1.35
+</pre>
+<p>In this format the coordinates of the path limits and error limits given to the right include both longitude and latitude values.
+
+<p>Most columns are self-explanatory. <ul>
+<li>The 'Error Limit' is the location of the north or south limit if the occultation path is displaced by the 1-sigma value. 
+<li>The last column gives a factor for deriving the correction lateral to the occultation path, for a change in observer's altitude. 
+<em>This is not provided with topographic paths, as the path is already adjusted.</em> To 
+adjust the path, multiply the altitude by this factor to get the displacement of the path. The sign associated with this correction can be confusing/misleading. 
+The guiding rule is: if the occultation path is located between the observer and the center of the world plot, increasing the observer's altitude will place them further from the path. If the observer is located 
+between the path and the center of the world plot, an increase in the observer's altitude will place them closer to the path. 
+Putting this another way - an increase in the altitude at the path location will 
+move the path sideways such that the path passes closer to the center of the 
+Earth.</ul>
+
+<p>At the end of the coordinates there are two lines like
+<pre>Uncertainty in time = +/- 6 secs
+
+[Prediction of 2007 Sep 25.2]</pre><ul>
+
+<li>The first line gives the time uncertainty corresponding to the major axis of the error ellipse (which is usually aligned with the direction of motion]
+<li>the second line gives the date the occultation elements were generated - and can be used to determine which of several predictions is the most recent.</ul>
+
+<h2>&nbsp;</h2>
+<h2>Topographic paths - things to be aware of</h2>
+<h4>Computation time</h4>
+<p>The calculation of the path coordinates takes considerably longer than a 
+'normal' path generation. This is because the path is stepped through by 0.7 arc 
+mins (for stepping by either longitude or latitude) or for fractions of a second 
+for stepping through by time. When fences are included, each fence takes about 
+the same time as each path line - of which there are 5 for a prediction without 
+fences. That is, the more fences, the longer the time.<p>The box that lists the 
+display appears as follows:<ul>
+	<li>during the actual calculation of the path, the box will be empty apart 
+	from a message at the top about the calculation occurring.</li>
+	<li>When the calculations are complete, the box will clear. It will then 
+	take a little time (many seconds, increasing if you include fences) to populate the box.</li>
+	<li>Thereafter the box will show the path coordinates. However it will not 
+	display the fence coordinates. They are used solely for plotting the path in 
+	GoogleEarth.</li>
+</ul>
+<p>&nbsp;</p>
+<h4>Low altitudes - stepping by time. 
+</h4>
+<p>The generation of a path corrected for local topography has some challenges 
+when the star altitude is low. 
+<p>One issue with that for low altitudes in mountainous terrain, the star may be 
+hidden if you are 'behind' the mountain. This situation is not dealt with as 
+such - with the path being plotted on the basis of the mountain being 
+'transparent'.<p>When Occult steps through the path using Time (but not 
+Longitude or Latitude), a small change in time can result in a long change in 
+the location of the path on the Earth's surface. This can lead to the heights 
+for successive approximations for the site location, to vary wildly in hilly 
+terrain. Occult minimises this problem by placing limits on the allowable 
+displacement at each step in an iteration, but even this is inadequate at very 
+low altitudes. When this situation arises, the path will not have the appearance 
+of a smooth line following the topography. Rather it can become very wavy, and 
+indeed loop back on itself. Obviously such paths are unreliable. In relatively 
+even terrain, this issue will not generally occur. But in mountainous regions 
+(e.g. crossing the Andes) the issue can occur with star altitudes as high as 10 
+deg.&nbsp; If Occult steps through the path using either Longitude or Latitude, 
+this issue does not arise, as the longitude or latitude in the along-path 
+direction is fixed in the iteration. That is, there can be no large 
+displacements during the iteration, in the along-path direction, such that the 
+heights in successive iterations are for similar locations.<p>&nbsp;<h4>Source of 
+topographic data</h4>
+<p>The function uses a file of surface elevations that 
+cover the whole Earth. The source of the file is
+<a href="https://ddfe.curtin.edu.au/models/Earth2014/readme_earth2014.dat">here</a>. 
+The data is provided in rectangles of 1-arc min in latitude/longitude, with the 
+altitude for that rectangle being some sort of average value over that region. 
+Occult generates a height for any specific location using&nbsp; interpolation 
+over adjoining rectangles. However in very rugged terrain the elevation 
+so derived may be significantly in error.<p>&nbsp;<h2>Information when plotted in 
+GoogleEarth</h2>
+<p>The path can be plotted in GoogleEarth, irrespective of whether or not it is 
+a topographic path. The following details use a topographic plot to illustrate 
+the full capability. If a fixed-elevation path is computed, there will be no 
+fence lines, and the path location will not vary with the terrain.</p>
+<p>&nbsp;</p>
+<h4>The path plot</h4>
+<img src="Asteroid%20Predictions%20-%20Path.PNG"width="800" />
+
+<p><img src="Asteroid%20Predictions%20-%20TopoPath.PNG"width="500">
+<p>The lines have the following meanings:</p>
+<ul>
+	<li><strong>Green</strong>&nbsp; the center path line</li>
+	<li><strong>Blue</strong> the path limits (based on an assumed diameter, and 
+	the asteroid being spherical)</li>
+	<li><strong>Red</strong> the 1-sigma path uncertainty limits</li>
+	<li><strong>Yellow</strong> the fence lines (if specified)</li>
+</ul>
+<p>When a fence line is within 2% of the asteroid's radius from a path limit 
+line or 1-sigma limit line, that fence line is not computed or displayed.</p>
+<h4>The GoogleEarth legend</h4>
+<p><img src="Asteroid%20Predictions%20-%20TopoPathLegend.PNG"width="400" />
+<p>The legend is displayed in the left panel of GoogleEarth, under Temporary 
+Places. </p>
+<p>The first line gives the file name used to plot the path. This file will be 
+found in the Occult folder /<strong>Generated Files/GoogleEarth</strong>. The file name is 
+structured as:</p>
+<p class="auto-style1">Star + Asteroid + date + MSL/topographic. The last word 
+is 'elevations', followed by a single letter in the range of <strong>a </strong>
+to <strong>k</strong>, to allow multiple map files for the same event. The 
+allocation of <strong>a</strong> to <strong>k</strong> is done automatically.
+<strong>You need to periodically review this folder, and delete files that are 
+no longer needed.</strong></p>
+<p>There are then a set of identification labels for each line. Fence lines 
+include the distance from the center line, in meters. This is the distance at 
+the asteroid, not a distance on the Earth's surface. The labels left and right 
+relate to the direction offset from the center line as if you were located on 
+the center line looking in the direction where the occultation shadow is moving. 
+That is, in the direction of increasing event time. Clicking the small check box 
+against each label will turn the display of the line on or off.</p>
+<p>The last group, in the folder <strong>UTCtimes</strong>, relate to the next 
+image...</p>
+<p>&nbsp;</p>
+<h4>Time and other info along the path</h4>
+<p><img src="Asteroid%20Predictions%20-%20TopoPathTime.PNG"width="200">
+&nbsp;<p>Along the center line you will see small target markers. These are 
+located approximately every 10 seconds along the path. Click on that marker, and 
+you get a box which displays:<ul>
+	<li>Predicted UTC of the event at that location. [The precise time at that 
+	location may differ from the listed time by several 10ths of a second. Much 
+	greater if the path is an MSL path] </li>
+	<li>Whether the path is at MSL, or is a topographic path</li>
+	<li>If it is a topographic path, the site elevation that has been used to 
+	generate the topographic path position (with the source of the elevation 
+	data being listed). The site elevation here will almost always differ from 
+	the Google Earth elevation for that location, by perhaps a few 10's of 
+	meters.</li>
+	<li>the altitude and azimuth of the star</li>
+	<li>the altitude of the Sun </li>
+	<li>the orbit used, and the date of the prediction</li>
+</ul>
+<p>&nbsp;<h4>Old map formats</h4>
+<p>In the most unlikely event certain old mapping environments are still being 
+used, Occult has retained the capability of writing files compatible with them. 
+While they have been retained in Occult, there is no guarantee that they will 
+still create useable files. The options are available&nbsp; under with <B>Prediction,... Save in map formats</B>. This means you can display the path on your mapping device as you drive to your location. Formats supported are:<ul>
+<li><B>.cmx </B> - <A href ="http://www.chicagomap.com/" target=_blank>Precision mapping streets</a>, covering USA and Canada. Note: if emailing these files, you must ZIP them to avoid corruption.
+<li><B>.gen</B> - for making ESRI shape files. <a href="http://en.wikipedia.org/wiki/Shapefile" target=_blank>Explanation of ESRI shape files</a>.
+<li><B>.gpx</B> - Easy GPS. EasyGPS can interface with Garmin, Magellan, or Lowrance GPS units. It is available as freeware from <a href="http://www.easygps.com/" target=_blank>here</a>.
+<li><B>.mif</B> - <a href="http://tinyurl.com/a6jds" target=_blank>MS Map Point</a>.
+<li><B>.plt</B> - <A href ="http://www.oziexplorer.com/" target=_blank>Ozi-Explorer</a>.
+<li><B>.txt </B> - <A href ="http://www.delorme.com/software.htm" target=_blank>DeLorme Street Atlas</a></ul> 
+
+<h2>&nbsp;</h2>
+
+</BODY>
+</HTML>

@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Edit Binary asteroids</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Edit Binary Asteroids</H1>
+<P>In recent years a number of asteroids have been identified as binary or possible binary asteroids. When a prediction is generated for such an asteroid, the fact of it being binary is indicated on the prediction map. This capability is provided by way of the file <B>BinaryAsteroids.csv</B>, which is edited using this form.
+
+<p>The form allows for editingof individual entries and/or adding new entries. 
+However the number of binary asteroids continues to grow at a steady pace, 
+making manual editing a major exercise both in keeping up-to-date with the 
+latest data, and in editing the file. Fortunately an up-to-date list of binary 
+asteroids is available on the web - Johnston's archive at&nbsp; <a href="http://www.johnstonsarchive.net/astro/asteroidmoons.html">http://www.johnstonsarchive.net/astro/asteroidmoons.html</a>. 
+Accordingly the primary function of this form is to update the file used in 
+Occult with data from Johnston's archive, allowing for manual editing of entries 
+if it is otherwise appropriate.<h2>Updating using Johnston's Archive</h2>
+<p>When the editor is opened, simply click on the button at the top of the form 
+- Generate new list using 'Johnston's Archive'. (You need to be internet 
+connected). The program has to separately interrogate the site for each asteroid 
+listed, to extract the details. You can view the progress on-screen as the list 
+of asteroids increases. In this update process, the new file of binary asteroid 
+data is written as the download continues. The previous version of the file is 
+retained as BinaryAsteroids.old/<h2>Manual editing</h2>
+<p>You can manually edit any entry, or add a new entry using the controls at the 
+bottom of the form. The various fields are self-explanatory. The reference frame 
+for the orbits in Johnston's Archive is&nbsp; the ecliptic of J2000, and this is 
+assumed for all orbits.<p>With manual editing the edited file is not 
+automatically saved. You need to click the menu item File... Save to save any 
+edits. If you try to close the form without having saved edits, you will be 
+warned.<p>Two functions require you to have either&nbsp; MPCORB or Astorb on your computer:</p>
+<ol>
+	<li>&nbsp;Identify asteroid number. This checks for whether a selected 
+	unnumbered asteroid is now numbered. This check uses the asteroid's 'name' 
+	of the form yyyy AAnnn - such as 2013 GN113. The main reason for not finding 
+	a matching number is that the asteroid has not been numbered. More rarely, 
+	the asteroid has been numbered and received a 'proper' name. If you believe 
+	the asteroid as been numbered, the solution is to go the the
+	<a href="https://www.minorplanetcenter.net/iau/MPEph/MPEph.html">Minor 
+	Planet Center Ephemeris Service</a>, and enter the identifier there.</li>
+	<li>Retrieve asteroid diameter. Frequently reports of binary discoveries 
+	give the ratio of the diameters of the moon to the main body. To convert 
+	such ratios to a value in km, the diameter of the asteroid is estimated 
+	using a convertor from H0 magnitude to diameter - at the bottom of the form.
+	</li>
+</ol>
+<p>If you edit an entry and then want to undo it, you can reload the data from 
+the menu item <em>File... Reload from file.</em><h3>Other issues</h3>
+<ul>
+	<li>where a numeric quantity is unknown, the value will default to zero.
+	</li>
+	<li>when entering data there may be a need to convert values to the units used in this file. For example, some sources provide the orbital period in hours, whereas days is used in the file. When you do such conversions, make sure you keep the number of significant digits the same.</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<p>&nbsp;
+
+
+</BODY>
+</HTML>

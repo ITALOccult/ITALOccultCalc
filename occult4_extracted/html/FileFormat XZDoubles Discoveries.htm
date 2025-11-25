@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>XZDoubles Discoveries</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFCC" TEXT="#000000">
+
+
+
+<H1><A NAME="idh_4overview">XZDoubles Discoveries.dat</A></H1>
+<!-- Insert Header in above line -->
+
+<P>This file maintains data on double stars discovered in occultations. As part of the overhaul of the DSFile information, data in that file system relating to stars discovered as double during a lunar occultation was extracted and combined into a single file. For ease of reference, and compatibility with the WDS2001 format, each discovery observation was allocated a unique reference number, using the format OCCnnnn. The format is as follows:</P>
+
+<table columns=3 border=1>
+<TR><TH NOWRAP>Column </TH><TH>Format </TH><TH>Meaning </TH></TR>
+<TR><TD>0 - 6  </TD><TD>OCCnnnn  </TD><TD>Identifier for occultation discoveries. The number was allocated in order of discovery date when this file was created - but this need not be continued for new discoveries.   </TD></TR>
+<TR><TD>7 - 12  </TD><TD>...</TD><TD> XZ number of the star.</TD></TR>
+<TR><TD>13  </TD><TD> ...  </TD><TD>Double star status<li>"A" definitely a double star<li>"P" a possible double star - reported as non-instantaneous<li>"E" definitely not a double star   </TD></TR>
+<TR><TD>14 - 18  </TD><TD>hhmmm  </TD><TD>Right Ascension (2000) - in WDS format </TD></TR>
+<TR><TD>19 - 23  </TD><TD> +ddmm  </TD><TD>Declination (2000) - in WDS format</TD></TR>
+<TR><TD>25 - 32  </TD><TD>yyyymmdd  </TD><TD>the date of the discovery observation   </TD></TR>
+<TR><TD>34 - 57  </TD><TD>... </TD><TD>Discoverer's name </TD></TR>
+<TR><TD>59 - 82  </TD><TD>... </TD><TD>Reference for the discovery observation. [ON = Occultation Newsletter] </TD></TR>
+<TR><TD>84 - 91  </TD><TD>yyyymmdd  </TD><TD>the date of the first confirmation observation   </TD></TR>
+<TR><TD>93 -100  </TD><TD>yyyymmdd  </TD><TD>the date of the second confirmation observation   </TD></TR>
+<TR><TD>102-109  </TD><TD>yyyymmdd  </TD><TD>the date of the third confirmation observation  </TD></TR>
+<TR><TD>111-118 </TD><TD>yyyymmdd  </TD><TD>the date of the fourth confirmation observation   </TD></TR>
+<TR><TD>119 </TD><TD>... </TD><TD>Light curve flag. <li>" " = no light curve available.<li>"?" light curve is arguable or inconclusive<li>"*" Light curve definitely shows a double star</TD></TR>
+<TR><TD>120-132  </TD><TD>NNNnnnn ccccc </TD><TD> Double star identifier, and component identifier, in WDS. An entry here indicates that the star has been entered in the WDS or Interferometric catalogues. An entry in WDS  will only occur if the star is double. However an entry in the Interferometric catalogue does not mean the star is a confirmed double. The data in that catalogue must be interpreted..  </TD></TR>
+<TR><TD>133-140  </TD><TD>+ddnnnnn  </TD><TD>BD/CD number  </TD></TR>
+<TR><TD>142-148  </TD><TD>iiyyMdd  </TD><TD>Discoverer identifier in the former dsFile. [Format = iiyyMdd, where ii= observer's initials, yy = year; M = Month (1-9, O,N,D); dd=day] </TD></TR>
+<TR><TD>149-150  </TD><TD>,,, </TD><TD>CR/LF sequence</TD></TR>
+</table>
+
+<P>In 2009 the double star files were thoroughly revised (with columns 13 and 119 being allocated the above values). As part of that revision all stars in XZDoubles that were not listed in the WDS or IF catalogiues were given an entry in this file. Those stars are OCC 1134 to OCC1654. Those stars fall into two categories, with the following characteristics in the file:
+<h4>Internal check of the XZ80Q file</h4>
+These stars were identified as double stars in the process of creating the XZ80Q catalogue. The criteria used was a separation of less than 10". In the file:<ul>
+<li>the discovery date is set to 2000  1  1
+<li>the discoverer is listed as 'Unknown'
+<li>the reference field contains the text 'close in XZ catalogue'</ul>
+<h4>Unknown sources, from dsFile</h4>
+The remaining stars have derived from the old <I>dsFile</I> of double stars. In the file:<ul>
+<li>the discovery date is set to 1980  1  1 - although in a very small number of instances an actual date is given
+<li>the discoverer is listed as 'Unknown'
+<li>the reference field is usually empty, but occassionally contains a reference to a star catalogue number</ul>
+
+
+</BODY>
+</HTML>

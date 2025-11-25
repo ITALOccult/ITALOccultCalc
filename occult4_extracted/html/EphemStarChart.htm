@@ -1,0 +1,100 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Star Chart</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Star Chart</H1>
+<!-- Insert Header in above line -->
+<P>This star chart appears in two forms:
+<li>as part of predictions for asteroid occultations - where the chart is centered on the occulted star, and the motion of the asteroid in the previous 10 days is indicated, and
+<li>as a stand-alone star chart, where the user can specify the location of the center of the chart.</P>
+
+<h4>The common details are:</h4>
+<ul>
+<li>selection of standard chart sizes and magnitudes;
+<li>selection of chart sizes - from 0.25 deg square to 20 deg square;
+<li>selection of star magnitude limit in the plot - from 6 to 21. Also whether to plot visual or photographic magnitudes</ul><p>
+<h4> Plot options are:</h4>
+<ul>
+<li>whether to show the constellation and coordinates in the cursor tooltip;
+<li>selection of catalogue to plot, depending on which star catalogues are available to the program. 
+The options are Tycho2, 2UCAC, and NOMAD (either the full version, or a special shortened version)
+<li>an option to set the paths for star catalogues. When Occult is called from OccultWatcher, a 'different instance' of Occult is opened, and the usual User Settings do not carry over from the user's normal Occult. This option allows the user to open the User Settings dialog for this instance of Occult, and set the paths for the various star catalogues the user has on their PC - and those star catalogues can then be accessed to plot detailed finder charts.</ul>
+<h4>Display star details</h4>
+Place the cursor on any star and click - and the star details of that star are displayed above the plot. The details provided are
+<ul><li>Star number
+<li>Magnitudes: Visual, Blue and Red
+<li>Coordinates: RA and Dec</ul>
+<p>The display bar is colored in accordance with the catalogue identifier.
+<ul><li>Yellow = UCAC4
+<li>Green = Tycho2
+<li>Cyan = Hipparcos<li>Salmon = J stars </ul>
+
+<h4>Chart orientation options</h4>
+<ul>
+	<li>To rotate the chart - by up to 180 degrees in either direction. This is 
+	controlled by a slider control above the chart, in combination with green 
+	and red buttons at its right. The current rotation angle is indicated at the 
+	left of the slider. When moving the sider with the mouse, he current angle 
+	is displayed with the cursor. To make fine adjustments in the rotation, the 
+	green and red buttons add or subtract 0.2 deg on each click.</li>
+	<li>Whether to flip the chart, either vertically or horizontally. Useful for 
+	users of telescopes that have mirror-reversed images (i.e. there are an odd 
+	number of reflections in the optical path). Flipping the chart occurs after 
+	any rotation has been applied. Flipping is accessed under <strong>with 
+	Plot...</strong> </li>
+</ul>
+
+<h4>Chart Opacity</h4>
+<ul>
+	<li>At the top right of the form there is a slider to vary the opacity of 
+	the form. The opacity change is of the entire form. The range is from 40% to 
+	100% full visibility.<br>Changing the opacity allows the star chart to be 
+	placed over an image, such that you can see the stars on the star chart 
+	overlying whatever is displayed on the image. You match the scale of the 
+	plot by selecting the plot Size from the form's menu, and otherwise changing 
+	the size of the form (in the usual manner of dragging the bottom corner) 
+	until the scales match. You then rotate (&amp; flip if required) the plot so 
+	that the stars on the chart align with those on the image. The cursor when 
+	placed on the star chart will display the RA &amp; Dec of where it is pointing. 
+	When aligned with the image, the cursor will give the RA and Dec of any 
+	point on that image - and the coords of stars can be read off. You can then 
+	get details of that star by going to the <strong>Maintenance Tab</strong>,&nbsp;
+	<strong>View catalogue details for a range of stars</strong>, select a 
+	catalogue and a range of RA and Dec that covers the coordinates, then use 
+	the coordinates to identify the star in the displayed list. Amongst other 
+	things, this allows you to easily obtain the Gaia magnitudes of stars on the 
+	image.</li>
+</ul>
+<p>Additionally the region of the chart can be plotted in GoogleSky (if GoogleEarth is installed on the computer) from a menu item (with the GoogleSky icon). The size of the GoogleSky chart when opened is either 2 deg square, or the size of the chart if that size is smaller.</p>
+
+<h3>Stand-alone star chart features</h3>
+<p>For the stand-alone chart, fields are provided to specify the center of the star chart, with buttons to draw the chart and to draw the region in GoogleSky. </p>
+
+<h3>&nbsp;</h3>
+<h3>Asteroid prediction star chart features</h3>
+<li>The occulted star is located in the center of the chart and is circled;
+<li>The path of the asteroid is shown at 0hrs UT for the 10 preceding dates and the two following dates. Alternate periods are connected by a line - with the day on which the occultation occurs not being joined.
+<li>When drawn in GoogleSky, the occulted star is marked with a pushpin.
+</p>
+
+<h2>GoogleSky Notes</h2>
+<li>GoogleSky was first included with a release of GoogleEarth in August 2007. 
+The Occult calls to map in GoogleSky will not work with earlier versions of 
+GoogleEarth.
+<li>If GoogleSky is already open, a new call to plot in GoogleSky will zoom directly onto the region of the sky. 
+<li>If GoogleSky is not open, the call will result in GoogleEarth opening, and a query to 'Switch to Sky'. Click yes. Unfortunately GoogleSky will not immediately zoom into the relevant part of the sky [A GoogleSky issue.] You can zoom in by double-clicking on the item 'ViewGoogleSky.KML' in the Places panel, Temporary places, in GoogleSky. [You do not have to do this if GoogleSky is already open.] 
+<li>The link to GoogleSky provides a quick way to verify the nature of a star. 
+It is useful to ascertain whether the star might be a double (and have related uncertainties in its position. 
+For USNO-B1 stars that might be predicted using the NOMAD catalogue, you can ascertain whether the object is a star or some other object such as a galaxy, planetary nebula, etc.
+<li>GoogleSky plots have noticeable distortions for declinations greater than about 60deg, are not very satisfactory at declinations greater than about 70deg, and useless for declinations greater than about 80deg.
+ 
+</BODY>
+</HTML>

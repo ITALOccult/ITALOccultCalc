@@ -1,0 +1,718 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=utf-8">
+<Title>Asteroid observations - plot</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<h1>To Plot and 'Reduce' the observations</h1>
+<p>The following area at the top-right of the form is used for fitting an ellipse to the 
+observations.
+<P align=center><img src="Asteroid%20Observations%20-%20Plot%20control.png"width="250">
+
+<p>The top part of this area provides the following controls:<ul>
+	<li>a button (top left) to click (multiple times as needed) to get a best 
+	fit solution</li>
+	<li>fields specifying the location of the center of the fitted ellipse, and the dimension and 
+	orientation of the fitted ellipse</li>
+	<li>check boxes to select which fields should be included in the solution</li>
+	<li>check boxes to force the solution to be circular, and in addition limit 
+	the diameter to that of the diameter assumed from IR&nbsp; satellite 
+	observations</li>
+	<li>a check box to include Miss events when conduction a solution</li>
+	<li>a check box to force a circular solution. </li>
+	<li>a check box to force the solution to use the assumed diameter of the 
+	asteroid (that is, the diameter derived using satellite measurements of 
+	asteroid brightness)</li>
+	<li>a small button with a red bar - to check all these check boxes</li>
+	<li>fields specifying the offset of the center of mass&nbsp; from the center 
+	of the fitted ellipse</li>
+	<li>[<strong>being phased out</strong>] <em>a check box to use when the chords are reliably fit to a shape model, 
+	with the center of the fitted ellipse being centered on the center of the 
+	shape model</em></li>
+	<li>a set of buttons to select (for events involving binary stars or 
+	asteroidal satellites) which chords are to be displayed</li>
+	<li>a drop-down box to set the quality of the fit (which flashes in color if 
+	set to 'no reliable position or size'</li>
+	<li>a check box to flag an event for review</li>
+	<li>a slider, plus a set of buttons, to change the plot scale (which changes the range of the plot coverage)</li>
+	<li>a checkbox to increase the range over which the plot can be scrolled, by 
+	a factor of 25%</li>
+	<li>a slider for changing the opacity of the form, so that the plot of 
+	an event can be placed over other displays; and</li>
+	<li>if the option to 'Draw asteroid profile' has been selected, a slider 
+	<strong>Limb fit</strong> to 
+	control the aggressiveness of the drawing process.</li>
+</ul>
+<p>These are explained in more detail below.<p>&nbsp;The 
+bottom part of the right-hand panel lists the observers for the events included on 
+the plot, with their reference number. If the paths are plotted in color, the 
+path color for each observer is also given.
+
+<h2>General features of the plot</h2>
+<p>The plot of observations show Disappearances in red; Reappearances in green; 
+Misses are light blue. Video or photoelectric observations are marked with 
+circles, visual observations are marked with a '+' , Miss events are marked with 
+an 'x', and Prediction is marked with an asterisk. When the tip of the cursor is 
+located on an observation, the record number, name of the observer, and time of 
+the event, are displayed above the plot. [If the observation is for a 
+'predicted' point, the distance from the centre of the ellipse is shown.] The 
+scale of the plot can be adjusted by using the Plot Scale slider in the control 
+area. The position of the observations in the plot screen can be adjusted using 
+the scroll bars at the side of the plot area.
+
+<p>You can measure the gradient of the limb of the asteroid, or between points, 
+by left-clicking at one point, and moving the mouse to the other point while 
+holding the left click down. When this is done at an observer's event location, 
+the observer's name, star motion, limb slope and PA, and the motion normal to 
+that limb, is displayed in the box next to the cursor. These values are used in 
+the&nbsp; <A  href="Asteroid_StarDiameterAnalyser.htm">
+Star diameter analyser </a>. <strong>NOTE</strong>. The line drawing the limb 
+slope is mis-placed won screens with resolutions greater than 1920x1200<h2>Plot options</h2>
+<p>Under the <B>Plot options</B> menu item are a range of options about how the 
+plot is drawn. Those options are:<ul>
+<li><B>Plot on BLACK background (screen only). </B>Sets the background on screen 
+to either black or white. Background on the printer is always white.
+<li><B>Plot on GREY background (screen only). </B>Sets the background on screen 
+to a light grey.
+<li><B>Show star paths in COLOUR).</B> Sets whether the star paths and some 
+other features are drawn in colour or B&amp;W. When drawn in color, a palette of 30 
+colours is used. If there are more than 30 chords, the colours re-cycle. The 
+colours are allocated on the basis of their current order in the Observations 
+editor. [The event number, and whether or not the event is plotted, do not 
+affect the colour allocation.] When the paths are shown in colour, a different 
+event legend is displayed - showing the colours against each observer. This 
+legend is graphics based, and can be saved when the plot is saved - separate 
+from a text-based legend.
+<li><b>use THICK lines</b>. Draws the star paths and ellipse using a thick line. 
+The thickness of the line is set in User Settings, in the Graphics group..
+<li><b>use LARGE font for labels</b>. Draws the observer numbers using a larger 
+font. The size of the font is set in User Settings, in the Graphics group.
+<li><B>Apply Watermark.</B> For use when an image is being sent to 3rd parties, and
+there is a need to ensure the source is clearly stated. The Watermark is 
+the current version of Occult.
+<br><hr>
+<li><b>Add DAMIT &amp; ISAM shape images</b>. Includes a displayed DAMIT or ISAM 
+shape profile in the reduction plot. <A  href="Asteroid%20Results%20-%20Add%20Shape%20images.htm"> 
+Details</a> 
+.
+
+<li><b><i>Show Shape model controls on plot</i></b>. This displays a set of 
+controls at the top left of the plot area, where you can select the shape model 
+to be displayed, and change its size. There are two groups of buttons 1 to 6, 
+for 
+possible <B>DAMIT </B>and <B>ISAM</B> shape models. To hide the 
+controls, click the '<font color=red>X</font>' button at top right of the 
+control block.
+<li><b>Show MEAN DIAMETER indicator</b>. Currently only available for 
+DAMIT models - this draws a line at the bottom of the plot corresponding to the 
+mean diameter of the shape model currently displayed. Two 'mean diameters' are 
+shown. One is the diameter of a sphere having the same Volume as the shape 
+model, while the other is the diameter of a sphere having the same Surface Area 
+as the shape model. The larger diameter is associated with the sphere having the 
+same Surface Area.
+<br>The value of the two mean diameters, in KM, is displayed above (Volume) and 
+below (Surface area) the line - but those values have meaning only when you have 
+fitted the shape model to the observed chords!
+
+<br>[A similar line can be drawn on the downloaded graphic by setting the menu 
+item on the <strong>DAMIT and ISAM shape models</strong> form - <strong>with 
+Model image... Draw mean Diameter on Image {DAMIT only}</strong>]
+<li><strong>Add an image from the clipboard</strong>. You can add any image you like from the clipboard. However it is centered on the plot, and cannot be removed.</li>
+<hr>
+<li><B>Show SOLUTION values on plot.</B> Default is to show. This displays the 
+solution for the axes of the asteroid (and their uncertainties) at the top of 
+the plot. If the star is a double star, the solution for the separation and 
+position angle (and their uncertainties) are also shown.
+<br>
+<li><b>Show plot SCALE&nbsp; - mas (↕)</b>. Draws a scale line (in mas) at the 
+right of the plot.
+<li><b>Show plot SCALE - km (↔)</b>. Draws a scale line (in km) at the bottom of 
+the plot.
+<li><b>Show SCALE GRID (km)</b>. This plots a rectangular grid on the plot. A sub-menu 
+	allows you to:<ul>
+  <li>allows you to set the orientation of the grid on the plot, with a 
+  drop-down selection list appearing over the plot. Once you have set the 
+  orientation, use the '<font color=red>X</font>' button on that list to close 
+  that list.
+<li>A list of grid scales to select from</ul>
+	To show or hide the grid, click on the main menu item <I>Show SCALE GRID 
+	(km)</I>, and not the submenu list.
+<hr>
+<li><b>Show best fit ELLIPSE</b>. Default is to show the ellipse. While the 
+ellipse will usually be shown it can be hidden so that the outline as indicated 
+by the observed star paths is more readily viewed.
+<li><b>... show Fresnel diffraction peak</b>. Draws a dotted line around the 
+fitted ellipse or circle, indicating the approximate location of the peak in 
+the Fresnel diffraction light curve.
+<li><b>... show Ellipse in OUTLINE</b>. If the ellipse is shown it can be either 
+a solid line, or a series of dots.
+<li><b>Draw asteroid profile</b>. This will draw a curve to the plotted data 
+points (other than those with zero weighting). The profile is generated as a 
+cardinal spline defined by the D and R event loactions. The 'tension' of the 
+line can be changed using a slider bar that appears over the list of observers.
+<br><B>Important: </B><I>for this function to work, the observers must be sorted 
+by path distance.</I>
+
+<li><b>Show AXES of ellipse</b>. Draws the major and minor axes. They are drawn 
+as a dashed line if the ellipse is a solid line, or a dotted line if the ellipse 
+is a dotted line.
+<li><strong>Show ASTROMETRY location</strong></li>. WHen selected, this shows the loaction of the point which is used to derive the astrometric position. Usually this is centered on the fiited ellipse. If a shape model is fitted, it can be loacted on the center of the shape model. For a binary asteroid, it can be loacted at the enmter of mass. 
+<li><b>Show event MARKERS.</b> Default is to show the events - red for D, green 
+for R, purple for a Miss. Video or photoelectric observations are marked with 
+circles, visual observations are marked with a '+', and Miss events are marked 
+with an 'x'. These can be turned off - which may be useful if the events are 
+drawn using some of the other options.)
+<li><b>Show observer NUMBERS.</b>  This is the record number; it is also listed 
+against the observer in the box at the right of the plot form and can be used to 
+associate points on the plot with the observers. The number is shown in italics 
+if a zero-weighting has been applied.
+<li><B>Show PREDICTED centre path</B>. This selectively shows those points that 
+have been entered on the basis of the predictions. Use it to show the difference 
+between prediction and observation. When star paths are plotted, the path for 
+this location is shown as a series of long dashes.
+<li><b>ALIGN primary and secondary star events</b>. When a double star is 
+involved, the events for the secondary star can be moved to align with the 
+events from the primary star . Doing this can lead to a more complete outline of 
+the asteroid. 
+<br><br>
+When the events are aligned, a representation of the separation and PA of the 
+components is given in the centre of the asteroid - on the same scale as the 
+asteroid plot.
+<br><hr>
+<li><b>Show ERROR bars.</b>  When the report includes a figure for the timing 
+	uncertainty, and error bar corresponding to that uncertainty is drawn at 
+	each event location. Where no uncertainty is given, the uncertainty is taken 
+	to be +/- 0.5 secs for visual events, and +/- 0.1 secs for 
+	video/photoelectric events. The error bars are drawn in red/green for D &amp; R 
+	respectively.
+<li><b>...&nbsp; Set for fitting to Shape Models</b>. The uncertainty in the <em>
+Length</em> of a chord is the quadratic sum of the uncertainties for the two 
+event times. When this is set, the uncertainties as plotted are reduced to match 
+the uncertainties in the chord length. Use these error bars to derive the 
+maximum/minimum diameters of the asteroid from the shape model (inner end gives 
+the maximum diameter, outer end the minimum diameter). There is a corresponding 
+button on the Shape Model control to set/clear this option. The setting is 
+cleared whenever the asteroid is changed, or whenever the main Observations 
+Editor form is selected. This is to ensure the reduced uncertainty bars are not 
+displayed by default, but only when expressly required.<li><b>Show star paths - star OCCULTED</b>. This shows the path of the star when 
+it was occulted. The outline of the asteroid surrounds these lines. Miss events 
+are not shown.
+<li><b>Show star paths - star VISIBLE.</b> This shows the path of the star while 
+it was visible. The outline of the asteroid is within these lines. Miss events 
+are shown with a continuous line having small breaks..
+<br>Rarely an observer will record <font color=red>multiple events from the same 
+location</font> - either as a grazing event, or the effect of satellites. To 
+ensure the plot of the star being visible does not overlie events from the same 
+location, ensure the events from the same location are sequential and ordered by 
+increasing time. [NOTE: For the plot to work in all situations, the 'Align 
+primary and secondary star events' must not be checked.] 
+<li><strong>Show RING event paths</strong> - This shows the path of the star 
+associated with occultations (or non-occultations) by a ring. These paths are 
+shown as a series of short dashes, always in a direction away from the main 
+body. The paths for non-detection ring observations are shown as a series of 
+close dots.<li><B>Include TIME-SHIFT corrections</B>. If there is an uncertainty in the 
+accuracy of the time base, the record may include a 'time shift'. This 
+correction is usually applied when plotting the observations. But if this option 
+is unchecked, the observations are plotted without applying the time shift 
+correction.
+<br><hr>
+<li><b>Show star paths for NO DETECTION events</b>. A toggle of whether or not 
+the paths for No Detection events are shown.
+<li><b>Show only VIDEO/photoelectric</b>. These observations are generally of 
+greater accuracy/reliability.
+<li><b>Show ZERO-WEIGHTED observations.</b> Some events might be given a zero 
+weighting to exclude them form the analysis. This option selectively includes 
+zero-weighted observations in the plot.
+<li><b>Show path - star not seen (e.g. CLOUD)</b> This shows events (treated as 
+Miss events) for locations where the observer could not see the event because of 
+cloud. If star paths are plotted, the paths for these events are shown as a 
+dotted line (grey when plotted in colour). It is useful when gathering 
+observations, as feedback to observers of what they might have seen. Clouded out 
+events are not transferred to the file of historical observations.
+<br><hr>
+<li>A group of 3 options for managing the check settings of these options. You 
+can retain the current set of checks as Default values. If you change the checks 
+when analysing a particular event, you can return the checks to the values you 
+have set as your default status. And you can reset the defaults to Occult's 
+default setting&nbsp;&nbsp; 
+<li><b>Show star diameter analyser</b> Opens the <A  href="Asteroid_StarDiameterAnalyser.htm">
+Star diameter analyser </a>, allowing you to input observer details and limb 
+slopes from the observation plot.
+</ul></p>
+
+<h2>Set 'Miss' Times</h2>
+<p>On the assumption that <strong>no detection</strong> events correspond to 
+Miss events, the button on the menu bar computes the correction to be applied to 
+the <strong>no detection</strong> 
+events to ensure that the time specified is the time of closest approach to the 
+centre of the plotted ellipse. Select this option, and the correction to be 
+applied to each event is displayed in a form. Click the <B>Correct times in 
+Report </B>button in this form to automatically correct the times of those  
+events. Note that because of the way the plot is generated, it may be necessary 
+to repeat this several times to properly align the Miss events. See <A href="AsteroidEditor%20-%20ClosestMissTimes.htm">
+here</a> for further notes.</p>
+
+
+<h2>Fitting an ellipse</h2>
+<p>The reduction of the observations involves fitting an ellipse to the 
+observations. The location, size, and orientation of the ellipse are specified 
+at the right of the form. For each of these parameters, there is:<ul>
+<li>an up/down box displaying the current value of the parameter. Clicking the 
+up/down buttons will change the value.
+<li>a check box to specify whether or not that parameter is to be included in 
+the least squares analysis; and
+<li>an indicated change to the specified parameter, based on a 'least squares' 
+analysis of the fit of the displayed ellipse to the data</ul>
+
+To the right of the boxes for the Major and Minor axes there is a display of the 
+ratio of the Major to Minor axes (a/b), and the magnitude variation if the major 
+axis was reduced to the minor axis (dM).
+<p>In addition, there is an option about whether 'Miss' events are to be 
+included in the solution. If this option is not checked, Miss events will not be 
+included in the solution at all. If this option is checked, Miss events are 
+included in the solution in the following manner:<br><br>
+<li>The miss path is compared against the location of the edge of the current 
+ellipse. 
+<li>If the miss path does not intersect the ellipse, the miss is not included in 
+the solution.
+<li>If the miss pass intersects the ellipse, the point along the path which is 
+furthest inside the ellipse is used as a data point for the solution
+<li>Miss events are given a weight of 5, unless a different weight is specified
+<li>For computing the shape and location of the occultation shadow, the computed 
+distance of the Miss observation inside the 'current' limb location is increased 
+by 0.5km. This bias reflects the Miss nature of the event. (that is, the fact 
+that the star was above the limb at all times.)</ul>
+
+
+<p>To obtain the best-fit ellipse, the following procedure should be applied.<ul type=1>
+<li>manually adjust the 5 parameters to visually make an approximate fit of the 
+ellipse to the observations. Then, on the Editor form, save the data for the 
+present observation. [The manual fit reduces the likelihood of the least squares 
+fit not converging on the solution. The Save step will allow you to retrieve the 
+manual fit in the event that the least squares fit is a divergent solution.]
+<li>At the top-left of the adjustment area is a button with a graph symbol on 
+it. Repeatedly clicking this button will make the adjustments to obtain the 
+least squares best fit. Save the data when done, as the final fit.
+<li>If the fit does not converge, or the distribution of observations is very 
+poor, it may be desirable to manually adjust one or more of the parameters, 
+using the displayed indicated changes as a guide.
+<li>When any of the corrections to be applied (they are displayed next to the 
+check boxes) are very large, it may be appropriate/necessary to uncheck that 
+particular item. [For example, a suggested correction to the PA of the ellipse 
+of several hundred degrees would suggest that the solution for this parameter is 
+very poor, and applying the correction may result in a diverging solution.]</ul>
+
+<p>For certain events, it is appropriate to assume that the object is circular. 
+Clicking the 'Circular' check box will force the minor axis to be the same as 
+the major axis, and will exclude the minor axis and the orientation parameters 
+from the least-squares solution. Note that if the observations are distributed 
+around only one half of the object, it may be better to leave Circular as 
+unchecked, specify the orientation of the ellipse to be parallel to the star 
+paths, and (initially) uncheck Orientation and Minor Axis from the least squares 
+analysis.
+<p>In circumstances where the observations are not extensive, there may be 
+several possibilities for the ellipse, some of which may be very elliptic. Some 
+ellipses can be eliminated on the basis of being inconsistent with known 
+magnitude variations of the asteroid. The value dM displayed at the top-right of 
+the form gives the magnitude variation that would occur if the major axis of the 
+ellipse was reduced to the minor axis. For a valid fit, this figure should be 
+less than the known magnitude variations. Two sources of magnitude variations 
+are <A href="http://cfa-www.harvard.edu/iau/lists/LightcurveDat.html" target = _blank> 
+Minor Planet Center</a> and <A href="http://obswww.unige.ch/~behrend/page1cou.html" target = _blank> 
+Geneva Observatory</a> 
+
+<h2>Double star solutions</h2>
+<p>If the event involves a double star, a floating panel appears on the form for 
+specifying the separation 
+and PA of the secondary star. Also the option buttons on the main part of the 
+form have meaning, in allowing you to specify whether all events are to be plotted, or just those involving the 
+primary, or secondary, star. When plot both stars is selected, ellipses for both 
+the primary and secondary star are displayed - unless the option to align the 
+events has been selected. 
+
+<p>The floating panel looks like:<br>
+<img Align=Middle Src="Asteroid%20Observations%20-%20Doubles.png"width="250">
+
+<p>There are several possible scenarios for solving double star details, with up 
+to 4 solutions. those scenarios are:<ol>
+	<li>there are several chords for both the primary star and secondary star - 
+	such that there is no doubt about which side of the asteroid each component 
+	passed. This scenario will result in a single solution for the separation 
+	and PA.</li>
+	<li>there are several chords for one component - such that there is no doubt 
+	about which side of the asteroid it passed. However for the other component 
+	there is only one chord (or perhaps a small number of closely-spaced chords) 
+	such that there is ambiguity as to which side of the asteroid this component 
+	passed. This scenario will have two distinct solutions</li>
+	<li>There is only one observed chord for each component. Typically, an 
+	observation by a single observer who records step events (but it can also 
+	arise with two closely spaced observers). In this scenario the solution has 
+	to be based on an assumed asteroid diameter, and treating the asteroid as 
+	circular in profile - which significantly degrades the precision of the end 
+	results. Importantly, in this situation there are FOUR separate solutions - 
+	with one star going first on one side, and then the other side, of the 
+	asteroid - and for both of those situations, the other star going on one 
+	side, then the other side, of the asteroid.<br></li>
+</ol>
+<br>An additional variation to this situation is the effect of close 'Miss' observations - which may lead 
+	to the conclusion that some solutions are 'incorrect' as otherwise that Miss 
+	observer would have recorded an event. However care needs to be exercised in 
+	the treatment of nearby Miss observations - to properly allow for the 
+	possibility of the asteroid being irregular, and the possibility that the 
+	Miss observer missed an actual event.
+<p>In addition, radio buttons are provided to vary the plot scale between 
+normal, extend range by a factor of 5 - so that a widely-separated companion (eg 2018 Nov 9 occultation 
+by Aspasia) can be readily included in the plot</p>
+<p>A detailed explanation of how to derive the the double solution(s) are set out 
+<a href="Asteroid%20Results%20-%20solve%20doubles.htm">here</a> </p>
+<h2>Binary asteroid solutions</h2>
+<p>If the event involves a binary asteroid, a floating panel appears on the form:<br>
+<img Align=Middle Src="Asteroid%20Observations%20-%20Binaries.png"width="250"></p>
+<p>The details about how to set the satellite solution(s) are set out 
+<a href="AsteroidEditor-Satellites.htm">here</a> </p>
+<h3>Setting the center of Mass for a binary asteroid</h3>
+<p>When an event involves a binary asteroid, the display of the Center of Mass 
+indicator is handled differently.</p>
+<p>The first step is to fit an ellipse to the main body, and set the location 
+and size of the satellite, using the usual controls for doing this. When this is 
+done, Occult will calculate the expected location of the center of mass on the 
+basis of the size of the two fitted ellipses.</p>
+<p>Initially, the center of mass indicator is located in the center of the 
+fitted ellipse. You can move the center of mass indicator using the Mass X and 
+Mass Y controls at the top right of the plot form.</p>
+<p>The Center of Mass indicator has dotted lines from that indicator to each 
+body. Ultimately those lines will align and be straight. Next to the indicator 
+are two lines of text. The top line gives the offset from the center of mass 
+location (in km, which is the unit of the displayed plot). The first number is 
+the distance along the line; the 2nd number is the distance normal to the line. 
+The second line gives the ratio of the current distance between the two bodies 
+(first number), and the ratio when at the center of mass (2nd number. This 
+number is fixed, and is always less than 0.500 which is 
+fixed). To set the center of mass, move the indicator such that the values on the top line are 0.0, 0.0, 
+and the first number on the bottom line is the same as the second number. If the masses of the two objects are 
+known, the location ratio can be computed - in which case the position is 
+located when the first value on the bottom line corresponds to the computed 
+value, and the 2nd value on the top line is 0.0.</p>
+<p>The following two images illustrate this functionality, using the 2021 May 19 
+discovery of the satellite of (4337) Arecibo. In the first image the center of 
+mass indicator (the blue circle) is not at the center of mass position The top 
+line indicates the current location is too far towards the satellite (14km) and 
+is 3.8 km away from the line joining the two bodies (the center of mass must be 
+on that line).&nbsp; The second image shows the center of mass indicator at the 
+center of mass. The right number in the bottom line bottom line indicates the 
+location of the center of mass along the line to the satellite (which is 0.143 
+in this example). The left number shows the current location. (The difference 
+between 0.144 and 0.143 is a rounding issue in the underlying data).</p>
+
+<img Align=Middle Src="Asteroid%20Observations%20-%20CofM_NotFitted.png"width="300"><br>
+<img Align=Middle Src="Asteroid%20Observations%20-%20CofM_Fitted.png"width="300"></p>
+<h2>&nbsp;</h2>
+<h2>Fitting to shape models</h2>
+<p>For many asteroids, shape models derived from their rotational light curves 
+are available. The main sources are
+<a href="http://astro.troja.mff.cuni.cz/projects/asteroids3D/web.php?page=project_main_page">
+DAMIT</a> and <a href="http://isam.astro.amu.edu.pl/">ISAM</a>. for the majority 
+of shape models there is an ambiguity in the solution for the polar axis of 
+rotation - giving rise to more than one solution, one of which will inevitably 
+be 'wrong'. Additionally, early shape models were always derived using convex 
+surfaces; however in recent years shape models incorporating convex surfaces are 
+becoming more common (although the fit to occultation data is not necessarily 
+improved....). DAMIT shape models are preferred to ISAM shape models because (as 
+at Oct 2018) the DAMIT data include information that allows the mean diameter of 
+the asteroid to be determined by fitting the shape model to the observed chords, 
+whereas the ISAM data does not.. On the other hand, the ISAM shape models are 
+usually quicker to download, and have an option to draw the axis of rotation on 
+the plot.</p>
+<p>The DAMIT system has up to 4 shape models for any asteroid, whereas the ISAM 
+system has up to 6 shape models. The majority of ISAM models are the same as 
+DAMIT models - but not always. And sometimes the additional model in ISAM 
+provides the best fit to occultation data.</p>
+<p>Occult provides a tool for fitting multiple shape models to the chords of an 
+occultation event, and retaining the details of those fits for further 
+analysis/consideration. In particular, one hopes that by analyzing the fit of 
+shape models to multiple occultations by a particular asteroid will lead to a 
+definite determination of which shape model is correct, and the true diameter of 
+the asteroid.</p>
+<p>The details about how to fit the chords to shape models, with the fit data 
+being retained,&nbsp; are set out <a href="Asteroid%20Results%20-%20fit%20shapes.htm">here</a> 
+.</p>
+<p>When a shape model is fitted to the observations, the center of the ellipse 
+may not coincide with the center of the shape model. If the fit to the shape 
+model is reasonably good/reliable, you can move the circle indicating the 
+location of the center of mass, so that it is coincident with the center of the shape model. 
+The result of this is that the astrometry reported from the occultation refers 
+to the 
+center of mass of the asteroid . To do this:</p>
+<ul>
+	<li>Fit an ellipse to the observed chords. If you cannot fit an ellipse 
+	without fixing any of the ellipse parameters that is, the axes, and&nbsp; 
+	its orientation), you cannot/should not attempt to specify the center of 
+	mass. rather leave it centered on the fitted ellipse. </li>
+	<li>Using the controls marked <strong>Mass X </strong>and <strong>Mass Y
+	</strong>to move the marker so that it overlies the center of the shape 
+	model [indicated by a small 
+	black circle]</li>
+</ul>
+<p>In this example [2013 Nov 9 (176) Iduna] the fitted ellipse is quite different to the shape model. As the observed chords largely match this shape model, it is approriate to set the Center of Mass indicator to the center of the shape model, rather than the center of the fitted ellipse.</p><img Align=Middle Src="Asteroid%20Observations%20-%20CofM_EllipseFit.png"width="300"><br>
+
+<br><em>The check-box option <strong>Shape Model</strong>, was used to indicate 
+the ellipse was centered on the center of the shape model - that is, at the 
+center of mass. That option was a poor attempt to deal with center of mass 
+locations, and cannot be set for any new 
+events (or past events where it has not been set). It is only present for past events that have not yet been updated to 
+use the Center of Mass settings. </em> <br>
+<h2>Setting the Quality</h2>
+<p>The form includes a drop-down box to indicate the quality of the fit to the 
+observations. This is not an analytical assessment, but is used to control the 
+reporting of the events. The options are:
+<table columns=2 border=1>
+	<TR>
+		<TH NOWRAP>Setting</TH>
+		<TH>Meaning</TH>
+	</TR>
+	<TR>
+		<TD nowrap>0 No reliable position or size</TD>
+		<TD>No useful data can be reliably extracted 
+	from the observations. Typically, inconsistent observations, or a single 
+	observation with a low level of confidence in the event.</TD>
+	</TR>
+	<TR>
+		<TD nowrap>1 Astrometry only. No reliable size</TD>
+		<TD>No independent 
+	determination of the diameter of the asteroid can be made. Rather the 
+	observations are best represented by the default diameter of the asteroid 
+	derived from satellite IR observations, or from estimates based on the 
+	asteroid's magnitude. Typically applied 
+	to a single observation with a high level of confidence in the observation, 
+	or several consistent observations that do not allow an ellipse to be 
+	sensibly fitted (usually the observed chords are closely spaced..)<br>Astrometry is derived (and reported) from these observations. For this 
+	purpose, the observed chords are fitted to the center of the asteroid 
+	(rather than one or other side of the asteroid) so that the cross-path 
+	uncertainty is identical in both directions. </TD>
+	</TR>
+	<TR>
+		<TD>2 Limits on size, but no shape</TD>
+		<TD>An ellipse can be fitted to the 
+	observations, but the fit is not very reliable. Examples are:<ul>
+			<li>large 
+	scatter of the observations - such that the uncertainty in the ellipse 
+	diameters is inherently uncertain;</li>
+			<li>poor distribution of events 
+		around the profile, such that the fit is poorly constrained - either 
+		because of large scatter. For example, two chords on either side of the 
+		asteroid spaced well away from the center constrain the diameter in the 
+		cross-direction, but not on the along-path direction).</li>
+		</UL>
+		</TD>
+	</TR>
+	<TR>
+		<TD>3 Reliable size. Can fit to shape models</TD>
+		<TD>An ellipse can be reliably fitted to the observations, 
+	with a good distribution of points around the ellipse. The observations can 
+	be fitted to shape models (if they exist) to assess whether the shape model 
+	is correct, and the volume-equivalent and/or surface-equivalent diameter of 
+	the shape model (that is, the asteroid).</TD>
+	</TR>
+	<TR>
+		<TD>4 Resolution better than shape models</TD>
+		<TD>As for #3. However the 
+	observations sufficient to clearly show deviations of the asteroid's outline 
+	from shape models (if they exist), and/or clearly show irregularities in the 
+	asteroid's profile. </TD>
+	</TR>
+	<TR>
+		<TD></TD>
+		<TD></TD>
+	</TR>
+</table>
+</p>
+<p><B>NOTE</B> The allocation of this assessment is used for two purposes: the 
+reporting of the diameters of asteroids, where the results are sorted into the 
+quality values of Poor, Good, and Excellent; and the reporting of the relative 
+position of the star and asteroid at the occultation - where Time Only events 
+have an uncertainty based on the diameter of the asteroid, and the 
+Poor/Good/Excellent events have an uncertainty based on the fit of the ellipse 
+to the observations. The correct allocation of the quality will ultimately be 
+done by the primary program coordinator(s) who has responsibility for reporting 
+the results.
+
+
+</p>
+<h3><br>NOTES:</h3>
+<ul>
+	<li>The least-squares solution works best when there are observations spread 
+around the entire periphery of the asteroid. If this is not the case, there can 
+be strong interdependencies between the various parameters. For example, if the 
+observations are limited to one half of the asteroid, then there is a strong 
+correlation between the dimension of the axis bisecting those observations, and 
+the position of the ellipse along that axis.
+
+	<li>Where strong correlations occur, one successful approach to obtaining the 
+fit is to turn off the least squares solutions for the major and minor axes, and 
+get the best fit on the remaining parameters. Then turn off the remaining 
+parameters, and turn on the major/minor axes and get a best fir for these. 
+Repeat this as often as necessary until the fit (as shown with all parameters 
+on) is optimal.
+
+	<li>Remember that the minimum number of points required to define an ellipse is 
+5. Any fit based on a smaller number must involve some assumptions about one or 
+more parameters. But while 5 or more points in principal can fully define an 
+ellipse, the quality of that fit is very dependent upon the extent of 
+observational errors, and the distribution of the observed points.
+
+	<li>The location of the centre of the plot is defined by the average of the 
+extreme displayed observation points in the N/S and E/W directions. As a result, 
+adding or removing displayed events that define these extremes will result in a 
+relative shift of the location of the ellipse to the observations. 
+
+	<li>The least squares fit is done on the basis of the function for an ellipse x<sup>2</sup>/a<sup>2</sup> 
++y<sup>2</sup>/b<sup>2</sup>=1 using changes of 0.01 km in the position and size 
+of the ellipse, and 0.01 deg in the PA of the ellipse, to determine the changes. 
+The changes are measured along the radius from the centre of the ellipse to the 
+plot point. Unless a weight has been specified at the data entry stage, visual 
+observations are accorded a weight of 1, and video/photoelectric observations 
+weighted as 4.</ul>
+<h3>Other notes</h3>
+<ul>
+	<li>The centre of the plot is defined by the average of the extremes of all 
+events. If an observation is significantly in error, it may push many/most of 
+the other observations off the screen. To rectify:<ul>
+		<li>If needed, set the plot scale to the extreme left - to make sure all events 
+are plotted.
+		<li>Check the menu item  <B>With Plot… Show observer no. </B>This will result in 
+the record number appearing against each point. Identify the observation that is 
+clearly in error, and either (a) correct the data, or (b) delete the event 
+time(s).</ul>
+	<li>An observation time will be treated as invalid (i.e. non-existent) if ANY of 
+the fields for the time of that event are blank. Thus for 0 hrs or 0 mins, 
+ensure a '0' is specified - do not merely leave the field blank.
+	<li>The label is printed in italic text for observations where the weight is set 
+to '0'.
+	<li>The program makes no automatic correction for Personal Equation (PE). The 
+event times should be corrected for PE before entering.
+	<li>Observational errors of a few tenths of a second can seem quite large 
+(relatively speaking) when the whole occultation event is only a few seconds. 
+Remember this before deleting apparently discordant observations. This also 
+affects the uncertainty of the ellipse fitted to the observations - no matter 
+how good the fit.
+	<li>Adjusting observed times by a multiple of seconds or minutes (so that they 
+fit the remaining observations better) should only be done if there is a good 
+reason associated with the method of timing used by the observer. Generally, 
+this should not be done.
+	<li>The program fits a simple ellipse to the observations. This is at best a 
+simple approximation to the actual shape of an asteroid, which may be quite 
+irregular.
+	<li>When comparing the results from one occultation event against another, 
+remember that a single observation does not indicate the 3-dimensional 
+orientation of the asteroid. That is, the effects of foreshortening, and 
+shadowing, cannot be detected. This means that the actual major axis of the 
+asteroid will be at least as large as the major axis of the fitted ellipse. 
+Similarly the smaller of the minor axes in a tri-axial spheroid approximating 
+the asteroid will be no larger than the minor axis of the fitted ellipse.</ul>
+<h2>Basis of the reduction</h2>
+<p>Reduction of the observations is done in the following manner.</p>
+<ul type=1>
+	<li>The reductions are performed with reference to the fundamental plane defined 
+by the apparent position of the star on the equinox of date. Co-ordinates on the 
+plane are expressed in km.
+	<li>The x,y co-ordinates of the observers on the fundamental plane are computed 
+for each event
+	<li>The motion of the asteroid on the fundamental plane is computed - using a 
+quadratic representation
+	<li>The positions of all observations are referred to a reference frame that is 
+fixed with regard to the asteroid, by (i) for each event and observer, compute 
+	the observer co-ordinates on the 
+fundamental plane at the time of that event, and (ii) adjust the origin of that 
+	fundamental plane in accordance with the motion of the asteroid, to a common 
+	reference time.&nbsp; This is done using a cubic expression to represent the 
+	motion of the asteroid,<li>The reference time is the mean time of all 
+	positive events. However, if a satellite is involved in the event, the 
+	reference time is defined as the mean of all the event times for the 
+	satellite. This ensure that for systems where the satellite mass is small 
+	compared to the main body, that the astrometric solutions are not adversely 
+	affected by orbital motion of the satellite around the main body.<li>The average of the maxima co-ordinates for all events is aligned with the 
+centre of the plot screen, and sets the origin for the analysis.
+	<li>Positions are also computed for times 2 minutes before each D, and 2 minutes 
+after each R. These are used to plot the star paths relative to the asteroid, 
+and in calculations of minimum distance from the asteroid and time of closest 
+approach.</ul>
+<p>The ellipse is represented by the traditional equation: x<sup>2</sup>/a<sup>2</sup> 
++y<sup>2</sup>/b<sup>2</sup>=1
+
+</p>
+<p>For least-squares solutions, the residual is computed as the distance from 
+the ellipse to the observed point, along the radius from the centre of the 
+ellipse to the observation point. The normal equations are generated using 
+variations of 0.01 km - and for double star details, 0.01” &amp; 0.01 deg.
+
+</p>
+<h2>Output options</h2>
+<p>Under the with Plot... menu item the following options are available</p>
+<ul type = a>
+	<li><b>Copy</B> - copies the event plot to the clipboard
+	<li><b>Print preview</B> - previews the print
+	<li><b>Print</B> - prints the event plot
+	<li><b>Save</B> - saves the event plot as a graphic
+	<li><b>Save entire form as an image</B> - saves an image of the entire form
+	<li><b>Save vector coordinates (without uncertainties)</B> and Save vector 
+coordinates (with uncertainties)</B>  - saves coordinate pairs of the chords, 
+plus details of the fitted ellipse, for use with software using vector graphics. 
+The format of the saved data is:<br><B>n</B> lines giving details for each chord in the dataset, formatted as 
+	<B>NNNNN, (x,y), (x,y), (x,y), (x,y)(x,y), (x,y), (x,y), (x,y)</B> - where:<ul>
+		<li>NNNN giving the chord number and basic observer details
+		<li>(x,y) are the coords of the plotted chords, in km. 
+<br>
+		<li>For output <I>without uncertainties</I>, there are 4 pairs of 
+	coordinates as follows:<ul>
+			<li>1st pair: 10 min before D 
+			<li>2nd pair: D event
+			<li>3rd pair: R event
+			<li>4th pair: 10 min after R 
+		</ul>
+		<br>
+		<li>For output <I>with uncertainties</I>, there are 8 pairs of coordinates 
+	as follows:<ul>
+			<li>1st pair: 10 min before D 
+			<li>2nd pair: D - uncertainty
+			<li>3rd pair: D event
+			<li>4th pair: D + uncertainty 
+			<li>5th pair: R - uncertainty 
+			<li>6th pair: R event
+			<li>7th pair: R + uncertainty 
+			<li>8th pair: 10 min after R 
+		</ul>
+		<li>the weight for the D, and R events. Weights of 1 to 5; 0 = exclude from solution; -1 = ignore entirely.</li>
+	</ul>
+Points to note:<ul type=i>
+		<li>- for Miss events, the 2nd and 3rd coord pairs are identical, and the pairs 
+for uncertainty are empty, as in ' ( , ) '
+		<li>- if one or other of the D or R event was not seen (or has been suppressed 
+as invalid) either the 1st &amp; 2nd, or 3rd &amp; 4th, coordinate pairs are identical 
+with large numbers.</ul>
+At the end there is one (or two) lines for the fitted ellipse. The format is: <B>NNNN (x,y), A, B, PA</B> where<ul>
+		<li>NNNN is the ellipse identifier, 
+		<li>(x,y) is the coords of the center(km), 
+		<li>A and B are the major and minor axes (km), and 
+		<li>PA is the orientation (-90 to +90 deg). 
+	</ul>
+Note that occasionally A is smaller than B -effectively the major/minor status 
+is reversed - but the axes plus PA gives the correct ellipse.
+	<li><b>Copy observer list (text)</B> - copies the list of observers, as text, to 
+the clipboard
+	<li><b>Save observer list (text)</B> - the list of observers, as text
+
+
+
+
+</ul>
+
+
+
+
+</BODY>
+</HTML>

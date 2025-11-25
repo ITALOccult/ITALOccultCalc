@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Maintenance Overview</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1><A NAME="Maintenance Main"></A>Maintenance - Overview</H1>
+<!-- Insert Header in above line -->
+
+<h2>General Maintenance functions</h2>
+
+<h3>User settings</h3>
+<p>This is the area to set a range of values that are used in the program as default values.</p>
+<p>For a first-time user, 3 settings are important:
+<ul>
+<li><B>Site details - low precision </B> A number of predictions make use of your site coordinates at low precision, largely to determine things like times of rise/set of objects, and time zone corrections (in the few locations where times are corrected to local time.)</li>
+<li><B>ftp URLs</B> In this section, insert your usual email address. Occult accesses a number of ftp sites to obtain data files, using 'anonymous' ftp. In anonymous ftp the password is your email address. If you don't specify your email address here, the ftp downloads may not work.</li>
+<li><B>GoogleEarth</B>  Occult can draw many outputs directly onto GoogleEarth. Indicate here whether GoogleEarth has been installed on your computer</li></ul>
+Experienced users can adjust other settings as they become familiar with the program.</p>
+
+<h3>Edit site files</h3>
+<p>Site files are one of the most important user components in Occult. They are used to control site-specific output in a number of areas. And they are the basis for controlling the output where predictions are to be generated for many sites.</p>
+<p>New users should create a site file that just contains their location (and perhaps a small number of other locations)  until they become familiar with the effect of changing certain settings. For example, you can significantly increase or decrease the number of lunar occultation predictions by adjusting the telescope aperture and/or magnitude correction. If you have the settings 'wrong', you will get either far too many or far to few predictions.</p>
+
+<p>If you have upgraded from Occult 3, the Site editor has the capability to import site files in any of the various formats used in Occult 3. Occult 4, uses a single format for site files, so that they can be used in any prediction context.</p>
+
+<p><B>IMPORTANT </B>note for users intending to create regional lunar occultation and graze predictions: For this functionality  to work successfully, you will  need to make sure that the site files are properly set up. In particular, it is critical that the site file used for the prediction is limited to observers in the same region.</p>
+
+
+<h2>Download data updates</h2>
+
+<h3>Downloads</h3>
+<p>This form provides a single location for downloading the full range of data downloads used in Occult.
+
+<h3>Download / Convert Astorb and MPCOrb</h3>
+<p>This is used to obtain orbital elements of asteroids and convert them into the format used by Occult
+
+<p>The program can retrieve elements from Lowell Observatory (Astorb), or the Minor Planet Center (MPCOrb).  Ftp links are provided to both the primary site and to a mirror site.</p>
+<p>If you have trouble getting a connection to download MPCOrb, read <A HREF="http://cfa-www.harvard.edu/iau/MPCORB.html">MPCOrb database</A>. Make sure you have set the anonymous password to your email address. Otherwise, conduct the test of whether your ISP has properly registered their DNS address - and if not, complain to your ISP. [<I>This 
+is a security issue implemented by Harvard University; ISP's that don't register 
+their DNS address are typically used by spammers. If your ISP does not Register its DNS, you might consider changing your ISP.</I>]</p>
+
+<p>The preferred source of elements is Astorb, which incorporates all observations up to the present date, and includes some useful uncertainty information. MPCOrb only updates orbits for well-established asteroids when the current O-C values exceed about 1 arcsecond.</p>
+
+<p>The process for downloading and converting elements is:
+<ul><li>in the box at the left, click the Astorb button. [If you have trouble connecting, you can try the mirror button] Typically it takes quite a few seconds before a progress bar appears. If you have a firewall, you will probably get an alert. When the download is complete, a message will appear. Click to complete the process - which involves unzipping the file (it takes a few seconds)</li>
+<li>Now you need to convert the ASTORB file into the format used in Occult (which includes data for binary asteroids). The selection criteria are in box 3. You can specify additional particular asteroids in box 4. Otherwise click Convert. [At this point, a 'file open' dialogue should display the downloaded file - if it doesn't, the file ASTORB.dat is located in the \Occult\Downloaded Files directory.]<br><br>
+<I>The conversion routine has options to include un-numbered minor planets. It must be remembered that the orbit of an un-numbered asteroid is somewhat uncertain - otherwise it would be a numbered asteroid! That is, as a general rule you should not convert unnumbered asteroids.</I></li>
+</ul>
+
+<h2><br>Star catalogues - display stars</h2>
+
+<h3>View catalogue details for selected stars</h3>
+<p>This displays the catalogue information for a particular star. The catalogues that can be accessed are:<ul>
+<li>ZC - all stars that are in the XZ catalogue, with information as for the XZ catalogue. [There are 295 ZC stars that are not in XZ80Q - because they are too far from the ecliptic.]</li>
+<li>SAO - all 26619 SAO stars that are in the XZ catalogue, with information as for the XZ catalogue. The SAO numbers lie between 57982 and 210563.</li>
+<li>XZ - all stars. Details include variable and double star details (including display of orbit)</li>
+<li>Hipparcos - all stars (if Tycho2, Nomad_Short or NOMAD is installed)</li>
+<li>Tycho2 - all Tycho2 stars if Nomad installed; all Tycho2 stars brighter than mag 12 if Tycho2 installed</li>
+<li>2UCAC - all stars if 2UCAC or NOMAD installed. Brighter parts of 2UCAC2 if either Tycho2 or Nomad_Short installed.</li></ul></p>
+<li>3UCAC - only if the 3UCAC catalogue is on the computer</li></ul></p>
+
+
+<h3>View catalogue details for a range of stars</h3>
+<p>This displays catalogue details for a range of stars. The range is based on the indexing available for the catalogue. The catalogues that can be accessed are:
+<ul>
+<li>XZ80Q - in increments of 4m in RA</li>
+<li>Tycho2 - in increments of 4m in RA, in declination bands of 1 deg</li>
+<li>Goffin - in increments of 4m in RA, in declination bands of 1 deg</li>
+<li>2UCAC - in increments of 6m in RA, in declination bands of 0.5 deg</li>
+<li>3UCAC - only if the 3UCAC catalogue is on the computer</li></ul></p>
+<li>NOMAD - in increments of 0.8m in RA, in declination bands of 0.1 deg</li>
+
+</ul></p>
+
+<p>If GoogleEarth is installed on the computer, the region covered by the list can be viewed in GoogleSky.</p>
+
+
+<h3>View double stars in WDS and IF, and variables + light curve</h3>
+<p>This allows the contents of the Washington Double Star Catalogue, and the 4th Interferometric Catalog, to be viewed for any specified RA and Declination. This also displays any entries in the AAVSO Index file of variable stars, and the AAVSO light curve (if one exists) can be obtained from here. <A href="Maintenance%20-%20Stars%20-%20Light%20Curve.htm">(details)</a> 
+
+
+<h3>Single star - compare positions from many catalogues</h3>
+<p>This allows the comparison of positions of a star as provided from a number of catalogues - for a specified epoch. This is intended for asteroidal occultations, allowing the user to identify any potential problem with star coordinates.
+
+
+<h2><br>Maintain certain data files</h2>
+<p><B><I>The functions available in this area will only be used on rare occasions, if at all.</I></B></p>
+
+<h3>Edit DeltaT</h3>
+<p>The difference between UTC (the broadcast time signal that is tied to the Earth's rotation) and the uniform time scale used in ephemerides, is held in files that can be edited under this setting. Generally speaking, the only time you need to do anything under this is when a leap second is introduced into UTC.</p>
+
+<p><B>IMPORTANT </B>Many popular texts that refer to deltaT indicate that it is a continuously changing value. The Help in this option explains how the correction is in fact applied in the context of UTC. Importantly, for current epochs the correction be applied to UTC is essentially constant between the dates of introduction of leap seconds in UTC. </p>
+
+<h3>Edit asteroid diameters</h3>
+<p>Occult maintains a file of asteroid diameters, retrieved form various sources. The diameter is inserted into the file of asteroid elements when it is converted from Astorb or 
+MPCOrb. The file includes a maximum and minimum diameter, but at this time only the maximum diameter is used. [When no diameter is listed in this table, the diameter included in the elements file is derived from the asteroid's absolute magnitude.]</p>
+
+<h3>Edit binary Asteroids</h3>
+<p>Occult maintains a file of binary asteroids. The file has data fields sufficient to include the orbital elements, but at this stage no use is made of the elements. Currently a large number of binary asteroids are objects too small to be routinely predicted in occultation predictions.</p>
+<p>The data in this file is used to set a warning message when an occultation involves a binary asteroid. The warning message indicates the maximum separation in km.</p>
+
+<h3>Maintain XZ catalogue</h3>
+<p>There are occasions where the XZ catalogue used in lunar occultation predictions and analysis, needs maintenance.<ul>
+<li>Double star details are periodically updated, with a revised version of the file XZDoubles.dat. Potentially the file of variable star details (XZVariables.dat) will be updated. The index flags in the XZ file can be updated here, so that the new data can be properly accessed. [Note - when the index is updated, the XZ subsets should be recreated.]</li>
+<li>For efficient predictions limited to bright stars, Occult can use subsets of the catalogue limited by magnitude. The creation of these subsets only takes a couple of seconds. They need to be created when Occult is installed, and also whenever the XZ catalogue is updated with new double star or variable star data.</li></ul></p>
+<p>Also provided are editors for the files of double and variable stars. Access to these is for Administrators.
+
+
+<h3>Check installation</h3>
+<p>This is a utility to report any missing files from the installation of Occult. The report distinguishes between 'essential' files and 'optional' files.</p>
+
+<h3>Import files from Occult3</h3>
+<p>This utility allows the importation of certain large data diles from an installation of Occult3.</p>
+
+
+
+
+</BODY>
+</HTML>

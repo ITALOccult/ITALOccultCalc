@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Star position from Lunar occultations</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Star position from Lunar occultations</H1>
+
+This form provides a tool to derive corrections to the XZ80Q catalogue from lunar occultation observations. It makes use of the series of reduced Archive files.
+
+<p>To analyse a star, select the star from the box at the top, and read the residuals in using the button <b>Read</b>. The star can be selected from a list of star names (with the list being selectable from the menu item <b>'Name of Star list'</b>, Or it can be selected by entering the ZC, SAO or XZ number.
+
+<p> When the data is read, an initial plot of the residuals, and the corresponding solution, is displayed. In the display, Green dots represent events that are within 2 standard deviations of the final result (or 0.5" if there is no iteration). The red dots represent observations that are further displaced, Note that the nature of the top plot is such that red and green dots can be mixed, whereas this is much less likely in the middle and bottom plots.<ul>
+<li>The top plot shows the residuals of all observations. 
+<li>The middle plot shows the residuals resolved in the RA direction, limited to those events where the residual in RA is at least 60% of the total residual. The plot also shows the line of best fit to the RA residuals.
+<li>The bottom plot shows the residuals resolved in the declination direction, limited to those events where the residual in declination is at least 60% of the total residual. The plot also shows the line of best fit to the declination residuals
+</ul> 
+
+<h2>Plot options</h2>
+The following options are available<ul>
+<li><B>Use D's only </B>This limits the data used to Disappearance events. Only D events are plotted.
+<li><B>Use R's only </B>This limits the data used to Reappearance events. Only R events are plotted.
+<li><B>Use grazes only </B>This limits the data used to graze events. However all events are plotted
+<li><B>Only High confidence </B>events. This excludes events where the certainty code is not 1. However observations where the is no certainty code are included, Only included events are plotted. The default state for this option is checked. 
+<li><B>Use non-visual only </B>This excludes observations where the method of timing is Stopwatch, Taperecorder, Keytapping or Chronograph - that is, events where a Personal Equation is to be expected. If the method of timing is not recorded, the event is included. Only selected events are plotted.
+<li><B>Use 1991.25 as base</B> If the star position has been derived from the Hipparcos catalogue, and the Hipparcos proper motion is in error, the solution for the proper motion correction is best done using the epoch of the Hipparcos catalogue (1991.25) as the reference point for the star position. For positions obtained from other catalogues (UCAC2 and Tycho2) it is usually appropriate to use the default reference point of the year 2000.
+<br><br>
+<li><B>Iterate</B> There are two processes for the solution. The 1<sup>st</sup> is a single pass through the residuals in the range +/-0.5". The 2<sup>nd</sup> is a 3-fold iteration, where events that are more than 2 standard deviations away from the previous solution are excluded. This option swaps between these two solution types. In principle an iterative solution should give better results. However for many data distributions a non-iterative solution may be preferable. The default state for this option is checked. 
+<li><B>Only after 1900</B> Excludes all events prior to 1900 from consideration - although events before 1900 are still plotted. Useful to see the effect of older observations, and to exclude 'bad' old observations.
+<li><B>Only after 1950</B> Excludes all events prior to 1950 from consideration - although events before 1950 are still plotted. Useful to see the effect of older observations, and to exclude 'bad' old observations.
+<li><B>Include position</B> The solution assumes a zero point of the year 2000. For most stars the position at 2000 is very well established, and solving for a positional error at 2000 is not justified - rather it is better to assume a zero correction at that date. However there will be instances where there is a significant change in the proper motions that may affect the position at 2000 - especially for Hipparcos stars which have a catalogue epoch of 1991.25. This option should be avoided unless it is clearly needed. A test for validity in its use is whether the correction at 1991.25 is close to zero. 
+<li><B>Include PE correction</B> This option allows for a correction to the average PE applied to visual observations. Note that the correction to PE will always be of similar effect to a correction to RA. It is provided for curiosity value more than anything else. Generally it should not be used.</ul>
+
+<h2>Results</h2>
+The results are displayed in the 'solution' box at the left, and also in the header to the plot. Also displayed is the number of events used in the solution. The basic data used to generate the solution is listed in the box at the bottom-left of the form.
+<p>The normal plot of the residuals shows the uncorrected residuals and the line of best fit in the RA and Declination plots.<ul>
+<li> You can plot the residuals as corrected by the solution, by checking the <B>Plot residuals as corrected </B>check box. This allows you to see the total effect of the solution on the residuals, particularly on the plot of the radius residuals.
+<li>You can expand the vertical resolution of the plot by a factpor of 5 (that is, to &plusmn0.2") with the <B>Expand Plot x5 </B>check box. This allows a better view of the number of data points close to the best fit solution.
+
+<p>Menu options are provided to Copy/Print/Save either the solution, the solution together with the event data, or the plot of the results.
+
+</BODY>
+</HTML>

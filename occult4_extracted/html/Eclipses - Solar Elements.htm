@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Besselian elements - Solar eclipse</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Besselian elements - Solar eclipse</H1>
+
+<P>Besselian elements are used to generate a lunar eclipse prediction. The elements are generated as a 2<sup>nd</sup> order polynomial expression. An example display of the series is:
+
+<PRE>Besselian elements for the solar eclipse of
+2010 Jul 11 
+  
+Zero time for series is 18h TT
+TT - UTC = 66.18 secs, UT1-UTC = -0.02
+  
+    X  -1.040475        Y  -0.444175
+   dX   0.557272       dY  -0.136186
+  d2X  -0.000001      d2Y  -0.000119
+  
+   L1   0.534575       L2  -0.011526
+  dL1  -0.000042      dL2  -0.000041
+ d2L1  -0.000012     d2L2  -0.000012
+  
+    D  22.046365       Mu  88.337518
+   dD  -0.005320      dMu  15.000060
+  d2D   0.000002     d2Mu   0.000002
+  
+tan(f1) 0.004599
+tan(f2) 0.004576
+</PRE>
+
+<P>The fundamental plane used for the calculations passes throuigh the center of the earth, and is normal to the direction of the sun. X, Y, L1 and L2 are expressed in earth-radii; D and Mu are in degrees..
+
+<P>The coordinates given are:<ul>
+<li>X - the distance of the Moon's shadow axis, +'ve to the East
+<li>Y - the distance of the Moon's shadow axis, +'ve to the North
+
+<li>L1 - the radius of the penumbral shadow on the fundamental plane;
+<li>L2 - the radius of the umbral shadow on the fundamental plane;
+<li>D - the apparent declination of the normal to the fundamental plane;
+<li>Mu - the hour angle of the normal to the fundamental plane
+<li>tan(f1), tan(f2) - the value of the tangent of the shadow cone angle with respect to the shadow axis. f1 is for the penumbral shadow; f2 is for the umbral shadow.  [tan(f1), tan(f2) are effectively constant for the duration of an eclipse.]</ul>
+
+<p>Each line gives the term in the series. The first line is the constant part of the series; the 2<sup>nd</sup> line gives the term in the first order of time; and the 3<sup>rd</sup> line gives the term in the 2<sup>nd</sup> order of time. Time is measured in hours from the 'Zero time for the series' as given at the start of the elements. 
+<p>To compute a value, evaluate the series as (using the X coordinate as an example):
+
+<br>X +dX*t+d2X*t<SUP>2</SUP>
+
+</BODY>
+</HTML>

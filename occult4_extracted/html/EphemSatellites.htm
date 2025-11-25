@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Satellite positions</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1><A NAME="idh_4overview"></A>Satellite positions</H1>
+<!-- Insert Header in above line -->
+<P>This option provides predictions of the location of satellites relative to the planet. The satellites included are:
+<table columns=3 border=1>
+<TR><TH NOWRAP>Planet</TH><TH>Satellites</TH></TR>
+<TR><TD>Mars</TD><TD>Phobos, Deimos</TD></TR>
+<TR><TD>Jupiter</TD><TD>Io, Europa, Ganymede, Callisto, Amalthea, Himalia, Elara, Pasiphae, Sinope, Lysithea, Carme, Ananke, Leda, Thebe, Adrastea, Metis</TD></TR>
+<TR><TD>Saturn</TD><TD>Mimas, Enceladus, Tethys, Dione, Rhea, Titan, Hyperion, Iapetus, Phoebe</TD></TR>
+<TR><TD>Uranus</TD><TD>Ariel, Umbriel, Titania, Oberon, Miranda, Cordelia, Ophelia, Bianca, Cressida, Desdemona, Juliet, Portia, Rosalind, Belinda, Puck</TD></TR>
+<TR><TD>Neptune</TD><TD>Triton, Nereid</TD></TR>
+<TR><TD>Pluto</TD><TD>Charon, Nix, Hydra, Kerberos, Styx</TD></TR>
+</table>
+
+</p>
+
+<p>The prediction requires selecting the planet (using the radio buttons), and checking the moons for the prediction - all at the top of the form. Then set the date for the start of the prediction; and for an ephemeris, set the step interval and duration. </p>
+
+<P>A sample output, based on the two principal moons of Neptune, is as follows:</P>
+
+<pre>
+Triton (I)
+Year Mth Dy  hr    h  m   s      o  '   "    Mag   Sep"   PA     "/min  PA
+2008 Jan  1  0.0  21 30 35.29  -15  2 14.3  13.6    13.5  12.7
+2008 Jan  1  4.0  21 30 36.67  -15  2  8.6  13.6    14.2  22.8    0.09  74.1
+2008 Jan  1  8.0  21 30 38.05  -15  2  3.3  13.6    14.8  32.0    0.09  75.0
+2008 Jan  1 12.0  21 30 39.40  -15  1 58.4  13.6    15.4  40.4    0.08  75.9
+
+Nereid (II)
+Year Mth Dy  hr    h  m   s      o  '   "    Mag   Sep"   PA     "/min  PA
+2008 Jan  1  0.0  21 30 52.20  -15  0 41.5  18.8   269.6  66.9
+2008 Jan  1  4.0  21 30 53.38  -15  0 35.9  18.8   269.2  66.9    0.08  71.8
+2008 Jan  1  8.0  21 30 54.57  -15  0 30.2  18.8   268.8  66.9    0.08  71.8
+2008 Jan  1 12.0  21 30 55.75  -15  0 24.6  18.8   268.5  66.9    0.08  71.8</pre>
+
+<p>The meaning of the output is:
+<table columns=3 border=1>
+<TR><TH NOWRAP>Column</TH><TH>Meaning</TH></TR>
+<TR><TD>Yr Mth Dy Hr</TD><TD>the geocentric date/time for the prediction</TD></TR>
+<TR><TD>h m s</TD><TD>J2000 RA</TD></TR>
+<TR><TD>o ' ''</TD><TD>J2000 declination</TD></TR>
+<TR><TD>Mag</TD><TD>Visual magnitude. For Iapetus, the orbital phase component is included</TD></TR>
+<TR><TD>Sep"</TD><TD>The separation in arc secs from the planet (strictly, from the enter of the planet). [For separations greater than 1 or 2 arc mins, the RA and Dec should be used in preference.]</TD></TR>
+<TR><TD>PA</TD><TD>The J2000 Position angle of the satellite from the Planet</TD></TR>
+<TR><TD>"/min</TD><TD>The motion of the satellite relative to the J2000 star background, in arcsec per minute.</TD></TR>
+<TR><TD>PA</TD><TD>The direction of motion of the satellite .</TD></TR>
+</table>
+
+<P>The ephemerides of all satellites covered by Occult are 'fully accurate', with the single exception of Saturn IX Phoebe (where errors of an arc min are to be expected.). The source of the ephemerides is listed <A href="FileFormat%20SatellitesEphemerisSources.htm">here</a></P>
+
+</BODY>
+</HTML>

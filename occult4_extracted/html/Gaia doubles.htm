@@ -1,0 +1,396 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Overview</Title>
+<style type="text/css">
+.auto-style1 {
+	color: #0000FF;
+}
+.auto-style2 {
+	border-style: solid;
+	border-width: 1px;
+}
+.auto-style3 {
+	border: 1px solid #800000;
+}
+.auto-style4 {
+	font-size: x-small;
+	color: #FF0000;
+}
+.auto-style5 {
+	font-size: xx-small;
+}
+.auto-style6 {
+	color: #800000;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Gaia double stars (more precisely, non-single stars)</H1>
+<p>This form displays details of stars which are in the Gaia non-single star 
+files. The Source catalog is <span class="auto-style1">VizieR I/357: Gaia DR3 Part 3. Non-single-stars</span>.</p>
+<p>The Gaia double star data can be accessed via:</p>
+<ul>
+	<li>Asteroid predictions, for displayed event - from the world map - using the menu item<strong> 
+	Gaia double stars (nearby)</strong></li>
+	<li>Asteroid reductions, for display event - from the <span class="auto-style6">Observations 
+	Editor</span>, using the menu item <strong>List... Gaia double stars (nearby)</strong></li>
+	<li>For a selected star - <span class="auto-style6">Maintenance</span> tab,
+	<span class="auto-style6">View catalogue details for selected stars</span>,
+	using the
+	<strong>Gaia doubles</strong> button</li>
+	<li>Generally, <span class="auto-style6">Ephemerides</span> tab, <strong>
+	View double stars in Gaia DR3 non-single-star files</strong> button</li>
+</ul>
+<p>There are 17 files in this catalog. Occult has used files 1 to 14. It has 
+not incorporated spectroscopic binary systems (56808 entries), nor models for 
+<em>sources compatible with an Variability Induced Mover (vim) solution (nss</em><sub><em>vin</em></sub><em>fl)</em>&nbsp;(870 
+entries)<em>. </em>The files created for Occult are in the <strong>Occult 
+4\Resource Files\Gaia </strong>folder. They are <strong>GaiaDoubles.csv</strong> 
+(which contains 
+all the data, and can be opened in <span class="auto-style6"><em><strong>Excel</strong></em></span>.) 
+and <strong> 
+&nbsp;GaiaDoubles.inx </strong>(an index file containing the byte location for 
+the start of the first record at 1 min intervals in RA). The file contains 724,823 entries.</p>
+
+
+
+
+<p>The functionality displays all stars in the Gaia files that 
+are within 0.25<sup>o</sup> of a specified coordinate in Right Ascension and 
+Declination. In part, this is to ensure the user has feedback that the 
+functionality is working. Where a match is identified (on the basis of matching 
+to within 3 arc-sec), the text ***&nbsp;&nbsp; Probable match&nbsp;&nbsp; *** 
+appears before the relevant entry. At this time, Occult does not provide any 
+further functionality (such as plotting an orbit).</p>
+<p>The data displayed is different, depending on the orbital or astrometric 
+model used for the solution. In a small number of instances, a star has more 
+than one entry - corresponding to different models used.</p>
+<p>Example<pre>
+<span class="auto-style1">Gaia doubles within 15 arc mins of  18  3  9.70, -29 34 53.0      Epoch 2016.0 = JD 2457388.405023
+
+Right Asc.   Declination   Gmag    Semimajor    Period(d)  Epoch(d)   Ecc  Inc Periastron      A      B      F      G   Gaia Source number Model
+18  2 19.07  -29 38 32.8  12.42          .76  587.1845165  -134.458   .15  151          7   -.47    .59    .53     .4  4050270330403424128    oc
+
+***   Probable match   ***
+Right Asc.   Declination   Gmag       pmRA   dpmRA   pmDec  dpmDec   Gaia Source number Model
+18  3  9.73  -29 34 52.8  11.67     -6.985    -.44 -26.284  -2.419  4050264351815143040  acc7
+
+Right Asc.   Declination   Gmag       Period(d)  Epoch(d)  Inc EclP(d) DurnP(d) EclS(d) DurnS(d)   Gaia Source number Model
+18  4 17.35  -29 35  0.3   15.9         .468478      .146   89   -.205     .123    .029     .123  4050355370786176768    eb</span>
+</pre></p>
+
+
+
+
+<p>The first line gives the star coordinates used to search for stars. The 
+coordinate system in J2000. The coordinates (and all other parameters) in the 
+catalog are for the epoch 2016.0</p>
+<p>This table lists the possible fields displayed, and their meaning. Only the 
+first three items, and the last two, are present in all entries:&nbsp;</p>
+<table class="auto-style2">
+	<tr>
+		<td class="auto-style3" style="width: 120px"><strong>Label</strong></td>
+		<td class="auto-style3" style="width: 740px"><strong>Meaning</strong></td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 120px">RA</td>
+		<td class="auto-style3" style="width: 740px">Right Ascension&nbsp; 
+		B2016.0</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 120px">Dec</td>
+		<td class="auto-style3" style="width: 740px">Declination&nbsp; B2016.0</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 120px">Gmag</td>
+		<td class="auto-style3" style="width: 740px">Gaia Green magnitude</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 120px">Semimajor</td>
+		<td class="auto-style3" style="width: 740px">semi-major axis of the 
+		orbit - in mas</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 120px">Period(d)</td>
+		<td class="auto-style3" style="width: 740px">orbital period - days</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 120px">Epoch(d)</td>
+		<td class="auto-style3" style="width: 740px">Epoch for the orbit. Offset 
+		in days from B2016.0 = JD
+<span class="auto-style1">2457388.405023</span></td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 120px">Ecc</td>
+		<td class="auto-style3" style="width: 740px">Eccentricity of the orbit</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 120px">Inc</td>
+		<td class="auto-style3" style="width: 740px">Inclination of the orbit - 
+		degrees</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 120px">Periastron</td>
+		<td class="auto-style3" style="width: 740px">Longitude of periastron - 
+		degrees</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 120px">Node</td>
+		<td class="auto-style3" style="width: 740px">Longitude of the ascending 
+		node - degrees</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 120px">A</td>
+		<td class="auto-style3" style="width: 740px">Theile-Innes constant A&nbsp; 
+		mas</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 120px">B</td>
+		<td class="auto-style3" style="width: 740px">Theile-Innes constant B&nbsp; 
+		mas</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 120px">F</td>
+		<td class="auto-style3" style="width: 740px">Theile-Innes constant F&nbsp; 
+		mas</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 120px">G</td>
+		<td class="auto-style3" style="width: 740px">Theile-Innes constant B&nbsp; 
+		mas</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 120px">EclP(d)</td>
+		<td class="auto-style3" style="width: 740px">Time of mid-eclipse of the 
+		primary by the secondary, relative to zero phase - days</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 120px">DurnP(d)</td>
+		<td class="auto-style3" style="width: 740px">Duration of primary eclipse 
+		assuming spherical components - days</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 120px; height: 32px;">EclS(d)</td>
+		<td class="auto-style3" style="width: 740px; height: 32px;">Time of 
+		mid-eclipse of the secondary by the primary - days</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 120px">DurnS(d)</td>
+		<td class="auto-style3" style="width: 740px">Duration of secondary 
+		eclipse assuming spherical components, relative to zero phase - days</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 120px">pmRA</td>
+		<td class="auto-style3" style="width: 740px">Proper motion in right 
+		ascension direction - mas/yr</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 120px">dpmRA</td>
+		<td class="auto-style3" style="width: 740px">Acceleration in RA - mas/yr<sup>2</sup></td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 120px">ddpmRA</td>
+		<td class="auto-style3" style="width: 740px">Time derivative of the 
+		acceleration in RA - mas/yr<sup>3</sup></td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 120px">pmDec</td>
+		<td class="auto-style3" style="width: 740px">Proper motion in 
+		declination direction - mas/yr</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 120px">dpmDec</td>
+		<td class="auto-style3" style="width: 740px">Acceleration in DEC - 
+		mas/yr<sup>2</sup></td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 120px">ddpmDec</td>
+		<td class="auto-style3" style="width: 740px">Time derivative of the 
+		acceleration in DE -&nbsp; - mas/yr<sup>3</sup></td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 120px">ID</td>
+		<td class="auto-style3" style="width: 740px">The Gaia star identifier</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 120px">Model</td>
+		<td class="auto-style3" style="width: 740px">The model used for the 
+		solution</td>
+	</tr>
+	</table>
+<p>The column Model is the file name (without the extension) with the initial part of the 
+file name removed. The following table provides a brief explanation of the basis 
+for the solution. In the above example, the File referred to by the Model are:</p>
+<p>oc = tbooc.dat<br>acc7 = acc7.dat<br>eb = tboeb.dat</p>
+<pre>File Summary:
+--------------------------------------------------------------------------------
+ FileName      Lrecl  Records   Explanations
+--------------------------------------------------------------------------------
+tboasb1c.dat    2534    33467   Non-single-star orbital models for sources
+                                 compatible with combined astrometric + single
+                                 lined spectroscopic orbital model
+                                 (nss_two_body_orbit) (17-10-2022 version)
+tboeb.dat       1028    86918   Non-single-star orbital models for sources
+                                 compatible with Eclipsing binary model
+                                 (nss_two_body_orbit)
+tboes.dat       1415      155   Non-single-star orbital models for sources
+                                 compatible with Combined eclipsing binary +
+                                 spectroscopic orbital model
+                                 (nss_two_body_orbit)
+tbooc.dat       1740   134598   Non-single-star orbital models for sources
+                                 compatible with Orbital model for an
+                                 astrometric binary with Campbell orbital
+                                 elements (nss_two_body_orbit)
+                                 (17-10-2022 version)
+tbooac.dat      1637      619   Non-single-star orbital models for sources
+                                 compatible with Alternative orbital model
+                                 mainly for low S/N systems with Campbell
+                                 orbital elements (nss_two_body_orbit)
+                                 (17-10-2022 version)
+tbooavc.dat     1637       10   Non-single-star orbital models for sources
+                                 compatible with Alternative orbital model
+                                 mainly for low S/N systems, with a subset
+                                 containing suffix 'Validated' with Campbell
+                                 orbital elements (nss_two_body_orbit)
+                                 (17-10-2022 version)
+tbootsc.dat     1658      345   Non-single-star orbital models for sources
+                                 compatible with Orbital model for a priori
+                                 known systems with Campbell orbital elements
+                                 (nss_two_body_orbit) (17-10-2022 version)
+tbootsvc.dat    1658      188   Non-single-star orbital models for sources
+                                 compatible with Orbital model for a priori
+                                 known systems, with a subset containing
+                                 suffix 'Validated' with Campbell orbital
+                                 elements (nss_two_body_orbit)
+                                 (17-10-2022 version)
+tbosb1.dat       607   181327   Non-single-star orbital models for sources
+                                 compatible with Single Lined Spectroscopic
+                                 binary model (nss_two_body_orbit)
+tbosb1c.dat      389      202   Non-single-star orbital models for sources
+                                 compatible with Single Lined Spectroscopic
+                                 binary model with circular orbit
+                                 (nss_two_body_orbit)
+tbosb2.dat       714     4630   Non-single-star orbital models for sources
+                                 compatible with Double Lined Spectroscopic
+                                 binary model (nss_two_body_orbit)
+tbosb2c.dat      482      746   Non-single-star orbital models for sources
+                                 compatible with Double Lined Spectroscopic
+                                 binary model with circular orbit
+                                 (nss_two_body_orbit)
+acc7.dat         671   246947   Non-single-star astrometric models for sources
+                                 having a non-linear proper motion which is
+                                 compatible with an acceleration solution,
+                                 Acceleration model with 7 parameters
+                                 (nss_acceleration_astro 7)
+acc9.dat         943    91268   Non-single-star astrometric models for sources
+                                 having a non-linear proper motion which is
+                                 compatible with an acceleration solution,
+                                 Acceleration model with 9 parameters
+                                 (nss_acceleration_astro 9)</pre></p>
+
+
+
+
+<h2>Computing PA and separation using the Thiele-Innes constants A, B, F, G</h2>
+<p>1. Compute the Mean anomaly at the required date. <br>&nbsp;&nbsp; M =&nbsp; 
+360/Period * (JD -
+<span class="auto-style1">2457388.405023 - Epoch)</span></p>
+<p>2. Compute the eccentric anomaly E by solving (commomly by iteration):<br>&nbsp; M = E - ecc*sin(E)</p>
+<p>3. Compute<br>&nbsp;&nbsp; X = cos(E) - ecc<br>&nbsp;&nbsp; Y = Sqrt(1-ecc<sup>2</sup>) 
+* sin(E)</p>
+<p>4. calculate the offsets in x and y (offsets in RA and declination) as<br>&nbsp; 
+x = A*X + F*Y<br>&nbsp; y = B*X + G*Y</p>
+<p>5. Separation is Sqrt( x*x + y*y)<br>&nbsp;&nbsp; PA is Atan(x/y)</p>
+<p class="auto-style4">Note - maths needs checking</p>
+<hr>
+<br>
+<h5 class="auto-style6">For the record, the TAP VizieR queries used to extract the data to create the file
+</h5>
+<span class="auto-style5">0</span><br class="auto-style5">
+<span class="auto-style5">SELECT doub.RA_ICRS, doub.DE_ICRS, Source, Gmag, doub.ATI, doub.BTI, doub.FTI, doub.GTI, doub.Per, doub.Tperi, doub.ecc, doub.amaj, doub.incl, doub.omega, doub.PAref, doub.NSSmodel</span><br class="auto-style5">
+<span class="auto-style5">FROM "I/357/tboasb1c" AS doub</span><br class="auto-style5">
+<span class="auto-style5">JOIN "I/355/gaiadr3" AS xmatch USING (Source)</span><br class="auto-style5">
+<span class="auto-style5">WHERE Gmag < 16.0</span><br class="auto-style5">
+<br class="auto-style5">1<br class="auto-style5">
+<span class="auto-style5">SELECT doub.RA_ICRS, doub.DE_ICRS, Source, Gmag, doub.Per, doub.Tperi, doub.ecc, doub.inc, doub.omega, doub.Teclp, doub.Durp, doub.Tecls, doub.Durp, doub.NSSmodel</span><br class="auto-style5">
+<span class="auto-style5">FROM "I/357/tboeb" AS doub</span><br class="auto-style5">
+<span class="auto-style5">JOIN "I/355/gaiadr3" AS xmatch USING (Source)</span><br class="auto-style5">
+<span class="auto-style5">WHERE Gmag < 16.0</span><br class="auto-style5">
+<br class="auto-style5">2<br class="auto-style5">
+<span class="auto-style5">SELECT doub.RA_ICRS, doub.DE_ICRS, Source, Gmag, doub.Per, doub.Tperi, doub.ecc, doub.inc, doub.omega, doub.Teclp, doub.Durp, doub.Tecls, doub.Durp, doub.NSSmodel</span><br class="auto-style5">
+<span class="auto-style5">FROM "I/357/tboes" AS doub</span><br class="auto-style5">
+<span class="auto-style5">JOIN "I/355/gaiadr3" AS xmatch USING (Source)</span><br class="auto-style5">
+<span class="auto-style5">WHERE Gmag < 16.0</span><br class="auto-style5">
+<br class="auto-style5">3<br class="auto-style5">
+<span class="auto-style5">SELECT doub.RA_ICRS, doub.DE_ICRS, Source, Gmag, doub.ATI, doub.BTI, doub.FTI, doub.GTI, doub.Per, doub.Tperi, doub.ecc, doub.amaj, doub.incl, doub.omega, doub.NSSmodel</span><br class="auto-style5">
+<span class="auto-style5">FROM "I/357/tbooc" AS doub</span><br class="auto-style5">
+<span class="auto-style5">JOIN "I/355/gaiadr3" AS xmatch USING (Source)</span><br class="auto-style5">
+<span class="auto-style5">WHERE Gmag < 16.0</span><br class="auto-style5">
+<br class="auto-style5">4<br class="auto-style5">
+<span class="auto-style5">SELECT doub.RA_ICRS, doub.DE_ICRS, Source, Gmag, doub.ATI, doub.BTI, doub.FTI, doub.GTI, doub.Per, doub.Tperi, doub.ecc, doub.amaj, doub.incl, doub.omega, doub.NSSmodel</span><br class="auto-style5">
+<span class="auto-style5">FROM "I/357/tbooac" AS doub</span><br class="auto-style5">
+<span class="auto-style5">JOIN "I/355/gaiadr3" AS xmatch USING (Source)</span><br class="auto-style5">
+<span class="auto-style5">WHERE Gmag < 16.0</span><br class="auto-style5">
+<br class="auto-style5">5<br class="auto-style5">
+<span class="auto-style5">SELECT doub.RA_ICRS, doub.DE_ICRS, Source, Gmag, doub.ATI, doub.BTI, doub.FTI, doub.GTI, doub.Per, doub.Tperi, doub.ecc, doub.amaj, doub.incl, doub.omega, doub.NSSmodel</span><br class="auto-style5">
+<span class="auto-style5">FROM "I/357/tbooavc" AS doub</span><br class="auto-style5">
+<span class="auto-style5">JOIN "I/355/gaiadr3" AS xmatch USING (Source)</span><br class="auto-style5">
+<span class="auto-style5">WHERE Gmag < 16.0</span><br class="auto-style5">
+<br class="auto-style5">6<br class="auto-style5">
+<span class="auto-style5">SELECT doub.RA_ICRS, doub.DE_ICRS, Source, Gmag, doub.ATI, doub.BTI, doub.FTI, doub.GTI, doub.Per, doub.Tperi, doub.ecc, doub.amaj, doub.incl, doub.omega, doub.NSSmodel</span><br class="auto-style5">
+<span class="auto-style5">FROM "I/357/tbootsc" AS doub</span><br class="auto-style5">
+<span class="auto-style5">JOIN "I/355/gaiadr3" AS xmatch USING (Source)</span><br class="auto-style5">
+<span class="auto-style5">WHERE Gmag < 16.0</span><br class="auto-style5">
+<br class="auto-style5">7<br class="auto-style5">
+<span class="auto-style5">SELECT doub.RA_ICRS, doub.DE_ICRS, Source, Gmag, doub.ATI, doub.BTI, doub.FTI, doub.GTI, doub.Per, doub.Tperi, doub.ecc, doub.amaj, doub.incl, doub.omega, doub.NSSmodel</span><br class="auto-style5">
+<span class="auto-style5">FROM "I/357/tbootsvc" AS doub</span><br class="auto-style5">
+<span class="auto-style5">JOIN "I/355/gaiadr3" AS xmatch USING (Source)</span><br class="auto-style5">
+<span class="auto-style5">WHERE Gmag < 16.0</span><br class="auto-style5">
+<br class="auto-style5">8<br class="auto-style5">
+<span class="auto-style5">SELECT doub.RA_ICRS, doub.DE_ICRS, Source, Gmag, doub.Per, doub.Tperi, doub.ecc, doub.omega, doub.NSSmodel</span><br class="auto-style5">
+<span class="auto-style5">FROM "I/357/tbosb1" AS doub</span><br class="auto-style5">
+<span class="auto-style5">JOIN "I/355/gaiadr3" AS xmatch USING (Source)</span><br class="auto-style5">
+<span class="auto-style5">WHERE Gmag < 16.0</span><br class="auto-style5">
+<br class="auto-style5">9<br class="auto-style5">
+<span class="auto-style5">SELECT doub.RA_ICRS, doub.DE_ICRS, Source, Gmag, doub.Per, doub.Tperi, doub.ecc, doub.omega, doub.NSSmodel</span><br class="auto-style5">
+<span class="auto-style5">FROM "I/357/tbosb2" AS doub</span><br class="auto-style5">
+<span class="auto-style5">JOIN "I/355/gaiadr3" AS xmatch USING (Source)</span><br class="auto-style5">
+<span class="auto-style5">WHERE Gmag < 16.0</span><br class="auto-style5">
+<br class="auto-style5">
+
+<span class="auto-style5">10</span><br class="auto-style5">
+<span class="auto-style5">SELECT doub.RA_ICRS, doub.DE_ICRS, Source, Gmag, doub.Per, doub.Tperi, doub.NSSmodel</span><br class="auto-style5">
+<span class="auto-style5">FROM "I/357/tbosb1c" AS doub</span><br class="auto-style5">
+<span class="auto-style5">JOIN "I/355/gaiadr3" AS xmatch USING (Source)</span><br class="auto-style5">
+<span class="auto-style5">WHERE Gmag < 16.0</span><br class="auto-style5">
+<br class="auto-style5">
+
+<span class="auto-style5">11</span><br class="auto-style5">
+<span class="auto-style5">SELECT doub.RA_ICRS, doub.DE_ICRS, Source, Gmag, doub.Per, doub.Tperi, doub.NSSmodel</span><br class="auto-style5">
+<span class="auto-style5">FROM "I/357/tbosb2c" AS doub</span><br class="auto-style5">
+<span class="auto-style5">JOIN "I/355/gaiadr3" AS xmatch USING (Source)</span><br class="auto-style5">
+<span class="auto-style5">WHERE Gmag < 16.0</span><br class="auto-style5">
+<br class="auto-style5">
+
+<span class="auto-style5">12</span><br class="auto-style5">
+<span class="auto-style5">SELECT doub.RA_ICRS, doub.DE_ICRS, Source, Gmag, doub.pmRA, doub.dpmRA, doub.pmDE, doub.dpmDE, doub.NSSmodel</span><br class="auto-style5">
+<span class="auto-style5">FROM "I/357/acc7" AS doub</span><br class="auto-style5">
+<span class="auto-style5">JOIN "I/355/gaiadr3" AS xmatch USING (Source)</span><br class="auto-style5">
+<span class="auto-style5">WHERE Gmag < 16.0</span><br class="auto-style5">
+<br class="auto-style5">
+
+<span class="auto-style5">13</span><br class="auto-style5">
+<span class="auto-style5">SELECT doub.RA_ICRS, doub.DE_ICRS, Source, Gmag, doub.pmRA, doub.dpmRA, doub.ddpmRA, doub.pmDE, doub.dpmDE, doub.ddpmDE, doub.NSSmodel</span><br class="auto-style5">
+<span class="auto-style5">FROM "I/357/acc9" AS doub</span><br class="auto-style5">
+<span class="auto-style5">JOIN "I/355/gaiadr3" AS xmatch USING (Source)</span><br class="auto-style5">
+<span class="auto-style5">WHERE Gmag < 16.0</span>
+
+
+</BODY>
+</HTML>

@@ -1,0 +1,211 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Light curve report</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Light curve report - General issues</H1>
+
+
+<h2>Reporting light curves</h2>
+There are two modes for reporting light curves. <ul type = 1>
+<li>Report multiple light curves on a periodic basis. This is the preferred way of reporting the light curves. The user generates and saves the light curves. Then periodically the user selects those light curves and emails them to the collecting point.
+<li>Report light curves on an individual basis. That is, having generated the light curve, the user saves and emails the light curve at the same time. </ul>
+
+The default location for storing light curves is the <B>{Occult 4}/Observations/LightCurves</B> directory. [The user can save the light curves in a different directory - however the automated process for emailing multiple light curves will not function properly.] When the user has successfully emailed the light curves, they are moved to the directory <B>{Occult 4}/Observations/LightCurves/Reported</B>.
+
+<p>The frequency of automated reporting of light curves is set in the <B>User Settings</B>, 2nd group (Check for availability of updates...) under <b>Check for light curves to upload:</B>. Available options are Never, Daily, Weekly, Monthly, or 3-Monthly - with the default setting being monthly. Those time frames are set on the basis of the date of the last upload of multiple light curves. <I>A '<B>Save and upload</B>' of a single light curve does not re-set the date for the automated uploads.</I>
+
+<p>The automated upload conducts a check at the start-up of Occult. Provided the user has not set the frequency to 'Never', Occult will check for whether there are any light curve files that have not been uploaded - and if so, whether the specified time frame has passed. If so, the user will get a message asking if they want to upload light curve files. Select yes, and a dialogue box will appear to select the files to upload. Generally, select all files - then click OK. This will result in those files being emailed - and if that is successful, the files will be moved into the <I>Reported </I>subdirectory, and the date of the last upload will be set to today's date. If you cancel, or the email is unsuccessful, the files will not be moved, and the last upload date will not be updated.
+
+<h3>Email addresses for reporting</h3>
+The email address for reporting light curves has been added to the file of Addresses used in Occult. The address used is a temporary address, for use while the functionality is being established. If your file of addresses has not been updated to include the required address, you will get a message to that effect when you try to upload a light curve. In this situation, go to the downloads page and download the Reporting addresses for occultations (which is the 10th download on the form) - irrespective of whether or not it is tagged for download.
+
+<p>You can specify multiple cc email addresses - so that you can copy your reports to colleagues. From the report form, click <B>Set CC addresses</B>, or select the menu item <B>File... set CC mail addresses for Light Curves</B>. This will open a box where you can enter multiple email addresses. Points to note when entering email addresses are:<ul type =i>
+<li>separate email addresses with a semicolon
+<li>do not force any line-breaks, or try to place addresses on separate lines. You must let the box line-wrap in its own way;
+<li>to indicate the message recipient, an email address also may have an associated display name for the recipient, which is followed by the address specification surrounded by angled brackets, for example: John Smith &ltjohn.smith@example.org&gt
+<li>The list of addresses is saved in the system user settings, by clicking the <B>Save</B> button. [Occult retrieves the addresses from the system user settings when an email is sent.] If you click the close button,or the Exit button, and there are changes that have not been saved, you will get a warning. If you make changes that are in error, and want to return to the saved version, click the Re-load button. However once you click the Save button, the previous version is lost.</ul>
+<p>When you send a Light Curve Email, the currently saved list of addresses will be added as CC addresses. That is, the addresses are those that exist at the time the email is sent, not when the light curve file was created.
+
+
+<h2>Processing the light curve</h2>
+Data for light curves has a wide range of variability in value ranges and length of data. The light Curve reporting functionality conducts the following processes:<ul type=a>
+<li>The user can (and should!) bin the data to match any integration periods if the measurements have come from an integrating video camera;<br><br>
+<li>When displayed, the user selects the section of the light curve to be archived. This is done by clicking on the light curve plot. If the <B>Start </B>radio button below the plot is checked, the start point will be set to the locaton of the mouse click, and the <B>End</b> radio button will now be checked.  Clicking while the <b>End</b> radio button is checked will set the end of the region, and set the <b>Start</b> radio button.<br><br>
+The portion of the light curve that is currently selected is displayed with a light aqua background.<br><br>
+For a lunar occultation, the user should aim at setting the light curve to about 1 second before the event to 1 second after. Where a companion start is observed, that period should include that companion to a similar extent. Where a companion star was expected but not seen, the light curve should include the time interval during which the companion event was expected.<br><br>
+<li>The height values of the light curve are scaled whenever the selected region is changed. The scaling is based on the values within the selected region. The result of this scaling is that all light curves have approximately the same height range. The maximum value of a light curve will always be about 9500. The minimum value should never be less than zero. However negative values do not indicate invalidity as such; rather it is an indication of poor observing conditions (usually strong background) such that the background subtraction is less than ideal.
+</ul>
+
+<H1>Light curve report - Lunar occultations</H1>
+<I><h3>Summary</h3><ul type=a>
+<li>Select the relevant event in the Observations Editor
+<li>Open the Light Curve report from the Observations Editor menu
+<li>Paste the light curve measurements from LiMovie
+<li>Select the start and end points of the light curve
+<li>Save the report.
+<li>Periodically, email multiple reports.</ul></I>
+The reporting of a light curve for a lunar occultation is accessed from the observations editor. The report can be of any event that has been entered into the editor. Typically, you would create the report at the time of entering a new observation (when you will usually have LiMovie open and displaying the event.) However you can report an old observation by selecting the relevant observation in the current file of observations, or a previous file of observations. In all instances, the only data you will need to manually enter/adjust is the light curve.
+<p>To initiate the Light Curve report, select the relevant event in the Observations Editor. Then click the menu item <B><I>Light curve report.... Create light curve report.</I></B>. This will open the Light Curve report as a lunar occultation, and prefill the report with a range of details.
+<p>Having measured the video in Limovie, there are two ways of entering the light curve into the Light Curve report:<ul type=i>
+<li>In Limovie, click the button <B><I>Copy CSV</I></B>. This button is new to version 0.9.98.2 of Limovie, and is located between the <I>Open AVI </I>button and the <I>Exit </I>button. This will copy the measurements to the Clipboard. Having done this, in the Light Curve report select the menu item <B>File... Paste CSV data set</B>. [<I>You can download version 0.9.98.2 of Limovie from <a href="http://astro-limovie.info/limovie/" target=blank>here</a>.</I>]
+
+<li>In Limovie, click the button <B><I>Save to CSV file</I></B>. Having done this, in the Light Curve report select the menu item <B>File... Open CSV file</B>. Locate the file just saved, and open it.</ul>
+
+<P>If you have measured the video with Tangra, export the measurements to a csv file. Then open that file using the File... Open CSV file menu item. Similarly if you have had the light curve processed in R-OTE.
+
+<p>At this point, you will be taken through three standard AOTA screens which allow the time scale to be set, checks for duplicated or skipped frames, and allows for binning (which would be most unusual for a lunar occultation).
+
+<p>The Light Curve report  displays a plot of the light curve. The region highlighted in Aqua is the part of the light curve that will be reported. For a lunar occultation, aim at reporting from 1.0 secs before the start of the event to 1.0 secs after the end of the event - allowing for the effecst of non-instantaneous transitions, and step events from double (or multiple) stars.
+
+<p>Once satisfied with the selection, the usual approach would be to Save the report - with a bulk-emailing of saved reports occurring at a later date. [A typical report will have a size of less than 2KB.] To save the report, simply click the button <B>Save this report</B>, or select the menu item <B>File...Save _this_ report.
+</B>.
+<p>However if you want to send the report immediately, click the button <B>Save & Email this report</B>, or select the menu item <B>File...Save & Email _this_ report</B> . This will save the report, email the report - and if the email is successful, move the report to the <I>Reported </I>subdirectory. The date for checking whether there are other reports waiting to be emailed is not affected when a single report is sent immediately).
+
+
+<H1>Light curve report - Asteroidal occultations</H1>
+<I><h2>Summary</h2><ul type=a>
+<li>Open the Light Curve report from the Asteroid Observations page in Occult
+<li>Paste, or read a csv file containing, the light curve measurements from LiMovie, Tangra, or R-OTE
+<li>Manually specify event and observer details (date, location, observer, and star)
+<li>Select the start and end points of the light curve
+<li>Save the report.
+<li>Periodically, email multiple reports.</ul></I>
+
+The reporting of a light curve for an asteroidal occultation is accessed from the main menu for asteroidal occultation observations. Unlike lunar occultations, the user will need to manually enter details of the date, asteroid, star, site location and observer. There are no restrictions on events that can be entered. 
+
+<h2>The Light Curve data</h2>
+The first step on opening the Light curve report will frequently be to enter the light curve. The required data is the csv data generated by either Limovie, Tangra, or R-OTE. If the measurement data has been saved, simply read the csv data using the menu item <B>File... Open CSV file</B>. If the video has been measured with LiMovie, there is the additoional option of copying the measurements in Limovie to the clipboard, and using the menu item <B>File... Paste CSV data set</B>.
+
+<p>You will be taken through three standard AOTA screens which allow the time scale to be set, checks for duplicated or skipped frames, and allows for binning. If an integrating camera has been used, it is important to bin the measurements consistent with the video camera signal. That is, the bin size should correspond to the number of frames integrated (or be a multiple of the number of frames integrated), and the start of the bins need to align with the start of each new integration interval in the video signal.
+
+<p>With the light curve displayed you should select the start and end points of the light curve to be reported. Typically this will be 10's of seconds before the start, and after the end, of an occultation.
+
+<p>You can check the quality of the light curve by selectively plotting any comparison stars. However comparison star data is not reported. Where the comparison star data shows significant changes in transparancy (light level), it may be appropriate to normalise the light curve using a comparison star - using the button for 'Integration, binning, normalisation'. You can also change the binning level. The tools for doing this are those used in AOTA.
+
+<h2>Bibliographic data</h2>
+Unlike lunar occultations, bibliographic data for an asteroidal occultation light curve needs to be manually entered (at this time). Also, at this time the data items that are captured do not include the relative rate of motion, and the direction relative to the normal to the surface of the asteroid.
+
+<p>To enter the bibliographic information, click the <B>Specify event and observer details </B>button in the blue box area. This will open a dialogue box where you specify:<ul type=i>
+<li>Date of the event (but not the time - that comes from the csv data or its processing)
+<li>Site location - East Longitude, Latitude, and altitude (metres)
+<li>Name of the observer(s)
+<li>Asteroid number (the name will be retrieved from the file of asteroid elements)
+<li>The star number. Select the star catalogue from the drop-down list, and complete the number. (Note that the star number retained is that displayed when the form is left.)
+<li>Equivalent star numbers in Hipparcos, SAO, Tycho2, and the Kepler 2 EPIC catalogue.</ul>
+
+<h3>Default settings for site and observer</h3>
+The currently displayed values for the site coordinates and observer name can be retained as default values by clicking the <B>Set as Defaults </B>button. The default values will be inserted in the fields on the form for entering bibliograhic data, where the corresponding fields in the Light Curve report are blank. You can change the displayed values to the default values by clicking the <B>Use defaults </B>button. Both these options require confirmation that you want to proceed.
+
+<h3>Star numbers  equivalents</h3>
+The retrieval of the equivalent star numbers depends upon what catalogues are present on your computer, and having internet access. The variuos possibilities are:<ul type =a>
+<li>The user has UCAC2, UCAC3 and UCAC4 on the computer, has downloaded the Kepler2 catalogue from the Occult downloads page, and has internet access. On clicking <B>Get coords from Star</B>,  Occult will retrieve the star's coordinates from the relevant catalogue on the computer, then query Vizier to locate the identifiers of equivalent stars.
+<li>Option (a) - but no internet access. The identifiers of equivalent stars cannot be retrieved.
+<li>The user does not have the relevant catalogue on their computer. Retrive the J2000 coordinates of the star from the asteroidal occultation prediction,and manually enter those into the boxes for the star's coordinates. Then click Get IDs from coordinates - which will result in a query to Vizier to identify the equivalent stars.
+<li>The user does not have the relevant catalogue on their and no internet connection. The user will be unable to identify the equivalent stars.</ul>
+
+<h3>Transferring the data to the Light Curve report</h3>
+<p>When finished, click <B>Transfer data and Exit</B> to transfer the data to the relevant locations in theLight Curve report, and close the Bibliographic form. If you need to change any data items, simply click the <B>Specify event and observer details </B>button, and change the data as required. If you click the form close button at the top right of the form, or the <B>Cancel </B>button at bottom right, the form will be closed with none of the data being transferred to the Light Curve report.
+
+<h2>Sending the report</h2>
+<p>Once satisfied with the selection, the usual approach would be to Save the report - with a bulk-emailing of saved reports occurring at a later date. [A typical report will have a size of a few tens of KB.] To save the report, simply click the button <B>Save this report</B>, or select the menu item <B>File...Save _this_ report.
+</B>.
+<p>However if you want to send the report immediately, click the button <B>Save & Email this report</B>, or select the menu item <B>File...Save & Email _this_ report</B> . This will save the report, email the report - and if the email is successful, move the report to the <I>Reported </I>subdirectory. The date for checking whether there are other reports waiting to be emailed is not affected when a single report is sent immediately).
+
+<p>If you want the report(s) to be copied to friends/colleagues, use the Set CC Addresses button to specify the cc addresses to be included on all emails of light curve reports.
+
+<p>A copy of the email will be sent as a BCC to your default email address as specified in the User Settings, box 4 (Email settings...). 
+
+<h1>Light curve file format</h1>
+<p><B>Important. This format is not the final format that will be used. However it will enable the overall process to be tested.
+</B><p>
+<B>Line 1</B>
+<table columns=3 border=1>
+<TR><TH NOWRAP>Col  </TH><TH>Format  </TH><TH>Data  </TH></TR>
+<TR><TD>1  </TD><TD>A1  </TD><TD># - new record identifier</TD></TR>
+<TR><TD>3 - 7  </TD><TD>I5  </TD><TD>Number of points in the light curve. There are 24 data points in each data line</TD></TR>
+<TR><TD> 9 - 15</TD><TD>F7.2</TD><TD>Time difference in seconds between the first and last point on the light curve.</TD></TR>
+<TR><TD>17-20</TD><TD>I4</TD><TD>Year corresponding to the first data point</TD></TR>
+<TR><TD>22-23</TD><TD>I2</TD><TD>Month</TD></TR>
+<TR><TD>25-26</TD><TD>I2</TD><TD>Day</TD></TR>
+<TR><TD>28-29</TD><TD>I2</TD><TD>Hour</TD></TR>
+<TR><TD>31-32</TD><TD>I2</TD><TD>Minute</TD></TR>
+<TR><TD>34-38</TD><TD>F5.2</TD><TD>Second</TD></TR>
+<TR><TD>40-48</TD><TD>A9</TD><TD>Hipparcos star number </TD></TR>
+<TR><TD>50-58 </TD><TD>A9 </TD><TD>SAO star number </TD></TR>
+<TR><TD>60-75</TD><TD>A16 </TD><TD>Tycho2 star number</TD></TR>
+<TR><TD>77-88</TD><TD>A12</TD><TD>Kepler2 EPIC ID number</TD></TR>
+<TR><TD>90-98</TD><TD>A9</TD><TD>XZ80Q star number [lunar occultations only]</TD></TR>
+<TR><TD >89-144</TD><TD>A47</TD><TD>not used</TD></TR>
+</table>
+
+<p><B>Line 2 - For Lunar occultations</B>
+<table columns=3 border=1>
+<TR><TH NOWRAP>Col  </TH><TH>Format  </TH><TH>Data  </TH></TR>
+<TR><TD>1-4</TD><TD>A4  </TD><TD>Identifier - "Moon"  </TD></TR>
+<TR><TD>11-17</TD><TD>F7.3  </TD><TD>Axis angle of the event   </TD></TR>
+<TR><TD >19-24</TD><TD>F6.3  </TD><TD>Longitude libration </TD></TR>
+<TR><TD>26-31</TD><TD>F6.3  </TD><TD>Latitude libration   </TD></TR>
+<TR><TD>33-38</TD><TD>f6.2  </TD><TD>Slope of limb at the occultation point. Positive values are equivalent to the limb orientation for a positive increase in the Position Angle of the event</TD></TR>
+<TR><TD>40-45</TD><TD>F6.4 </TD><TD>Motion of the star (arcsec/second) in a direction perpendicular to the lunar limb</TD></TR>
+<TR><TD>47-52</TD><TD>F7.2  </TD><TD>Contact Angle - the difference between the normal to the lunar limb and the direction of lunar motion. values range between -180 and +180. Disappearance have values in the range +90 to -90; reappearances are in the range 90 to 180, or -90 to -180. The sign of Cct indicates whether the star is to the north (+'ve) or south (-'ve) of the direction of motion.</TD></TR>
+<TR><TD>55-59</TD><TD>F5.3</TD><TD>Ratio of apparent lunar radius to the eman lunar radius   </TD></TR>
+<TR><TD>61-66</TD><TD>F6.2</TD><TD>Position angle of the event   </TD></TR>
+<TR><TD>68-71</TD><TD>A4</TD><TD>Cusp angle of the event   </TD></TR>
+<TR><TD>73-76</TD><TD>I4</TD><TD>Percent illumination of the moon. -'ve values are for the waning moon   </TD></TR>
+<TR><TD>78-79</TD><TD>I2</TD><TD>Altitude of the moon   </TD></TR>
+<TR><TD>81-84</TD><TD>I4</TD><TD>Site longitude - degrees   </TD></TR>
+<TR><TD>86-87</TD><TD>I2</TD><TD> Site longitude - minutes  </TD></TR>
+<TR><TD>89-92</TD><TD>f4.1</TD><TD>Site longitude - seconds   </TD></TR>
+<TR><TD>94-96</TD><TD>I3</TD><TD>Site latitude - degrees   </TD></TR>
+<TR><TD>98-99</TD><TD>I2</TD><TD>Site latitude - minutes   </TD></TR>
+<TR><TD>101-104</TD><TD>F4.1</TD><TD>Site latitude - seconds   </TD></TR>
+<TR><TD>105-109</TD><TD>I5</TD><TD>Site altitude metres   </TD></TR>
+<TR><TD>111-135</TD><TD>A25</TD><TD>Observer's name  </TD></TR>
+<TR><TD  NOWRAP>136-144</TD><TD>A9</TD><TD>not used</TD></TR>
+</table>
+
+<p><B>Line 2 - For Asteroidal occultations</B>
+<table columns=3 border=1>
+<TR><TH NOWRAP>Col  </TH><TH>Format  </TH><TH>Data  </TH></TR>
+<TR><TD>1-8</TD><TD>A8</TD><TD>Identifier - "Asteroid"  </TD></TR>
+<TR><TD>10-17</TD><TD>I8</TD><TD>Asteroid number</TD></TR>
+<TR><TD>19-34</TD><TD>A16</TD><TD>Asteroid Name</TD></TR>
+<TR><TD>36-39</TD><TD>I4</TD><TD>Site longitude - degrees   </TD></TR>
+<TR><TD>41-42</TD><TD>I2</TD><TD> Site longitude - minutes  </TD></TR>
+<TR><TD>44-47</TD><TD>f4.1</TD><TD>Site longitude - seconds   </TD></TR>
+<TR><TD>49-51</TD><TD>I3</TD><TD>Site latitude - degrees   </TD></TR>
+<TR><TD>53-54</TD><TD>I2</TD><TD>Site latitude - minutes   </TD></TR>
+<TR><TD>56-59</TD><TD>F4.1</TD><TD>Site latitude - seconds   </TD></TR>
+<TR><TD>60-64</TD><TD>I5</TD><TD>Site altitude metres   </TD></TR>
+<TR><TD>66-90</TD><TD>A25</TD><TD>Observer's name  </TD></TR>
+<TR><TD  NOWRAP>91-136</TD><TD>A103</TD><TD>not used</TD></TR>
+</table>
+
+<p><B>Line 2 - For Other occultations (Not used yet)</B>
+<table columns=3 border=1>
+<TR><TH NOWRAP>Col  </TH><TH>Format  </TH><TH>Data  </TH></TR>
+<TR><TD>1-5</TD><TD>A5</TD><TD>Identifier - "Other"  </TD></TR>
+<TR><TD  NOWRAP>6-144</TD><TD>A139</TD><TD>not used</TD></TR>
+</table>
+
+<p><B>Lines 3+</B>
+<table columns=3 border=1>
+<TR><TH NOWRAP>Col  </TH><TH>Format  </TH><TH>Data  </TH></TR>
+<TR><TD>1-6  </TD><TD>I6 </TD><TD>height value   </TD></TR>
+<TR><TD>7-12  </TD><TD>I6</TD><TD>height value     </TD></TR>
+<TR><TD>13-18  </TD><TD>I6 </TD><TD>height value     </TD></TR>
+<TR><TD>...  </TD><TD>I6</TD><TD>height value     </TD></TR>
+<TR><TD>139-144</TD><TD>I6</TD><TD>height value    </TD></TR>
+</table>
+
+<P></P>
+
+</BODY>
+</HTML>
