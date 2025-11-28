@@ -1,0 +1,3 @@
+[submodule "external/IOC_GaiaLib"]
+	path = external/IOC_GaiaLib
+	url = https://github.com/manvalan/IOC_GaiaLib.git
