@@ -1,0 +1,151 @@
+# IOccultCalc Preset - AstDyn Orbit Fitting Example
+# Usa elementi AstDyS con fitting osservazioni RWO
+# Propagazione alta precisione RKF78
+# Uso: ./italoccultcalc.sh preset_astdyn_fitting_example.oop
+
+general.
+    .propagator = 'AstDyn-RKF78'     # RKF78 ordine 7(8) invece di RK4
+    .step_size_days = 0.1            # Passo iniziale (adattivo)
+
+# ═══════════════════════════════════════════════════════════════
+# ORBIT SOURCE - AstDyS con Fitting
+# ═══════════════════════════════════════════════════════════════
+
+orbit_source.
+    .type = 'astdys'                 # Fonte: AstDyS (.eq1 + .rwo)
+    .asteroid_number = 433           # (433) Eros
+    
+    # File locali (se disponibili)
+    .elements_file = 'data/433.eq1'  # Elementi equinoziali AstDyS
+    .observations_file = 'data/433.rwo' # Osservazioni RWO
+    
+    # Download automatico (se file non trovati)
+    .auto_download = .TRUE.
+    .astdys_url_base = 'https://newton.spacedys.com/~astdys2'
+    
+    # Orbit Fitting
+    .fit_orbit = .TRUE.              # Abilita fitting con osservazioni
+    .outlier_threshold = 3.0         # Soglia outlier detection [σ]
+    .max_iterations = 20             # Max iterazioni differential correction
+    .convergence_tolerance = 1.0e-6  # Convergenza [AU]
+    .verbose_fitting = .TRUE.        # Output iterazioni
+
+# ═══════════════════════════════════════════════════════════════
+# ASTDYN - Propagatore RKF78
+# ═══════════════════════════════════════════════════════════════
+
+astdyn.
+    # Integratore
+    .tolerance = 1.0e-12             # Tolleranza step adattivo
+    .min_step = 1.0e-6               # Passo minimo [giorni]
+    .max_step = 10.0                 # Passo massimo [giorni]
+    
+    # Perturbazioni
+    .use_planets = .TRUE.            # Perturbazioni 8 pianeti (Simon 1994)
+    .use_asteroids = .TRUE.          # Perturbazioni AST17 (16 asteroidi)
+    .use_relativity = .TRUE.         # Correzioni relativistiche (Schwarzschild)
+    
+    # Output diagnostico
+    .show_propagation_stats = .TRUE. # Statistiche passi integratore
+
+# ═══════════════════════════════════════════════════════════════
+# TEMPO
+# ═══════════════════════════════════════════════════════════════
+
+time.
+    .start_date = '2026-01-01'
+    .end_date = '2026-06-30'
+    .interval_days = 1.0
+
+# ═══════════════════════════════════════════════════════════════
+# RICERCA OCCULTAZIONI
+# ═══════════════════════════════════════════════════════════════
+
+asteroids.
+    .selection_mode = 'from_orbit_source' # Usa asteroide da orbit_source
+
+search.
+    .max_magnitude = 12.0            # Stelle fino a mag 12
+    .search_radius_deg = 0.05        # Raggio ricerca ristretto (alta precisione)
+    .min_probability = 0.01          # Probabilità minima 1%
+
+occultation.
+    # Impostazioni LinOccult-compatibili
+    .shadow_threshold_factor = 3.0
+    .star_uncertainty_base_mas = 7.0
+    .star_pm_degradation_mas_per_year = 2.5
+    .use_probability_cdf = .TRUE.
+    
+    # Usa incertezza da fit O-C
+    .use_fitted_uncertainty = .TRUE. # Usa RMS da fit come incertezza
+    
+    # NO Chebyshev (già alta precisione con RKF78)
+    .use_chebyshev = .FALSE.
+    
+    # NO Adaptive timestep (RKF78 già adattivo)
+    .use_adaptive_timestep = .FALSE.
+
+# ═══════════════════════════════════════════════════════════════
+# CATALOGO GAIA
+# ═══════════════════════════════════════════════════════════════
+
+gaia.
+    .use_local_cache = .TRUE.
+    .cache_directory = '/Users/michelebigi/catalogs'
+    .catalog_file = 'gaia_mag18.cat.gz'
+    .auto_download = .FALSE.
+    .version = 'DR3'
+
+# ═══════════════════════════════════════════════════════════════
+# OUTPUT
+# ═══════════════════════════════════════════════════════════════
+
+output.
+    .format = 'iota'
+    .directory = 'output'
+    .include_uncertainties = .TRUE.
+    .include_path = .TRUE.
+    .generate_kml = .TRUE.
+    .generate_json = .TRUE.
+    
+    # Output specifici AstDyn
+    .include_fit_statistics = .TRUE. # Include statistiche fit O-C
+    .include_residuals_plot = .TRUE. # Plot residui per epoca
+    .save_fitted_elements = .TRUE.   # Salva elementi migliorati in .eq1
+
+# ═══════════════════════════════════════════════════════════════
+# FILTRI GEOGRAFICI (Opzionali)
+# ═══════════════════════════════════════════════════════════════
+
+filters.
+    .use_geographic_filter = .FALSE. # Disabilitato per demo globale
+    
+# ═══════════════════════════════════════════════════════════════
+# NOTE
+# ═══════════════════════════════════════════════════════════════
+# 
+# Questo preset dimostra l'integrazione completa con AstDyn:
+# 
+# 1. Download elementi da AstDyS (formato .eq1)
+# 2. Download osservazioni RWO (formato .rwo)
+# 3. Orbit fitting con differential correction
+# 4. Propagazione alta precisione con RKF78
+# 5. Predizione occultazioni con elementi migliorati
+# 
+# Performance attese:
+# - Fitting: ~10-20 secondi (dipende da n. osservazioni)
+# - Propagazione: ~0.05s per ±30 giorni
+# - RMS tipico: 0.3-0.5 arcsec
+# - Precisione ombra: ±50-100 km
+# 
+# Vantaggi vs RK4 standard:
+# - Precisione: 10× migliore su propagazioni > 30 giorni
+# - Validazione: Confronto diretto con osservazioni reali
+# - Incertezze: Stimate da fit O-C, non parametriche
+# 
+# Requisiti:
+# - ITALOccultLibrary/astdyn compilato
+# - File 433.eq1 e 433.rwo (o download automatico)
+# - CMake flag: -DUSE_ASTDYN=ON
+# 
+# ═══════════════════════════════════════════════════════════════

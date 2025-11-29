@@ -15,29 +15,55 @@ IOccultCalc è una libreria completa per astronomi amatoriali e professionisti c
 
 - ✨ **Download automatico** elementi orbitali equinoziali da AstDyS2
 - 🌟 **Query intelligenti Gaia DR3** - scarica solo le stelle necessarie
-- � **Cache locale Gaia DR3** - download una volta, usa offline, 5-10× più veloce
-- �🛰️ **Propagazione orbitale precisa** usando elementi equinoziali (non singolari)
+- 💾 **Cache locale Gaia DR3** - download una volta, usa offline, 5-10× più veloce
+- 🛰️ **Propagazione orbitale precisa** usando elementi equinoziali (non singolari)
 - 🪐 **Modello N-body completo** - perturbazioni di tutti i pianeti e corpi maggiori
 - 🌍 **JPL DE441 ephemerides** - standard NASA con precisione <100m per pianeti (10-50× meglio di VSOP87)
 - 🔬 **Orbit determination** - miglioramento orbitale con osservazioni astrometriche
 - 📡 **Download osservazioni MPC** - formato standard 80 colonne
 - 📈 **Differential correction** - metodo Gauss-Newton con least squares
-- � **Calcolo shadow path** sulla superficie terrestre
+- 🌓 **Calcolo shadow path** sulla superficie terrestre
 - 📊 **Calcolo probabilità** con incertezze orbitali
 - ⚡ **RKF78/DOPRI853** - integratori high-order con step adattivo
 - 🔭 **Correzioni relativistiche** - light-time, aberrazione, deflessione gravitazionale
 - 🗺️ **Export KML/KMZ** per visualizzazione in Google Earth
 - 📄 **Compatibilità Occult4 XML** - import/export previsioni formato Dave Herald
+- 📋 **Liste combinate asteroidi** - range numerici + file multipli con deduplicazione automatica 🆕
+- 💾 **Output ASTNUM_LIST** - formato riutilizzabile (number) # name (N events) 🆕
+- 📥 **Multi-format input** - supporto ASTNUM_LIST, MPC_NUMBERED, PLAIN_TEXT 🆕
 - ⚙️ **Performance ottimizzate** con ricerche parallele e caching
+- 🔧 **Script di installazione** automatico con supporto multi-piattaforma 🆕
 - 📚 **Documentazione completa** ed esempi
 
 ## 🚀 Quick Start
 
-### Installazione (macOS)
+### Installazione Automatica
+
+```bash
+# 1. Clone del repository
+git clone https://github.com/manvalan/IOccultCalc.git
+cd IOccultCalc
+
+# 2. Installazione automatica (standard)
+./install.sh
+
+# 3. Installazione utente (senza sudo)
+./install.sh --user
+
+# 4. Installazione personalizzata
+./install.sh --prefix /opt/ioccultcalc
+
+# 5. Verifica
+italoccultcalc --help
+```
+
+**Guida completa**: [INSTALLATION_GUIDE.md](INSTALLATION_GUIDE.md)
+
+### Installazione Manuale (macOS)
 
 ```bash
 # 1. Installa dipendenze
-brew install cmake curl libxml2
+brew install cmake libomp
 
 # 2. Clone e compila
 git clone https://github.com/manvalan/IOccultCalc.git
@@ -48,7 +74,7 @@ cd IOccultCalc
 ./build/examples/example_basic 433
 ```
 
-### Installazione (Linux)
+### Installazione Manuale (Linux)
 
 ```bash
 # 1. Installa dipendenze
@@ -139,6 +165,30 @@ Ricerca multipli asteroidi da file:
 ```bash
 ./build/examples/example_search examples/asteroids.txt 2026-01-01 2026-12-31 14.0
 ```
+
+### Combined Asteroid Lists 🆕
+Sistema avanzato per combinare range numerici e file multipli con deduplicazione automatica:
+```bash
+# Range [1-1000] + file locale
+./build/examples/example_combined_asteroid_lists
+
+# Tramite preset OOP
+italoccultcalc --preset preset_quick_combined.oop
+
+# Output riutilizzabile in formato ASTNUM_LIST
+# (1) # Ceres (5 events)
+# (4) # Vesta (3 events)
+# (10) # Hygiea (2 events)
+```
+
+**Caratteristiche**:
+- Unione di range numerici e file multipli
+- Deduplicazione automatica
+- Multi-format input (ASTNUM_LIST, MPC_NUMBERED, PLAIN_TEXT)
+- Output riutilizzabile come input
+- File .oop per configurazione persistente
+
+**Guide**: [COMBINED_LISTS_IMPLEMENTATION.md](COMBINED_LISTS_IMPLEMENTATION.md) | [GUIDA_FILE_OOP.md](GUIDA_FILE_OOP.md)
 
 ### Orbit Improvement
 Miglioramento elementi orbitali con osservazioni astrometriche:
