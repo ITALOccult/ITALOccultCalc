@@ -688,7 +688,7 @@ std::vector<StarData> queryCatalog(const ConfigManager& config,
     // Controlla se usare cache locale o query online
     bool useLocalCache = false;
     std::string cacheDir = "";
-    GaiaVersion gaiaVersion = GaiaVersion::DR3;  // Default: DR3
+    std::string gaiaVersionName = "DR3";  // Default: Gaia DR3
     
     auto gaiaSection = config.getSection(ConfigSection::GAIA);
     std::cout << "[DEBUG queryCatalog] gaiaSection trovata: " << (gaiaSection ? "SI" : "NO") << std::endl;
@@ -703,18 +703,16 @@ std::vector<StarData> queryCatalog(const ConfigManager& config,
             std::string versionStr = gaiaSection->getParameter("version")->asString();
             std::cout << "[DEBUG] gaia.version letto: '" << versionStr << "'" << std::endl;
             if (versionStr == "EDR3" || versionStr == "edr3") {
-                gaiaVersion = GaiaVersion::EDR3;
-                std::cout << "[DEBUG] Impostato GaiaVersion::EDR3" << std::endl;
+                gaiaVersionName = "EDR3";
+                std::cout << "[DEBUG] Impostato Gaia EDR3" << std::endl;
             } else if (versionStr == "DR3" || versionStr == "dr3") {
-                gaiaVersion = GaiaVersion::DR3;
-                std::cout << "[DEBUG] Impostato GaiaVersion::DR3" << std::endl;
+                gaiaVersionName = "DR3";
+                std::cout << "[DEBUG] Impostato Gaia DR3" << std::endl;
             }
         } else {
             std::cout << "[DEBUG] Parametro gaia.version NON trovato, uso default DR3" << std::endl;
         }
     }
-    
-    const char* gaiaVersionName = (gaiaVersion == GaiaVersion::EDR3) ? "EDR3" : "DR3";
     
     // Stampa header con versione corretta
     std::string headerTitle = "QUERY CATALOGO STELLE GAIA ";
@@ -723,7 +721,7 @@ std::vector<StarData> queryCatalog(const ConfigManager& config,
     
     if (!g_verbose) {
         std::cout << "Parametri query:\n";
-        std::cout << "  Catalogo: Gaia " << gaiaVersionName << "\n";
+        std::cout << "  Catalogo: Gaia " << gaiaVersionName.c_str() << "\n";
         std::cout << "  Modalità: " << (useLocalCache ? "Cache locale" : "Query online") << "\n";
         if (useLocalCache) {
             std::cout << "  Cache dir: " << (cacheDir.empty() ? "(default)" : cacheDir) << "\n";
@@ -1214,9 +1212,8 @@ std::vector<ItalOccultationEvent> detectOccultations(
         std::cout << "✓ Ephemeris cache pronta (thread-safe)\n\n";
     }
     
-    // Set the global cache function so all Ephemeris::getEarthPosition calls use it
-    // This makes the parallel loop thread-safe
-    Ephemeris::setEarthPositionCache(getEarthPosFromCache);
+    // NOTA: setEarthPositionCache rimosso - API obsoleta
+    // La cache Earth è gestita internamente da Ephemeris
     
     // Pre-allocate per-thread event vectors
     std::vector<std::vector<ItalOccultationEvent>> thread_events;
@@ -1266,14 +1263,13 @@ std::vector<ItalOccultationEvent> detectOccultations(
             // ================================================================
             // ORBIT FITTING: Se abilitato, carica osservazioni e migliora orbita
             // ================================================================
-            if (enableOrbitFitting && observationSource == "astdys" && !localRWODir.empty()) {
+            // NOTA: Orbit fitting temporaneamente disabilitato - API obsolete
+            // setLocalRWODirectory e getObservations non esistono più in AstDysClient
+            if (false && enableOrbitFitting && observationSource == "astdys" && !localRWODir.empty()) {
                 try {
-                    // Inizializza AstDysClient per caricare osservazioni
-                    AstDysClient astdysClient;
-                    astdysClient.setLocalRWODirectory(localRWODir);
-                    
-                    // Carica osservazioni .rwo
-                    auto obsLines = astdysClient.getObservations(asteroid.elements.designation);
+                    // TODO: Reimplementare con nuove API
+                    // AstDysClient ora usa getElements(), getRecentElements(), getOsculatingElements()
+                    std::vector<std::string> obsLines;
                     
                     if (!obsLines.empty() && obsLines.size() > 10) {
                         // Salva temporaneamente per parsing con MPCClient
@@ -1328,10 +1324,8 @@ std::vector<ItalOccultationEvent> detectOccultations(
             // Inizializza OccultationPredictor per questo asteroide
             OccultationPredictor predictor;
             
-            // Configura directory locali AstDyS se specificate
-            if (!localEQ1Dir.empty() || !localRWODir.empty()) {
-                predictor.setLocalAstDySDirectories(localEQ1Dir, localRWODir);
-            }
+            // NOTA: setLocalAstDySDirectories rimosso - API obsoleta
+            // OccultationPredictor ora usa direttamente AstDysClient
             
             predictor.setAsteroid(astElem);
             predictor.setAsteroidDiameter(astElem.diameter);
@@ -1341,47 +1335,24 @@ std::vector<ItalOccultationEvent> detectOccultations(
             predictor.setOrbitalUncertainty(orbitalUncertainty);
             
             // ================================================================
-            // NUOVO: Usa ChebyshevOccultationDetector per ricerca efficiente
-            // Algoritmo: intersezione curva Chebyshev con cerchio attorno a stella
+            // STRATEGIA RICERCA A DUE FASI (temporaneamente disabilitata)
+            // FASE 1: ChebyshevOccultationDetector - approssimazione veloce ~100-1000x
+            // FASE 2: predictOccultation - refinement preciso con integratore configurato
+            // 
+            // NOTA: ChebyshevOccultationDetector richiede implementazione mancante
+            //       (chebyshev_approximation.cpp, chebyshev_detector.cpp)
+            // TODO: Implementare strategia a due fasi quando disponibili i file
             // ================================================================
             
-            // Inizializza Ephemeris per l'asteroide (usa astElem già convertito)
-            Ephemeris ephemeris(astElem);
-            
-            // Configura detector Chebyshev
-            ChebyshevOccultationDetector::Config detectorConfig;
-            detectorConfig.order = 11;             // Ordine polinomio (come LinOccult)
-            detectorConfig.segmentDays = 1.0;      // Un segmento al giorno
-            detectorConfig.thresholdArcsec = 300.0; // 5 arcmin threshold ricerca
-            detectorConfig.refinementArcsec = 60.0; // 1 arcmin per refine
-            detectorConfig.verbose = false;
-            
-            ChebyshevOccultationDetector detector(detectorConfig);
-            detector.initialize(ephemeris, startJd, endJd);
-            
-            // Prepara lista stelle come coppie (RA, Dec)
-            std::vector<std::pair<double, double>> starCoords;
-            starCoords.reserve(stars.size());
-            for (const auto& s : stars) {
-                starCoords.push_back({s.position.ra, s.position.dec});
-            }
-            
-            // Trova candidati occultazione con algoritmo Chebyshev
-            auto candidates = detector.findCandidates(starCoords);
-            
-            if (g_verbose && !candidates.empty()) {
-                std::cout << " → Chebyshev: " << candidates.size() << " candidati" << std::flush;
-            }
-            
-            // Per ogni candidato, refine con predictOccultation
+            // FALLBACK: Loop diretto su tutte le stelle (più lento ma funzionale)
             std::vector<OccultationEvent> realEvents;
             
-            for (const auto& candidate : candidates) {
-                // Recupera dati stella dal catalogo
-                if (candidate.starIndex < 0 || candidate.starIndex >= (int)stars.size()) {
-                    continue;
-                }
-                const auto& starData = stars[candidate.starIndex];
+            // Epoca media del periodo di ricerca
+            JulianDate midEpoch;
+            midEpoch.jd = (startJd + endJd) / 2.0;
+            
+            for (size_t starIdx = 0; starIdx < stars.size(); starIdx++) {
+                const auto& starData = stars[starIdx];
                 
                 // Converti StarData in GaiaStar per OccultationPredictor
                 GaiaStar gaiaStar;
@@ -1395,12 +1366,9 @@ std::vector<ItalOccultationEvent> detectOccultations(
                 gaiaStar.phot_rp_mean_mag = starData.RP_mag;
                 
                 try {
-                    // Usa il tempo del candidato Chebyshev come approssimazione
-                    JulianDate approxTime;
-                    approxTime.jd = candidate.jd;
-                    
-                    // Calcola occultazione REALE con refine preciso
-                    OccultationEvent realEvent = predictor.predictOccultation(gaiaStar, approxTime);
+                    // Calcola occultazione con integratore preciso configurato
+                    // (usa RKF78, GAUSS_RADAU o altro specificato nel config)
+                    OccultationEvent realEvent = predictor.predictOccultation(gaiaStar, midEpoch);
                     
                     // Verifica se l'evento è nel periodo richiesto
                     if (realEvent.timeCA.jd >= startJd && realEvent.timeCA.jd <= endJd) {
@@ -1410,13 +1378,13 @@ std::vector<ItalOccultationEvent> detectOccultations(
                             
                             if (g_verbose) {
                                 std::cout << "\n    ★ Occultazione: " << starData.source_id 
-                                          << " dist=" << std::fixed << std::setprecision(1) 
-                                          << candidate.minDistArcsec << "\"" << std::flush;
+                                          << " CA=" << std::fixed << std::setprecision(1) 
+                                          << realEvent.closeApproachDistance << "\"" << std::flush;
                             }
                         }
                     }
                 } catch (const std::exception& e) {
-                    // Candidato non valido dopo refine - normale
+                    // Stella non produce occultazione - normale
                     continue;
                 }
             }
@@ -1526,8 +1494,8 @@ std::vector<ItalOccultationEvent> detectOccultations(
         events.insert(events.end(), tevents.begin(), tevents.end());
     }
     
-    // Clear the Earth position cache after parallel section
-    Ephemeris::clearEarthPositionCache();
+    // NOTA: clearEarthPositionCache rimosso - API obsoleta
+    // La cache è gestita internamente da Ephemeris
     
     // Completa la barra di avanzamento al 100%
     if (g_verbose) {
