@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>XZDoubles</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1><A NAME="idh_4overview">XZDoubles.dat</A></H1>
+<!-- Insert Header in above line -->
+<P>This file contains all the double star information used by OCCULT. The file uses a record length of 200, with the following field definitions. All data is stored as ASCII.</P>
+
+<P></P>
+
+<table columns=3 border=1>
+<TR><TH NOWRAP>Bytes  </TH><TH>  Format</TH><TH> Definition </TH></TR>
+<TR><TD>0 - 6  </TD><TD>xxxxxx_  </TD><TD> XZ number of the primary star in the pair  </TD></TR>
+<TR><TD>   7 -  13 </TD><TD>xxxxxx_  </TD><TD>XZ number of the secondary star in the pair   </TD></TR>
+<TR><TD> 14 - 19 </TD><TD>xxxxxx  </TD><TD>XZ number of the principle star in the system   </TD></TR>
+<TR><TD> 20</TD><TD>M</TD><TD>Flag to indicate whether the XZ80Q position is a mean position. M = mean.</TD></TR>
+<TR><TD>21 - 25  </TD><TD>hhmmsss  </TD><TD> RA (2000) in WDS format  </TD></TR>
+<TR><TD>26 - 30  </TD><TD> +ddmm </TD><TD>Declination (2000) in WDS format   </TD></TR>
+<TR><TD>31 - 38  </TD><TD> _xxxxxxx </TD><TD>ID of double  For OCC stars:<li>OCC = definite double <li>OCc=possible double <li>OC*= not a double  </TD></TR>
+<TR><TD>39 - 44  </TD><TD> _xxxxx </TD><TD> Component identifier  </TD></TR>
+<TR><TD> 45 - 49 </TD><TD>_yyyy  </TD><TD>Year for first observation   </TD></TR>
+<TR><TD>50 - 54  </TD><TD>_yyyy  </TD><TD>Year for last observation   </TD></TR>
+<TR><TD>55 - 57  </TD><TD>_nn  </TD><TD> Number of observations  </TD></TR>
+<TR><TD>58 - 63  </TD><TD>_PPPP.P  </TD><TD>Position Angle for first observation   </TD></TR>
+<TR><TD>64 - 69  </TD><TD>_PPPP.P  </TD><TD>Position Angle for last observation   </TD></TR>
+<TR><TD>70 - 77 </TD><TD>_ddd.ddd  </TD><TD>Separation for first observation   </TD></TR>
+<TR><TD>78 - 85  </TD><TD>_ddd.ddd  </TD><TD>Separation for last observation   </TD></TR>
+<TR><TD>86 - 91  </TD><TD>_mm.mm  </TD><TD> Magnitude of primary in the pair  </TD></TR>
+<TR><TD>92 - 97  </TD><TD>_mm.mm  </TD><TD> Magnitude of secondary in the pair  </TD></TR>
+<TR><TD>98 -107  </TD><TD>_xxxxxxxxx  </TD><TD> Spectrum (usually of primary)  </TD></TR>
+<TR><TD>108-118  </TD><TD>_+xxx +xxx  </TD><TD>Proper motion (arcsecs/1000 years) in RA & Dec   </TD></TR>
+<TR><TD>119-126  </TD><TD>+ddnnnnn </TD><TD>BD number   </TD></TR>
+<TR><TD>127-130 </TD><TD>_xxxx  </TD><TD>Note code from WDS   </TD></TR>
+<TR><TD>131-141  </TD><TD>_xxxx.xxxxx  </TD><TD>Period (years)   </TD></TR>
+<TR><TD>142-151  </TD><TD> _xx.xxxxxx</TD><TD>Semi-major axis (arcsecs)   </TD></TR>
+<TR><TD>152-160  </TD><TD>_xxx.xxxx  </TD><TD>Inclination (deg.)   </TD></TR>
+<TR><TD>161-169  </TD><TD>_xxx.xxxx  </TD><TD>Node (deg)   </TD></TR>
+<TR><TD>170-180  </TD><TD>_yyyy.yyyy  </TD><TD>T0 - date of periastron (years)   </TD></TR>
+<TR><TD>181-188 </TD><TD>_0.xxxxx  </TD><TD>Eccentricity   </TD></TR>
+<TR><TD>189-197  </TD><TD> _xxx.xxxx </TD><TD>Periastron (deg.)   </TD></TR>
+<TR><TD>198-199  </TD><TD>  </TD><TD> CR/LF sequence  </TD></TR>
+</table>
+
+<P>The meaning of the codes in Notes (columns 128-130) are as follows:</P>
+
+<table columns=2 border=1>
+<TR><TH NOWRAP>   </TH><TH>  </TH></TR>
+<TR><TD>D </TD><TD>  Delta Magnitude given.   </TD></TR>
+<TR><TD>N </TD><TD>Notes found in the Notes table of WDS.   </TD></TR>
+<TR><TD>O </TD><TD>Orbit. Where motion has exceeded 360 degrees, no values are listed in the position angle and separation columns. Orbits may be found in the "Fourth Catalog of Orbits of Visual Binary Stars" (Worley and Heintz, 1983), and in the Information Circulars published by Commission 26 of the IAU, as well as in the literature.</TD></TR>
+<TR><TD>P  </TD><TD>100 year proper motion in right ascension. </TD></TR>
+<TR><TD>Q  </TD><TD> 100 year proper motion in declination.</TD></TR>
+<TR><TD>R  </TD><TD> 100 year proper motion in right ascension and declination.</TD></TR>
+<TR><TD>a  </TD><TD>Pair appears in an appendix list, not part of the discoverer's regular numbering system.  </TD></TR>
+<TR><TD>p  </TD><TD>Coordinates and proper motions from the ACRS, PPM, IRS, and FK5 catalogs.</TD></TR>
+<TR><TD>r  </TD><TD>Pair was listed, but in a "rejected" list, not part of the discoverer's regular numbering sequence. </TD></TR>
+<TR><TD>s  </TD><TD>Pair has other discoverer's designations and numbers in the literature due to duplicate discovery. We have given credit to the earliest discovery observation (and correct identification) reported in the literature. The List of Synonyms follows the List of Additional Discoverers. </TD></TR>
+<TR><TD>XZ  </TD><TD>Double identified from XZ80Q scan</TD></TR><table><br>
+
+<p>The first six entries are as follows:<p>
+<nowrap><pre>
+ 54264  54263  54264 00033-0100 RST5179       1943 1991  4 188   185     1.1     1.1   10.96 11.89                     -01 4521                                                                       
+    18            18 00033-0409 RST4738       1939 1991  4  76    64     1.5     1.8    8.09 12.08 F2        -018 -010 -04 6013  p                                                                    
+ 54355         54355 00052+0204 J  1801       1941 1952  3  70    66     3.0     4.0   10.0  11.0                                                                                                     
+    51            51 00053-0542 33 Psc                                   0.002          5.0   7.5  K1III               -06 6357        0.19968  0.00457   35.97    66.30   1991.16943 0.2720  337.71  
+    60            60 00062-0153 HDS   9       1991 1991  1 324   324     0.5     0.5    8.91 10.94 F8        -010 -047 -02 6098   D                                                                   
+ 54446         54446 00065+0550 LDS3123       1960 1960  1 141   141    23.0    23.0   11.0  16.9  K1        +202 +022           p                                                                    <br>
+</pre></nowrap>
+
+</BODY>
+</HTML>

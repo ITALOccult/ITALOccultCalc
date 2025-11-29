@@ -1,0 +1,196 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>VizieR Lunar Archive Format</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Lunar Archive - Format of Reduction files</H1>
+
+<pre>
+Byte(s): (Format) Description
+
+
+  1-  4: (I5)     sequential number in the file
+  
+  7- 27: (A20)    Observer name (An asterisk indicates the name has been deduced, and
+                   may not be correct.)
+ 28    : (A1)     Star catalogue / object type
+                     R  Zodiacal Catalogue  [ADS ref 1940USNAO..10..169R]
+                     S  SAO catalogue [I/131A]
+                     X  XZ80Q catalogue  [I/289]
+                     A  Numbered asteroid
+                     P  Planet and planet satellites
+                     U  Unidentified star
+
+ 29- 34: (I6)     Number in catalogue
+                     For an Unidentified star - 0
+                     For planets, number is formed as pmmm, where:
+                         p = planet number
+                         mmm = moon number. Set to 000 for occultation of planet.
+                         eg Mercury = 1000, Jupiter = 5000, Ganymede = 5003, Titan = 6006  1-  4: (I4)     Year [Note: full year required - such as '2008']
+
+ 35    : (A1)      WDS double star component identifier (A - Z, a - z)
+ 37- 40: (I4)     Year
+ 42- 43: (I2)     Month   
+
+ 45- 46: (I2)     Day
+
+ 48- 49: (I2)     Hour
+
+ 51- 52: (I2)     Minute
+
+ 54- 59: (F6.3)   Second. Number of decimal places is given according to accuracy. 
+
+ 61    : (A1)     Phenomena
+                    &lt&gt  not specified
+                     D  disappear
+                     R  reappear
+                     B  Blink. The mid-time of a blink event. Usually only occurs during a graze,
+                           but can occur in near-graze situations. Duration is specified at 
+                            column 48.
+                           (video) partial disappearance (always &gt 25% of full light). 
+                           (visual) a short disappearance-reappearance - too close to separately
+                            time.
+                     F  Flash. The mid-time of a flash event. Usually only occurs during a graze,
+                           but can occur in near-graze situations. Duration is specified at
+                            column 48.
+                           (video) partial reappearance (always &lt 25% of full light). 
+                           (visual) a short reappearance-disappearance - too close to separately
+                            time.
+                     M  Miss. The time when the star was adjacent the highest point on the
+                          observed or predicted graze profile û although the time might also be
+                          simply the mid-time of the graze. Usually only used when other
+                          observers in a graze observation have recorded D &amp/or R events
+                     S  Start or resume. Only used in a graze observation, to indicate periods
+                          when the observer was observing.
+                     E  End or pause. Only used in a graze observation, to indicate periods when
+                          the observer was not observing.
+                     O  Other [used by ILOC instead of S or E]
+                     X  Missing data. A grazing occultation of this star was known to have been
+                          successfully observed on this date, but no observations are available.
+                          The time and site coordinates are indicative only.
+
+ 62    : (A1)     Limb
+                    &lt&gt  not specified
+                     D  dark limb
+                     B  bright limb (including lunar eclipse penumbra)
+                     U  umbra of lunar eclipse 
+
+ 63    : (A1)     Graze flag
+                     G  graze event
+                    &lt&gt  ordinary occultation
+
+ 64    : (A1)     Method of timing and recording
+                    &lt&gt  not specified
+                     G  Video with time insertion, times extracted by frame analysis
+                     V  Video with other time linking, times extracted by frame analysis
+                     M  Video with other time linking, times extracted by replay
+                     S  Stopwatch (visual)
+                     T  Tape recorder (visual)
+                     E  Eye and ear
+                     P  Photoelectric
+                     K  Key-tapping - including computer keyboards
+                     X  Chronograph
+                     C  Camera and clock
+                     O  Other [details reported to ILOC, but not captured.]
+                     
+  65    : (A1)     Certainty
+                    &lt&gt  Not specified
+                     1  Sure
+                     2  Possibly spurious
+                     3  Most likely spurious
+                     
+  66    : (A1)     Double star / unidentified star
+                    &lt&gt  No double star effect noted
+                     W  Preceding (west) component
+                     E  Following (east) component
+                     N  North component
+                     S  South component
+                     B  Brighter component
+                     F  Fainter component
+                     U  Unidentified star
+                     
+  67    : (A1)     Observation validity
+                    &lt&gt  Valid
+                     A  Valid, after adjustments to the date/time.
+                     B  Valid, after adjustments to the star number.
+                     C  Valid, after adjustments to both the date/time AND star number.
+                     D  Valid, after adjustments to site coordinates.
+                     E  Valid, after adjustments to site coordinates AND date/time.
+                     F  Valid, after adjustments to site coordinates AND star number.
+                     G  Valid, after adjustments to site coordinates AND star number AND date/time.
+                          [NOTE for codes D, E, F & G: Adjustments to site coordinates are made on
+                           the basis of ALL observations made from a site, and not on an
+                           event-by-event basis.]
+
+                     S  Unknown site location. [Used for RGO and ILOC data, where there
+                           is no site data for the specified station.]
+                     T  Poor time base [for events before 1850]
+                     U  Unidentified star [including star is not in the XZ80Q catalogue]
+                     W  Invalid site location. The site location is definitely
+                           in error (eg site located in the sea, or all 
+                           observations from the location have large residuals), and the
+                           correct location cannot be deduced (eg obvious transposition
+                           of digits in the reported site coordinates).
+                     X  Assessed as an invalid observation. On investigation, confident the
+                          relevant occultation and observing location has been identified,
+                          with a conclusion that the event was not actually observed for 
+                          some reason - such as difficult conditions.
+                     Y  limb-corrected residual greater than about 4". This is a flag 
+                          automatically generated to indicate the computed residual is
+                          unsatisfactory. The exact criteria applied depends on the basis for
+                          correcting the limb for its irregularities. Events with this flag
+                          have not been individually investigated to determine whether there
+                          is an error in the reported data, or whether the observation was
+                          adversely affected by poor observing conditions (that is, is invalid).
+                     Z  Unresolved data errors. After considering the possibility
+                          of errors in several of date + time, star, and site location, 
+                          the reported observation cannot be plausibly associated with a
+                          relevant occultation.
+
+ 68- 75: (F8.3)  O-C residual. Computed height of the star above the lunar limb.
+ 
+ 76- 83: (F7.2)   Position Angle of the point on lunar limb. (degrees)
+
+ 84- 91: (F8.2)   topocentric Longitude libration (degrees)
+
+ 92- 97: (F6.2)   topocentric Latitude libration (degrees)
+
+ 98-104: (F7.2)   topocentric Axis Angle of the contact point on lunar limb (degrees). That is,
+                  the position angle referenced to the lunar north pole.
+
+105-111: (F7.3)   Height of the lunar limb at the contact point, corrected by the Moonscale factor
+
+112-117: (F6.3)   Moonscale. The ratio of the apparent angular radius of the moon compared to
+                  the mean angular radius of the moon
+                  
+118-124: (F7.2)   The P coordinate of the point on the lunar limb (degrees)
+
+125-130: (F6.2)   The D coordinate of the point on the lunar limb (degrees)
+
+131-137: (F7.2)   Change in residual for a time difference of +1.0 seconds.
+
+138-143: (F6.2)   Apparent rate of motion of moon (arcsecs/second).
+
+144-150: (F7.2)   Position Angle of direction of motion of the moon (degrees).</pre>
+<pre>
+152-157: (A6)     Source of star position. EDR3 = Gaia EDR3, DR2 = Gaia DR2, DR1 = Gaia DR1,
+                    Hip2 = Hipparcos 2, XZ80Q, DE4xx = JPL DE version for planets,
+                    Ast = asteroid orbital elements, Sat = low precision satellite of a planet  
+
+<strong>NOTES</strong>
+All Text fields [Ax] are left justified.
+All integer fields [Ix] are right justified.
+All floating point fields are aligned by the decimal point.
+For floating point fields, the number of decimal places used is determined by the accuracy of the
+ reported data. The remainder of the field is padded with spaces, not zeros. 
+
+</pre>
+
+</BODY>
+</HTML>

@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Archive functions - regional coordinator</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Archive functions - regional coordinator</H1>
+The primary tools for use by the regional collector are provided on the form that displays the reduced observations.
+
+<p>Regional coordinators need to have the <B>Administrator Access </B>enabled from the User Settings to access the archive functionalities..
+
+<h3>1. Loading the report into the editor</h3>
+
+<p>Upon receipt of a set of observations, they should be read into the Observations Editor. There are two basic ways of doing this:<ul type=1>
+<li>Detach the report from the email, saving it in a directory of your choice. Then use the <B>File... Open </B>menu item of the editor.
+<li>Open the report file in the Email software. Select the entire content of the email, and Copy it to the clipboard (usually Ctrl-C). Then from the Observations Editor, select <B>File... Paste</B>.[You can then save the file to a desired location, it you want.]</ul>
+
+<h3>2. Review the report</h3>
+Do a quick perusal of the report to identify any obvious problems. In particular:<ul type = a>
+<li>Go to the Header section, and read any message.
+<li>In the Header section, check that the field for Email address has been completed. If not, take the email address from the email that sent you the report, and copy it into the email address field. [This needs to be done so that the reductions can be emailed from within Occult.]
+<li>Also in the section, check that the <B>Place name </B>is a sensible identification of the place the observations were made from. [The Place name is archived with the observations]. The Place name should be a  town, village, or significant geographical feature.
+<li>Go to the Sites section, do a quick perusal of the sites. For grazes, plot the sites in GoogleEarth and confirm that the sites look 'sensible' - eg along the side of a road, rather than in the middle of a forest or an ocean! For observer names, if appropriate place in the standard format of Initial plus family name - as in 'J. Smith'. [However if this can't be done with confidence, leave the name as submitted.]
+<li>Go to the Events section. Identify any events where the star is unidentified. Use the <B>Identify Star </B>button to identify the star. [You can assume that the XZ catalogue contains all stars that can be observed by a 20cm scope in any circumstances. It is <I>possible </I>for larger telescopes to record stars that are not in the XZ catalogue, but this will usually only occur in the two or three days before first quarter, or during a very dark lunar eclipse.]
+<li>Review the events for double stars, and make sure a WDS component identifier is specified.
+</ul>
+<h3>3. Reduce the observations, and review</h3>
+Click the <B>Reduce and plot </B>button to reduce the observations. :<ul type = a>
+<li>Scan the column <B>O-C </B>. Most values should have a numerical value less than 1". Values less than 3 are still 'acceptable' - the large value possibly being due to (i) the Watts Charts being a poor representation of the limb at the occultation point, (ii) a poor star position (very rare) or (iii) an observation made under difficult conditions where the event was probably missed. You can compare the observation against past occultations by selecting the reduction line, right-clicking, and plotting the event.
+<li>Residuals greater than 10" are almost always the result of a data recording error. The most common errors are:<ul>
+<li>Incorrect star identification. In the editor, select the event, and click the <B>Identify Star </B>button to identify the star. If this gives a suitable star (with a small residual), replace the star number in the report with that star. [Frequently the nature of the data entry error will be evident from the correct star number - such as transposed digits.]
+<li>Incorrect minute identified. The historical data set is replete with examples of the time being out by an integral number of minutes. 1 minute is the most common. 5 and 10 minutes are also common.
+<li>Incorrect Hour and/or day. Occassionally observers will convert Local time to Universal time incorrectly, or  incorrectly allow for summer time. This will lead to the time being out by an integral number of hours, and possible a day.
+<li>If all events have large residuals, the likely explanation is an error in the the site coordinates.</ul>
+</ul>
+While many of these errors may best be dealt with by asking the representative to clarify the observation, an alternative approach is to generate a set of predictions for the relevant site and date - and compare the observations with the predictions.
+ <h3>4. Seek clarification from the representative [if needed]</h3>
+If you need to clarify any issues in the report with the representative:<ul>
+<li>From the form listing the residuals, select the menu item <B>Archive functions... Email reductions with a message - do not Archive. </B>
+<li>You will then be asked if you want the message sent to all observers. This is particularly relevant to graze reports - where the message can be copied to all observers where an email address is given. The most likely response for a query message is <B>No</B>.
+<li>Now you will have a form where you can enter the message you want to send. Enter the message, and then press <B>Send Email</B>. </ul>
+An email will be sent to the representative containing your message, a standard text explaining the reductions, and a copy of the reductions. 
+<p>The reductions sent to the representative only includes each line up to the O-C column. The columns giving the librations are not sent to the representative.
+<p>[<B>Note</B>. The standard explanatory text included in the email is held in the file <B>Occult 4\Resource Files\Lunar reduction Email body.txt</B>. A coordinator should personalise this file with their name, by editing the file in a standard text editor.]
+
+<p>The nature of the expected response is largely up to the coordinator. A coordinator could request a substitute report. Or they could merely ask for a particular correction to be advised.
+
+ <h3>5. Add the observations to the Archive</h3>
+Once the coordinator is satisfied that the observations are 'OK', they are converted to the Archive format and added to a file of observations held by the coordinator. There are two options for doing this:<ul>
+<li><B>Archive functions... Email reductions AND add observations to Archive. </B>This sends an automatically generated email - made up of the Lunar reduction Email body.txt, and a copy of the Reductions, and adds the observations to the Archive file. <I>[If there was an error sending the email, you will be asked whether you still want to add the observations to the Archive. This will allow you to fix up the cause for the email not being sent, and repeating the entire process without creating duplicate entries in the Archive.]
+</I><li><B>Add observations to Archive (no Email sent)</B> This merely adds the observations to the Archive file.</ul>
+<p>For both options, you will be asked to specify the archive file to add the observations to. The default directory for the Archive files is \Occult 4\Lunar Archive\. Select the file you are currently using to archive the observations. [See notes below on managing the Archive files.]
+
+<h2>Managing the Archive files</h2>
+The Archive files maintained by the coordinator are a critical component of the collection of observations, and must be handled appropriately.
+<p>All observations added to an Archive file are 'added'. Occult will not overwrite the file.
+<p>After the observations have been added, the file is automatically sorted by date. As a result, it is not easy to manually delete the latest observations that have been added.
+<p>The following back-up scheme is applied - so that up to two previous versions of the file can be restored:<ul>
+<li>The current version has an extension of .txt (or any other extension the user applies).
+<li>The immediately preceeding version has the extension <B>.bup</B>.
+<li>The 2nd preceeding version has the extension <B>.bp2</B>.</ul>
+Consequently you can return to the Archive file as it existed before the last two additions. 
+<p>The naming convention used in these local archive files is entirely up to the coordinator. However a name that involves the Year and Month (or Quarter - depending on volume) - such as <B>Archive 2009 Jan.txt  </B>- would be appropriate. Note that the date should indicate the period during which you are adding observations to the Archive, <I>not </I>the date of the observations being added to the Archive.
+<p>Periodically the coordinator will email their latest Archive file to the global coordinator - who will merge the observations into a global file. Once the coordinator emails the archive file to the global coordinator, they must make sure that no more observations are added to that file (for example, by making it Read-only). New observations should be added to a new Archive file (appropriately named for the period you will be adding observations to it).
+
+<h3>Keeping copies of sent emails</h3>
+All emails generated from within Occult include your email address as a BCC address - so you will receive a copy of all emails sent in your inbox. This serves two purposes - (i) confirmation that your email was in fact sent (and went through your ISP), and (ii) provides you with a copy of what was actually sent.
+
+</BODY>
+</HTML>

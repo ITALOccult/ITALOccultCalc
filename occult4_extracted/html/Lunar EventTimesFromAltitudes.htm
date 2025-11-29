@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Event times from altitudes</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Event times from altitudes</H1>
+<P>For observations in the 1600's and early 1700's, an accurate time source was not readily available. In the early-to-mid 1600's occultation observations were timed by measuring the altitude of one or more stars. Later clocks were 'calibrated' by measuring the altitude of several stars. This form is designed to derive the UT of an event from the recorded measurments of the altitudes of stars, or for the times of transit of stars or the Sun.
+
+<p>The form looks like:
+<br><img src=TimesFromAltitude.png><br>
+
+<h2> Menu item - Reset Date & Location</h2>
+This clears the form of any currently entered data.
+
+<h2>Observer & location</h2>
+In this box, select the observer and site location. The site location is displayed. The drop-down list includes and option 'Enter coord manually', which allows the site coordinates to be manually set.
+
+<h2>Altitude measurement </h2>
+In this box, you first select the star that has been used in the altitude measuremnt. The coordinates of that star are displayed for both the J2000 equinox, and the apparent position on the relevant date.
+<p>Secondly you specify the UT date of the Greenwich transit of that star, and the measured altitude of that star. The 3rd box displays the UT, Mean local time, and Apparent Local time, for each of the times of local transit, local rise, and local set (at the specified altitude).
+<br><B>IMPORTANT</B>The UT date of the Greenwhich transit may differ from the date of the event. You must select a date that matches the date and time of the event as reported.
+<br><B>IMPORTANT </B>For historical obsrvations, the day ran from midday to midday, not midnight to midnight. The form incorporates the required corrections for this change in definition of the day. Issues associated with the Gregorian calendar are also included.
+ 
+<h2>Third box</h2>
+This box displays the computed dates and times for transit, rise and set. Adjacent each of the Mean Time and Apparent time displays ius a small button. Click that button to transfer the time to the <b>Reported local event time</b> box.
+
+<h2>Top right box</h2>
+This is usewd to specify the reported event time. 
+<li>When there is no clock to 'correct', the suer should simply transfer the relevant time from the 3rd box (as described above) to this field, as the time of the occultation event
+<li>When the altitudes are being used to determine the clock correction, enter the clock time in this field. Do this before adding the event to the Bottom box using the relevant button to specify the event is a Transit, Rise or Set event. This will result in the added line including the clock correction specific for that altitude measurement.
+
+<h2>Middle-right box</h2>
+This box is used to determnine the final event time, and compute the residual for the occulted star.
+<p>You need to specify wherther the reported altitudes need to have a correction for refraction applied. This should be set to <B>Yes </B>unless there is a clear reason to believe the reported altitudes have already been corrected for refraction (which is most unlikely).
+<p>When the observer is using a clock, and the observations are eing used to derive clock corrections, the form allowws the clock correction to be derived as an overall <B>Mean</B>, or a <B>linear best fit</B>. The values of the fits are displayed in text at the bottom of the form. In cases where there is an observation that seems quite inconsistent with the others, clear the check box from the Bottom box to rwemove it from the clock correction solution.
+<p>To derive the final event time, and determine thr esiduals - enter the event time (either from the relevant altitude when no clock is used, or the reported clock time) in the top right box. Specify the star identifier using the usyal notation of Raaaa, Saaaaaa, Xaaaaaa, or (for planets) Pa. The residual is displayed below.
+<p>when satisfied with the 'solution' for the time and star, click <B>Add event </B>to add the details to the bottom box.
+
+
+<h2>Bottom box</h2>
+This is used to gather all the results. In particular, when the observer has a clock, and the altitude measurements are being used to derive a clock correction, that analysis is performed on the data as lsited here. The check boxes are used to determine whether or not a particular observation is included in the derivation of the clock corrections.
+<p>Note that when an event is added, two lines are in fact added. The first line is evaluated on the basis that the reported altitude needs to be corrected to allow for refraction. The 2nd added line is on the basis that the reported altitude was corrected for refraction (which is almost certainly never the case).
+<p>The following buttons are provided for use with this box:<ul>
+<li><B>add transit </B> Used to add details on the basis the altitude measurement was a time of transit. 
+<li><B>add Rise</B> Used to add details on the basis the altitude measurement was a time of Rise through the specified altitude. 
+<li><B>add Set</B> Used to add details on the basis the altitude measurement was a time of Set through the specified altitude. 
+<li><B>add Clock Correction</B> Used to add the solutions for the derived clock correcton. 
+<li><B>add Comment</B> Used to add text comments about the event. The firtst character of a comment line is a "'". If such a line is highlighted, selecting <B>add Comment </B>allows that line to be edited. Otherwise a new comment line is added. Added comment lines are sorted on an alpha-numeric basis (as is the whole list box).
+<li><B>Duplicate</B> Adds an entry identical to the highlighted entry. This allows the user to weight particular observations in the Clock Correction solution, by duplicating them
+<li><B>Delete</B> Deletes the highlighted entry
+<li><B>Paste observations</B> Allows the user to insert events that have been previously saved - such that they can be included in the analysis (or reanalysed)
+<li><B>Copy output list</B> Copies the contents of the lsit box to the clipboard as text.
+<li><B>Append list to Log file</B> This is the primary option for retaining the analysis results. The log file is contained in the <B>Occult4/Observations/</B> directory, with a file  name made up as <B>HistLog_</B> followed by the observer and location - with an extension of <B>.txt</B>. For example, as <B>HistLog_Bullialdus at Loudon.txt</B>. Clicking the Append... button adds the current data to the end of the relevant file.
+</ul>
+
+<h2>File format of the log file</h2>
+The following is a sample log file entry, showing teh additional headers that are written to the file.
+<pre>
+*1656 Mar  1   Hevelius @ Gdansk     
+ ReportedT  Type    Ref star   Altitude  Rfn   UT event  Rate     UT     Tcorrn
+.  8 34  0 (Mean),  HIP 21421,  38 12.2, 1.3', 19 19 24, 7.9s/'|19.3235|    46
+
+:  8 34  0 (Mean),  HIP 21421,  38 13.5, 0.0', 19 19 24, 7.9s/'|19.3235|    36
+
+ ReportedT  Type Crns      h  m  s  Star     Reduction
+_  8 34  0 (Mean) MR = UT 19 20 10, R   438, Residual = 2.3" in PA  75.1°, deltaT = 39 sec
+` a. No clock times are given. Just the altitude
+
+ Clock corrections
+~ Clock corrn. Mean: 36 ±0 sec, Linear: 0+0.00*(UT-19) ±0 sec
+~ Clock corrn. refraction adjusted Mean: 46 ±0 sec, Linear: 0+0.00*(UT-19) ±0 sec
+
+</pre>
+
+<h2>Other issues</h2>
+<p>The data for Observer names and locations is held in the <B>Resource Files </B>subdirectory in a file called <B>OldObservers.txt</B>; that for the stars used in the altitude measurments is in a file called <B>OldStars.txt</B>. When the form is opened for the first time, these files are downloaded. Otherwise they can be updated to the latest version using the menu item <B>Download Updates</B> {this is a rare occurrence].
+
+</BODY>
+</HTML>

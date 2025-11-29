@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>v</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Datum Conversions</H1>
+<h2>Local datum to WGS84</h2>
+<p>The latitude and longitude referenced to 'old' local datums can be converted to the WGS84 datum using this utility. The basis of the conversion is the Molodensky parameters given in the authorative <A href="http://earth-info.nga.mil/GandG/publications/tr8350.2/tr8350_2.html" target = _blank> WGS84 reference documentation  TR8350.2</a>.
+
+<p>Note that the Molodenski conversion parameters give a conversion accurate to about 0.1".
+
+<p>The drop-down box provides the list of datums included in this conversion. They correspond to the datums used by ILOC in association with the dataset of lunar occultation observations - with the number being that allocated by ILOC. The list includes a number of modern datums that are formally identical to, or practically identical to, WGS84 - and these are indicated with '(= WGS84)'.
+
+<p>TR8350.2 includes Molodensky conversion parameters for regions within datums. However all conversions done within Occult are based on the conversion parameters given for the entire datum.
+
+
+
+
+<h2><br>Mean Sea Level  (msl) above WGS84 spheroid.</h2>
+<p>The reference used for all GPS measurements is the WGS84 spheroid. 
+<p>The mapping authorities around the world have adopted the WGS spheroid (or very close national equivalents) as the reference point for measurements of latitude and longitude.
+<p>However, the mapping authorities around the world have also retained msl as the reference surface for measuring altitude. 
+<p>The default display of almost all GPS units is WGS84 latitude and longitude, and msl height. Internally, the GPS unit applies a correction to a computed height above the WGS84 spheroid to obtain the msl altitude. Some GPS units have an option to display the height above the WGS84 spheroid.
+<p>Occult maintains a file to convert from msl to spheroid height - which is required for accurate analysis of observations. This option displays the height of the mean sea 
+level datum above the WGS84 spheroid for any longitude/latitude location. A web site that maintains all available gravity datums is <a href="http://icgem.gfz-potsdam.de/home", target=_blank> here</a>, and a site for generating a table of heights above MSL is <a href="http://icgem.gfz-potsdam.de/calcgrid" target = _blank> here</a>. As at 2017, the data in the Occult file is derived from the <a href = http://dataservices.gfz-potsdam.de/icgem/showshort.php?id=escidoc:1739891"><B>eigen-6s4v2 </B></a> model. 
+
+<p><b>Note</b> When reporting observations, report height with reference to the msl datum. If you report a WGS84 referenced height, it is very important that you indicate this in the report. 
+
+
+</BODY>
+</HTML>

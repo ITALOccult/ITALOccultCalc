@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Overview</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Crater timing reductions</H1>
+<P>This functionality reduces Crater Timing observations made during lunar eclipses, to compute the height of the notiuonal eclipse-forming layer above the Earth's geoid, and the percent enlargement of the umbral shadow. The methodology is set out in <B>Analysis of Lunar Crater Timings 1842-2011</B>, <I>D Herald and R Sinnott</I>,  JBAA, (in print, expected at end of 2014). 
+
+<p>The routine operates on a file of observations having the following format:
+
+<pre>Byte(s): (Format) Description
+--------------------------------------------------------------------------------
+   Bytes Format  Units   Label   Explanations 
+--------------------------------------------------------------------------------
+  1-  4: (I4)    yr      Year     [1842, 2011] Year of eclipse
+  6-  7: (I2)    mth     Month    [1, 12] Month of eclipse
+  9- 10: (I2)    d       Day      [1, 31] Day of eclipse (based on the Universal 
+                                  Time of mid-eclipse, Gregorian calendar)
+ 12- 31: (A20)   ---     Feature  Name of lunar feature (from the IAU Gazetteer
+                                  of Planetary Nomenclature)
+ 32    : (I1)    ---     Event    [0-9] Event descriptor
+                                  Events during ingress:
+                                    0 First contact with Moon's limb
+                                    1 First contact with a crater, mare, or 
+                                      other surface feature
+                                    2 Middle of the feature or a bright spot
+                                    3 Second contact with the feature
+                                    4 Second contact with Moon's limb
+                                  Events during egress:
+                                    5 Third contact with Moon's limb
+                                    6 Third contact with a crater, mare, or
+                                      other surface feature
+                                    7 Middle of the feature or a bright spot
+                                    8 Fourth contact with the feature 
+                                    9 Fourth contact with Moon's limb
+ 34    : (I1)    ---     DayFlag  [ pf] flag - event in the preceding or
+                                  following UT day
+                                   " " event occurred in the specified UT day
+                                   "p" event occurred in the preceding UT day
+                                   "f" event occurred in the following UT day
+ 35- 36: (I2)    h       Hour     [0, 23] Hour of the event
+ 38- 39: (I2)    min     Minute   [0, 59] Minute of the event
+ 41- 42: (I2)    s       Second   [0, 59] Second of the event
+ 44- 45: (I2)    ---     NumObs   [1, 55] Number of observations combined
+ 47- 50: (I4)    km      Height   [-50, +250] Computed height of the notional 
+                                  eclipse forming layer above the Earth (km) 
+ 52- 54: (I3)    deg     ULat     [-90, +90] Computed latitude of the event on
+                                  the umbral shadow
+ 56- 59: (F4.1)  %       Percent  [-1.1, +5.6] Computed percent enlargement of
+                                  the umbral shadow  
+ 61-115: (A55)   ---     Name     Observer name(s). Individuals are separated
+                                  by an ampersand (&)
+</pre>
+
+The dataset of observations from 1842 to 2011 in this format will be available from Vizier as catalogue VI/140. 
+
+<p>Also required is a file of crater coordinates and diameters that conatins all the craters and other features in the file. This file is 
+called <i>CraterTimings.bin</I>, and has been created from the <B>Gazetteer of Planetary Nomenclature </B>
+maintained by the <I>Inernational Astronomical Union (IAU) Working Group for
+Planetary System Nomenclature</I>. The format for this file (which stores the data as binary) is:
+
+<pre>Byte(s): (Format) Description
+  1-  2: (int16)   Selenographic longitude of the center of the crater, in units of 0.01deg.
+  3-  4: (int16)   Selenographic latitude of the center of the crater, in units of 0.01deg
+  5-  8: (int32)   radius of the Crater in km
+  9- 28: (A20)     Name of lunar feature</pre>  
+
+A version of <I>CraterTimings.bin </I>that includes all the craters and other features required for the 1842-2011 dataset is included in the <B>Crater coordinates </B>download available on the Downloads page on the Maintenance tab.
+
+<h3>Output generated</h3>
+The routine creates a file having the same name (and directory location) as the source file, but with the name augmented with:<br>
+<B>_v0</B><br>
+with the version number automatically incrementing to prevent overwriting.
+<p>Reduction values are written in the fields of Height, ULat, and Percent, overwriting the existing values.
+
+
+ 
+
+
+
+
+</BODY>
+</HTML>

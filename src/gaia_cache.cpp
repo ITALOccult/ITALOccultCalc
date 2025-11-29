@@ -1,0 +1,686 @@
+/**
+ * @file gaia_cache.cpp
+ * @brief Implementazione cache locale GAIA DR3
+ */
+
+#include "ioccultcalc/gaia_cache.h"
+#include "ioccultcalc/data_manager.h"
+#include <nlohmann/json.hpp>
+#include <fstream>
+#include <sstream>
+#include <cmath>
+#include <algorithm>
+#include <iostream>
+#include <iomanip>
+#include <sys/stat.h>
+#include <ctime>
+#include <set>
+
+namespace ioccultcalc {
+
+// ==================== HEALPix Utilities ====================
+
+/**
+ * @brief Conversione coordinate → HEALPix index (RING scheme)
+ * 
+ * Implementazione semplificata per NSIDE=32 (12288 tiles totali)
+ * Ogni tile copre circa 13.4 gradi quadrati
+ */
+namespace healpix {
+
+const double PI = 3.14159265358979323846;
+const double TWOPI = 2.0 * PI;
+const double HALFPI = 0.5 * PI;
+
+int ang2pix_ring(int nside, double theta, double phi) {
+    // theta: colatitude [0, PI]
+    // phi: longitude [0, 2*PI]
+    
+    double z = std::cos(theta);
+    double za = std::abs(z);
+    
+    int npix = 12 * nside * nside;
+    double tt = (2.0 / 3.0);  // = 2/3
+    
+    if (za <= tt) {
+        // Equatorial region
+        double temp1 = nside * (0.5 + tt * z);
+        int jp = static_cast<int>(temp1 - (1 - nside) % 2); // index of  ascending edge line
+        int jm = static_cast<int>(temp1 + (1 - nside) % 2); // index of descending edge line
+        
+        int ir = nside + 1 + jp - jm;  // ring number (1 to 2*nside)
+        int kshift = 1 - (ir % 2);     // kshift=1 if ir even, 0 otherwise
+        
+        double t1 = (phi / TWOPI) * 4.0 * nside;
+        int ip = static_cast<int>(t1 - kshift + 1) / 2;
+        if (ip >= 4 * nside) ip -= 4 * nside;
+        
+        return nside * (nside - 1) * 2 + (ir - 1) * 4 * nside + ip;
+        
+    } else {
+        // Polar caps
+        double tp = phi - static_cast<int>(phi / TWOPI) * TWOPI;
+        double temp1 = nside * std::sqrt(3.0 * (1.0 - za));
+        
+        int jp = static_cast<int>(tp * temp1 / HALFPI);  // increasing edge line index
+        int jm = static_cast<int>((TWOPI - tp) * temp1 / HALFPI);  // decreasing edge line index
+        
+        int ir = jp + jm + 1;  // ring number
+        int ip = static_cast<int>((tp / TWOPI) * 4.0 * ir + 0.5);
+        if (ip >= 4 * ir) ip -= 4 * ir;
+        
+        if (z > 0) {
+            return 2 * ir * (ir - 1) + ip;
+        } else {
+            return npix - 2 * ir * (ir + 1) + ip;
+        }
+    }
+}
+
+void pix2ang_ring(int nside, int pix, double& theta, double& phi) {
+    int npix = 12 * nside * nside;
+    int ncap = 2 * nside * (nside - 1);
+    
+    if (pix < ncap) {
+        // North polar cap
+        int iring = static_cast<int>(0.5 * (1 + std::sqrt(1 + 2 * pix)));
+        int iphi = (pix + 1) - 2 * iring * (iring - 1);
+        
+        theta = std::acos(1.0 - iring * iring / (3.0 * nside * nside));
+        phi = (iphi - 0.5) * PI / (2.0 * iring);
+        
+    } else if (pix < npix - ncap) {
+        // Equatorial region
+        int ip = pix - ncap;
+        int iring = ip / (4 * nside) + nside;
+        int iphi = ip % (4 * nside) + 1;
+        
+        double fodd = ((iring + nside) % 2) ? 1 : 0.5;
+        theta = std::acos((2.0 * nside - iring) / (1.5 * nside));
+        phi = (iphi - fodd) * PI / (2.0 * nside);
+        
+    } else {
+        // South polar cap
+        int ip = npix - pix;
+        int iring = static_cast<int>(0.5 * (1 + std::sqrt(2 * ip - 1)));
+        int iphi = 4 * iring + 1 - (ip - 2 * iring * (iring - 1));
+        
+        theta = std::acos(-1.0 + iring * iring / (3.0 * nside * nside));
+        phi = (iphi - 0.5) * PI / (2.0 * iring);
+    }
+}
+
+std::vector<int> query_disc(int nside, double ra_deg, double dec_deg, double radius_deg) {
+    // Convert to colatitude/longitude
+    double theta = (90.0 - dec_deg) * PI / 180.0;  // colatitude
+    double phi = ra_deg * PI / 180.0;              // longitude
+    double radius_rad = radius_deg * PI / 180.0;
+    
+    std::vector<int> pixels;
+    
+    // Simple approach: check all pixels within bounding box
+    // For production, use proper HEALPix query_disc algorithm
+    
+    int npix = 12 * nside * nside;
+    double cos_radius = std::cos(radius_rad);
+    double cos_theta = std::cos(theta);
+    double sin_theta = std::sin(theta);
+    
+    for (int i = 0; i < npix; ++i) {
+        double t, p;
+        pix2ang_ring(nside, i, t, p);
+        
+        // Angular distance using haversine
+        double cos_dist = cos_theta * std::cos(t) + 
+                         sin_theta * std::sin(t) * std::cos(phi - p);
+        
+        if (cos_dist >= cos_radius) {
+            pixels.push_back(i);
+        }
+    }
+    
+    return pixels;
+}
+
+} // namespace healpix
+
+// ==================== GaiaCache::Impl ====================
+
+class GaiaCache::Impl {
+public:
+    std::string cacheDir;
+    std::string tilesDir;
+    std::string indexFile;
+    bool autoDownload;
+    bool verbose;
+    
+    std::map<int, GaiaTile> tileIndex;  // healpix_id -> tile metadata
+    std::shared_ptr<GaiaClient> gaiaClient;
+    
+    Impl() : autoDownload(true), verbose(false) {
+        // Setup directories
+        auto& dm = DataManager::instance();
+        dm.initialize();
+        
+        cacheDir = dm.getRootDir() + "/gaia";
+        tilesDir = cacheDir + "/tiles";
+        indexFile = cacheDir + "/cache_index.json";
+        
+        // Create directories
+        mkdir(cacheDir.c_str(), 0755);
+        mkdir(tilesDir.c_str(), 0755);
+        
+        // Create default GAIA client
+        gaiaClient = std::make_shared<GaiaClient>();
+    }
+};
+
+// ==================== GaiaCache Implementation ====================
+
+GaiaCache::GaiaCache(const std::string& cacheDir) : pImpl(new Impl()) {
+    if (!cacheDir.empty()) {
+        pImpl->cacheDir = cacheDir;
+        pImpl->tilesDir = cacheDir + "/tiles";
+        pImpl->indexFile = cacheDir + "/cache_index.json";
+        
+        mkdir(pImpl->cacheDir.c_str(), 0755);
+        mkdir(pImpl->tilesDir.c_str(), 0755);
+    }
+    
+    loadIndex();
+}
+
+GaiaCache::~GaiaCache() = default;
+
+// ==================== HEALPix Utilities ====================
+
+int GaiaCache::coordsToHealpix(double raDeg, double decDeg, int nside) const {
+    double theta = (90.0 - decDeg) * healpix::PI / 180.0;  // colatitude
+    double phi = raDeg * healpix::PI / 180.0;              // longitude
+    return healpix::ang2pix_ring(nside, theta, phi);
+}
+
+void GaiaCache::healpixToCoords(int healpix, int nside, double& raDeg, double& decDeg) const {
+    double theta, phi;
+    healpix::pix2ang_ring(nside, healpix, theta, phi);
+    decDeg = 90.0 - theta * 180.0 / healpix::PI;
+    raDeg = phi * 180.0 / healpix::PI;
+}
+
+std::vector<int> GaiaCache::queryDisc(double raDeg, double decDeg, double radiusDeg, int nside) const {
+    return healpix::query_disc(nside, raDeg, decDeg, radiusDeg);
+}
+
+// ==================== Query Interface ====================
+
+std::vector<GaiaStar> GaiaCache::queryRegion(double raDeg, double decDeg, 
+                                            double radiusDeg, double maxMagnitude,
+                                            bool autoDownload) {
+    std::vector<GaiaStar> results;
+    
+    // Find relevant tiles
+    auto tileIds = queryDisc(raDeg, decDeg, radiusDeg, 32);
+    
+    if (pImpl->verbose) {
+        std::cout << "Query region: RA=" << raDeg << " Dec=" << decDeg 
+                  << " Radius=" << radiusDeg << " → " << tileIds.size() << " tiles" << std::endl;
+    }
+    
+    // Check/download tiles
+    for (int tileId : tileIds) {
+        if (!tileExists(tileId) || 
+            pImpl->tileIndex[tileId].max_magnitude < maxMagnitude) {
+            
+            if (autoDownload && pImpl->autoDownload) {
+                if (pImpl->verbose) {
+                    std::cout << "  Downloading tile " << tileId << "..." << std::endl;
+                }
+                auto tile = downloadTile(tileId, maxMagnitude);
+                saveTile(tile);
+                pImpl->tileIndex[tileId] = tile;
+            } else {
+                if (pImpl->verbose) {
+                    std::cout << "  Tile " << tileId << " missing (auto-download disabled)" << std::endl;
+                }
+                continue;
+            }
+        }
+        
+        // Load tile if not in memory
+        if (pImpl->tileIndex[tileId].stars.empty()) {
+            loadTile(tileId);
+        }
+        
+        // Filter stars by distance and magnitude
+        const auto& tile = pImpl->tileIndex[tileId];
+        for (const auto& star : tile.stars) {
+            if (star.phot_g_mean_mag > maxMagnitude) continue;
+            
+            // Check if star is within radius
+            double dra = (star.pos.ra - raDeg) * std::cos(decDeg * healpix::PI / 180.0);
+            double ddec = star.pos.dec - decDeg;
+            double dist = std::sqrt(dra * dra + ddec * ddec);
+            
+            if (dist <= radiusDeg) {
+                results.push_back(star);
+            }
+        }
+    }
+    
+    if (pImpl->verbose) {
+        std::cout << "  Found " << results.size() << " stars" << std::endl;
+    }
+    
+    return results;
+}
+
+std::vector<GaiaStar> GaiaCache::queryPath(const std::vector<EquatorialCoordinates>& path,
+                                          double widthDeg, double maxMagnitude,
+                                          bool autoDownload) {
+    std::vector<GaiaStar> results;
+    std::set<std::string> seenIds;  // To avoid duplicates
+    
+    // Query region around each point in path
+    for (const auto& coord : path) {
+        auto stars = queryRegion(coord.ra, coord.dec, widthDeg, maxMagnitude, autoDownload);
+        
+        for (const auto& star : stars) {
+            if (seenIds.find(star.sourceId) == seenIds.end()) {
+                results.push_back(star);
+                seenIds.insert(star.sourceId);
+            }
+        }
+    }
+    
+    return results;
+}
+
+bool GaiaCache::isCovered(double raDeg, double decDeg, double radiusDeg, 
+                         double maxMagnitude) const {
+    auto tileIds = queryDisc(raDeg, decDeg, radiusDeg, 32);
+    
+    for (int tileId : tileIds) {
+        auto it = pImpl->tileIndex.find(tileId);
+        if (it == pImpl->tileIndex.end()) return false;
+        if (it->second.max_magnitude < maxMagnitude) return false;
+    }
+    
+    return true;
+}
+
+// ==================== Cache Management ====================
+
+int GaiaCache::downloadRegion(double raDeg, double decDeg, double radiusDeg,
+                             double maxMagnitude,
+                             std::function<void(int, int)> progressCallback) {
+    auto tileIds = queryDisc(raDeg, decDeg, radiusDeg, 32);
+    int downloaded = 0;
+    int total = tileIds.size();
+    
+    if (pImpl->verbose) {
+        std::cout << "Downloading region: " << tileIds.size() << " tiles" << std::endl;
+    }
+    
+    for (size_t i = 0; i < tileIds.size(); ++i) {
+        int tileId = tileIds[i];
+        
+        // Check if already downloaded with sufficient magnitude
+        if (tileExists(tileId) && 
+            pImpl->tileIndex[tileId].max_magnitude >= maxMagnitude) {
+            if (pImpl->verbose) {
+                std::cout << "  Tile " << tileId << " already cached" << std::endl;
+            }
+            continue;
+        }
+        
+        // Download tile
+        if (pImpl->verbose) {
+            std::cout << "  Downloading tile " << tileId << " (" << (i+1) << "/" << total << ")..." << std::endl;
+        }
+        
+        try {
+            auto tile = downloadTile(tileId, maxMagnitude);
+            saveTile(tile);
+            pImpl->tileIndex[tileId] = tile;
+            downloaded++;
+            
+            if (progressCallback) {
+                progressCallback(i + 1, total);
+            }
+            
+        } catch (const std::exception& e) {
+            std::cerr << "Error downloading tile " << tileId << ": " << e.what() << std::endl;
+        }
+    }
+    
+    saveIndex();
+    
+    if (pImpl->verbose) {
+        std::cout << "Downloaded " << downloaded << " new tiles" << std::endl;
+    }
+    
+    return downloaded;
+}
+
+int GaiaCache::downloadPath(const std::vector<EquatorialCoordinates>& path,
+                           double widthDeg, double maxMagnitude,
+                           std::function<void(int, int)> progressCallback) {
+    // Collect all unique tiles along path
+    std::set<int> allTiles;
+    for (const auto& coord : path) {
+        auto tiles = queryDisc(coord.ra, coord.dec, widthDeg, 32);
+        allTiles.insert(tiles.begin(), tiles.end());
+    }
+    
+    int downloaded = 0;
+    int total = allTiles.size();
+    int current = 0;
+    
+    for (int tileId : allTiles) {
+        if (!tileExists(tileId) || 
+            pImpl->tileIndex[tileId].max_magnitude < maxMagnitude) {
+            
+            try {
+                auto tile = downloadTile(tileId, maxMagnitude);
+                saveTile(tile);
+                pImpl->tileIndex[tileId] = tile;
+                downloaded++;
+            } catch (const std::exception& e) {
+                std::cerr << "Error downloading tile " << tileId << ": " << e.what() << std::endl;
+            }
+        }
+        
+        current++;
+        if (progressCallback) {
+            progressCallback(current, total);
+        }
+    }
+    
+    saveIndex();
+    return downloaded;
+}
+
+// ==================== Tile Management ====================
+
+GaiaTile GaiaCache::downloadTile(int healpixId, double maxMagnitude) {
+    GaiaTile tile;
+    tile.healpix_id = healpixId;
+    tile.max_magnitude = maxMagnitude;
+    
+    // Get tile center coordinates
+    healpixToCoords(healpixId, 32, tile.ra_center, tile.dec_center);
+    
+    // Tile radius ~ sqrt(area/pi) where area ~ 4*pi / (12*32*32) steradians
+    tile.radius = 180.0 / healpix::PI * std::sqrt(4.0 * healpix::PI / (12.0 * 32.0 * 32.0 * healpix::PI));
+    
+    // Query GAIA for this tile (use larger radius to ensure coverage)
+    if (pImpl->gaiaClient) {
+        tile.stars = pImpl->gaiaClient->queryRegion(
+            tile.ra_center, tile.dec_center, 
+            tile.radius * 1.5,  // Overlap factor
+            maxMagnitude
+        );
+    }
+    
+    tile.star_count = tile.stars.size();
+    
+    // Set timestamp
+    std::time_t now = std::time(nullptr);
+    char buf[100];
+    std::strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", std::localtime(&now));
+    tile.last_update = buf;
+    
+    return tile;
+}
+
+bool GaiaCache::loadTile(int healpixId) {
+    std::string path = getTilePath(healpixId);
+    
+    try {
+        std::ifstream file(path);
+        if (!file.is_open()) return false;
+        
+        nlohmann::json j;
+        file >> j;
+        
+        GaiaTile& tile = pImpl->tileIndex[healpixId];
+        tile.stars.clear();
+        
+        for (const auto& item : j["stars"]) {
+            GaiaStar star;
+            star.sourceId = item["source_id"];
+            star.pos.ra = item["ra"];
+            star.pos.dec = item["dec"];
+            star.parallax = item.value("parallax", 0.0);
+            star.pmra = item.value("pmra", 0.0);
+            star.pmdec = item.value("pmdec", 0.0);
+            star.phot_g_mean_mag = item.value("phot_g_mean_mag", 99.0);
+            star.phot_bp_mean_mag = item.value("phot_bp_mean_mag", 99.0);
+            star.phot_rp_mean_mag = item.value("phot_rp_mean_mag", 99.0);
+            
+            tile.stars.push_back(star);
+        }
+        
+        return true;
+        
+    } catch (const std::exception& e) {
+        std::cerr << "Error loading tile " << healpixId << ": " << e.what() << std::endl;
+        return false;
+    }
+}
+
+bool GaiaCache::saveTile(const GaiaTile& tile) {
+    std::string path = getTilePath(tile.healpix_id);
+    
+    try {
+        nlohmann::json j;
+        j["healpix_id"] = tile.healpix_id;
+        j["ra_center"] = tile.ra_center;
+        j["dec_center"] = tile.dec_center;
+        j["radius"] = tile.radius;
+        j["star_count"] = tile.star_count;
+        j["max_magnitude"] = tile.max_magnitude;
+        j["last_update"] = tile.last_update;
+        
+        j["stars"] = nlohmann::json::array();
+        for (const auto& star : tile.stars) {
+            nlohmann::json s;
+            s["source_id"] = star.sourceId;
+            s["ra"] = star.pos.ra;
+            s["dec"] = star.pos.dec;
+            s["parallax"] = star.parallax;
+            s["pmra"] = star.pmra;
+            s["pmdec"] = star.pmdec;
+            s["phot_g_mean_mag"] = star.phot_g_mean_mag;
+            s["phot_bp_mean_mag"] = star.phot_bp_mean_mag;
+            s["phot_rp_mean_mag"] = star.phot_rp_mean_mag;
+            j["stars"].push_back(s);
+        }
+        
+        std::ofstream file(path);
+        file << std::setw(2) << j << std::endl;
+        
+        return true;
+        
+    } catch (const std::exception& e) {
+        std::cerr << "Error saving tile " << tile.healpix_id << ": " << e.what() << std::endl;
+        return false;
+    }
+}
+
+std::string GaiaCache::getTilePath(int healpixId) const {
+    std::ostringstream oss;
+    oss << pImpl->tilesDir << "/tile_" << std::setfill('0') << std::setw(6) << healpixId << ".json";
+    return oss.str();
+}
+
+bool GaiaCache::tileExists(int healpixId) const {
+    return pImpl->tileIndex.find(healpixId) != pImpl->tileIndex.end();
+}
+
+// ==================== Index Management ====================
+
+bool GaiaCache::loadIndex() {
+    try {
+        std::ifstream file(pImpl->indexFile);
+        if (!file.is_open()) return false;
+        
+        nlohmann::json j;
+        file >> j;
+        
+        pImpl->tileIndex.clear();
+        
+        for (const auto& item : j["tiles"]) {
+            GaiaTile tile;
+            tile.healpix_id = item["healpix_id"];
+            tile.ra_center = item["ra_center"];
+            tile.dec_center = item["dec_center"];
+            tile.radius = item["radius"];
+            tile.star_count = item["star_count"];
+            tile.max_magnitude = item["max_magnitude"];
+            tile.last_update = item["last_update"];
+            // Stars not loaded (loaded on demand)
+            
+            pImpl->tileIndex[tile.healpix_id] = tile;
+        }
+        
+        if (pImpl->verbose) {
+            std::cout << "Loaded index: " << pImpl->tileIndex.size() << " tiles" << std::endl;
+        }
+        
+        return true;
+        
+    } catch (const std::exception& e) {
+        std::cerr << "Error loading index: " << e.what() << std::endl;
+        return false;
+    }
+}
+
+bool GaiaCache::saveIndex() {
+    try {
+        nlohmann::json j;
+        j["version"] = "1.0";
+        j["last_update"] = ""; // TODO: timestamp
+        j["total_tiles"] = pImpl->tileIndex.size();
+        
+        j["tiles"] = nlohmann::json::array();
+        for (const auto& [id, tile] : pImpl->tileIndex) {
+            nlohmann::json t;
+            t["healpix_id"] = tile.healpix_id;
+            t["ra_center"] = tile.ra_center;
+            t["dec_center"] = tile.dec_center;
+            t["radius"] = tile.radius;
+            t["star_count"] = tile.star_count;
+            t["max_magnitude"] = tile.max_magnitude;
+            t["last_update"] = tile.last_update;
+            j["tiles"].push_back(t);
+        }
+        
+        std::ofstream file(pImpl->indexFile);
+        file << std::setw(2) << j << std::endl;
+        
+        return true;
+        
+    } catch (const std::exception& e) {
+        std::cerr << "Error saving index: " << e.what() << std::endl;
+        return false;
+    }
+}
+
+GaiaCacheStats GaiaCache::getStats() const {
+    GaiaCacheStats stats;
+    stats.total_tiles = pImpl->tileIndex.size();
+    
+    for (const auto& [id, tile] : pImpl->tileIndex) {
+        stats.total_stars += tile.star_count;
+        stats.min_magnitude = std::min(stats.min_magnitude, tile.max_magnitude);
+        stats.max_magnitude = std::max(stats.max_magnitude, tile.max_magnitude);
+    }
+    
+    // Sky coverage (each tile ~ 4*pi/(12*32*32) steradians)
+    stats.sky_coverage = stats.total_tiles * 100.0 / (12.0 * 32.0 * 32.0);
+    
+    // Estimate size
+    stats.total_size_mb = 0;
+    for (const auto& [id, tile] : pImpl->tileIndex) {
+        std::string path = getTilePath(id);
+        struct stat st;
+        if (stat(path.c_str(), &st) == 0) {
+            stats.total_size_mb += st.st_size / (1024.0 * 1024.0);
+        }
+    }
+    
+    return stats;
+}
+
+int GaiaCache::cleanOldTiles(int maxAgeDays) {
+    int removed = 0;
+    std::time_t now = std::time(nullptr);
+    
+    auto it = pImpl->tileIndex.begin();
+    while (it != pImpl->tileIndex.end()) {
+        // TODO: Parse last_update and check age
+        // For now, just placeholder
+        ++it;
+    }
+    
+    saveIndex();
+    return removed;
+}
+
+void GaiaCache::clearCache() {
+    pImpl->tileIndex.clear();
+    saveIndex();
+    
+    // Delete all tile files
+    // TODO: implement directory scanning and deletion
+}
+
+void GaiaCache::setGaiaClient(std::shared_ptr<GaiaClient> client) {
+    pImpl->gaiaClient = client;
+}
+
+void GaiaCache::setAutoDownload(bool enable) {
+    pImpl->autoDownload = enable;
+}
+
+void GaiaCache::setVerbose(bool verbose) {
+    pImpl->verbose = verbose;
+}
+
+// ==================== Builder ====================
+
+GaiaCacheBuilder::GaiaCacheBuilder() 
+    : autoDownload_(true), verbose_(false) {}
+
+GaiaCacheBuilder& GaiaCacheBuilder::cacheDir(const std::string& dir) {
+    cacheDir_ = dir;
+    return *this;
+}
+
+GaiaCacheBuilder& GaiaCacheBuilder::autoDownload(bool enable) {
+    autoDownload_ = enable;
+    return *this;
+}
+
+GaiaCacheBuilder& GaiaCacheBuilder::verbose(bool enable) {
+    verbose_ = enable;
+    return *this;
+}
+
+GaiaCacheBuilder& GaiaCacheBuilder::gaiaClient(std::shared_ptr<GaiaClient> client) {
+    client_ = client;
+    return *this;
+}
+
+std::unique_ptr<GaiaCache> GaiaCacheBuilder::build() {
+    auto cache = std::make_unique<GaiaCache>(cacheDir_);
+    cache->setAutoDownload(autoDownload_);
+    cache->setVerbose(verbose_);
+    if (client_) {
+        cache->setGaiaClient(client_);
+    }
+    return cache;
+}
+
+} // namespace ioccultcalc

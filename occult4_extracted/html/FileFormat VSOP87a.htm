@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>VSOP87a</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1><A NAME="idh_4overview">VSOP87a<br>
+Mercury.bin, Venus.bin, Earth.bin, Mars.bin, Jupiter.bin, Saturn.bin, Uranus.bin, Neptune.bin, Pluto.bin</A></H1>
+<!-- Insert Header in above line -->
+<P>Occult includes the VSOP87A series as a default basis for computing planetary ephemerides - of Sun, and Mercury to Neptune. VSOP87 is a fit to the JPL-DE200 ephemeris.</p>
+<p>The files Mercury.bin to Neptune.bin contain coefficients for computing the ecliptic X,Y,Z co-ordinates of the planets according to the <B>VSOP </B>expressions. The series has been truncated to terms with coefficients >5e-8 AU in any of the X,Y,Z co-ordinates - except for the Earth/Sun. The record length in each file is 26, with the following structure:
+</P>
+
+<P></P>
+
+<table columns=3 border=1>
+<TR><TH NOWRAP>Bytes</TH><TH>Data</TH></TR>
+<TR><TD>0</TD><TD>Co-ordinate: 1 = X, 2 = Y, 3 = Z</TD></TR>
+<TR><TD>1</TD><TD>P (0, 1, 2, 3, 4, or 5)</TD></TR>
+<TR><TD>2 - 9</TD><TD>A, stored as double precision</TD></TR>
+<TR><TD>10 - 17</TD><TD>B, stored as double precision</TD></TR>
+<TR><TD>18 - 26</TD><TD>C, stored as double precision</TD></TR>
+</table>
+<P>The co-ordinates are computed for a given Julian date JD as follows:</p>
+
+<p> t=(jd-2451545)/365250<br>
+
+ term= A * sin(B + C*t) * t<sup>P</sup></p>
+
+<p>The co-ordinates are computed by summing the terms for each co-ordinate. The equatorial XYZ co-ordinates are obtained through a rotation to the equator, and a small equinox correction. The conversion made is:</p>
+<pre>
+X<sub>e</sub> = X + 0.00000044036 * Y - 0.000000190919 * Z
+Y<sub>e</sub> = -0.000000479966 * X + 0.917482137087 * Y - 0.397776982902 * Z
+Z<sub>e</sub> = 0.397776982902 * Y + 0.917482137087 * Z</pre>
+</P>
+
+<h2>PLUTO</h2>
+The file <B>Pluto.bin </B>contains a series by Chapront that represents the position of Pluto over the period 1700 - 2100 to 0.03” (compared to DE200). The file is a binary file, with data stored as follows:
+
+<p><li>106 binary records with the following field definitions:<ul>
+FQ As Double, cX As Double, sX As Double, cY As Double, sY As Double, cZ As Double, sZ As Double</ul></p>
+
+<p><li>3 binary records with field definitions:<ul>
+a0 As Double, a1 As Double, a2 As Double, a3 As Double</ul></p>
+
+<p>The co-ordinates for a given date are computed with:<ul>
+Tp = 2 * (jd - 2341972.5) / 146120# - 1         (Tp ranges from -1 to +1)<br>
+Fx = Tp * 73060<br>
+Arg = FQ*Fx</p></ul>
+
+<p>To obtain the X coord, sum the following values:
+
+<li>cX*cos(Arg) + sX*sin(Arg)  [for records 1 to 82]</li>
+<li>Tp*(cX*cos(Arg) + sX*sin(Arg))  [for records 83 to 101]</li>
+<li>Tp*Tp*(cX*cos(Arg) + sX*sin(Arg))  [for records 102 to 106]</li>
+<li>a0 + a1 * Tp + a2 * Tp * Tp + a3 * Tp * Tp * Tp [using the first record for a)</li></p>
+
+<p>Y is obtained using cY, sY, and the second record for 'a';  Z using cZ and sZ and the third record for 'a'</p>
+
+<p>The following is from the text file accompanying the series:<ul>
+<li>The tables of Pluto have been constructed by J. Chapront (BDL) with a new method of approximation using frequency analysis as described in the paper :<br>
+<I>Representation of planetary ephemerides by frequency analysis. Application to the five outer planets. </I><B>Astron. & Astrophys.Suppl. Ser</B>., 109, 191 (1995).</li><br><br>
+
+
+<li>This representation uses the result of numerical integration DE200 of Jet Propulsion Laboratory as a source :<br>
+Standish E. M., 1990, <I>The observational basis for JPL'DE200, the planetary ephemerides of the Astronomical Almanac</I>. <B>Astron. Astrophys.</B>, 233, 252.</li><br><br>
+
+<li>The interval of validity is 146120 days.<br>
+Start : Jan 01 1700 0h  JD2341972.5<br>
+End :   Jan 24 2100 0h  JD2488092.5</li><br><br>
+
+<li>The reference frame is defined with dynamical equinox and equator J2000 (DE200).</li><br><br>
+
+<li>The numerical accuracy can be evaluated with the largest discrepancy obtained in a comparison with the ephemerides DE200 on the period 1700-2100 : for the positions  : 5 E-7 au (0.003")</li>
+</ul></p>
+
+
+</BODY>
+</HTML>

@@ -1,0 +1,24 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Asteroid reductions - methodology</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Asteroid reductions - methodology</H1>
+
+<p>The observations are reduced using the Besselian fundamental plane as the reference plane. The basic methodology is as follows.<ul>
+
+<li>The position of the asteroid is computed at three intervals, centered on the nominal mid time of the observed occultation. The positions are converted to (x,y) coordinates on the fundamental plane, expressed as a quadratic expression. These calculations are performed in the J2000 reference frame.
+<li>The (x,y) position of each observer on the fundamental plane is computed at each of their event times. The orientation of the fundamental plane is referenced to the apparent equinox of date for this purpose.
+<li>All of the observer positions are referenced to a moving reference frame that is fixed relative to the asteroid. This reference frame has a nominal zero defined by the observer coordinates associated with the first observation. The motion of the reference frame is that of the asteroid. 
+<li>The fit of an ellipse to the observations occurs in this moving reference frame (which is fixed relative to the asteroid). The calculations are performed in units of earth radii, and converted to km for output purposes.
+<li>The the astrometric position of the asteroid is obtained by combining the motion of the moving reference frame with the location of the fitted ellipse on that reference frame, to obtain the time when the asteroid was closest to the geocenter - from which the time, separation and position angle of the asteroid relative to the star are derived. </ul>
+<p>This methodology takes full account of the motions of the asteroid and the observers.
+
+</BODY>
+</HTML>

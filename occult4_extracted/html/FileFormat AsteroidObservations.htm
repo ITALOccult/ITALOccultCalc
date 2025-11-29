@@ -1,0 +1,1218 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Asteroid Observation format</Title>
+<style type="text/css">
+.auto-style1 {
+	border: 1px solid #000000;
+	background-color: #99FF99;
+}
+.auto-style2 {
+	text-align: left;
+	border: 1px solid #000000;
+	background-color: #99FF99;
+}
+.auto-style3 {
+	text-align: left;
+	font-size: x-large;
+	border: 1px solid #000000;
+	background-color: #99FF99;
+}
+.auto-style4 {
+	text-align: left;
+	border: 1px solid #000000;
+	background-color: #99FF99;
+	font-size: medium;
+}
+.auto-style6 {
+	text-align: left;
+	border: 1px solid #000000;
+	background-color: #99FF99;
+	margin-left: 160px;
+}
+.auto-style8 {
+	margin-left: 80px;
+}
+.auto-style9 {
+	border-style: solid;
+	border-width: 1px;
+	background-color: #FFFF66;
+}
+.auto-style10 {
+	border: 1px solid #000000;
+}
+.auto-style12 {
+	font-size: medium;
+	border: 1px solid #000000;
+}
+.auto-style13 {
+	font-size: medium;
+}
+.auto-style14 {
+	font-size: small;
+	border: 1px solid #000000;
+}
+.auto-style17 {
+	border: 1px solid #000000;
+	text-align: left;
+}
+.auto-style18 {
+	border: 1px solid #000000;
+	background-color: #FFCC99;
+}
+.auto-style19 {
+	border: 1px solid #000000;
+	text-align: left;
+	font-weight: bold;
+	font-size: medium;
+}
+.auto-style20 {
+	border: 1px solid #000000;
+	text-align: left;
+	font-weight: bold;
+	font-size: small;
+}
+.auto-style21 {
+	border: 1px solid #000000;
+	font-weight: bold;
+}
+.auto-style23 {
+	margin-top: 0px;
+}
+.auto-style25 {
+	color: #FF0000;
+}
+.auto-style29 {
+	font-weight: bold;
+}
+.auto-style30 {
+	font-size: x-small;
+}
+.auto-style31 {
+	border: 2px solid #800000;
+	background-color: #CCFFFF;
+}
+.auto-style32 {
+	font-weight: normal;
+}
+.auto-style33 {
+	color: #0000FF;
+}
+.auto-style34 {
+	color: #0000FF;
+	font-weight: bold;
+}
+.auto-style35 {
+	text-decoration: underline;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+<H1>Format for Asteroid Occultation Observations</H1>
+<h1 class="auto-style25">Version 2.15+</h1>
+<h1>XML format</h1>
+
+
+
+
+<table class="auto-style31" style="width: 90%" style="margin-left:60px" height="20">
+	<tr>
+		<td>
+			<h2>Change log</h2>		
+			<li>V1.0 - Added Hourly rate of change of parallax (dParallax) to &lt;Asteroid&gt;. 
+			Changed file name to Asteroid~Observations.xml. Introduced Version number as a 
+			field in the file</li>
+			<li>V1.1- Added &lt;MainAtConjunction&gt; and &lt;SecondaryAtConjunction&gt;</li>
+			<li>V2.0 - multiple changes in the &lt;star&gt; line and &lt;astrometry&gt; lines. See 
+			Revision details for v4.10.0.0 of 22 March 2020</li>
+			<li>V2.1 - added a field in the 'Position for an unseen primary of a binary 
+			asteroid' to &lt;MainBody&gt;</li>
+			<li>V2.2 - added diameter uncertainties to &lt;asteroid&gt;</li>
+			<li>V2.3 - To &lt;Astrometry&gt;&lt;MainBody&gt; added fields for 'Fit Code', adjustments to 
+			along and across path uncertainty (x2) and Maximum/Minimum chord distances (x4). 
+			In &lt;Satellite&gt;, corrected the&nbsp; of the units for the rates of 
+			motions </li>
+			<li>V2.4 - Added new line &lt;StarIssues&gt; to include maters relating to 
+			the reliability of the Gaia star position. (RUWE, DuplicateSource 
+			flag, lack of proper motion, and where UCAC4 has been used to create 
+			a proper motion for the Gaia position&nbsp; Expanded the 
+			&lt;Prediction&gt; line to add a field for Fee text. In &lt;EllipticFit&gt; 
+			Added new field for 'Future Review'.</li>
+			<li>V2.5 - Added offset of the Center of Mass from the Center of 
+			Figure fit. - at end of the &lt;EllipticFit&gt; line.</li>
+			<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Added a new 
+			event code 'N' for events involving a ring - in 
+			Observations&gt;&lt;Observer&gt;&lt;D&gt;, and ...&lt;R&gt; (July 
+			2021)</li>
+			<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Added a new telescope 
+			type - eVscope</li>
+			<li>V2.6 - Added offsets from the star position to the position of 
+			the star used for the solution, plus ratio of component brightness, 
+			in &lt;Star&gt;&lt;StarIssues&gt;(April 2022)</li>
+			<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Expanded the list of 
+			fit options for shape models, to include 'Not constrained'.</li>
+			<li>V2.7&nbsp; - Added a new event code 'n' for non-detection of 
+			events involving a ring - in Observations&gt;&lt;Observer&gt;&lt;D&gt;, and ...&lt;R&gt; 
+			. Also revised the definitions of M and m to replace all references 
+			to 'Miss' with 'non-detection' (October 2022)</li>
+			<li>V2.8 - No change to the field definitions or content. Occult 
+			4.2023.4.25 incorporated a major change associated with the 
+			numbering of ISAM shape models, and the consequential ability to 
+			only use models from ISAM that are not in DAMIT. The version change 
+			is used to ensure compatibility between the file content and the 
+			Occult handling of ISAM models.</li>
+			<li>V2.9 - Added an extra category under &lt;EllipticFit&gt; for the item 
+			FitQuality, to accommodate a setting for single-frame events where 
+			astrometry will not be reported. (November 2023). Changed the telescope type descriptor under 
+			&lt;Observations&gt;&lt;Observer&gt;&lt;ID&gt; from the commercial identifier of 
+			'eVscope' to the commercially neutral identifier of&nbsp; 
+			'Electronic', with the qualifier '[intended to refer to 
+			small-aperture self-aligning telescopes with an electronic 
+			detector]'. (January 2024)</li>
+			<li>V2.10 - Added an extra category under &lt;EllipticFit&gt; for the item 
+			FitQuality, to cover the situation where the occultation was of one 
+			component of a double star&nbsp; 'Only 1* of a double. No 
+			astrometry'.&nbsp; Under &lt;Astrometry&gt;&lt;ReferenceTime&gt;Added AcrossPath 
+			Uncertainty - due to Earth's rotation during reference time 
+			uncertainty (2024 May 5)</li>
+			<li>V2.11 - Added a field under &lt;MPC&gt;&nbsp; for the MPC Observation 
+			ID of an observation (2024 Dec 16)</li>
+			<li>V2.12 - Added an extra category under &lt;Doubles&gt; to provide a 
+			date of submission of double data to the JDSO, and for the issue of 
+			publication&nbsp;&nbsp; &lt;JDSO&gt; Date of submission | JDSO 
+			reference&lt;/JDSO&gt;&nbsp; (2025 Mar 03)</li>
+			<li>V2.13 - Added an extra category under &lt;Satellite&gt; to provide 
+			the CBET number announcing the occultation discovery&nbsp;(2025 May 
+			23)</li>
+			<li>V2.14 - Added a field for the component ID of a known double 
+			star, under &lt;StarIssues&gt;&nbsp;&nbsp; (2025 Aug 02 )</li>
+			<li>V2.15 - Changed 
+			tag at start and end of the file to be &lt;AsteroidOccultations&gt; and &lt;/AsteroidOccultations&gt;&nbsp; 
+			[to remove a long-standing unintended duplication in the use of the 
+			Tag &lt;Observations&gt;, which is used to embrace the lines for the 
+			details for all observers] (2025 Aug 22)</li>
+		</td>
+	</tr>
+</table>
+
+<h2>The structure of the xml file is:</h2>
+
+<p>&lt;AsteroidOccultations&gt;<br>&nbsp;&nbsp; &lt;FileVersion&gt;file version number&lt;/FileVersion&gt;<br>&nbsp;&nbsp; &lt;Event&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;Date&gt; year| month| day| hour&lt;/Date&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;Details&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Star&gt; 
+Catalogue| number| Gaia version|Gaia id| RA2000 (hh.hhhhhhhhhh)| Dec2000 (±dd.ddddddddd)|RA 
+uncertainty (mas)|Dec uncertainty (mas)|Stellar diameter (mas)|IssuesFlag| RA Apparent (hh.hhhhhhhh)| Dec Apparent(±dd.ddddddd)|Mb|Mg|Mr| EPIC ID&lt;/Star&gt;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;StarIssues&gt;Reliability|Gaia Duplicated Source flag|No Proper Motion flag|Proper 
+motion using UCAC4|Double star solution - star brightness 
+ratio|Uncertainty in the star brightness ratio, in percent|Double star solution RA offset (mas)| Double star solution Dec offset (mas)|Standard Deviation RA offset (mas)| Standard Deviation Dec offset (mas)|known 
+double star component ID&lt;/StarIssues&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;Asteroid&gt; Number| Name| dX| dY| d2X| d2Y d3X| d3Y| Parallax| dParallax| 
+Nominal mean diameter (km)|Uncertainty in mean diameter (km)| Mv&lt;/Asteroid&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;EventFits&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;SolveFlags&gt;X| Y| Major Axis|&nbsp; Minor Axis| PA Major Axis| Circular solution| Include Miss events| 
+Separation of 2nd star/asteroid moon| PA of 2nd star/asteroid moon&lt;/SolveFlags&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;EllipticFit&gt;X| Y| Major axis| Minor Axis| PA Major Axis| Fit quality| Used 
+Assumed Diameter| Flag for future review|Center of Mass X| Center of Mass Y&lt;/EllipticFit&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;EllipseUncertainty&gt;Sdev_X| Sdev_Y| SdevMajor| SdevMinor| SdevPA&lt;/EllipseUncertainty&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;ShapeModelFit&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Fit&gt;Source| ID| SurfaceDia/VolumeDia ratio| Fit quality| Phase correction| Volume Dia Min| Volume Dia Max| 
+Version&lt;/Fit&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .....<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/ShapeModelFit&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;SatelliteFit&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Satellite&gt;IAU designation|SatdX|SatdY|Satd2X|Satd2Y|Separation|J2000 Position Angle|Uncertainty 
+in separation|Uncertainty in Position angle| Major axis| Minor Axis| PA Major Axis| 
+Fit quality&lt;/Satellite&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+....<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;/SatelliteFit&gt;<br>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;DoubleStar&gt;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;JDSO&gt;Date of submission to the JDSO| JDSO publication reference &lt;/JDSO&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;Solution&gt;PA| Separation| sdev_PA| Sdev_Separation| Centre_X| Centre_Y| Offset_X| Offset_Y| 
+Solution number&lt;/Solution&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+...{either 1| 2 or 4 lines| depending on the nature of the solution}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &lt;/DoubleStar&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;/EventFits&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Astrometry&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;ReferenceTime&gt;year| month| day|Reference hour|Uncertainty|AcrossPathUncertainty&lt;/ReferenceTime&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;MainBody&gt;IAU designation|GeocentricX| GeocentricY|dRACosDec|dDec|UncertRA|UncertDec| 
+Position centered on shape model|number of chords used|Position for an unseen 
+primary of a binary asteroid|Fit code|Adustment to the across path 
+uncertainty|adjustment to the along path uncertainty|Maximum +'ve Hit chord 
+distance|Maximum -'ve chord distance|Minimum +'ve Miss chord distance|Minimum -'ve 
+chord distance&lt;/MainBody&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;MainAtConjunction&gt;IAU designation|GeocentricX at conjunction|GeocentricY at 
+conjunction|Position for an unseen primary of a binary asteroid&lt;/MainAtConjunction&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;SatelliteBodies&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Secondary&gt;IAU designation|GeocentricX| GeocentricY|PA_2000|dRACosDec|dDec|UncertRA|UncertDec|number 
+of chords used&lt;/Secondary&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;SecondaryAtConjunction&gt;IAU designation|MiriadeMotions|GeocentricX| GeocentricY|Year|Month| 
+Day of 
+conjunction|Sdev_day|Sdev_AlongTrack|Separation|Sdev_Separation|PAatConjuncton&lt;/SecondaryAtConjunction&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+...}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+...}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;/SatelliteBodies&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;MPC&gt;Date of publication|Circular number|MPC Submission ID&lt;/MPC&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;/Astrometry&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/Details&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;Observations&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;Prediction&gt;Seq Num|Longitude| Latitude| hr| min| sec|Event comments&lt;/Prediction&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;Observer&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;ID&gt;Seq Num| Observer1| Observer2| MoreThan2Observers| NearLocation| 
+State/country| Longitude| Latitude| Alt| Datum| TelescopeAperture| TelescopeType| Observing method| Time Source&lt;/ID&gt; <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;Conditions&gt;Stability| Transparency| SN| Time Adjustment| Comment&lt;/Conditions&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;D&gt;hh mm ss.ss| eventCode| Accuracy| PEqn| Weight| PlotCode&lt;/D&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;R&gt;hh mm ss.ss| eventCode| Accuracy| PEqn| Weight| PlotCode&lt;/R&gt; <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;/Observer&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;/Observations&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &lt;Added&gt; yyyy|m|d&lt;/Added&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;LastEdited&gt;yyyy|m|d&lt;/LastEdited&gt;<br>&nbsp;&nbsp; &lt;/Event&gt;<br>&lt;/AsteroidOccultations&gt;</p>
+
+<p>The tag &lt;AsteroidOccultations&gt; delimits the XML file</p>
+<p>The tag &lt;FileVersion&gt; specifies a version number for the file format. The 
+number is a decimal number, and is used to identify the need to upgrade either 
+the file, or the version of Occult.</p>
+<p>The tag &lt;Event&gt; delimits the data for an event. The whole file will be read 
+into memory, but only data within an event will be decoded (when required).</p>
+<p>Within an event, the tags &lt;ShapeModelFit&gt;, &lt;DoubleStar&gt; and &lt;BinaryAsteroid&gt; 
+will only be present when appropriate, as will three items under &lt;Astrometry&gt;</p>
+<p>Within a data element, individual items are stored as pipe-separated-values. 
+This allows commas to be used in several fields.</p>
+<p><span class="auto-style25"><strong>IMPORTANT</strong></span>. None of the 
+data items have been corrected for the Gaia DR3 Frame Rotation error. This 
+correction is only applied when generating astrometric outputs.</p>
+<P>&nbsp;</P>
+<table align="left" class="auto-style1" style="width: 97%;  " height="20">
+	<tr>
+		<th class="auto-style3" style="width: 160px" height="20">Tag</th>
+		<th class="auto-style3" style="width: 691px" height="20">Data items</th>
+	</tr>
+	<tr>
+		<td class="auto-style4" style="height: 26; width: 160px"><strong>Date</strong></td>
+		<td class="auto-style1" style="height: 26px; width: 691px;">
+		<strong>Date of the event</strong><br><ul><li>The year, month, and day of the 
+		event, and the hour (to 0.1 hrs) close to the observed event times. If 
+			observations extend across different days, specify the earlier day, 
+			with times going above 24hrs as required. </ul>
+		</td>
+	</tr>
+	<tr>
+		<td class="auto-style4" style="width: 160px" height="20"><strong>Star</strong></td>
+		<td class="auto-style2" style="width: 691px" height="20">
+		
+			<strong>Details of the star</strong><br><ul><li>Catalogue - the 
+				catalogue identifier. The identifiers used are:<br>HIP 
+				(Hipparcos), Tycho2 (or TYC), UCAC4, USNO-B1, NOMAD and G-coords</li>
+			<li>Number - the number in the catalogue</li>
+			<li>Gaia version - The source of the star position. 0 = Hipparcos2, 
+			1 = Gaia DR1, 2 = Gaia DR2, 3 = Gaia EDR3, 9 = USNO Bright Star 
+			Catalogue (UBSC, 2022), -1 = not specified</li>
+				<li>Gaia id - the 18-digit Gaia id in the relevant Gaia version</li>
+			<li>Right Ascension (hh.hhhhhhhhhh - the RA of the star. GCRS 
+			coordinates. (That is, coordinates referred to the ICRS reference 
+			frame of 2000, proper motion to date, corrected for parallax). No correction 
+			for relativistic light bending.</li>
+			<li>Declination (±dd.ddddddddd) - the Declination of the star, GCRS 
+			coordinates. No correction 
+			for relativistic light bending.</li>
+				<li>Uncertainty in Right Ascension (mas) - incorporating 
+				position, proper motion and parallax uncertainties</li>
+				<li>Uncertainty in Declination (mas) - incorporating position, 
+				proper motion and parallax uncertainties</li>
+				<li>Angular diameter of star (mas) - using the Gaia estimated 
+				star diameter from <font face="Times New Roman">DR2. For stars 
+				added after the beginning of 2021, an estimate based on the 
+				star’s magnitudes is given as the quantity is not available in 
+				EDR3.</font></li>
+				<li>Issues flag. 0 = no issues, 1 = high RUWE,&nbsp; 2 = 
+				Duplicate source flag, 3 = 1 + 2.<br>- see Notes for 
+				explanations</li>
+				<li>Right Ascension - apparent, hh.hhhhhhhh. The apparent RA of 
+				the star at the Date+time of the event, with no correction for relativistic light bending.</li>
+				<li>Declination - apparent (±dd.ddddddd) The apparent 
+				declination of the star at the Date+time of the event, with no correction for relativistic 
+				light bending.</li>
+				<li>Mb - The Gaia blue magnitude of the star</li>
+			<li>Mg - The Gaia G magnitude. For non-Gaia stars, the V magnitude </li>
+			<li>Mr - The Gaia red magnitude of the star. Where available, the Red 
+			Photometer magnitude of Gaia</li>
+			<li>EPIC ID - the identification of stars if they are 
+			observed in the Keplar2 mission</li>
+		</ul>
+
+		</td>
+	</tr>
+	<tr>
+		<td class="auto-style4" style="width: 160px" height="20">StarIssues</td>
+		<td class="auto-style2" style="width: 691px" height="20">
+		
+			<p><strong>Extra details about the star</strong></p>
+			<ul>
+				<li>Reliability. A measure of whether the star position is fully 
+				reliable.
+				<ul>
+					<li>For Gaia stars, the value is the RUWE (Renormalised Unit 
+					Weight Error). &quot;<span class="auto-style33">The 
+					RUWE is expected to be around 1.0 for sources where the 
+					single-star model provides a good fit to the astrometric 
+					observations. A value significantly greater than 1.0 (say, 
+					&gt;1.4) could indicate that the source is non-single or 
+					otherwise problematic for the astrometric solution.</span>&quot;</span></li>
+					<li>For star positions sourced from TychoGaia: the 
+					'astrometric-excess-noise' parameter</li>
+					<li>For star positions sourced from Hipparcos2: a value 
+					computed using the Hipparcos values of Ntr, F2, and the 
+					number of parameters in the solution. The result is largely 
+					equivalent to RUWE.</li>
+				</ul>
+				</li>
+				<li>Duplicated Source flag. A flag in Gaia. 0 = not set, 1 = set, 
+				-1 = not specified (that is, position comes from TychoGaia or 
+				Hipparcos2)<br></li>
+				<span class="auto-style33">During data processing, this source happened to be duplicated and only one source identifier has been kept. Observations assigned to the discarded source identifier(s) were not used. This may indicate observational, cross-matching or processing problems, or stellar multiplicity, and probable astrometric or photometric problems in all cases. In Gaia DR1 and DR2, for close doubles with separations below some 2 arcsec, truncated windows have not been processed, neither in astrometry nor photometry. The transmitted window is centred on the brighter part of the acquired window, so the brighter component has a better chance to be selected, even when processing the fainter transit. If more than two images are contained in a window, the result of the image parameter determination is unpredictable in the sense that it might refer to either (or neither) image, and no consistency is assured.
+				</span><br>
+				<li>No proper motion&nbsp; flag. Indicates that no proper motion 
+				has been specified in the Gaia catalogue. Values are 0 = has 
+				proper motion, 1 = no proper motion, -1 = not specified (that 
+				is, position comes from TychoGaia or Hipparcos2, which will have 
+				proper motions). An RUWE of 0 appears to be applied when there 
+				is no proper motion in Gaia.</li>
+				<li>Proper motion derived using UCAC4. For some stars where 
+				there is no proper motion in Gaia, and approximate proper motion 
+				was added by comparing the UCAC4 J2000 position with the Gaia 
+				2016 position. Values are 0 = (includes stars with Gaia proper 
+				motions, or stars with no Gaia proper motions that were not 
+				matched to UCAC4), 1 = proper motion added,&nbsp; -1 = not 
+				specified (that is, the position comes from TychoGaia or 
+				Hipparcos2)</li>
+				<li>Double star - ratio of star brightness. Default is 1.2. The 
+				ratio is used to determine to location of the Gaia position 
+				along the component separation. If R is the ratio 
+				(reference/other), the distance of the reference star from the 
+				Gaia position is Separation/(R + 1)</li>
+				<li>Uncertainty in the star brightness ratio, as %. Default is 
+				10</li>
+				<li>Double star solution, offset in RA. The offset in RA from 
+				the Gaia position, of the component used for the occultation 
+				solution.</li>
+				<li>Double star solution, offset in Dec. The offset in Dec from 
+				the Gaia position, of the component used for the occultation 
+				solution.</li>
+				<li>Double star solution, Standard deviation in offset in RA.</li>
+				<li>Double star solution, Standard deviation in offset in Dec.</li>
+				<li>Double star solution. If the star, is a known component of a 
+				double star at the date of the observation, that known pairing.&nbsp; </li>
+			</ul>
+
+		</td>
+	</tr>
+	<tr>
+		<td class="auto-style4" style="width: 160px"><strong>Asteroid</strong></td>
+		<td class="auto-style2" style="width: 691px">&nbsp;<strong>Details of the asteroid</strong><br>
+			<ul><li>Number - the number of the asteroid</li>
+				<li>Name - the asteroid's name, or other identification [the 
+				name of asteroid (229762)&nbsp;<nobr>G!kun||'homdima</nobr> is held as 
+				Gunhoumdima]</li>
+			</ul>
+			Positions on the Apparent fundamental plane are computed using 
+		orbital elements at the Date + time of the event, with the 
+		shadow motion being expressed as<br>&nbsp;a*T + b*T<sup>2 </sup>
+			+ c*T<sup>3</sup> ,<br>where T is the time (in hours) from the hour under <strong>Date</strong>. 
+			The following give the coefficients for this expression.
+			<ul><li>dX - coefficient 'a' in X (Earth radii/hr) </li>
+				<li>dY - coefficient 'a' in Y (Earth radii//hr) </li>
+				<li>d2X - coefficient 'b' in X (Earth radii/hr<sup>2</sup>) </li>
+				<li>d2Y - coefficient 'b' in Y (Earth radii/hr<sup>2</sup>) </li>
+				<li>d3X - coefficient 'c' in X (Earth radii/hr<sup>3</sup>) </li>
+				<li class="auto-style23">d3Y - coefficient 'c' in Y (Earth radii/hr<sup>3</sup>) 
+				<br><br> </li>
+				<li>Parallax - in arcsec, at the hour under Date</li>
+				<li>dParallax - in arcsec. The hourly rate of change in parallax<br></li>
+				<li>Nominal mean diameter - in km. Typically from IR satellite 
+				measurements</li>
+				<li>Uncertainty in that diameter - km (added in v2.2)</li>
+				<li>Mv - the Visual magnitude of the asteroid</li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<td class="auto-style4" style="width: 160px"><strong>SolveFlags</strong></td>
+		<td class="auto-style6" style="width: 691px">
+			<strong>Flags for automatic fitting</strong><br><br>A number of 
+			parameters can be set for automatic fitting - and this is indicated 
+			by a flag. The flag is:<ul><li><strong>0</strong> 
+			if the parameter has <strong><em>not</em></strong> been included in 
+			the automatic fitting</li><li><strong>1 </strong>if the parameter was 
+			included in the automatic fitting of an ellipse to observed chords</li></ul>
+			The parameters for which the flags are set 
+			are:
+			<ul>
+				<li>X coordinate</li>
+				<li>Y coordinate</li>
+				<li>Major Axis</li>
+				<li>Minor Axis</li>
+				<li>PA Major Axis</li>
+				<li>Circular solution</li>
+				<li>Include Miss events</li>
+				<li>Separation of 2nd star/asteroid moon</li>
+				<li>PA of 2nd star/asteroid moon</li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<td class="auto-style4" style="width: 160px"><strong>EllipticFit</strong></td>
+		<td class="auto-style2" style="width: 691px"><strong>Details of the fit of an ellipse to the 
+		observed chords</strong><br>
+			<ul><li>X - X-coordinate of the center of 
+				the best-fit ellipse (in km) relative to the reference frame used to 
+				plot the observations</li>
+				<li>Y - Y-coordinate of the center of the best-fit ellipse (in km) 
+				relative to the reference frame used to plot the observations</li>
+				<li>Major axis - in km</li>
+				<li>Minor Axis - in km</li>
+				<li>PA Major Axis - in deg</li>
+				<li>Fit quality - a code indicating the quality of the fit</li>
+			</ul>
+			<p class="auto-style8">0 = 'No reliable position or size'<br>1= 'Astrometry 
+			only. No reliable size' Observation can 
+			be used to report astrometry, but nothing meaningful about the 
+			asteroid's size.<br>2 = 'Limits on size, but no shape'. Poor coverage around the profile, but 
+			a diameter is determinable (often with a fit to a shape model)<br>
+			3 = 'Reliable size. Can fit to shape models'. Good coverage around much of the profile enabling a reliable 
+			determination of the asteroid's size - even without a shape model <br>
+			4 = 'Resolution better than shape models'. Profile of the asteroid well covered with highly 
+			consistent results<br>
+			5 = 'Short duration event. No astrometry'. For 
+			events where there is only one positive chord, and the duration of the 
+			potential occultation is for one or two video frames or camera exposures. Such 
+			events are not used for any reporting process; it is provided only as a 
+			holding place. <br>
+		    6 = 'Only 1* of a double. No astrometry'. For events where the 
+			observed light drop was clearly less than the expected drop, and 
+			could not be explained by variation in the brightness of the 
+			asteroid - leaving the only explanation being the occultation was 
+			one component of a double star, with the other component not 
+			detected. No astrometry because the location of the photocenter to 
+			match the Gaia star position cannot be determined.</p>
+			<ul>
+				<li>Used Assumed Diameter - flag to indicate the major/minor axes 
+				are assumed values (e.g. from IR satellite measures) rather than 
+				derived from the observation.</li>
+				<li>Flag to indicate the event should be reviewed in the future 
+				because of particular issues that might be resolved with further 
+				information. The numeric value of the Flag is the addition of 
+				the following values if they apply to an event. <br>&nbsp; 1 = 
+				Unspecified issue<br>&nbsp; 2 = Possible double star<br>&nbsp; 4 
+				= Possible satellite</li>
+				<li>X-offset from X to the Center of Mass location - in km</li>
+				<li>Y-offset from Y to the Center of Mass location - in km</li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<td class="auto-style4" style="width: 160px"><strong>EllipseUncertainty</strong></td>
+		<td class="auto-style2" style="width: 691px"><strong>The standard deviations of the values for the fitted ellipse</strong><br>
+			<ul><li>X - X-coordinate of the center of 
+				the best-fit ellipse relative to the reference frame used to 
+				plot the observations (km)</li>
+				<li>Y - Y-coordinate of the center of the best-fit ellipse  
+				relative to the reference frame used to plot the observations 
+				(km)</li>
+				<li>Major axis - in km</li>
+				<li>Minor Axis - in km</li>
+				<li>PA Major Axis - in deg</li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<td class="auto-style4" style="width: 160px"><strong>ShapeModelFit</strong></td>
+		<td class="auto-style2" style="width: 691px"><strong>Where shape models are available, this 
+		group gives data about the fits to shape models<br><br></strong>Each shape 
+		model has its own group with the tags <strong>&lt;Fit&gt;&nbsp; &lt;/Fit&gt;</strong>. The 
+		items within each such group are:
+			<ul><li>Source&nbsp; - The shape model source&nbsp;name (DAMIT, ISAM)</li>
+				<li>ID - the identification within that source</li>
+				<li>SurfaceDia/VolumeDia ratio - the ratio of the Surface-equivalent diameter 
+				to the Volume-equivalent diameter of the shape model.</li>
+				<li>Fit quality - a flag to indicate whether the model is consistent with 
+				the occultation observations.<br>0 = Not fitted. Too few chords 
+				to make a fit to the shape model.<br>1 = Bad occn data. The 
+				occultation observations are either inconsistent or unreliable, 
+				with no ready way of distinguishing between reliable and 
+				unreliable observations<br>2 = Model wrong. The shape 
+				model is <strong>clearly</strong> inconsistent with the observed 
+				chords<br>3 = Minimum Dia. Usually associated with a single 
+				chord observation, with that chord being matched to the largest 
+				dimension of the shape model to give its minimum diameter<br>4 = 
+				Diameter but no fit. The chords do not sensibly match the shape 
+				model, yet it is possible to derive minimum and maximum possible 
+				diameters. [NOTE: flag 1 - Model wrong - should be used unless 
+				there is a degree of confidence that the derived diameters are 
+				'in the right ball-park']<br>5 
+				= Poor fit. The shape model is generally consistent with the 
+				observed chords - but has some broad deviations<br>6 = Good fit. 
+				The shape model has a high degree of correspondence with the 
+				observed chords.<br>7 = Not constrained. The observations have 
+				been compared to the shape model, but the distribution of the 
+				chords, or the magnitude of the uncertainties, were such that no 
+				meaningful constraints could be determined. Setting 7 added with 
+				effect from May 2022</li>
+				<li>Phase correction - the rotational correction (in degrees) 
+				applied to optimize the fit. Only applied if the light curve 
+				data warrants such an adjustment.</li>
+				<li>Volume Dia Min - the minimum volume-equivalent diameter arising 
+				from a fit of the chords to the shape model</li>
+				<li>Volume Dia Max - the maximum volume-equivalent diameter arising from a fit of 
+				the chords to the shape model</li>
+				<li>Version - information about the version</li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<td class="auto-style4" style="width: 160px"><strong>Satellite</strong></td>
+		<td class="auto-style2" style="width: 691px"><strong>Details of an observed companion to an 
+			asteroid<br></strong><br><strong>This group only appears if the 
+			observation shows the presence of two&nbsp; bodies. </strong><br>As 
+		at 2019, the fit to the satellite is 'manual', so there 
+		are no determined standard deviation values<ul>
+				<li>IAU designation of companion</li>
+				<li>Sat_dRA - motion of the satellite in Right Ascension relative to the 
+				system's center of mass. Units are mas/hr. The zero time is same as for the motions of 
+				the main body. [Note this and the following three items are only 
+				set if a Miriade ephemeris is available for the system. 
+				Otherwise the values are set to zero. These values are only used 
+				to align the chords of the satellite.]</li>
+				<li>Sat_dDec - motion in Declination relative to the system's 
+				center of mass</li>
+				<li>Sat_d2RA - 2nd order motion in&nbsp; Right Ascension relative to the 
+				system's center of mass</li>
+				<li>Sat_d2Dec - 2nd order motion in Declination relative to the 
+				system's center of mass</li>
+				<li>Separation (mas)</li>
+				<li>PA (deg) PA of companion with respect to the main body - 
+				Apparent reference frame</li>
+				<li>Uncertainty in Separation (mas)</li>
+				<li>Uncertainty in PA</li>
+				<li>Major axis (km) - of the companion</li>
+				<li>Minor Axis (km) - of the companion</li>
+				<li>PA Major Axis&nbsp; (Deg) - of the companion</li>
+				<li>Fit quality<ul>
+					<li><strong>None</strong>&nbsp;&nbsp;&nbsp; No fit to the satellite. This is 
+					only used when the observations indicate the detection of a 
+					satellite, but the observations have not been analyzed to 
+					obtain a fit to the observations.</li>
+					<li><strong>Is it a satellite?</strong>&nbsp;&nbsp; The 
+					observations indicates the possibility of a satellite. 
+					However the observational evidence is not sufficient to 
+					assert a definite detection. [Single-chord visual 
+					observations would typically fall into this category, as 
+					well as single noisy video recordings]</li>
+					<li><strong>Approx offset</strong>&nbsp;&nbsp; The existence 
+					of a satellite is reasonably definite. The approximate location of 
+					the satellite can be determined, but not its size or shape</li>
+					<li><strong>Offset + size</strong>&nbsp;&nbsp; An accurate location location 
+					of the satellite is determined, together with a size 
+					derived by assuming it is spherical</li>
+					<li><strong>Offset + shape</strong>&nbsp;&nbsp; An accurate determination of 
+					the location, size and shape of the satellite.</li>
+				</ul>
+				</li>
+				<li>CBET number announcing the occultation discovery</li>
+			</ul>
+		<br>
+		</td>
+	</tr>
+	
+	
+		<tr>
+		<td class="auto-style4" style="width: 160px"><strong>DoubleStar</strong></td>
+		<td class="auto-style2"><strong>Details of double star solutions<br><br>This 
+		group only appears if the observation indicates the star is double.</strong><br>
+		<br>The number of times this line can appear depends on the 
+		circumstances of the event, as follows:<br>1 - if there are two or more 
+		spaced chords for both the primary and secondary star, such that there 
+		is no doubt about which side of the asteroid the primary or secondary 
+		star passed as seen by the observers. This provides a unique solution.<br>
+		<br>2 - if there are two or more spaced chords for one component of the 
+		pair - such that there is no doubt about which side of the asteroid that 
+		component passed. However if the other component does not have 
+		sufficient chords to determine which side of the asteroid it passed, 
+		there are two possible solutions.<br><br>4 - if the number of observed 
+		chords is insufficient to locate either component against one or other 
+		side of the asteroid, leading to 4 possible solutions. This situation 
+		most commonly occurs with single-chord events, but it also occurs when 
+		there are two or more chords which happen to be closely spaced such that 
+		the relevant side of the asteroid cannot be determined.<br><br>
+			<table class="auto-style9" style="width: 97%">
+				<tr>
+					<td class="auto-style12" style="width: 103px"><strong>Tag</strong></td>
+					<td class="auto-style12"><strong>Data items</strong></td>
+				</tr>
+				<tr>
+					<td class="auto-style10" style="width: 103px"><strong>JDSO</strong></td>
+					<td class="auto-style10"><strong>Publication in Journal of Double Star Observations</strong>
+					<ul><li>Date of submission to the JDSO</li><li>JDSO publication reference - Volume/Issue/Page</li></ul>
+					</td>
+				</tr>
+				<tr>
+					<td class="auto-style10" style="width: 103px"><strong>Solution</strong></td>
+					<td class="auto-style10"><strong>The double star solution, or 
+					one of multiple double star solutions.<br><br></strong>This 
+					group is repeated as often as required
+						- 1, 2 or 4 times.
+						<ul><li>PA - the PA of the 
+							companion (deg)</li>
+							<li>Separation - the separation of the components (mas)&nbsp;&nbsp;&nbsp; 
+							* may be negative: see note below</li>
+							<li>Uncertainty in PA</li>
+							<li>Uncertainty in Separation</li>
+							<li>Centre in X - for when there are plural 
+							solutions</li>
+							<li>Centre in Y - for when there are plural 
+							solutions</li>
+							<li>Offset in X</li>
+							<li>Offset in Y</li>
+							<li>Solution number</li>
+						</ul>
+						The Offsets in X and Y apply when there are insufficient chords 
+						to locate the primary star on one side or the other of the asteroid. 
+						In this situation there are 4 potential solutions:<br>
+					* primary star on one side of the asteroid, with secondary 
+					on one or the other side; and<br>* primary star on other side of 
+					asteroid, with secondary on one or the other side.<br>The offset value 
+					places the primary star one one or other side of the 
+					asteroid, avoiding the need to re-solve for the position of 
+					the asteroid. The astrometric position is for the mean 
+					relative location of the primary star.<br><br>Where the 
+					occultation is of one star only of a double star 
+					(demonstrated by the light drop being significantly less 
+					than expected, the Separation is specified as a negative 
+					value</td>
+				</tr>
+			</table><br><br>
+		</td>
+	</tr>
+	
+	
+	<tr>
+		<td class="auto-style4" style="width: 160px;"><strong>Astrometry</strong></td>
+		<td class="auto-style2"><strong>Details of the astrometric solution 
+		derived from the event<br><br>This group only appears if the quality 
+		setting under EllipticFit is greater than 0.<br></strong><br>There are three groups under this 
+		heading:<br class="auto-style13">
+			<table class="auto-style9" style="width: 97%" height="20">
+				<tr>
+					<td class="auto-style12" style="width: 145px"><strong>Tag</strong></td>
+					<td class="auto-style12"><strong>Data Items</strong></td>
+				</tr>
+				<tr>
+					<td class="auto-style14" style="width: 145px"><strong>ReferenceTime</strong></td>
+					<td class="auto-style10"><strong>The time used for reporting 
+					an event. </strong><br>If the event involves a satellite, 
+					this time is the average of all events involving the 
+					satellite that have been used in the solution. This time is 
+					used for both the satellite, and the primary body.<br><br>If 
+					the star is a double star, only the primary events are used. The first step 
+					in the solution is to identify the location of the center of the 
+					asteroid relative to the geocenter, at a time identified by a 
+					particular observed event that is used to define the plot axes.
+						<ul><li>
+							Year&nbsp; (yyyy)</li>
+							<li>
+							Month (mm)</li>
+							<li>
+							Day (dd)</li>
+							<li>
+							Reference hour (hh.hhhhhh)</li>
+							<li>
+							Uncertainty in the reference time (s.sss) (including&nbsp; 
+							effect of earth's rotation during uncertainty 
+							period)</li>
+							<li>
+							Across Path Uncertainty (mas)&nbsp; (arising from 
+							earth's rotation during uncertainty period)</li>
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<td class="auto-style14" style="width: 145px"><strong>
+					MainBody</strong></td>
+					<td class="auto-style10">
+					<p><strong>Event details at the Reference Time</strong><ul>
+						<li>IAU 
+					designation</li>
+						<li>FundamentalPlaneX (km)&nbsp; kkkk.k (apparent)</li>
+						<li>FundamentalPlaneY (km)&nbsp; kkkk.k (apparent)</li>
+						<li>dRACosDec&nbsp; (arcsec) - J2000</li>
+						<li>dDec (arcsec) - J2000</li>
+						<li>UncertRA (arcsec)&nbsp; - uncertainty in Time 
+						included. This data element is not used. Final RA 
+						uncertainty is based on along/across track uncertainties 
+						and time uncertainty.</li>
+						<li>UncertDec (arcsec) - uncertainty in Time included. 
+						This data element is not used. Final Dec uncertainty is 
+						based on along/across track uncertainties and time 
+						uncertainty.</li>
+						<li>Position centered on shape model (0=false, 1=true). 
+						Set to false if &lt;EllipticFit&gt;, X-offset or Y-Offset, are 
+						non-zero</li>
+						<li>number of chords used</li>
+						<li>Position is for an unseen primary of a binary 
+						asteroid<br>(0=false, 1=true), and is used solely as the 
+						origin for the position of the satellite.<br><ul>The values of dRACosDec 
+						and dDec are 'observed' values. They have been converted 
+						from the Apparent reference frame to J2000. They have not had the 
+						effects of deflection of the asteroid relative to the 
+						star removed.</ul>
+						<li>Fit code - uncertainty in position of center of asteroid.
+						<span class="auto-style30"><ul>Parts of the Error Code use the following 5 parameters, which relate to the distance of certain chords on either side of the center of the asteroid. In these parameters, the side of the path is indicated as Plus, or Minus - with Plus referring to the north-side of the path. Hit refers to positive occultation events, while Miss refers to Miss events. The Hit parameters specify the distance of the furthest positive chord on either side of the path, with a value of zero if there is no such chord on the particular side. The Miss parameters specify the distance of the closest Miss chord on either side of the path, with a value of +9 or -9 if there is no such chord on the particular side. The distances are expressed in units of the asteroid's assumed radius.</ul>:
+						</span>
+						<ul><strong><span class="auto-style30">Well-located</span></strong><span class="auto-style30"> : PlusHit &gt= 0.3 and MinusHit &lt= -0.3
+							</span> </ul>
+						<ul><strong><span class="auto-style30">Poorly-Located</span></strong><span class="auto-style30"> : (PlusHit - MinusHit) &gt 0.5, with either PlusHit &lt 0.3 or MinusHit &gt -0.3
+						</span> </ul>
+						<ul><strong><span class="auto-style30">Constrained</span></strong><span class="auto-style30"> : either PlusMiss &lt 1.3 or MinusMiss &gt -1.3</span></ul>
+						<ul><strong><span class="auto-style30">Unconstrained </span> </strong><span class="auto-style30"> : none of the above</span></ul>
+						<ul><strong><span class="auto-style30">MeanLocation</span> </strong><span class="auto-style30"> :the Absolute Value of the average of PlusHit and MinusHit - with the MeanLocation value limited to between +0.2 and +0.8.</span></ul></ul>
+						
+<ul><span class="auto-style30">The fit uncertainty categories are:</span><br>
+
+<ul><strong><span class="auto-style30">a</span></strong><span class="auto-style30"> - the uncertainty is that from a least squares fit of an unrestricted ellipse to the observed chords. This provides the minimal value of the uncertainties.  (a) is usually replaced by one of the following codes. However it will appear for occultations by the major planets and larger planetary satellites, when they have a known diameter and are known to be spherical.</span></ul>
+         
+        
+<br>
+<ul><strong><span class="auto-style30">b</span></strong><span class="auto-style30"> - 
+	<em>For asteroids only</em>. If the astrometric position is set to match the _center_ of a shape model (center of mass solution) - the uncertainties for both the 
+	<strong>Along-Path </strong>and <strong>Across-Path</strong> directions are set at 5% of the assumed diameter.</span></ul>
+
+<br>
+<ul><strong><span class="auto-style30">c</span></strong><span class="auto-style30"> - if not b, but has a shape model fit of either 'poor' or 'good'</span>
+  <ul><strong><span class="auto-style30">c1</span></strong><span class="auto-style30"> - If the overall event quality is 'Reliable Size...' or 'Resolution better than Shape models': uncertainties for both the 
+	  <strong>Along-Path </strong>and <strong>Across-Path</strong> directions are set at 8% of the assumed diameter.</span></ul>
+  <ul><strong><span class="auto-style30">c2</span></strong><span class="auto-style30"> - If the overall event quality is 'Limits on size, but no shape': uncertainties for both the 
+	  <strong>Along-Path</strong> and <strong>Across-Path</strong> directions are set at 12% of the assumed diameter.</span></ul>
+ </ul>
+<br>
+<ul>  <strong><span class="auto-style30">(d)</span></strong><span class="auto-style30"> - 
+	<em>for major planets & their large moons</em>. This relies on they being essentially circular in profile, and their diameters being accurately known - to provide good astrometry in circumstances which would not apply to asteroids.</span>
+<ul class="auto-style30"><strong>d1</strong> - if Well-located: uncertainties of (a), unchanged</li>
+	</ul>
+<ul class="auto-style30"><strong>d2</strong> - if Poorly-located: three times the uncertainties of (a)</li>
+	4% of assumed diameter</ul>
+<ul class="auto-style30"><strong>d3</strong> - if Constrained:<br> (i) if only 1 chord, or the spread of the chords is less than 5% of the assumed diameter,<ul><li>if the motion in the time uncertainty period is greater than the <strong>Along-Path </strong> uncertainty, that motion distance is taken as the <strong>Along-Path </strong>uncertainty. The <strong>Along-Path</strong> and <strong>Across-Path</strong> uncertainties are taken as this value.</li><li>otherwise the <strong>Along-Path </strong> and <strong>Across-Path</strong> uncertainties are the uncertainties from the fit</li></ul>(ii) if not (i), the <strong>Along-Path </strong> and <strong>Across-Path</strong> are the uncertainties from the fit.<br> 
+	<span class="auto-style35"> <em><strong>** For both (i) and (ii)</strong></em></span>: The <strong>Across-Path </strong>uncertainty is divided by the 
+	<strong>MeanLocation </strong>value, and the 
+	<strong>Along-path </strong>uncertainty is divided by <strong>SQRT(1- MeanLocation^2)</strong></ul>
+<ul class="auto-style30"><strong>d4</strong> - if Not-constrained:<br> (i) If only one chord, <ul><li>the <strong>Along-Path</strong> uncertainty is computed on the same basis as for&nbsp; '<strong>d3</strong> - if Constrained', (i), 
+	<em>first</em> dot point.</li>
+	<li>if the chord is located more than 2 arc-seconds from the center of the object, the <strong>Across-Path</strong> uncertainty is computed on the same basis as for '<strong>d3</strong> - if Constrained', (i), first dot point. </li>
+	<li>Otherwise the <strong>Across-Path</strong> uncertainty is set as 25% of the object's assumed diameter</li>
+	</ul>
+(ii) If more than one chord<ul><li>the <strong>Along-Path</strong> uncertainty is computed on the same basis as for '<strong>d3</strong> - if Constrained', (i), 
+		<em>second</em> dot point.</li><li>if the <strong>MeanLocation </strong>value is greater than 25% of its assumed radius, AND (<strong>PlusHit</strong> - 
+		<strong>MinusHit</strong>) >0.05, <br>OR the <strong>MeanLocation </strong>value is greater than 15% of its assumed radius, AND (<strong>PlusHit</strong> - 
+		<strong>MinusHit</strong>) >0.10, 
+		<br>the <strong>Across-Path</strong> uncertainty is the uncertainty from the fit</li><li>otherwise the <strong>Across-Path</strong> uncertainty is set as 
+		25% of the object's assumed diameter</li>   </ul>
+<span class="auto-style35"> <em><strong>** For both (i) and (ii)</strong></em></span>:&nbsp;  The 
+	<strong>Across-Path </strong>uncertainty from the first two dot points (but not the third) is divided by the 
+	<strong>MeanLocation</strong> value. The 
+	<strong>Along-path </strong>uncertainty is divided by SQRT(1- MeanLocation^2)</ul>
+</ul>
+<br>
+<ul><strong><span class="auto-style30">e - if (b), (c) and (d) do not apply: </span></strong>
+ 
+		<br><span class="auto-style30">This applies to events where quality is better than 
+		'Astrometry only', and either <ul>(i) the Major + Minor axes are 
+		included in the Least Squares solution, or </ul><ul>(ii) the solution is for 
+		a circle.</ul> The uncertainties are separately considered in the 
+		<strong>Along-Path </strong>and <strong>Across-Path</strong> directions, and are set as the larger of the 
+		uncertainty from (a), and the uncertainty specified in the relevant one 
+		of <strong>e1</strong> to <strong>e8:</strong></span>
+	<br class="auto-style30"><ul class="auto-style30"><strong>If the overall event quality is 'Limits on size, but no shape'</strong>
+    <ul> <strong><span class="auto-style30">e1</span></strong><span class="auto-style30"> - Well-located - uncertainty must be at least 8% of assumed diameter</span></ul>
+    <ul> <strong><span class="auto-style30">e2</span></strong><span class="auto-style30"> - Poorly-located - uncertainty must be at least 12% of assumed diameter</span></ul>
+    <ul> <strong><span class="auto-style30">e3</span></strong><span class="auto-style30"> - Constrained - uncertainty must be at least 16% of assumed diameter</span></ul>
+    <ul> <strong><span class="auto-style30">e4</span></strong><span class="auto-style30"> - Unconstrained - uncertainty must be at least 20% of assumed diameter</span></ul>
+    
+    <br class="auto-style30"><ul class="auto-style30"><strong>If the overall event quality is 'Reliable size', or 'Resolution better than Shape models'</strong></ul>
+    <ul><strong><span class="auto-style30">e5</span></strong><span class="auto-style30"> - Well-located - uncertainty must be at least 5% of assumed diameter</span></ul>
+    <ul><strong><span class="auto-style30">e6</span></strong><span class="auto-style30"> - Poorly-located -uncertainty must be at least 8% of assumed diameter</span></ul>
+    <ul><strong><span class="auto-style30">e7</span></strong><span class="auto-style30"> - Constrained - uncertainty must be at least 12% of assumed diameter</span></ul>
+    <ul><strong><span class="auto-style30">e8</span></strong><span class="auto-style30"> - Unconstrained - uncertainty must be at least 16% of assumed diameter</span></ul>
+</ul>   
+<strong><span class="auto-style30"><br>f - if none of (<strong>b</strong>) to (<strong>e</strong>) apply:</span></strong>
+
+<br class="auto-style30"><span class="auto-style30"><strong>Across-Path </strong>
+	uncertainty set on following basis:
+	<ul><strong><span class="auto-style30">f1</span></strong><span class="auto-style30"> - Well-located: the uncertainty in the assumed diameter of the asteroid.</span></ul>
+    <ul><strong><span class="auto-style30">f2</span></strong><span class="auto-style30"> - Poorly-located: twice the uncertainty in the assumed diameter of the asteroid./span></ul>
+    <ul><strong><span class="auto-style30">f3</span></strong><span class="auto-style30"> - Constrained: twice the uncertainty in the assumed diameter of the asteroid (same as f2).</span> </ul>
+    <ul> <strong><span class="auto-style30">f4</span></strong><span class="auto-style30"> - Unconstrained: 40% of the assumed diameter of the asteroid.</span></ul>
+</span> </ul>
+
+
+<ul> 	
+         <br class="auto-style30"><span class="auto-style30"><strong>Along-Path</strong> uncertainty for each of<strong> f1</strong> to 
+		 <strong>f4</strong>, is set on following basis:
+         </span>
+         <ul><span class="auto-style30">For each positive chord::
+         </span>
+         <ul class="auto-style30"><li>if chord length > 0.8 of assumed diameter - the Along-Path uncertainty for that chord is set at 5% of assumed diameter of the asteroid.</li></ul>
+         <ul class="auto-style30"><li>else if chord length > 0.6 of assumed diameter - the Along-Path uncertainty for that chord is set at 10% of assumed diameter of the asteroid.</li></ul>
+         <ul class="auto-style30"><li>Otherwise - the Along-Path uncertainty for that chord is set at 20% of assumed diameter of the asteroid.</li></ul></ul>
+    <ul class="auto-style30">Along-Path uncertainty set as the mean of the individual Along-Path uncertainties, assessed in inverse quadrature (to give greater significance to smaller uncertainty values).</ul>
+</ul>         
+
+<br><li>The increase<span class="auto-style30"> from codes (b) to (f)</span> to 
+	the <strong>Across-Path</strong> uncertainty compared <span class="auto-style30">&nbsp;to 
+	the uncertainty from (a) (km)</span></li>
+<li> The increase <span class="auto-style30">from codes (b) to (f) to</span> the <strong>Along-Path</strong> uncertainty 
+<span class="auto-style30">compared to the uncertainty </span>from (a) (km)</li>
+<li>Maximum +'ve Hit distance, asteroid radii d.dd (always set)</li>
+<li>Maximum -'ve Hit distance, asteroid radii -d.dd (always set)</li>
+<li>Minimum +'ve Miss distance, asteroid radii d.dd; 9 = not set</li>
+<li>Maximum -'ve Miss distance, asteroid radii -d.d; -9 = not set</li></ul></td>
+				</tr>
+				<tr>
+					<td class="auto-style14" style="width: 145px"><strong>MainAt 
+					Conjunction</strong></td>
+					<td class="auto-style10">
+					<p><strong>Event details at for the time of 
+					Geocentric Conjunction</strong><ul>
+						<li>IAU 
+					designation</li>
+						<li>GeocentricX&nbsp; at Conjunction (km)&nbsp; kkkk.k </li>
+						<li>GeocentricY at Conjunction (km)&nbsp; kkkk.k</li>
+						<li>Year of Conjunction</li>
+						<li>Month of Conjunction </li>
+						<li>Day of Conjunction dd.ddddddd</li>
+						<li>Standard Deviation in Time of Conjunction d.ddddddd</li>
+						<li>Standard deviation Along-track (mas)&nbsp; (s.s) - 
+						from fit only, SDev in Time of Conj not included</li>
+						<li>Separation at conjunction (arcsec)&nbsp; ss.ssss</li>
+						<li>Standard deviation Across-track {Separation} (mas) (s.s)</li>
+						<li>Position Angle of Conjunction (deg)&nbsp; ddd.ddd</li>
+						<li>Position is for an unseen primary of a binary 
+						asteroid<br>(0=false, 1=true), and is used solely as the 
+						origin for the position of the satellite</li>
+					</ul>
+					<p>The values are 'observed' values. They have been 
+					converted from the Apparent reference frame to J2000. They 
+					have not had the effects of deflection of the asteroid 
+					relative to the star removed.<br></p>
+					</td>
+				</tr>
+				<tr>
+					<td class="auto-style14" style="width: 145px"><strong>
+					Secondary</strong></td>
+					<td class="auto-style10">
+					<p><strong>Event details at the Reference Time</strong><ul>
+						<li>IAU 
+					designation</li>
+						<li>GeocentricX (km)&nbsp; kkkk.k</li>
+						<li>GeocentricY (km)&nbsp; kkkk.k</li>
+				<li>PA (deg) PA of companion with respect to the main body - 
+				J2000 reference frame</li>
+						<li>dRACosDec (arcsec)</li>
+						<li>dDec (arcsec)</li>
+						<li>UncertRA (arcsec)</li>
+						<li>UncertDec (arcsec)</li>
+						<li>number of chords used</li>
+						<br><br>The values of dRACosDec 
+						and dDec are 'observed' values, They have been converted 
+						from the Apparent reference frame to J2000. They have 
+						not had the effects of deflection of the satellite relative to the 
+						star removed.<br></li>
+					</ul>
+					</td>
+				</tr>
+								<tr>
+					<td class="auto-style14" style="width: 145px"><strong>SecondaryAt 
+					Conjunction</strong></td>
+					<td class="auto-style10">
+					<p><strong>Event details at for the time of 
+					Geocentric Conjunction</strong><ul>
+						<li>IAU 
+					designation</li>
+						<li>Satellite motions (from Miriade) allowed for in the 
+						solution. 0 = no, 1 = yes</li>
+						<li>GeocentricX&nbsp; at Conjunction (km)&nbsp; kkkk.k </li>
+						<li>GeocentricY at Conjunction (km)&nbsp; kkkk.k</li>
+						<li>Year of Conjunction</li>
+						<li>Month of Conjunction </li>
+						<li>Day of Conjunction dd.ddddddd</li>
+						<li>Standard Deviation in Time of Conjunction d.ddddddd</li>
+						<li>Standard deviation Along-track (mas)&nbsp; (s.s)</li>
+						<li>Separation at conjunction (arcsec)&nbsp; ss.ssss</li>
+						<li>Standard deviation Across-track {Separation} (mas) (s.s)</li>
+						<li>Position Angle of Conjunction (deg)&nbsp; ddd.ddd</li>
+					</ul>
+					<p>The values are 'observed' values. They have been 
+					converted from the Apparent reference frame to J2000. They 
+					have not had the effects of deflection of the asteroid 
+					relative to the star removed.<br></p>
+					</td>
+				</tr>
+
+				<tr>
+					<td class="auto-style14" style="width: 145px">MPC</td>
+					<td class="auto-style10"><strong>Details of publication by the Minor Planet Center</strong>
+						<ul><li>Date of submitting the accepted observation to 
+							the MPC</li>
+							<li>MPC Circular number of the summary report</li>
+							<li>MPC Observation ID</li>
+						</ul>
+					</td>
+				</tr>
+			</table><br>
+		</td>
+	</tr>
+		
+	
+	<tr>
+		<td class="auto-style4" style="width: 160px"><strong>Observations</strong></td>
+		<td class="auto-style2"><strong>This provides a series of groups giving 
+		details for each observer<br><br></strong>There are two groups under 
+		this heading<strong>.<br>
+		<div>
+		<table class="auto-style9" style="width: 97%" height="20">
+			<tr>
+				<td class="auto-style21" style="width: 101px"><strong>Tag</strong></td>
+				<td class="auto-style10"><strong>Data items</strong></td>
+			</tr>
+			<tr>
+				<td class="auto-style21" style="width: 101px">Prediction</td>
+				<td class="auto-style10"><strong>Details for a predicted central 
+				line location near the observed locations<br></strong><br>The 
+				prediction information is used to validate the observed data, 
+				and to calculate the offset between prediction and observed
+					<ul>
+						<li>Sequential reference number</li>
+						<li>Prediction Longitude (±ddd mm ss.s)</li>
+						<li>Prediction Latitude (±dd mm ss.s)</li>
+						<li>Time (hh mm ss.s) The time is always positive. For events near 0hrs UT, the hour 
+						can be 24 or more</li>
+						<li>Event comments. A free-text field for overall 
+						comments about the event - such as why no astrometry is 
+						reported. Field added at start of 2021 - and is 
+						incomplete for earlier years. From Nov 2021, field 
+						includes the source of the orbit used for the prediction 
+						in this tag.</li>
+					</ul>
+				</td>
+			</tr>
+			<tr>
+				<td class="auto-style21" style="width: 101px"><strong>Observer</strong></td>
+				<td class="auto-style10"><strong>Observer details.<br></strong><br><b>This 
+				group is repeated as often as required</b><br><br>There are 
+				four groups under this heading. <br><br>
+				<table align="left" class="auto-style18" style="width: 97%">
+					<tr>
+						<td class="auto-style19" style="width: 102px">Tag</td>
+						<td class="auto-style19">Data Item</td>
+					</tr>
+					<tr>
+						<td class="auto-style20" style="width: 102px">ID</td>
+						<td class="auto-style17"><b>Details of the observer and 
+						equipment</b>
+							<ul><li>Sequential reference number</li>
+								<li>Name 1</li>
+								<li>Name 2</li>
+								<li>More Than 2 observers</li>
+								<li>located near</li>
+								<li>State or country (2 or 3 letter code)</li>
+								<li>Longitude&nbsp;&nbsp; (±ddd mm ss.s)</li>
+								<li>Latitude&nbsp;&nbsp;&nbsp; (±dd mm ss.ss)</li>
+								<li>Alt&nbsp; (m)</li>
+								<li>Datum<br>_ = WGS84 <br>N = NAD1927<br>E = 
+								ED1950<br>T = Tokyo<br>G = GB1936<br>* = 
+								unspecified, or other.</li>
+								<li>Telescope Aperture (cm)</li>
+								<li>Telescope Type<br>_ = unstated<br>1 = 
+								Refractor<br>2 = Newtonian<br>3 = SCT<br>
+								4 = Dobsonian<br>5 = Binoculars<br>6 = Other<br>
+								7 = None<br>8 = Electronic [intended to refer to 
+								small-aperture self-aligning telescopes with an 
+								electronic detector]</li>
+								<li>Observing method<br>&nbsp;&nbsp;&nbsp; unspecified<br>
+								a&nbsp; Analogue & digital video<br>b&nbsp; Digital SLR-camera video<br>c&nbsp; 
+								Photometer<br>d&nbsp; Sequential images<br>e&nbsp; 
+								Drift scan<br>f&nbsp;&nbsp; Visual<br>g&nbsp; 
+								Other<br></li>
+								<li>Time Source<br>&nbsp;&nbsp; unspecified<br>a GPS<br>
+								b NTP<br>c Telephone (fixed or mobile)<br>d Radio 
+								time signal<br>e Internal clock of recorder 
+								[such as by calibrating the recorder well before 
+								and after the event]<br>f&nbsp; 
+								Stopwatch<br>g 
+								Other<br></li>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<td class="auto-style20" style="width: 102px">Conditions</td>
+						<td class="auto-style17"><b>Observing Conditions</b>
+							<ul><li>Stability<br>_ = unstated<br>1 = Steady<br>
+								2 = Slight flickering<br>3 = Strong flickering</li>
+								<li>Transparency<br>_ = unstated<br>1 = Clear<br>
+								2 = Fog<br>3 = Thin cloud &lt;2 [mag loss &lt;2 mag.]<br>
+								4 = Thick cloud &gt;2 [mag loss &gt;2 mag. <br>5 = 
+								Broken opaque cloud [that is, observed thru gaps 
+								in the cloud]<br>6 = Star faint<br>7 = By 
+								averted vision</li>
+								<li>SN</li>
+								<li>Time Adjustment&nbsp; (±s.ss) [Adjustment to 
+								time base of observer, to fit to other 
+								observations ]</li>
+								<li>Free-text comments</li>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<td class="auto-style20" style="width: 102px">D</td>
+						<td class="auto-style17"><b>Details of the D event</b>
+							<ul><li><strong>hh mm ss.ss.</strong> &nbsp; Always +'ve 
+								values. For events near 0hrs UT, the hour can be 24h or more</li>
+								<li><b>event Code</b>
+								<ul>
+								<span class="auto-style33"><b>D</b> </span>for main star<br>
+								<span class="auto-style34">d</span> for 2nd 
+								star<br><span class="auto-style34">G</span> for 
+								satellite with main star<br>
+									<span class="auto-style34">g</span> for satellite 
+								with 2nd star<br>
+								<span class="auto-style34">M</span> applies to situations where an occultation event could not be reliably detected. Most commonly this relates to a situation where the object did not occult the star. However there may be other explanations for the non-detection.<br>
+								<span class="auto-style34">m</span> applies to situations where an occultation event involving a 2nd star of a double star could not be reliably detected. Most commonly this relates to a situation where the object did not occult the 2nd star. However there may be other explanations for the non-detection.<br>
+								<span class="auto-style34">N</span> for events 
+								involving a ring. The D and R times are for opposite arms of a ring. Where there is a D+R for an arm of a ring, the mid-time is specified, with the duration being given in FREE_TEXT<br>
+								<span class="auto-style34">n</span> for asteroids (or planets) known to have one or more rings, and an occultation by that ring(s) could not be reliably detected. Most commonly this relates to the star not crossing the orbit of any ring, or the absence of material in the portion of a ring crossed by the star. However there may be other explanations for the non-detection.<br>
+								<span class="auto-style34">C</span> for Not Seen - 
+								e.g. because of cloud<br>
+								<span class="auto-style34">e</span> for an artificial D time 
+								of the primary body of an asteroid with 
+								satellites - for use when the primary component 
+								is not observed. Always a predicted location 
+								and time.
+								</ul>
+								<li><b>Accuracy (s.ss)</b> [usually specified by the observer. See below for default values when not specified.]</li>
+								<li><b>PEqn (s.s)</b></li>
+								<li><b>Weight</b>&nbsp; [Usually 
+								set as 'blank'. See below for default values 
+								that are then applied]</li>
+								<li><b>Include in Solution </b>	Code
+								<br>
+								_ Include observation<br>
+								x Exclude observation<br>
+								y Include D only<br>
+								z Include R only</li>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<td class="auto-style20" style="width: 102px">R</td>
+						<td class="auto-style17"><b>Details of the R event</b>
+							<ul><li><b>hh mm ss.ss</b>. &nbsp; Always +'ve values. For 
+								events near 0hrs UT, the hour can be 24h or more</li>
+								<li><b>event Code</b><ul>
+								<span class="auto-style34">R</span> for main star<br>
+								<span class="auto-style34">r</span> for 2nd 
+								star<br><span class="auto-style34">B</span> for 
+								satellite with main star<br>
+								<span class="auto-style34">b </span>for 
+								satellite with 2nd star<br>
+								<span class="auto-style34">M</span> applies to situations where an occultation event could not be reliably detected. Most commonly this relates to a situation where the object did not occult the star. However there may be other explanations for the non-detection.<br>
+								<span class="auto-style34">m</span> applies to situations where an occultation event involving a 2nd star of a double star could not be reliably detected. Most commonly this relates to a situation where the object did not occult the 2nd star. However there may be other explanations for the non-detection.<br>
+								<span class="auto-style34">N</span> for events 
+								involving a ring. The D and R times are for opposite arms of a ring. Where there is a D+R for an arm of a ring, the mid-time is specified, with the duration being given in FREE_TEXT<br>
+								<span class="auto-style34">n</span> for asteroids (or planets) known to have one or more rings, and an occultation by that ring(s) could not be reliably detected. Most commonly this relates to the star not crossing the orbit of any ring, or the absence of material in the portion of a ring crossed by the star. However there may be other explanations for the non-detection.<br>
+								<span class="auto-style34">C</span> for Not Seen - 
+								e.g. because of cloud. 
+									<br>
+								<span class="auto-style34">f</span> for an artificial R time 
+								of the primary body of an asteroid with 
+								satellites - for use when the primary component is not observed. Usually a predicted location and time.</ul>
+								<strong>
+								<li>Accuracy (s.ss)</strong> [usually specified by the observer. See below for default values when not specified.]</li>
+								<li><strong>PEqn (s.s)</strong></li>
+								<li><strong>Weight</strong>&nbsp; [Usually set as blank. See below for default values that are then 
+								applied.]</li>
+								<li><b>Include in Solution </b>	Code.<br>
+								_ Include observation<br>
+								x Exclude observation<br>
+								y Include D only<br>
+								z Include R only </li>
+					       </ul>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="auto-style20" style="width: 102px">LightData</td>
+						<td class="auto-style17"><b>Meta data for the light curve of the observation</b>
+						<p>When the event is soon after 0hrs UT, the start of 
+						the light curve can be in the day preceding the date in 
+						the Date field above. Similarly, if the event time is 
+						greater than 24h, the start of the light curve can be in 
+						the day following the date in the Date field above. </p>
+							<ul>
+							<li><b>Year</b> - for first data point</li>
+								<li><b>Month</b> - for first data point</li>
+								<li><b>Day</b> - for first data point</li>	
+							<li><b>Hr </b> - for first data point</li>	
+							<li><b>Min</b> - for first data point</li>	
+							<li><b>Sec</b> - for first data point</li>	
+							<li><b>Duration</b> - the time difference in seconds between 
+							the first and last data points in the light curve</li>	
+							<li><b>#Points</b> - the number of data points in the light curve</li>
+					       </ul>
+
+						</td>
+					</tr>
+					<tr>
+						<td class="auto-style20" style="width: 102px">LightValues</td>
+						<td class="auto-style17"><b>Light Curve values, as integers</b>
+							<ul><li>A series of values representing the light 
+								curve value.
+								<p>The values are scaled such that the maximum value is set to 9524 (=10,000/1.05). As a result, all light curve values have a maximum near to, but less than, 10000 - irrespective of the numeric values in the source light curve. (No adjustments to the zero-level in the light curve data are applied.)<p>
+
+	Where the light curve is missing one or more exposures, the data element for that exposure is empty.<p>
+								The number of elements is specified in 
+								<b>#Points</b> in <b>LightData</b></li>
+								
+					       </ul>
+						</td>
+					</tr>
+
+				</table>
+				<br style="clear:both"/>
+				
+				<br>Some items have default values:<br>
+				<b>Accuracy</b> is usually set by the observer. However when not set (which most commonly occurs for observations before 2000) the accuracy is set as follows:
+				<ul>
+				<li>If the observing Method was 'a', 'b', or 'c'</li>
+				<ul>
+				<li>0.5 sec if the Time Source was 'a', 'd', 'e', 'f'</li>;
+				<li>1.5 sec if the time source was 'b', 'c', or 'g'</li>
+				</ul>
+				<li>1.0 sec if the observing Method was 'd', 'e', 'f', or 'g'</li>
+				</ul>
+				<b>Weight </b>is usually 
+				set as Blank. When solving for the best fit, the applied weights 
+				are:<br>5 - for analogue or digital (non-SLR) video<br>4 
+				<span class="auto-style29">- </span>for digital SLR-camera 
+				video, and Photometer<br>3 - for sequential images and drift scan<br>1 - 
+				for visual and anything else.<br>0 - event is ignored in any 
+				solution, but may still be plotted<br><br>Miss events are 
+				considered only if expressly included in the solution - in which 
+				case they are weighted 5.<br><br><b>Plot code</b> - determines 
+				whether an event is plotted in Occult, and by corollary whether 
+				the event is reliable in any way. The settings are:<br>&lt;blank&gt; - 
+				both events plotted<br><b>x</b> - neither event is plotted<b><br>y</b> - only 
+				the D event plotted<b><span class="auto-style32"><br>
+				</span>z - </b>only the R event plotted <br>
+			</td>
+		</tr>
+	</table>
+	</strong></td>
+</tr>
+<tr><td class="auto-style4" style="width: 160px"><strong>Added</strong></td>
+		<td class="auto-style2" style="width: 691px">The date the record was 
+		added to the file</td></tr>
+<td class="auto-style4" style="width: 160px"><strong>LastEdited</strong></td>
+		<td class="auto-style2" style="width: 691px">The date the record was 
+		last edited</td>
+</table>
+
+
+</BODY>
+</HTML>

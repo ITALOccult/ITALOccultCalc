@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Unistellar processing</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Processing eVscope observations, from Unistellar</H1>
+<P>The <strong>eVscope</strong> is a fully-electronic telescope system manufactured by
+<a href="https://unistellaroptics.com/">Unistellar Inc</a>. The system has an 
+aperture of 11 cm, fully automatic alignment, time synchronized using a mobile 
+phone, and has a fully-electronic detector. Some background to the system is 
+provided
+<a href="https://unistellaroptics.com/equity-crowdfunding-from-unistellar-gives-space-lovers-rare-access-to-a-profitable-space-brand/">
+here</a>. Observations made by individual users are analyzed by <strong>Unistellar</strong>.</P>
+<P>&nbsp;</P>
+<P><strong>Unistellar</strong> reports its observations to <strong>IOTA</strong> via xml files in the
+<a href="#14/Help/html/FileFormat AsteroidObservations.htm">AsteroidObservations</a> 
+format. Many of the fields are not populated; they will be 
+populated when an event is read into the <strong>Observations Editor</strong> in Occult.</P>
+<P>The files supplied by <strong>Unistellar</strong> fall into three categories:</P>
+<ol>
+	<li>events containing observations for an event already in Occult</li>
+	<li>events which are not in Occult</li>
+	<li>events containing only Miss observations, with no event in Occult</li>
+</ol>
+<P>These categories can only be properly considered if there has been sufficient 
+time from the date of the event. The code applies a time minimum of 100 days - 
+sufficient for events to get from the observer to the regional coordinator and 
+then to the overall coordinator for inclusion in the Occult file of 
+observations. However (1) can be assessed at an earlier date,&nbsp; when the 
+event has been included in the Occult file.</P>
+<P>The functionality has two steps: Sorting events according to the above 
+criteria, and processing events of type (1). Events of type (2) are processed 
+using the Observations Editor <strong>File... Open Multiple Files</strong> to 
+review and add the individual event files. Events of type (3) are to be ignored.</P>
+<P>The sort process needs to be run on a regular basis, while ever there are 
+files in the directory where the <strong>Unistellar</strong> files have been 
+initially placed.</P>
+<P>&nbsp;</P>
+<h3>Sorting the Observations</h3>
+<P>Firstly, place the Unistellar observations in a folder of choice. A 
+convenient location might be in a directory structure in Occult like:</P>
+<P><strong>&nbsp;&nbsp;&nbsp;&nbsp; Occult 4/Asteroid/Observations/yyyy/eVscope</strong></P>
+<P>where yyyy is the year of the observations.</P>
+<P>To sort the observations, from the Asteroid Observations Editor, select&nbsp; 
+File....eVscope: match to existing observations. This will display the following 
+form.</P>
+<P align=left><img src="eVscopeSort.PNG" border="2" width="800"><br>
+<P>The first step is to select the directory containing the files to be 
+processed. This selection applies to both the <strong>Sort..</strong>. and
+<strong>Process...</strong> options on the form.</P>
+<P>To sort the observation files into the three categories above, click the <strong>Sort...</strong> button. 
+The results of the sort are displayed like:</P>
+
+<P align=left><img src="eVscopeSortSummary.PNG" border="2" height="250"><br>
+
+
+
+<p align="left">The sort process moves the files into new subdirectories of the 
+directory holding the eVscope files. Those directories are:</p>
+<p align="left"><strong>....eVscope/EventsToAdd </strong>&nbsp; containing new 
+events that need to be added to the Occult file</p>
+<p align="left"><strong>....eVscope/ObservationsToAdd </strong>&nbsp;&nbsp; 
+containing events having observations to be added to an event already in the 
+Occult file</p>
+<p align="left"><strong>....eVscope/EventsToIgnore </strong>&nbsp;&nbsp; 
+containing events with only Miss observations, with no corresponding event in 
+the Occult file</p>
+<p align="left">The directory<strong> ....eVscope</strong> will retain any event 
+files where the sort date is less than 100 days from the event date - except for 
+any events matched to an existing event.</p>
+<p align="left">&nbsp;</p>
+<h3 align="left">Subsequent processing</h3>
+<p align="left">The files in <strong>....eVscope</strong> might still be matched to an event in the Occult file. They will remain there until they are either matched, or the routine is run more than 100 days after the event date.</p>
+<p align="left">The files in <strong>....eVscope/EventsToAdd&nbsp; </strong>should be processed in the same manner as any new observation files provided in the Occult .xml format. 
+That is, from the <strong>File... Open Multiple Files</strong> menu item on the 
+Observations Editor form</p>
+<p align="left">The files in <strong>....eVscope/EventsToIgnore </strong> require no further consideration.</p>
+<p align="left">The files in <strong>....eVscope/ObservationsToAdd</strong> contain observations in an event that has been matched to an event in the Occult file. 
+It cannot be assumed that all the observations in such files need to be added to 
+the existing event in the Occult file, as some observations might already be 
+present. Also (and as usual) all observations need to be checked for reliability 
+etc.. The button <strong>Process the files for Existing Events</strong> assists 
+with adding these extra observations. When selected, a form looking like the 
+following will appear:</p>
+
+<P align=left><img src="eVscopeAddObservations.PNG" border="2" height="400"><br>
+<p align="left">The form displays an event in the .<strong>...ObservationsToAdd 
+folder</strong>. The file name is given at the top. The event date and asteroid 
+are listed under the tags &lt;Date&gt; and &lt;Asteroid&gt;. The form is displayed with its 
+full set of observations highlighted for selection. To process:</p>
+<ol>
+	<li>
+	<p align="left">In the Observations Editor, open the relevant event that 
+	exists in the Occult file</p>
+	</li>
+	<li>
+	<p align="left">Compare the Observer names as listed in this form, and the 
+	Observations Editor, and identify any observations on the displayed form 
+	that are not in the Editor</p>
+	</li>
+	<li>
+	<p align="left">Select (by highlighting) the observations that are displayed 
+	on the form that need to be added to the event. Make sure that the tags<strong> 
+	&lt;Observer&gt; a</strong>nd <strong>&lt;/Observer&gt;</strong> are included in the selection 
+	(if either is not included, that observer data will not be included.)</p>
+	</li>
+	<li>
+	<p align="left">Copy those observations.</p>
+	</li>
+	<li>
+	<p align="left">On the observations editor, select the menu item <strong>
+	Paste... New observer lines [one or more groups] - XML format</strong> This will copy those observer entries into the Occult record. The Paste will also sort and renumber the observers in accordance with distance from the path.</p>
+	</li>
+	<li>
+	<p align="left">On the form that plots the observations, click the button on 
+	the menu bar <strong>Set Miss Times</strong>, and from the form that appears 
+	click <strong>Correct times in report</strong>. This will ensure appropriate 
+	times are given for Miss events.</p>
+	</li>
+	<li>
+	<p align="left">Review the added observations, and the observations as a 
+	whole, in the usual manner. When satisfied, Update the record in Occult</p>
+	</li>
+	<li>
+	<p align="left">On the form, click <strong>Mark file as processed and 
+	display next file</strong>. This will add the text <strong>_done</strong> to 
+	the file name just before the extension. This will prevent the file being 
+	selected in future runs. It will then move to the next file and display it.<br>
+	It is important to click the&nbsp; <strong>Mark file as processed and 
+	display next file</strong>. The form does not allow for user selection of 
+	files to process. Rather it steps through the files in the directory, 
+	skipping over files marked with&nbsp; <strong>_done</strong> This is to ensure all files are processed.<br>
+	You can cease processing at any stage by clicking <strong>Exit</strong>. 
+	When you next run this form, it will continue by working through all files 
+	that have not had&nbsp; <strong>_done</strong> added to the file name.</p>
+	</li>
+	<li>
+	<p align="left">When all files have been processed, you will get a message, 
+	and the form will close.</p>
+	</li>
+</ol>
+<p align="left">&nbsp;</p>
+<p align="left">&nbsp;</p>
+<p align="left">&nbsp;</p>
+
+
+</BODY>
+</HTML>

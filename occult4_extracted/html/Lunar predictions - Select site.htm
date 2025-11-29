@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Select site</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Select the site for predictions</H1>
+<p align=center><img src="SetSite.png">
+<P>The primary way of selecting the site for predictions is by way of a site file. A site file is created using the <a href="Site%20Editor.htm">Site Editor</a> that is found under the Maintenance tab. When a site is added to a site file, you specify a number of parameters such as telescope aperture, and graze travel distance, which controls the output generated in lunar occultation predictions.</P>
+
+<p>Some of the issues to keep in mind when creating a site file are:
+<li>Multi-Site predictions for a star generate predictions for all sites in a site file.
+<li>The observer scan listing for grazing occultations is generated on the basis of all sites in the site file.
+<li>The regional map generated in the Predictions of Multiple Sites for Multiple objects is sized to include all the sites in the selected site file
+<li>If the 'Filter search to sites in file' box is checked, the generation of occultation elements is constrained to stars that <I>might </I>be occulted within the area covered by the site file.
+<li>for solar eclipses and asteroid occultations, you might want the site file to cover a large portion of the Earth (or even the entire Earth)</p>
+<p>It is quite possible that the site you want to select is in more than one site file. You need to consider the above issues when choosing which 
+site file to use.
+
+<h3><br>Selecting/Setting the site file and site</h3>
+<p>First, select the relevant site file. Once selected, the longitude and latitude range of the sites in that file are displayed below the site file name. [For the significance of this, see above.] Then select the site from the listing of sites within that file.<br><br>
+Having selected a site file and site, you can set that combination as your 'home' site by clicking the 'Set home' button. Subsequently, if you have changed the site and/or site file, you can return the settings to your 'home' site by clicking the 'Use home' button. The 'Home' setting is retained between sessions.<br><br>
+For maximum search efficiency, you can check the 'Filter search to sites in file' box.  When this is checked, the scan of the XZ catalogue to identify stars that <I>might </I>be occulted includes a filter to exclude many stars that cannot be occulted as seen from any location within the site file coverage.</p>
+
+<h3><br>Using an arbitrary site</h3>
+<p align=center><img src="SetSpecialSite.png">
+<p>At time you might want to generate predictions for a site that is not in a site file. To do this, click the 'Use single' button. The site file selections will disappear, being replaced by boxes for entering a site longitude, latitude and 
+altitude, a site name to be included on the prediction, and the telescope aperture. Other parameters are fixed in the program at the following values:<li>
+Magnitude correction = 0;
+<li>Graze travel distance = 50km
+<li>Plot site on Occult maps = No
+<li>Plot site in Google maps = No
+<p>To return to select a site from a site file, click 'Use Site files'.
+
+<h3><br>Adjusting the Magnitude Limit correction</h3>
+<p>There are times when you might want to adjust the magnitude limit correction applied to the selected site. You can do this with the Menu item 'Mag Limit Adjustment', where a range of corrections (in magnitudes) are available for selection. Note - the selection is not retained between sessions.</p>
+
+</BODY>
+</HTML>

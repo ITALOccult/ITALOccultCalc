@@ -1,0 +1,196 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Lunar Predictions Overview</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1><A NAME="Lunar predictions Main"></A>Lunar Occultation Predictions - Overview</H1>
+
+This form provides three functions for computing lunar occultations:<ul>
+<li>Predictions for single sites</li>
+<li>Predictions of single objects</li>
+<li>Predictions of multiple objects for multiple sites</li></ul>
+and four utility functions<ul>
+<li>Edit the user file of minor planets</li>
+<li>View star catalogue details</li>
+<li>Display moon in star field</li>
+<li>View source data for watts charts</li>
+</ul>
+
+<h2>Predictions for single sites</h2>
+<p>This is the main tool for predicting lunar occultations. Its focus is on finding occultations visible from a particular location. The form provides an extensive range of options, as follows:<ul>
+<li><B>Site selection</B>. You select the site for the prediction by selecting a site file and a site within that file. Your selection is retained between sessions. You can specify a particular site file + site as your 'Home' site, and later set the site to your Home site with a single button-click. Also, you can choose to enter the site coordinates (but these are not retained.) You can also filter the search for occultations to stars which might be occulted at the site, increasing the speed of the prediction (especially if the search is against the full XZ catalogue).<br><br></li> 
+<li><B>Star catalogue</B>. You can select the full XZ catalogue. Or you can select a subset catalogue. If you are only interested in occultations of brighter stars, the subset catalogues provide a significant increase in computation speed.<br><br></li> 
+<li><B>Object</B>. You can specify the objects to be included in the prediction. The choices are Stars, Planets, and Asteroids. For current predictions you would usually have all three checked. For predictions of dates more than a few years from present times, you should uncheck Asteroids, unless you are particularly interested in an asteroid prediction.<br><br></li> 
+<li><B>Set Dates</B>. This sets the period covered by the prediction. You can set the start and end dates manually. Or you can use buttons to set the date range to one of: <ul>
+<li>the whole calendar year (based on the year set in the Start line)</li> 
+<li>a whole calendar month (based on the year + month set in the start line)</li> 
+<li>the day set in the start line</li> 
+<li>today - based on the UT date of today</li> 
+</ul>[Note - whenever you change the Start date, the End date will be reset to be the same date.]<br>
+<I><B>IMPORTANT</B>. Most of the functions listed below are only available for predictions based on a single date</I>.<br><br>
+<li><B>Events for Site</B>. You can select a short format for prediction output that is more suitable for emailing. [The short output does not include the moon's librations, differential corrections, and the star's coordinates] You can also choose to only list graze messages.<br>
+When the predictions are generated, right-clicking on a line will bring up a menu. The options available are:<ul>
+<li><B>Generate a graze prediction</B>. [<U><I>for single date predictions only</I></U>]. Will generate a grazing occultation prediction for longitudes close to the site longitude. The functions available when a graze prediction is displayed are described below, under Grazes.<br><br></li> 
+<li><B>MoonMap</B>. Display a simple map of the moon, showing the location of the occultation event (with the time and star magnitude included). From the MoonMap, you can choose to include various numbers of subsequent occultations on the plot (selected with a right-click menu from the moon map). The moon map can be drawn mirror-reversed.<br><br></li> 
+<li><B>Multisite prediction</B>. [<U><I>for single date predictions only</I></U>]. This will generate a table of predictions for the particular star, for all the sites contained in the currently selected site file. [Multisite predictions are explained below.]<br><br></li> 
+<li><B>Star details</B>. Opens the form for displaying details of a selected star, with the particular star being displayed.<br><br></li> 
+<li><B>World Map</B>. [<U><I>for single date predictions only</I></U>]. Draws a world map showing the occultation region.<br><br></li> 
+<li><B>View in GoogleEarth</B>. [<U><I>for single date predictions only</I></U>]. Displays the occultation path in GoogleEarth<br><br></li> 
+<li><B>Save GoogleEarth kmz file</B>. [<U><I>for single date predictions only</I></U>]. Generates a kmz file for use with GoogleEarth <br><br></li> 
+<li><B>Save GoogleMaps HTM file</B>. [<U><I>for single date predictions only</I></U>]. Generates an HTML file for use with GoogleMaps, showing the occultation path.<br><br></li> 
+</ul>
+
+<li><B>Grazes (Events anywhere)</B>  [<I>Only available for single date predictions</I>.] This provides the general graze prediction function in Occult. When selected, a form is displayed listing all stars in memory. From the list, <ul>
+<li>Specify north or south limit</li>
+<li>Set the start and end longitudes for the prediction</li> 
+<li>Set the step interval - that is, the longitude increment to be used in the predictions</li> 
+<li>Set the nominal site altitude to use for the prediction. [Note. By setting the nominal site altitude to the altitude of the likely sites, the need to correct the location of the graze path for site altitude will be eliminated.]</li> 
+<li>select the star for the prediction</li> </ul>
+<p>The graze path will be generated, together with information about double star components, variable star information, and a table of visibility. Additionally, the graze path will be compared with all sites in the currently selected site file, and if it is located within the graze travel distance set for that site, the site will be listed in an 'Observer scan' listing.</p>
+When the predictions are generated, right-clicking on a line will bring up a menu. The options available are:<ul>
+
+<li><B>Graze path map</B>.  Plots the graze path using Occult's internal mapping capability</li> 
+<li><B>Graze profile.</B> Generates a graze profile specific to the selected line. In the graze profile there are options to plot the results from past grazes and ordinary occultations. NOTE. Where there are sufficient data points from past observations, it is usually best to not display the Watts profile.</li> 
+<li><B>Limiting magnitude table</B>. Generates the limiting magnitude table for the specific line. This may be important for grazes at small cusp angles, to ensure the information is relevant for your selected site location..</li> 
+<li><B>Relist Occultations</B>. This returns to the display or ordinary occultations for that day and selected site.</li> 
+<li><B>View in GoogleEarth</B>. This draws the graze path in GoogleEarth</li> 
+<li><B>Save GoogleEarth kmz file</B>. This saves a kmz file of the graze path, for use in GoogleEarth</li> 
+<li><B>Save GoogleMap HTM file.</B> This saves an HTML file of the graze path, for use in GoogleMaps</li> 
+<li><B>Save in other map formats</B>. This saves the graze path in a range of formats for use in various mapping software/devices. This means you can display the graze path on your mapping device as you drive to your location. Formats supported are:<ul>
+<li><B>.cmx </B> - <A href ="http://www.chicagomap.com/" target=_blank>Precision mapping streets</a>, covering USA and Canada. Note: if emailing these files, you must ZIP them to avoid corruption.
+<li><B>.gen</B> - for making ESRI shape files. <a href="http://en.wikipedia.org/wiki/Shapefile" target=_blank>Explanation of ESRI shape files</a>.
+<li><B>.gpx</B> - Easy GPS. EasyGPS can interface with Garmin, Magellan, or Lowrance GPS units. It is available as freeware from <a href="http://www.easygps.com/" target=_blank>here</a>.
+<li><B>.mif</B> - <a href="http://tinyurl.com/a6jds" target=_blank>MS Map Point</a>.
+<li><B>.plt</B> - <A href ="http://www.oziexplorer.com/" target=_blank>Ozi-Explorer</a>.
+<li><B>.txt </B> - <A href ="http://www.delorme.com/software.htm" target=_blank>DeLorme Street Atlas</a> 
+</ul>
+
+<li><B>MultiSite - for one star (Events anywhere)</B>  This generates a multisite prediction for the selected star, with the sites being those in the currently selected site file. From the displayed list of stars, select the star for the prediction
+
+<p> Note. MultiSite predictions are typically generated for occultations of bright stars for publishing predictions in popular magazines. As a result, the selection of 
+the relevant star will usually be much easier if the star catalogue is set to an appropriate subset catalogue (e.g. the '&lt mag 4' catalogue)</p>
+
+<p>The prediction consists of two sections, one giving more information than the other. In each section, all D events are grouped separately from the R events. The events are listed against the site name. Following the predictions is a table of coordinates for all the sites appearing in the predictions.  [If no occultation is visible at a site, the site is not included in the prediction.]</p>
+
+<li><B>World Map  (Events anywhere)</B> This generates a world map showing the occultation path. Select the star from the list to generate the map. Note - the reason for this option is to generate a map for stars that are not occulted at you chosen site.  </li> 
+</li> 
+</ul></p>
+
+
+
+
+<h2>Predictions of single objects</h2>
+<p>This option is designed to find occultations of specified objects. For example, if you wanted to know when the next occultation of Antares, Saturn, or Vesta will occur for you, this option will provide the answer.</p>
+<p>The form will look for occultations over a specified period of years. In principle this can be any number of years, but for one of the outputs (a graphic of all events found) the search should be limited to 20 years or less.</p>
+<p><li>The search can be conducted for a specified star. The star can be specified by one of ZC, XZ or SAO numbers. Or it can be selected from a drop-down box. The content of the drop-down box is set in accordance with the radio buttons above the drop-down box. Press the 'Find Star' button to search for that star.</p>
+
+<p><li>The search can be conducted for any of the major planets + Pluto. Use the radio buttons to select the planet, and then press the 'Find Planet' button to conduct the search for that planet.</p>
+
+<p><li>The search can be conducted in respect of any asteroid contained in the User file of asteroids. Those asteroids are listed in the drop-down box in this item on the form. Select the asteroid, then press the 'Find Asteroid' button.
+
+To search for occultations of a comet, edit the user file to include the comet's orbital elements - then select the comet in this option and conduct the search.
+Note that the orbits of asteroids will need to be integrated, and this may take some time.</p>
+
+<p><li>The search can be conducted for a specified RA and declination coordinate. For example, a search could be conducted for a newly-discovered supernova. Enter the object's J2000 coordinates, and press 'Find Object'.</p>
+
+<p>The search will result in a list of possible occultations at the bottom of the form. [A small number of events may be 'near-miss' events.] The actions that can be taken are:<ul>
+
+<li><B>Double click on an event</B>. This will generate a world map showing the occultation region. Also the occultation elements will be made available to the Single Site prediction form, which when 
+maximized can be used to generate local predictions for any site, or graze predictions.</li>
+
+<li><B>Right click on an event</B> - and plot the event in Google Earth. Again, the occultation elements are made available to the Single Site prediction form.</li>
+
+ <li><B>Right click on the list</B> - and select <B>Plot ALL listed events</B>. This will create a page with world maps of all events plotted. These maps provide an extremely useful visual tool for finding when occultations of an object will occur in a particular location. The plot has 3 maps across the page. If a map is 'missing', it is because no occultation occurs on that date. The maps can be copied and saved, but not printed from Occult.<br>
+</li></ul>
+
+
+<h2><br>Predictions of multiple objects for multiple sites</h2>
+<p><B>IMPORTANT.</B> <I>This option produces prediction for multiple sites. It is intended for people who distribute predictions to other observers. This option is highly dependant upon the Site files. Unsatisfactory prediction outcomes (too many, or too few, events) will be due to inappropriate site settings within the site file. People planning on using this option need to make sure they are familiar with site files, and the effect of the various site settings on predictions.</I></p> 
+<h3>Compute Grazes  / Compute Occultations</h3>
+<p>This is the primary functionality. Before running the predictions, you need to set a range of settings.<ul>
+<li><B>Select sites</B>.  This sets the sites to be included in the predictions. You first select a site file containing the sites of interest, using the drop-down box at the top of this section. All the sites in that file will be displayed. You then check the sites you want to include in the predictions. Buttons at the bottom of the list enable you to set or clear ALL sites.<br><br>
+For greatest success, you should ensure that the selected sites are all in the same region. For example, it would be appropriate to include London and Paris in the same predictions. But London and Sydney would be inappropriate.<br><br></li>
+
+<li><B>Select catalogue and planets</B>.  Here select the catalogue to use. Generally one of the subset catalogues will be most appropriate. The 'XZ&lt Mag 9' catalogue will generally be sufficient for most purposes.<br><br>
+You also set here the type of objects to be included. Generally this would include stars and planets, but not asteroids.<br><br></li>
+
+<li><B>Options for grazes</B>.  Grazing occultation predictions involve a number of choices of outputs and file types. In this section you specify the parameters, as follows<br><br><ul>
+
+<b>Output Files - <I>for individuals</I></b><br>
+<li><B>Prediction - text </B>- the usual text listing of the graze path, including the visibility table, the observer scan listing, and any double or variable star details</li>
+<li><B>Profile </B>- the graze profile. (Details of the profile content are set further down)</li>
+<li><B>Regional Map</B> This is a map of the region covered by the site file, showing the graze paths across that region. The size of that region is indicated at the top of the Site Selection box.</li>
+<li><B>GoogleEarth kmz</B> A kmz file to use with GoogleEarth.<br><br></li>
+
+<b>Output Files - <I>for web sites</I></b> These files are intended for people that put predictions on web sites.<br>
+<li><B>Google Map HTM </B>An HTML file to display the entire occultation in GoogleMaps</li>
+<li><B>Local Google Map HTM </B>An HTML file to display the graze path in GoogleMaps</li>
+<li><B>No spaces in file names</B>  An option to ensure files names have no spaces.</li></ul>
+
+<ul><br><b>Profile Options</b> The graze profile has a number of options which are set here.<br>
+<li><B>Plot Size</B>  Select the size of the profile plot. A small plot has reduced file size (good for emailing) but also reduced resolution.</li>
+<li><B>Observed data</B>  Set the parameters for plotting historical observations on the profile</li>
+<li><B>Hide Watts profile</B>   Recommended setting is to check this box</li>
+<li><B>File format</B>  Set the file format for saving graphics</li></ul><br></li>
+
+<li><B>Set output options</B>.  For ordinary occultations, you can choose to zip the output files, and delete the original files. For graze predictions, all output is to zip files.</li><br><br>
+
+<li><B>Set date range</B>.  Various options are provided.</li></ul>
+</p>
+
+<p>Having set the parameters, you can compute the occultations or grazes. All output is to file. The files will be found in the subdirectories AutoGenerated Lunar, and AutoGenerated Grazes, under subdirectories having the name of the various sites.</p>
+
+<h3><br>Fixed region bright grazes</h3>
+This option generates graze predictions of bright stars (using the 'XZ &lt Mag 4' catalogue), and planets (Mercury to Neptune). The regions of the World are set in the User Settings file, where 7 regions can be specified.
+
+Output is sent to the subdirectory \Autogenerated Grazes\World. Output is:<ul>
+<li>For all events, a world map showing the occultation region</li>
+<li>For each region (other than the World), a regional map showing the graze paths, and a text index file.</li></ul>
+
+
+
+
+
+<h2><br>Utility functions</h2>
+<h3>Edit the user file of minor planets</h3>
+<P>Lunar occultations of asteroids can  be computed. To do this Occult needs a file of orbital elements. However, as only the brightest asteroids have any prospect of being observed in a lunar occultation, a special User file of asteroid elements is created from the main file of asteroid elements. This file can also include objects such as comets. This option allows for editing of the elements in this User file.</P>
+<p>The simplest way to maintain this file is to import elements from the main file of asteroid elements held by Occult. The form has functionality to do this import, making a selection on the basis of mean opposition magnitude. Note that an asteroid is at least 1 magnitude fainter than its mean opposition magnitude for perhaps 80% of the time. A recommended magnitude to use when importing elements is 9.0</p>
+
+<ul><B>Important issues</B>
+<li>There are significant overheads in computing occultations by asteroids. As you increase the number of asteroids, the prediction speed slows considerably. In normal circumstances you should try to keep the number of asteroids to less than 20, or even less than 10.</li>
+<li>To compute a prediction, the program will need to integrate each orbit to the date of the event. You should try to ensure the epoch of the orbits are within a couple of years of the event date.</li>
+<li>To integrate the orbit, some files of xyz coordinates of the planets may need to be generated. You will be prompted if this is required.</li>
+</ul>
+
+
+<h3><br>View star catalogue details</h3>
+<p>This displays the catalogue information for a particular star. The catalogues that can be accessed are:<ul>
+<li>ZC - all stars that are in the XZ catalogue, with information as for the XZ catalogue. [There are 295 ZC stars that are not in XZ80Q because they are too far from the ecliptic.]</li>
+<li>SAO - all 26619 SAO stars that are in the XZ catalogue, with information as for the XZ catalogue. The SAO numbers lie between 57982 and 210563.</li>
+<li>XZ - all stars. Details include variable and double star details (including display of orbit)</li>
+<li>Hipparcos - all stars (if Tycho2, Nomad_Short or NOMAD is installed)</li>
+<li>Tycho2 - all Tycho2 stars if Nomad installed; all Tycho2 stars brighter than mag 12 if Tycho2 installed</li>
+<li>2UCAC - all stars if 2UCAC or NOMAD installed. Brighter parts of 2UCAC2 if either Tycho2 or Nomad_Short installed.</li></ul></p>
+
+
+<h3><br>Display moon in star field</h3>
+<p>This displays a representation of the moon against the stars in the XZ80 catalogue. 
+The representation is limited to showing the diameter, phase, and PA of the bright limb. You can plot the field at any of four scales. The default starting time for the plot is the time the form is opened. If the plot is in nighttime, the background is black; daytime is light grey, twilight is varying shades of blue, and if the moon is below the horizon, the background is brown</p>
+<p>The plot can be animated, by setting the 'duration' to a value in minutes, and a plot interval in seconds. For example:<ul><li> to view the motion of the moon 'tonight', you might set the duration at 480 minutes (8 hours), and the plot interval at 60 seconds.</li>
+<li>to view the motion of the moon over a month, you might set the duration at 43200 minutes (30 days) and the plot interval at 600 seconds.</li></ul>
+Note that the speed of the animation depends on the computer speed, and the size of the star field to be plotted.</p>
+<p>The animation can be an instructive tool to demonstrate the motion of the moon, including the change in motion during the day due to parallax movement.</p>
+
+<h3><br>View source data for Watts charts</h3>
+<p>This displays the lunar limb from the Watts charts for any combination of longitude & latitude librations, and axis angle. Also shown is a chart of the librations of each of the photographs used to generate the Watts chart at that particular Axis Angle</p>
+
+
+
+</BODY>
+</HTML>

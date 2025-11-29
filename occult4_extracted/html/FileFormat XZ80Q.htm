@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>XZ80Q</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1><A NAME="idh_4overview"></A>XZ80 star catalogue</H1>
+<P> XZ80 is the main catalogue used for predicting lunar occultations. It is based on the XZ80Q catalogue, which is archived in the Vizier system, at:<BR>
+<A HREF="http://vizier.u-strasbg.fr/viz-bin/qcat?xz80Q" target=_blank> XZ80Q catalogue</A>
+<BR><P>
+<P>The format of the star catalogues used in OCCULT is a 35-byte record length random-access file. The main file (XZ80.dat) is the XZ80Q catalogue. This is an expansion of the XZ80P catalogue based on the Tycho-2 catalogue, and includes all stars in Tycho-2 to Visual magnitude 12.0. There are 186798 stars in XZ80Q, with numbers ranged between 1 and 187172.<BR><BR>
+
+The first record contains the first and last star number in the file. This record is in ASCII, with the two numbers separated by a carriage return. The location of the carriage return is not fixed..<BR><BR>
+
+All subsequent records contain the following information:<BR>
+
+<TABLE  COLS = 3 BORDER=1>
+
+<TR><TH NOWRAP>Byte </TH><TH>Meaning</TH><TH>Decode with:</TH></TR>
+<TR><TD>0 - 3</TD><TD>Right Ascension</TD><TD>Stored as a LONG integer. To decode to the RA in degrees, divide by 10<SUP>7</SUP>, and add 180</TD></TR>
+<TR><TD>4 -  7<TD>Annual proper motion in RA</TD><TD>Stored as a Single. Value is in degrees per year</TD></TR>
+<TR><TD>8 - 11</TD><TD>Declination</TD><TD>Stored as a LONG integer. To decode to the Declination in degrees, divide by 10<SUP>7</SUP></TD></TR>
+<TR><TD NOWRAP>12 - 15</TD><TD>Annual proper Motion in
+Declination</TD><TD>Stored as a Single. Value is in degrees per year</TD></TR>
+<TR><TD>16 - 17</TD><TD>Mv - visual magnitude</TD><TD>Integer. Divide by 100.</TD></TR>
+<TR><TD>18 - 19</TD><TD>Mp - blue magnitude</TD><TD>Integer. Divide by 100.</TD></TR>
+<TR><TD>20 - 21</TD><TD>Mr - red magnitude</TD><TD>Integer. Divide by 100.</TD></TR>
+<TR><TD>22</TD><TD>Spectral Class</TD><TD>sa = (ASC(14) AND 240)/16 + 1<BR>
+sb = (ASC(14) AND 15) + 1<BR>
+M1$ = "* WOBAFGKMNRS+"<BR>
+M2$ = "* 0123456789ABC+"
+class = mid$(M1$,sa,1) + mid$(M2$,sb,1)</TD></TR>
+<TR><TD>23</TD><TD>Double Star Code<br>and Kepler2 Flag</TD><TD>in ASCII text (C c D d W w M S K k)</TD></TR>
+<TR><TD>24 - 27</TD><TD>XZ number</TD><TD>Long integer</TD></TR>
+<TR><TD>28 - 31</TD><TD>SAO number</TD><TD>Long integer</TD></TR>
+<TR><TD>32 - 33</TD><TD>ZC number</TD><TD>Integer</TD></TR>
+<TR><TD>34</TD><TD>Variable Star Code</TD><TD>in ASCII text (E e V v S s)</TD></TR>
+
+</TABLE><BR>
+
+The double star code has the following definitions:
+<UL>C = double, component in XZ80Q, Separation <1"<BR>
+c = double, component not in XZ80Q, Separation <1"<BR>
+D = double, component in XZ80Q, Separation <10"<BR>
+d = Double, component not in XZ80Q, Separation <10"<BR>
+W = double, component in XZ80Q, Separation >10"<BR>
+w = double, component not in XZ80Q, Separation >10"<BR>
+M = multiple system, all components in XZ80Q<BR>
+S = multiple system, some but not all in XZ80Q<br>
+K = star in K2 catalogue, short cadence<br>
+k = star in K2 catalogue, long cadence<br>
+P = star in K2 catalogue, short cadence, and one of the other double star flags apply<br>
+p = star in K2 catalogue, long cadence, and one of the other double star flags apply<br>
+The K, k, P, p codes have precedence over the other codes.</ul>
+The variable star code has the following definitions:<BR>
+<UL>E = eclipsing-type variable, magnitude variation >0.5 mag<BR>
+e = eclipsing-type variable, magnitude variation <0.5 mag<BR>
+V = other variable, magnitude variation >0.5 mag<BR>
+v = other variable, magnitude variation <0.5 mag<BR>
+S = suspected variable, magnitude variation >0.5 mag<BR>
+s = suspected variable, magnitude variation <0.5 mag</UL><BR>
+
+The XZ80 catalogue has an associated <B>.inx</B> file. This file is a random access file of record length 9, containing 361 records. Each record corresponds to a 1-degree (4 min) increment in R.A., for 0 deg through to 360 degrees. The record contains the record number (in ASCII) /in the catalogue file of the first star whose RA is greater than or equal to the relevant increment in RA. 
+
+</BODY>
+</HTML>

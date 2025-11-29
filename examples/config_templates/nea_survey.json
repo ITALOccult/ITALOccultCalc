@@ -1,0 +1,112 @@
+{
+  "metadata": {
+    "name": "Near-Earth Asteroids Survey",
+    "author": "Michele Bigi",
+    "date": "2025-11-22",
+    "description": "Search occultations for potentially hazardous asteroids"
+  },
+  "sections": [
+    {
+      "type": "asteroid_range",
+      "name": "Target Selection",
+      "parameters": [
+        {
+          "name": "from",
+          "value": "1",
+          "type": "int",
+          "comment": "Start asteroid number"
+        },
+        {
+          "name": "to",
+          "value": "100000",
+          "type": "int",
+          "comment": "End asteroid number"
+        },
+        {
+          "name": "where",
+          "value": "diameter > 1, H < 22, orbit_class in [NEA, Aten, Apollo, Amor], a < 1.3",
+          "type": "array",
+          "comment": "Inclusion filters (AND logic)"
+        },
+        {
+          "name": "wherenot",
+          "value": "e > 0.95, i > 40",
+          "type": "array",
+          "comment": "Exclusion filters (OR logic)"
+        }
+      ]
+    },
+    {
+      "type": "search",
+      "name": "Search Parameters",
+      "parameters": [
+        {
+          "name": "start_jd",
+          "value": "2461041.0",
+          "type": "double",
+          "comment": "Search start (2026-01-01)"
+        },
+        {
+          "name": "end_jd",
+          "value": "2461405.0",
+          "type": "double",
+          "comment": "Search end (2026-12-31)"
+        },
+        {
+          "name": "step_days",
+          "value": "0.5",
+          "type": "double",
+          "comment": "Sampling interval"
+        },
+        {
+          "name": "sky_coverage",
+          "value": "full",
+          "type": "string",
+          "comment": "full, northern, southern, ecliptic"
+        },
+        {
+          "name": "mag_limit",
+          "value": "14.0",
+          "type": "double",
+          "comment": "Star magnitude limit"
+        }
+      ]
+    },
+    {
+      "type": "operations",
+      "name": "Processing Options",
+      "parameters": [
+        {
+          "name": "download_elements",
+          "value": "true",
+          "type": "bool",
+          "comment": "Auto-download from AstDyS"
+        },
+        {
+          "name": "parallel_processing",
+          "value": "true",
+          "type": "bool",
+          "comment": "Use multiple CPU cores"
+        },
+        {
+          "name": "max_threads",
+          "value": "8",
+          "type": "int",
+          "comment": "Maximum parallel threads"
+        },
+        {
+          "name": "batch_size",
+          "value": "100",
+          "type": "int",
+          "comment": "Process asteroids in batches"
+        },
+        {
+          "name": "continue_on_error",
+          "value": "true",
+          "type": "bool",
+          "comment": "Continue if single asteroid fails"
+        }
+      ]
+    }
+  ]
+}

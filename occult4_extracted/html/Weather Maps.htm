@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Weather predictions</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Weather predictions</H1>
+
+<P>Occult provides two forms of weather predictions:<ul type = 1>
+<li>displays predictions of cloud cover and temperature for a specified location (including along a graze path).
+<li>accesses the Weacharts of the 7Timer system to provide regional maps of weather conditions for 16 days into the future. The full Weachart system is available
+<a target="_blank" href=http://http://www.7timer.info/> here</a>. The functionality provided by Occult is a subset of the weacharts that are of most interest to occultation observers.</ul>
+
+<H2>Basis of the predictions</H2> 
+The data and charts of 7Timer are generated using the <I>Global Forecast System </I>(GFS) model of the <A  href="http://www.ncep.noaa.gov/"  target=_blank> National Centers for Environmental Prediction </a>(NCEP). A description of the GFS model may be read <A  href="http://www.emc.ncep.noaa.gov/gmb/moorthi/gam.html"  target=_blank> here </a>. Updates to the GFS model can be viewed <A  href="http://wwwt.emc.ncep.noaa.gov/gmb/STATS/html/model_changes.html"  target=_blank> here</a>. Anyone interested in the basis of the weather predictions in Occult should read this documentation.
+
+<h1>Local weather predictions</h1>
+Local predictions of cloud cover and temperature for a three-day period is enabled at several locations. The 3-day limit ensures the predictions have a good likelihood of being correct - although users will have to make their own assessments based on their local knowledge and experience.  For lunar grazing occultations, the functionality displays the cloud and temperature along the graze path - which may assist on deciding on observing locations.
+
+
+<H1>Regional weather charts</h1>
+
+<H3>Important</H3>
+<ul type=1><li>The Weacharts are generated at 7Timer every 6 hours - but it takes several hours for them to be generated. Occult accesses the latest <I>complete </I>set of Weacharts. 
+<li>You should always check the label on the displayed map to confirm that it is for the expected date and time.
+<li>If a map is not available, you will be advised. You should try a different time setting. This should only occur for times before 'now', and for times more than 16 days in the future.
+</ul>
+
+<H2>Selecting a chart</H2>
+<h3>Select the map region</h3>
+Weacharts are provided for the 6 populated continents, and the world as a whole. Select the region relevant to you. This setting will be retained between sessions. Changing the setting will result in the relevant map being downloaded.
+
+<h3>Select the map type</h3>
+Maps are provided for cloud (total, high, middle and low), atmpospheric extinction, temperature and wind. Changing the setting will result in the relevant map being downloaded.
+
+<h3>Select the date and time</h3>
+Select the date and time for the map using the list of radio buttons.. Changing the setting will result in the relevant map being downloaded.
+
+<H2>Legend</H2>
+You can obtain the legend for the Weachart maps from <a target="_blank" href="http://www.7timer.info/wchart.php?lang=en">here</a>.
+<h2>Some background</h2>
+Some background about the generation of these weather charts,<ul>
+<li>the numeric GFS data is generated every 6 hours by the NCEP. The relevant GFS model data set is indicated at the top right of the display, as the <B><I>Starting point for prediction</I></B>. 
+<li>Ye Quanzhi (7Timer) uses the GFS data to generate the maps for his <a target="_blank" href=http://www.7timer.info/> Weachart</a> web page. It takes several hours for the complete set of maps used in WeaChart to be generated. Typically, the complete set of maps is not available for 4 to 8 hours after the date/time of the relevant GFS model. [Occult only accesses those maps that relate to cloud, temperature and wind.]
+<li>the display of the date/time selection on the form logically starts with "today's" date (in UT). The date of the GFS model is either the same, or the preceding, day (in UT). 
+<li>the hours of the maps in the 12-hour map period are either 0 and 12, or 6 and 18, depending on the initial hour of the GFS model. Similarly, the end of the 3-hourly maps depends on the initial hour of the GFS model.
+</ul>
+
+</BODY>
+</HTML>

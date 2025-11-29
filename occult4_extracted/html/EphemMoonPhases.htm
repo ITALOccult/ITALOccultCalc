@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Moon Phases</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1><A NAME="idh_4overview"></A>Moon Phases, Moon Perigee/Apogee, Physical ephemeris</H1>
+<!-- Insert Header in above line -->
+<P>The date and time of the phases New Moon, First Quarter, Full Moon, and Last Quarter, are computed for the whole year. The time is given to the nearest tenth of an hour. The phase is computed on a geocentric basis, which is the usual basis for identifying the phase of the moon. Note that if the phase of the moon is to be determined by topocentric conditions, the time can differ from the geocentric value by up to about an hour.</P>
+
+<P>The date and time when the moon is at perigee and apogee are similarly computed for the whole year. The time is given to the nearest hour. </p>
+
+<p>The physical ephemeris of the moon is computed at a 2-day interval for 0hrs UT. The values generated are:
+<table columns=3 border=1>
+<TR><TH NOWRAP></TH><TH></TH></TR>
+<TR><TD>l</TD><TD>longitude libration (degrees) - geocentric value</TD></TR>
+<TR><TD>b</TD><TD>latitude libration (degrees) - geocentric value</TD></TR>
+<TR><TD>Axis</TD><TD>Position angle of the lunar north pole (C) - geocentric value</TD></TR>
+<TR><TD>Coln</TD><TD>The co-longitude of the sun. This corresponds to the selenocentric longitude of the sun-rise terminator.</TD></TR>
+<TR><TD>Lat</TD><TD>The selenocentric latitude of the sun</TD></TR>
+<TR><TD>%Illum</TD><TD>Percent illumination of the moon</TD></TR>
+</table>
+The data is presented in 2 blocks, each covering 6 months.
+<p>A sample abbreviated output follows.</P>
+
+<pre>                    Phases of the Moon 2010
+
+    New Moon    First Quarter      Full Moon     Last Quarter
+      d  h            d  h            d  h            d  h      
+                                                 Jan  7 10.8    
+ Jan 15  7.2     Jan 23 10.8     Jan 30  6.3     Feb  5 23.9    
+ Feb 14  2.9     Feb 22  0.8     Feb 28 16.6     Mar  7 15.8    
+
+
+                    Moon at Perigee 2010
+
+      d  h            d  h            d  h            d  h      
+ Jan  1 21       Jan 30  9       Feb 27 21       Mar 28  4      
+ Apr 24 20       May 20  9       Jun 15 15       Jul 13 11      
+
+                    Moon at Apogee 2010
+
+      d  h            d  h            d  h            d  h      
+ Jan 17  1       Feb 13  2       Mar 12 10       Apr  9  4      
+ May  6 23       Jun  3 17       Jul  1 10       Jul 28 23      
+
+
+
+                    Physical Ephemeris for the Moon 2010
+
+ Date    l    b   Axis  Coln  Lat %ill  Date    l    b   Axis  Coln  Lat %ill 
+         o    o     o     o    o                o    o     o     o    o       
+Jan  1 -1.9 -0.9   4.2  94.6 -0.3 100  Apr  1  5.7  6.2  20.1 109.8  1.5  95  
+     3  1.8  2.5  15.0 118.9 -0.2  93       3  6.7  4.5  12.2 134.1  1.5  82  
+     5  4.9  5.3  21.4 143.2 -0.2  76       5  5.8  2.0   1.7 158.5  1.5  64  
+     7  6.8  6.7  23.0 167.5 -0.1  55       7  3.6 -0.8 351.7 182.8  1.5  44  
+
+                    Physical Ephemeris for the Moon 2010
+
+ Date    l    b   Axis  Coln  Lat %ill  Date    l    b   Axis  Coln  Lat %ill 
+         o    o     o     o    o                o    o     o     o    o       
+Jul  1 -0.7 -5.0 340.8 140.8  0.1  82  Oct  1 -6.6 -0.1   0.9 184.4 -1.5  52  
+     3 -3.3 -6.4 337.2 165.3  0.0  65       3 -5.4  3.0  11.8 208.8 -1.5  30  
+
+</pre>
+
+<P></P>
+
+</BODY>
+</HTML>

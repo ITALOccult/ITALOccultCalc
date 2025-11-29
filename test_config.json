@@ -1,0 +1,147 @@
+{
+  "metadata": {
+    "created_by": "IOccultCalc",
+    "date": "2025-11-22",
+    "version": "1.0"
+  },
+  "sections": [
+    {
+      "parameters": [
+        {
+          "comment": "Object ID",
+          "name": "id",
+          "type": "string",
+          "value": "433"
+        },
+        {
+          "comment": "Object name",
+          "name": "name",
+          "type": "string",
+          "value": "433 Eros"
+        }
+      ],
+      "type": "object"
+    },
+    {
+      "parameters": [
+        {
+          "comment": "End epoch (Julian Date)",
+          "name": "end_jd",
+          "type": "double",
+          "value": "2461405.000000"
+        },
+        {
+          "comment": "Start epoch (Julian Date)",
+          "name": "start_jd",
+          "type": "double",
+          "value": "2461041.000000"
+        },
+        {
+          "comment": "Integration step size (days)",
+          "name": "step_size",
+          "type": "double",
+          "value": "0.050000"
+        },
+        {
+          "comment": "Propagator type (RK4, RA15, ORBFIT)",
+          "name": "type",
+          "type": "string",
+          "value": "RK4"
+        }
+      ],
+      "type": "propag"
+    },
+    {
+      "parameters": [
+        {
+          "comment": "AST17 SPK file path",
+          "name": "ast17_file",
+          "type": "string",
+          "value": "~/.ioccultcalc/ephemerides/codes_300ast_20100725.bsp"
+        },
+        {
+          "comment": "JPL ephemeris version (DE441, DE440)",
+          "name": "jpl_version",
+          "type": "string",
+          "value": "DE441"
+        }
+      ],
+      "type": "ephemeris"
+    },
+    {
+      "parameters": [
+        {
+          "comment": "Output file path",
+          "name": "file",
+          "type": "string",
+          "value": "results.json"
+        },
+        {
+          "comment": "Output format (JSON, KML, TEXT)",
+          "name": "format",
+          "type": "string",
+          "value": "JSON"
+        },
+        {
+          "comment": "Verbosity level (0=quiet, 1=normal, 2=verbose)",
+          "name": "verbosity",
+          "type": "int",
+          "value": "1"
+        }
+      ],
+      "type": "output"
+    },
+    {
+      "parameters": [
+        {
+          "comment": "Number of massive asteroids (0-17)",
+          "name": "asteroid_count",
+          "type": "int",
+          "value": "17"
+        },
+        {
+          "comment": "Include planetary perturbations",
+          "name": "planets",
+          "type": "bool",
+          "value": "true"
+        },
+        {
+          "comment": "Include relativistic corrections",
+          "name": "relativity",
+          "type": "bool",
+          "value": "true"
+        }
+      ],
+      "type": "perturbations"
+    },
+    {
+      "parameters": [
+        {
+          "comment": "Search end epoch (JD)",
+          "name": "end_jd",
+          "type": "double",
+          "value": "2461405.000000"
+        },
+        {
+          "comment": "Magnitude limit for star search",
+          "name": "mag_limit",
+          "type": "double",
+          "value": "14.000000"
+        },
+        {
+          "comment": "Search start epoch (JD)",
+          "name": "start_jd",
+          "type": "double",
+          "value": "2461041.000000"
+        },
+        {
+          "comment": "Search sampling interval (days)",
+          "name": "step_days",
+          "type": "double",
+          "value": "0.500000"
+        }
+      ],
+      "type": "search"
+    }
+  ]
+}

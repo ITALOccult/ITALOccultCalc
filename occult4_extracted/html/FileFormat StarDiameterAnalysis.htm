@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>File format star diameter analyser</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>File format star diameter analyser</H1>
+<!-- Insert Header in above line -->
+<P>Help topic not written yet.....</P>
+The file of data to be used in the star diameter analyser uses a tagged line format. The basic structure of the file is two initial lines, followed by a group of lines for each observer.
+<p>the tags for the initial two lines are:
+<table columns=2 border=1>
+<TR><TH NOWRAP>Tag</TH><TH>Data item</TH></TR>
+<TR><TD>Star Dia</TD><TD>The stellar diameter in mas, the uncertainty in the value, and the number of light curves used</TD></TR>
+<TR><TD NOWRAP>Num Observers</TD><TD>The number of observers. There will be this many groups of observations in the file</TD></TR>
+</table>
+
+<p>For each observer there is a group of tagged data as follows:<p>
+<table columns=2 border=1>
+<TR><TH NOWRAP>Tag</TH><TH>Data item</TH></TR>
+<TR><TD>Record</TD><TD>The sequential number of the observer record</TD></TR>
+<TR><TD NOWRAP>Observer</TD><TD>Observer name</TD></TR>
+<TR><TD>Frame rate</TD><TD>The number of frames/sec. It is 1 divided by the time 
+	interval between each data point</TD></TR>
+<TR><TD>Display Secs</TD><TD>The number of seconds of the data to be displayed in the main plots</TD></TR>
+<TR><TD>LimbDarken</TD><TD>0 if no limb darkening to be applied. 1 for limb 
+	darkening to be applied</TD></TR>
+<TR><TD>Is Partial</TD><TD>0 if a full occultation, 1 if a partial occultation</TD></TR>
+<TR><TD>Saturation</TD><TD>The level of saturation in teh video signal. 0 = no saturation. 1 = clipped at the 95% level, 2=clipped at 90% etc...</TD></TR>
+<TR><TD>Motion D</TD><TD>The rate of motion of the star normal to the asteroid limb at D, in mas/sec<TD></TR>
+<TR><TD>Motion R</TD><TD>The rate of motion of the star normal to the asteroid limb at R, in mas/sec<TD></TR>
+<TR><TD>Uncert D</TD><TD>The uncertainty in the rate of motion of the star normal to the asteroid limb at D, 0-4<TD></TR>
+<TR><TD>Uncert R</TD><TD>The uncertainty in the rate of motion of the star normal to the asteroid limb at R, 0-4.<TD></TR>
+<TR><TD>Location D</TD><TD>The offset from the middle of the data to the middle of the plot, for D. Identifies the frame for the middle of the event.<TD></TR>
+<TR><TD>Location R</TD><TD>The offset from the middle of the data to the middle of the plot, for R. Identifies the frame for the middle of the event.<TD></TR>
+<TR><TD>Count D</TD><TD>The number of data points in the D light curve</TD></TR>
+<TR><TD>Count R</TD><TD>The number of data points in the R light curve</TD></TR>
+<TR><TD>Dia D</TD><TD>The deduced diameter from the D light curve</TD></TR>
+<TR><TD>Dia R</TD><TD>The deduced diameter from the R light curve</TD></TR>
+<TR><TD>Weight D</TD><TD>The weight allocated to the D diameter measurement (0-5)</TD></TR>
+<TR><TD>Weight R</TD><TD>The weight allocated to the R diameter measurement (0-5)</TD></TR>
+
+<TR><TD>Cal Top1D</TD><TD>The data point number for the start of the top calibration region for the top of the D curve</TD></TR>
+<TR><TD>Cal Top2D</TD><TD>The data point number for the end of the top calibration region for the top of the D curve</TD></TR>
+<TR><TD>Cal Top SD</TD><TD>The standard deviation of the data for the top of the D curve</TD></TR>
+<TR><TD>Cal Bottom1D</TD><TD>The data point number for the start of the bottom calibration region for the bottom of the D curve</TD></TR>
+<TR><TD>Cal Bottom2D</TD><TD>The data point number for the end of the bottom calibration region for the bottom of the D curve</TD></TR>
+<TR><TD nowrap>Cal BottomD SD</TD><TD>The standard deviation of the data for the bottom of the D curve</TD></TR>
+
+<TR><TD>Cal Top1R</TD><TD>The data point number for the start of the top calibration region for the top of the R curve</TD></TR>
+<TR><TD>Cal Top2R</TD><TD>The data point number for the end of the top calibration region for the top of the R curve</TD></TR>
+<TR><TD>Cal Top SR</TD><TD>The standard deviation of the data for the top of the R curve</TD></TR>
+<TR><TD>Cal Bottom1R</TD><TD>The data point number for the start of the bottom calibration region for the bottom of the R curve</TD></TR>
+<TR><TD>Cal Bottom2R</TD><TD>The data point number for the end of the bottom calibration region for the bottom of the R curve</TD></TR>
+<TR><TD>Cal BottomR SR</TD><TD>The standard deviation of the data for the bottom of the R curve</TD></TR>
+
+<TR><TD>Cal Meas1D</TD><TD>The data point number for the start of the measurement region for the D curve</TD></TR>
+<TR><TD>Cal Meas2D</TD><TD>The data point number for the end of the measurement region for the D curve</TD></TR>
+<TR><TD>Cal Meas1R</TD><TD>The data point number for the start of the measurement region for the R curve</TD></TR>
+<TR><TD>Cal Meas2R</TD><TD>The data point number for the end of the measurement region for the R curve</TD></TR>
+
+<TR><TD>Comment D</TD><TD>Free text comment for the D event</TD></TR>
+<TR><TD>Comment D</TD><TD>Free text comment for the R event</TD></TR>
+
+<TR><TD>Data D</TD><TD>For each point in the D light curve, the frame number from the csv file, and the height value</TD></TR>
+<TR><TD>Data D</TD><TD>For each point in the R light curve, the frame number from the csv file, and the height value</TD></TR>
+</table>
+
+</BODY>
+</HTML>

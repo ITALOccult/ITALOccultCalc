@@ -165,6 +165,13 @@ public:
     std::string generateXML(const std::vector<OccultationEvent>& events);
     
     /**
+     * @brief Genera evento XML in formato Occult4 standard (CSV)
+     * @param event Evento IOccultCalc
+     * @return Stringa XML formattata in formato Occult4
+     */
+    std::string generateOccult4EventXML(const OccultationEvent& event);
+    
+    /**
      * @brief Converte evento IOccultCalc in formato Occult4
      * @param event Evento IOccultCalc
      * @return Evento formato Occult4

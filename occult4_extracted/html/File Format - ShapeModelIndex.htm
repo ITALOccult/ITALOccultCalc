@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Shape model data</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1><A NAME="idh_4overview"></A>Shape model data</H1>
+<!-- Insert Header in above line -->
+<P>Two index files - one for DAMIT and one for ISAM - for shape models are held 
+in the subdirectory ShapeModels. The files are .csv files, with the following 
+field content</P>
+
+<P></P>
+
+<table columns=3 border=1>
+<TR><TH NOWRAP>  Field</TH><TH>  Label</TH><TH>  Content</TH></TR>
+<TR><TD>  1</TD><TD>  Asteroid number</TD><TD>   integer</TD></TR>
+<TR><TD>  2</TD><TD>  Model number</TD><TD>   string (although DAMIT model 
+	numbers are all integer)</TD></TR>
+<TR><TD>  3</TD><TD>&lambda;</TD><TD>   ecliptic longitude of axis of rotation, 
+	degrees</TD></TR>
+<TR><TD>  4</TD><TD>&beta;  </TD><TD>   ecliptic longitude of axis of rotation, 
+	degrees</TD></TR>
+<TR><TD>  5</TD><TD>  Period</TD><TD>   Rotation period, hours   </TD></TR>
+<TR><TD>  6</TD><TD>  YORP</TD><TD>   The coefficient of the YORP effect. Only 
+	available for a very small number of asteroids. The YORP correction to the 
+	rotational angle (in degrees) is calculated as YORP * (JD - JD0)<sup>2</sup> 
+	/ 2, where JD is the date of the event.</TD></TR>
+<TR><TD>  7</TD><TD>  JD0</TD><TD>   The epoch for rotation, and also for the 
+	YORP effect - Julian day number</TD></TR>
+<TR><TD style="height: 25px">  8</TD><TD style="height: 25px">  Phi0</TD>
+	<TD style="height: 25px">   The rotational phase at JD0. Degrees. Usually 
+	zero.</TD></TR>
+<TR><TD>  9</TD><TD>  Quality</TD><TD>   For recent DAMIT models a quality 
+	rating of the shape model</TD></TR>
+<TR><TD>  10</TD><TD>  Version</TD><TD>   The current version of the shape 
+	model. Specified as a date</TD></TR>
+<TR><TD>  11</TD><TD>  Comment</TD><TD>   Various general comments concerning 
+	the model.&nbsp; Text</TD></TR>
+<TR><TD>  12</TD><TD>  Created</TD><TD>   The date when this model was first 
+	created. Present for most DAMIT models. For ISAM models, set to be the same 
+	as Version</TD></TR>
+<TR><TD>  13</TD><TD>  Modified</TD><TD>   The date (if any) when the current 
+	model was modified. Only present for some DAMIT models; not present for ISAM 
+	models.</TD></TR>
+<TR><TD>  14</TD><TD>  DAMIT asteroid ID</TD><TD>   The DAMIT system uses an 
+	asteroid identification system that is independent of the asteroid's number. 
+	This field gives the DAMIT ID</TD></TR>
+<TR><TD>  </TD><TD>  </TD><TD>   </TD></TR>
+<TR><TD>  </TD><TD>  </TD><TD>   </TD></TR>
+<TR><TD>  </TD><TD>  </TD><TD>   </TD></TR>
+<TR><TD>  </TD><TD>  </TD><TD>   </TD></TR>
+<TR><TD>  </TD><TD>  </TD><TD>   </TD></TR>
+<TR><TD>  </TD><TD>  </TD><TD>   </TD></TR>
+<TR><TD>  </TD><TD>  </TD><TD>   </TD></TR>
+<TR><TD>  </TD><TD>  </TD><TD>   </TD></TR>
+<TR><TD>  </TD><TD>  </TD><TD>   </TD></TR>
+<TR><TD>  </TD><TD>  </TD><TD>   </TD></TR>
+<TR><TD>  </TD><TD>  </TD><TD>   </TD></TR>
+<TR><TD>  </TD><TD>  </TD><TD>   </TD></TR>
+<TR><TD>  </TD><TD>  </TD><TD>   </TD></TR>
+<TR><TD>  </TD><TD>  </TD><TD>   </TD></TR>
+
+
+</table>
+<P></P>
+
+</BODY>
+</HTML>

@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Set UT dates for the predictions</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Set UT dates for the predictions</H1>
+<p align=center><img src="SetUTDates.png">
+<p>Setting dates is  one of the most fundamental issues with generating predictions. In 
+Occult, there are two basic approaches to setting dates:<ul>
+<li>set a date range, to generate predictions covering a range of dates. Such predictions would be used to publish predictions, and to identify future events to observe (that is, forward planning). 
+<li>generate predictions for a particular day. This might be for forward planning, or for observing events 'today'.</ul>
+<p>Note that many of the advanced features for occultation predictions are only available for predictions generated for a single day. </p>
+
+<h3><br>Setting the date</h3>
+<P>In box 4 you set the date range for the predictions. Particular issues are:<ul>
+<li>Whenever you change the Start date, the End date will be reset to be the same as the start date
+<li> the 'Year' button sets the start date to January first, and the end date to December 31 - for the year set in the Start date line.
+<li> the 'Month' button sets the start date to the first day of the month, and the end date to the 31 day of the month - for the year and month set in the Start date line. [If the month has less than 31 days, the actual end date of the predictions will be the 1st day of the following month; for February it will be March 2 or 3]. 
+<li> the 'Day' button sets the end date to being the same as the displayed start date.
+<li> the 'Today' button sets the start and end date to being the UT date corresponding to the  date, time, and time zone in the computer's 
+system clock. [As a result, the date inserted here can at times be the day before or after the local date.]</ul>
+</P>
+
+<h3><br>IMPORTANT  - Setting the 'Starting at ' value </h3>
+<p>Occult generates predictions using a time window of 24 hours - identifying all geocentric conjunctions that occur in the window, and then generating local predictions. Inevitably, near the start and end of a 24hr period there are events that fall within the preceding/following day.<p>
+<p>The natural observing period is night-time. Accordingly, to minimise issues with the 'end' of the 24hr computing period, the computing period needs to run from about mid-day to mid-day. The 'Starting at' column of radio buttons is provided for this purpose.</p>
+
+<p>The setting on the prediction form is retained between sessions. It is initially set when you first installed Occult4 - provided you specified your site longitude in the first box on the User Settings page. [Note: It will be reset whenever you change the site longitude on the User Settings page.] </p>
+
+<p>The following table provides a guide to which setting to use for different regions of the world, to ensure the start and end of the computation day occurs within about 3 hours of local midday.
+<table columns=3 border=1>
+<TR><TH NOWRAP>Start Hour</TH><TH>Regions/countries</TH></TR>
+<TR><TD>-6</TD><TD>North and South America, including all of Canada, USA (except for Alaska and  Hawaii), Mexico, Argentina, 
+	Brazil </TD></TR>
+<TR><TD>0</TD><TD>Oceania (including Hawaii), Alaska, New Zealand, eastern states of Australia</TD></TR>
+<TR><TD>6</TD><TD>Asia (including Japan), Western Australia, India, Iran</TD></TR>
+<TR><TD>12</TD><TD>Europe, Africa, Middle East</TD></TR>
+<TR><TD></TD><TD></TD></TR>
+</table>
+ 
+
+
+
+</BODY>
+</HTML>

@@ -1,0 +1,222 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>AsteroidElements</Title>
+<style type="text/css">
+.auto-style2 {
+	border: 2px solid #800000;
+	margin-right: 120px;
+}
+.auto-style3 {
+	white-space: nowrap;
+	border: 1px solid #800000;
+}
+.auto-style4 {
+	font-size: x-small;
+}
+.auto-style5 {
+	font-size: x-small;
+	font-weight: bold;
+}
+.auto-style6 {
+	font-size: x-small;
+	font-style: italic;
+}
+.auto-style7 {
+	margin-left: 40px;
+}
+.auto-style8 {
+	font-size: x-small;
+	margin-left: 40px;
+}
+.auto-style9 {
+	text-decoration: underline;
+}
+.auto-style10 {
+	margin-top: 0px;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<h1>AsteroidElements.csv<br>UserMinorPlanetElements.csv<br>UserMinorPlanetElements_Lunar.csv</h1>
+<!-- Insert Header in above line -->
+<P><B>AsteroidElements.csv </B> contains the orbital elements of asteroids. It is used for computing predictions of occultations by asteroids.</P>
+<p><B>UserMinorPlanetElements.csv</B> contains the orbital elements of a select number of asteroids or comets for use in asteroid occultation predictions. The elements can be imported from AsteroidElements.dat, or manually entered.</p>
+<p><B>UserMinorPlanetElements_Lunar.csv</B> contains the orbital elements of a select number of asteroids or comets for use in Lunar occultation predictions. The elements can be imported from AsteroidElements.dat, or manually entered.</p>
+
+<p> The format of all three files is the same. The elements are referred to the J2000 equinox.:</P>
+<P>These files, introduced in 2018, contain the elements in a csv format - 
+thereby allowing variable precision in the elements held in the file. </P>
+<P>The first line of the file is a header identifying the fields. The header 
+line is:</P>
+<p class="auto-style7">
+Num,Name,year,month,day,MA,perih,node,i,e,a,H0,G,Dia,DiaSrc,PEU,#Rings,#Moons,OrbSrc,OrbDate,Class</p>
+<P>Thereafter are the lines containg the data for each asteroid covered by the 
+file. The format is:</P>
+<table columns=2 class="auto-style2" float: left">
+<TR><TH class="auto-style3" style="width: 25px">Field  </TH>
+	<TH class="auto-style3" style="width: 711px">Meaning  </TH>
+	<TH class="auto-style3" style="width: 519px">Usual precision</TH></TR>
+<TR><TD class="auto-style3" style="width: 25px">1</TD>
+	<TD class="auto-style3" style="width: 711px"> Asteroid number</TD>
+	<TD class="auto-style3" style="width: 519px"> &nbsp;</TD></TR>
+<TR><TD class="auto-style3" style="width: 25px">2</TD>
+	<TD class="auto-style3" style="width: 711px">Asteroid name  </TD>
+	<TD class="auto-style3" style="width: 519px">&nbsp;</TD></TR>
+<TR><TD class="auto-style3" style="width: 25px">3</TD>
+	<TD class="auto-style3" style="width: 711px">Osculating date - Year&nbsp; {for high-e objects, 
+	year of perihelion}</TD>
+	<TD class="auto-style3" style="width: 519px">integer</TD></TR>
+<TR><TD class="auto-style3" style="width: 25px">4</TD>
+	<TD class="auto-style3" style="width: 711px">Osculating date - Month&nbsp; 
+	{for high-e objects, month of perihelion}</TD>
+	<TD class="auto-style3" style="width: 519px">integer</TD></TR>
+<TR><TD class="auto-style3" style="width: 25px">5</TD>
+	<TD class="auto-style3" style="width: 711px">Osculating date - Day {for 
+	high-e objects, day of perihelion}</TD>
+	<TD class="auto-style3" style="width: 519px">integer for asteroids, up to 5 
+	decimal places for perihelion dates</TD></TR>
+<TR><TD class="auto-style3" style="width: 25px">6</TD>
+	<TD class="auto-style3" style="width: 711px"><B>MA</B> - Mean anomaly at the date of the elements. Set to '0' if the elements specify 
+	<br>the date of perihelion with no mean anomaly.</TD>
+	<TD class="auto-style3" style="width: 519px">MPCOrb 0.00001°; Astorb 
+	0.000001°; <br>AstDyS-2&nbsp; 0.00000001°</TD></TR>
+<TR><TD class="auto-style3" style="height: 23px; width: 25px">7</TD>
+	<TD class="auto-style3" style="height: 23px; width: 711px"><B>&#982</B> - Argument of perihelion (deg)  </TD>
+	<TD class="auto-style3" style="height: 23px; width: 519px">MPCOrb 0.00001°; 
+	Astorb 0.000001°; <br>AstDyS-2&nbsp; 0.00000001°</TD></TR>
+<TR><TD class="auto-style3" style="width: 25px"> 8</TD>
+	<TD class="auto-style3" style="width: 711px"><B>&#937</B> - Longitude of ascending node (deg) </TD>
+	<TD class="auto-style3" style="width: 519px">MPCOrb 0.00001°; Astorb 
+	0.000001°; <br>AstDyS-2&nbsp; 0.00000001°</TD></TR>
+<TR><TD class="auto-style3" style="width: 25px"> 9</TD>
+	<TD class="auto-style3" style="width: 711px"><B>i</B> - Inclination (deg)</TD>
+	<TD class="auto-style3" style="width: 519px">MPCOrb 0.00001°; Astorb 
+	0.000001°; <br>AstDyS-2&nbsp; 0.00000001°</TD></TR>
+<TR><TD class="auto-style3" style="width: 25px">10</TD>
+	<TD class="auto-style3" style="width: 711px"><B>e</B> - eccentricity of orbit</TD>
+	<TD class="auto-style3" style="width: 519px">MPCOrb 0.0000001; Astorb 
+	0.00000001; <br>AstDyS-2&nbsp; 0.0000000001</TD></TR>
+<TR><TD class="auto-style3" style="width: 25px">11</TD>
+	<TD class="auto-style3" style="width: 711px"><B>a</B> - semi-major axis; if 
+	e&gt;0.97, <strong>q</strong> - perihelion distance</TD>
+	<TD class="auto-style3" style="width: 519px">MPCOrb 0.0000001; Astorb 
+	0.00000001; <br>AstDyS-2&nbsp; 0.0000000001</TD></TR>
+<TR><TD nowrap class="auto-style3" style="width: 25px">12  </TD>
+	<TD class="auto-style3" style="width: 711px"><B>H0</B> - magnitude constant </TD>
+	<TD class="auto-style3" style="width: 519px">.01</TD></TR>
+<TR><TD class="auto-style3" style="width: 25px">13</TD>
+	<TD class="auto-style3" style="width: 711px"><B>G</B> - Slope parameter in the magnitude equation for asteroids. Commonly 0.15 
+	<br>For comets, set to '0'</TD>
+	<TD class="auto-style3" style="width: 519px">.01</TD></TR>
+<TR><TD class="auto-style3" style="width: 25px">14</TD>
+	<TD class="auto-style3" style="width: 711px">Max diameter, in km </TD>
+	<TD class="auto-style3" style="width: 519px">.1</TD></TR>
+<TR><TD class="auto-style3" style="width: 25px">15</TD>
+	<TD class="auto-style3" style="width: 711px">Diameter source [1=IRAS mimpsalb, 2=IRAS diamalb V6, 3=IRAS single V6, 
+	<br>A = AKARI AcuA, B= WISE, C = TNO & Centaurs (from PDS)]</TD>
+	<TD class="auto-style3" style="width: 519px">Text</TD></TR>
+<TR><TD class="auto-style3" style="width: 25px">16</TD>
+	<TD class="auto-style3" style="width: 711px"><B>PEU</B> - Peak Ephemeris Uncertainty, in arcseconds. 
+	The value is present in Astorb. It is <br>used when MPCORB or AstDyS-2 are 
+	converted - providing Astorb is present at the<br>time of the conversion.&nbsp; 
+	When Horizons is used, the value is the 'Root-Sum-of-Squares'<br>&nbsp;for 1-sigma</TD>
+	<TD class="auto-style3" style="width: 519px">.001&quot; </TD></TR>
+<TR><TD class="auto-style3" style="width: 25px"> 17</TD>
+	<TD class="auto-style3" style="width: 711px">Number of rings</TD>
+	<TD class="auto-style3" style="width: 519px">integer</TD></TR>
+<TR><TD class="auto-style3" style="width: 25px"> 18</TD>
+	<TD class="auto-style3" style="width: 711px">Number of moons</TD>
+	<TD class="auto-style3" style="width: 519px">integer</TD></TR>
+<TR><TD class="auto-style3" style="width: 25px"> 19</TD>
+	<TD class="auto-style3" style="width: 711px">Source of the orbital elements. 
+	For asteroids, typically one of <strong>MPCORB</strong>, <strong>AstDys-2</strong>,
+	<strong><br>Astorb</strong>. Other possibilities associated with 'User' 
+	elements are <strong>Comet</strong>, <strong>Orbfit</strong>, and <strong>
+	JPL</strong>. <br>It can also be a user-specified value when the orbital 
+	elements are sourced elsewhere <br>by the user.</TD>
+	<TD class="auto-style3" style="width: 519px">Text</TD></TR>
+<TR><TD class="auto-style3" style="width: 25px"> 20</TD>
+	<TD class="auto-style3" style="width: 711px">Date of the elements. For 
+	MPCORB and Astorb (which are updated daily), it is the file<br>download 
+	date. For AstDyS-2 it is the date AstDyS-2 was last updated on its server.</TD>
+	<TD class="auto-style3" style="width: 519px">Text, yyyyMMMdd</TD></TR>
+<TR><TD class="auto-style3" style="width: 25px; height: 55px;"> 21</TD>
+	<TD class="auto-style3" style="width: 711px; height: 55px;">Taxonomic class. Values are: (blank), Amor, Apollo, Aten, 
+	Centaur, TNO, Trojan, PHA.<br>PHA is additional to another 
+	type, and appears like <strong>Apollo<span class="auto-style9"> + PHA</span></strong></TD>
+	<TD class="auto-style3" style="width: 519px; height: 55px;">Text</TD></TR>
+<TR><TD class="auto-style3" style="width: 25px"> 22</TD>
+	<TD class="auto-style3" style="width: 711px">Uncertainty in the diameter of 
+	the asteroid (km)</TD>
+	<TD class="auto-style3" style="width: 521px">0.1</TD></TR>
+
+<TR><TD class="auto-style3" style="width: 25px"> 23</TD>
+	<TD class="auto-style3" style="width: 711px">Uncertainty Ellipse - Major 
+	Axis&nbsp; 1-sigma&nbsp;&nbsp; [from Horizons]</TD>
+	<TD class="auto-style3" style="width: 521px">0.1 mas</TD></TR>
+
+<TR><TD class="auto-style3" style="width: 25px"> 24</TD>
+	<TD class="auto-style3" style="width: 711px">Uncertainty Ellipse - Minor 
+	Axis&nbsp; 1-sigma&nbsp;&nbsp; [from Horizons]</TD>
+	<TD class="auto-style3" style="width: 521px">0.1 mas</TD></TR>
+
+<TR><TD class="auto-style3" style="width: 25px"> 25</TD>
+	<TD class="auto-style3" style="width: 711px">Uncertainty ellipse - Position 
+	Angle of Major Axis&nbsp;&nbsp; [from Horizons]</TD>
+	<TD class="auto-style3" style="width: 521px">degree</TD></TR>
+
+</table>
+
+<br>
+<h1 class="auto-style10"><br></h1>
+<h1 class="auto-style10">Superceded files</h1>
+<p>The following files were superseded with version 4.5.4</p>
+
+<h2 class="auto-style7">AsteroidElements.dat<br>UserMinorPlanets.dat<br>UserMinorPlanets_Lunar.dat</h2>
+<!-- Insert Header in above line -->
+<P class="auto-style7"><span class="auto-style5">AsteroidElements.dat </span>
+<span class="auto-style4">contains the orbital elements of asteroids. It is used for computing predictions of occultations by asteroids.</span></P>
+<p class="auto-style7"><span class="auto-style5">UserMinorPlanets.dat</span><span class="auto-style4"> contains the orbital elements of a select number of asteroids or comets for use in asteroid occultation predictions. The elements can be imported from AsteroidElements.dat, or manually entered.</span></p>
+<p class="auto-style7"><span class="auto-style5">UserMinorPlanets_Lunar.dat</span><span class="auto-style4"> contains the orbital elements of a select number of asteroids or comets for use in Lunar occultation predictions. The elements can be imported from AsteroidElements.dat, or manually entered.</span></p>
+
+<p class="auto-style8"> The format of all three files is the same, and have a 
+record length of 145 characters. The elements are referred to the J2000 equinox. 
+The format is:</P>
+<table columns=2 border=1 class="auto-style7">
+<TR><TH NOWRAP class="auto-style4">Columns  </TH><TH class="auto-style4">Meaning  </TH></TR>
+<TR><TD class="auto-style4">0 - 6  </TD><TD class="auto-style4"> Asteroid number</TD></TR>
+<TR><TD class="auto-style4">8- 23  </TD><TD class="auto-style4">Asteroid name  </TD></TR>
+<TR><TD class="auto-style4">24-38  </TD><TD class="auto-style4">The osculating date for the elements or the date of perihelion. Format is 24-28 year, 29-30 month, 31-38 day. Day is an integer if the elements specify the mean anomaly, and has up to 5 decimal places if the elements use the date of perihelion.</TD></TR>
+<TR><TD class="auto-style4">39-49  </TD><TD><span class="auto-style5">MA</span><span class="auto-style4"> - Mean anomaly at the date of the elements. Set to '0' if the elements specify the date of perihelion with no mean anomaly.</span></TD></TR>
+<TR><TD class="auto-style4">50-60  </TD><TD><span class="auto-style5">&#982</span><span class="auto-style4"> - Argument of perihelion (deg)  
+	</span>  </TD></TR>
+<TR><TD class="auto-style4"> 61-71 </TD><TD><span class="auto-style5">&#937</span><span class="auto-style4"> - Longitude of ascending node (deg) 
+	</span> </TD></TR>
+<TR><TD class="auto-style4"> 72-82 </TD><TD><span class="auto-style5">i</span><span class="auto-style4"> - Inclination (deg)</span></TD></TR>
+<TR><TD class="auto-style4">83-93  </TD><TD><span class="auto-style5">e</span><span class="auto-style4"> - eccentricity of orbit</span></TD></TR>
+<TR><TD class="auto-style4">94-106  </TD><TD><span class="auto-style5">a</span><span class="auto-style4"> - semi-major axis; if e&gt;0.97, 
+	</span> <strong><span class="auto-style4">q</span></strong><span class="auto-style4"> 
+	- perihelion distance</span></TD></TR>
+<TR><TD nowrap class="auto-style4">107-112  </TD><TD><span class="auto-style5">H0</span><span class="auto-style4"> - magnitude constant 
+	</span> </TD></TR>
+<TR><TD class="auto-style4">113-118  </TD><TD><span class="auto-style5">G</span><span class="auto-style4"> - Slope parameter in the magnitude equation for asteroids. Commonly 0.15 For comets, set to '0'</span></TD></TR>
+<TR><TD class="auto-style4">119-125  </TD><TD class="auto-style4">Max diameter, in km </TD></TR>
+<TR><TD class="auto-style4">126-132  </TD><TD class="auto-style4">Min diameter, in km. Left blank if there is no determination. </TD></TR>
+<TR><TD class="auto-style4">133-134  </TD><TD><span class="auto-style4">Diameter source [1=IRAS mimpsalb, 2=IRAS diamalb V6, 3=IRAS single V6, A = AKARI AcuA, B= WISE, C = TNO & Centaurs (from PDS)]</span><br class="auto-style4">
+	<span class="auto-style6">[The following are not used as of 2016: 0=Unknown,  4=Richmond, 5=Photometry, 6=from H0, 7=Occultation, 8=Direct imaging, 9=Miscellaneous]  
+	</span></TD></TR>
+<TR><TD class="auto-style4">135-140 </TD><TD><span class="auto-style5">PEU</span><span class="auto-style4"> - Peak Ephemeris Uncertainty, in arcseconds</span></TD></TR>
+<TR><TD class="auto-style4"> 141</TD><TD class="auto-style4">Number of rings</TD></TR>
+<TR><TD class="auto-style4"> 142 </TD><TD class="auto-style4">Number of moons</TD></TR>
+<TR><TD class="auto-style4"> 143-144</TD><TD class="auto-style4">CR LF sequence</TD></TR>
+</table>
+<h1 class="auto-style7"><A NAME="idh_4overview0"></A></h1>
+
+</BODY>
+</HTML>

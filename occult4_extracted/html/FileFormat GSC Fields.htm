@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<Title>GSC Fields</Title>
+</HEAD>
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+<H1><A NAME="idh_4overview"></A>GSC Fields.dat</H1>
+<P> <B>GSC Fields.dat</B> contains the RA and Dec limits for each of the Guide Star Catalogue fields. It is used, together with 
+a Gaia...inx file, to identify a Tycho2 star from its number.</P>
+<P> This file is present in Occult, being a file in the Occult installation 
+files.</P>
+
+<P>The file is a random access file of length 16. There are 9537 records, each corresponding to the GSC region number (i.e. the first 4 digits in the star number). The content of each record is as follows:<BR><UL><TABLE COLUMNS=2 BORDER = 1>
+
+<TR><TD>RA, western limit</TD><TD>Stored as Single</TD></TR>
+<TR><TD>RA, eastern limit </TD><TD>stored as Single</TD></TR>
+<TR><TD>Dec, Northern limit </TD><TD>stored as Single</TD></TR>
+<TR><TD>Dec, Southern limit</TD><TD>stored as Single</TD></TR></TABLE></UL>
+
+The units for all co-ordinates are degrees.<P>To locate a specific star in a 
+Gaia catalogue from its Tycho-2 number:</P>
+<ul>
+	<li>use the Region number (the first element in the Tycho2 number) to extract from this file the limits in RA and Dec for that 
+	Tycho2 region. </li>
+	<li>for the Gaia file being accessed, use its corresponding .inx to obtain the range of records 
+	to be scanned in the 0.5° bands of that Gaia catalogue file. </li>
+	<li>Scan the Gaia file to find an entry with the required Tycho2 number</li>
+</ul>
+<p>Not all stars with a Tycho2 number will be found. There are two reason:
+</p>
+<ol>
+	<li>Each Gaia entry contains on a single star identifier. A Hipparcos number has precedence over a Tycho2 number, and as a result any Tycho2 stars which are also in Hipparcos cannot be located using the Tycho2 number.
+	</li>
+	<li>The Tycho2 numbers in the Gaia catalogues have been obtained via the TychoGaia file of Gaia DR1. Beyond that, no effort has been made to match Gaia stars to the original Tycho2 catalog.</li>
+</ol>
+<p><strong>NOTE</strong>: The Tycho2 star numbers within a Region are not 
+ordered by Right Ascension or Declination.</p>
+
+</BODY>
+</HTML>

@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Transits</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Transits</H1>
+The form for transit predictions has a list at the left of all possible transits of Mercury and Venus that occur in a 100-year period. The 100-year period is set by changing the year above the list (and pressing Enter).  The available range of years is -13000 to +17000 - corresponding to the coverage of the  DE431 ephemeris. To display a prediction for a transit, simply select the transit in the 100-year list.
+ 
+<h2>Example prediction</h2>
+<pre>Transit of Venus on 2012 Jun 6 (TT)
+   {'+' => next day; '-' => previous day }
+                                           Overhead at
+     Geocentric Event      UTC         P.A.  Long  Lat
+                         h  m  s       o      o    o 
+
+[1]  Exterior Ingress   22  9 36-    40.7   -153   23
+[2]  Minimum Separation  1 30 23             157   23
+[3]  Exterior Egress     4 49 38    290.2    107   23
+
+Minimum sepn 554.9";  Radii - Sun 945.7", Venus 29.2"
+delta T =  66.2 secs,  Ephemeris = DE430
+</pre>
+
+<P align=center><img src="2012%20Jun%20%206%20Transit%20Earthmaps.png">
+<P align=center><img src="2012%20Jun%20%206%20Transit%20-%20Sun.png">
+
+<H2>Notes</h2>
+<ul>
+<li>Any '+' and '-' signs after the event time indicate the event occurs in the day after or before (respectively) the date specified at the top of the prediction.
+<li>Two maps of the world show the Earth as seen from the Sun. The first is for the time of geocentric 1<sup>st</sup> contact. The second is for the time of geocentric 4<sup>th</sup> contact. The relevant times are shown above each map. They show the regions from where the transit will be visible, and are drawn on the basis of the estimated value of deltaT (even if the predicted times are in TT). The uncertainty in the Earth's orientation is given at the bottom of the plot (when the uncertainty in deltaT is greater than 2 secs.) 
+<li>When there is no transit, each map is identical, being drawn for the time of closest approach of the planet to the sun. 
+<li>The other image represents the path of the planet during the transit. Note that the planet ALWAYS crosses the Sun from East to West.
+<li>The minimum <I>geocentric </I>separation, and the apparent radii of the Sun and the relevant planet, are given in arc secs.
+<li>The ephemeris used for the prediction is given in the line specifying the value of deltaT. 
+<li>Times are given in UT provided the uncertainty in deltaT is less than 1 hour (ie between -1970 and +3471). Otherwise the time are in TT.
+
+</ul>
+
+<h2>Grazing transits</h2>
+<p>On rare occasions a transit may be a grazing transit. Recent examples are:<ul>
+<li>Mercury in 1999 November 15, which was a full transit for the northern hemisphere, but a partial transit in southern Australia;
+<li>Mercury in 1937 May 11, which was a partial transit in Africa and southern Asia, but otherwise a complete miss.</ul>
+<p>When a transit is a grazing transit, the prediction includes a line to indicate the nature of the event, as in:
+<Pre>Transit of Mercury on 1999 Nov 15 (TT)
+   {'+' => next day; '-' => previous day }
+                                           Overhead at
+     Geocentric Event      UTC         P.A.  Long  Lat
+                         h  m  s       o      o    o 
+     *** Total/Partial transit ***
+[1]  Exterior Ingress   21 15  1     32.1   -143  -19
+[2]  Minimum Separation 21 40 32            -149  -19
+[3]  Exterior Egress    22  6 46     13.8   -156  -19
+
+Minimum sepn 963.0";  Radii - Sun 970.2", Mercury 5.0"
+delta T =  64.2 secs,  Ephemeris = DE430
+</pre>
+
+<br>Also provided in a separate table is a set of latitude/longitude coordinates of the limit line between the Total/Partial phase, or between the Partial phase and a Miss. The uncertainty in the rotational orientation of the earth is given at the end of the table, when it is 0.1 deg or greater.  
+
+<p>The next grazing transit of Mercury will be on 2391 May 11 [although transits that are close to grazing occur in 2154, 2174, 2210, 2371, and 2387.] The previous grazing transit of Mercury occurred on 1342 October 21. A grazing transit of Venus last occurred on 1631 Dec 7; the next will be on 2611 December 13. 
+
+<p>For grazing and near-grazing transits, the contact times will be very dependent upon the location of the site. Where a grazing transit occurs, the line dividing the zone of partial transit from a total transit is drawn in blue; that between a partial transit and a miss is drawn in red. In <I>theory </I>it is possible for both lines to exist at a May transit of Mercury, but not for a November transit of Mercury, or a transit of Venus. For some transits of Venus, the transit is partial all over the Earth. The type of the transit [total/partial, or partial/miss] is indicated, together with the limit line coordinates at 5-degree intervals, in a separate box.
+
+<p>The following table lists grazing transits which occur between 1000BC and 6100AD. The phases present in the transit are indicated by <B>T</B>(Total), <B>P</B> (Partial) and <B>M</B>(Miss). Only Venus can have transits that are partial as seen from all locations on the Earth. Otherwise there will be a region of partial transit bordered either by a region of full transit (<B>T</B>), or a region where there is no transit (<B>M</B>).<p>
+<table columns=3 border=1>
+<TR><TH NOWRAP> </TH><TH>Mercury  </TH><TH>Venus  </TH></TR>
+<TR><TH NOWRAP>Date  </TH><TH>Phases</TH><TH>Phases  </TH></TR>
+<TR><TD> 921BC May 23  </TD><TD>.  </TD><TD>P</TD></TR>
+<TR><TD>541BC Nov 19  </TD><TD>.</TD><TD>P+M    </TD></TR>
+<TR><TD>514BC Oct 23   </TD><TD>P+M  </TD><TD>.   </TD></TR>
+<TR><TD>349BC Oct 13   </TD><TD>P+M</TD><TD>.   </TD></TR>
+<TR><TD>132BC Oct 14   </TD><TD>T+P </TD><TD>.    </TD></TR>
+<TR><TD>155 Apr 21   </TD><TD>P+M  </TD><TD>.  </TD></TR>
+<TR><TD>175 Apr 16   </TD><TD>T+P  </TD><TD>.     </TD></TR>
+<TR><TD>392 Apr 16   </TD><TD>P+M  </TD><TD>.    </TD></TR>
+<TR><TD>554 May 22   </TD><TD>.</TD><TD>T+P    </TD></TR>
+<TR><TD>960 Oct 28   </TD><TD>P+M  </TD><TD> . </TD></TR>
+<TR><TD>1342 Oct 21   </TD><TD>P+M  </TD><TD>. </TD></TR>
+<TR><TD>1631 Dec 7   </TD><TD>.  </TD><TD>T+P   </TD></TR>
+<TR><TD>1937 May 11   </TD><TD>P+M  </TD><TD>. </TD></TR>
+<TR><TD>1999 Nov 15   </TD><TD>T+P  </TD><TD>.</TD></TR>
+<TR><TD>2391 May 11   </TD><TD>T+P  </TD><TD>.  </TD></TR>
+<TR><TD>2608 May 13   </TD><TD>P+M  </TD><TD>.  </TD></TR>
+<TR><TD>2611 Dec 13   </TD><TD>.</TD><TD>T+P    </TD></TR>
+<TR><TD>2815 Nov 16   </TD><TD>T+P  </TD><TD>.   </TD></TR>
+<TR><TD>2854 Dec 14   </TD><TD>. </TD><TD>P+M   </TD></TR>
+<TR><TD>3219 Jun 19   </TD><TD> . </TD><TD>T+P   </TD></TR>
+<TR><TD>3462 Jun 22   </TD><TD>.  </TD><TD>P    </TD></TR>
+<TR><TD>3705 Jun 24   </TD><TD>.  </TD><TD>P+M    </TD></TR>
+<TR><TD>3936 Jun 3   </TD><TD>T+P  </TD><TD>.  </TD></TR>
+<TR><TD>4071 Nov 30   </TD><TD>T+P  </TD><TD> .    </TD></TR>
+<TR><TD>4077 Dec 9 </TD><TD>T+P  </TD><TD> .    </TD></TR>
+<TR><TD>5110 Dec 13  </TD><TD>T+P </TD><TD> .    </TD></TR>
+<TR><TD>5269 Jan 8 </TD><TD>P+M </TD><TD> .    </TD></TR>
+<TR><TD>5475 Jun 15  </TD><TD>T+P </TD><TD> .    </TD></TR>
+<TR><TD>5909 Jun 21  </TD><TD>P+M </TD><TD> .    </TD></TR>
+<TR><TD>5939 Jan 1  </TD><TD>P+M </TD><TD> .    </TD></TR>
+</table>
+
+
+
+<h2>Local predictions</h2>
+<p>Local predictions can be generated for a range of sites. Merely select a Site file from the drop-down box, and click Multisite predictions using....  <A href="Eclipses%20-%20Transits%20-%20mutilocation.htm">Details</a>. However this ability is disabled when the uncertainty in deltaT is greater than 60 minutes (ie before -1970, and after 3471 ).
+
+<h2>Transit timings and analyses</h2>
+A listing of contact timings for transits of Mercury for the period 1677-1973 is given in Royal Greenwich Observatory Bulletin No.181, 359-420 (1975). Unfortunately this article is not available on-line.
+
+<p>An analyses of past transits of Mercury is published in the <a href="http://adsabs.harvard.edu/abs/1975MNRAS.173..183M"> MNRAS</a>
+<p>An analysis of (non-)variations in the solar diameter using transist of mercury is published in <a href="http://adsabs.harvard.edu/abs/1980Natur.288..548P">Nature, 288, 548-551 (1980)</h>.
+
+</BODY>
+</HTML>

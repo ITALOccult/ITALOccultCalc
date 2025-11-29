@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>deltaT_deltaTA</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1><A NAME="idh_4overview">deltaT.dat,  deltaTA.dat</A></H1>
+<!-- Insert Header in above line -->
+
+<P>The program maintains two files for the difference between UT and TDT</p>
+
+<p><b>deltaT.dat</b> contains values of <B>deltaT</B> (the difference between UT, and Terrestrial Dynamical Time) for each year, in seconds. The table covers years since -500. 
+The period -500 to 1600 is covered on a 100-year interval. Thereafter it is an annual interval. The format is:<ul>
+YYYY	[year]<br>
+tt.tt	[value of deltaT]</ul>
+with other years following sequentially.<p>
+
+<p><b>deltaTA.dat</b>, contains the difference <B>deltaAT</B> between UTC and International Atomic Time (TAI). UTC is the usual broadcast time signal. In the periods between the application of leap seconds, there is a constant difference between UTC and TAI. The file also includes the value of <B>dUT1</B> immediately following the introduction of a leap second. The format of the data held in this file is:<ul>
+YYYY	[year]<br>
+tt.tt	[value of <B>deltaAT</B>]<br>
+t.tt	[Value of <B>dUT1</B>]<br></ul>
+with other years following sequentially. The data is stored chronologically by year. The year (and fraction of a year) represents the date at which a leap second is inserted into UTC - with the time difference applying until the next entry. The year must have a decimal position, to indicate when the leap second is applied. Valid values are '.0', '.25', '.5', and '.75' - although to date only '.0' and '.5' have been used. The relevant value of <B>deltaAT </B>is found in the entry for a year immediately preceding the first year greater than the specified year.</p>
+
+</BODY>
+</HTML>

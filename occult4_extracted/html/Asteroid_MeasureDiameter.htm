@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Measure Asteroid Diameter</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Measuring an asteroid's diameter using shape models</H1>
+
+<h2>Issues to be determined</h2>
+<ul type=1>
+<li>Where there is more than one shape model - which model is the 'correct' model - in the sense of representing the physical shape of the asteroid.
+<p>A well-observed occultation may be sufficient to exclude a model - on the basis that it can be well-fitted to one model, but cannot be reasonably fitted to the other model for any orientation about the rotational axis at the time of the event.<p>
+<li>For the correct model - what is the accurate period of rotation? 
+<p>Typically a shape model will require some level of adjustment to the rotational orientation. Any adjustment to the period of rotation needs to be consistent across all occultation events. This issue is important for:<ul>
+<li>determining the correct period of rotation. The correction might simply be just a correction to the rotational period. If there are enough events, the correction may additionally involve a constant offset.
+<li>when fitting the model to occultation results, ensuring the orientation is determined on the basis of the best fit to all events, and not just the current event. This ensures a 'best fit' of the occultation results to the model <B>overall </B>is performed, with the differences between the model and the occultation being a better represention of the 'errors' in the detail of the shape model.</ul>
+
+<p><li>Once the model and period have been resolved, procede with fitting the shape models to the occultation results.
+
+<p><li>In fitting the occultation results, are there any chords where there are indications of:<ul>
+<li>an erroneous time base - indicated by the event duration being consistent with the chord's location, but having a time-offset. A potential challenge is to identify which chord has the time base problem...
+<li>a Miss chord that probably was not a miss. This will most likely occur with visual observations involving a faint (i.e. fainter than mag 8 or 9) star - especially if the star field is somewhat crowded.
+<li>inconsistency with other chords. On occassions the 'erroneous' chord may become obvious when trying to fit the shape models - but care must be taken to consider all models and phase orientations before reaching such a conclusion.</ul>
+
+<p><li>Having identified the correct model and rotation, review ALL events of the asteroid to identify those where a shape model can be reasonably applied to derive a diameter. Note that once the shape model has been coreectly identified, and the rotation period established, it can be applied to occultation events with as few as two chords - providing appropriate spacing of the chords. 
+
+<p><li>Record the derived diameter of the asteroid for each event. Assuming there are several valid measurments, derive a mean and standard deviation of the measurements.</UL>
+
+
+<h2>Background issues to be aware of</h2>
+The successful determination of asteroid diameters by combining the results of asteroidal occultations with Asteroidal shape models requires an understanding of a range of background issues.
+
+<h3>Direct measurement of diameter from a visiting satellite</h3>
+Inherently gives the most accurate information about the size and shape of an asteroid. However only a very small number of asteroids have been visited; the technique is not applicable to asteroids generally.
+
+<h3>Direct measurement of diameter using adaptive optics</h3>
+A small numberof asteroids have been 'resolved' using large telescopes having adaptive optics. Telescope time precludes this from being used for anyhthing other than a very small number of large asteroids. While images will generally indicate the shape of the asteroid, the level of resolution is not great.
+
+<h3>Radar measurements</h3>
+Radar detections of main belt asteroids are uncommon, and limited to the largest asteroids. Most radar imaging is of Near Earth Asteroids near the time of closest approach. Resolution is typically a small fraction of a km, and a series of images will readily show the asteroid's rotation. The effective limitation to NEA's near closest approach means this technique does not provide a solution applicable to main belt asteroids.
+
+<h3>Satellite measurements of asteroid diameters</h3>
+<p>The approach which has resulted in the largest number of asteroid diameter measurements is that of infra-red measurements from satellites. The basic approach is to measure the brightness of the asteroid in several different infra-red wavelengths to deduce the albedo of the asteroid - and use that in combination with the absolute magnitude of the asteroid to derive its diameter. The standard equation is
+D =1329*10<sup>-H/5</sup> /&#8730p<sub>V</sub>, where:
+<li>D is the diameter in km;
+<li>H is the absolute magnitude (V) of the asteroid; and
+<li>p<sub>v</sub> is the visible geometric albedo</ul>
+As can be seen from this equation, the smaller the albedo, the larger the inferred diameter. The values of p<sub>v</sub>  in the WISE results range from 0.0038 to 0.99, with the middle-80% falling in the range  to 0.04 to 0.30. Where a diameter is not available, Occult calculates the diameter as 10<sup>(3.52-H/5)</sup>; this is the same as the above equation, with the albedo p<sub>V</sub> set at the fixed value of 0.1611.
+
+<p>The strength of this approach is that it can be easily applied to a large number of asteroids, and (in principle) overcomes the problem of not knowing the reflectance (Albedo) of the asteroid when using the standard relationship between absolute magnitude and diameter.
+
+<p>A pdf paper (2MB) giving details of the approach as applied to WISE/NEOWISE, is available <a href="https://arxiv.org/pdf/1109.4096.pdf" target=blank>here</a>
+
+<p>Three satellite missions have derived asteroid diameters using this technique:<ul type =1>
+<li>IRAS <I>InfraRed Astronomy Satellite</I>  There are 3 catalogues associated with IRAS:<ul type=i>
+<li>diamalb - the main IRAS catalogue of diameters and albedos
+<li>single - listing data for asteroids which had only one acceptable observation; and
+<li>mimpsalb - the MSX Infrared Minor Planet Survey made using the MSX satellite that made measurements between April 1996 and February 1997 of areas of the sky either missed by IRAS or in which the IRAS senitivity was degraded by confusion. </ul>
+Several revions of the IRAS diamalb and single datasets have been issued, with the last one being V6.
+<li>AKARI  AcuA <I><B>A</B>steroid <B>c</B>atalog <B>u</B>sing <B>A</B>KARI </I>. AKARI observed the whole sky in the far infrared (50-180&#956m) and the mid-infrared (9 and 18&#956m), between May 2006 and August 2007. AcuA used the mid-infrared measurements (9&#956m and 18&#956m) to derive the size and albedo of 5120 asteroids. 
+<li>WISE<I> <B>W</B>ide-field <B>I</B>nfrared <B>S</B>urvey <B>E</B>xplorer</I> WISE initially observed from January 14 to August 5, 2010 (when the cryogen coolant ran out). WISE subsequently entered a Post-Cryogenic Mission (NEOWISE) to complete the survey of the largest MBAs, continue discovering new NEOs, and complete a second-pass survey of the sky in the two shortest wavelengths. WISE imaged the sky in four infrared wavelengths simultaneously, at 3.4&#956m, 4.6&#956m, 12&#956m and 22&#956m. On average, each asteroid detected was observed 10-12 times over a period of ~30hrs.
+</ul>
+The formal uncertainties in the derived diameters range between about 1% and 10%. However the absence of a reliable set of definitive asteroid diameters, systematic errors of the order of 10% may also exist.
+
+<h3>Occultations</h3>
+The typical spatial resolution of a video-timed asteroidal occultation of a main belt asteroid isof the order of 1km. This is inherently more precise than satellite IR satellite measurements and adaptive optics. The difficulties with the occultation technique are:<ul type=a>
+<li>An occultation can give precise information on the asteroid profile in its particular orientation at the time of the event. By itself it only provides an indicative measure of the asteroid's overall mean diameter. Occultation results from different events cannot be combined from occultation data alone, other than on a statistical basis.
+<li>Observations prior to about 2000 were almost all recorded visually - typically using a tape recorded to record the observer's comments (such as 'gone', and 'back'), as well as a radio time source such as WWV. Visual observations inherently have a larger uncertainty in the event time (compared to instrumental techniques) as well as the effects of personal equation (which was frequently underestimated). Additionally, when an observer reports a Miss observation visually, the question arises of whether the observer was monitoring the correct star.
+<li>Observations made after ~2010 are almost all made using video. A key component of a video observation is the time base for the video. <ul type=i>
+<li>The most reliable time base relies on video-inserted time tags. 
+<li>Some videos rely upon a computer clock set using NTP; however depending on factors such as the computer operating system, the internet connectivity, and distance to the NTP server, such a time base can be late by over 1 second. 
+<li>Some videos rely upon a camera clock (or PC clock) running continuously, with calibration of the clock (typically using a video-inserted time stamp an hour or two before the event, and similarly after the event - and assume the clock rate is linear over that time. That assumption may not be valid if the camera is subjected to significant temperature variation between synchronisations, or the battery condition is poor.</ul>
+
+While (ii) and (iii) can create uncertainty about whether the occultation event times are correct in an absolute sense, there is a high level of integrity in the <B><I>duration </I></B>of the event (as any error in the absolute time will almost always be the same at both the start and end of an asteroidal occultation).
+</ul>
+<h3>Asteroid Shape Models</h3>
+Asteroid shape models are derived from the rotational light curve of asteroids. The basic approach is to measure the light curve at multiple loactions in the asteroid's orbit around the Sun, and to derive a model of the shape of the asteroid needed to reproduce those light curves (by a process referred to as light curve inversion).
+<p>Importantly, the dimensions of the shape model are entirely relative. The absolute size of the shape model representing an asteroid is irrelevant to the derivation of the shape model.
+<p>The issues associated with shape models are:<ul type =a>
+<li>inherent in all shape modelling is an assumption that the asteroid surface is of uniform albedo.
+<li>most shape models are  based on a convex solution. Only a small number of shape models allow for concave solutions (due to computing complications), even though it is reasonable to speculate that many asteroids will have significant areas of concavity on their surface.
+<li>a shape model is (fundamentally) a model that replicates the observed light curve - on assumptions of uniform reflectance (albedo) and (for most) a surface that is entirely convex at the macro level. The extent to which a shape model is a representation of the physical shape of an asteroid is dependant upon the validity of the assumptions about reflectancy and convexity. Indeed, the accuracy of a shape model vis-a-vis the real physical shape of an asteroid is essentially untested at any level of  fine detail.
+<li>there are challenges in measuring the light curve of an asteroid as it moves across a star field in the course of the many hours of observations required. [A light curve of a variable star is relatively straight forward, as you have a constant field and set of reference stars. With an asteroid, the field changes, and different reference stars are required.] As a result there can be systematic differences in the light curves used for the inversion, which flow through to the final shape model.
+<li>the light curve of an asteroid can be hugely different at different parts of its orbit. As a result the determination of the period of rotation is not a straight-forward issue, and can have a significant uncertainty. For a small number of asteroids, the uncertainty in the rotational period can lead to an uncertainty in the asteroid's orientation at current dates, of over a full revolution.
+<li>the solution for a shape models requires a determination of the direction of orientation of the axis of rotation. For most asteroids there are two possible solutions; occassionally there can be more. Each solution results in a completely different shape model.
+<li>variation in an asteroid's light curve has a strong dependancy on the inclination of its axis of rotation to its orbital plane. Where the axis of rotation is normal to its orbital plane, the light curve will have minimal changes at different parts of its orbit - preventing a reliable shape model from being determined. However if it lies in the orbital plane there will be maximal changes in the light curve at different parts of its orbit - leading to a good solution for the shape model. As a result, shape models cannot be derived for all asteroids, and for some asteroids the shape model is inherently less reliable than for others.
+</ul>
+
+</BODY>
+</HTML>

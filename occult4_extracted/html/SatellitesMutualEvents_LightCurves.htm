@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Mutual event light curve</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Mutual event - Light Curve</H1>
+This form displays a predicted light curve for a mutual event. The form is designed to be overlaid over a plot of an observed light curve, so that the observer can get a feeling for how well their observation matches prediction. Note that the computed light curve will generally not be centered on the form (caused by having the left end of the form representing an integral number of minutes.)
+
+<p><font color=red><b>IMPORTANT</b> When using this tool, remember that the value of an observation lies in the differences between the observed light curve and the predicted light curve. As a general principle, the light curve of a successful observation will not exactly match the predicted light curve. Observations should be reported to the IMCCE irrespective of how well they match the light curve generated in this tool. Information on reporting mutual events may be found <a href="http://www.imcce.fr/phemu/index.php?popup=3" target = blank>here</a></font>.
+
+<p><B>Generating a light curve</B> The light curve is generated merely by selecting a mutual event from the list of events, and then either double-clicking on the small light curve on that form, or selecting the menu item <b> with Predictions... Display light curve (Large)</b>.
+
+<p><H2>Display options</h2>e
+The following options are available for displaying the time-related information on a plot - under the menu item <b>with Plot...</b><ul>
+<li><B><I>Display in minutes. </I></B>This is used when the observed plot displays the time along the horizontal axis. When selected, the horizontal axis will show vertical time lines at integral minutes.
+<li><b><I>Display in NTSC frames</I></B> Used when the observed plot shows a frame count rather than a time count. When selected, the horizontal axis will show vertical lines at multiples of 1000 frames at NTSC frame rate.
+<li><b><I>Display in PAL frames</I></B> Same as for the previous - except the frames are at PAL frame rate.
+</ul>The following options are provided in track-bar controls at the top of the form<ul>
+<li><b><I>Transparency.</I></b> To facilitate the matching of the predicted light curve to an observed light curve, the user can vary the transparency of the form. That is, the user places the form over a form containing the observed light curve - then varies the transparency so that both the observed light curve and the predicted light curve can be seen superimposed. The transparency is adjusted using the slider at the top of the form. When the form is less than 90% opaque, the form is set to always stay on top of anything else displayed on the monitor.
+<li><B><I>Zero-level height</I></B> This provides a mechanism to stretch the light curve by moving the zero-point of the light curve above or below the calculated zero light level. This may be appropriate if there are concerns about whether the recorded light curve is affected by non-linearity, or an incorrect zero-point. The value of the zero light level is displayed next to the track-bar adjustment. That height is also plotted as a horizontal dashed line. If the line is located below the bottom of the overall plot area, a thick red dashed line is drawn at the bottom of the plot area.</ul>
+
+To use the form to match the light curves:<ul>
+<li>Place the form over the observed light curve, and reduce the transparency slider so that the observed plot can be seen through the form.
+<li>Place the left side of the form against the equivalent time on the observed plot (if you are displaying time), or against the left end of the observed plot (displaying frame numbers)
+<li>Adjust the width of the light curve plot so that the time scale/frame count scale matches that on the observed light curve.
+<li>Place the zero height line of the form over the zero height line on the observed plot, and adjust the height of the plot such that the full light level matches the full light level on the observed light curve. If the observed plot does not show the zero height level, either estimate where that zero light level would be - or match the vertical scale using an intermediate light level.
+<li>Move the form left/right over the observed plot (keeping the zero light and full light levels aligned) until the light curves best match in the horizontal direction.
+<li>Adjust the<B><I> Zero-level height </I></B>track bar so that the depth of the two light curves correspond</ul>
+
+Having done this, you will have matched the predicted and observed light curves. You can record the match using a screen dump, or using a screen capture utility like <a href="http://www.mirekw.com/winfreeware/mwsnap.html" target=blank> MWSnap</a> (which I highly recommend!). You can also copy or save the predicted light curve using the menu option <B>with Light curve...</B> 
+
+<h2>Basis of the calculations</h2>
+The light curve is calculated on the following bases.
+<h3>Occultations</h3>
+<li>Both satellites are treated as being circular, and of the 'official' radius. 
+<li>The albedo of each satellite is incorporated in the calculation
+<li>The brightness of the two satellites over the duration of the event is computed by adding the area of each satellite that is visible as multiplied by its albedo - and comparing this with the value obtained when the satellites are not in occultation. [In practice, only the visible area of the more-distant satellite varies during the event.]
+<h3>Eclipses</h3>
+<li>The light distribution across the shadow is computed on the basis of the percent of the solar disk that is obscured by the eclipsing satellite as seen at the distance of the eclipsed satellite;
+<li>the light distribution across the shadow is represented as 100 annuli extending from the center of the shadow to the penumbral edge. The light level at each annulus is the percent of the solar disk that would be visible at the mid-width of the annulus;
+<li>the light level on the eclipsed moon is computed by summing the area of each annulus that intersects the eclipsed moon, and multiplying that with the light level for that annulus - and comparing this with the light level from that moon when un-eclipsed.  
+
+
+
+</BODY>
+</HTML>

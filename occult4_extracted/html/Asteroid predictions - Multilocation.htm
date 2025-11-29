@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Multilocation predictions</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Asteroid Multilocation predictions</H1>
+<P>This form is used to generate local predictions for an event, including the probability of the event occurring.
+
+<p>The list is generated using a site file of your choice which is selected at the top of the form.  The site file is retained between sessions.
+
+<p>An example output is:
+<pre>
+Occultation of TYC 5298-00191-1 by 1127 Mimi on 2007 Oct 24 
+
+Distance from center of occultation path - in km
+Distances are positive to the right, referenced to the direction of motion along the path
+
+Uncertainty in time = +/- 7 secs
+
+        d Proba-  Location                          Longitude Latitude   alt      U.T.     Sepn   Alt  Sun
+     km   bility                                       o   '    o   '      m    h  m  s     "       o    o
+    172 -    0%   ** Path limit plus 3-Sigma **   
+    161 N    0%   Melbourne                          144 55.  -37 45.     20   18 11 47   -0.157   46  -14
+    144 N    1%   Albury                             146 55.  -36  5.    100   18 11  2   -0.140   45  -13
+    126 -    2%   ** Path limit plus 2-Sigma **   
+     80 -   15%   ** Path limit plus 1-Sigma **   
+
+     40 N   38%   Canberra                           149  5.  -35 15.    680   18 10 32   -0.039   44  -12
+     33 -   42%   ***  Path limit  ***            
+     26 N   46%   Newcastle                          151 45.  -32 55.     10   18  9 34   -0.025   43  -11
+      8 N   52%   Sydney                             151  5.  -33 55.     25   18  9 53   -0.008   43  -11
+      0 -   53%   **** Centre Line    ****        
+
+    -21 S   48%   Wollongong                         150 55.  -34 25.     10   18 10  5    0.020   43  -11
+    -33 -   42%   ***  Path limit  ***            
+    -80 -   15%   ** Path limit plus 1-Sigma **   
+   -126 -    2%   ** Path limit plus 2-Sigma **   
+   -172 -    0%   ** Path limit plus 3-Sigma **   
+
+
+[Prediction of 2007 Oct  9.4]
+
+</pre>
+<p>The meaning of the various items is:
+<table columns=3 border=1>
+<TR><TH NOWRAP>column</TH><TH>Comment</TH></TR>
+<TR><TD>Uncertainty in time</TD><TD>The uncertainty in the prediction time corresponding to the major axis of the error ellipse (which is usually aligned with the direction of motion of the asteroid)</TD></TR>
+
+<TR><TD>km [or mi]</TD><TD>This column gives the observer's distance from the central path, in km, or miles (<I>see below</I>). <I>Note - the calculation does not correct for the curvature of the Earth, and is therefore only approximate for distance in excess of several 100 km.</I><br><br>Positive distances are to the right of the path, when viewed along the direction of motion of the shadow along the path.</TD></TR>
+<TR><TD>d</TD><TD>The geographic direction of the site from the asteroid path. <br><B>IMPORTANT</B>. For occultation paths near the pole, or at low altitudes, the direction given here may be incorrect.</TD></TR>
+<TR><TD>Probability</TD><TD>The computed probability that an occultation will be seen at that location. The probability is derived from the uncertainties in the catalogue position and proper motion of the star, and the ephemeris uncertainty in the Asteroid.</TD></TR>
+<TR><TD>Location</TD><TD>The name of the relevant site.<p>In addition to sites in the site file, entries are also included for the central line, the northern and southern limits, and those limits as expanded by the uncertainty in the path location.</TD></TR>
+<TR><TD>Longitude, Latitude and Altitude</TD><TD>The coordinates of the site location. <B>See below</B>.</TD></TR>
+<TR><TD>UT</TD><TD>The predicted time of closest approach at the location. If 
+	that time is in the day prior to the UT date in the header, the time is 
+	preceded by '-'. If it is in the day following, it is preceded with a '+'.</TD></TR>
+<TR><TD>Separation</TD><TD>The predicted minimum apparent separation of the star and 
+	asteroid at the location</TD></TR>
+<TR><TD>Alt</TD><TD>The altitude of the star at the predicted time</TD></TR>
+<TR><TD>Sun</TD><TD>The altitude of the sun at the predicted time</TD></TR>
+<TR><TD></TD><TD></TD></TR>
+</table>
+<p>Following the table is a line giving the date of calculation of the occultation elements used to generate the predictions. This is very useful if there is a last-minute update to the prediction as it allows you  to ascertain whether the prediction is based on the latest updated prediction.
+
+<h2>Controlling output</h2>
+<h3>Number and range of sites</h3>
+<p>You can control the inclusion of sites in the list using the <B>Set distance limits </B>menu item, and then selecting to limit output to sites to 
+those within the 1, 2, or 3 -sigma distances. Or you can apply no restriction and list all sites (which is generally not desirable). As a general guide, you should choose either the 2- or 3- sigma distance. Note that you can retain the distance setting using the specific menu item to save the limit values as a default.
+
+<H3>km or miles</h3>
+<p>You can choose whether the distances are displayed in km or miles under the menu item <B>Set distance limits.</B>
+
+<h3>Displayed coordinate precision</h3>
+<p>The multilocation list is intended for dissemination to observers prior to an event - such as via the internet. This can give rise to privacy concerns (which can vary between legal jurisdictions as well as individuals) For this reason the output of the site coordinates can be either at a precision of 0.1 arc mins, or rounded to the nearest arcmins ending in 5. This is set under the <B>Set distance limits </B>menu item. The default setting is arcmins ending in 5 (to avoid accidental publication of accurate coordinates). <I>NOTE. The calculations are done on the basis of the actual site location, not the displayed rounded site location.</I>
+
+
+
+</BODY>
+</HTML>

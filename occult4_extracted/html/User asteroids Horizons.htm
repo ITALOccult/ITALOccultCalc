@@ -1,0 +1,198 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>JPL-Horizons</Title>
+<style type="text/css">
+.auto-style1 {
+	text-align: left;
+}
+.auto-style2 {
+	color: #800080;
+}
+.auto-style3 {
+	color: #0000FF;
+}
+.auto-style4 {
+	border: 2px solid #800000;
+}
+.auto-style5 {
+	color: #FF0000;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>JPL-Horizons</H1>
+
+<h2>Adding Orbital Elements from Horizons</h2>
+<P>The JPL Horizons system can generate accurate orbital elements at any epoch. 
+This has particular advantages when the orbital integration routine in Occult is 
+inadequate. This particularly occurs with orbits that have a large eccentricity 
+(eg greater than 0.4), or a small perihelion distance(eg less than 1.5AU). 
+Accuracy can also be lost if the event date is many years from the current date.<P>
+In these circumstances, Occult can 'automatically' download the elements for an 
+object for a user-specified date. 
+This can occur in three locations: on the <strong>Asteroid Search</strong> form, 
+on the <strong>List and Display </strong>form, and on the form 
+for editing the file of UserAsteroids. 
+<h2 class="auto-style3">
+Adding elements for a single asteroid when searching</h2>
+<P>
+The process for using Horizons for a single asteroid when conducting a search on the <strong>Asteroid Search Form
+</strong>is set out <a href="Asteroid%20predictions%20-%20Search.htm">here.</a>
+<P>
+The process is limited to searches with a duration of less than 35 days, and 
+limited to a single asteroid. The intent is to provide an accurate prediction 
+for an object of special interest - and in particular, when that object is in an 
+orbit with eccentricity greater than 0.4 and semimajor axis less than 2AU.<h2 class="auto-style3">
+Creating a User file of asteroid elements to match events of interest</h2>
+The work-flow for 
+	this option is<ul>
+		<li>generate a set of predictions using <strong>MPCORB</strong>, <strong>
+		Astorb</strong>, or <strong>AstDys-2</strong>. Typically they would be 
+		for a time-limited period of a month or two, appropriate for generating 
+		an OccultWatcher feed or personal predictions</li>
+		<li>use the filter options on the List and display form to limit the 
+		listed events to those that are of potential interest</li>
+		<li>select this option, to create a User file of asteroid elements, by 
+		downloading orbital elements form JPL-Horizons</li>
+		<li>Re-do the search for the time period, but this time check the box on 
+		the Search form <strong>use USER file of elements</strong></li>
+	</ul>
+	<p>the resulting search will be based on Horizon elements. More information 
+	is <a href="Asteroid%20predictions%20-%20ListAndDisplay.htm">here</a></p>
+<h2><span class="auto-style3">Adding elements using the Editor for the UserAsteroids file
+</span> <br>
+</h2>
+<P>
+The basic function of the UserAsteroids editor is the manual addition of 
+asteroid and comet orbits.&nbsp;
+<P>
+The functionality to add orbits from Horizons is enabled by clicking the Menu 
+item Add elements from JPL-Horizons. This will disable the general editor 
+functions, and will display a panel that looks like<P><img src="UserAsteroid_Horizons.PNG" width="600"><P class="auto-style1">
+This panel can be moved around the form by dragging it with the cursor.<P class="auto-style1">
+The top row of data elements is used to set the epoch for the elements to be 
+downloaded. The panel opens with the current UTC date being displayed. The date 
+can be set to any date (within reason....). All downloaded elements will be for 
+this epoch.<P class="auto-style1">
+A button is provided to delete all elements in the list.<h2 class="auto-style3">
+Adding Asteroids</h2>
+<P class="auto-style1">The left part of the form is for specifying 
+the asteroids to be downloaded. There are two basic options.<ul>
+	<li>
+	Specify a set of asteroids either individually, or as 
+	a range; or
+	</li>
+	<li>
+	Specify all asteroids greater than a certain diameter</li>
+</ul>
+These options are selected by clicking the appropriate radio button. For the 
+radio buttons relating to asteroid size, the number of asteroids that will be 
+downloaded is indicated by the number below the radio button. If a Diameter 
+radio button is selected, the text box below the buttons for specifying 
+individual asteroids is disabled.<br><br>If the <strong>by Number</strong> 
+option is selected, the text box below the buttons for specifying individual 
+asteroids is enabled. You then specify the asteroids to be downloaded. The 
+following are examples of valid inputs<br><br>&nbsp;&nbsp;&nbsp; 254&nbsp;&nbsp;
+<span class="auto-style2">{for asteroid 254 alone}</span><br>&nbsp;&nbsp;&nbsp; 
+-100&nbsp; <span class="auto-style2">{for asteroids 1 to 100 inclusive}</span><br>&nbsp;&nbsp;&nbsp; 
+456-543&nbsp; <span class="auto-style2">{for asteroids 456 to 543 inclusive}</span><br>&nbsp;&nbsp;&nbsp; 
+4, 76, 3696, 25, 50000&nbsp;&nbsp; <span class="auto-style2">{for asteroids 4, 
+25, 76, 3696 and 50000. The order is not important}<br><br></span>Spaces can be 
+included between numbers. But any other characters will result in an error 
+message.<br><br>Be careful about how many asteroids you specify. Assuming a 
+reasonable internet speed it will take about 1 second to download for each 
+asteroid. [The program imposes a limit of 5000 asteroids.]<br><br>To start 
+downloading, simply click <strong>Retrieve elements</strong>. If there are any 
+issues with the specified criteria you will get an error message, and you will 
+need to correct the relevant entry.<br><br>If the criteria are valid, the 
+process for retrieving the elements will begin. At the bottom left of the form 
+the number of the just-downloaded asteroid will be displayed on an 
+asteroid-by-asteroid basis. After every 10 asteroids, the displayed list of 
+asteroids held in the editor will be updated (with the display being focused on 
+the last asteroid in the list).<br><br>Also displayed is an <strong>Abort</strong> 
+button to cancel the downloads. It may require clicking more than once to be 
+effective (and it will only abort after the end of the current asteroid 
+download).<br><br>When the download is completed, all the displayed asteroids 
+are saved in an updated UserAsteroids file.<br><br>You can view the asteroids in 
+the list while the Horizons panel is displayed, using the scroll bar. However 
+you cannot edit any entry.<br><br>You leave the Horizons panel by clicking the
+<strong>X</strong> at the top right of the panel.<br><br><h2 class="auto-style3">Adding Comets</h2>
+<p>
+
+The form provides a list of all comets held in the MPC Comets file, which is 
+download #2. For newly discovered comets, you need to download the latest 
+version of that file.<p>
+
+There are three categories of comets listed. The identifications are in the 
+form:<p>
+
+<table class="auto-style4" width="500">
+	<tr>
+		<td style="width: 210x">Identifier</td>
+		<td style="width: 531px">Description</td>
+	</tr>
+	<tr>
+		<td style="width: 210px">C/yyyy id (Name)</td>
+		<td style="width: 531px">C = near-parabolic orbit, single apparition</td>
+	</tr>
+	<tr>
+		<td style="width: 210px">P/yyyy id (Name)</td>
+		<td style="width: 531px">P = periodic comet, single apparition</td>
+	</tr>
+	<tr>
+		<td style="width: 210px">xxxP/Name</td>
+		<td style="width: 531px">Periodic comet observed at multiple appearances</td>
+	</tr>
+	<tr>
+		<td style="width: 210px">xI/Name</td>
+		<td style="width: 531px">Interstellar comet</td>
+	</tr>
+</table>
+&nbsp;<p>
+
+The id is structured as the half-month of discovery, and the sequence of the 
+discovery in that month. That A2 is the 2nd comet discovered in Jan 1-15, B5 is 
+the 5th comet discovered in the period Jan16-31.<p>
+
+<span class="auto-style5"><strong>IMPORTANT</strong></span>. The positions of 
+comets are far less reliable than for asteroids. This is a combination of the 
+nucleus not being readily identifiable within the coma, and the presence of 
+non-gravitational forces. Within the first month of discovery the ephemeris is 
+usually quite inaccurate - far too inaccurate for sensible occultation 
+predictions. In general, periodic comets at multiple returns have the best 
+orbits - and hence will provide more reliable predictions than for other comets.<p>
+
+<span class="auto-style5"><strong>IMPORTANT #2.</strong></span> Becaiuse of 
+non-gravitational forces, as well as orbits being not as well defined as for 
+asteroids, ensure the Horizons elements are downloaded for about the mid-point 
+of the time period you are covering for your search, and keep the search 
+duration relatively short (a month or two)<p>
+
+<span class="auto-style5"><strong>IMPORTANT #3</strong></span>. Comets of the 
+for C/ have near parabolic orbits. The integration scheme in Occult may be 
+suboptimal. As a genera rule, keep predictions for such comets to a relatively 
+short period, such as a month or two.<p>
+
+To add comet elements to the User file, check the comets you want to add (double 
+click). You can clear all the checks using the <strong>Clear all checks</strong> 
+button. Or you can clear checks individually. The number of comets that have 
+been selected is given in the yellow download button.<p>
+
+When you have made your selection, click the Retrieve xx elements. This will 
+query Horizons, and add the elements to the main list. The file will be 
+automatically saved at the end of the download.<p>
+
+<strong><em>When you have added comets to the UsersAsteroids file, do not check 
+the Horizons button on the search form. If checked, the program will attempt to 
+download elements again, and may fail.</em></strong><p>
+
+&nbsp;
+
+</BODY>
+</HTML>

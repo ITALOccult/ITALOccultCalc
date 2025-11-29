@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Watts.crn</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Watts.crn</H1>
+
+<P>The file WATTS.CRN contains data for correcting the Watts charts for the corrections given in <A href="http://adsabs.harvard.edu/full/1981MNRAS.196.1005M" target = _blank><I>Morrison & Appleby </I><B>MNRAS</B> (1981) 196, 1013-1020</a>. The data stored are the values indicated in Fig 3 of that paper (on page 1016), and are stored as two-byte signed integers. The order of storing the data is:<ul>
+
+<li>Quantities in order
+
+dR0, dX, dY, dR2
+
+<li>Within each quantity, the values are ordered by librations in longitude and latitude.  The values are ordered firstly by l, in accordance with:<br>
+
+L = -7.5, -4.5, -1.5, +1.5, +4.5, +7.5
+
+
+<li>Then, for each value of L, the data is ordered by B in accordance with<br>
+
+B = -6.5, -3.5, -0.5, +2.5, +5.5<br>
+
+(ie  there are 6 values of L, each accompanied by 5 values of B, for each quantity).
+
+
+
+
+</BODY>
+</HTML>

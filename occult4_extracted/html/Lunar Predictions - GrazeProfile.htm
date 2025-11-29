@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Lunar graze profile</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Graze profile</H1>
+
+<p>The graze profile is a critical element of any grazing occultation prediction. It predicts the shape of the edge of the moon. Since the graze occurs against a different part of the 
+edge of the moon along the graze path, the graze profile should be generated for a location close to the intended observing sites.
+<br>To demonstrate how the profile varies along a graze path, you can generate an animated GIF file of the profile, showing the profile at each of the computed locations along the path. Right-click on any line of the graze prediction and select <I>set up animated Gif</I> to set the animated GIF parameters. Right-click and select Create animated GIF to create the file:
+<p><B>NOTE</B>: you should first generate a profile for a point along the path and set up relevant plot factors (for example, the size of the plot, and the basis of the plot of historical observations) before creating the animated GIF file. These settings will be used in the animated GIF <I>providing </I>you do not close the limb profile form before creating the animated GIF.
+
+
+<h2>Basic details of the profile</h2>
+
+<p>The information shown on the profile is:<ul>
+
+<li>the mean limb of the moon - shown as continuous when illuminated, widely-spaced dots when dark;
+
+<li>the terminator (if present) - shown as continuous;
+
+<li>the lunar profile. There are 2 options available, selectable from the with Profile menu item.<ul type=1>
+<li>LOLA data points. This plots the altimeter data points from the LRO LOLA, 
+leaving it up to the user's eye to identify the location of the limb.<li>LOLA Hi-resolution profile line. This plots a 'best-fit profile line to the LOLA 
+	data.</ul>
+<B>For more information about the LOLA data</B>, see <a href="FileFormat%20LOLA.htm">LOLA data</a>. 
+<br>
+	<li>A <B><I>Vertical Magnify </I></B>scale, and a <B><I>Horizontal Magnify 
+	</I></B>scale, at the top of the form, for stretching the vertical and horizontal scales of the plot by a factor of up to 4. This allows the profile to be inspected in greater detail, to better position an observer such that multiple events might be observed. [The enlarged scale applies to the profile as plotted on the screen (and that profile when copied and saved). However it does not operate on the profile as printed. Neither does it operate on the grazes generated in the autogeneration functionality.]
+	<li>An indication of the number of occultation events that will be observable from different distances from the graze path (optionally selected from the 
+	<I>with Profile... show number of events by path distance. </I>This is 
+	displayed as a bar graph along the left-hand edge of the profile plot at 
+	steps of 100 meters from the graze path, in increments of two events (a D/R 
+	pair). In creating this graph, no account is taken of whether an event 
+	occurs at the bright limb. 
+	<li>Observations from past grazes and occultations [optional], plotted using the following coding:<ul>
+		<li>squares - graze events, either visual or instrumental;
+		<li>circles - instrumental observations (eg video, photoelectric);
+		<li>'+' - visual observations
+		<li>a legend for the plotted events;</ul>
+	<font color=red><B>NOTE</B>: If the high resolution LOLA data is used for 
+	the profile, observations of past grazes should NOT be plotted. Rely on the 
+	accuracy of the LOLA profile.</font>
+	<li>if the star is a double star with a separation normal to the limb of less than 3", the position of the companion relative to the primary star is indicated by way of a line starting at Time =0, height = 0, extending to the location of the star on the scale of the plot. If the prediction is based upon a Mean position of the two stars, the line will be displaced so that the two ends of the line will correspond to where the two stars will pass across the profile. The brighter star is shown as a slightly larger disk.
+	<li>the time scale, in minutes;
+
+	<li>the distance scale, perpendicular to the graze path, in km or miles (The default value is km. This can be changed to Miles in the User settings, under 'Lunar Occultations - Grazes' by clearing the check box 'Graze profile vertical scale in km (not miles)'.
+
+	<li>a scale line for 1 arc sec, and 1 degree in PA; and
+
+	<li>information identifying the star, date, and longitude used for the profile prediction. 
+
+	<li>the time, and distance from the smooth-limb limit, at the location of the cursor is shown as a tool-tip. [It can be turned off under the 'with Profile' menu item.]</ul>
+
+<p>Avoid using the Watts profile. Historically the Watts profile was the primary 
+source of limb data. However it is a very poor source of limb data since the 
+availability of LOLA data.<h2><br>Interpreting the plot of LOLA elevation points</h2>
+If the Hi-resolution dataset of LOLA has been downloaded, using that data to plot the lunar profile results in a much more definitive lunar limb.
+<p>&nbsp;The LOLA dataset contains data points that would appear to be 
+erroneous. The left image below of a portion of a graze profile indicates two 
+such data points; they are identified by being an isolated point significantly 
+above a well-defined limb.<p>
+
+<img src="LunarProfileOddpoints_Points.png">  <img src="LunarProfileOddpoints_Hires.png"><p>
+
+Unfortunately such erroneous data points are hard to deal with when generating a hi-resolution lunar limb profile. As shown in the right image, the high resolution limb is fitted to these erroneous data points. For this reason, any sharp/narrow features in the hi-resolution profile should be treated with 
+skepticism, with the underlying data points being closely inspected.
+
+<p>The plot of points presents a visual appearance of mountains and valleys. While this adds some pleasantry to the plot, the effect is largely optical. In particular, more than 50% of the plotted data points are in respect of the surface of the moon beyond the effective limb - yet the appearance is affected by the interaction of those points with points on the 'near-side' of the moon.
+
+<p><p>
+<h2>Observed graze and occultation data</h2>
+<div style='border:1px black solid; '>
+
+<p><font color=red>Past observed grazes and occultations can be plotted against the profile. This was particularly valuable when the only source of limb data was the Watts data. However the reliability of the plot of past observations is heavily 
+dependent upon the precise librations of the past event compared to the presently predicted event. <B>As a result, a plot of past observations against the LOLA lunar limb is of little value</B>.</font>
+<p>The options available to plot past observations are provided under the menu item 'Observed graze and occultation data', and are as follows:
+<table columns=2 border=1>
+<TR><TH NOWRAP>Menu item</TH><TH>Effect</TH></TR>
+<TR><TD>None</TD><TD>No observed data is plotted</TD></TR>
+<TR><TD>P, D[+/- X.Xdeg]</TD><TD>This plots observations according to their value in the P,D reference frame - with the indicated range in the D value.</TD></TR>
+<TR><TD>AA, L[+/- Xdeg], B[+/- Y.Ydeg]</TD><TD>This plots observations according to their value in the WA, L, B reference frame - with the indicated ranges in the L and B values.</TD></TR>
+<TR><TD>Exclude ordinary occultations</TD><TD>If checked, the data from ordinary occultations are included. If not checked, only grazing occultations are included.<br>
+<li>if ordinary occultations are included, the plot takes longer;
+<li>the effects of Personal equation on the uncertainty of the limb height are greater with ordinary occultations
+<li>however ordinary occultations are often the only source of information for the relevant libration.</TD></TR>
+<TR><TD>Hide line profile - if >200 observed points</TD><TD>When there are sufficient observed data points, the limb as drawn from 
+	LOLA is not drawn.</TD></TR>
+<TR><TD>List grazes used</TD><TD>This provides (on a separate form) a <a href="Lunar%20predictions%20-%20list%20grazes%20used.htm"> list of the grazes used</a> in the plot. This can be useful to compare the librations of a past event with the current event - to assess reliability of the profile prediction.</TD></TR>
+<TR><TD>List observers for plotted events</TD><TD>This lists the observers for 
+	the plotted data points</TD><TR><TD>Draw in colour</TD><TD>Controls whether the overall plot is B&W or colour</TD></TR>
+<TR><TD>Show events in colour</TD><TD>The effect of this is limited to printer output. You can retain the colour coding of events when the profile is printed (which otherwise is always B&W).</TD></TR>
+</TR>
+</table>
+
+<p>When a profile is first drawn the settings used for plotting the observed data are taken from the User settings - 'Lunar Occultations - grazes' - 'Prediction profile - Librations for plotting observed data'.
+
+<p>When observed data is plotted, you can:<ul>
+<li>identify the observer and event by placing the cursor on the plotted point. The details are given in the menu bar above the plot. The coding used is:
+Event codings:<ul>
+<li>DD DB DU   - disappearance at the Dark limb / Bright limb / in Umbra
+<li>RD RB RU   - reappearance at the Dark limb / Bright limb / in Umbra
+<li>BL FL Mi    - Blink / Flash / Miss
+<li>Reliability codings -  "ok" = certain, "?" = possibly spurious; "??" = almost certainly spurious</ul>
+<li>right-click on a plotted point and you can highlight (i) all events by that observer, (ii) all events involving that 
+particular star, or (iii) all events on that particular day. 
+<li>Additionally, if you double-click on a graze in the List of listed in the <a href="Lunar%20predictions%20-%20list%20grazes%20used.htm"> list of the grazes used</a>, all events in that graze will be highlighted.</ul>
+
+<h2><br>Interpreting the plot of historical observations</h2>
+<h3>The libration reference frames</h3>
+<p>The full specification of the height of a point on the edge of the moon involves identification of the location around the edge of the moon (Axis Angle), and the longitude an latitude librations. This 
+was the basis of the Watts Charts. However, because the reference 
+frame has three dimensions, the data density of observations plotted in this <B>AA, L, B</B> reference frame is generally quite low.
+
+<p>For any given point on the edge of the moon, the effect of the longitude/latitude librations is twofold:
+<li> it changes the distance of the point closer or further away from the Earth; and
+<li>alters the perspective at which that point is observed.<br>
+For example, consider a point at the north pole of the moon. Changes in the latitude libration moves the point either behind the edge moon, or in front of the edge of the moon. Changes in longitude libration doesn't move the point in front of, or behind the edge of the moon, but changes perspective. For example, if two mountains are perfectly aligned, but are at different distance from the edge of the moon, a change in the longitude libration will view the two mountains from a different perspective and they will no longer be aligned.
+<p>The <B>P,D </B>reference frame provides a basis for increasing the data density of observations. The P dimension is the angle around the edge of the moon from the north pole, and is almost always within 1 deg of the Axis Angle. The D dimension is the distance of the point in front of, or behind the location of the mean lunar limb. In this reference frame, there is no allowance for the effect of different perspectives caused by the different combinations of the L,B librations.  
+
+<h3>Interpreting the plots</h3>
+<p>When plotting graze profiles, the objective is to obtain a reliable prediction of the lunar limb. The most reliable reference frame is the AA, L, B reference frame. But frequently there are very few observations to plot. You can increase this by increasing the range of L and B values to be included in the plot, but accuracy quickly reduces.
+<p>Plotting observations in the P,D reference frame almost always produces many more observed data points. However when the profile is in a region where there is a large mountain located at a distance from the limb of the moon, the location of that mountain can appear displaced around the edge of the moon, leading to a blurring of the mountain. In such situations the height of the mountain above the lunar 
+limb is well determined. The only issue is its location around the limb.
+<p>Accordingly, the best profiles are usually obtained using the P,D[+/-0.3Deg] or P,D[+/-0.5Deg] options, provided care is take to identify any lateral displacements that can occur in this reference frame.  
+<p>On any profile it is quite likely that there will be data points plotted well away from the main group of data points. Typically these represents observations where the observation is in some manner erroneous. A particular example is situations where there is a curved line of D and R events. These are frequently associated with a graze where an observer has obviously had trouble seeing the star and the sequence of events were not caused 
+by occultation  phenomena. 
+<p>Finally, a general rule: if there are more than 200 observations plotted, the accuracy of the limb that you can deduce from those plots (which often have significant scatter) is almost always much better than the Watts charts. Note that <a href="http://articles.adsabs.harvard.edu/cgi-bin/nph-iarticle_query?1970MNRAS.149...81M&amp;data_type=PDF_HIGH&amp;whole_paper=YES&amp;type=PRINTER&amp;filetype=.pdf" target=_blank>Morrison</a> has shown that the observed mean error of a point on the watts charts is 0.2" for features that extend at least 0.5deg in AA, and is greater for narrow features; this is often larger than the scatter of the observed data. And frequently the observed data shows the 'real' limb to be significantly displaced from the Watts profile. Consequently the thin line representing the watts profile gives a false sense of its accuracy, and can be a distraction when interpreting the profile. For that reason, the Watts profile should Not be plotted when planning an observation.
+</div>
+
+</BODY>
+</HTML>

@@ -1,0 +1,34 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Multipath plot</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Asteroid Multipath plot</H1>
+<P align=center><img src="Multipath%20Plot.png">
+  
+<p>This form plots all occultation paths listed in a summary list on a regional map.
+
+<p>The plot includes a label for each event. <B>The center-line of the path intersects the label in its middle. </B>This is usually between the month name and the day number.
+
+<p>Plot options available are:<ul>
+<li>The full paths can be plotted, with northern and southern limits as solid lines, and the central line being a dashed line. Or just the central path can be drawn (as a solid line). - using <B>Draw Map  </B>and either <B>Full Path</B>, or <B>Center lines only</B>.
+<li>You can enable/disable a display of the latitude/longitude at the location of the cursor, with<b> Map... Show coordinates in tooltip</b>.
+<li>You can plot sites on the map using a site file which is selected using the Plot Sites drop-down box at the top of the form. The site file that is selected here is retained between sessions.
+<li>You can include site names, using the second drop-down box at the top right. The criteria use the value set in the site file for <B>Include in Occult maps </B>to control when a site name is displayed.
+<li>You can Copy, Print or Save the map, from the with Map menu item. Additionally you can create a GoogleEarth kmz file containing the full paths of all events plotted.</ul>
+
+
+<p>When the form is first opened, the region is specified by the Site location set in the Selection criteria when the summary list is created - being the site longitude +/- 3 degrees, and the site latitude +/- 2 degrees. You can manually adjust the plot region using the coordinate boxes for East and 
+West longitudes, and North and South latitudes, on the form.
+
+<p>You may find that there are several different regions that you would like to be able to regularly plot. For example, entirely different regions of the Earth, or the same general region, but at a different extent of coverage. You can define eight pre-set plotting regions under <B>User Settings</B>, in the box <B>Asteroid Multipath Maps; Lunar Graze </B>maps. These regions will appear in the drop-down box at the top of the plot form. Select a region, and the longitude and latitude limits for the plot will be set accordingly. You can return to the original region defined by the site set when the summary was created, by selecting the first item in the drop-down list. [<I><B>Note</B>. For asteroid maps, the initial plot will always be based on the site location. The setting in the User Settings to use the first user site as the default only applies to lunar occultation maps.</I>]
+
+<p><B>IMPORTANT </B>If you are drawing the map using a Local summary of events, you should not change the location to a large distance from the site used to generate the summary list. The map only draws paths listed in the summary. If there is a large change in distance, relevant occultations may not be in the list - and therefore not plotted.
+</BODY>
+</HTML>

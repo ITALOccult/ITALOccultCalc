@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>UBAD catalogue</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+<pre>
+Title: USNO Bright Star Catalog, version 1 
+Authors: Zacharias N., Makarov V.V., Finch C.T., 
+         Harris H.C., Munn J.A., Subasavage J.P. 
+Table: The USNO Bright Star Catalog
+================================================================================
+Byte-by-byte Description of file: ajac686dt2_mrt.txt
+--------------------------------------------------------------------------------
+   Bytes Format Units     Label   Explanations
+--------------------------------------------------------------------------------
+   1-  6 I6     ---       HIP     Hipparcos identifier
+   8- 14 F7.4   mag       Hpmag   Hipparcos apparent magnitude
+  16- 21 F6.3   mag       B-V     The (B-V) color from Hipparcos
+      23 I1     ---       Bin     Binarity/perturbed flag (1)
+      25 I1     ---       Source  Source flag (2)
+  27- 29 I3     ---       Num     Number of observational equations in HUU
+  31- 39 F9.2   ---       chi2    The {chi}^2^ of residuals
+  41- 45 F5.2   mas       MAD     MAD of residuals * 1.5
+  47- 58 F12.8  deg       RAdeg   Right Ascension in decimal degrees
+  60- 71 F12.8  deg       DEdeg   Declination in decimal degrees 
+  73- 79 F7.2   mas       plx     Parallax
+  81- 88 F8.2   mas/yr    pmRA    Proper motion along RA
+  90- 97 F8.2   mas/yr    pmDE    Proper motion along DE
+  99-102 F4.2   mas     e_RAdeg   Uncertainty in RAdeg
+ 104-107 F4.2   mas     e_DEdeg   Uncertainty in DEdeg
+ 109-112 F4.2   mas     e_plx     Uncertainty in plx
+ 114-117 F4.2   mas/yr  e_pmRA    Uncertainty in pmRA
+ 119-122 F4.2   mas/yr  e_pmDE    Uncertainty in pmDE
+ 124-130 F7.4   mas2      c12     Covariance c12 value
+ 132-138 F7.4   mas2      c13     Covariance c13 value
+ 140-146 F7.4   mas2/yr   c14     Covariance c14 value
+ 148-154 F7.4   mas2/yr   c15     Covariance c15 value
+ 156-162 F7.4   mas2      c23     Covariance c23 value
+ 164-170 F7.4   mas2/yr   c24     Covariance c24 value
+ 172-178 F7.4   mas2/yr   c25     Covariance c25 value
+ 180-186 F7.4   mas2/yr   c34     Covariance c34 value
+ 188-194 F7.4   mas2/yr   c35     Covariance c35 value
+ 196-202 F7.4   mas2/yr2  c45     Covariance c45 value
+--------------------------------------------------------------------------------
+Note (G1): All astrometric parameters and covariances are on the ICRS, 
+           epoch J1991.25.
+Note (1): See Section 5 for full details.
+    0 = star not know to be perturbed;
+    1 = HIP Mult_flag C, resolved double or multiple star;
+    2 = HIP Mult_flag X, stocahstic (or failed) solution;
+    3 = HIP Mult_flag G, accelerating star;
+    4 = HIP Mult_flag V, variability-induced motion;
+    5 = HIP Mult_flag O, physical binary with an orbital solution;
+    6 = an astrometric binary, candidate unresolved binary with statistically
+        significant difference between the UBSC and Gaia EDR3 proper motions 
+	and not in categories 1-5;
+    7 = an astrometric binary, from Makarov & Kaplan 2005 [2005AJ....129.2420M]
+        catalog.
+Note (2):
+    1 = a star with a solution based on UBAD and HIAD only.
+    2 = a star with a solution based on URAT and HIAD ony.
+    3 = a star with a solution based on all 3 sources.
+--------------------------------------------------------------------------------
+</pre></BODY>
+</HTML>

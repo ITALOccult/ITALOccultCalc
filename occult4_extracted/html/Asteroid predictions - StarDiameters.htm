@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Asteroid - StarDia</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Asteroid - Star Diameter and Fresnel diffraction</H1>
+
+An asteroidal occultations might be non-instantaneous as a result of either the star's diameter, or the effects of Fresnel diffraction. This form displays an estimate of these effects.
+
+<H2>Star diameter</h2>
+The basis for calculating the star's diameter, and the format of the diameter display, is explained <A href="Maintenance%20-%20Stars%20-%20Diameters.htm">here</a>.
+
+<p>The display will indicate the diameter of the star as a percentage of the apparent angular diameter of the star. <B>IMPORTANT </B><I>If the star's diameter is greater than about 20% of the asteroid's apparent diameter, the occultation cannot be assessed by assuming the star is occulted by a straight edge. Rather  the light curve must be treated as convolution of the shape of the asteroid and the light distribution across the star's disk, and is of increasing complexity as the star's diameter increases relative to the asteroid. The light curves of such events should be processed using de-convolution techniques.</I>
+
+<p>The display will also indicate the likely fade time as a result of the stellar diameter. The fade time is calculated on the basis of 70% of the stellar diameter, and on the assumption that the event occurs 'head-on'. While the duration will increase as the event is located towards the edge of the actual occultation path, it will remain a reasonable indicator for all but near-grazing circumstances. 
+
+<h2>Fresnel diffraction</h2>
+
+A common cause of fades in an asteroidal occultation is the 'tail' part of Fresnel diffraction. The display provides an estimate of the extent of any fading due to the tail of Fresnel diffraction. An important element in the visibility of the tail is the drop in the light level that is detectable. In 
+particular Fresnel diffraction is most likely to be seen with an occultation of a bright star in dark conditions, and is 
+unlikely to be seen with an occultation of a faint star in marginal conditions.
+
+<p>The display provides up to three estimates of the Fresnel diffraction effect - depending upon the predicted magnitude drop. 
+<li>For all events, the display provides the diffraction estimate for a 
+magnitude drop of 2 mags (which is a drop to 16% of full light); and
+<li>If the predicted magnitude drop is greater than 2, the display also provides  the diffraction estimate for a magnitude drop of 4 mags (which is a drop to 2.5% of full light); and
+<li>If the predicted magnitude drop is greater than 4, the display also provides the diffraction estimate for a magnitude drop of 6 mags (which is a drop to 0.4% of full light). 
+
+<p>As a general rule, the actual light drop will be less than that given in the last line of the Fresnel predictions - which means that any Fresnel diffraction fades will usually be significantly shorter than the duration indicated in that last line.  
+
+<p>Like the star diameter predictions, the duration of the Fresnel diffraction fade is based on the assumption that the event occurs 'head-on'. While the duration will increase as the event is located towards the edge of the actual occultation path, the predicted fade duration will remain a reasonable indicator for all but near-grazing circumstances.
+
+<p>Fresnel diffraction associated with small objects is quite complex. A 
+detailed discussion is provided in
+<a href="https://articles.adsabs.harvard.edu/pdf/1987AJ.....93.1549R">
+Stellar_occultations_by_small_bodies_-_Diffraction.pdf</a>. The following are 
+two diagrams from that paper, illustrating the complexities that exist with 
+small bodies.<p>
+<p>
+<img src="AsteroidFresnel_1.PNG">
+</p>
+<p>
+<img src="AsteroidFresnel_2.PNG">
+</p>
+
+<p><B>A simplified mathematical explanation of Fresnel diffraction is set out <A href="Fresnel%20Diffraction.htm">here</a></B>.
+
+</BODY>
+</HTML>

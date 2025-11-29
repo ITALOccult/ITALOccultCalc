@@ -1,0 +1,254 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>AutoAsteroidPrediction</Title>
+<style type="text/css">
+.auto-style1 {
+	color: #008000;
+}
+.auto-style2 {
+	color: #800080;
+	margin-left: 40px;
+}
+.auto-style3 {
+	color: #0000FF;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>AutoAsteroidPrediction</H1>
+
+<P>Occult includes 2 modes for generating predictions of asteroidal 
+occultations. Single event predictions using user provided orbital elements and 
+star position. And multiple event predictions using the normal Occult files.<P>&nbsp;<h1>
+<span class="auto-style1">1. Single event predictions using user provided 
+orbital elements and star position.</span> </h1>
+<P>&nbsp;<P>OCCULT includes a facility to facilitate the generation of updates of a specified asteroidal occultation predictions, using automatic loading, calculation, and unloading of the program.
+
+<h3>NOTE: This functionality is for specialised use only. It assumes that the user is in a position to generate updated orbital elements of an asteroid. </h3>
+
+<h2><br>Overview of AutoAsteroidPredict.exe functionality</h2>
+<p>This short program allows external access to the prediction capabilities of Occult, to generate asteroid occultation predictions using uodated orbital elements of the asteroid. To use this facility: <ul type=1>
+
+<li>The orbital elements of the asteroid, integrated to a time close to the date of the occultation, must be saved in a file using the file format for <A href="FileFormat%20AsteroidElements.htm">asteroid elements </a>. There should be only one object in the file - if there are more than one, only the first will be used. Note that the value of PEU need not be set.<br><br>
+
+<li>The position of the star must be saved in a file using the file format for <A href="FileFormat%20UserStar_MinorPlanetSearch.htm">user star position</a>.<br><br> 
+
+<li>The parameters needed to control the process must be written to a <B>Control File</B>, the contents of which are described below.<br><br>
+
+<li>The program <B>AutoAsteroidPrediction.exe</B>, which is located in the Occult 4 directory, is called - with the full file path plus name of the control file appended as a 'command line parameter'. For example, if the control file was <I>c:\Program Files\Control Files\Control File1.txt</I>, the call would be:<p>
+	AutoAsteroidPredict.exe c:\Program Files\Control Files\ControlFile 1.txt<p>
+
+	This will result in the generation of prediction output in accordance with details specified in the control file. [<strong>Note</strong>: While the program is running a blank window is created and minimised. It closes when the program has finished. You should not do anything with this window; if you close it, the program will immediately cease.]
+<p>[<strong>NOTE</strong>: If the file name &/or path includes any spaces, surround the control file path+name with quotes - as spaces are treated as the separator of multiple command line parameters.]
+</ul>
+
+<p>The following is a code snippet of C# code to make the call, and retrieve a value that indicates whether the calculation has completed normally:
+
+<ul><I><pre>
+using System.Diagnostics;
+
+Process P = new Process();
+P.StartInfo.FileName = @"c:\Program Files\Occult 4\AutoAsteroidPrediction.exe"; //[Full path of the AsteroidPrediction.exe file]
+P.StartInfo.Arguments = @"c:\.......\ControlFile.dat"; //[Full path and file name of the control file.]
+P.Start();
+P.WaitForExit();
+int ReturnValue = P.ExitCode;
+</PRE></I></ul>
+The possible values of ReturnValue are:<br> 0 = successful completion.<br> -1 = 
+the control file did not have a numeric JD date for the event <br>-2 = no events 
+were found<br>-10 = the asteroid is a binary asteroid with an ephemeris 
+available at Miriade - but Miriade results were not obtained [either no 
+internet, or the Miriade server not responding.] The prediction is otherwise 
+successful, and based on the barycenter.<br>101, 102, 103 ...&nbsp; = 
+the asteroid is a binary asteroid with ephemerides for the components having 
+been obtained from Miriade. Subtract 100 to get the 
+number of individual prediction files relating to the 
+components of the system and the orbit bases.<br>&nbsp;<br>
+<h2>User Settings for AutoAsteroidPrediction</h2>
+<p>The User settings that you set from Occult 4 do not apply to the AutoAsteroidPrediction program - they must be separately set. To do this, run the AutoAsteroidPredict.exe program with no command line parameters. You will get a short explanatory message, and then be taken to the User Settings form.
+<p>The only setting that needs to be made is the file type for graphics saves - which is found at the end of the <B>Asteroid occultations - Search and Display</B> box. Note that the settings you make here will not apply when you run Occult4 normally. Also, the output files for the AutoAsteroidPredict function are hard coded, and not affected by the selection of output files generated from the Summary of Events form.
+
+<h2><br class="auto-style3"><span class="auto-style3">Control File structure</span></h2>
+<p>The format of the <B>Control File </B>is as follows:
+
+<table columns=3 border=1>
+<TR><TH NOWRAP>Line  #</TH><TH>Content </TH><TH>Comments  </TH></TR>
+<TR><TD> 1 </TD><TD nowrap>Asteroid element file </TD><TD>This is the file containing the orbital elements of the asteroid. Specify the full path and name. The file can be located anywhere.</TD></TR>
+<TR><TD> 2 </TD><TD>Star position file </TD><TD>This is the file containing the position of the star. Specify the full path and name. The file can be located anywhere.</TD></TR>
+<TR><TD> 3 </TD><TD>Output file base</TD><TD>This is used to specify the path, and the file name root. Specify the full path and file name <B><I>without any extension</I></B>. The path can be anywhere - but must be for an existing path.</TD></TR>
+<TR><TD> 4 </TD><TD>Site file </TD><TD>The site file to be used to generate a multisite prediction. Specify just the Site file name (with extension) - no path. The site file must be one that exists in the Occult 4\Sites directory. NOTE If this line is blank, no multisite prediction will be generated.    </TD></TR>
+<TR><TD>  5</TD><TD>JD of event  </TD><TD>The Julian day number of the event.</TD></TR>
+<TR><TD>  6</TD><TD>Error ellipse - semi-major axis</TD><TD>the +/- uncertainty, in arc-secs</TD></TR>
+<TR><TD>  7</TD><TD>Error ellipse - semi-minor axis</TD><TD>the +/- uncertainty, in arc-secs   </TD></TR>
+<TR><TD>  8</TD><TD>Error ellipse - PA</TD><TD>The PA of the major axis of the error ellipse, in degrees.</TD></TR>
+<TR><TD>  9</TD><TD>Sigma</TD><TD>Standard error (in arc secs) of position of asteroid relative to the star (in the cross-track direction) </TD></TR>
+<TR><TD>10</TD><TD>Path augmentation</TD><TD>Uncertainty of path location, in path widths. Used to plot lines indicating the likely limits of the occultation path.  If set to 1 or less, the uncertainty path limit is located at the same place as the nominal path limits. For greater numbers, the uncertainty path limits are located beyond the nominal path limit by (Path augmentation-1) path widths.</TD></TR>
+<TR><TD>11</TD><TD>Longitude step</TD><TD>in degrees. The increment in longitude (or latitude) used when generating the table of path coordinates.</TD></TR>
+<TR><TD>12</TD><TD>Flag for Sun Up, and<br>for Miriade</TD><TD>This flag is used 
+	to control the output of the table of path coordinates, and the number of 
+	solutions for binary asteroids from Miriade. <ul><li>The value 
+	relating to the table of path coordinates controls whether the table of path 
+	coordinates extends along the entire path, or just that portion where the 
+	Sun is below the horizon.</li><li>The value relating to Miriade binary asteroids 
+	controls whether predictions are generated for just the best solution, or 
+	for all solutions.</li></ul>Valid values of the flag are 0,1,2,3, with it 
+	being interpreted as follows<br>
+	<ul>
+		<li>Flag &amp; 1 = 0 - limits path to sun below 
+	horizon <br></li>
+		<li>Flag &amp; 1 = 1 - the entire path is listed<br></li>
+		<li>Flag &amp; 2 = 0 - only 
+	the best Miriade orbit solution is used<br></li>
+		<li></li>Flag &amp; 2 = 2 - All Miriade orbit 
+	solutions are used.</li>
+	</ul>
+	For many (most?) users, the flag should be set to zero - which will give the path coordinates where the sun is below the horizon, and only use the best Mirade orbits for binary asteroids.
+</TD></TR>
+<TR><TD>13/TD><TD>Plot Longitude</TD><TD>Degrees. Used to center the plot   </TD></TR>
+<TR><TD>14</TD><TD>Plot Latitude</TD><TD>Degrees. Used to center the plot   </TD></TR>
+<TR><TD>15</TD><TD>Plot scale</TD><TD>Sets the scale of the plot. Is the same as the Plot scale when plotting events from Occult</TD></TR>
+<TR><TD>16</TD><TD>Center plot location</TD><TD>A flag to control how plots are centered. Values are:<ul>
+<li>0 = Plot centred on mid-point of path across the earth
+<li>1 = Centred on path for the longitude at line 13. If path doesn't cross that longitude, centred on path at the latitude at line 14
+<li>2 = Centred on the longitude at line 13 and latitude at line 14. </li></ul></TD></TR>
+<TR><TD>17</TD><TD>Plot in colour</TD><TD> A flag to control whether the world map is drawn in colour of B&W. Values are:<ul>
+<li>0 = Map drawn in colour on black
+<li>anything else = drawn in B&W</li></ul></TD></TR>
+</table>
+<p>Lines 13-17 can be repeated as many times as desired, for differing values of the parameters.
+
+<p>The output files are saved using the root file name, with the following extensions:</p>
+<table columns=3 border=1>
+<TR><TH NOWRAP>File</TH><TH>CoContent</TH></TR>
+<TR><TD>rootfile_Elements.DAT</TD><TD>the Occelmnt file</TD></TR>
+<TR><TD>rootfile_Path.TXT</TD><TD>the file of path co-ordinates</TD></TR>
+<TR><TD>rootfile Local times.txt</TD><TD>the file of multisite predictionsTD></TR>
+<TR><TD>rootfile1.BMP</TD><TD>the graphic for the first site</TD></TR>
+<TR><TD>rootfile2.BMP</TD><TD>the graphic for the second site</TD></TR>
+</table>
+and so on. 
+
+<p>An example of the file contents is as follows (for two plots). The text comments should NOT be included</p>
+<table columns=3 border=1>
+<TR><TH NOWRAP>Line content</TH><TH>Comment</TH></TR>
+<TR><TD>c:\Temp\UserAsteroid test.da</TD><TD>Asteroid elements</TD></TR>
+<TR><TD>c:\Temp\SpecialForAsteroids test.dat</TD><TD>Star position</TD></TR>
+<TR><TD>c:\Temp\OccElemntTestA</TD><TD>Output file baseTD</></TR>
+<TR><TD>.</TD><TD>Site file -none specified, so no multisite output</TD></TR>
+<TR><TD>2452697</TD><TD>JD of event</TD></TR>
+<TR><TD>0.25</TD><TD>Error ellipse major axis</TD></TR>
+<TR><TD>0.15</TD><TD>Error ellipse minor axis</TD></TR>
+<TR><TD>70</TD><TD>Error ellipse PA</TD></TR>
+<TR><TD>0.04</TD><TD>Sigma</TD></TR>
+<TR><TD>1.4</TD><TD>path Augmentation</TD></TR>
+<TR><TD>2</TD><TD>Longitude step for path coordinates</TD></TR>
+<TR><TD>y</TD><TD>Sun up flag</TD></TR>
+<TR><TD>90</TD><TD>Longitude (1)</TD></TR>
+<TR><TD>20</TD><TD>Latitude(1)</TD></TR>
+<TR><TD>2</TD><TD>Plot Scale (1)</TD></TR>
+<TR><TD>1</TD><TD>Center plot flag(1)</TD></TR>
+<TR><TD>1</TD><TD>Colour flag(1)</TD></TR>
+<TR><TD>100</TD><TD>Longitude (2)</TD></TR>
+<TR><TD>-20</TD><TD>Latitude(2)</TD></TR>
+<TR><TD>2</TD><TD>Plot Scale (2)</TD></TR>
+<TR><TD>2</TD><TD>Center plot flag(2)</TD></TR>
+<TR><TD>1</TD><TD>Colour flag(2)</TD></TR>
+</table>
+
+<H1>Including offsets to the prediction</h1>
+<p>A simple offset from the asteroid ephemeris can be included by using this additional control file - avoiding the need to re-generate an orbital element file when last-minute astrometry becomes available.
+</p>
+<p>The additional control file must have the same path, file name and extension as the usual control file - except that the characters '-A' must appear at the end of the file name. Using the control file name example above, you would have the following two files present:<br>
+c:\Program Files\Control Files\Control File1.txt<br>
+c:\Program Files\Control Files\Control File1-A.txt
+
+<p>The additional control file is used to 'adjust' the occultation elements by applying a correction 
+<em>to the position of the asteroid, </em>even if the adjustment is actually in 
+the position of the star. The following scenarios arise:
+<ul type=i><li><B>Asteroid has a small satellite</B>. Generate the prediction for the primary component as usual. Create the additional control file containing an ephemeris of the satellite at around the time of the occultation; include the satellite's name and diameter. Place the additional control file in the same directory as the main control file - and run the predictions to generate predictions for the satellite.
+<li><B>Asteroid and Satellite are of similar size</B>. Here the usual asteroid ephemeris must be take as referring to the barycenter of the asteroid system. Accordingly a control file will be needed for each component of the asteroid - with the separation from the barycenter being inversely proportioned according to component mass.
+<li><B>Last minute correction to the asteroid's position</B>. Create the additional control file containing the correction to be applied to the position of the asteroid. The correction is in the sense of (New-asteroid - old-asteroid). Note that the correction in RA must be a 'great-circle' distance - that is, it is dRA*cos(dec)
+<li><B>Last minute correction to the star's position</B>. Create the additional control file containing the correction to be applied as if it was a correction the position of the asteroid. That is, the correction is in the sense of (old-star - new-star). Note that the correction in RA must be a 'great-circle' distance - that is, it is dRA*cos(dec)
+<li><B>Last minute correction to both the asteroid and star's position</B>. Create the additional control file containing the combined corrections on the basis that they will all be applied to the position of the asteroid. The correction is in the sense of (New-asteroid - old-asteroid + old-star - new-star). Note that the correction in RA must be a 'great-circle' distance - that is, it is dRA*cos(dec)
+<li><B>Asteroid satellite involved, with corrections to star and/or asteroid position</B>. This is just a combination of the above possibilities - and is handled merely by providing the required data items in the control file.</ul>
+
+<H2>Format specification for the '-A' control file</h2>
+The '-A' control file uses a tagging to identify the data items, 
+which can be in any order.&nbsp;
+<table columns=2 border=1>
+<TR><TH NOWRAP>Tag</TH><TH>data item</TH></TR>
+<TR><TD>&#60Offset RA&#62</TD><TD>A correction to be applied to the asteroid's RA - for example, as the result of last-minute astrometry. The distance is expressed in units of milli-arcsec (mas) and are expressed as a great-circle distance. That is, a difference in the RA (in h.m.s) must be multiplied by cos(declination).  A correction to the star's position can be incorporated by simply reversing the sign of that correction.</TD></TR>
+<TR><TD NOWRAP>&#60Offset Dec&#62</TD><TD>A correction to be applied to the asteroid's Declination - for example, as the result of last-minute astrometry. The distance is expressed in units of milli-arcsec (mas). A correction to the star's position can be incorporated by simply reversing the sign of that correction.</TD></TR>
+</table>
+
+<p>&nbsp;</p>
+
+<h1 class="auto-style1">2. Multiple event predictions using the normal Occult files.</h1>
+<h2>Overview</h2>
+This functionality allows for an external call to Occult, to generate a 
+file of occultation elements. It relies on a control file that contains the 
+parameters to be used for the search. The results are saved to a file in the
+<strong>Occult 4\Generated Files</strong>\ subdirectory. 
+<p>To generate this output, the program <B>AutoAsteroidPrediction.exe</B>, which is located in the Occult 4 directory, is called, 
+with two Command Line parameters. <br>* The first parameter <em>MUST</em> be the 
+text <strong>AsteroidPredictions </strong><br>* The second parameter is the full file path plus name of the control file appended as a 'command line parameter'. For example, if the control file was <I>c:\Program Files\Control Files\Control File1.txt</I>, the call would be:<p class="auto-style2">
+	AutoAsteroidPredict.exe AsteroidPredictions c:\Program Files\Control Files\ControlFile1.txt<p>
+
+	This will result in the generation of prediction output 
+	in the Generated Files subdirectory of Occult, in accordance with details specified in the control file. [<strong>Note</strong>: While the program is running a blank window is created and minimised. It closes when the program has finished. You should not do anything with this window; if you close it, the program will immediately cease.]
+<p>[<strong>NOTE</strong>: If the file name &/or path includes any spaces, surround the control file path+name with quotes - as spaces are treated as the separator of multiple command line parameters.]
+<p>This functionality relies on the existing file of orbital elements for 
+asteroids. The user will need to maintain that file in the normal manner.<p>&nbsp;<p>&nbsp;</p>
+<h2 class="auto-style3">Control file contents</h2>
+<p>The control file specifies parameters via a tag - which is the first part of 
+each line. The order of the lines does not matter. And not all lines need be 
+present - with the last part of each line indicating the value that will be used 
+if that line is not included in the file. The parameters correspond to those 
+which are specified on the Occult search form.</p>
+<p>The angled brackets must be included, and the text in the first set of 
+brackets on each line must not be changed. </p>
+<p>The values to be specified are placed between the &gt; &lt; brackets in the middle 
+of each line.</p>
+<p>Any text after that 2nd &lt; bracket can be changed arbitrarily. </p>
+<p>Many fields are boolean. For these fields, 0 = false, 1 = true. Such fields 
+are identified in the below via the Default value - which is either 0 or 1.</p>
+<h3>Control File definitions</h3>
+<p>&lt;GaiaCatBaseName&gt; &lt;Default ='Gaia12_EDR3'&gt;<br>&lt;Start_Y_M_D&gt; &lt;default = 
+'2023,1,1'&gt;<br>&lt;End_Y_M_D&gt; &lt;default = '2023,1,31'&gt;<br>&lt;FirstAsteroidNumber&gt; 
+&lt;Default = '1': number, name, or provisionalID (yyyy xxxx)&gt;<br>&lt;LastAsteroidNumber&gt; 
+&lt;Default = '100' : number, name, or provisionalID (yyyy xxxx)&gt;<br>&lt;MinimumAsteroidDiameter&gt; 
+&lt;Default = 10&gt;<br>&lt;AsteroidClass&gt; &lt;Default =''&gt;<br>&lt;LimitingStarMagForSearch&gt; 
+&lt;Default = 10&gt;<br>&lt;MinimumDuration&gt; &lt;Default = 2&gt;<br>&lt;ExpandedSearchDistInEarthRadii&gt; 
+&lt;Default = 0&gt;<br>&lt;UseUserElementFile&gt; &lt;Default =''&gt;<br>&lt;UseDefaultErrorSettings&gt; 
+&lt;Default = 0&gt;<br>&lt;AppendFlag&gt; &lt;Default = 0&gt;<br>&lt;UserElementsFile&gt; &lt;Default = ''&gt;<br>
+&lt;AutoSaveSearch&gt; &lt;Default = 1&gt;<br>&lt;OutputFileName&gt; &lt;GaiaPredictions_External&gt;<br>
+&lt;ShowProgressBar&gt; &lt;Default = 1&gt;<br>&lt;ForJWST&gt; &lt;Default = 0&gt;<br>&lt;GetNearbyStars&gt; 
+&lt;Default = 1&gt;<br>&lt;MagDropLimit&gt; &lt;Default = 0.5&gt;<br>&lt;OutputPaths&gt; 
+&lt;Default = 0. If true, outputs a path file for each event&gt;</p>
+<h3>Example control file</h3>
+<p>&lt;GaiaCatBaseName&gt;gaia16_EDR3&lt;Default ='Gaia12_EDR3'&gt;<br>&lt;Start_Y_M_D&gt;2022,3,10 
+&lt;default = '2023,1,1'&gt;<br>&lt;End_Y_M_D&gt;2022,3,20 &lt;default = '2023,1,31'&gt;<br>&lt;FirstAsteroidNumber&gt; 
+10 &lt;Default = '1': number, name, or provisionalID (yyyy xxxx)&gt;<br>&lt;LastAsteroidNumber&gt; 
+15 &lt;Default = '100' : number, name, or provisionalID (yyyy xxxx)&gt;<br>&lt;MinimumAsteroidDiameter&gt;10&lt;Default 
+= 10&gt;<br>&lt;AsteroidClass&gt;&lt;Default =''&gt;<br>&lt;LimitingStarMagForSearch&gt; 16 &lt;Default 
+= 10&gt;<br>&lt;MinimumDuration&gt;2&lt;Default = 2&gt;<br>&lt;ExpandedSearchDistInEarthRadii&gt; 
+&lt;Default = 0&gt;<br>&lt;UseUserElementFile&gt; &lt;Default =''&gt;<br>&lt;UseDefaultErrorSettings&gt;0&lt;Default 
+= 0&gt;<br>&lt;AppendFlag&gt;0&lt;Default = 0&gt;<br>&lt;UserElementsFile&gt;&lt;Default = ''&gt;<br>&lt;AutoSaveSearch&gt;1&lt;Default 
+= 1&gt;<br>&lt;OutputFileName&gt;GaiaPredictions_External.xml&lt;GaiaPredictions_External.xml&gt;<br>
+&lt;ForJWST&gt;0&lt;Default = 0&gt;<br>&lt;GetNearbyStars&gt;&lt;Default = 1&gt;<br>&lt;MagDropLimit&gt;0.3&lt;Default 
+= 0.5&gt;<br>&lt;OutputPaths&gt;1&lt;Default = 0. If true, outputs a path file for each 
+event&gt;</p>
+<h3>&nbsp;</h3>
+
+
+
+
+
+</BODY>
+</HTML>

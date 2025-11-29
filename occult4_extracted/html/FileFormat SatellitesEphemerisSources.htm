@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Satellites - ephemeris sources</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Satellites - ephemeris sources</H1>
+<!-- Insert Header in above line -->
+The following lists the source of the ephemerides of the satellites of the planets used in Occult.
+
+<h2>Mars</h2>
+<li><a href="http://articles.adsabs.harvard.edu/cgi-bin/nph-iarticle_query?1989A%26A...220..321S&amp;data_type=PDF_HIGH&amp;whole_paper=YES&amp;type=PRINTER&amp;filetype=.pdf" target=_blank>A.T. Sinclair <I>The orbits of the satellites of Mars determined from Earth-based and spacecraft observations </I><B>Astron. Astrophys.</B> 220, 321-328 (1989)</a>
+
+<h2>Jupiter</h2>
+<h3>Satellites I - IV</h3>
+<li>The IMCCE L1 theory of the Galilean satellites. Specifically, <A href="http://www.aanda.org/index.php?option=com_article&access=bibcode&Itemid=129&bibcode=2006A%2526A...456..783LFUL" target=_blank>Synthetic representation of the Galilean satellites' orbital motions from L1 ephemerides</a>. Fortran source code is available at the <A href="ftp://ftp.imcce.fr/pub/ephem/satel/galilean/L1/L1.2/" target =_blank>IMCCE ftp site</a>.
+
+<!--
+<li><A href="http://articles.adsabs.harvard.edu/cgi-bin/nph-iarticle_query?1977A%26A....56..333L&amp;data_type=PDF_HIGH&amp;whole_paper=YES&amp;type=PRINTER&amp;filetype=.pdf" target=_blank>J.H. Lieske <I>Theory of Motion of Jupiter's Galilean Satellites</I> <B>Astron & Astrophys.</B> 56, 333-352 (1977)</a>, using the [E2] values as given in J.H. Lieske <a href="http://articles.adsabs.harvard.edu/cgi-bin/nph-iarticle_query?1986A%26A...154...61L&amp;data_type=PDF_HIGH&amp;whole_paper=YES&amp;type=PRINTER&amp;filetype=.pdf" target=_blank><I>A collection of Galilean satellite eclipse observations, 1652-1983: Part 1 </I><B>Astron & Astrophys.</B> 154, 61-76 (1986) </a>. 
+-->
+
+<h3>Satellites VI-XIII</h3>
+<li><a href="http://www.imcce.fr/fr/publications/nst/pdf/note54.pdf" target=_blank><I>Orbites et Ephemerides des Satellites Lointains de Jupiter</I>, <B>Notes Scientific et Techniques du Bureau des longitudes</B>, S054, June 1997.</a> For the period 1900 Jan 1 to 2048 Oct 31 - the Chebychev polynomials of the full solution, available from the FTP server at <A href="ftp://ftp.imcce.fr/pub/ephem/satel/faintsat/jupiter/" target = _blank><I>Bureau des Longitudes</I></a>, as files j6.xyz to j13.xyz, are used. Outside this period, the approximate solutions given in the paper are used.
+
+<h3>Satellites V, XIV-XVI</h3>
+<li>Elements have been taken from <a href="http://ssd.jpl.nasa.gov/?sat_elem" target=_blank>http://ssd.jpl.nasa.gov/?sat_elem</a>. 
+
+<h2>Saturn</h2>
+<h3>Satellites I - VI, VIII</h3>
+<li>
+<a href="http://articles.adsabs.harvard.edu/cgi-bin/nph-iarticle_query?1995A%26A...297..588V&amp;data_type=PDF_HIGH&amp;whole_paper=YES&amp;type=PRINTER&amp;filetype=.pdf" target=_blank>A. Vienne and L. Duriez <I>Tass 1.6: Ephemerides of the major Saturnian Satellites</I> <B>Astron Astrophys.</B> 297, 588-605 (1995)</a>
+<h3>Satellite VII</h3>
+<li><a href="http://articles.adsabs.harvard.edu/full/1997A%26A...324..366D" target=_blank>L. Duriez and A. Vienne <I>Theory of motion and ephemerides of Hyperion</I> <B>Astron Astrophys.</B> 324, 366-380 (1997)</a> [Note This, together with <I>Tass 1.6</I>, makes <I>Tass 1.7</I>]
+<h3>Satellite IX</h3>
+
+<li>For dates between 1875 July 01 and 2022 Jun 30 -  the Chebychev polynomials from Desmars J, Li S.N., Tajeddine R., Peng Q.Y., Tang Z.H. <I>Phoebe's Orbit from ground-based and space-based observations</I> <B>A&A 553</B>, pp A36-A46, (2013). The series  has been truncated to the first 7 coeffs in x,y,z. The largest omitted term has a value of 3.7e-10 AU. This file is provided as an optional download (due to its recent availability).
+<li>Otherwise, 
+	<A href="http://aas.aanda.org/index.php?option=article&access=standard&Itemid=129&url=/articles/aas/pdf/1998/04/ds5713.pdf" target=_blank>R.A. Jacobsen  
+	<I>The orbit of Phoebe from Earthbased and Voyager observations</I> <B>Astron Astrophys. Suppl. Ser. 128</B>, 7-17 (1998).</A>  [ only gives a mean orbit referenced to the Laplacian plane. Perturbations from   P.E. Zadunaisky 
+	<a href="http://articles.adsabs.harvard.edu/cgi-bin/nph-iarticle_query?1954AJ.....59....1Z&amp;data_type=PDF_HIGH&amp;whole_paper=YES&amp;type=PRINTER&amp;filetype=.pdf" target=_blank>
+	<I>A determination of new elements of the orbit of Phoebe, ninth satellite of Saturn 
+	</I><B>Astron. J 59</B>, 1-6 (1954)</a> have been included, but errors can approach an arc-min.])
+
+<h3>Satellites XII, XIII, XIV</h3>
+<li>P. Oberti and A. Vienne <em>An upgraded theory for Helene, Telesto, and 
+Calypso</em>,<strong> A&amp;A</strong> 397, 353–359 (2003)
+
+<h2>Uranus</h2>
+<h3>Satellites I - V</h3>
+<li><a href="http://articles.adsabs.harvard.edu/cgi-bin/nph-iarticle_query?1987A%26A...188..212L&amp;data_type=PDF_HIGH&amp;whole_paper=YES&amp;type=PRINTER&amp;filetype=.pdf" target=_blank>J. Laskar and R.A. Jacobson GUST86. An analytical ephemeris of the Uranian satellites Astron. Astrophys 188, 212-224 (1987)</a>
+<li>For the period 2006 Jan 1 to 2011 Dec 30, Chebychev polynomials available on the FTP server at the <A href="ftp://ftp.imcce.fr/pub/ephem/satel/la06/" target = _blank><I>Bureau des Longitudes</I> </a>, as files NOE-coefcheb1.res  to NOE-coefcheb5.res,  are used. 
+
+<h3>Satellites VI - XV</h3>
+<li><a href="http://www.journals.uchicago.edu/AJ/journal/issues/v115n3/970457/970457.web.pdf" target=_blank>R.A. Jacobson <I>The orbits of the inner Uranian satellites from Hubble Space Telescope and Voyager 2 observations </I><B>Astron J 115</B>, 1195-1199 (1998)</a>
+
+<h2>Neptune</h2>
+<li>
+<h3>Triton</h3>
+</li>
+<li>N. V. Emelyanov and M. Yu. Samorodov. Triton ephemeris from 'Analytical 
+theory of motion and new ephemeris of Triton from Observations&nbsp; <strong>MNRAS 
+454</strong>, 2205-2215, (2015)
+<h3>Nereid</h3>
+</li>
+<li><a href="http://articles.adsabs.harvard.edu/cgi-bin/nph-iarticle_query?1991A%26A...247..565J&amp;data_type=PDF_HIGH&amp;whole_paper=YES&amp;type=PRINTER&amp;filetype=.pdf" target=_blank>  R.A. Jacobson, J.E. Riedel, and A.H. Taylor <I>The orbits of Triton and Nereid from spacecraft and Earthbased observations </I><B>Astron. Astrophys. </B>247, 565-575 (1991)</a>
+
+<h2>Pluto</h2>
+<li>Marina Brozovic, Mark R. Showalter, Robert A. Jacobson, Marc W. Buie <I>The orbits and masses of satellites of Pluto</I>, <B>Icarus </B> [Preprint, Aug 2014].
+<li><a href="http://arxiv.org/PS_cache/astro-ph/pdf/0512/0512491v2.pdf" target=_blank> M W Buie, W M Grundy, E.F Young, L A Young, S A Stern  <I>Orbits and photometry of Pluto's satellites: Charon, P/2005 P1, S/2005 P2 </I>[Preprint, 2005 Dec 19]</a>
+
+</BODY>
+</HTML>

@@ -1,0 +1,97 @@
+{
+  "metadata": {
+    "generator": "ITALOccultCalc",
+    "software": "v1.0.0",
+    "date_generated": "2025-11-23",
+    "event_count": 3
+  },
+  "events": [
+    {
+      "asteroid": {
+        "number": 324,
+        "name": "Bamberga",
+        "diameter_km": 228.00,
+        "absolute_magnitude": 6.82
+      },
+      "star": {
+        "catalog": "TYC",
+        "id": "5865-00764-1",
+        "ra_deg": 56.82340000,
+        "dec_deg": 8.45670000,
+        "magnitude": 7.50
+      },
+      "occultation": {
+        "time_utc": "2025-12-08 22:44:13",
+        "jd": 2460653.447370,
+        "mag_drop": 3.07,
+        "duration_sec": 11.50,
+        "shadow_width_km": 228.0,
+        "shadow_velocity_kms": 19.80,
+        "path_uncertainty_km": 12.0,
+        "time_uncertainty_sec": 2.50
+      },
+      "priority": {
+        "score": 11,
+        "class": "★★★"
+      }
+    },
+    {
+      "asteroid": {
+        "number": 10,
+        "name": "Hygiea",
+        "diameter_km": 407.10,
+        "absolute_magnitude": 5.43
+      },
+      "star": {
+        "catalog": "GAIA",
+        "id": "DR3 1234567890123456",
+        "ra_deg": 123.45670000,
+        "dec_deg": 23.45670000,
+        "magnitude": 10.20
+      },
+      "occultation": {
+        "time_utc": "2026-01-09 18:35:48",
+        "jd": 2460685.274866,
+        "mag_drop": 7.45,
+        "duration_sec": 22.20,
+        "shadow_width_km": 407.1,
+        "shadow_velocity_kms": 18.30,
+        "path_uncertainty_km": 18.0,
+        "time_uncertainty_sec": 3.20
+      },
+      "priority": {
+        "score": 9,
+        "class": "★★★"
+      }
+    },
+    {
+      "asteroid": {
+        "number": 4,
+        "name": "Vesta",
+        "diameter_km": 525.40,
+        "absolute_magnitude": 3.20
+      },
+      "star": {
+        "catalog": "HIP",
+        "id": "45678",
+        "ra_deg": 234.56780000,
+        "dec_deg": -12.34560000,
+        "magnitude": 8.90
+      },
+      "occultation": {
+        "time_utc": "2026-01-24 15:00:00",
+        "jd": 2460700.125000,
+        "mag_drop": 5.12,
+        "duration_sec": 24.40,
+        "shadow_width_km": 525.4,
+        "shadow_velocity_kms": 21.50,
+        "path_uncertainty_km": 22.0,
+        "time_uncertainty_sec": 2.80
+      },
+      "priority": {
+        "score": 7,
+        "class": "★★"
+      }
+    }
+  ]
+}

@@ -1,34 +1,42 @@
 \babel@toc {english}{}\relax 
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {2.1}{\ignorespaces The International Celestial Reference System (ICRS). Origin at the Solar System Barycenter (SSB), with axes fixed relative to distant quasars. Coordinates are Right Ascension ($\alpha $) and Declination ($\delta $).}}{10}{figure.2.1}%
-\contentsline {figure}{\numberline {2.2}{\ignorespaces Relationship between equatorial (blue) and ecliptic (red) coordinate systems. The obliquity $\epsilon _0 \approx 23.44°$ is the angle between the two planes. The vernal equinox direction ($\gamma $) is the common $X$-axis. CEP = Celestial Equatorial Pole, ENP = Ecliptic North Pole.}}{11}{figure.2.2}%
-\contentsline {figure}{\numberline {2.3}{\ignorespaces Geodetic coordinates on the WGS84 ellipsoid. The geodetic latitude $\phi $ is measured perpendicular to the ellipsoid surface (normal direction), not from geocenter. Height $h$ is measured along this normal. The difference between geodetic and geocentric latitude can reach 11.5 arcminutes.}}{12}{figure.2.3}%
-\contentsline {figure}{\numberline {2.4}{\ignorespaces Transformation chain from celestial (GCRS) to terrestrial (ITRS) coordinates. CIRS = Celestial Intermediate Reference System, TIRS = Terrestrial Intermediate Reference System. Each transformation depends on time and requires different astronomical data (precession-nutation model, UT1, polar motion parameters).}}{14}{figure.2.4}%
-\addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Hierarchy of astronomical time scales. TAI (International Atomic Time) is the fundamental standard. UTC includes leap seconds for civil use. TT is uniform time for geocentric calculations. TDB includes relativistic corrections for barycentric dynamics. UT1 tracks actual Earth rotation.}}{20}{figure.3.1}%
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Evolution of UT1 - UTC from 1972 to 2025 (schematic). The sawtooth pattern shows Earth rotation gradually falling behind UTC (negative slope due to tidal deceleration), then reset by leap second insertion (vertical green lines) to stay within ±0.9 s bounds.}}{21}{figure.3.2}%
-\contentsline {figure}{\numberline {3.3}{\ignorespaces Time scale conversion workflow in \texttt {IOccultCalc}{}. Observations in UTC are converted to TT (for ephemerides) and UT1 (for Earth rotation). The TDB conversion is optional depending on ephemeris source.}}{24}{figure.3.3}%
-\addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces JPL DE441 coordinate system. Barycentric ICRF/J2000.0 rectangular coordinates: $X$ axis toward vernal equinox, $Z$ axis toward ecliptic north pole. IOccultCalc converts to heliocentric by subtracting Sun position.}}{28}{figure.4.1}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Barycentric vs heliocentric coordinates. JPL DE provides positions relative to Solar System Barycenter (SSB). IOccultCalc converts to heliocentric by subtracting Sun's barycentric position.}}{33}{figure.4.2}%
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Earth position error for VSOP87D compared to JPL DE430. Complete VSOP87D maintains sub-0.2 km accuracy over ±100 years. Reduced series (used in some older software like Occult4) degrades to several km.}}{34}{figure.4.3}%
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Earth-Moon barycenter (EMB) vs. geocenter. VSOP87D provides EMB position. The geocenter displacement (up to 4670 km) must be corrected using lunar ephemeris (ELP2000) for accurate occultation predictions.}}{37}{figure.4.4}%
-\addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Classical orbital elements. The orbit is defined by: semi-major axis $a$, eccentricity $e$, inclination $i$, longitude of ascending node $\Omega $, argument of perihelion $\omega $, and true anomaly $\nu $ (or mean anomaly $M$). ENP = Ecliptic North Pole.}}{42}{figure.5.1}%
-\contentsline {figure}{\numberline {5.2}{\ignorespaces Equinoctial eccentricity vector $(h, k)$. The magnitude $\sqrt {h^2 + k^2} = e$ gives eccentricity, and the angle $\arctan (h/k) = \omega + \Omega $ gives perihelion direction. Unlike classical elements, $(h, k) = (0, 0)$ for circular orbits is well-defined.}}{43}{figure.5.2}%
-\contentsline {figure}{\numberline {5.3}{\ignorespaces Relationship between mean anomaly $M$ (green, uniform angular motion), eccentric anomaly $E$ (red, on auxiliary circle), and true anomaly $\nu $ (purple, actual position). Kepler's equation $M = E - e\sin E$ connects them.}}{47}{figure.5.3}%
-\addvspace {10\p@ }
-\contentsline {figure}{\numberline {6.1}{\ignorespaces Error vs. step size for different integrators. RKF78 achieves 0.5 km accuracy with $\sim $10 day steps for typical asteroid orbits, vs. $\sim $0.1 day for RK4.}}{52}{figure.6.1}%
+\contentsline {figure}{\numberline {2.1}{\ignorespaces The International Celestial Reference System (ICRS). Origin at the Solar System Barycenter (SSB), with axes fixed relative to distant quasars. Coordinates are Right Ascension ($\alpha $) and Declination ($\delta $).}}{12}{figure.2.1}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Relationship between equatorial (blue) and ecliptic (red) coordinate systems. The obliquity $\epsilon _0 \approx 23.44°$ is the angle between the two planes. The vernal equinox direction ($\gamma $) is the common $X$-axis. CEP = Celestial Equatorial Pole, ENP = Ecliptic North Pole.}}{14}{figure.2.2}%
+\contentsline {figure}{\numberline {2.3}{\ignorespaces Geodetic coordinates on the WGS84 ellipsoid. The geodetic latitude $\phi $ is measured perpendicular to the ellipsoid surface (normal direction), not from geocenter. Height $h$ is measured along this normal. The difference between geodetic and geocentric latitude can reach 11.5 arcminutes.}}{15}{figure.2.3}%
+\contentsline {figure}{\numberline {2.4}{\ignorespaces Transformation chain from celestial (GCRS) to terrestrial (ITRS) coordinates. CIRS = Celestial Intermediate Reference System, TIRS = Terrestrial Intermediate Reference System. Each transformation depends on time and requires different astronomical data (precession-nutation model, UT1, polar motion parameters).}}{17}{figure.2.4}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Hierarchy of astronomical time scales. TAI (International Atomic Time) is the fundamental standard. UTC includes leap seconds for civil use. TT is uniform time for geocentric calculations. TDB includes relativistic corrections for barycentric dynamics. UT1 tracks actual Earth rotation.}}{36}{figure.4.1}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Evolution of UT1 - UTC from 1972 to 2025 (schematic). The sawtooth pattern shows Earth rotation gradually falling behind UTC (negative slope due to tidal deceleration), then reset by leap second insertion (vertical green lines) to stay within ±0.9 s bounds.}}{38}{figure.4.2}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Time scale conversion workflow in \texttt {IOccultCalc}{}. Observations in UTC are converted to TT (for ephemerides) and UT1 (for Earth rotation). The TDB conversion is optional depending on ephemeris source.}}{42}{figure.4.3}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {5.1}{\ignorespaces JPL DE441 coordinate system. Barycentric ICRF/J2000.0 rectangular coordinates: $X$ axis toward vernal equinox, $Z$ axis toward ecliptic north pole. IOccultCalc converts to heliocentric by subtracting Sun position.}}{49}{figure.5.1}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Barycentric vs heliocentric coordinates. JPL DE provides positions relative to Solar System Barycenter (SSB). IOccultCalc converts to heliocentric by subtracting Sun's barycentric position.}}{55}{figure.5.2}%
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Earth position error for VSOP87D compared to JPL DE430. Complete VSOP87D maintains sub-0.2 km accuracy over ±100 years. Reduced series (used in some older software like Occult4) degrades to several km.}}{56}{figure.5.3}%
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Earth-Moon barycenter (EMB) vs. geocenter. VSOP87D provides EMB position. The geocenter displacement (up to 4670 km) must be corrected using lunar ephemeris (ELP2000) for accurate occultation predictions.}}{59}{figure.5.4}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {7.1}{\ignorespaces Classical orbital elements. The orbit is defined by: semi-major axis $a$, eccentricity $e$, inclination $i$, longitude of ascending node $\Omega $, argument of perihelion $\omega $, and true anomaly $\nu $ (or mean anomaly $M$). ENP = Ecliptic North Pole.}}{80}{figure.7.1}%
+\contentsline {figure}{\numberline {7.2}{\ignorespaces Equinoctial eccentricity vector $(h, k)$. The magnitude $\sqrt {h^2 + k^2} = e$ gives eccentricity, and the angle $\arctan (h/k) = \omega + \Omega $ gives perihelion direction. Unlike classical elements, $(h, k) = (0, 0)$ for circular orbits is well-defined.}}{82}{figure.7.2}%
+\contentsline {figure}{\numberline {7.3}{\ignorespaces Relationship between mean anomaly $M$ (green, uniform angular motion), eccentric anomaly $E$ (red, on auxiliary circle), and true anomaly $\nu $ (purple, actual position). Kepler's equation $M = E - e\sin E$ connects them.}}{87}{figure.7.3}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {8.1}{\ignorespaces Error vs. step size for different integrators. RKF78 achieves 0.5 km accuracy with $\sim $10 day steps for typical asteroid orbits, vs. $\sim $0.1 day for RK4.}}{93}{figure.8.1}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {13.1}{\ignorespaces Besselian geometry. Asteroid shadow projected onto fundamental plane perpendicular to star direction. Observer positions on Earth map to points on this plane. Shadow path is straight line in this frame.}}{69}{figure.13.1}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {15.1}{\ignorespaces IOccultCalc software architecture. Modular design with clear separation: core utilities, ephemerides, numerical integration, and high-level prediction/orbit determination.}}{73}{figure.15.1}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {15.1}{\ignorespaces Besselian geometry. Asteroid shadow projected onto fundamental plane perpendicular to star direction. Observer positions on Earth map to points on this plane. Shadow path is straight line in this frame.}}{115}{figure.15.1}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {17.1}{\ignorespaces IOccultCalc software architecture. Modular design with clear separation: core utilities, ephemerides, numerical integration, and high-level prediction/orbit determination.}}{123}{figure.17.1}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
 \addvspace {10\p@ }

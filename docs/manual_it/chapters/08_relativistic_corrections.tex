@@ -1,0 +1,111 @@
+\chapter{Relativistic Corrections}
+\label{chap:relativistic}
+
+\section{Introduction}
+
+General relativity introduces corrections to Newtonian gravity that are small but measurable \citep{Moyer1971,Klioner2003}:
+\begin{itemize}
+    \item Light-time: Signal travel delay ($\sim$8 minutes at 1 AU)
+    \item Stellar aberration: Observer motion ($\sim$20'' for Earth)
+    \item Gravitational deflection: Grazing Sun ($\sim$1.75'')
+    \item Shapiro delay: Time dilation near massive bodies
+\end{itemize}
+
+\section{Light-Time Correction}
+
+Light travels at finite speed $c = 299792.458$ km/s. The observed position differs from instantaneous position:
+
+\begin{equation}
+\vect{r}_{\text{obs}}(t) = \vect{r}_{\text{true}}(t - \tau)
+\end{equation}
+
+where light-time $\tau = |\vect{r}|/c$ is solved iteratively:
+
+\begin{algorithm}[H]
+\caption{Light-Time Iteration}
+\begin{algorithmic}[1]
+\STATE $\tau \leftarrow 0$ \quad // Initial guess
+\FOR{$i = 1$ to 5}
+    \STATE $\vect{r} \leftarrow$ ephemeris at $(t - \tau)$
+    \STATE $\tau_{\text{new}} \leftarrow |\vect{r}|/c$
+    \IF{$|\tau_{\text{new}} - \tau| < 10^{-6}$ s}
+        \STATE \textbf{break}
+    \ENDIF
+    \STATE $\tau \leftarrow \tau_{\text{new}}$
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+\textbf{Example:} Asteroid at 2.5 AU:
+\begin{equation}
+\tau = \frac{2.5 \times 1.496 \times 10^8 \text{ km}}{299792.458 \text{ km/s}} = 1246 \text{ s} = 20.8 \text{ min}
+\end{equation}
+
+\section{Stellar Aberration}
+
+Observer's velocity $\vect{v}$ causes apparent star shift \citep{Stumpff1985}:
+
+\begin{equation}
+\Delta\alpha = \frac{v_x}{c} \frac{1}{\cos\delta}, \quad \Delta\delta = \frac{v_y \sin\alpha + v_z \cos\alpha}{c}
+\end{equation}
+
+For Earth at 30 km/s:
+\begin{equation}
+|\Delta\theta| = \frac{30 \text{ km/s}}{299792 \text{ km/s}} = 10^{-4} \text{ rad} = 20.6''
+\end{equation}
+
+\textbf{Components:}
+\begin{itemize}
+    \item \textbf{Annual:} Earth's orbital motion ($\pm 20''$)
+    \item \textbf{Diurnal:} Observer's rotation ($\pm 0.3''$ at equator)
+\end{itemize}
+
+\section{Gravitational Light Deflection}
+
+Light passing near mass $M$ is deflected by \citep{Einstein1916}:
+
+\begin{equation}
+\Delta\theta = \frac{4GM}{c^2 b} = \frac{1.75''}{b/R_{\odot}}
+\end{equation}
+
+where $b$ is impact parameter.
+
+\textbf{Solar deflection:} 1.75'' grazing the Sun, $<$ 0.01'' for $b > 10 R_{\odot}$.
+
+\textbf{Planetary deflection:} Jupiter at closest approach ($\sim$4 AU): $\sim$0.02''$.
+
+\section{Shapiro Time Delay}
+
+Signal travel time increased by gravitational potential \citep{Shapiro1964}:
+
+\begin{equation}
+\Delta t = \frac{2GM}{c^3} \ln\left(\frac{r_1 + r_2 + d}{r_1 + r_2 - d}\right)
+\end{equation}
+
+\textbf{Maximum (superior conjunction):} $\sim$240 µs for solar system.
+
+\section{Summary}
+
+\begin{table}[htbp]
+\centering
+\caption{Relativistic effects for asteroid occultations}
+\label{tab:relativistic_effects}
+\begin{tabular}{lcc}
+\hline
+\textbf{Effect} & \textbf{Magnitude} & \textbf{Correction needed?} \\
+\hline
+Light-time & 20 min @ 2.5 AU & Yes (critical) \\
+Annual aberration & 20'' & Yes \\
+Diurnal aberration & 0.3'' & Yes \\
+Gravitational deflection & $< 0.05''$ & Optional \\
+Shapiro delay & $< 0.001$ s & No \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{References:}
+\begin{itemize}
+    \item Moyer (1971) \citep{Moyer1971}: spacecraft navigation
+    \item Klioner (2003) \citep{Klioner2003}: astrometric relativity
+    \item Stumpff (1985) \citep{Stumpff1985}: proper motion and aberration
+\end{itemize}

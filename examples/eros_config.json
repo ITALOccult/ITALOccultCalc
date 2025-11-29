@@ -1,0 +1,91 @@
+{
+  "metadata": {
+    "created_by": "IOccultCalc",
+    "version": "1.0",
+    "date": "2025-11-22",
+    "description": "Configurazione per ricerca occultazioni di 433 Eros",
+    "author": "Michele Bigi"
+  },
+  "sections": [
+    {
+      "type": "object",
+      "parameters": [
+        {
+          "name": "name",
+          "value": "433 Eros",
+          "type": "string",
+          "comment": "Nome asteroide"
+        },
+        {
+          "name": "id",
+          "value": "433",
+          "type": "string",
+          "comment": "Numero asteroide"
+        }
+      ]
+    },
+    {
+      "type": "propag",
+      "parameters": [
+        {
+          "name": "type",
+          "value": "RK4",
+          "type": "string",
+          "comment": "Integratore: RK4, RA15, ORBFIT"
+        },
+        {
+          "name": "step_size",
+          "value": "0.05",
+          "type": "double",
+          "comment": "Passo di integrazione (giorni)"
+        }
+      ]
+    },
+    {
+      "type": "search",
+      "parameters": [
+        {
+          "name": "start_jd",
+          "value": "2461041.0",
+          "type": "double",
+          "comment": "Inizio ricerca (2026-01-01)"
+        },
+        {
+          "name": "end_jd",
+          "value": "2461051.0",
+          "type": "double",
+          "comment": "Fine ricerca (2026-01-11)"
+        },
+        {
+          "name": "step_days",
+          "value": "0.5",
+          "type": "double",
+          "comment": "Intervallo di campionamento"
+        }
+      ]
+    },
+    {
+      "type": "operations",
+      "parameters": [
+        {
+          "name": "download_elements",
+          "value": "true",
+          "type": "bool",
+          "comment": "Scarica elementi orbitali da AstDyS"
+        },
+        {
+          "name": "propagate",
+          "value": "true",
+          "type": "bool",
+          "comment": "Propaga orbita"
+        },
+        {
+          "name": "search_occultations",
+          "value": "true",
+          "type": "bool",
+          "comment": "Cerca occultazioni"
+        }
+      ]
+    }
+  ]
+}

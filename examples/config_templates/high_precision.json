@@ -1,0 +1,299 @@
+{
+  "metadata": {
+    "created_by": "IOccultCalc",
+    "version": "1.0",
+    "date": "2025-11-22",
+    "description": "High-precision asteroid occultation prediction configuration",
+    "author": "Michele Bigi"
+  },
+  "sections": [
+    {
+      "type": "object",
+      "name": "object",
+      "parameters": [
+        {
+          "name": "name",
+          "value": "433 Eros",
+          "type": "string",
+          "comment": "Target asteroid name"
+        },
+        {
+          "name": "id",
+          "value": "433",
+          "type": "string",
+          "comment": "Asteroid number or designation"
+        },
+        {
+          "name": "diameter",
+          "value": "16.84",
+          "type": "double",
+          "comment": "Diameter in kilometers"
+        },
+        {
+          "name": "source",
+          "value": "AstDyS",
+          "type": "string",
+          "comment": "Orbital elements source"
+        }
+      ]
+    },
+    {
+      "type": "propag",
+      "name": "propagation",
+      "parameters": [
+        {
+          "name": "type",
+          "value": "RK4",
+          "type": "string",
+          "comment": "Integrator type: RK4, RA15, ORBFIT"
+        },
+        {
+          "name": "step_size",
+          "value": "0.05",
+          "type": "double",
+          "comment": "Integration step size in days"
+        },
+        {
+          "name": "start_jd",
+          "value": "2461041.0",
+          "type": "double",
+          "comment": "Start epoch (Julian Date)"
+        },
+        {
+          "name": "end_jd",
+          "value": "2461405.0",
+          "type": "double",
+          "comment": "End epoch (Julian Date)"
+        },
+        {
+          "name": "tolerance",
+          "value": "1.0e-12",
+          "type": "double",
+          "comment": "Integration tolerance"
+        }
+      ]
+    },
+    {
+      "type": "ephemeris",
+      "name": "ephemeris",
+      "parameters": [
+        {
+          "name": "jpl_version",
+          "value": "DE441",
+          "type": "string",
+          "comment": "JPL ephemeris version"
+        },
+        {
+          "name": "de_file",
+          "value": "~/.ioccultcalc/ephemerides/linux_p1550p2650.441",
+          "type": "string",
+          "comment": "Path to JPL DE file"
+        },
+        {
+          "name": "ast17_file",
+          "value": "~/.ioccultcalc/ephemerides/codes_300ast_20100725.bsp",
+          "type": "string",
+          "comment": "Path to AST17 SPK file"
+        },
+        {
+          "name": "auto_download",
+          "value": "true",
+          "type": "bool",
+          "comment": "Automatically download missing files"
+        }
+      ]
+    },
+    {
+      "type": "perturbations",
+      "name": "perturbations",
+      "parameters": [
+        {
+          "name": "planets",
+          "value": "true",
+          "type": "bool",
+          "comment": "Include 8 major planets"
+        },
+        {
+          "name": "asteroid_count",
+          "value": "17",
+          "type": "int",
+          "comment": "Number of massive asteroids (AST17)"
+        },
+        {
+          "name": "relativity",
+          "value": "true",
+          "type": "bool",
+          "comment": "Include relativistic corrections"
+        },
+        {
+          "name": "earth_moon",
+          "value": "true",
+          "type": "bool",
+          "comment": "Separate Earth-Moon system"
+        }
+      ]
+    },
+    {
+      "type": "search",
+      "name": "search",
+      "parameters": [
+        {
+          "name": "start_jd",
+          "value": "2461041.0",
+          "type": "double",
+          "comment": "Search start epoch (JD)"
+        },
+        {
+          "name": "end_jd",
+          "value": "2461405.0",
+          "type": "double",
+          "comment": "Search end epoch (JD)"
+        },
+        {
+          "name": "step_days",
+          "value": "0.5",
+          "type": "double",
+          "comment": "Sampling interval in days"
+        },
+        {
+          "name": "max_separation",
+          "value": "0.1",
+          "type": "double",
+          "comment": "Maximum angular separation (degrees)"
+        },
+        {
+          "name": "mag_limit",
+          "value": "14.0",
+          "type": "double",
+          "comment": "Star magnitude limit"
+        },
+        {
+          "name": "cone_radius",
+          "value": "5.0",
+          "type": "double",
+          "comment": "Search cone radius (degrees)"
+        }
+      ]
+    },
+    {
+      "type": "star",
+      "name": "star",
+      "parameters": [
+        {
+          "name": "catalog",
+          "value": "Gaia",
+          "type": "string",
+          "comment": "Star catalog (Gaia, UCAC4, etc.)"
+        },
+        {
+          "name": "gaia_release",
+          "value": "DR3",
+          "type": "string",
+          "comment": "Gaia data release"
+        },
+        {
+          "name": "proper_motion",
+          "value": "true",
+          "type": "bool",
+          "comment": "Apply proper motion corrections"
+        },
+        {
+          "name": "parallax",
+          "value": "true",
+          "type": "bool",
+          "comment": "Apply parallax corrections"
+        }
+      ]
+    },
+    {
+      "type": "output",
+      "name": "output",
+      "parameters": [
+        {
+          "name": "format",
+          "value": "JSON",
+          "type": "string",
+          "comment": "Output format (JSON, KML, TEXT, CSV)"
+        },
+        {
+          "name": "file",
+          "value": "occultation_predictions.json",
+          "type": "string",
+          "comment": "Output file path"
+        },
+        {
+          "name": "verbosity",
+          "value": "1",
+          "type": "int",
+          "comment": "Verbosity level (0-3)"
+        },
+        {
+          "name": "include_uncertainty",
+          "value": "true",
+          "type": "bool",
+          "comment": "Include position uncertainties"
+        },
+        {
+          "name": "coordinate_frame",
+          "value": "J2000",
+          "type": "string",
+          "comment": "Reference frame (J2000, ICRF)"
+        }
+      ]
+    },
+    {
+      "type": "IERS",
+      "name": "IERS",
+      "parameters": [
+        {
+          "name": "use_iers",
+          "value": "true",
+          "type": "bool",
+          "comment": "Use IERS corrections"
+        },
+        {
+          "name": "extrapolation",
+          "value": "true",
+          "type": "bool",
+          "comment": "Allow extrapolation beyond available data"
+        },
+        {
+          "name": "update_interval",
+          "value": "7",
+          "type": "int",
+          "comment": "Update interval in days"
+        }
+      ]
+    },
+    {
+      "type": "operations",
+      "name": "operations",
+      "parameters": [
+        {
+          "name": "download_elements",
+          "value": "true",
+          "type": "bool",
+          "comment": "Download orbital elements from AstDyS"
+        },
+        {
+          "name": "propagate",
+          "value": "true",
+          "type": "bool",
+          "comment": "Propagate orbit"
+        },
+        {
+          "name": "search_occultations",
+          "value": "true",
+          "type": "bool",
+          "comment": "Search for occultations"
+        },
+        {
+          "name": "export_json",
+          "value": "true",
+          "type": "bool",
+          "comment": "Export results to JSON"
+        }
+      ]
+    }
+  ]
+}

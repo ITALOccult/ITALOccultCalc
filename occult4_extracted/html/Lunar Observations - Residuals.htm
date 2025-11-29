@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Lunar Occultations - Residuals</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Display of Residuals</H1>
+<P>This form displays the computed residuals of the observations. 
+
+<p>This form provides a facility to help a person who has organised a graze to send results to observers, and ask 
+them questions concerning their observations.<A href="Lunar%20Observations%20-%20Graze%20organiser.htm"> Details</a>
+
+<p>This form also provides the tools for a collector of occultation observations to send reduction reports to the observer, and to convert and save the observations in the format required for archiving. [This functionality is only enabled when 'Administrator Access' is enabled from the User Settings.]<A href="Lunar%20Observations%20-%20Archive%20Regional%20Coord.htm"> Details</a>
+
+<h2>Basis of the reduction</h2>
+At the top of the list there are 4 lines giving the basis of the reduction. The lines are:<ul>
+<li>The name of the observation file that has been reduced;
+ <li>The date of the reduction
+<li>The basis for the lunar ephemeris used in the reductions
+<li> The basis of the lunar limb - including whether the Watts limb has had the corrections of <A  href="http://adsabs.harvard.edu/abs/1981MNRAS.196.1013M"> Morrison & Appleby</a> applied; and
+<li>Whether the O-C values have been corrected for the effects of the lunar limb</ul>
+
+<h2>The reductions</h2>
+<table columns=3 border=1>
+<TR><TH NOWRAP>Column</TH><TH>Meaning</TH></TR>
+<TR><TD>ref</TD><TD>The reference number of the event in the report.</TD></TR>
+<TR><TD>Observer</TD><TD>The observer's name - truncated to 20 characters</TD></TR>
+<TR><TD>Star No</TD><TD>The star identification - including any WDS component code</TD></TR>
+<TR><TD>y m d h m s</TD><TD>The date and time of the event, as reported.<li>
+when PE is specified but not subtracted, the PE is applied during the reduction.
+<li>if PE is 'unknown', the reduction applies a PE of 0.5s for D, 0.8s for R</TD></TR>
+<TR><TD>Ph</TD><TD>Event phase: 2-character code
+<li>D = Disappear, R = Reappear, B = Blink, F = Flash, M = Miss, S = Start/resume, E = End/pause
+<li>D = Dark limb, B = Bright limb, U = Umbra</TD></TR>
+<TR><TD>Gr</TD><TD>Graze code:
+<li>G = graze event</TD></TR>
+<TR><TD>Gr</TD><TD>Method of recording
+<li>G  Video with time insertion
+<li> V  Video - other time linking
+<li>S  Stopwatch (visual)
+<li>T  Tape recorder (visual)
+<li>E  Eye and ear
+<li>P  Photoelectric
+<li>K  Key-tapping - including computer keyboards
+<li>X  Chronograph
+<li>C  Camera and clock
+</TD></TR>
+<TR><TD>Ce</TD><TD>Certainty: 1=sure, 2 = possibly spurious, 3=probably spurious</TD></TR>
+<TR><TD>Db</TD><TD>Double star code<li> W = preceding component, E = following component
+<li>N = north component, S = south component
+<li>B = brighter component, F = fainter component</TD></TR>
+<TR><TD>O-C</TD><TD>The computed residual - compared to the lunar limb defined by the Watts charts. Refer to the header to ascertain whether the Watts charts have been 'corrected'.<br><br>
+<B>Generally, the O-C should be less than 1". </B>In locations where the lunar limb is poorly known (such as the Cassini regions), the value can easily exceed 1". Values exceeding 3" indicate either a data entry error, or that the observer did not actually see the occultation event.
+</TD></TR>
+<TR><TD>Limb</TD><TD>The computed limb correction - scaled in accordance with the 'Scale' value, and incorporating any correction to the Watts heights.</TD></TR>
+<TR><TD>PA</TD><TD>The computed position angle of the event</TD></TR>
+<TR><TD>l,  b,  AA</TD><TD>The computed librations in l and b, and the computed Axis Angle.<br><B>Note</B>: The librations are computed using the IAU value of 1d 32' 32.7" for the inclination of the lunar equator to the ecliptic. [Watts used 1.564 deg when construction his charts. The difference in any libration value is a maximum of 0.02deg.]</TD></TR>
+<TR><TD>P,  D</TD><TD>The libration values in the [P, D] libration reference frame. P is the angle around the limb of the moon, and D is the angular distance in front, or behind, the location of the mean lunar limb.</TD></TR>
+<TR><TD>Scale</TD><TD>The Watts charts give the limb height at the mean distance of the moon. This figure scales the mean height to the actual height given the distance to the moon at the time of he event.</TD></TR>
+</table>
+
+<h2><br>Viewing events against the lunar profile</h2>
+<p>Viewing observations against the lunar profile can be very useful for assessing the overall results, as well as checking the validity of observations.
+
+<p>The form provides two ways for viewing the observations against the lunar profile.<ul type=1>
+<li>On any line, do a right-click. The menu item that appears will enable you to plot the event against the lunar profile.
+<li>If there are graze events included in the report, the button at the top of the form 'Plot graze events against profile' will be enabled. Click the button, and the graze events will be plotted.</ul>
+<p>Details about the profile are <A href="Lunar%20observations%20-%20Observed%20profile.htm">here</a>.
+
+<h3>Important notes re plotting a graze profile</h3>
+For the plot of the graze profile to be successful:<ul type=1>
+<li>Ensure all graze observations in the report involve the same star, on the same day, and at the same limb of the moon (that is, northern, or southern, limit graze). [But it is OK to include observations of the same graze made from different parts of the world.]
+<li>The angular coverage of the graze profile is scaled in accordance with the Axis Angles of the events in the report. 'Started Observing' and 'Ended observing' events are excluded from determining the plot scale. 
+</BODY>
+</HTML>

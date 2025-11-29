@@ -1,0 +1,304 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Compare Star Catalogues</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Compare Star Catalogues</H1>
+
+<P>This form allows users to compare the position of a star from a number of recent high-precision catalogues. The purpose is to assist detection of potential problems with a star's position for asteroidal occultations.
+
+<h2><font color=red>Warning. Read the explanation below in full, to avoid mis-interpreting the information provided. Note that the information will probably raise more questions than answers, and it will require some learning before the significance of the data can be properly assessed.<font color=black></h2>
+
+<p>The functionality relies on web-server access to the <A  href="http://vizier.u-strasbg.fr/viz-bin/VizieR"  target=_blank>VizieR</a> system. It cannot be used if internet access is not available.
+
+<p><B>For an asteroidal occultation, the preferred manner of using this form is by right-clicking on a prediction plot of the event. This will result in all the required data fields being populated by the relevant details for the event, and the star position having proper motion applied to the date of the event. The details of the event are displayed on the form, and the ability to manually specify the star is excluded.
+<p>Users that also run Hristo Pavlov's <A  href="http://www.hristopavlov.net/OccultWatcher"  target=_blank>OccultWatcher</a> can also download an Add-in in OccultWatcher that will allow this functionality in Occult to be accessed from the OW list of events. To enable this, in OccultWatcher select the menu item <I>Add-ins</I>, <I>Find Add-ins</I>, and select <I>Occult Tools for OccultWatcher</I>. Then set the location of your Occult program using <I>Add-ins</I>, <I>Configure Add-ins</I>, <I>Configure Occult Tools for OccultWatcher</I>.
+</B>
+
+<p>The functionality can be accessed 'manually' for any star, in which case the data must be entered as follows:<ul type = 1>
+
+<li>Specify the star coordinates. This can be by entering the coordinates manually, or selecting the catalogue and entering the star number (followed by<B> Get coords</B>). <B>IMPORTANT</b> In this situation the star position used as the reference position is not corrected for proper motion. To assess prediction offsets, you MUST reference positions to the plotted position corresponding to the star catalogue used for the star position, and not the center of the plot.
+<li>Set a search radius. The default setting is 4 arc secs. Because the Proper Motion epoch of Hipparcos is 1991.25, and Tycho2 is about 1991.5, a larger search radius might be required to pick up Hipparcos and Tycho2 stars if they have large proper motions. However note that the maximum size of the plot of the returned star positions is 1 arc secs square, or 20" square if the x20 box is checked.
+<li>Set the epoch for comparing the star positions. The default setting is 'today's' date, on the assumption that the relevant event will be occurring within the next month or so. If this date is changed, it can be reset by clicking the 'Now' button.
+<li>Set an object diameter - in milli-arcsecs. This is used to plot a representation of an asteroid at the scale of the plot - so that the different catalogue positions can be easily related to the size of an asteroid being occulted.. 
+<li>Set the PA of the object's motion. This is used to plot lines representing the apparent path of the asteroid relative to the stars. This assists in assessing the extent to which variations in catalogue positions are along-path, and across-path, of an asteroidal occultation. [The direction of those lines will appear as a mirror-image of the path direction on an asteroid prediction plot.]
+<li>Indicate whether the lines showing the motion of the object are to be shown.
+</ul>
+
+<p>The final step, which applies no matter how the form is accessed, is to select the star catalogues which are to be accessed. By default the main high-accuracy catalogues are checked. See comments below about star catalogue issues.
+
+<p>To retrieve and plot the data, click <b>Get and show position</b>.It will take a few seconds to retrieve the data from Vizier. When the search is complete, the list of results will have a line stating '***  Search complete  ***'. The results will appear in the order of the catalogues selected. When there is no star identified in a catalogue, there will simply be no star listed. In the case of close double stars, more than one entry may appear for any one catalogue - as the search is based on star position, not star number.  If no stars are listed, and the search was based on the position of a star, the likely explanation is that the Vizier server is down.<B> However for some stars (usually bright stars) the proper motions may be sufficiently large that the 'current epoch' and the catalogue epoch positions differ by more than the search radius - resulting in a nil return. In such cases, the search radius should be increased.
+</B>
+If you get a message: <b><font color=red>The data return from Vizier has used VOTable v??, which is not properly supported at the moment. Use the results with caution.</b><font color=black>, please advise the author of Occult. This message indicates an update of the standard used by Vizier to provide the star catalogue data, and there might be a consequential need to make program changes.
+<p>Once the data has been displayed, you can change the epoch for comparison, the object's diameter, the PA of the object's motion and whether the object's motion is shown - and replot the image without downloading the data from Vizier - by clicking the <B>re-display positions </B>button. You can also increase the area covered by the plot by a factor of 20, using the x20 check box above the slider that sets the plot scale. 
+
+
+<p>To display the full VizieR listing for any star, right-click on the relevant line, and select 'Show star in VizieR'. This will open your browser and display the full VizieR listing for the star. <B>From Vizier you can also plot the star and surrounding region in <A  href="http://aladin.u-strasbg.fr/aladin.gml"  target=_blank> Aladin</a></B> using the <B>Aladin Image </B>link located immediately above the table of data for the star. <I>[Aladin is a mapping utility that can access the full range of catalogues held in VizieR.]</I>
+
+<p>Buttons are also provided to display the star in GoogleSky (with a field width of 5 arc mins) [<B>Google Sky</B>], and to display any entries in the Washington Double star catalogue, the 6th Interferometric catalogue, and the AAVSO Index catalogue of variable stars [<B>WDS/IF/Vars</B>].
+<p>The data displayed is:
+
+<table columns=2 border=1>
+<TR><TH NOWRAP>Column</TH><TH>Content</TH></TR>
+<TR><TD>Cat ID</TD><TD>The catalogue and star number. For catalogues that use the star's coordinates as the identifier, the number might be truncated.</TD></TR>
+
+<TR><TD>Magnitudes</TD><TD>The magnitudes as given in the catalogues. Three colours are provided: B, V and R. Noting that astrometric catalogues generally are not a source for high precision magnitudes, and the range of color scales that are used, the magnitudes are allocated on the basis of the attribution made in the Vizier data. Thus (for example) the UCAC2 magnitudes appear as V magnitudes. Photographic magnitudes (p) are treated as B magnitudes.</TD></TR>
+
+<TR><TD>RA</TD><TD>RA for the specified current epoch - corrected for stellar parallax when available (Hipparcos & FK6)</TD></TR>
+<TR><TD>Dec</TD><TD>Declination for the specified current epoch - corrected for stellar parallax when available (Hipparcos & FK6)</TD></TR>
+
+<TR><TD>RA</TD><TD>Uncertainty in Right Ascension. Four data items are provided<ul>
+<li>uncertainty in position at epoch. 
+<li>uncertainty in proper motion at epoch (in arc sec per year).
+<li>epoch for the uncertainty values. 
+<li>computed uncertainty in position at the current epoch. 
+</ul></TD></TR>
+<TR><TD>Dec</TD><TD>Uncertainty in declination. Four data items are provided<ul>
+<li>uncertainty in position at epoch. 
+<li>uncertainty in proper motion at epoch  (in arc sec per year).
+<li>epoch for the uncertainty values. 
+<li>computed uncertainty in position at the current epoch. 
+</ul></TD></TR>
+<Tr><td>Flags</td><td>Flags indicating possible issues, or extra information. The flags use under columns of D, V, O and #, and have the following meanings: <ul>
+<li>D - <B>d</B> indicates the star is a double, or could be a double
+<li>V - <B>v </B>indicates the star is variable
+<li>O - <ul>
+<li><B>*</B> indicates the existence of some issue of significance. 
+<li>For the <B>PPMXL </B>catalogue, <B>P </B>indicates the star is from PPMX, and <B>?</B> indicates that one of the coordinates had an excessively large scatter (chi square).
+<li>For the <B>PPMX </B>catalogue, values of <B>S</B>, <B>H </B>and <B>O </B>indicate the basis of the position in the PPMX catalogue [<B>S </B>= independant survey, <B>H</B> = old epoch positions from Astrographic catalogue, <B>O</B> = other sources.
+</ul>
+<li># - <ul><li>For <b>URAT1 </b>, the number of images used for the mean position.
+<li>For <B>UCAC2, UCAC3 </B>and <B>UCAC4</B>, the number of catalogues used in the proper motion determination. 
+<li>For <B>PPMXL</B>, the number of observations used. It will be blank for stars coming from ARIHIP or Tycho-2 via PPMX. 
+<li>For <B>PPMX </B>and <B>PPM</B>, the number of catalogues used. 
+<li>For <B>CMC14</B>, the number of measures of the star. 
+<li>For <B>USNO-B1</B>, the number of detections used.</ul></ul>
+Where the data item does not exist in the catalogue, the field will contain a '.'. If the data item exists in the catalogue, but does not contain any relevant information, the field will contain a blank ' '.
+<br>Details of how these flags are set are given below.
+
+</td></tr>
+<TR><TD>R.A</TD><TD>The catalogue J2000 RA</TD></TR>
+<TR><TD>PM</TD><TD>Annual PM in RA, in secs</TD></TR>
+<TR><TD>Epoch</TD><TD>Epoch of the position in right ascension (usually 2000)</TD></TR>
+<TR><TD>Declination</TD><TD>Declination J2000</TD></TR>
+<TR><TD>PM</TD><TD>Annual PM in Dec</TD></TR>
+<TR><TD>Epoch</TD><TD>Epoch of the position in declination (usually 2000)</TD></TR>
+<TR><TD>Plx</TD><TD>The stellar parallax (in arc secs)</TD></TR>
+<TR><TD>e_Plx</TD><TD>uncertainty in the stellar parallax (in arc secs)</TD></TR>
+<TR><TD>Notes.</TD><TD>Alert if there is no Proper motion.</TD></TR>
+</table>
+
+<p>In the plot:<ul>
+<li>The star positions at the specified 'Epoch for comparison' are plotted, together with a representation of the asteroid and its motion. The epoch is included at the top left of the image. The direction of motion of the asteroid in the star field is indicated by the arrow at the top right.
+<li>The 'current' star position is indicated by a small colored circle. 
+<li>The plot will show either the motion of the star over the previous 10 years, or the formal uncertainty in its current position. The motion over the previous 10 years is indicated by a dotted line in the color of the star. The uncertainty in the 'current' star position is represented by a dashed ellipse in the color of the star. The check box <B>Show:... Star Uncert{ainty}</B> toggles between the display of the motion, and the display of the uncertainty ellipses, with the setting being retained between sessions. For stars without proper motions, the ellipse that is plotted is of the positional uncertainty at the epoch of that catalogue - with the ellipse being drawn with widely-spaced dots.
+<li>For Hipparcos and FK6 stars, the displacement from stellar parallax is indicated by a faint dotted line. [Positions from other catalogues will be similarly affected by parallax. However the effects of parallax in those catalogues will have been averaged out - so that the size of the parallax is effectively an indicator of the reliability of the position from such catalogues.].
+<li> A legend gives the linkage between the colour and the catalogue
+<li>The scale of the plot can be changed using the slider bar next to it - with the scale being indicated at the bottom of the plot. At the top of the slider there is a box marked 'x20'. Checking this box will result in the field coveraged being increased by a factor of 20. This is useful for expanding the field for high proper motion stars. 
+<li>The plot can be drawn with a white background, from the <I>with List...  </I>menu item. Also the positional data, and the graphics can be copies or saved from the <I>with List...  </I>menu item.
+<li>If the plot does not appear to show all the stars indicated in the legend, change the plot scale so that the plot area is larger! Check the x20 check box to make the field 20 times larger. [<B>NOTE: </B>the maximum size of the plot is 1.0" across, 20" if the x20 box is checked.]
+<li>The map is effectively a highly-magnified star chart, with the stars and asteroid projected on the sky plane. This is important when assessing the effect of a different star position on the location of the path on the Earth. If you choose to use a star position that is further <B>NORTH </B>than the star used for the prediction, the displacement of the path on the Earth is to the <B>SOUTH</B>. Similarly with east/west.
+<li>Similarly, the orientation of the occultation path as indicated on the map is mirror-reversed to the direction of the path on the asteroid prediction map.
+<li><B>Generally the location of the star used in the prediction will not be precisely centered on the asteroid. This is because the position of the star that is available from the occultation prediction is limited in precision to 0.01", whereas the catalogue comparison is conducted at a precision of 0.001" - leading to a small apparent difference in location. [Note: the occultation prediction is computed on the basis of the full-precision star position.]
+</B></ul>
+
+<h3>Animated GIF</h3>
+You can create an animated gif of the star comparison, showing the motion of the star from the different catalogues. Set the animated GIF parameters under the menu item <B>Animated gif... Animated gif settings</B>. Create the animated gif using the menu item <B>Animated gif...Create (-10 to +5 years)</B>. This will create an animated GIF file starting 10 years before the indicated Epoch for Comparison, to 5 years after that date, at an interval of 0.5 years. When you create the animated gif, you will be asked to specify the file name and location to save the file. The default directory is Occult 4\Predictions\.
+
+<h1>Interpreting the data and plot</h1>
+
+<h2>Catalogue issues</h2>
+Any assessment of catalogue positions requires some understanding of their interdependencies. These can be summarised as follows:<ul>
+<li><B>Hipparcos</B>.  Truly independent of other catalogues for both positions and proper motions. Hipparcos revolutionised astrometry by being able to generate a global solution for all stars. [In comparison, an earth-bound observer cannot measure the separation of Polaris and sigma Octantis). However the proper motion solution depends on observations made over a short number of years, leading to some bad proper motion values.
+<li><B>FK6</B>. The FK series of catalogues have traditionally been the catalogue of highest precision, and are limited to stars brighter than about 5. FK6 follows on from Hipparcos, and is described <A  href="http://www.ari.uni-heidelberg.de/datenbanken/fk6/index.php.en"  target=_blank> here </a>. Where an FK6 position is available, it should generally be used in preference to all other catalogues.<ul>
+<B><I>IMPORTANT #1</I></B>.The FK6 catalogue is in two parts, and the data content is slightly different between the two parts. Part I contains 878 stars with full data for all stars. Part II contains 3272 stars. The Part of the FK6 catalogue is included in the identifier, as either FK6(I), or FK6(III).
+<br><B><I>IMPORTANT #2</I></B>. Two solutions from the FK6 catalogue are displayed in the comparison. The first [FK6(I) nnnn] is the SI (Single star) solution, and is an over-all best fit. The 2nd solution [FK6(I)-LTP nnnn] is the LTP (Long Term Prediction) solution. The LTP solution is likely to be the better representation of the position of the star at current epochs.
+<br><B><I>IMPORTANT #3</I></B>. However Part III of the FK6 only contains partial data for the LTP solution. In particular it does not provide the difference between the SI position and the LTP position at any epoch. The data displayed for the LTP position for Part III stars is based on the SI position and uncertainty of the star at J2000, combined with the LTP proper motions and uncertainty in proper motions. Such stars are flagged with a '**' to indicate this issue - and appear like FK6(III)-LTP nnnn**.
+</ul>
+<li><B>UCAC4</B>. Positions at epoch (1999-2003) tied to Hipparcos by way of Tycho2 positions - with positional accuracy generally better than Tycho2. Proper motions based on comparison with old-epoch catalogues. <br><B>* NOTE 1 </B> UCAC4 is the final version of the UCAC catalogue. It should be the most reliable of all the UCAC versions.<br><B>* NOTE 2 </B> The data returned from Vizier for UCAC4 stars does not include the parallax for stars that are also in Hipparcos.
+
+<li><B>UCAC3</B>. Positions at epoch (1999-2003) tied to Hipparcos by way of Tycho2 positions - with positional accuracy generally better than Tycho2. Proper motions based on comparison with old-epoch catalogues. <B>NOTE </B> UCAC3 should not be relied upon. Use UCAC4 in preference to UCAC3.
+<li><B>UCAC2</B>. Positions at epoch (1999-2001) tied to Hipparcos by way of Tycho2 positions - with positional accuracy generally better than Tycho2. Proper motions based on comparison with old-epoch catalogues. <B>NOTE</B> that stars in common between UCAC2, UCAC3 and UCAC4 are based on the same image data. Any differences at the imaging epoch are due to refined reduction of the image data (with differences generally less than 0.050"). Frequently the epoch for the error data is significantly different between UCAC2 and UCAC3 - which reflects the different catalogues used for proper motions. UCAC4 is considered to be the most reliable overall.
+<li><B>Tycho2</B>. Positions at epoch (1991.5) tied to the Hipparcos catalogue. Proper motions based on comparison with old-epoch catalogues.
+<li><B>PPMXL </B>This catalogue is a combination of the USNO-B1, and the 2MASS, catalogues, adjusted to refer to the ICRS by way of the PPMX catalogue. It is particularly relevant for fainter stars (mag >12), but provides no additional useful information for brighter stars. If the PPMXL position has been taken from PPMX, the 3<sup>rd</sup> flag will be set to 'P'. If the star is in both PPMXL and PPMX, and the 3<sup>rd</sup> flag in PPMX is 'O', the PPMXL position may be preferable. <ul>The time interval used for the proper motion determination for faint stars can be estimated from the Mean Epoch of a position, on the basis that the epoch of the 2MASS position will be near the year 2000. That is, the proper motion interval will be twice the difference between the mean epoch and the year 2000. </ul>
+<li><B>PPMX </B>An expanded and updated version of the PPM catalogue. Referenced to Hipparcos system, but is based on positions from a range of catalogues. It appears to have a high dependency on UCAC2 positions.
+
+<li><B>CMC15</B>. Linked to Hipparcos system. Epoch generally more recent that UCAC. Formal uncertainty in position at epoch almost as good as UCAC catalogues. Its value is limited by the absence of proper motions. However it may give more reliable magnitudes.
+
+<li><B>2MASS </B>- 2 Micron All Sky Survey. Positional accuracy is quite variable. Some positions are of similar precision to the UCAC positions, while others are <I>much </I>worse.. The main limitation is the absence of proper motions. Epoch is generally around 2000. However it is a truly independent source of positions.
+
+<li><b>UGPS</b>. The UKIDSS Galactic Plane Survey. This is is a 1868 deg<sup>2</sup> imaging survey covering Galactic latitudes |<I>b</I>| &#60 5&#176 (mainly north of the equator)  in the J, H and K filters using the Wide Field Camera (WFC) on the UK Infrared telescope on Mauna Kea (Hawaii). Importantly, it covers the region where the ecliptic crossses the galactic plane in the Saggitarius region.  Useful for TNO occultations of faint stars. Coverage is for the galactic plane between RA 17 48m to 22h 50m - which includes the ecliptic region in Sagitarius. There is also coverage between about 4h and 5h (extending south of the galactic plane), and between 6h 3m and 7h 20m. Coverage is indicated <a href="http://cdsarc.u-strasbg.fr/viz-bin/w/Footprint?catid=2316&-gal&-z&8" target = blank>here</a>.
+
+<li><b>IPHAS2</b>. The INT/WFC Photometric H&#945 Survey of the Northern Galactic Plane (IPHAS). This is is a 1800 deg<sup>2</sup> imaging survey covering Galactic latitudes |<I>b</I>| &#60 5&#176 and longitudes <i>l</i> = 30&#176 to 215&#176 in the r, i and H&#945 filters using the Wide Field Camera (WFC) on the 2.5-metre Isaac Newton Telescope (INT) in La Palma. Useful for TNO occultations of faint stars. Coverage is for the galactic plane between RA 18 49m to 6h 52m - which includes the ecliptic region in Taurus and Gemini.  Coverage is indicated <a href="http://cdsarc.u-strasbg.fr/viz-bin/w/Footprint?catid=2321&-gal&-z&8" target = blank>here</a>.
+
+<li><B>PPM</B>. The last pre-Hipparcos catalogue. Because it is not linked into the Hipparcos system, it suffers from all the systematic and zonal errors of pre-Hipparcos catalogues. Because of this it is of minimal value (and is not pre-checked).
+<li><B>USNO-B1</B>. Based on scans of Schmidt plates. Proper motion determinations are poor, and the epochs are generally fairly old - resulting in the uncertainty for current epochs being large. Generally it is of little value (and is not pre-checked).
+<li><B>NOMAD</B>. A hierarchical compilation of catalogue positions, The preferential order is Hipparcos, UCAC2, Tycho2, USNO-B1, YB6 and 2MASS. As a result, any positions should merely be a repeat of a position form one of the other catalogues - and is therefore of little value (and is not pre-checked).  <I>[Note YB6 refers to 'unpublished' data from scans of NPM and SPM plates performed at Flagstaff.]</i>
+<li><B>CMC14</B>. Earlier version to CMC15, with less sky coverage. 
+</I></ul>
+
+<h2>Magnitudes</h2>
+The star's magnitude is relevant in two ways. (i) will the observer be able to find the star with their equipment, and (ii) will they be able to detect the expected magnitude drop. Generally speaking astrometric catalogues are not a source of photometric data - so there can be significant variation in the magnitudes listed. Priority should be given to Hipparcos, Tycho2 and FK6, followed by CMC14 and PPMX. UCAC magnitudes are less reliable.
+
+<h2>Catalogue uncertainties</h2>
+The listed data gives the uncertainties in position and proper motion at the relevant catalogue epoch, and the corresponding uncertainty at the current epoch (under the heading 'total').
+<p>It needs to be understood that the uncertainty values represent the consistency of the data used to generate the positions and proper motions. For example it is quite possible for two catalogues to have similar uncertainties in position and proper motion, but to have quite different proper motion values (and hence positions at current epoch) because of a different selection of source catalogues for the proper motion determination.
+
+<p>As a general proposition, a star with significantly smaller uncertainties in proper motion should be preferred over stars with a larger uncertainty - even if the uncertainty in position at the current epoch is similar. The smaller proper motion uncertainty is an indicator of a more reliable proper motion determination. Similarly, and more generally, stars with smaller uncertainties should be preferred over stars with significantly larger uncertainties.
+ 
+<p>For catalogues without proper motions (CMC14, 2MASS, IPHAS2), the uncertainty at current epochs is essentially the unspecified proper motion from Epoch until now. In a 10-year period, this will typically be several tenths of an arcsec. Where the proper motions from other catalogues is consistent, it may be appropriate to apply the same proper motion - scaled to be for the period from the epoch of the CMC14, 2MASS or IPAS2 position until the present date.
+
+<p>The uncertainty data  is plotted as an uncertainty ellipse if the <B>Star Uncertainty </B>box is checked. If that box is cleared, the plot shows the proper motion over the preceding 10 years.
+
+<h2>Flag issues</h2>
+If a flag is set, there is additional information in that may be relevant bto the assessment of the catalogues. To get full details of thee xtra information it will frequently be necessary to consult the full listing of eth star in VizieR. Do this by right-clicking on the relevant line, and select the one available option - show star in VizieR. this will open a browser window with the catalgue entry displayed.
+
+<p>The issues to be expected when any of the flags are shown are as follows:
+<table columns =2 border = 1>
+<TR><TH>Flag</TH><TH>Issues</TH></TR>
+<TR><td>D - double</td><td>There is a flag set in the catalogue that indicates the star is a double, or might be a double. This includes a wide range of situations depending on the catalogue. There is no presumption that the star is a resolved double star, or has an entry in the WDS or the 6th Interferometric catalogs. Details of the data elements in the various source catalogues that are used to trigger this flag are listed below. For 2MASS, the flag is set to '?' if the star is in a Tile overlap region, and there is one source within 2" of the position in the overlapping tile.</td></tr>
+<tr><td>V - variable</td><td>This flag is only set for the Hipparcos catalogue.</td></tr>
+<tr><td>O - other</td><td>This flag indicates there is something in the source catalogue that in some manner affects the reliability of the position. The exact details can only be determined by identifying the relevant data item in the source catalogue - by displaying the entry in VizieR. Details of the data elements in the various source catalogues that are used to trigger this flag are listed below.
+<p>For the PPM catalogue, this flag is used to indicate the basis of the star's entry in PPMX, and which thereby gives an indication of reliability. The codings are:
+<li><b>S</b> 5.6 million stars brighter than 12.8, which have been independantly surveyed. PPMX provides an independant reference for these stars</b>
+<li><b>H</b> a small group of additional stars where an old-epoch position was available in the Astrographic catalogue. The proper motion of these stars should be 'good'</b>
+<li><b>O</b> 11 million stars, with positions being derived from other sources. For such stars, the PPMX catalogue does not provide independant positions and proper motions, and should be disregarded in any comparison.</li>
+<p>For the UGPS and IPHAS2 catalogues, a ' ' indicates the object is a clear point source, and a '?' indicates the source is likely to be extended.. 
+</td></tr>
+<tr><td># - number of catalogues or positions</td><td>The figure given here has the following significance<ul>
+<li>UCAC4, UCAC3, UCAC2, and PPMX provides the number of catalogues used to derive the proper motions. 
+<li>PPMXL provides the number of observations used to derive the proper motions.
+<li>URAT1, CMC14 and IPHAS2 provides the number of measures used to derive the position, and 
+<li>USNO-B1 provides the number of 'detections' used to derive the catlogue entry.
+</ul>For UCAC3, UCAC2 and PPMX and PPMXL, this value is very useful for understanding the basis of the proper motion. As a general principle, the larger the number of catalogues used, the more reliable the proper motion should be. Note that when dealing with a small number of catalogues, the use of extra catalogues can both improve proper motion reliability and  at the same time make the formal uncertainty of the proper motion worse. This is consistent with the statistics of small samples - with the larger formal uncertainty being a better representation of the 'real' uncertainty.</td></tr>
+
+</table>
+
+<h2>Consistency issues</h2>
+The following observations may be made....<ul>
+<li>Often the plots of UCAC2 and UCAC3 stars show a divergent motion that appears to have a common origin. The common origin reflects the common source of the catalogue position. The divergent motion reflects the use of different catalogue data for determining the proper motion.
+<li>Divergent large proper motions may indicate unreliable old catalogue positions for proper motions. And this creates a corresponding uncertainty in current positions. In these situations it may be better to ignore the proper motions, and look at the trends in catalogue positions
+<li>Where the proper motions from several catalogues are similar, and one is different, you can't simply assume that the odd-one-out is incorrect. For example: if most catalogues determine the proper motion by using a particular old catalogue, and that old catalogue is in error, then all those catalogues will have a common error in the proper motion - and a catalogue that did not use that old catalogue for proper motion may give the correct motion. 
+<li> a useful indicator of prediction reliability is probably the extent to which the scatter of the star positions extends across-track. If the scatter is essentially along-track with little cross-track scatter, there is an increased likelihood that an occultation will occur in the predicted region. On the other hand, a scatter that is largely across-track may indicate a decreased probability of an occultation occurring in the predicted region. <B>IMPORTANT</B>. When assessing the scatter, totally disregard the proper motion lines, and focus entirely on the positions of the stars as indicated by the circles.
+</ul>
+
+<h1>How the flags are set</h1>
+The following sets out the details of the data elements of the various catalogues that are used to set the flags. This will assist users to identify the relevant details in the source catalogue when displayed in VizieR. 
+
+<H3>Hipparcos 2</h3>
+Double flag set if <B>Nc</B> greater than 1, or the first field in <B>Sn</B> is either 1 or 4<br>
+Variable flag set if the first field of <B>Sn</B> is 2<br>
+Other flag is set if the second field of <B>Sn</B> is 5 or 8.<br>
+# flag not set<br>
+
+<H3>FK6</h3>
+Double flag set if <B>Kbin2</B> = 2, or the first field in <B>Kbin1</B> is one of 2, 3, 4 or 6.<br>
+Variable flag is set if <B>f_Vmag </B>is 1 or 2<br>
+Other flag is set if the first field in <B>Kbin1</B> is one of 2, 3, 4 or 6.<br>
+# flag not set<br>
+
+<H3>URAT1</h3>
+Double flag is not set<br>
+Variable flag  is not set<br>
+Other flag is not set <br>
+# flag set to value in <B>Niu</B>. If value greater than 99, flag is set to 99.<br>
+
+<H3>UCAC4</h3>
+Double flag is set to 'd' if <B>db</B> is greater than 10 (component of a 'good' double star), is set to '*' if <B>db</B> has values in the range 2 and 9 (component of a 'good' double star), and set to '?' if <B>db</B> = 1 (elongated image but only one peak.<br>
+Variable flag  is not set<br>
+Other flag is set if <B>db </B>is one of 1 or 7<br>
+# flag set to value in <B>Nc</B>. If value greater than 99, flag is set to 99.<br>
+
+<H3>UCAC3</h3>
+Double flag set if <B>db</B> is one of 2, 3, 4, 5 or 6<br>
+Variable flag  is not set<br>
+Other flag is set if <B>db </B>is one of 1 or 7<br>
+# flag set to value in <B>Cu</B>. If value greater than 99, flag is set to 99.<br>
+
+<H3>UCAC2</h3>
+Double flag is not set<br>
+Variable flag  is not set<br>
+Other flag is not set <br>
+# flag set to value in <B>Nc</B>. If value greater than 99, flag is set to 99<br>
+
+<H3>Tycho2</h3>
+Double flag set if <B>CCDM </B>has a value, posflag is either 'P' or 'D', or pflag is 'd'<br>
+Variable flag  is not set<br>
+Other flag is set if <B>pflag </B>is 'X'<br>
+# flag not set<br>
+
+<H3>PPMXL</h3>
+Double flag is not set<br>
+Variable flag  is not set<br>
+Other flag is set to <B>P</B> if bit 1 or 2 of <B>fl </B>is set.<br>
+Other flag is set to <B>?</B> if bit 0 of <B>fl </B>is set.<br>
+# flag is set to <B>No</B>. If No greater than 99, value is set to 99. <br>
+
+<H3>PPMX</h3>
+Double flag is not set<br>
+Variable flag  is not set<br>
+Other flag is set to sub.<br>
+# flag is set to <B>Nobs</B>. If Nobs greater than 99, value is set to 99. <br>
+<p> The significance of the values in the Other flag are:<br>
+<li><B>S</B> = a survey S of stars brighter than R=12.8, consisting of 5,620,114 stars <br>
+<li><B>H</B> = 874,934 stars fainter than the survey limit have measurements in the AC and therefore highly accurate proper motions <br>
+<li><B>O</B> = all other stars (11,593,871). <br>
+
+<H3>CMC15</h3>
+Double flag is not set<br>
+Variable flag  is not set<br>
+Other flag is set if <B>f_CMC14</B> is '*'<br>
+# flag is set to <B>Na</B>. If Na greater than 99, flag is set to 99. <br>
+
+<H3>2MASS</h3>
+Double flag set to "?" if dup flag is '1', and 'd' if dup is greater than '1'<br>
+Variable flag  is not set<br>
+Other flag is set if <B>Aflg </B>is 1, <B>Cflg </B>is one of p, c, d, s or b, or <B>Xflag </B>is either 1 or 2<br>
+# flag not set<br>
+
+<H3>UGPS</h3>
+Double flag is not set<br>
+Variable flag  is not set<br>
+Other flag is set to blank <B>p*</B> is greater or equal to 0.90. Else it is "?"; and <br>
+# flag is not set.<br>
+
+<H3>IPHAS2</h3>
+Double flag is not set<br>
+Variable flag  is not set<br>
+Other flag is set to blank if <B>a10point</B> is 1. Else it is "?"; and <br>
+# flag is set to <B>nObs</B>.<br>
+
+<H3>PPM</h3>
+Double flag set if <B>Flag2 </B>is 'D'<br>
+Variable flag  is not set<br>
+Other flag is set if <B>Flag1 </B>is P or C<br>
+# flag is set to <B>Npos</B>. If the value is greater than 99, it is set to 99.<br>
+
+<H3>USNO-B1</h3>
+Double flag is not set<br>
+Variable flag  is not set<br>
+Other flag is set if <B>Flags </B>is 's'<br>
+# flag is to <B>Ndet</B>. If the value is greater than 99, it is set to 99.<br>
+
+<H3>NOMAD</h3>
+[The flag information for this catalogue are written in hexadecimal, with fields being labeled in the catalogue documentation.]<br>
+Double flag set if either <B>TYCONF </B>or <B>BSCONF </B>is set<br>
+Variable flag  is not set<br>
+Other flag is set if any of <B>UBBIT</B>, <B>TMBIT</B>, <B>SPIKE </B>or <B>BSART </B>are set.<br>
+# flag not set<br>
+
+<H3>CMC14</h3>
+Double flag is not set<br>
+Variable flag  is not set<br>
+Other flag is set if <B>f_CMC14</B> is '*'<br>
+# flag is set to <B>Na</B>. If Na greater than 99, flag is set to 99. <br>
+
+
+</BODY>
+</HTML>

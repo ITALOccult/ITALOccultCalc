@@ -1,0 +1,220 @@
+;'/html/2012 Jun  6 Transit Earthmaps.png
+l)/html/2015 Mar 8 Eclipse Mutual Event.png
+6=/html/2015 Mar 8 Occultation for Mutual Events of Jupiter.png
+i8/html/2015 Mar 8 Shadow for Mutual Events of Jupiter.png
+'/html/2015May21 IIIecl1 LightCurves.png
+z$/html/2015May21 IIIecl1 TimePlot.png
+)/html/2022Nov8Lunar eclipse Earthmaps.png
+t&/html/2022Nov8Lunar eclipse shadow.png
+/html/Animated GIFs.htm
+/html/Animated GIFs_files/
+0/html/Animated GIFs_files/colorschememapping.xml
+:&/html/Animated GIFs_files/filelist.xml
+Y(/html/Animated GIFs_files/themedata.thmx
+!/html/AOTA analyse anomalous1.png
++!/html/AOTA analyse anomalous2.png
+/html/AOTA Analyse.htm
+/html/AOTA FinalTimes.htm
+/html/AOTA Find events.htm
+/html/AOTA Fourier.htm
+/html/AOTA Hints and Tips.htm
+-&/html/AOTA integration and binning.htm
+--------------------------------------------------------------------------------
+l)/html/2015 Mar 8 Eclipse Mutual Event.png
+6=/html/2015 Mar 8 Occultation for Mutual Events of Jupiter.png
+i8/html/2015 Mar 8 Shadow for Mutual Events of Jupiter.png
+'/html/2015May21 IIIecl1 LightCurves.png
+z$/html/2015May21 IIIecl1 TimePlot.png
+)/html/2022Nov8Lunar eclipse Earthmaps.png
+t&/html/2022Nov8Lunar eclipse shadow.png
+/html/Animated GIFs.htm
+/html/Animated GIFs_files/
+0/html/Animated GIFs_files/colorschememapping.xml
+:&/html/Animated GIFs_files/filelist.xml
+Y(/html/Animated GIFs_files/themedata.thmx
+!/html/AOTA analyse anomalous1.png
++!/html/AOTA analyse anomalous2.png
+/html/AOTA Analyse.htm
+/html/AOTA FinalTimes.htm
+/html/AOTA Find events.htm
+/html/AOTA Fourier.htm
+/html/AOTA Hints and Tips.htm
+-&/html/AOTA integration and binning.htm
+/html/AOTA Integrity.htm
+--------------------------------------------------------------------------------
+/html/FileFormat Earth2014.htm
+/html/FileFormat EOP.htm
+/html/FileFormat GAIA.htm
+""/html/FileFormat Geoid Heights.htm
+/html/FileFormat GoogleMaps.htm
+/html/FileFormat GSC Fields.htm
+c$/html/FileFormat Hipparcos Index.htm
+/html/FileFormat J6 to J13.htm
+/html/FileFormat Kepler2.htm
+/html/FileFormat Kepler2_files/
+5/html/FileFormat Kepler2_files/colorschememapping.xml
+:+/html/FileFormat Kepler2_files/filelist.xml
+^-/html/FileFormat Kepler2_files/themedata.thmx
+/html/FileFormat LOLA.htm
+a"/html/FileFormat Lunar Archive.htm
+'/html/FileFormat Lunar observations.htm
+,,/html/FileFormat LunarArchive Reductions.htm
+K(/html/FileFormat LunarArchive Vizier.htm
+/html/FileFormat Maria.htm
+/html/FileFormat Moon_yyyy.htm
+/html/FileFormat MoonSeries.htm
+--------------------------------------------------------------------------------
+/html/FileFormat EOP.htm
+/html/FileFormat GAIA.htm
+""/html/FileFormat Geoid Heights.htm
+/html/FileFormat GoogleMaps.htm
+/html/FileFormat GSC Fields.htm
+c$/html/FileFormat Hipparcos Index.htm
+/html/FileFormat J6 to J13.htm
+/html/FileFormat Kepler2.htm
+/html/FileFormat Kepler2_files/
+5/html/FileFormat Kepler2_files/colorschememapping.xml
+:+/html/FileFormat Kepler2_files/filelist.xml
+^-/html/FileFormat Kepler2_files/themedata.thmx
+/html/FileFormat LOLA.htm
+a"/html/FileFormat Lunar Archive.htm
+'/html/FileFormat Lunar observations.htm
+,,/html/FileFormat LunarArchive Reductions.htm
+K(/html/FileFormat LunarArchive Vizier.htm
+/html/FileFormat Maria.htm
+/html/FileFormat Moon_yyyy.htm
+/html/FileFormat MoonSeries.htm
+/html/FileFormat Nutation.htm
+--------------------------------------------------------------------------------
+/html/FileFormat LOLA.htm
+a"/html/FileFormat Lunar Archive.htm
+'/html/FileFormat Lunar observations.htm
+,,/html/FileFormat LunarArchive Reductions.htm
+K(/html/FileFormat LunarArchive Vizier.htm
+/html/FileFormat Maria.htm
+/html/FileFormat Moon_yyyy.htm
+/html/FileFormat MoonSeries.htm
+/html/FileFormat Nutation.htm
+4!/html/FileFormat Observations.htm
+#/html/FileFormat Occelmnt files.htm
+/html/FileFormat PPMXL.htm
+/html/FileFormat SAO_XZ.htm
+/html/FileFormat SAO_ZC.htm
+Y//html/FileFormat SatellitesEphemerisSources.htm
+/html/FileFormat Sites.htm
+/html/FileFormat StarDia.htm
+Y)/html/FileFormat StarDiameterAnalysis.htm
+$/html/FileFormat Tycho2 creation.htm
+/html/FileFormat Tycho2.htm
+/html/FileFormat U1 to U5.htm
+--------------------------------------------------------------------------------
+j~3s
+Il{=
+Kko?
+7{_%
+M_7S
+>uK;
+C@$ m
+LU!,
+QmPeJ
+We"cQ
+]XMl!
+]^XP:
+ 3^<
+#,S9P`K
+lH+/
+Qhs)
+!Ri^
+QHXk
+_`RY
+|Yf!
+2N$\l/
+--------------------------------------------------------------------------------
+<@&]
+{t|m
+HlnT&
+5h6S
+D>\z
+`t?8
+DCtpeo
+n'{;?
+b"g]
+!C>R
+XXml
+2bOq
+AJT"
+zw)F
+x`Yk
+ca.OM`
+ne{dN
+?a61
+FX6o?aMP
+eZD)
+)w-=
+--------------------------------------------------------------------------------
+Apdi_,wqX
+p.RM
+N-h\k
+G D]]{
+^=m"I;#
+.9d(
+$joG
+fq"2B
+9HeX
+1^eg
+eayXML
+82&S
+?@k=
+u@WB
+&0aX)
+i"QO
+>A^ 
+Xg3&
+%xe;
+Y~m/
+H:uI
+--------------------------------------------------------------------------------
+5o&Xh6,
+@]N#j
+}Nc2P,
+Y>Vf_
+/$Rf
+U0/a
+|7D/
+:`(AA
+YQ5?
+LlQ"
+XMl[
+.-/wom
+Kp41
+4[R5
+_8]6<
+i0+V[
+k^Ml
+) Vw
+#*/+#B
+}(|*
+!PaW'
+--------------------------------------------------------------------------------
+RPw'N
+@kv[
+bsX2
+/*tV$
+p9;du
+H&Y,,
+LK6+
+Cl![
+STv/
+q3+3
+Jxml
+-L(1
+.L?]
+g=yX=zNe
+TjnN
+ve6
+tSD*
+:=8J]
+a;t?
+^|OT*!
+,VIW
+--------------------------------------------------------------------------------

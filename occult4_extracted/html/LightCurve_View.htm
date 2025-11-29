@@ -1,0 +1,277 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>View a Light Curve</Title>
+<style type="text/css">
+.auto-style2 {
+	color: #0000FF;
+}
+.auto-style4 {
+	color: #FF0000;
+	background-color: #FFFFDF;
+}
+.auto-style8 {
+	color: #800000;
+}
+.auto-style9 {
+	color: #008000;
+}
+.auto-style10 {
+	margin-left: 40px;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>View a Light Curve</H1>
+The light curve viewer can be opened as follows:
+<li>From the Asteroid Observations tab, click <span class="auto-style2">View light curves</span></li>
+<li>From the Lunar observations tab, click <span class="auto-style2">View a light curve</span></li>
+<li>From the Asteroid Observations editor, click <span class="auto-style2">List... Display Star Light curve (if any are available)</span></li>
+<li>From the Asteroid Observations editor, if a plot of light curves is displayed when an event is opened, by clicking 
+<span class="auto-style2">Open Light curve viewer</span> from the top of that display</li>
+<li>From Lunar occultation predictions. When light curves are available for a star, that fact will be flagged in the lunar occultation predictions - with an asterisk immediately after the 'v' magnitude. 
+
+See <a href="#Lunar">example below</a><p>
+<p><img src="LightCurveViewer.png" width="500" border="2">
+<p>
+
+<p>There is also functionality to plot multiple light curves on a single form 
+(hereafter referred to as the <span class="auto-style2"><strong>Multi-plot form</strong></span>), which will be referred to below. Such a plot is:<p>
+
+&nbsp;<img src="LightCurveMultiPlot.png" width="500" border="2">
+
+
+<p>Light curves in this form are limited to just the information shown in each 
+plot. To get a detailed view of the light curve, use the menu option View... A 
+light curve, by record number
+
+</body>
+
+<p>When the form is opened, all light curve from the main file of light curves, 
+as well as reports prepared by you but not yet submitted. With Administrator 
+use <strong>pending submitted light curves</strong> and <strong>light curves 
+marked for deletion</strong>) are automatically loaded.</p>
+<p>&nbsp;</p>
+<h2>Light curve files 'behind the scenes'</h2>
+<p>The light curve viewer manages the following sets of light curves</p>
+<ul>
+	<li>the main collection of light curves - held in a single file
+	<span class="auto-style2">Occult 4\LightCurves\Lightcurves.txt</span>.</li>
+	<li>your collection of light curves you have submitted - held as 
+	individual light curve files, in <span class="auto-style2">Occult 4/Observations/LightCurves/Reported</span></li>
+	<li>your collection of light curves you have prepared but not yet submitted 
+	- held as 
+	individual light curve files, in <span class="auto-style2">Occult 4/Observations/LightCurves</span></li>
+	<li>for administrator use - the collection of light curve files received but 
+	not yet added to the main collection</li>
+</ul>
+<p>The <span class="auto-style8">Light curve viewer</span> assumes your un-reported light curve files are located in the 
+Occult 4 sub-directory <span class="auto-style2">Occult 4/Observations/LightCurves</span>, 
+and your reported light curve files are in the subdirectory<span class="auto-style2"> Occult 4/Observations/LightCurves/Reported.</span> The light curves will be automatically managed from these locations if you use Occult to generate and submit the light curve files. If you are using other tools, you will have to move the files to these locations in order to view them in the Viewer.</p>
+
+<p>The file name of the light curve file is constructed as: AAAAA_yyyymmddhhmmss-ss.txt<ul>
+<li>AAAAA is an identifier. For lunar occultations, it is the star number. For asteroidal occultations it is the asteroid number [surrounded by brackets ( ) ]</li>
+<li>the date/time of the first point in the light curve.&nbsp; yyyy = year; mm=month; dd = day; hh = hour; mm = minute; ss_ss 
+= seconds. Leading zeros must be included</li>
+	<li>ends with the extension .txt</li>
+</ul>
+
+<H2>&nbsp;</h2>
+<H2>Light curve plot</h2>
+<p>The horizontal axis of the plot has tick-marks along it. They are spaced at 
+intervals of 1, 5 or 10 seconds, depending on the duration of the light curve.</p>
+<p>The light curve files represent the light curves over a fixed range, with the 
+top of the light curve being at the same level irrespective of the brightness of 
+the star.</p>
+<p>A line of text at the top left of the plot gives the event date, star or asteroid identifier, and 
+observer.</p>
+<p>A line of text at the bottom of the plot provides the record number in the main file, or (for administrators) an index number 
+of the relevant file of submitted light curves. <span class="auto-style8"><em>
+[Note. The record number for any one light curve will change with each update of 
+the file of light curves.]</em></span> When viewing light curves you 
+have submitted, or light curves not yet submitted, the file name is also 
+included.</p>
+<p>On the menu bar of the plot, there is a check box <strong>Show Time + height</strong>. If this 
+is checked, the UT and cursor height above zero for the location of the cursor 
+are displayed with the cursor. The check status of this setting is retained 
+between sessions.</p>
+<p>When multiple light curves are plotted (which are displayed on a different 
+form), the plot format is the same. the multiple plots are drawn two to a row. 
+The multiple pot is limited to 600 light curves. If your selection involves more 
+than 600 light curves, you will be asked to indicate how many light curves you 
+want to plot (maximum of 600), and the index number of the first.</p>
+
+<p>By default, the plot is scaled to the form width. However for the single 
+light curve plot you can change the 
+plot scale at the bottom left of the form. The scale can range from 0.20 to 
+30.00, with specific options of 1, 5, 10 and 15.<p>A check box
+<span class="auto-style2">show skipped frames</span> at the bottom left of the 
+form, when checked, will highlight any frames that are missing from the light 
+curve. This can occur when the camera output or recorder is unable to keep up 
+with the exposure rate being used. It is an uncommon situation. However it is 
+important to know whether there are any skipped frames near the event.<p></p>
+<h2>Copying the light curve graphic</h2>
+<p>You can copy the light curve graphic using the menu item,&nbsp; 
+<span class="auto-style9"><strong>With 
+displayed light curve... Copy</strong></span> This will place the graphic on the 
+Clipboard ready to be pasting into other software, such as <strong>Paint</strong> 
+or <strong>Word</strong>.</p>
+<p>The image that is copied is of the entire light curve, even if it extends 
+beyond the display area on the form.</p>
+<p>&nbsp;</p>
+<h2>Viewing the displayed light curve in AOTA</h2>
+<p>&nbsp;Any light curve displayed on the Light Curve Viewer can be transferred to 
+AOTA for display and analysis, using the menu item 
+<span class="auto-style9"><strong>With displayed light curve... Display in AOTA.</strong></span> 
+All the usual functions of AOTA can be applied to the light curve. This can be useful for 
+reviewing event times, and applying the <strong>Short duration event</strong> 
+test in <strong>AOTA</strong>. <span class="auto-style4">HOWEVER</span> precise 
+event times depend on how camera corrections have been incorporated in the light 
+curve data when it was created. And for the Short duration test there are no 
+comparison stars - which adversely affects the numeric value of the assessment.</p>
+<p>&nbsp;</p>
+<h1>Viewing light curves</h1>
+
+<p>&nbsp;There are two means of selecting a light curve to view:</p>
+<ul>
+<li>Select the star using the options in the group at the bottom right of the form; or</li>
+<li>Use the menu bar options</li></ul><p></p>
+<h2>Using the options at the bottom right of the form</h2>
+<img src="LightCurveViewerSelections.png"><br>The options available are
+6 star catalogues (Hip, SAO, Tyc2, UCAC4, XZ and ZC), asteroid number, and 
+observer name.<p>When one is selected, the drop-down box below those options 
+will list:</p>
+<ul>
+	<li>for selection based on star catalogue, all the events involving stars from the selected catalogue - 
+sorted by catalogue number. </li>
+	<li>for selection based on asteroids, all events involving asteroids - 
+sorted by asteroid number.</li>
+	<li>for selection based on observer names - all observers containing the 
+characters specified in the 'name contains' box - sorted by date. </li>
+</ul>
+<p>To display an event, simply select the relevant line in the drop-down box.
+
+<p>The light curve is displayed, together with details of the star; date and 
+observer; and the asteroid number and name, or lunar occultation details.</p>
+<h3>Selecting by observer name</h3>
+<p>To view light curves from an observer, the program first needs to create a list of all light curves meeting the criteria for specifying the observer. In the box headed 'Index name' at the bottom-right of the form, insert a character string to identify the observer. The character string must be at least 3 characters long. Upper and lower case are treated the same. Avoid using initials or punctuation characters unless you are confident about consistency of their use for the observer of interest. Press <I>Enter </I>to create the index; all events matched to the search string are listed in the drop-down box - giving star number, date (month 
+&amp; year) and observer name. The events are sorted by event date.
+
+<h3>Plotting multiple light curves</h3>
+<p>You can additionally plot all light curves associated with either the 
+selected star number, asteroid number, or observer name, by clicking <strong>
+Plot all of selected star</strong> [or <strong>Plot all with selected name</strong>] 
+They are plotted in a form two light-curve plots wide, and up to a total of 600 
+light curves. If there are more than 600 light curves, you will be asked to 
+specify the range to be plotted.
+<p>
+<h2>Using the View... menu item</h2>
+<p>The <span class="auto-style2"><strong>View...</strong></span>&nbsp;&nbsp; 
+menu item provides functionality for a more-direct access to light curves. The 4 
+options provided are:<h3 class="auto-style2">A light curve, by record number</h3>
+<p>This is used when you have displayed multiple light curves in the 
+multi-plot form. With this option, simply enter the record number that is given 
+at the bottom left of the plot, and press enter, or click the OK button. In the 
+illustration of the multi-plot form at the start of this Help topic, the record 
+numbers are 3509, 8503 and 9193<h3 class="auto-style2">A light curve, selected by asteroid number</h3>
+<p>This is the most convenient way to select a light curve associated with a 
+particular asteroid. When selected, enter the asteroid number in the box 
+provided. As you enter digits, the form will display all the available light 
+curves for the asteroid number as presently keyed in. The list gives the 
+asteroid number, event date, and the observer(s) - so each light curve should be 
+uniquely identifiable. When you have specified the correct number, double-click 
+on the relevant light curve, and it will be displayed<h3 class="auto-style2">My xxx unsubmitted light curves</h3>
+<p>The menu item should indicate the number of unsubmitted light curves you 
+have. Click this item, and the light curves are displayed on the
+<span class="auto-style2">Multi-plot</span> form. These light curves cannot be 
+displayed on the Light Curve Viewer<h3 class="auto-style2">My yyyy reported light curves</h3>
+<p>The menu item should indicate the number of&nbsp; light curves you 
+have submitted. Click this item, and the light curves are displayed on the
+<span class="auto-style2">Multi-plot</span> form. If you have submitted more 
+than 600, you will have to specify the number of the first light curve to 
+display. These light curves cannot be displayed on the Light Curve Viewer
+<p>&nbsp;
+<h2><a name="Lunar"></a>Viewing light curves from Lunar predictions</h2>
+<p>When light curves are available for a star, that fact will be flagged in the lunar occultation predictions - with an asterisk immediately after the 'v' magnitude. To view the light curves, right-click on the prediction, and select 'Observed light curves' 
+. This is an option which is only available when a light curve is flagged as 
+being available.<br>
+<img src="LightCurve_FromLunar.png" width="300">
+<p>The Light Curve viewer form lists all instances of the star in the drop-down box at the bottom right of the Light curver viewer form. Click any entry to view the light curve and its associated details.<p>
+<img src="LightCurveViewer_Lunar.png" width="500">
+<h1><br class="auto-style8"><span class="auto-style8">Admin functions</span></h1>
+<img src="LightCurve_Admin.png" width="200" border="2"> <p>These options are 
+used to manage submitted light curves, and to edit both submitted light curve 
+files, and light curves in the Main file.<p>The functions are:<ul>
+	<li><strong>Re-read all light curves.</strong> Needed after the Main file 
+	light curves have been edited &amp;/or the submitted light curves have been 
+	edited.</li>
+	<li><strong>Reread Submitted light curves.</strong> Needed after submitted 
+	light curves have been edited.</li>
+	<li><strong>Merge submitted light curves into the Main file </strong>- 
+	described below</li>
+	<li><strong>View... </strong>&nbsp;5 options for viewing submitted light 
+	curves</li>
+	<li><strong>Edit... </strong>&nbsp;an option to edit the Main file, or all 
+	submitted files</li>
+	<li><strong>Manage Embargoes</strong> - provides time-based settings to 
+	withhold light curves from being merged into the main file [This has its own 
+	Help topic]</li>
+</ul>
+<p>
+<h2>Processing submitted light curves</h2>
+<p>The process for dealing with submitted light curves is:<ul>
+	<li>Files relevant to the processing are:
+<br>* <B>LightCurves.txt </B>file (otherwise referenced as the <strong>Main file</strong>), being the distributed file containing all 
+	light curve files. <br>* The individual submitted light curve files <br>* a set of 'consolidation files', being zipped groups of submitted light curve files that have been 
+	added to the <B>LightCurves.txt </B>file, and
+	<br>The 
+	main purpose of the processing is to update and maintain the <B>LightCurves.txt 
+	</B>file. Secondary to this process is maintaining the originally reported 
+	files. </li>
+	<li>As light curve files are received, the individual files must be placed in the directory<B> {Occult 4}\LightCurveReports</B>.<li>all&nbsp; submitted light curves can be viewed using 	<B>AAdmin Functions.... View&nbsp;&nbsp; ... in a group:xx pending submitted light curves</B> This 
+	will display all the submitted light curves on a single form.<li>when a sufficient number are received, they are checked for errors using
+	<strong>Admin functions... Edit&nbsp; ... xx submitted light curves</strong>, as set out in the <a href="Light%20Curve%20Editor.html">Light curve editor</a>.</li>
+	<li>After the submitted light curves have been checked, and edited as needed, they are consolidated into 
+	the main file&nbsp;using the menu item <B>Admin functions... Merge submitted light-curves 
+	into the Main file.</B> This process will:</li></ul>
+
+<li>
+<ul>
+	<p class="auto-style10">* Create a combined data set of the existing and submitted files
+		<br>* seek confirmation of the intention to merge
+	<br>* rename the existing main file to <strong>{Occult 4}\LightCurves\LightCurves_yyyymmdd_n.txt
+	</strong>- as a backup.
+	<strong>yyyymmdd</strong> is the date of renaming. <strong>n </strong>is a 
+	sequential number if there are more than one files created on that date.&nbsp; <br>* write the new file of light curves 
+	<strong>{Occult 4}\LightCurves\LightCurves.txt</strong><br>* in the directory <strong>{Occult 4}\LightCurveReports </strong>combine all the light curve reports that have been added to the main file into the file 
+	<strong>&nbsp;{Occult 4}\LightCurveReports\Consolidations\Consolidation#nnn.txt</strong>, zips all those files into 
+	<strong>{Occult 4}\LightCurveReports\Zipped Source Files\Consolidation#nnn.zip</strong>, 
+	(where nnn is a sequential number), and deletes all the individual files.
+	</p>
+</ul>
+</li>
+<ul>
+	<li>The resulting <strong>{Occult 4}\LightCurves\LightCurves.txt </strong>file is the file to be distributed to Occult users, 
+	and submitted to <strong>VizieR</strong><br></li>
+</ul>
+	
+&nbsp;<h2>Light curve distribution</h2>
+The light curve data is distributed in 2 ways:<ul type=1>
+	<li><B>To Occult users</B>. Simply zip the LightCurves.txt file in the <B>{Occult 4}/LightCurves/</B>directory into a zip file called 
+	<B>lightcurves.zip</B>,  and make it available for download from the Occult download site.
+	<li><B>To VizieR</B>, to update the VizieR catalogue <B>B/occ</B>.  This is strictly an administrator function role, and the person taking on this role will need to establish a relationship with VizieR. However the update process simply involves providing VizieR with the
+	<B>lightcurves.zip</B> file.</ul>
+<h2>Taking on the role of managing the light curves</h2>
+
+<p>Anyone taking over the role of managing the light curves will likely not have the set of consolidation files the previous person may have created. The work-around for this is to copy the latest available version of the file 
+<B>{Occult 4}\LightCurves\LightCurves.txt</B> to <strong>{Occult 4}\LightCurveReports\Consolidation#000.txt&nbsp;
+</strong>(ensuring there are no other consolidation files in the directory). This will ensure they have 
+a full back file of light curves available, with newly submitted light curves being added by way of new consolidation files created as described above.
+
+</BODY>
+</HTML>

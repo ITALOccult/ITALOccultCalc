@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>AOTA Set time scale</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+<h2>AOTA Help topics</h2>
+<a href="AOTA%20Overview.htm">Overview and form layout</a><br><br>
+<a href="AOTA%20Read%20and%20integrate.htm">Tab 1. Read, Integrity, Set time, Bin and Normalise</a><br>
+<a href="AOTA%20Fourier.htm">Tab 2A. Fourier plot</a><br>
+<a href="AOTA%20Short.htm">Tab 2B. Short event check</a><br>
+<a href="AOTA%20Find%20events.htm">Tab 3. Find events</a><br>
+<a href="AOTA%20Select%20to%20analyse.htm">Tab 4. Select event to analyse</a><br>
+<a href="AOTA%20Analyse.htm">Tab 5. Analyse</a><br>
+<a href="AOTA%20FinalTimes.htm">Tab 6. Camera corrections, final results</a><br><br>
+<a href="AOTA%20Integrity.htm">Integrity check</a><br>
+<a href="AOTA%20Integration%20and%20binning.htm">Integration, binning & normalisation</a><br>
+<a href="AOTA%20Set%20time%20scale.htm">Set time scale</a><br>
+<a href="AOTA%20Verify.htm">Verify event times</a><br>
+<a href="AOTA%20VTI%20info.htm">VTI information</a><br><br>
+<a href="AOTA%20Hints%20and%20Tips.htm"><B>Hints and Tips</B></a><br>
+
+
+<H1>AOTA Set time scale</H1>
+<h3>Important</h3>
+<p>The correct allocation of time is critical to the video analysis. If you make a mistake completing this form, there is no 'undo' functionality. While many mistakes can be corrected by simply re-doing an action, some mistakes cannot be undone in this manner. <font color=red><B>The safest way to handle a mistake is to start again by re-loading the recording.</B></font>
+<p><img src="AOTA_SetTimes.png"><p>
+
+
+This form provides for the manual specification of the time in the video.
+
+<p>The box at the middle-left provides a list of all frame IDs in the video measurement, and the time currently associated with that frame.
+
+<p>To set the time, select  a frame for which the UTC is known - making sure it is highlighted. Enter the UTC for the <B>START </B>of the frame <B>output </B>from the camera, in the boxes provided, and click <B>Set this time for the selected frame</B>. That time will now appear in the box. Now click the relevant button under the frame listing box to fill the table according to NTSC or PAL frame rate.
+
+<p>Most likely the actual frame rate of the recording will differ slightly from the theoretical rate - and this can become significant if the recording runs for a minute or more. Scroll down the frame list to near the end - without 'selecting' a frame. Identify a frame for which the time is known. In the middle of the form there is an up-down box to set the frame rate (in frames per second). Change the frame rate slightly, and click the <B>Fill table using the frame rate specified below.</B> This will re-fill the table using the original reference time, but with that slightly different frame rate. Repeat adjusting the frame rate and re-filling the table, until the time for this later frame agrees with the known time for that frame.
+
+<p>A particular variation  can arise with a video measured with Tangra. Under some circumstances (see below), Tangra will give a time stamp for just two frames, with the remaining times being set to zero. In this case, you will automatically be taken to this form after the data has been loaded. In the list of frames and times, the first frame that has a time stamp will be highlight, and the ecnter of the form will change to:<p>
+<img src="AOTA_SetTimes_Tangra.png">
+<p>In this case, the frame rate as displayed has been calculated using the two time stamps from Tangra - and all you need do is click <B>Fill table with....</B> without changing that frame rate.
+
+<p>If the absolute time is unknown, simply fill the table with either the NTSC or PAL frame rate, using 00 00 00.000 as the time for the first entry. This will result in the final times being referenced to the start of the recording.
+
+<p>When you are satisfied that you have set the time scale, click <B>Exit </B>when done.
+
+
+<h2>Times from Tangra</h2>
+When a video is measured with Tangra, the times generated from Tangra (either in a .csv file, or via a direct call to AOTA) refer to the mid-point of the corresponding measurement. AOTA adjusts the times to refer to the start of that measurement.
+
+<p>Within Tangra, the user has options to bin (integrate) measurements. When this occurs the apparent frame rate of the measurements will be a fraction (eg &#189, &#188 &#8230) of the NTSC or PAL frame rate.
+
+<p>When setting the times within Tangra, Tangra will report if the time stamps are inconsistent with the espected frame rate. If the user chooses to procede, Tangra will not  associate a time with each frame; rather it will merely time stamp the two frames near the start and end of the video for which the user has specified the times. In this situation, the yellow-boxed text in the above form will be displayed, and the corresponding frame rate will be set.  Click <b>Fill table using the frame rate above</b> to set the times.
+<p><B>IMPORTANT</B>. There are two reasons for Tangra not allocating times to each frame.<ul>
+<li>the camera is operating at a frame rate significantly different from the expected PAL or NTSC frame rate. In this situation, the times for each frame will be correctly set by this process.
+<li>the video recording is missing one or more frames - usually caused by the recording equipment being unable to keep up with processing the video stream. In this situation the correct time can only be determined by inspecting the time stamp on the video frames at the location of each event. </ul>
+
+<h3>VTI information</h3>
+A box is provided that gives basic information about how the most common VTIs time-stamp a video recording - to assist you with identifying which time stamp should be used to specify the start time for the output of a frame or field. For most VTI's, the time required is one of the displayed time stamps. For the TIM-10 (formerly CUNO) a small correction needs to be <I>ADDED</I> to the time stamp..
+
+
+
+
+</BODY>
+</HTML>

@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Prepoint stars</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Prepoint stars</H1>
+
+<p>There can be many situations where the observer may have difficulty in pointing their telescope at the star to be occulted. For 
+example:<ul>
+<li>The observer may have an alt-az telescope and have trouble finding the star field;
+<li>The observer  may be able to point the telescope in roughly the right 
+direction but have trouble star-hoping to the star;
+<li>the observer might leave the telescope unattended, observing at a different location.</ul>
+
+<p>The concept of Pre-point stars enables you to point the telescope well before the event using an easy-to-find star - 
+and then using the Earth's rotation to bring the occulted star into the center of the field of view at the time of the occultation. Specifically, if you can identify a bright star of almost the same declination, then pointing the telescope at that star at a certain time before the event - and then leaving the telescope stationary - will bring the occulted star into the field of view at the predicted time of the occultation.
+
+<p>This form generates a list of 'prepoint' stars for an occultation. In generating this list, full allowance is made for precession. The controls on the form are:
+<P align=center><img src="Asteroid%20Prepoint%20controls.png">
+
+<p><table columns=3 border=1>
+<TR><TH NOWRAP>Item</TH><TH>Significance</TH></TR>
+<TR><TD>Faint star limit</TD><TD>Set the magnitude of the faintest star to be included in the list, and the maximum difference in 
+	declination. Usually this will be a relatively small difference in declination - such as 5 arc mins.</TD></TR>
+<TR><TD>Bright star limits</TD><TD>Since bright stars are easier to find but less common, you can include bright stars with a larger declination difference. Set here the magnitude limit for a 'bright star', and the maximum declination difference.</TD></TR>
+<TR><TD nowrap>Lead time</TD><TD>This sets the number of hours before the occultation that the list should 
+	accommodate. </TD></TR>
+<TR><TD>Event time</TD><TD>The basic output in the list is the time offset prior to the predicted event at which the telescope must be pointed at a star. For general predictions this is the only sensible way of providing the list. But for personal predictions, or 
+	predictions for a specific location, you can enter here the predicted time of the event - and the table will directly give the UT at which the telescope must be pointed at the stars.</TD></TR>
+</table>
+
+<p>An example list is as follows:
+<pre>
+   Occultation of 2UCAC 23247490 by 
+       52 Europa on 2007 Oct 10 
+           Pre-point stars
+
+  Time                J2000         Dec
+ Offset    Star    RA       Dec   Offset
+ h  m  s    mag   h   m     o  '  ArcMin
+
+ 0  0  0   11.7  19 12.9  -21 43   star
+ 0  0 27    6.4  19 12.5  -21 40   -3.0  
+ 0  2 20    8.8  19 10.6  -21 40   -2.2  
+ 0  3  9    2.9  19  9.8  -21  1  -41.1  
+ 0  4 42    8.6  19  8.2  -21 47    4.9  
+ 0  4 53    8.4  19  8.0  -21 42   -0.8  
+ 0  8 12    3.8  19  4.7  -21 44    2.0  
+ 0 15  5    8.3  18 57.8  -21 44    2.0  
+ 0 15  9    3.5  18 57.7  -21  6  -36.0  
+ 0 17 45    5.0  18 55.1  -22 40   57.9  
+ 0 18 52    5.7  18 54.0  -21 22  -20.7  
+</pre>
+
+<p>The meaning of each column is:
+
+<table columns=3 border=1>
+<TR><TH NOWRAP>Column</TH><TH>Comments</TH></TR>
+<TR><TD>Time Offset </TD><TD>Point the telescope at the star at exactly this time before the 
+predicted local time of the occultation</TD></TR>
+<TR><TD>Star mag</TD><TD>the particular star's magnitude</TD></TR>
+<TR><TD>RA</TD><TD>The star's J2000 RA</TD></TR>
+<TR><TD>Dec</TD><TD>The star's J2000 declination</TD></TR>
+<TR><TD>Dec offset Arcmin</TD><TD>This gives the declination offset from the particular star to get to the declination of the occulted star. A '-' indicates that you should center the telescope's field of view that many arc-minutes south of the prepoint star. Because of the effects of precession, it is critical that the distance listed here is used, and not the difference in the J2000 declination.
+</TD></TR>
+</table>
+
+<p>The first line of the list gives the details of the occulted star.
+
+<p>In this example, the star at RA 19  4.7, Dec  -21 44 would be an excellent choice for a manned telescope. It is bright (mag 3.8), and the declination offset is only  2.0 arc mins. The observer would locate the star well before the event. Then at 8mins 12secs before the predicted local time of the occultation, the observer would make sure the telescope was pointing about 2 arcs mins north of the star - and then make the telescope stationary.  The occulted star will then drift into the field of view at the time of the occultation.
+
+</BODY>
+</HTML>

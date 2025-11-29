@@ -1,0 +1,216 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>XZDoubles Editor</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>XZDoubles Editor</H1>
+<p>When the editor is opened, both the <B>XZDoubles </B>and <B>XZDoubles Discoveries</B> files are loaded into memory. The initial display is of the entries in XZDoubles file; clicking the <B>O</B>button, or the menu item <B>OCC star Maintenance...  OCC star editor </B>switches the display to the entries in the <I>Occultation Discoveries </I>file.
+
+<P>To use this editor, it is assumed that you are familiar with the <A href="FileFormat%20XZDoubles.htm" target=_blank>content</a> of the <B>XZDoubles.dat </B>file, as well as the content of the  <A href="FileFormat%20XZDoubles%20Discoveries.htm" target=_blank>content</a> of the <B>XZDoubles Discoveries.dat </B>file. No further explanation of the data fields is provided here.
+
+<h3><font color=red>Important. This editor works by reading both XZDoubles and XZDoublesDiscoveries into memory. All editing is done on the data in memory. The files used in Occult are only changed when you Save the files in this editor.</h3> <font color=black>
+
+<h1>Updating processes</h1>
+The primary repository of double star information is the <B>Washington Double Star </B>catalogue, and the <B>Interferometric Catalog</B>. These catalogues are updated on a regular (more often monthly) basis by US Naval Observatory. Consequently the double star file XZDoubles.dat needs to be regularly updated so that it contains the latest available information.
+
+<p>In addition, occultation observations lead to the discovery of new double stars. These need to be processed in a manner such that they reach the WDS or the Interferometric catalogues, and get picked up in XZDoubles. The arrangements for managing the double stars are as follows (with it being assumed that the user has downloaded the latest WDS and Interferometric catalogues.)
+
+<p> <font color=red>
+<B>IMPORTANT. Before undertaking an update, make sure you read and understand ALL the advice given below <font color=black>
+
+</B>
+<h2><font color=darkgreen>Updating XZ80Q<font color=black></h2>
+The double star details are linked to the XZ80Qcatalogue by way of a flag that is set in the XZ80 catalogue. Whenever new stars are added to the XZDoubles file, or the status of stars in the XZDoubles Discoveries file is set to 'Definitely not a double star', that change is not given effect in the prediction environment until the links in the XZ catalogue have been re-set.
+<p>To reset the links, simply select the <B>Re-index doubles </B>button on the Maintenance, MaintainXZ catalogue, form. This will take a short while. The program first goes through the file and removes all existing double flags. It then reads the XZDoubles file, determines the flags to be applied, and writes then to the XZ file. When this has completed, the <B>Create catalogue subsets </B>button on the Maintenance, MaintainXZ catalogue, form should be clicked - to create updated catalogue subsets. 
+
+
+<p> To distribute a full update of double star information, you need to package XZ80.dat, XZ80.inx, XZDoubles.dat, XZdoublesDiscoveries.dat, XZ80Mag4.dat, XZ80Mag7.dat, XZ80Mag9.dat and ZC.dat into a zip file called xz.zip, and upload it to the download site. Also the file downloadcontrol.txt that is on the download site needs to include a line like 
+<XZ>01082009
+The numbers are a date (format ddmmyyyy) that is later than the previous version of the file, and earlier (eg by 1 day) than the date of the current file. This is used to advise Occult users that an update to the XZ data is available.
+
+<h2><font color=darkgreen>Updating XZDoubles with WDS revised data<font color=black></h2>
+The WDS catalogue is updated at Vizier on a weekly basis. The catalogue is growing at a rate of about 8% per year, in addition to incorporating the latest measures. Experience indicates that over a period of 6 months, the WDS data for hundreds of stars in the XZ catalogue will be updated. 
+<p>To update the XZDoubles.dat file with the latest WDS data:<ul>
+<li>make sure the WDS file has been downloaded recently. [It is updated at Vizier on a weekly basis.]
+<li>Open the XZDoubles editor. [Maintenance, Maintain XZCatalogue, Edit XZDoubles & Occultation Discoveries.]
+<li>At the bottom there a button <B>Update with current WDS</B>. This will replace entries matched to the WDS with the current WDS data. Click the button. The process will take a few seconds, and will redisplay the data when completed. Check that there have not been any obvious mishaps. Then Save the data [File, Save]. This will write the new data to the XZDoubles file.
+<li>In the <I>Downloaded Files </I>directory there will now be a file called <B>Unmatched WDS Stars.txt</B>. This contains a list of all pairs in XZDoubles that have not been matched to a WDS pair. The great majority of entries will be for OCC stars. The residual entries may be for stars that are in the Interferometric catalogue, or the<B> 6th Catalogue of Visual Binary Star Orbits</B>. The list should be scanned through to identify any pairs that should have been matched to the WDS - and then investigate why there has been no match. It may be that the pairing identification has changed, or a 3rd component added. Edit any such identfiers to match the current WDS (and if needed, add any new pairs), then re-run the WDS update.</ul>
+<p><B>NOTE 1</B> This update process relies on matching the double star name and component identifiers to those in the WDS catalogue. Occassionally the component identifiers are changed in the WDS. At this time (2010) the only way of detecting such changes is a manual check of each event.
+<p><B>NOTE 2</B> The update process replaces the data for the date, number of observations, PA, separation, magnitude, proper motions and BD number.
+
+<h2><font color=darkgreen>Updating XZDoubles with new WDS pairs<font color=black></h2>
+
+<li>Open the XZDoubles editor. [Maintenance, Maintain XZCatalogue, Edit XZDoubles & Occultation Discoveries.]
+<li>At the bottom there a button <B>Add new WDS entries</B>. This will add entries in the WDS to the list of double stars. The following ponts are to be noted:<ul>
+<li>When stars are added, they are marked with a '<B>#</B>' at the end of the normal WDS data line (before the data for orbits) to indicate the newly added lines. That marker is not saved.
+<li>The button <b>Next</b> at the bottom will selet the next line marked with this marker. This allows you to step through all lines that have been added, so that they can be reviewed.
+<li>A maximum of 50 entries will be added to the list on any run of the routine. This provides the user with a reasonable number of entries to review and then save (with loss of the flag character). After review, save the list. Then re-load the file to obtain a current list with no flag characters. Then click <B>Add new WDS entries</B> again, and repeat the process until there are no stars added. [Note. If you forget to Save and re-load, you will have to step though all the previously added entries and review them again.]
+<li>A list of stars waiting to be added will be found in the <I>Downloaded Files </I>directory in the file <I>WDS Stars not in XZDoubles.txt</I> . This file is updated whenever <B>Add new WDS entries</B> is clicked.
+<li>Whenever new entries are added, they must be reviewed to ascertain wherther there are any consequential actions reqiuired. Common situations where action is required are:<ul>
+<li>A known double star previously had two components. As a result, there will be no component identifiers. When a new component is found, there will typically be two new entries added. One for the AB pair, and one for the AC pair. One of those will correspond to the existing pair that has no component identification (but the discoverer code will be the same). In this situation, the earlier entry should be deleted.
+<li>The component identifiers of a known double have been changed. For example a pairing like 'Aa' might be changed to 'AF'. This will usually only occur in a system with several entries. Often you have to look hard to identify the previous entry that has been deleted. In these cases it usually helps to display the WDS entry for the star (by double-clicking on a line in the list.) 
+</ul><li>When deleting previous entries, the following must be kept in mind (and you will get a warning message if any of them apply):<ul>
+<li>Check that the XZ numbers for the added entry corresponds to the XZnumbers of the entry to be deleted. In particular, make sure the System Primary is consistent with other entries for the star.
+<li>If the entry to be deleted has the Mean position flag checked, make sure it is checked on the added entry. This is very important for calculating the offset of the components from the catalogue position for the star. 
+<li>Check for the presence of orbital elements. If the entry to be deleted has orbital elements, the best solution is to amend the star name and pairing in the edit area, to be the same as the added entry - and then  click <B>Replace Entry.</B> Then click the <B>Retrieve WDS data </B>button (located in the 2nd last line of controls) - which will retrieve the WDS data for that star, and populate the edit boxes - and then click <b>Replace Entry</b> to update the record. Now delete the entry that was added, to remove the duplicate (which has no orbital elements).
+
+</ul></ul>
+
+</B>
+<h2><font color=darkgreen>Updating XZDoubles with the latest Visual Binary Orbits<font color=black></h2>
+This update is perfored without user interaction. To update the Orbital elements:
+<ul><li>Make sure you have recently downloaded the catalogue of Visual Binary Orbits.
+<li>On the <B>Maintenance, Maintain XZCatalogue</B> form, click the button <B>Update XZDoubles with latest orbits</B>. This will update the file with the latest orbit data.</ul>
+<p>Points to note are:<ul>
+<li>If your copy of the Visual Binary Orbits file is more than 100 days old, the program will try to download a current version.
+<li>A copy of the XZDoubles.dat file as it existed before the update is maintained as XZDoubles.bup.</ul>  
+
+
+<h2><font color=darkgreen>Updating XZDoubles with changes to XZDoubles Discoveries<font color=black></h2>
+<B>For a completely new entry</B>. Follow the instructions below to enter the star details in XZDoubles Discoveries. Importantly, when the data is entered in the Discoveries editor, return to XZDoubles editor, complete the record information, and add the star.
+<p><b>Following revision of the XZDoubles Discovery file</b> When the XZDoubles Discovery file has been edited/updated, it is important that the  status flags set in XZDoubles Discoveries is carried through to the XZDoubles file. To do this, click the menu item<B>OCC star maintenance... Update XZDoubles using latest OCC data</B>. This should be done after any editing of the XZDoubles Discoveries file. <font color=red><B>IMPORTANT</B><font color=black>. This only updates the data for OCC stars that already exist in the XZDoubles file. It does not add new OCC stars to XZDoubles.
+
+<h2><font color=darkgreen>Updating XZDoubles with new OCC stars added to XZDoubles Discoveries<font color=black></h2>
+If the person maintaining the Occultation Discoveries file (the OCC stars list) is also maintaining the definitive copy of the <B>XZDoubles.dat</B> file, their XZDoubles.dat file will be updated whenever an OCC star entry is created - as explained in the next topic.
+
+<p>Where the person maintaining the XZDoubles.dat file is differnt to the person maintaining the OCC list, the following arrangement applies:<ul>
+<li>Whenever an OCC star entry is created, a copy of that star's entry in XZDoubles.dat is appended to a file called <B>XZDoubles_OCC_additions.dat </B>.
+<li>When a revised XZDoubles Discoveries file (the OCC list) is forwarded for uploading an update of XZDoubles, that file must be accompanied by the <B>XZDoubles_OCC_additions.dat </B> file.
+<li>The XZDoubles.dat file is updated for the OCC list changes as follows:<ul type=1>
+<li>the existing copies of <I>XZDoubles Discoveries.dat </I>and <I>XZDoubles_OCC_additions.dat </I>are replaced by the new versions.
+<li>from the XZDoubles editor, select the menu item <B>OCC star maintenance... Update XZDoubles with latest OCC data</B>. This will update existing entries of OCC stars in XZDoubles with any changes in status etc
+<li>from the XZDoubles editor, select the menu item <B>OCC star maintenance... Add OCC stars to XZDoubles, using latest 'Additions' file</B>. This will add newly created OCC stars to the end of the list of stars - with the last addition being displayed in the editor.
+<li>Review the added OCC star entries to make sure there are no obvious problems. If OK, click <B>Sort List</B>, followed by <B>File... Save</B>. This will result in a full update of XZDoubles with the latest OCC star entries</ul></ul>
+
+The menu item <B>OCC star maintenance... Create 'Additions' file of XZDoubles data for all OCC stars</B> will create a full list of OCC star data in the user's XZDoubles.dat file. For anyone responsible for editing the OCC list of stars, this option should only be run before they do <I>any </I>editing, as it will result in the loss of any data that is not in the current XZDoubles file.
+
+
+
+<h2><font color=darkgreen>Updating the status of stars in XZDoubles Discoveries, due to new observations, or updates in the Interferometric Catalog<font color=black></h2>
+<b>Updating as a result of new observations</b>
+<ul><li>Enter new observation dates
+<li>If a light curve is available - set the Light Curve evidence status
+<li>Review the Double Star status setting
+<li>Click Replace current OCC. Remember to save the file before exiting the editor. The changes will be lost unless the file is saved.</ul>
+
+<p><b>Check Interferometric catalogue for new observations that will change the status</b>
+To check for new observations in the Interferometric catalogue which might lead to a change in Double Star status of stars in XZDoubles Discoveries:
+<li>Click <B>List status mismatches with the interferometric catalogue</B>
+This will bring up a list that looks like:
+<pre>
+The Interferometric catalogue indicates following 
+OCC stars may be definitely double
+
+OCC609
+OCC1151
+OCC1219...
+
+
+The following OCC stars only have an occultation entry
+(or no entry) in the Interferometric catalogue, but a
+light curve shows the star to be definitely double
+
+OCC995
+
+
+The Interferometric catalogue does not provide any
+independent determination that the following
+OCC stars are definitely double
+
+OCC57   
+OCC464   ON I,10,108-110
+OCC555   ON V,7,184-186
+...
+OCC1145   close in XZ catalogue
+OCC1146   close in XZ catalogue
+...
+</pre>
+The stars in the 1st and 3rd lists should be manually inspected with the tools on the form, to determine whether the double star status for the star should be changed. In this exercise, it is VERY IMPORTANT to make sure that the  Interferometric entry corresponds to the star in XZDoubles Discoveries. Note that stars in the 3rd list include the information contained in the reference field. Most of the stars listed in the 3rd list are stars that were identified from a scan of the XZ80Q catalogue for stars closer than 10".
+<p>The 2nd list lists those stars where the evidence for a double star is unambiguous from an occultation, but there are no confirming observations from other observing techniques. Generally these will not require review. For all such stars, the Double Star status should also be set to 'definitely a double star.'
+
+<h2><font color=darkgreen>Processes for dealing with double star observations<font color=black></h2>
+The occultation environment is not the place for maintaining definitive records about double star observations. The relevant repository is the Washington Double Star (WDS) catalogue, and the Interferometric catalogue (IF).
+<p>Observations will not go into the WDS unless the observations are sufficient to triangulate a separation and position angle. However a single observation that gives a vector separation in a particular postion angle will get entered into the IF catalog.
+<p>For the interferometric catalogue, a clear negative observation can be as important as a positive observation.
+
+<p>To achieve entry into these catalogues, the process requested by the US Naval Observatory is for the double star observations to be 'published' in an appropriate journal - from which USNO will retrieve the observations, The journal recommended by USNO is the <A HREF="http://www.jdso.org/" target=_blank>Journal of Double Star Observations</A>. With discoveries, it would be appropriate for those involved with discovery, and any follow-up  investigations of past observations, to write a short paper for the JDSO. For single observations of known doubles, it may be appropriate for regional coordinators to prepare a paper listing such observations on an annual or quartely basis.
+
+<H1><BR><br>XZDoubles - Controls</h1>
+<h3>Find</h3>
+<p>To facilitate editing an entry in the file, there are two <B>Find </B>buttons to locate an entry. One uses the XZ number, while the other uses 
+the discover code and number. Enter the details, click Find, and the highlight will be located on the first star in the list that has an exact match (case insensitive). <B>IMPORTANT</B>: An XZ number can appear against more than one entry. Similarly a discoverer code and number can apply to more than one entry. So having found an entry using <B>Find</B>, it is still necessary to confirm that you have the correct pair. If it is not the correct pair, the correct pair should be located within a few entries.
+
+<H3>Add as New Entry</h3>
+<p>This will take the data displayed in the edit fields, and create a new entry. The entry will be located in a position ordered by its right ascension and declination. [Entries are sorted by increasing right ascension, and for a given RA, are sorted by increasing declination).
+
+<H3>Replace Entry</h3>
+<p>This will replace the data for the selected entry with the data displayed in the edit fields. You will get a confirmation warning before the data is replaced.
+
+<H3>Delete Entry</h3>
+<p>This will delete the selected entry. You will get a confirmation warning before the data is deleted.
+
+<h3>Retrieve WDS data</h3>
+This will retrieve the data in the WDS catalogue for the currently selected star, and populate the fields. If the WDS has not been downloaded within the previous 40 days (it is updated at Vizier monthly), the file will be downloaded. This will take a few minutes (it is over 13MB). <I>The file is downloaded into the Downloaded Files directory.</I>
+
+<p>To change the data in the record, you will need to click <I>Replace Entry</I>. 
+
+<h2>Update data in XZDoubles</h2>
+This group of commends provides for updating the data in XZDoubles based on the latest version of the WDS, and XZDoublesDiscoveries.
+<h3>Update with current WDS</h3>
+The updates the data in XZDoubles if the number of observations recorded in WDS for the star is greater than the number of observations listed in XZDoubles. The fields that are updated are dates, # of observations, PA, Separation, Magnitudes, proper motions and BD number.
+
+<h3>Add new WDS entries</h3>
+This adds pairings from the WDS that are not listed in XZDoubles.updates the data in XZDoubles if the pairing is listed in the WDS. 
+
+<h3>Next #</h3>
+This steps through added entries, for review purposes. 
+
+<h3>OCC Star Editor</h3>
+This swaps the displayed data and edit controls to that for the OCC star list.
+
+<h2>Menu item - OCC star maintenance</h2>
+<h3>Update XZDoubles using latest OCC data</h3>
+This updates all OCC entries in <I>XZDoubles </I>with the data in <I>XZDoublesDiscoveries </I>data. The potential changes that are made are:<ul>
+<li>If the star is marked as being definitely double, the WDS-type identifier included in <I>XZDoublesDiscoveries </I>replaces the identifier in <I>XZDoubles</I>. This creates a linkage to the WDS and Interferometric catalogue. If the identifier is <B>OCC</B>, the identifier in XZDoubles will also be <B>OCC </B>(all upper case). The linkage to <I>XZDoublesDiscoverers</I> is broken if the WDS identifier is changed from <B>OCC</B>.
+<li>If the star is marked as <I>Possible double</I>, the identifier is <I>XZDoubles </I>is set as <B>OCc</B>
+<li>If the star is marked as <I>Definitely not a double</I>, the identifier is <I>XZDoubles </I>is set as <B>OC*</B>
+</ul>
+
+
+<h2>XZDoubles Discoveries - Controls</h2>
+<p>In this file, the entries are sorted by their OCC number, which is allocated on discovery. There are two basic functions - Replace current entry, and 
+create a new entry. There is no provision for deletion of entries - once allocated, an OCC entry should remain in the file.
+
+<h3>Initialise new OCC entry</h3>
+<p>To create a new OCC entry<ul type=1>
+<li>Enter the XZ, SAO or ZC in the relevant box at the bottom left. Then click<B> Initialise new OCC entry</B>. The program will populate the edit boxes with data specific for that star, and make the other edit boxes blank.
+<li>Complete the data for the other edit boxes.
+<li>When done, click the <B>Add as new OCC </B>button. This will create a new entry in the list.
+<li>The <B>Add as new OCC </B> also changes the display back to the XZDoubles form, with certain details of the new OCC double star inserted in the edit boxes - ready for the star to be entered into the main file of double stars. Add any extra details for the star (such as separation and position angle), then click <B>Add as new entry</B>. This will complete the process of creating entries for the new star - both in XZDoubles Discoveries, and XZDoubles.</ul>
+
+<h3>Replace current OCC</h3>
+Select the star to be edited. Make the necessary changes to the data displayed in the edit boxes, and click <B>Replace current OCC</B>. You will get a confirmation warning before the data is replaced. Note that certain fields cannot be edited.
+
+<h2>Saving edited files</h2>
+<p>All edits are made to the data as displayed. Following any edit, it is necessary to save the changes... This is done by clicking the menu item  <B>File...  Save </B>- which saves either the<B> XZDoubles.dat </B>file, or the <B>XZDoubles Discoveries.dat </B>file, depending on which file is displayed.
+<p>If you attempt to close the form with unsaved changes, you will receive a waning message which will advise you of which data has not 
+been saved. If needed, change the display to the 'other' display, and Save.
+
+
+<h2>Setting status of an OCC star</h2>
+The regime for handling occultation discoveries is as follows:<ul>
+<li>When the star is detected as a possible double star, the star is entered in the list, with a status of 'Possible double'. This will appear in XZDoubles with the identifier <B>OCc</B>, which flags its status.
+<li>If the star is subsequently determined to not be a double star, the status is changed to 'Definitely not a double'. The Identifier in XZDoubles will become <B>OC*</B>.
+<li>If the star is determined to be a double, the details should be published in the Journal of Double Star Observations. From there, the details will be picked up in one or other of the WDS and Interferometric catalogues. When that occurs, the WDS/IF identifiert are entered against the star, and the status set to 'Definitely a double star'. The identifier in XZDoubles will change to the WDS identifier so entered.
+</ul><b>Note</b> The changes in status flag is not given effect in XZDoubles (and hence in occultation predictions) until you run the <B>Update all OCC star entries </B>from the XZDoubles editor.
+
+
+
+</BODY>
+</HTML>

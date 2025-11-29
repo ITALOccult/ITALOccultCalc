@@ -1,0 +1,248 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Observations</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1><A NAME="idh_4overview">Observations.dat<br> .Obs files</A></H1>
+<!-- Insert Header in above line -->
+<P>The Observations.dat file contains all the observations of asteroidal occultations. Files for individual events have the extension .OBS, and have the same file structure. The file has a fixed record-length file (151 bytes) with the following data structure:
+</P>
+
+<h3>Header - Line 1</h3>
+<table columns=3 border=1>
+<TR><TH NOWRAP>Columns  </TH><TH>Format  </TH><TH>Definition  </TH></TR>
+<TR><TD>0  </TD><TD> A1 </TD><TD> Header flag [= '*']  </TD></TR>
+<TR><TD>1 -20  </TD><TD>A20  </TD><TD> Asteroid number and name  </TD></TR>
+<TR><TD>21-29  </TD><TD>yyyymmdd_  </TD><TD> Year/month/day of the event. If event extends past 24hrs, specify the earlier date, and specify hours greater than 24h, as needed.  </TD></TR>
+<TR><TD>30-42  </TD><TD>A13  </TD><TD>Star number:<br>
+                     HIP xxxxx   Hipparcos number<br>4UCzzz-nnnnn&nbsp; UCAC4 
+	number<br>
+                     pppp-nnnnn-xu  Tycho2 number. The 'u' is a flag    	for the source of the coordinates. Blank =  	Tycho2; “u” = UCAC2<br>
+                     Bzzzz-nnnnnnn   USNO-B1.0 number <br><br>While the 
+	following catalogue identifiers are catered for, only one entry remains 
+	using one of these identifiers (as at 1 June 2018).<br>Nzzzz-nnnnnnn NOMAD 
+	catalogue number [one entry remains - 2008 Aug 24]<br>2Unnnnnnnn   UCAC2 number<br>
+	3UCzzz-nnnnn&nbsp; UCAC3 number<br>1UTzzz-nnnnn&nbsp; URAT1 number<br>
+	</TD></TR>
+<TR><TD>43-53  </TD><TD nowrap>hhmmss.ssss  </TD><TD>RA of star J2000, at epoch   </TD></TR>
+<TR><TD>54-64  </TD><TD> -ddmmss.sss </TD><TD> Dec of star J2000, at epoch  </TD></TR>
+<TR><TD>65-70  </TD><TD>_hh.h_  </TD><TD>Zero time for motions   </TD></TR>
+<TR><TD>71-78  </TD><TD>F8  </TD><TD>RA motion of asteroid  (sec/hr)   </TD></TR>
+<TR><TD>79-86  </TD><TD>F8  </TD><TD> 2nd order RA motion (sec/hr/hr)  </TD></TR>
+<TR><TD>87-93  </TD><TD>F7  </TD><TD>Dec motion of asteroid ("/hr)   </TD></TR>
+<TR><TD>94-100  </TD><TD>F7  </TD><TD>2nd order Dec motion ("/hr/hr)   </TD></TR>
+<TR><TD>101-107  </TD><TD>F7.4  </TD><TD>Parallax of asteroid (")   </TD></TR>
+<TR><TD>108-113  </TD><TD>F6.1  </TD><TD>Major axis of satellite (km)</TD></TR>
+<TR><TD>114-119  </TD><TD>F6.1 </TD><TD>Minor axis of satellite (km)</TD></TR>
+<TR><TD>120-125  </TD><TD>F6.1  </TD><TD>PA of axis of satellite </TD></TR>
+<TR><TD>126  </TD><TD>A1  </TD><TD>Gaia release version for star positions.<br>&quot; 
+	&quot; = Not&nbsp; known<br>&quot;0&quot; = Hipparcos2<br>&quot;1&quot; = DR1&nbsp; <br>&quot;2&quot; = DR2</TD></TR>
+<TR><TD>127-136  </TD><TD>I4, I3, I3  </TD><TD>Year, month and day of last update to any data item in the event record.   </TD></TR>
+<TR><TD>137</TD><TD>I1  </TD><TD>The 5th decimal character 
+	in secs of RA. Divide by 100000 and add to the secs of RA</TD></TR>
+<TR><TD>138</TD><TD>I1</TD><TD>The 4th decimal character in 
+	secs of declination. Divide by 10000 and add to the secs of Dec - before 
+	applying the sign of declination</TD></TR>
+<TR><TD nowrap>139-148  </TD><TD>I4, I3, I3 </TD><TD>Year, month and day of last edit of any observation record in the event record   </TD></TR>
+<TR><TD>149-150  </TD><TD>A2  </TD><TD>CR/LF sequence   </TD></TR>
+</table>
+
+<h3>Header - Line 2</h3>
+<table columns=3 border=1>
+<TR><TH NOWRAP>Columns  </TH><TH>Format  </TH><TH>Definition  </TH></TR>
+<TR><TD>0  </TD><TD>A1  </TD><TD> Header flag [= '#']  </TD></TR>
+<TR><TD> 1-6 </TD><TD> F6.2 </TD><TD>Mv of star   </TD></TR>
+<TR><TD> 7-12 </TD><TD>F6.2  </TD><TD> Mv of asteroid  </TD></TR>
+<TR><TD>13-17  </TD><TD>A5  </TD><TD>Asteroid diameter (km)   </TD></TR>
+<TR><TD> 18 </TD><TD>A1  </TD><TD> blank  </TD></TR>
+<TR><TD> 19-24 </TD><TD>F6.1  </TD><TD>X coordinate of best-fit ellipse (km)   </TD></TR>
+<TR><TD>25-30  </TD><TD>F6.1  </TD><TD>Y coordinate of best-fit ellipse (km)   </TD></TR>
+<TR><TD>31-36  </TD><TD>F6.1  </TD><TD>Major axis of best-fit ellipse (km)   </TD></TR>
+<TR><TD>37-42  </TD><TD>F6.1  </TD><TD> Minor axis of best-fit ellipse (km)  </TD></TR>
+<TR><TD>43-48  </TD><TD>F6.1  </TD><TD>PA of major axis of best-fit ellipse   </TD></TR>
+<TR><TD>49-54  </TD><TD>F6.1  </TD><TD>PA of 2nd star   </TD></TR>
+<TR><TD>55-60  </TD><TD>F6.1  </TD><TD>Separation of 2nd star (milli-arcsecs)   </TD></TR>
+<TR><TD>61-62  </TD><TD>A2  </TD><TD> blank  </TD></TR>
+<TR><TD>63  </TD><TD>A1  </TD><TD> Code for fit quality<ul>
+                       0  not fitted<br>
+                       1  UT only [no fit, just relative location of
+                          star and asteroid]<br>
+                       2  poor fit<br>
+                       3  good fit<br>
+                       4  excellent fit</ul>
+  </TD></TR>
+<TR><TD>65-70  </TD><TD>F6.1  </TD><TD> Standard deviation - Major axis (km)  </TD></TR>
+<TR><TD>71-76  </TD><TD> F6.1 </TD><TD>Standard deviation - Minor axis (km)   </TD></TR>
+<TR><TD>77-82  </TD><TD>F6.1  </TD><TD>Standard deviation - PA of Major axis (deg)   </TD></TR>
+<TR><TD>83-88  </TD><TD>F6.1  </TD><TD> Standard deviation - Separation (milli-arcsecs)  </TD></TR>
+<TR><TD>89-94  </TD><TD>F6.1  </TD><TD>Standard deviation - PA of 2nd star (deg)   </TD></TR>
+<TR><TD>95-100  </TD><TD>F6.1  </TD><TD>Standard deviation - centre of ellipse - X (km)   </TD></TR>
+<TR><TD>101-106  </TD><TD>F6.1  </TD><TD>Standard deviation - centre of ellipse - Y (km)   </TD></TR>
+<TR><TD nowrap>107-109  </TD><TD>A3  </TD><TD>blank   </TD></TR>
+<TR><TD nowrap>110-118  </TD><TD>A9  </TD><TD>Kepler2 project - EPIC ID for the star </TD></TR>
+<TR><TD>119  </TD><TD>I1  </TD><TD>Include Miss events in solution   </TD></TR>
+<TR><TD> 120 </TD><TD>I1  </TD><TD> Solve for major axis (1 = yes)  </TD></TR>
+<TR><TD>121  </TD><TD>I1  </TD><TD>Solve for minor axis (1 = yes)   </TD></TR>
+<TR><TD>122  </TD><TD>I1  </TD><TD>Solve for PA of major axis (1 = yes)   </TD></TR>
+<TR><TD>123  </TD><TD>I1  </TD><TD> Solve for separation of 2nd star (1 = yes)  </TD></TR>
+<TR><TD>124  </TD><TD>I1  </TD><TD> Solve for PA of 2nd star (1 = yes)  </TD></TR>
+<TR><TD>125  </TD><TD>I1  </TD><TD>Solve for a circular solution (1 = yes)   </TD></TR>
+<TR><TD>126-133  </TD><TD>A8   </TD><TD>blank  </TD></TR>
+<TR><TD nowrap>134-141 </TD><TD>A8  </TD><TD>Date of MPC publication  yyyymmdd   </TD></TR>
+<TR><TD>142-148  </TD><TD>A7  </TD><TD>MPC circular number  nnnnnnn    </TD></TR>
+<TR><TD>149-150  </TD><TD>A2  </TD><TD>CR/LF sequence   </TD></TR>
+</table>
+
+
+<h3>Header - Line 3</h3>
+<table columns=3 border=1>
+<TR><TH NOWRAP>Columns  </TH><TH>Format  </TH><TH>Definition  </TH></TR>
+<TR><TD>0  </TD><TD>A1  </TD><TD>Header flag [= '^']   </TD></TR>
+<TR><TD>1 - 11  </TD><TD>F11.6  </TD><TD>UT of event used to position the plot   </TD></TR>
+<TR><TD> 12 - 20 </TD><TD>F9.1  </TD><TD>Geocentric X of ellipse (km) at event time   </TD></TR>
+<TR><TD>21-28  </TD><TD>F8.1  </TD><TD>Geocentric Y of ellipse (km) at event time   </TD></TR>
+<TR><TD>29-38  </TD><TD>F10.1  </TD><TD>Geocentric X of ellipse (km) at conjunction   </TD></TR>
+<TR><TD>39-46  </TD><TD>F8.1  </TD><TD>Geocentric Y of ellipse (km) at conjunction   </TD></TR>
+<TR><TD>47-54  </TD><TD>F8.1  </TD><TD> Geocentric distance (km) at conjunction  </TD></TR>
+<TR><TD>55-60  </TD><TD>A6  </TD><TD>"  T = " </TD></TR>
+<TR><TD>61-64  </TD><TD>I4  </TD><TD>year   </TD></TR>
+<TR><TD>65  </TD><TD>A1  </TD><TD>blank   </TD></TR>
+<TR><TD>66-67  </TD><TD>I2  </TD><TD>month   </TD></TR>
+<TR><TD>68  </TD><TD>A1  </TD><TD>blank   </TD></TR>
+<TR><TD>69-78  </TD><TD>F10.7  </TD><TD>day at conjunction (dd.ddddddd)   </TD></TR>
+<TR><TD>79-84  </TD><TD>A6  </TD><TD>“ Sep =”   </TD></TR>
+<TR><TD>85-92  </TD><TD>F8.4  </TD><TD>Separation at conjunction (arcsecs)   </TD></TR>
+<TR><TD>93-97  </TD><TD>A5  </TD><TD>“ PA =”   </TD></TR>
+<TR><TD>98-105  </TD><TD>F8.3  </TD><TD> PA at conjunction (deg)  </TD></TR>
+<TR><TD>106-112  </TD><TD>A7  </TD><TD>“ dSep =”   </TD></TR>
+<TR><TD nowrap>113-118  </TD><TD>F6.1  </TD><TD>Uncertainty in separation (masec)   </TD></TR>
+<TR><TD>119-125  </TD><TD>A7  </TD><TD>“ dUT =”   </TD></TR>
+<TR><TD>126-134  </TD><TD>F9.7  </TD><TD> Uncertainty in UT of conjunction (days)  </TD></TR>
+<TR><TD>135-139  </TD><TD>A5  </TD><TD> “ N = ”  </TD></TR>
+<TR><TD>140-143  </TD><TD>I4  </TD><TD>Number of chords used in analysis   </TD></TR>
+<TR><TD>144-148  </TD><TD>A5  </TD><TD>blank   </TD></TR>
+<TR><TD>149-150  </TD><TD>A2  </TD><TD>CR/LF sequence   </TD></TR>
+
+
+</table>
+<h3>Observation lines</h3>
+An observation line is provided for each D/R observation for each observation.<br>
+Where an observer reports events from a double star, a separate line is required for each star component.
+<table columns=3 border=1>
+<TR><TH NOWRAP>Columns  </TH><TH>Format  </TH><TH>Definition  </TH></TR>
+<TR><TD>0-2  </TD><TD>A3  </TD><TD>Sequence number for observer   </TD></TR>
+<TR><TD>3 -39  </TD><TD>A37  </TD><TD>Observer identifier   </TD></TR>
+<TR><TD>40  </TD><TD>A1  </TD><TD>blank   </TD></TR>
+<TR><TD>41-51  </TD><TD NOWRAP>-DDDMMSS.SS  </TD><TD>Site longitude   </TD></TR>
+<TR><TD>52-60  </TD><TD>-DDMMSS.S  </TD><TD> Site latitude  </TD></TR>
+<TR><TD>61-65  </TD><TD>A5  </TD><TD> Site altitude (m)  </TD></TR>
+<TR><TD>66  </TD><TD>A1  </TD><TD>Code for Datum:<ul>
+                      &lt &gt= WGS84 <br>
+                       N = NAD1927<br>
+                       E = EP1950<br>
+                       T = Tokyo<br>
+                       G = GSBN80<br>
+                       * = unspecified, or other.</ul>   </TD></TR>
+<TR><TD> 67-69 </TD><TD>I3  </TD><TD>Telescope Aperture (cm)   </TD></TR>
+<TR><TD>70  </TD><TD>A1  </TD><TD>Telescope type<ul>
+                      &lt &gt= unstated<br>
+                       1 = Refractor<br>
+                       2 = Newtonian<br>
+                       3 = Schmidt-Cassegrain<br>
+                       4 = Dobsonian<br>
+                       5 = Binoculars<br>
+                       6 = Other<br>
+                       7 = None</ul>   </TD></TR>
+<TR><TD>71  </TD><TD>A1  </TD><TD>Stability<ul>
+                      &lt &gt= unstated<br>
+                       1 = Steady<br>
+                       2 = Slight flickering<br>
+                       3 = Strong flickering</ul>   </TD></TR>
+<TR><TD>72  </TD><TD>A1  </TD><TD>Transparency<ul>
+                      &lt &gt= unstated<br>
+                       1 = Clear<br>
+                       2 = Fog<br>
+                       3 = Thin cloud <2  [mag loss <2 mag.]<br>
+                       4 = Thick cloud >2 [mag loss >2 mag. <br>
+                       5 = Broken opaque cloud [that is, observed thru gaps in the cloud]<br>
+                       6 = Star faint<br>
+                       7 = By averted vision</ul>   </TD></TR>
+<TR><TD>73  </TD><TD>A1  </TD><TD>Time Source<ul>
+                      &lt &gt= unstated<br>
+                       1 = GPS - video inserted<br>
+                       2 = GPS - other linking<br>
+                       3 = Video + audio time signal<br>
+                       4 = Tape Recorder + time signal<br>
+                       5 = Eye-ear + time signal<br>
+                       6 = Stopwatch<br>
+                       7 = Radio broadcast - calibrated<br>
+                       8 = Other</ul>   </TD></TR>
+<TR><TD>74-82  </TD><TD>HHMMSS.SS  </TD><TD>UT of disappearance   </TD></TR>
+<TR><TD>83  </TD><TD>A1  </TD><TD>Event code.<ul>
+                       D for main star<br>
+                       d for 2nd star<br>
+                       G for moon with main star<br>
+                       g for moon with 2nd star<br>
+                       M for miss<br>
+                       C for Not Seen - e.g. because of cloud<br>
+                       P for data point based on predictions</ul>   </TD></TR>
+<TR><TD>84-87  </TD><TD>F4.2  </TD><TD>Accuracy for D (secs) - 3-sigma value   </TD></TR>
+<TR><TD>88-91  </TD><TD>F4.2  </TD><TD>Personal equation (secs)   </TD></TR>
+<TR><TD>92  </TD><TD>I1  </TD><TD> Weight for D (&lt &gt, 0 to 5)  </TD></TR>
+<TR><TD>93-101  </TD><TD>HHMMSS.SS  </TD><TD> UT of reappearance  </TD></TR>
+<TR><TD>102  </TD><TD>A1  </TD><TD>Event code.<ul>
+                       R for main star<br>
+                       r for 2nd star<br>
+                       B for moon with main star<br>
+                       b for moon with 2nd star<br>
+                       M for miss<br>
+                       C for Not Seen - e.g. because of cloud<br>
+                       P for data point based on predictions</ul>   </TD></TR>
+<TR><TD>103-106  </TD><TD>F4.2  </TD><TD>Accuracy for R (secs) - 3-sigma value    </TD></TR>
+<TR><TD>107-110  </TD><TD>F4.2  </TD><TD>  Personal equation (secs)  </TD></TR>
+<TR><TD>111  </TD><TD>I1  </TD><TD> Weight for R (&lt &gt, 0 to 5)  </TD></TR>
+<TR><TD>112  </TD><TD>A1  </TD><TD>Method code<ul>
+                     _  Visual, with PE applied<br>
+                     1  Visual, with predetermined PE applied (not observer's estimate)<br>
+                     2  Visual, no PE applied<br>
+                     3  Video with frame analysis<br>
+                     4  Video, photo, or photoelectric<br>
+                     5  Only duration timed<br>
+                     6  Drift scan methods (CCD, photo)<br>
+                     7  Preliminary times only</ul>   </TD></TR>
+<TR><TD>113  </TD><TD>A1  </TD><TD>Plot code<ul>
+                       &lt &gt= plot both<br>
+                        x = plot none<br>
+                        y = plot D only<br>
+                        z = plot R only</ul>
+   </TD></TR>
+<TR><TD>114-118  </TD><TD>F5.2  </TD><TD>Adjustment to time base of observer, to fit to other observations   </TD></TR>
+<TR><TD>119-148  </TD><TD>A30  </TD><TD>Free text comments   </TD></TR>
+<TR><TD>149-150  </TD><TD>A2  </TD><TD>CR/LF sequence   </TD></TR>
+</table>
+<p>At the end of each event there is a blank record.</p>
+
+
+<h3>Index file </h3>
+<p>The file Observations.inx is an index file for the Observations.dat file. The field definition for this file is as follows:</p>
+
+<table columns=3 border=1>
+<TR><TH NOWRAP>Columns  </TH><TH>Format  </TH><TH>Definition  </TH></TR>
+<TR><TD>0-3  </TD><TD>yyyy  </TD><TD>year of event. If observations extend past 24hrs, use the earlier date</TD></TR>
+<TR><TD>5-6  </TD><TD>mm  </TD><TD>month</TD></TR>
+<TR><TD>8-9  </TD><TD>dd  </TD><TD>day</TD></TR>
+<TR><TD>10-16  </TD><TD>I6  </TD><TD>asteroid number</TD></TR>
+<TR><TD>18-30  </TD><TD>A13  </TD><TD>asteroid name</TD></TR>
+<TR><TD>32-34  </TD><TD>I4  </TD><TD>number of observation records</TD></TR>
+<TR><TD>36-40  </TD><TD>I5  </TD><TD>record number in the file of the first header line for the event</TD></TR>
+
+<P></P>
+
+</BODY>
+</HTML>

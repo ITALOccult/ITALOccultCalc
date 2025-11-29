@@ -1,0 +1,26 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Email settings</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Email settings</H1>
+Occult provides functionality to send emails. This functionality assumes that your email service uses an SMTP server for outgoing emails. Occult communicates directly with the SMTP server to send emails - it does not use your normal Email software.
+
+<p>For most users, all that is required to enable sending Emails is the identification of your Email SMPT server.  This is done in the Maintenance tab, User Settings option, in the Internet; FTP URL's box. If the server is not set, you will be asked to specify it when you try to send an email.
+<p> The address of your email server will have been provided to you by your ISP. If you are not sure what it is, you can obtain it from your email application. For users of OutlookExpress, it can be found under 'Tools, Accounts, Mail - Properties button'. For Microsoft Mail it is found under 'Tools, Accounts - Properies button, Servers'.
+
+<p>For some users, additional 'Advanced' settings may be required. Only make settings in the Advanced Email settings area if you are sure they are needed. For most users, they should be left blank.<ul>
+<li>If the Email server requires authentication, you should enter the user name and password in the boxes provided.<br><br>
+<li>If your server requires an SSL connection, check the SSL box. You may also need to specify a Port - noting that the default Port is 25.
+<br><i>If your server requires an SSL connection and Port 465, but you cannot get a connection - try clearing the SSL check box and setting the Port to 587. Reason - the functionality provided in the Net framework is apparently TLS, which is the successor to SSL, and occassionally there may be incompatibilities. If Port 587 is available on the Server, you may be able to establish a non-SSL connection via this Port.</I></ul>
+
+<p>If you are using an Internat-based mail server (such as Hotmail or GMail) you might find that the email functionality does not work. In such cases you might try using software like <A  href="http://www.softstack.com/freesmtp.html"  target=_blank> <B>Free SMPTP server</B></a> which <I>might </I>enable the functionality to work (I haven't tested it!).
+
+</BODY>
+</HTML>

@@ -1,0 +1,139 @@
+\chapter{Costanti Fisiche e Dati di Riferimento}
+\label{app:costanti}
+
+\section{Costanti Fondamentali (CODATA 2018)}
+
+\begin{table}[htbp]
+\centering
+\caption{Costanti fisiche fondamentali}
+\label{tab:costanti_fisiche}
+\begin{tabular}{llc}
+\hline
+\textbf{Costante} & \textbf{Simbolo} & \textbf{Valore} \\
+\hline
+Velocità della luce & $c$ & $299792458$ m/s (esatto) \\
+Costante gravitazionale & $G$ & $6.67430 \times 10^{-11}$ m$^3$kg$^{-1}$s$^{-2}$ \\
+Unità astronomica & AU & $1.495978707 \times 10^{11}$ m (esatto) \\
+Parametro massa solare & $GM_{\odot}$ & $1.32712440018 \times 10^{20}$ m$^3$/s$^2$ \\
+Parametro massa terrestre & $GM_{\oplus}$ & $3.986004418 \times 10^{14}$ m$^3$/s$^2$ \\
+Anno giuliano & $T_J$ & $365.25$ giorni (esatto) \\
+Secolo giuliano & — & $36525$ giorni (esatto) \\
+\hline
+\end{tabular}
+\end{table}
+
+\section{Costanti Astronomiche IAU}
+
+\begin{table}[htbp]
+\centering
+\caption{Costanti astronomiche IAU 2015}
+\label{tab:costanti_iau}
+\begin{tabular}{llc}
+\hline
+\textbf{Costante} & \textbf{Simbolo} & \textbf{Valore} \\
+\hline
+Costante gravitazionale gaussiana & $k$ & $0.01720209895$ (AU$^{3/2}$/giorno/M$_{\odot}^{1/2}$) \\
+Tempo-luce per 1 AU & $\tau_A$ & $499.004783836$ s \\
+Obliquità J2000.0 & $\epsilon_0$ & $23°26'21''.406$ \\
+Raggio equatoriale (Terra) & $a_{\oplus}$ & $6378137.0$ m \\
+Schiacciamento (Terra) & $f$ & $1/298.257223563$ \\
+Raggio solare & $R_{\odot}$ & $696000$ km \\
+\hline
+\end{tabular}
+\end{table}
+
+\section{Offset delle Scale Temporali}
+
+\begin{table}[htbp]
+\centering
+\caption{Relazioni tra scale temporali (2025)}
+\label{tab:offset_temporali}
+\begin{tabular}{lc}
+\hline
+\textbf{Relazione} & \textbf{Valore} \\
+\hline
+TT - TAI & $+32.184$ s (costante) \\
+TAI - UTC & $+37$ s (dal 2017) \\
+TT - UTC & $+69.184$ s (corrente) \\
+TDB - TT & $\pm 1.658$ ms (periodico) \\
+UT1 - UTC & $-0.12$ s (2025-11-21, variabile) \\
+\hline
+\end{tabular}
+\end{table}
+
+\section{Masse Planetarie}
+
+\begin{table}[htbp]
+\centering
+\caption{Parametri massa planetari (JPL DE441)}
+\label{tab:masse_planetarie}
+\begin{tabular}{lcc}
+\hline
+\textbf{Corpo} & \textbf{$GM$ (km$^3$/s$^2$)} & \textbf{Massa/$M_{\odot}$} \\
+\hline
+Sole & $1.32712440018 \times 10^{11}$ & 1 \\
+Mercurio & $2.2032 \times 10^4$ & $1.660 \times 10^{-7}$ \\
+Venere & $3.2486 \times 10^5$ & $2.448 \times 10^{-6}$ \\
+Terra+Luna & $4.0350 \times 10^5$ & $3.040 \times 10^{-6}$ \\
+Marte & $4.2828 \times 10^4$ & $3.227 \times 10^{-7}$ \\
+Giove & $1.2669 \times 10^8$ & $9.548 \times 10^{-4}$ \\
+Saturno & $3.7931 \times 10^7$ & $2.859 \times 10^{-4}$ \\
+Urano & $5.7940 \times 10^6$ & $4.366 \times 10^{-5}$ \\
+Nettuno & $6.8351 \times 10^6$ & $5.152 \times 10^{-5}$ \\
+Luna & $4.9028 \times 10^3$ & $3.695 \times 10^{-8}$ \\
+\hline
+\end{tabular}
+\end{table}
+
+\section{Parametri Ellissoide WGS84}
+
+\begin{table}[htbp]
+\centering
+\caption{Sistema di riferimento geodetico WGS84}
+\label{tab:wgs84}
+\begin{tabular}{lc}
+\hline
+\textbf{Parametro} & \textbf{Valore} \\
+\hline
+Semiasse maggiore $a$ & $6378137.0$ m \\
+Schiacciamento $f$ & $1/298.257223563$ \\
+Semiasse minore $b$ & $6356752.314$ m \\
+Prima eccentricità al quadrato $e^2$ & $0.00669437999$ \\
+Seconda eccentricità al quadrato $e'^2$ & $0.00673949675$ \\
+Raggio medio & $6371008.8$ m \\
+\hline
+\end{tabular}
+\end{table}
+
+\section{Secondi Intercalari (1972--2025)}
+
+\begin{table}[htbp]
+\centering
+\caption{Cronologia secondi intercalari TAI - UTC}
+\label{tab:secondi_intercalari_completa}
+\begin{tabular}{lc|lc}
+\hline
+\textbf{Data} & \textbf{TAI-UTC (s)} & \textbf{Data} & \textbf{TAI-UTC (s)} \\
+\hline
+1972-01-01 & 10 & 1994-07-01 & 29 \\
+1972-07-01 & 11 & 1996-01-01 & 30 \\
+1973-01-01 & 12 & 1997-07-01 & 31 \\
+1974-01-01 & 13 & 1999-01-01 & 32 \\
+1975-01-01 & 14 & 2006-01-01 & 33 \\
+1976-01-01 & 15 & 2009-01-01 & 34 \\
+1977-01-01 & 16 & 2012-07-01 & 35 \\
+1978-01-01 & 17 & 2015-07-01 & 36 \\
+1979-01-01 & 18 & 2017-01-01 & 37 \\
+1980-01-01 & 19 & & \\
+1981-07-01 & 20 & \multicolumn{2}{l}{\textit{Corrente (2025): 37 secondi}} \\
+1982-07-01 & 21 & & \\
+1983-07-01 & 22 & & \\
+1985-07-01 & 23 & & \\
+1988-01-01 & 24 & & \\
+1990-01-01 & 25 & & \\
+1991-01-01 & 26 & & \\
+1992-07-01 & 27 & & \\
+1993-07-01 & 28 & & \\
+\hline
+\end{tabular}
+\end{table}

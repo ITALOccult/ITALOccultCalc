@@ -1,0 +1,533 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=utf-8">
+<Title>DAMIT</Title>
+<style type="text/css">
+.auto-style1 {
+	color: #006400;
+}
+.auto-style2 {
+	color: #FF0000;
+}
+.auto-style3 {
+	color: #0000FF;
+}
+.auto-style4 {
+	color: #901212;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Asteroid shape models from DAMIT and ISAM </H1>
+
+<p>This form provides ready access to all the shape models held within the DAMIT 
+and ISAM systems.</p>
+
+
+<h2>DAMIT</h2><ul> <li><B>DAMIT</B> = <B>D</B>atabase of <B>A</B>steroid <B>M</B>odels 
+	from <B>I</B>nversion <B>T</B>echniques. The database is operated by The 
+	Astronomical Institute of the Charles University <http://astro.troja.mff.cuni.cz> 
+	in Prague, Czech Republic. A paper describing DAMIT has been published by 
+	Durech et al., <I>DAMIT: a database of asteroid models</I>, 2010 A&amp;A 513, 
+	A46 <A href = "http://www.aanda.org/articles/aa/pdf/2010/05/aa12693-09.pdf" target = blank> 
+	(download PDF, 1.2 MB)</a>. <!-- "http://cdsads.u-strasbg.fr/abs/2010A%26A...513A..46D"--></ul>
+	<p>The DAMIT system was upgraded at the end of October 2019 to V3, with the 
+	V2 version of DAMIT ceasing at the end of March 2020. The changes 
+	implemented in V3 necessitated a major change in the way Occult handles 
+	DAMIT shape models. Specifically, rather than downloading images of the 
+	shape model for a specified date + time, Occult now generates the image 
+	locally. This results in a huge improvement in performance, as well as 
+	independence from internet connectivity. Associated functionality is 
+	described below.</p>
+	<h2>ISAM</h2>
+<ul><li><B>ISAM</B> = <B>I</B>nteractive <B>S</B>ervice for <B>A</B>steroid <B>M</B>odels. 
+It is operated by the Astronomical Observatory of Adam Mickiewicz University, 
+Poznań, Poland. A .pdf Poster Paper describing ISAM is available <a href="http://vesta.astro.amu.edu.pl/~zupa/DPSposter.pdf" target=blank>
+here</a>. A detailed paper describing ISAM has been published by Marciniak et 
+al., <I>Photometry and models of selected main belt asteroids IX. Introducing 
+interactive service for asteroid models (ISAM)</I>, 2012 A&amp;A 545, A131. <a href = "http://www.aanda.org/articles/aa/pdf/2012/09/aa19542-12.pdf" target = blank> 
+(download PDF, 3.1MB)</a>.
+	
+</ul><h2>3D Asteroid Catalogue</h2>
+<ul><li><p>An additional source of shape models is the
+	<a href="https://space.frieger.com/asteroids/">3D Asteroid Catalogue</a>. 
+	Most of the shape models are in fact sourced from DAMIT. However it includes 
+	a number of asteroids not included in DAMIT or ISAM. However this source has 
+	not been used as it does not provide all the information needed to orient a 
+	shape model for a specified date+time.</li>
+</ul>
+<h1>New Shape Model implementation</h1>
+<p>The revision of the DAMIT website referred to above necessitated an overhaul 
+of Occult to process the raw data that defines a shape model. That data is the 
+orientation of the axis of rotation (&lambda;, &beta;), an epoch for the rotation, a series of 
+vector coordinates that define the coordinates of the corners of triangles used 
+to model the surface, and a series of numbers that links those vertices together 
+to define faces. A typical model will have around 1000 vertices and 2000 
+linkages. For some asteroids (particularly in the ISAM database) the number of 
+vertices is of the order of 4000, with over 7500 linkages {and for the asteroid 
+(25143) Itokawa there are 6146 vertices and 12288 linkages}. 
+<p>The previous shape model implementation involved downloading images generated 
+by the DAMIT and ISAM websites - with new downloads being required whenever a 
+parameter was changed. This was slow, and heavily dependent upon Internet 
+availability.<p>The new implementation involves downloading the model data. Once 
+the data for a model has been downloaded, the model can be drawn for any 
+date/time without internet access. Furthermore, as the image generation is done 
+within Occult, a number of options are available that are not available from the 
+image downloads.<h2>Downloading model data</h2>
+<p>Two approaches for downloading the shape model data are provided on the
+<strong>DAMIT and ISAM shape models </strong>form. 
+<p>In the first approach, if the&nbsp; models for a selected asteroid are not 
+present on the computer, Occult will download the relevant files. Of course, the 
+download requires internet access. Once the files for that asteroid have been 
+downloaded, shape models for that asteroid can be generated without internet 
+access.<p>In the second approach, Occult downloads all the available shape 
+models. Currently (Feb 2020) there are 4207 shape model files for DAMIT, and 
+with a reasonable internet connection they are all downloaded in about 15 to 20 
+minutes. There are 3122 shape model files for ISAM. However the ISAM server 
+appears to be slow, and the download of all those files requires several hours.<p>
+It should be noted that the great majority of asteroids with shape models have 
+never been observed in Occultation. This leads to the following recommended 
+approach:<ul>
+	<li>for DAMIT shape models, download the entire dataset. This is done using 
+	the menu option on the <strong>DAMIT and ISAM shape models </strong>form
+	<strong>Shape Model Maintenance... DAMIT.... Download/update shape-model 
+	files</strong></li>
+	<li>for ISAM shape models - if you are an occasional user of shape models, 
+	let Occult automatically download the required shape model files if they are 
+	not present on the computer - eventually you will have all the files you 
+	need in practice. If you are a regular user, set aside several hours for 
+	Occult to download all available models using the menu option <strong>Shape 
+	Model Maintenance... ISAM.... Download shape-model files.</strong> </li>
+</ul>
+<h2><strong>Maintenance issues</strong></h2>
+<p>The <strong>DAMIT</strong> shape model data is subject to regular revision. 
+This may include the addition of new models, the deletion of models no longer 
+considered valid, and changes to the shape model data. For this reason users 
+should periodically (eg every three months or so) run the menu option <strong>
+Shape Model Maintenance... DAMIT.... Download/update shape-model files.</strong> This will automatically 
+update the shape model data and files.<p>As at Feb 2020 the revision of <strong>
+ISAM</strong> data is limited to updating the list of available <strong>ISAM</strong> 
+shape models (using <strong>Shape Model Maintenance... ISAM.... update list of 
+ISAM models</strong>), 
+after which any new models can be downloaded using&nbsp; <strong>Shape Model 
+Maintenance... ISAM.... Download shape-model files.</strong><h2>Files for shape 
+models</h2>
+<p>The files for individual shape models are held in the <strong>Occult</strong> 
+subdirectory <strong>ShapeModels</strong>. <strong>DAMIT</strong> shape models 
+are stored under their <strong>DAMIT</strong> model number (eg <em>1234.txt</em>). 
+Note that the model number is not directly related to the asteroid number. ISAM 
+shape models are stored using the asteroid number and the model number for that 
+asteroid. The format used is <strong>Annnnn-m</strong>, where <strong>A</strong> is an alpha character that 
+ensures the <strong>ISAM</strong> and <strong>DAMIT</strong> models are separated when the directory is viewed,
+<strong>nnnnn</strong> is the asteroid number, and <strong>m</strong> is the model number for that asteroid.&nbsp; 
+For example <em>A1219-4</em>. The total file size of all shape model files as at 
+Feb 2020 is 320 MB.<p>Thee are two other files in that subdirectory that are 
+critical to the shape model generation. These files contain information about 
+the orientation of the shape model (including its rate of rotation) as well as 
+associated comments and revision dates. These files are generated differently 
+for DAMIT and ISAM:<p>For <strong>DAMIT</strong>, the data is obtained by 
+downloading two files from the <strong>DAMIT</strong> site and linking/merging 
+the data in those two files. This process necessarily creates a file that covers 
+all models in the <strong>DAMIT</strong> database. This file can be updated 
+using <strong>
+Shape Model Maintenance... DAMIT.... Update list of available models</strong>. 
+However this step is automatically done if you use&nbsp; <strong>
+Shape Model Maintenance... DAMIT.... Download/update shape-model files</strong> 
+to update the <strong>DAMIT</strong> models.<p>For <strong>ISAM</strong>, the 
+required data is held in each individual shape model file. As a result, details 
+for an asteroid are only present for shape models that have been downloaded 
+<h2>Resulting improvements</h2>
+<p>The following is a summary of the changes that have been enabled as a result 
+of the local generation of the shape model images<ul>
+	<li>Once model data has been downloaded, shape model generation is <em>very</em> 
+	fast</li>
+	<li>The shape model can be drawn 
+in color or Black &amp; White. The color image is a bronze color (as shown 
+	below).</li>
+	<li>The axis of 
+rotation can be drawn for both <strong>DAMIT</strong> and <strong>ISAM</strong> images - with the north pole being 
+green and the south red. There is also a 'N' or 'S' drawn at the appropriate 
+pole (if it is visible).</li>
+	<li>The orientation of the model is defined by the 
+ecliptic longitude &lambda; and latitude &beta; of its axis of rotation. These values can be 
+varied between ±16° in steps of 4° - to ascertain whether a small change in the 
+orientation of the axis would result in a better fit to observed occultation 
+chords.</li>
+	<li><strong>ISAM</strong> models that are duplicates of <strong>DAMIT</strong> models 
+	are identified</li>
+	<li>The need to provide for a different scale as between <strong>DAMIT</strong> 
+	and <strong>ISAM</strong> images has gone</li>
+	<li>The edges of the faces on the model can be highlighted. This is quite 
+illuminating for many 'old' models which are not based on 'regular' triangles. 
+The following shows an 'old' and 'new' type of shape model, with face edges 
+highlighted. </li>
+</ul>
+<p><img src="DAMIT%20faces.png"><p>&nbsp;<p>The following is an image of the form, together with a DAMIT model at small 
+image scale. Note the absence of any slider to change the ISAM image scale 
+relative to the DAMIT scale. The small font in the buttons for ISAM models #1 
+and #3 signifies those models are duplicates of DAMIT models. <p><img src="DAMIT.png"><p>
+
+<h2>Measuring asteroid diameters</h2>
+Asteroid shape models can be combined with occultation results to derive the 
+mean diameter of an asteroid. Guidance on what is involved is provided <a href="Asteroid_MeasureDiameter.htm">
+here</a>
+<br>
+<H2>Binary asteroids</H2>
+<p>As at 2020 there is only one binary asteroid with a shape model file - (90) 
+Antiope. An algorithm has been implemented to provide for the components being colored 
+differently. The colors are bronze for the primary component (that is, the first 
+component in the file) and light green for the secondary. If plotted in grey-scale, 
+the secondary is plotted darker.</p>
+<p>The algorithm is based on an assumption of how shape models for binary 
+asteroids may be constructed in the future, and may turn out to be wrong..</p>
+<h2>Menu bar choices</h2>
+<h3>with Model image</h3>
+This menu item provides the following general items<ul>
+<li><b>Draw mean Diameter on image</b> to selectively draw the mean 
+diameter used in the displayed shape image. The setting is applied to all 
+models, and is retained between sessions. Two 'mean diameters' are shown. One is the diameter of 
+a sphere having the same Volume as the shape model, while the other is the 
+diameter of a sphere having the same Surface Area as the shape model. The larger 
+diameter is associated with the sphere having the same Surface Area. [Their 
+calculation is based on the expressions of&nbsp; <strong>Dobrovolskis</strong> 
+(1996) <em><strong>Icarus</strong></em> 124, 698-704 (1996), which are used in 
+DAMIT]. A similar 
+set of lines can be drawn on the plot of observations from the <strong>
+Plot event observations</strong> form&nbsp; by setting the menu item <strong>
+Plot options... Show MEAN DIAMETER indicator. </strong>Indeed, drawing 
+the lines from the <strong>Plot event observations</strong> form will usually 
+provide clearer lines.<li><strong>Plot model in Grey scale.</strong> This may be 
+	important for publication purposes, where a B&amp;W image may be 
+	desired/required. The setting is applied to all models, and is retained 
+	between sessions.<li><strong>Plot on White background</strong>. Draws the 
+	shape model on a white background. [Previously, <strong>DAMIT</strong> and
+	<strong>ISAM</strong> downloaded models were always on a black background, 
+	and the downloaded image needed manipulation to achieve a white background 
+	when needed.] The setting is applied to all models, and is retained between 
+	sessions.<li><strong>Show face edges on model.</strong> This is discussed 
+	above. The setting is applied to all models, and is retained between 
+	sessions.<li><b>Include rotational axis</b> to selectively include the axis 
+	of rotation. The setting is applied to all models, and is retained between 
+	sessions.<li><strong>Plot on Earth plane.</strong> The setting is applied to 
+	all models, and is retained between sessions.. The default orientation of 
+	the plot is the appearance of the asteroid in the sky as seen from the 
+	Earth. However for prediction purposes it is more useful to plot the shape 
+	as it would appear in projection on the Earth from an occulted star. To get 
+	the best benefit of this you need to match the image scale to that of map of 
+	the occultation prediction. The easiest way to do this is to plot the 
+	predicted path in GoogleEarth, select a point near the center of the path 
+	across the Earth, and adjust the scale of the GoogleEarth plot and the shape 
+	model plot so that the length of he scale line on the shape model plot - as 
+	projected on the GoogleEarth image - corresponds to the known diameter of 
+	the asteroid. To do this correctly, make sure you choose a location near 
+	where the path is closest to the center of the Earth, and measure the 
+	distance along the path. Measuring across the path, or at your observing 
+	location, may give erroneous results.<li><strong>Change polar axis orientation. 
+	</strong>This 
+	has a submenu that enable the ecliptic longitude Lambda, and ecliptic 
+	latitude Beta, of the axis of rotation to be varied ion the range ±16°. 
+	Changes are applied to all models displayed for the current asteroid. 
+	However when a different asteroid is selected the values are reset to zero, 
+	and are not retained 
+	between sessions<li><strong>List Diameters from IR-satellites</strong>. Lists all available 
+	diameters from the three IR satellites <strong>IRAS</strong>, <strong>AKARI</strong> 
+	and <strong>Wise</strong>.<li><b>List model parameters &amp; light curve 
+	dates</b> 
+	This lists the following data for each shape models on your computer for&nbsp; 
+	the currently selected asteroid:<ul>
+<li>The identifier for the shape model
+		<li>the ecliptic longitude &lambda; and latitude &beta; of the pole, and its period of 
+		rotation<li>The zero date for the rotational ephemeris
+<li>The ephemeris period of rotation - in hours
+</ul>
+	<ul>
+		<li>If the Internet is available, a list of references to light curve measurements used to create the 
+		selected shape 
+model will be downloaded from DAMIT. This list is very useful as it indicates the length of time covered by 
+the observations, and the date of the last observation. The longer the time 
+period covered by the observations, the more accurate the rotational ephemeris. 
+The longer the occultation observation is after the last observation, the 
+greater the rotational uncertainty in the shape model.
+	</ul>
+	<li><strong>Display model fit to light curves (DAMIT)</strong>. This downloads a 
+series of plots that show the fit of the light curve generated by the derived 
+shape model to the source photometric observations. This can be useful in 
+assessing whether the shape model is reliable.<li><b>Copy event JD, DAMIT epoch 
+	and period</b> This copies the following data to the clipboard, for ease of 
+	access:<ul>
+		<li>Model Epoch = nnnnn <I>[... is the zero date for the light curve]</I>
+		<li>Model Phase at Epoch = n.n° <em>[usually 0.0, but apparently not 
+		always...]</em><li>Daily rotation rate = nnnn.nnnnnnn°/day<li>DAMIT Period (hrs) = n.nnnnn
+		<I>[period of rotation]</I>
+		<li>Best fit:   <I>[This is associated with fitting shape models to 
+		occultation chords. The values correspond to the best fitted phase model]</I><ul>
+			<li>Event JD = nnnnnn
+			<li>Phase correction (revs) = n°<li>Rotation rate correction = n.nnnnnn°</ul>
+	</ul>
+	<li><b>Copy image</b>
+	<li><b>Save image</b>
+</ul>
+
+<h3>with Phase models</h3>
+This set of submenus provides 
+options in relation to multiple images of a selected shape models, showing the 
+shape model rotationally offset. This menu option is disabled whenever a 
+different asteroid is selected - being enabled only when shape models for that 
+asteroid have been downloaded. The options are:<ul>
+<li><b>Download phase models at .... steps</b>. There are 5 options available. 
+Each option downloads 10 shape models at equal intervals of time, the 5<sup>th</sup> 
+model being for the specified date + time. The first option covers a full rotation 
+of the asteroid in 10° steps. The other 4 options download the shape images at 
+smaller intervals of time - allowing for a finer fit to occultation chords.
+<li><b>Animate display of Phase models</b> Clicking this will result in a cyclic 
+display of the phase models. The last phase model is displayed longer than the 
+remainder. When an animation is started, a button 'Cancel animation' will appear 
+- click this to stop the animation.
+<li><b>Set animation interval</b> This displays a submenu to select the display 
+interval for the animation. The currently selected display rate is indicated in 
+the menu text (and is retained between sessions).
+<li><b>Animated GIF - Setup</b> This opens the standard menu for setting two 
+parameters for an animated GIF file - the display interval, and the number of 
+cycles.
+<li><b>Save Phase models as an animated GIF</b> This creates an animated GIF 
+file of the shape model as displayed on the present form.
+<li><b>Save Phase models as an animated GIF, against plot of occultations</b> 
+This option is only enabled when the shape models are called from the Asteroidal 
+Occultations observations editor. It creates an animated GIF file of the shape 
+model as plotted on the plot of the occultation observations. It provides a 
+simple way to demonstrate the fit of the shape model to the occultation 
+observations.
+<br><B>NOTE</B> animated GIF files cannot be created while the images are being 
+displayed as an animation.</ul>
+<h3>Keep form on top (or Return form to Normal)</h3>
+This item controls whether the shape model form is maintained as the top-most 
+form - even when other forms are active. The text changes to match the current 
+state. The status is retained between sessions.
+
+<h3>Help</h3>
+<p>Click to bring up the help topic for this form</p>
+
+<h3>Shape Model Maintenance</h3>
+<p>This menu item is for maintaining up-to-date shape model data. There are two sub-items, for 
+<span class="auto-style4">DAMIT</span> and <span class="auto-style4">ISAM</span></p>
+<h4 class="auto-style4">DAMIT</h4>
+<ul><li><strong>Update list of available models.</strong> This will access the 
+	DAMIT website to retrieve data for all current shape models. This should be 
+	implemented every month or so. For the occasional user, use it before 
+	looking for whether a shape model is available.</li><br>
+	<br><li><strong>Download/update shape-model files</strong>. This is for the 
+	regular user of shape models. It will access the DAMIT website to establish 
+	what shape models are available, and whether there are any shape models that 
+	have been updated - and provide for downloading all the shape model files. 
+	An initial download will take some time - there are over 4000 files (Jan 
+	2020) occupying about 170MB. Subsequently the updating process is much 
+	quicker.</li><br><br>
+	<li><strong>Convert & add a single DAMIT model</strong>. This is used to create a shape model file using a standard file of shape model coordinates (typically 
+	a file with an extension <strong>.tri)</strong> and a file of Spin 
+	parameters. <strong><span class="auto-style3">The file of shape coordinates</span> </strong>will have the following format
+	<pre>
+	         560        1116
+  -1.4180574600000000        2.3396996600000000        2.5812860299999998     
+  -1.4180574600000000       0.34167022699999999        2.8443315999999998  
+  ..
+  ..
+           1           2           3
+           1           3           4
+           1           4           5
+..
+..
+  </pre>	
+	*	
+The first line contains the number of vertices in the model, and the number of faces. 
+	For a valid file, the number of faces is always 4 less than twice the number 
+	of vertices. This line can also be empty. However a line before the first block of data must be present.
+<br>* The first block are the coordinates of the vertices. The code requires each line in this block to be at least 40 characters long.
+	If needed, pad out these lines.
+<br>* The 2nd block gives the vertices for each face in the model. 
+	These lines must be less than 40 characters long.<br>* For some source files, the characters v and f may be present to distinguish between vertices and faces. These will be ignored.<br>
+	* The conversion process for this file is simple reformatting into a common format</li><br><p>* <span class="auto-style3"> <strong>The spin file may have multiple lines.</strong></span> The elements that must be present in this file, and in this order, are<ul>
+<li>ecliptic longitude of the polar axis - degrees
+<li>ecliptic latitude of the polar axis - degrees
+<li>period of rotation - hrs</li>
+<li>JD - the initial epoch for the rotation </li>
+</ul>
+<br>A typical Spin file may look like
+<pre>126.4 +22.1  52.86696506
+2456920.000000
+0.391012 0.0586379 -0.865301
+0.1 1</pre>
+In this example, the 4 elements required are the three fields of the first line, and the first field of the 2nd line.
+<p>The conversion process for this file involves extracting certain data and adding it to the <strong>DamitModels.csv</strong> file</p>
+
+
+
+	It doesn't matter how many lines are in the file, and it might even be just 
+	one. The issue that matters is that the first 4 
+	fields give the required data in the required order.<br><br>
+	When the file has been converted, the Shape Model file is written to the 
+	<strong>ShapeModels</strong> folder. The existing <strong>DamitModels.csv</strong> file, which contains the spin data for each model, 
+	is renamed to include todays date plus a sequence number (like <strong>DamitModels 07-Feb-24_2.csv</strong>), with a new <strong>DamitModels.csv</strong> being written. 
+	When several models are processed on the same day, the existing <strong>
+	DamitModels.csv</strong> file is always renamed, but with a different 
+	sequence number - so that you can always go back to an earlier version of 
+	that file. When you are satisfied that the added models are working 
+	properly, you can delete these renamed files.</ul>
+	
+	<h4 class="auto-style4">ISAM</h4>
+<ul>
+	<li><strong>Create list of available ISAM shape models not in DAMIT.</strong> 
+	Usually done by an Admin person as takes quite a while (perhaps an hour or 
+	two). This identifies all models in <strong>ISAM</strong> that are not in
+	<strong>DAMIT</strong>, and writes them to the file&nbsp; <strong>Occult 4\ShapeModels\Isam_AvailableAsteroids.csv</strong> This 
+	only needs to be done occasionally. <br> <br> </li>
+	<li><strong>Download/Add ISAM shape model files</strong>. This accesses the
+	<strong>ISAM</strong> website and downloads all shape models listed in <strong>
+	Isam_AvailableAsteroids.csv</strong>&nbsp;The shape model files are written to the ShapeModels folder, and the spin parameters are written to <strong>Occult 4\ShapeModels\IsamModels.csv.</strong> </li><br>
+	The distributed set of Shape Model files contains shape models for Ceres, Vesta, and Arakoth. These shape model files will be included.</ul>
+
+
+
+
+<p>&nbsp;</p>
+
+
+
+
+<H2>Controls and Labels</h2>
+The controls and labels on the form are as follows:<ul type = a>
+<li>At the top left, fields for specifying the UT date/time to use when 
+generating the apparent shape of the asteroid as seen from the Earth. When this 
+form is called from the asteroid <strong>Observations Editor</strong>, or from 
+the world map of a prediction, the date &amp; time are 
+automatically filled in. Underneath these boxes the corresponding JD value is 
+given 
+<li>An area to adjust the rotational period of the asteroid. The rate of 
+rotation is adjusted using the up-down control - which adjusts the rate by 
+0.000005 deg/day. T When a change in the period is set, the 'adjusted' period is displayed 
+next to the boxes. Additionally, next to the date fields <B>δ Hrs </B>gives the 
+effective change in hours at the specified date, while the box <B>Total at event </B>gives the 
+change in rotational orientation in degrees (including the phase offset for a 
+series of phase-adjusted models). Additionally, you can adjust the rotational 
+orientation by a fixed amount using the <strong>zero phase</strong> control.&nbsp;
+
+<comment><span style="visibility: hidden">As a guide to the likely size of correction to be applied, the uncertainty in 
+the rotational orientation of the asteroid at the time of the event is given to 
+the right of the area. The uncertainty value is based on an</span><span style="visibility: hidden">assumed 
+uncertainty of 1 unit in the last digit of the rotational periodd </span>
+<span style="visibility: hidden">as given on 
+the DAMIT or ISAM web sites. The computed uncertainty at the date of the event 
+is therefore best described as the minimum uncertainty - and may be much larger.as given on 
+the DAMIT or ISAM web sites. The computed uncertainty at the date of the event 
+is therefore best described as the minimum uncertainty - and may be much larger.
+</span></comment>
+
+<li>The list box at the left lists the number of shape models available from 
+DAMIT and ISAM for each of the listed asteroids. <br>The DAMIT model numbers are downloaded each time the form is loaded, so the list is 
+always 'up-to-date'. The ISAM system does not have a convenient tool for 
+obtaining a list of the number of models for each asteroid in ISAM. A tool for 
+doing this is available in the Downloads form of Occult; it is intended for 
+administrator use, as it takes many <I>many </I>minutes to retrieve the data 
+required. Otherwise the list is updated by way of the normal Occult Updates 
+process, involving a very quick download of the required file.
+	<li>Two rows of buttons to display the downloaded model images. The top row is 
+for DAMIT models; the bottom row is for ISAM models. The buttons are enabled 
+only for models that have been downloaded. The button for the currently 
+displayed model is coloured green. Each button is labeled with the relevant 
+model number, with the period of rotation In hours) being displayed underneath. Click the buttons to change the model being displayed. When the 
+shape models have been called from the asteroid observations editor, changing 
+the model will automatically return the focus to the plot of the asteroid 
+observations. It will usually be more convenient to change the model displayed, 
+and the size of the model, from the plot form, by selecting the menu option <B>Plot options... 
+	<I>Show Shape model controls on plot.</i></B>
+	<li>Text above each button to advise of the current download status. Options 
+are:&nbsp; <strong>---</strong><B>, <font color=Brown>???</font >, 
+	</B><span class="auto-style1"><strong>Yes</strong></span>, and 
+	<span class="auto-style2"><strong>No</strong></span>. (for not present, 
+	attempting to download, downloaded and available, and could not be 
+	downloaded.) <font color=Red><strong>xxx</strong></font > is given when ISAM has not been enabled.
+	<li>A slider at the top right to change the size of the displayed image. 
+Changing the display size here will also change the size of the image as plotted 
+on the Observations Editor plot of the event. Use this slider as one tool to 
+adjust the image of the shape model to the observed occultation chords.
+	<li>A 2nd slider for adjusting the scale of the ISAM plots to be the same as for 
+the DAMIT plots.<br>The ISAM images are drawn with a different image size to 
+	DAMIT images. 
+	This slider is used to adjust the ISAM image of the shape model to be the same as 
+the DAMIT image of the shape model. The default value is 1.65, and is marked on the slider. 
+	<span class="auto-style3"><em>DO NOT CHANGE THIS VALUE WITHOUT GOOD REASON</em></span>. By 
+having this scale set appropriately, you can move between the DAMIT and ISAM 
+plots without having to adjust the overall image scale.
+</ul>
+<p>When a model has been downloaded, the model identifier is displayed at the 
+bottom left of the plot, and just above the top-left of the plot.<p>The following is an image of the form, together with a DAMIT model at small 
+image scale, when a set of phase models has been downloaded. While downloading, 
+text above each button advises of the current download status. Options are:&nbsp; <b>
+<font color="brown">Retrieving</font>, </b><span class="auto-style1"><strong>
+Available</strong></span>, and <span class="auto-style2"><strong>None</strong></span>. This 
+image shows:<ul>
+<li>The 10 buttons for the phase models, with the phase offset (in degrees) displayed in each 
+button. At the top right of the box containing the buttons is an 'X' to close 
+the phase model display.
+<li>Underneath each button, the phase offset if the period correction had not 
+been set (this image demonstrates a period correction).<li>The Download button, which shows the step interval of the current phase 
+images. If you adjust the Period using the control bar at the left, you can 
+download the phase models at the same interval (but for the
+</ul>
+
+
+<p><img src="DAMIT%20phases.png"><p>
+
+
+
+
+<h2>Notes on DAMIT &amp; ISAM models</h2>In the majority of cases, where ISAM models 
+are available, they include the models available in DAMIT. However ISAM commonly 
+includes additional models, and sometimes the best fit is obtained with one of 
+those additional models. Accordingly it is important to check all available 
+models against the observations. 
+
+<p>Some issues with the list of DAMIT models are:<ul type = i>
+<li>Up to 4 models might be available.<li>If an existing model is refined, the model will be updated under its DAMIT 
+model number and the 'Version' (which is a date) will change. If the new model 
+is very different from the old one (significantly different period and/or pole), 
+which means that the old model was probably wrong, the old model will be erased 
+and a new one will be created with a new model number. This way the existing 
+model can be updated many times. [The case of replacing a wrong model with a 
+better should not occur frequently.] Sometimes one of two models for an asteroid 
+can disappear because it was rejected by new data (occultation or AO image, for 
+example).</ul>
+
+<h2>Interaction with the Asteroid Observations Editor</h2>
+When the DAMIT/ISAM functionality is accessed from the observations editor, the 
+program operates as follows: <ul type=a>
+<li>Access the functionality from the Observations editor by selecting the menu 
+item  <B>Light curve data &amp; Shapes...Display DAMIT &amp; ISAM shape models</B>. This 
+will open the DAMIT and ISAM form. If no model is available in either DAMIT or 
+ISAM for the particular asteroid, a message box will appear advising of this. 
+Otherwise the DAMIT and ISAM form will have the date and time set to the average 
+time of all the D and R events recorded in the editor for the displayed event, 
+and then proceed to download all available models (assuming your computer is 
+connected to the internet!)
+<li>To have the model displayed on the plot of the observations, make sure the 
+menu option <B>Plot Options... Add DAMIT &amp; ISAM shape images</B> is checked.
+<li>You can control which model is displayed, and its size, from the Plot form 
+by selecting the menu option <B>Plot options... <I>Show Shape model controls on 
+plot.</i></b>
+
+<li>The image on the plot of the observations is updated whenever<ul type =i>
+<li>a different model is selected; and
+<li>the scale of the image is changed.</ul>
+This means that you can easily change the models to compare how they fit the 
+observations, and you can easily change the model size to suit the plot size of 
+the observations.
+
+
+</ul>
+
+</BODY>
+</HTML>

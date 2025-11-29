@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Overview</Title>
+<style type="text/css">
+.auto-style1 {
+	color: #8E0D0D;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1><A NAME=""></A>Creating a Feed for OccultWatcher</H1>
+<H1><span class="auto-style1">IMPORTANT. This topic is out of date. The process 
+for generating the files for a feed has been changed. The process is explained
+</span><a href="Asteroid%20predictions%20-%20ListAndDisplay.htm">
+<span class="auto-style1">HERE</span></a></H1>
+
+
+
+<h2>Introduction</h2>
+<p><B>OccultWatcher </B>is free software designed to help asteroidal occultation observers to stay tuned with the latest predictions published by Steve Preston on his web site. The program monitors his site, and downloads the new or updated predictions when they become available.</p>
+
+<p>Importantly, OccultWatcher can monitor other sites for predictions. Several people have set up sites to list predictions of 'low-probability' events that will occur in their part of the world, encouraging local participation.  While such predictions have a lower degree of certainty then those from Preston's site, successful observations of these events can be made. You might like to set up a site for your part of the world.</p>
+
+<p>The following describes how to set up a feed for OccultWatcher. It has been provided by <B>Brad Timerson </B>(who provides a feed for 
+Eastern North America), <B>Tony George</B> (who provides a feed for Western 
+North America) and <B>Dave Gault</B> (who provides a feed for SE Australia and New Zealand).</p>
+<P>Learn more about <B>OccultWatcher</B>, and download it, from <A href = "http://www.hristopavlov.net/OccultWatcher/publish.htm">here</a>.</P>
+
+<h2>Overview</h2>
+<p>OccultWatcher Feeds can be created using the Predictions from Occult4 and
+the program called OWFeedGen written by Hristo Pavlov.  This program takes
+the results of Occult4 and creates an Index file and Summary files for each
+event.  These files, along with detailed path information, are uploaded to a
+server.  Observers select predictions for their region and apply filters to the 
+predictions.</p>
+
+<h2>Initial set-up</h2>
+<p>To enable the automatic generation of the output files. In<B><ul>USER SETTINGS </B>--> <B>Asteroid Occultations - search and display</b><ul>
+<li>check <B>Enable generation of output files</B>
+<li>check <B>World Map,</B> <B>Path Coordinates and Pre-Point Stars</B>.  [Other files may be selected for personal use.]<br></ul></ul></p>
+
+<h2>Maintaining current orbital elements</h2>
+
+<p>You will need to update the file of asteroid elements at least every few months. This requires the following steps:<ul TYPE=1>
+<li> Select <B>MAINTENANCE </B>--> <B>Download/Convert Astorb, MPCOrb & IAA </B>.<br><br> 
+<li> In the <B>Download file</B> group, click <B>Astorb </B>.  The download is ~30Mb file. Unzip when prompted. [<B>Note </B>Use ASTORB in preference to MPCOrb].<br><br> 
+<li>Check the <B>Astorb </B>radio button.  Choose desired minor planet size [Currently the 
+'low-probability' events in OccultWatcher feeds use "larger than 4km"]. <br><br> 
+<li> Check <B>Numbered minor planets </B>. [Do not include un-numbered minor planets, as their orbits are poorly determined.]<br><br> 
+<li>Click <B>Convert</B>.  Accept  the default file name and location.</ul></p>
+
+<h2>Generating the files for the feed</h2>
+<p>The following is the process for generating the files used in the feed.<ul Type=1>
+
+<li><B>ASTEROID PREDICTIONS --> Search for Occultations
+</B><ul> 
+<li>Select Start and End Date.  
+<li>Minor Planet button selected.  
+<li>NOMAD button selected. (Be sure NOMAD_Short is available and its location provided in Maintenance. NOMAD is the catalogue of choice, as it includes full error information for the star positions; the internal Tycho2 catalogue does not include this information.)
+<li>Determine magnitude of stars to exclude.  Low-prob excludes less than 10.5.
+<li>Determine size of minor planets to include.  Low-prob excludes smaller than 5km.
+<li>Select output file.  Use default unless creating multiple files for other uses.
+
+<li>Select Search.  Depending on values selected and your computer speed, the Search
+could take between several minutes and several hours.  This process creates an "occlment" file.</ul><br>
+
+<li><B>ASTEROID PREDICTIONS --> [Display predictions]</B> <br>
+Select all properties desired - by checking the relevant box, and setting the relevant values. That is:<ul>
+<li> Set dates for Predictions.  
+<li>Magnitude drop of at least 0.3, 
+<li>Duration of at least 0.3 seconds, 
+<li>Diameter of at least 5km.  
+<li>Set the geographic coordinates to a location at about the midpoint of the area you are servicing with the Feed.  
+<li>Set the 'Distance of Site From Path' to a value that will include events for the area you are servicing with the Feed.  </ul><br>
+
+
+<li><B><I>[Optional]</I> Check location for file saves</B>.  
+All the files about to be created will be placed in the AutoGenerated Asteroids directory. You might find it easier to maintain the output if you make sure this directory is empty before you create the output files.<br><br>
+
+<li>Now click <B><U>Local</U> Events Summary</B>. <br>
+Select occlment file just created in Search. A table of events is created.  Select the first event to get a map.  Adjust this map to look the way you want all the maps to look.  Color or black and white, plot scale, etc. can all be adjusted. Once set, all maps will be created using these same properties.<br><I>Note: do NOT use <U>Global </U>Events summary - the output is slightly different....</I><br><br>
+
+<li> click  "<B>Auto File Generation</B>" at the top of the Summary page, select.   The <B>AutoGenerated Asteroids </B>directory will now be filled with files needed by OccultWatcher.<br>If the "<B>Auto File Generation</B>" button is not at the top of the form, go back to the 'Initial Set-up' above, and ensure <B>Enable generation of output files </B>has been checked.<li>On the <B>Summary page</B>, under menu item "with Predictions" choose <B>Copy</B>.  Minimize the Summary.<br><br>
+
+<li>Start the program <B>OWFeedGen</B>. <ul type=i>
+<li>Click "<B>New</B>". 
+<li>Click cursor in empty white box. <B>CTRL-V </B>to paste the events in this screen. and then click "<B>Populate</B>".  OWFeedGen creates a table using the events you copied.  
+<li>Click "<B>Produce Index Page</B>".  Default values for file names and locations have been previously set using directions for use of  OWFeedGen.  
+<li>Click "<B>create index HTML page</B>".  Any errors in creating the Index page mean that the event in question must be removed from the data table.  Click in the far left-hand column and then select <B>DELETE </B>to remove that item.  Try to create
+the index page again.</ul></ul>
+
+<p>In the AutoGenerated Asteroid directory you will now also have an Index page for OccultWatcher and a Summary HTML file 
+for each event.  All the files within the AutoGenerated Asteroid directory - the Index file, the path text file, the PNG map, 
+the pre-point star file, the Summary HTML file, and the FileIndex text file - are now ready to upload the server.</p>
+
+<p>Once uploaded, they will be immediately available for use by subscribers to OccultWatcher,
+provided that particular Feed has been made available within OccultWatcher.</p>
+
+<p>If you plan on creating a feed for OccultWatcher, contact its Author (<A href = "http://www.hristopavlov.net/OccultWatcher/About.html">Hristo Pavlov</a>) to arrange for your feed to be included in OccultWatcher.</p>
+
+</BODY>
+</HTML>

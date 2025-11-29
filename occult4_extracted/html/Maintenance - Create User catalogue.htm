@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Overview</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Create User catalogue</H1>
+This functionality is designed to create a 'User' catalogue for use with asteroidal and planetary occultation predictions - using a non-specific source of star (or other object) positions.
+
+<p>The form is divided into four regions. Selecting a source file, setting the field locations, doing a test read of the file, and creating the User file.
+
+<h3>Select source file</h3>
+The source file must be an ASCII text file, with no header lines. Select the file that is to be used. Once selected, the adjacent box will list the first 4 lines in the file. At the top of the list are two lines giving the column numbers - to assist in completing the next section.
+
+<H3>Set field locations</h3>
+In this section, specify the start column of  various fields. For some fields the number of characters in the field needs to be specified. If the field is not present in the catalogue (eg magnitudes) set the field length to zero.
+<p>At this time there is no provision to specify fields for proper motion.
+<p> The settings made in this section are retained between sessions.
+<p>If the catalogue is a B1950 catalogue, check the check box to convert the positions from B1950 to J2000. {However, only check this box once the Test Read data is confirmed to be correct.]
+
+<h3>Test Read</h3>
+This box allows you to confirm that you have correctly specified the columns. The data should appear with the various columns aligned with the header text. Providing the Precession box has not been checked, the numbers here should be identical to the corresponding numbers in the source file listing ato the top of the form.
+<p>If the catalogue is being converted from B1950 to J2000, you should leave the precession check box unchecked until you have confirmed that the source catalogue is being correctly read. 
+
+<h3>Create the output catalogue</h3>
+Select the relevant User catalogue to create (UserA to F), then click the button to create the User catalogue. If the User catalogue already exists, you will get a warning about whether or not to overwrite the existing catalogue. If you proceed, the User catalogue will be created using the entire source catalogue.
+
+<h2>Checking the User catalogue</h2>
+To view the contents of the User catalogue<ul type=a>
+<li>note an RA and Declination where there are stars in the catalogue.
+<li>On the Maintenance tab select the button <b>View catalogue details for a range of stars</b>. At the far right of the form that appears there is a set of controls for <B>User Catalogues</B>. Select the User catalogue you have created. Set the RA and Declination parameters to match the location of stars in the catalogue, then click <B>Display</B>.</ul> 
+If the User catalogue has been correctly created, the stars in the specified region will be listed. Following from this check you can use the User Catalogue with confidence to find occultation events.
+
+</BODY>
+</HTML>

@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>UCAC4</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>UCAC4 catalogue</H1>
+
+<H2>Installing the UCAC4 catalogue</H2>
+The UCAC4 catalogue is provided in a double-sided DVD. The installation of the catalogue assumes that the catalogue might be accessed by other applications - which requires the maintenance of the directory structure on the DVD. Accordingly installation requires the following steps.<ul type=1>
+<li>Create a directory for the catalogue - having a name and location of your choice. A suitable name for the directory might be <B>UCAC4</B>
+<li>Create the following subdirectories:<ul>
+<li>u4b
+<li>u4i</ul>
+<li>copy all of the files on the dvd that are in the directory u4b, into the u4b directory that you have created.<br><B>IMPORTANT</B>. This involves files on BOTH sides of the DVD. If you have copied the files correctly, you will have 900 files in this directory, ranging from z001 to z900.
+<li>copy all of the files on the dvd in the directory u4i into the u4i directory you have created. Those files are:<ul>
+<li>hipsupl.dat 
+<li>u4hpm.dat
+<li>u4index.unf 
+<li>u4xtycho 
+<li>u4supl.dat 
+<li>u4index.asc = ASCII table index file for each box in RA and each zone
+<li>zone_stats  = ASCII table, summary of zone files </ul>
+<B>Note</B>: The files u4supl.dat, u4index.asc and zone_stats are not used by Occult - but might be used by other software that uses UCAC4.
+<li>From Occult, Maintenance, User Settings - in the group for <B>Paths for Optional Catalogues</B> use the control to select the UCAC4 directory.
+<li>Occult needs to create three additional cross-reference files. To create these files, click the <B>Create xRef files </B>button next to the UCAC4 line.where you have selected the path for the catalogue. These files will take <I>at least </I>several minutes to create on a fast computer. A progress bar will indicate the progress. Most of the time is taken with reading the entire UCAC4 catalog to extract UCAC4 entries corresponding to Hip stars.
+<br>When completed, the following additional files will be located in the u4i directory:<ul>
+<li>HIPtoU4.bin
+<li>U4toTycho2.bin
+<li>Tycho2toU4.bin</ul>
+<br>These files provide a link between a Hipparcos star number and its relevant UCAC4 star entry, and between UCAC4 entries and the Tycho2 catalogue. 
+<br><B>Note</B>: Once Occult has created the additional cross-reference files, it does not use the u4xtycho file - although other software that uses UCAC4 might use that file.
+</ul>
+
+<h2><br>Correcting certain errors in UCAC4</h2>
+The following notice was issued by USNO on 2013 Jan 29:
+<p>**********
+<br>Dear user of UCAC4,
+<p>It came to our attention that for some high proper motion (HPM) stars the published proper motion in the UCAC4 catalog is pointing in the wrong direction. This has been tracked down to a bug in preparing some external HPM catalog data, which later were merged with UCAC4.
+<p>Affected are 3416 stars and 416 binary zone files between zones 6 and 449. All affected stars have object type flag=4, i.e. stars observed with the astrograph and mean position and proper motion taken from external catalogs. Only the proper motion columns are affected by this bug, all other data items of those stars remain as they are in the UCAC4.
+<br>....
+<br>**********
+<p>If you have UCAC4 installed on your computer, Occult conducts a simple check at start-up re whether the catalogue has been corrected. Alternatively you can conduct a comprehensive check of whether all relevant entries in UCAC4 have been corrected, from <B>User Settings</B>, <B>6. Paths for optional catalogues</B>, <B>Check if corrected</B>
+
+<p>The catalogue is corrected by downloading and running a program file (<I><B>CorrectUCAC4.exe</B></I>) which is stored in the <B>u4b</B> subdirectory of the UCAC4 catalog. The program provides a report on the corrections made. It runs in a DOS window, which needs to be manually closed when it has finished. 
+
+<p><ul><B><I>NOTE </I></B>the program is a renamed copy of the program <B>modifs.exe</B>, written by <I>Bill Gray </I>(Project Pluto) as an implementation of the Python Script <B>modifs.py </B>that was written by <I>Francois Ochsenbein </I>of CDS. </ul>
+
+
+<h2><br>File formats for the Index files created by Occult</h2>
+<h3>HIPtoU4.bin</h3>
+
+<table columns=3 border=1>
+<TR><TH NOWRAP></TH><TH></TH></TR>
+<TR><TD>1 - 4</TD><TD>4-byte integer. Hipparcos number</TD></TR>
+<TR><TD>5 - 6</TD><TD>2-byte integer. Zone number in UCAC4</TD></TR>
+<TR><TD>7 - 10</TD><TD>4-byte integer. Sequence number in the UCAC4 zone</TD></TR>
+<TR><TD>11-12</TD><TD>2-byte integer. Magnitude of star (units of 0.1 mag)</TD></TR>
+</table>
+<B>IMPORTANT</B>. There are a significant number of instances where a Hipparcos star is associated with up to three entries in UCAC4. These are all instances where the separate components of a single Hipparcos star have a separate entry in UCAC4. The file is sorted by Hipparcos number. Where there are several stars with the same Hipparcos number, they are sorted by increasing numerical magnitude.
+
+<p><B>Note </B>The Hipparcos data in UCAC4 is based on the Hipparcos2 catalogue. There are 103 stars in Hip1 (corresponding to 109 stars in UCAC4) that are not in the Hip2 catalogue. Those stars are:<ul>
+
+<pre>   421    1338    3158    3482    5502    6132   8781   9867  
+ 10659   11692   11829   14275   14277   16218   17201   18045   19424 
+ 20488   22992   23299   24042   25050 
+ 31067   31157   31500   31825   31999   32000   34226   34716   36007   36109   36609   38562 
+ 41110   41884   43946   45109   48307   48645 
+ 50572   50751   51496   52585   52800   54144   54171   54353   54812   54948   57037   59154   59189   59273   59963
+ 61062   61200   62292   64354   65863   65908   67616   68059   69192 
+ 75865   75901   79592
+ 81538   81694   82021   84915   85778   87122   87816   88639
+ 92584   92836   93538   95493   95672   96005   96073   98713   98909    99861
+100086  100109  100245  100364  103992  103995  103996  106124  108291
+111277  111858  112316  115269
+120412  120413  120414  120415  120416  </pre> 
+</ul>
+The UCAC4 'hipsuppl' file contains an entry for each of these stars - but the data items are set to zero. When Occult access such stars, the Hip number will not be associated with the star.
+
+
+<h3>U4toTycho2.bin</h3>
+2,549,788 lines in binary format, containing:
+
+<table columns=3 border=1>
+<TR><TH NOWRAP>Cols</TH><TH>Data</TH></TR>
+<TR><TD>1 - 4</TD><TD>4-byte integer. UCAC4 zone + sequence number combined as zzznnnnnn</TD></TR>
+<TR><TD>5 - 8</TD><TD>4-byte integer. Tycho2 number, formatted as zzzznnnnn</TD></TR>
+<TR><TD>9</TD><TD>byte. Tycho2 component number (usually 1)</TD></TR>
+</table>
+
+<h3>Tycho2toU4.bin</h3>
+2,549,788 lines in binary format, containing:
+
+<table columns=3 border=1>
+<TR><TH NOWRAP></TH><TH></TH></TR>
+<TR><TD>1 - 4</TD><TD>4-byte integer. Tycho2 number, formatted as zzzznnnnn</TD></TR>
+<TR><TD>5</TD><TD>byte. Tycho2 component number (usually 1)</TD></TR>
+<TR><TD>6 - 9</TD><TD>4-byte integer. UCAC4 zone + sequence number combined as zzznnnnnn</TD></TR>
+</table>
+
+
+
+</BODY>
+</HTML>

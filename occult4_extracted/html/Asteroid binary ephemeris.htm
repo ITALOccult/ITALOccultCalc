@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Binary asteroid ephemerieds - from IMCEE Miriade</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Binary asteroid ephemerides <br>- from IMCCE Miriade</H1>
+
+<P>Several hundred asterods are known to have satellites. However only a relatively small number of these binary asteroids have observations sufficient to establish a reliable orbit. <br><font size=1>[Furthermore, as the gravitational binding between the asteroid and its satellites is relatively weak, the orbit is more susceptible  to the gravitational influence of the sun and major planets]<font size=3>
+
+<p>The ephemerides of several binary asteroids have been provided on the Miriade server of IMCCE [<I>Paris Observatory</I>]. Theses orbits are performed by Frederic Vachier and Jerome Berthier, using the Genoid System. (F. Vachier et al. , <I>Determination of binary asteroid orbits with a genetic-based algorithm</I>, 2012, <B>Astronomy & Astrophysic</B>, Volume 543, id.A68, 07/2012) - who may be contacted at <U>genoide@imcce.fr</U>
+
+<p>The binary asteroids with available ephemerides as at 1 Jan 2015 are:<ul>
+
+<li>Id, Rank, System, Satellite, Diameter (km)
+<li>22, 1, Kalliope, Linus, 28
+<li>41, 1, Daphne, S/2008 (41) 1, 2
+<li>45, 1, Eugenia, Petit-Prince, 7
+<li>45, 2, Eugenia, Petite-Princesse, 5
+<li>87, 1, Sylvia, Romulus, 18
+<li>87, 2, Sylvia, Remus, 7
+<li>87, 3, Sylvia, Romulus, 18
+<li>93, 1, Minerva, Aegis, 8
+<li>93, 2, Minerva, Gorgoneion, 6
+<li>93, 4, Minerva, Gorgoneion, 8
+<li>107, 1, Camilla, S/2001 (107) 1, 16
+<li>216, 1, Kleopatra, AlexHelios, 9
+<li>216, 2, Kleopatra, CleoSelene, 7
+<li>283, 1, Emma, S/2003 (283) 1, 10
+<li>283, 2, Emma, S/2003 (283) 1, 10
+<li>379, 1, Huenna, S/2003 (379) 1, 6
+<li>617, 1, Patroclus, Menoetius, 103
+<li>617, 2, Patroclus, Menoetius, 103
+<li>624, 1, Hektor, S/2006 (624) 1, 12
+<li>702, 1, Alauda, Pichi_Unem, 4
+<li>702, 2, Alauda, Pichi_Unem 1-sig limit 2015-01-20, 0
+<li>702, 3, Alauda, Pichi_Unem 1-sig limit 2015-01-20, 0
+<li>762, 1, Pulcova, S/2000 (762) 1, 20
+<li>3749, 1, Balam, S/2002 (3749) 1 [P0], 2
+<li>3749, 2, Balam, S/2002 (3749) 1 [P1], 2
+<li>3749, 3, Balam, S/2002 (3749) 1 [P2], 2
+<li>3749, 4, Balam, S/2002 (3749) 1 [P3], 2
+<li>3749, 5, Balam, S/2002 (3749) 1 [P4], 2
+<li>3749, 6, Balam, S/2002 (3749) 1 [P5], 2
+<li>3749, 7, Balam, S/2002 (3749) 1 [P6], 2
+<li>3749, 8, Balam, S/2002 (3749) 1 [P7], 2
+<li>3749, 9, Balam, S/2002 (3749) 1 [P8], 2
+<li>3749, 10, Balam, S/2002 (3749) 1 [P9], 2
+<li>50000, 1, Quaoar, Weywot, 90
+<li>90482, 1, Orcus, Vanth, 276
+<li>136108, 1, Haumea, Hiiaka, 320
+<li>136108, 2, Haumea, Namaka, 160
+</ul>
+
+</P>Occult can obtain ephemerides of these satellites from the Miriade server. The form for retrieving the ephemerides can be accessed from two different locations, with slightly different functionality.
+<table columns=2 border=1>
+<TR><TH NOWRAP>Called from</TH><TH>Functionality</TH></TR>
+<TR><TD>Asteroid search form</TD><TD>A button is provided  to transfer the ephemeris data to the search form - for each generated ephemeris. Also the ephemneris can be written to a 'control file' for use with asteroid predictions</TD></TR>
+<TR><TD>Ephemerides tab, Asteroid satellites</TD><TD>Transfer to the Search form is not possible, but the data can be written to a control file.</TD></TR>
+</table>
+In both cases an ephemeris for up to 99 dates can be generated. However only the first three points can be transferred to the Search form, or Saved in a Control file.
+<p>The form for obtaining the Miriade ephemeris is:
+<P align=center><img src="BinaryAsteroids%20Miriade.png">
+
+<p>The Mirade system provides two lists of binary asteroid orbits. One list includes the 'best' orbits. The other list includes all orbits, including multiple entries for single satellites. Specify the number of the relevant asteroid at the top of the form, and the check boxes for that asteroid will be checked in both lists. You can select or deselect orbits using the check boxes. 
+
+<p>The form has the following parameters which need to be set:
+<ul type = 1><li>asteroid number;
+<li>the mass ratio of the satellite (or primary) compared to ther total mass of the system. The data in this field is transfered for this purpose to the Search form, or saved in the Control file.
+<li>the initial date; that is, the specified year, month, day and hour. [<B>NOTE: </B>the initial date requested from the Miriade server is actually 1 step interval prior to the specified year/month/day/hour - so that the 3-point ephemeris for use with asteroidal occultation predictions is centered on the specified time of the occultation.]
+<li>the step interval in the ephemeris - as specified on the form
+<li>the number of dates for the output. This is fixed at 3 for asteroid searches, or the # dates as specified on the form.</ul>
+The name and diameter of the satellite, and the mass ratio, are transferred to the Search form, or saved in the Control file when either the 'Transfer 1-3...' or Save 1-3..' buttons are clicked. 
+
+<p>Up to 12 orbits can be displayed. The data displayed are:<ul>
+<li>The asteroid identifier as given in Miriade:
+<li>for each date line in the ephemeris<ul>
+<li>the ephemeris date as given in Miriade.The format is yyyy-mm-ddThh:mm
+<li>the offset of the satellite in RA - in arc secs (as given in Miriade)
+<li>the offset of the satellite in Dec - in arc secs (as given in Miriade)
+<li>the PA of the satellite; and
+<li>the separation of the satellite - in mas.</ul>
+<li>The position of the satellite relative to the moon is plotted to the right of each ephemeris block. The first position of the satelllite is plotted in Red, with the remainder being plotted in Blue.The number at the bottom of each plot gives the width of the plot, in arcsec. The directions of North and East are indicated. You can enlarge the plot size by changing the form size.<br>[<B>Note</B>: the configuration of the asteroid + satellite as projected on the Earth's surface is a left/right mirror image of the sky plot.]
+</ul>
+
+<p><B>When called from the Asteroid Search form:</B>
+<li>set the Year, Month, Day and Hour to be close to the time of the occultation;
+<li>set the time interval to be 2 hours (unless the satellite motion is very large over a 4-hour time span - in which case a smaller interval may be used. <B>HOWEVER avoid using a time interval of less than 1 hour.</B>
+<li>The Miriade system generally contains more than one ephemeris for a given satellite. Occult will display up to 12 ephemerides. The most reliable ephemerides are those in the list of 'Best orbits'.  Generally speaking, when there is more than one orbit for a particular satellite, the first listed is expected to be the most reliable.
+<li>For some asteroids, ephemerides are available for more than one satellite. You will need to look closely at the size and motion of the orbits to associate an orbit with a particular satellite.
+</ul>
+<h3>Using the results</h3>
+The results of a Miriade query can be used in two ways:<ul type =1>
+<li>when the query is called from the Search form for asteroidal occultations, clicking the <B>Transfer 1-3 to Search</B> button will transfer the data from the relevant ephemeris to the search form, ready for a search to be conducted.
+<li>in all instances, clicking the <B>Save 1-3 to Control file </B>button will save the data from the relevant ephemeris in a tagged file ready for use as the '-A' control file for <A  href="AutoAsteroidPrediction.htm"  > external use </a>. </ul>
+In both instances you need to set a value for the mass ratio, as this will set the offset from the mean position on which the normal asteroid ephemeris has been generated. If the moon is small relative to the primary, setting a mass ratio of 0.05 will effectively provide an offset of the satellite from the ephemeris. However when the satellite is a significant fraction of the size of the primary, you will need to allow for an offset of both the primary and the satellite. If the mass ratio was (for example) 0.4, set 0.4 on the Search form for the satellite and generate the prediction. Then set the mass ratio to 0.6 [= 1-0.4] to generate the prediction for the primary. Note that when the mass ratio is set to 0.5 or greater the background color will change from light-green to pale-violet-red;.
+<p>Note that in both cases only the first three data items are transferred or saved. However the ephemeris can be generated for up to 99 points - so that the orbit can be visualised.
+
+</BODY>
+</HTML>

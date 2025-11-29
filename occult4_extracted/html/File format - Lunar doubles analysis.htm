@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>File format - Lunar observations - double star analysis</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>File format - Lunar observations - double star analysis</H1>
+<P>The form for analysing lunar occultations for double star details allows the data to be saved and loaded. The default location for all such files is  Occult 4\Observations\Doubles. The data in the file is as follows.
+
+<p>Line 1 contains identification details. The data is not used in the analysis, but does form the basis of he file name.
+<table columns=3 border=1>
+<TR><TH NOWRAP>Columns</TH><TH>Data</TH></TR>
+<TR><TD>0 - x</TD><TD>star identification</TD></TR>
+<TR><TD>x+2 to x+5</TD><TD>Year</TD></TR>
+<TR><TD>x+7 to x+8</</TD><TD>Month</TD></TR>
+<TR><TD>x+10 to x+11</</TD><TD>Day</TD></TR>
+</table>
+
+<p>Line 2 contains fixed header text.
+
+
+
+
+<p>The data lines contain:
+<table columns=3 border=1>
+<TR><TH NOWRAP>Columns</TH><TH>Data</TH></TR>
+<TR><TD> 1 - 10</TD><TD>The date of the event. Format is yyyy mm dd</TD></TR>
+<TR><TD>13 - 28</TD><TD>The name of the observer (T1)</TD></TR>
+<TR><TD>30 - 35</TD><TD>event seconds of the time, brighter star (T1)</TD></TR>
+<TR><TD>36 - 43</TD><TD>event seconds of the time, fainter star (T2). The zero point is the start of the minute for (T1)</TD></TR>
+<TR><TD>44 - 50</TD><TD>T2-T1, seconds</TD></TR>
+<TR><TD>52 - 58</TD><TD>PA of the event</TD></TR>
+<TR><TD>60 - 66</TD><TD>rv - the radial rate of motion of the star relative to the lunar limb</TD></TR>
+<TR><TD>68 - 74</TD><TD>cct - angle relative to the normal</TD></TR>
+<TR><TD>76 - 82</TD><TD>slope - the 'slope' of the lunar limb between the points of contact of the primary and secondary star, in degrees. A positive slope corresponds to the limb hight decreasing as the Axis Angle increases. slope is calculated from the Primary_AA, Secondary_AA, and the respective heights.</TD></TR>
+<TR><TD>85</TD><TD>* - a flag to indicate whether the event is included in the solution. '1' = included; ' ' = not included</TD></TR>
+<TR><TD>88 - 92</TD><TD>l - topocentric lunar libration in longitude</TD></TR>
+<TR><TD>95 - 99</TD><TD>b - topocentric lunar libration in latitude</TD></TR>
+<TR><TD>102 -107</TD><TD>AA - topocentric Axis Angle of the primary star at its reported time of occultation</TD></TR>
+<TR><TD>109-113</TD><TD>Scale - the ratio of the apparent lunar radius to the mean lunar radius. Used to determine precise limb heights.</TD></TR>
+<TR><TD>115-119</TD><TD>&#176/asec  - the re number of degrees around the apparent lunar limb corresponding to 1 arcsec. Used to convert double star separation to a change in the Axis Angle</TD></TR>
+<TR><TD>122-127</TD><TD>Primary_AA - the Axis Angle of the primary star at the time of the occultation of the secondary</TD></TR>
+<TR><TD>129-133</TD><TD>ht - limb height at the Primary_AA</TD></TR>
+<TR><TD>136-141</TD><TD>Second_AA - the Axis Angle of the secondary star at the time of its occultation</TD></TR>
+<TR><TD>143-147</TD><TD>ht - limb height at the Second_AA</TD></TR>
+<TR><TD>149-152</TD><TD>CA - the Cusp Angle of the event</TD></TR>
+<TR><TD>153-156</TD><TD>Ill- the % illumination of the moon</TD></TR>
+<TR><TD>159-160</TD><TD>Alt - the altitude of the moon at the event</TD></TR>
+</table>
+
+<P>After the event lines, there is a single blank line, followed by a line containing the solution.
+
+<p><b>Note 1</b>
+The following data items essential for the analysis come from the observer's double star report:
+<li>Date
+<li>T1, T2
+<li>PA
+<li>RV
+<li>CCT
+<li>l
+<li>b
+<li>AA
+<li>Scale
+<br>For 'old' reports that did not include one or all of l, b, AA or Scale, the values are retrieved from the Lunar Archive files.
+
+<p>The following data items are computed as part of the solution process: 
+<li>slope
+<li>&#176/asec  
+<li>Primary_AA, and height at that location
+<li>Secondary_AA, and height at that location
+
+<p>The following information come from the observer's double star report:
+<li>Observer's name
+<li>CA
+<li>Ill
+<li>Alt
+<br>CA, Ill, and Alt are provided to assist in subjectiuve assessment (if needed) of the reliability of an observation.
+
+<p><b>Note 2</b> Versions of Occult prior to v 4.1.5.6 (July 2015) containmed less data in a different data forrmat.
+
+
+</BODY>
+</HTML>

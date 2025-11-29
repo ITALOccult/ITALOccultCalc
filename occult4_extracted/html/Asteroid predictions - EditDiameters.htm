@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Edit asteroid diameters</Title>
+<style type="text/css">
+.auto-style1 {
+	font-size: medium;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Edit asteroid diameters</H1>
+<P>The diameter of an asteroid is an important data element for asteroidal occultations 
+- as it sets the path width and maximum duration. It is also relevant to lunar occultations 
+in estimating the duration of any fading. Operationally the asteroid diameter is 
+incorporated into the file of <A href="FileFormat%20AsteroidElements.htm">asteroid orbital elements</a>
+
+whenever that file is created by converting one of MPCORB, AstDyS-2 or Astorb.<p>The asteroid diameter inserted in the file of asteroid diameter comes from the 
+list of Infrared Satellite diameter measurements that are stored in the file <A href="FileFormat%20AsteroidDiameters.htm">
+<strong>AsteroidDiameters.bin</strong></a>. If no diameter is provided in the file, the diameter is computed from the magnitude constant H0. This form is used to edit/insert 
+a diameter in the file AsteroidDiameters.bin. Most users will have no reason to edit this file. 
+That file will handle asteroids numbered in the range 1 to 550,000.<P>Upon opening, the form 
+indicates asteroid #1, and shows its diameter. Change the asteroid number to the 
+desired number, and the value of the diameter helkd in the file is displayed. To edit that diameter, 
+simply enter the new value in the diameter field and click '<B>Replace entry'</B>. 
+You will be asked to confirm before the change is written to the file.<P>&nbsp;<P>
+<strong><span class="auto-style1">Note</span></strong>. The file <A href="FileFormat%20AsteroidDiameters.htm"><strong>
+AsteroidDiametersAll.bin</strong></a>, which contains the individual measures from 
+the various infrared astronomy satellites, is not changed as a result of the 
+above edit, and is not otherwise editable.
+
+
+</BODY>
+</HTML>

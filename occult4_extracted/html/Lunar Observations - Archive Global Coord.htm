@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Global coordinator</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Archiving lunar occultations<br>Global coordinator functions</H1>
+
+<h2>Consolidating regional observations</h2>
+<ul type=1>
+<li>Under the directory \Occult 4\Lunar Archive\ create a working directory for all archive files received over a period. At convenient intervals cease using this directory and create a new directory for new archive files. Do not add files to these directories other than Archive files
+
+<li>When an archive file is received, place it in the working directory.
+
+<li>Periodically (as often as receipt of a new file) consolidate the files into a single Archive file. Do this from the Archive Editor, using the <B>Process files from coordinators button</B>.  On clicking this button, select the currect working directory, and select ALL files. The routine will:<ul type = i>
+<li>combine each of the archive files into a merged  file (in this process, it will skip packed files with extensions of .zip, .rar, .arj, .lzh, .gz and .tar.)
+<li>create  <B>Log file.txt </B>, a file listing all the files that have been merged
+<li>run the Auto correction routine over the merged file
+<li>sort the file chronologically
+<li>rename the file to <B>Archive Observations recent.dat</B>, ready for uploading
+<li>reduce the file, creating the file <B>RArchive Observations recent.dat</B>, ready for uploading
+<li>after confirmation, email a copy of the log file to each regional coordinator.
+<br><br>two additional functions will be included in the future: Re-allocate graze identification numbers, and re-generate the Graze Index file. This can't be automated until the transition from ILOC is complete, with no significant backlog of old unreported observations.<br><br>
+</ul>
+<li>It is possible that the AutoCorrection routine will make a correction that should not be made. This should be checked by opening the <B>Archive Observations recent.dat</B> file in the Archive editor &#8212
+ using the <B>Edit Events </B>button, with the <B>Corrected events </B>radio button checked. This will list all events that have been corrected. Select each in turn, and make sure the correction applied is appropriate. To undo a correction:<ul type = i>
+<li>select the line,
+<li>click the <B>Retrieve original data </B>button, 
+<li>in the large group of radio buttons at the right, select <B>OK 'as is' </B>
+<li>click <B>Write correction to file </B>button.</ul>
+Note that the correction is written directly to the file.
+</ul>
+
+These two files need to be zipped into a file called <B>latest_observations.zip</B>, which is then uploaded to the Occult download site, replacing the file of the same name.
+
+<h2>Managing the main Archive files</h2>
+....
+
+<h2>Creating the Archive for VizieR</h2>
+The File archived at VizieR is a single file containing both the observations and reduced data. The file is created from the Archive Editor, Combine Regions page. The time taken to create the file will be of the order of hours... (and longer if the computer is slow...). The file that is created is based on the set of Archive Observations files contained in teh user's Resource Files directory. The generated file is also contained in that directory, and is aclled Vizier Archive.txt.
+
+<p>When generating this file, previous copies are renamed Vizier Archive.bup, Vizier Archive.bp2, and Vizier Archive.bp3.
+
+<p>The Vizier Archive file can also be used to generate the corrections to the table of deltaT values - to create a table that is consistent with the ephemeris being used in Occult. This is explained <A  href="DeltaT.htm"> here</a>. The deltaT corrections are only made for the period 1700 - 1960. To save time with this correction process, the Vizier Archive can be limited to events prior to 1961 by checking the relevant box. 
+
+<p>The format of the VizieR lunar Archive file is set out <A  href="FileFormat%20LunarArchive%20Vizier.htm"> here</a>.
+
+
+
+
+
+
+</ul>
+
+</BODY>
+</HTML>

@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Identify poor star positions</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Identify poor star positions</H1>
+
+This option generates a list of entries where there appears to be a problem with the star position.
+
+<h3>Selecting the events to check</h3>
+The selection of events is the same as the selection of events in the Observations editor. Except that all the events satisfying the criteria are presented in a list, rather than a drop-down box. That is, use the option buttons and drop down boxes to select a range of asteroids; those asteroids will be listed, and the output will be based on that list.
+
+<h3>Generating the list</h3>
+Click<B><I> Check star positions </I></B>to conduct the check.
+
+If the check box <B>use UCAC4</B> is checked, the program will use the UCAC4 catalogue as the basis for Hipparcos and Tycho2 positions.
+
+<h3>List content</h3>
+The output is a series of blocks of the following form:
+<pre>112 Iphigenia 2005 Feb 25
+0834-00330-1 
+ 9 51 53.6971 :  9 51 53.6954
+ 12 30 10.418 :  12 30 10.431
+</pre>
+with the list finishing with the line:
+<pre>Check completed</pre>
+<ul><li>an event is output is the difference exceeds 0.0014s in RA, or 0.021" in dec (equivalent to 1e-7 radians in both coordinates)
+<li>The first line identifies the event.
+<li>The second line identifies the star.
+<li>The third and fourth lines give the RA and declination of the star. The coordinate before the colon is the value currently held in the AsteroidObservations file. the value after the colon is the value that this check routine thinks shoould be present.
+</ul>
+
+<h3>Interpreting the results</h3>
+The primary purpose of the list is to identify events where the star position should be re-determined. Note that not all mismatches are in fact actual errors (a residual programming bug somewhere...)
+<p>For Tycho2 stars, if there is a small difference in coordinates - the most likely explanation is that the star position currently in file is a Tycho2 position rather than a UCAC2 position.
+<p>Where there is a large difference in coordinates, the star identifier will almost certainly be wrong. Check formatting of the number carefully.
+
+
+</BODY>
+</HTML>

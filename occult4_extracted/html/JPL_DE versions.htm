@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Using different versions of the JPL DE Ephemeris</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+<H1>DE Ephemeris in Occult - Overview</h1>
+The primary ephemeris basis for the planets and the moon is the JPL Development Ephemeris - typically identified as DExxx where xxx is a number. The latest general purpose versions (May 2014) are DE430 and DE431. The DE ephemeris is not included in the installation package. In the absence of a DE ephemeris, Occult uses the VSOP87A series to compute the positions of the planets, and the Chapront 87D series for the Moon. However these are not as accurate as the DE ephemerides.
+
+<p>Occult maintains the DE files in the following manner<ul type =i>
+<li>A 'best precision' version that covers a period of up to about 400 years around current times - under the file name <B>DE_Ephemeris.bin</B>
+<li>A 'long period' version that covers a period of several thousand years - under the file name <B>DE_LongEphemeris.bin</B>
+<li>Any number of versions of the DE ephemeris - under the file names <B>DEvvv.bin</B>, where vvv is the DE version number.</ul>
+ The <B>DE_Ephemeris.bin</B> and <B>DE_LongEphemeris.bin</B> files are the DE files that are automatically accessed by Occult. The other DE version files can be renamed to one of these files for automatic use, or may be selected for use just during the current session of Occult.
+
+<ul><font size=2>Note. Prior to Occult 4.1.1, the files maintained in Occult were called <B>DE404-413.bin</B>, and <B>DE_6000yrs.bin</B>. When Occult 4.1.1 is run, those file will be renamed as <B>DE_Ephemeris.bin</B> and <B>DE_LongEphemeris.bin</B> respectively.</font></ul>
+
+<p>JPL issues improved versions of the JPL-DE ephemerides on an irregular basis - typically associated with a spacecraft mission. The functionality provided to handle the DE files are as follows:<ul type=1>
+<li>To check the JPL FTP site for available versions of the DE ephemeris, and to download source text files;
+<li>To convert a set of source text files into a single binary file for use in Occult
+<li>To select any DE binary file available in Occult as the <B>DE_Ephemeris.bin</B> or <B>DE_LongEphemeris.bin</B> file; and
+<li> To select any DE  binary file available in Occult to be used temporarily as the <B>DE_Ephemeris.bin</B> file during just the current session of Occult. </ul>
+
+<p>The functionality for dealing with the DE files is available under the <B>Maintenance </B>tab, <B>Download and Convert JPL-DE ephemeris file</B>. The specific functionality to set a DE version for temporary use is provided as a button<B> Select DE Ephemeris </B>provided on the <B>Asteroid Predictions</B>, <B>Eclipse</B>, and <B>Ephemerides </B>tabs.
+
+<p>A 2014 explanation of the JPL-DE ephemerides and their file structure is <a href = "JPL_DE.htm">here</a>.
+
+<h1>Checking and Downloading DE source files</h1>
+This functionality is provided on the first tab of the 'Create JPL_DE_Ephemerides form, which looks like:
+<img src="DE_DownloadSource.png">
+<p>This functionality requires internet access, When the form opens, click on the button <B>Get available versions </B>to get a list of DE ephenmerides versions that are available on the JPL ftp site. 
+
+<p>To view the files associated with any particular version, double-click on the version. This will display a list of the available files together with the file size. To download a file, its check box needs to be checked. Each file will be automatically checked if (i) the file has not been downloaded, or (ii) a file of that name is present, but it is of the incorrect length (indicating that it has not been correctly downloaded). The file names are color-coded to indicate whether the file has been downloaded, is of the incorrect length, or a download has failed.
+
+<p>To download the files, simply click the <B>Download selected files </B>button. Note that it is not necessary to download all the files. You can limit the version of the ephemeris that you will create to the years covered by just some of the files - provided the files are sequential. Nate that the start year is always part of the file name. Also that the file name is like <B>ascp </B>for years after the year zero, and <B>ascm </B>for years before the year zero. In any event <font color=red>YOU MUST DOWNLOAD ONE OF THE HEADER FILES</font> (Where there is more than one header file, it can be either header file.)
+
+<p>When downloading, a progress bar will indicate progress with the current file. The color of the files will change as the download progresses, with the check box being cleared after each successful file download. Where a download of a particular file fails, the check box will not clear; in that situation, simply click the download button again after the completion of the first downloads, to re-download those files.
+
+<p>The downloaded files are held in a directory 
+<br><ul>{occult 4}/Downloaded Files/DE_Source Files/devvv</ul>
+where vvv is the DE version number.
+
+<h1>Converting DE source files</h1>
+To use a DE ephemeris it needs to be converted from the ASCII source file to a binary file - and this is done under the Convert DE source files tab.
+
+<p><Font color=red>Not all versions of the DE ephemerides can be converted.</font> The conversion capability is limited to versions where the number of coefficients (NCOEFF) is either 1018 or 938. [This value is available as a labelled value in the first line of the Header file, or the 2nd value in the first line of each data file.] As a result the following versions cannot be converted: DE102, 200, 202 and 406.
+
+<p>The first step is to select the folder containing the DE source files that you want to convert. This is done by clicking the button <B>Select the folder containing JPL-DE source files</B>. This will display a folder tree with focus on the folder ...Occult 4/Downloaded Files/DE_SourceFiles/ - under which there are folders for any DE ephemeris files that have been downloaded. Simply select the relevant folder and click OK.
+
+<p>The conversion form will now look like:<br>
+<img src="DE_Convert.png">
+<p>The imformation provided is:
+<li> a line giving the directory of the sorce files
+<li>a line specifying the header file that will be used
+<li>a list of all the available source files.
+<p>If you have not downloaded a Header file, the conversion cannot proceed. You will be advised of this, and the list of files available for conversion will be empty.
+
+<p>The list of files contains check boxes to indicate which files to use in the conversion. You do not have to convert all the files - you can just convert a subset covering a smaller number of years, PROVIDED there are no gaps between the selected files. Files to be included in the conversion are listed <font color=green>in green</font>. Files not included will be listed <font color=red>in red</font>. If the coverage of the selected files is not continuous, the text uder the list will state <font color=DarkRed><B>Files have gaps in the range covered. Conversion cannot proceed</B></font>, and the button to create the converted file will be disabled.
+
+<p><B>NOTE</B> - when selecting files to include/exclude, click on the file name - not the check box. If you click on the check box you may also see changes in a different check box that you clicked....
+
+<p>To convert the files, simply click the button <B>Create DEvvv.bin file</B>. This will create the file of that name in the Occult 4/Resource Files directory, ready for use. Note that it will overwrite any previous versions of that DE file that you may have created (with no alert being provided). During the conversion process the form will display a progress bar for each file being processed, and the name of the current file being processed. When each file has been processed, <font color=darkred> the text is turned deep red</font>. At the end of the conversion process the program will run a check of a log file to confirm that the converted file contains the expected continuous set of data. If there are any problems the date corresponding to the problem location will be displayed.
+
+<h1>Set default versions of DE ephemeris</h1>
+For normal use, Occult uses two 'default' versions of the DE files. Those versions are called:<ul>
+<li>DE_Ephemeris.bin. and
+<li>DE_LongEphemeris.bin</ul>
+The reason for these two default files is that the DE ephemeris for a period of several hundred years about current dates is updated realatively frequently, wheras an ephemeris covering a thousand years or more is not updated very often. Consequenty the ephemeris for 'current' predictions can be easily updated whenever a new version is released, whereas a version covering historical and far-future events needs updating only occassionally.
+
+<p>The form for setting the defaiult versions appears as:<p>
+<img src="DE_SetDefaultVersions.png">
+
+<p>The form has three work areas:
+<li>a box that list the available DE ephemerides
+<li>a box for setting the DE_Ephemeris file
+<li>a box for setting the DE_LongEphemeris file
+<p>The current default files are highlighted (red on yellow) in the list of available files. The details of those files are displayed in text in the relevant box for setting the files. In the above example, the 'current' DE_Ephemeris.bin file is DE430, and it covers the year range 1550 to 2650. Likewise the 'current' DE_LongEphemeris.bin file is DE422, and it covers the year range -2999 to 3000.
+
+<p>To change the ephemeris file, select the file in thelist of available files. The details (version and date range) of this file are given above the list of files, and on the large button in each box for setting the file. In the example, the highlighted file is DE413.bin. On each of the buttons the text corresponding to that file is given - as <B>DE413.bin = DE413 (1900/2050) </B> - meaning the coverage of the DE413.bin file is the years 1900 to 2050.
+
+<p>To use that file as either the DE_Ephemeris file, or the DE_LongEphemeris file, simple click the relevant button. This will result in the following changes to files in the Resource Files folders:
+<li>The current DE_Ephemeris (or DE_LongEphemeris) file will be renamed as a DEvvv.bin file. If a file of that name already exists, a letter (a... g) will be appended to the extension - to avoid overwiting an existing file.
+<li>The selected DEvvv.bin file will be renamed as DE_Ephemeris.bin, or DE_LongEphemeris.bin - as appropriate.
+<li>Any lunar ephemeris cached files held in the /Resource Files/Moon folder are deleted.
+<li>The details of the ephemeris being used, as displayed at the bottom left of the Occult main form, are updated.
+<p>You can change the files as much as you like with no concerns about lost of data - as no files are overwritten or deleted. The files are merely renamed.
+<p>Occult accesses the DE files in the order 
+<li>DE_Ephemeris.bin,
+<li>DE_LongEphemeris.bin,
+<li>VSOP87A
+<p>There is no need to have either of the DE files present, or to ensure the DE files are different files. 
+
+<p>The recommended versions of the files to use (as at July 2014) are:<ul>
+<li>For DE_Ephemeris.bin: DE430
+<li>For DE_LongEphemeris.bin: DE431. However this is a large file (after conversion, 2.7GB, and about 8.5GB download of source files). If you are concerned about the file size, think carefully about the year range you want to have covered, and simply download the source files to cover those years.<br>
+An alternative is to download DE_LongEphemeris.bin from the Downloads form of Occult. This version of the DE_LongEphemeris.bin file contains the DE422 ephemeris, and covers the years -3000 to +3000. The download is <I>only </I>530 MB.</ul>
+
+
+<h1>Set temporary version of DE ephemeris</h1>
+There can be times when it is desirable to compare predictions generated with different versions of the DE ephemeris, but without making a long-term change to the ephemeris used in Occult be default. For this purpose, Occult has an option to specify a DE ephemeris file to use in place of the DE_Ephemeris.bin file - but just for the current session of Occult. Note that this temporary change applies only to the DE_Ephemeris.bin file; a temporary change to the DE_LongEphemeris.bin file cannot be made.
+
+<p>The form for doing this can be accessed directly from several locations in Occult - specifically, buttons to <B>Select DE Ephemeris</B> are provided on the <B>Asteroid </B>, <B>Eclipses and Transits</B>, and <B>Ephemerides</B> tabs of the Occult main form. It can also be accessed from the Maintenance tab as part of the general DE file processing. The form appears as:<p>
+<img src = "DE_SetTemporary.png">
+<p>The form lists The coverage of the current DE_Ephemeris.bin file and the coverage of the DE file selected in the list of available files. The name of the selected file appears in the top button. Simply select the file you want to use, and click the button. This will implement the temporary change, and close the form. Otherwise click the <B>Close - with no changes </B>button to exit.
+
+</BODY>
+</HTML>

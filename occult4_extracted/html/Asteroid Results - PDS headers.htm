@@ -1,0 +1,353 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>PDS Headers</Title>
+<style type="text/css">
+.auto-style1 {
+	margin-left: 40px;
+}
+.auto-style4 {
+	border: 1px solid #000000;
+}
+.auto-style5 {
+	border: 2px solid #800000;
+	margin-left: 40px;
+}
+.auto-style6 {
+	font-size: medium;
+}
+.auto-style7 {
+	font-size: medium;
+	border: 1px solid #000000;
+}
+.auto-style8 {
+	font-weight: normal;
+}
+.auto-style9 {
+	color: #FF0000;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Manage/Edit Headers for PDS archiving</H1>
+
+<h2>Overview</h2>
+<P>The process for archiving the Asteroid observations held in Occult, with 
+NASA's Planetary Data system, requires the creation of 12 data files and 3 text 
+files. These files are created from the xml fields in the 
+Asteroid~Observations.xml file maintained by Occult. There are two types of 
+files created</P>
+<ul>
+	<li>&nbsp;files containing the observation data. These files have the&nbsp; 
+	extension <strong>.psv </strong>(for Pipe Separated Values; they are like 
+	csv files, but use a '|' rather than a ',' as the field separator)</li>
+	<li>files containing field definitions and data content. These files have 
+	the extension <strong>.xml</strong></li>
+</ul>
+<P>&nbsp;The 20 data files (with the year+month the files are created) in 10 
+pairs are:</P>
+<P class="auto-style1">Asteroid_2023Jul.xml<br>Asteroids_2023Jul.psv</P>
+<P class="auto-style1">AsteroidAstrometry_2023Jul.psv<br>
+AsteroidAstrometry_2023Jul.xml</P>
+<P class="auto-style1"><br>AsteroidDiameter_2023Juls.xml<br>
+AsteroidDiameters_2023Jul.psv<br><br>AsteroidsSummary_2023Jul.psv<br>
+AsteroidSummary_2023Jul.xml</P>
+<P class="auto-style1"><br>AsteroidTimes_2023Jul.psv<br>
+AsteroidTimes_2023Jul.xml</P>
+<P class="auto-style1"><br>DoubleStars_2023Jul.psv<br>DoubleStars_2023Jul.xml</P>
+<P class="auto-style1"><br>Planet.xml_2023Jul.xml<br>Planets_2023Jul.psv</P>
+<P class="auto-style1"><br>PlanetAstrometry_2023Jul.psv<br>
+PlanetAstrometry_2023Jul.xml</P>
+<P class="auto-style1"><br>PlanetsSummary_2023Jul.psv<br>
+PlanetSummary_2023Jul.xml</P>
+<P class="auto-style1"><br>PlanetsTimes_2023Jul.psv<br>PlanetTimes_2023Jul.xml</P>
+<P>These files are built from the Asteroid~Observations file using a <strong>Header</strong> 
+file (which are files containing information that is used in the creation of the
+<strong>.psv</strong> and <strong>.xml</strong> files). Each pair of files has a corresponding Header file - although the two 
+pairs of '...Times' use the same header file. Those files are:</P>
+<P class="auto-style1"><strong>HeaderAsteroids.txt<br>HeaderAsteroidsSummary.txt<br>
+HeaderAstrometry.txt<br>HeaderDiameters.txt<br>HeaderDoubles.txt<br>
+HeaderPlanets.txt<br>HeaderPlanetsSummary.txt<br>HeaderTimes.txt</strong></P>
+<P>The header files contain multiple lines giving the field details for each 
+data element. The details are:</P>
+<ol>
+	<li><strong>Label</strong>:&nbsp; This is a text label that links the fields 
+	in the .psv file to the relevant field properties in the .xml file</li>
+	<li><strong>Format</strong>:&nbsp; Specifies the format of the data. See 
+	below for details</li>
+	<li><strong>Units</strong>:&nbsp; Where the data item has associated 
+	measurement units, this is specified here. See below for more details</li>
+	<li><strong>Description</strong>:&nbsp; A clear statement of what the data 
+	in the field represents. When the description needs to extend over several 
+	lines (for example, when listing the available options in a field) the line 
+	breaks are specified by using a tilda ( ~ ) at the required line break 
+	location.</li>
+</ol>
+<P>The .psv files are built using the data from the Asteroid~Observations file. 
+That data is presented in the same order as that in the Asteroid~Observations 
+file - with some exceptions explained below. The first line of each .psv file 
+contains a label for each field in the .psv file, for linking to the field 
+definitions in teh corresponding .xml file. The label is taken from the relevant 
+Header file.</P>
+<P>The .xml files are built from the Header files using the text in the 4 fields 
+of that file. It also contains data about the corresponding .psv file - such as 
+the file name, file date and file length.</P>
+<P>A critical element in this process is that the lines in the header files must 
+correspond to the data elements that are created in the .psv files. As a result, 
+any change in the ordering of data in the Asteroid~Observations file, or 
+addition or removal of fields from that file, requires a corresponding change to 
+the Header files.</P>
+<h2>PDS Standards</h2>
+<P>The details of the data definitions fora PDS archive file may be found at
+<a href="https://pds.nasa.gov/datastandards/documents/im/v1/index_1E00.html#9.38%C2%A0%C2%A0class_pds_table_delimited&gt;.">
+PDS Standards</a>. </P>
+<P>&nbsp;</P>
+<h2>Multiple Groups of Fields in the files</h2>
+<P>The files are constructed to accommodate multiple entries for certain data 
+groups. Those data groups are:</P>
+<ul>
+	<li>Double stars. Four sets of fields, to cater for the up-to-four solutions 
+	that are possible</li>
+	<li>Satellites. Two sets of fields, to cater for there being up to two 
+	satellites involved</li>
+	<li>Shape models. Ten sets of fields, to cater fits for up to 10 shape 
+	models</li>
+</ul>
+<P>These sets of fields are present in each line of the .psv files, each line in 
+the Header files, and the groups in the xml file.</P>
+<P>&nbsp;</P>
+<h2>Two characters that must be avoided</h2>
+<P>Certain characters are used to interpret the data when creating the .psv and 
+.xml files. Those characters are:</P>
+<P class="auto-style1"><strong>:&nbsp; (Colon)</strong> This is used in the 
+Header files to separate the fields. The colon must not be used in ANY column.</P>
+<P class="auto-style1"><strong>|&nbsp; (Pipe) </strong>This is used in the .psv 
+files to separate the fields in that file. The pipe character must not be used 
+in the Label&nbsp; column, as that will result in incorrect number of fields&nbsp; 
+and incorrect Labels when the .psv file is created.</P>
+<P>&nbsp;</P>
+<h2>Label <span class="auto-style8">field</span></h2>
+<P>The Label field contains a set of characters to identify the name of the 
+field - used to link the xml file data specification to specific columns. Points 
+to note are:</P>
+<ul>
+	<li>You MUST NOT use the pipe character ( | ) in the Label. The pipe 
+	character is the column separator character used in the .psv file. If you 
+	include a pipe character in the label, it will treat that as a division in 
+	the field; it will not appear in the label, and the link between the .xml 
+	and .psv files</li>
+	<li>Currently the dataset uses upper case for the labels.</li>
+</ul>
+<p>&nbsp;</p>
+<h2>Format <span class="auto-style8">types</span></h2>
+<P>The format types may be found in the&nbsp;
+<a href="https://pds.nasa.gov/datastandards/documents/im/v1/index_1E00.html#9.38%C2%A0%C2%A0class_pds_table_delimited&gt;.">
+PDS Standards</a> document in part <strong><span class="auto-style6">23 DataType Classes</span></strong>. The list is long, 
+but only 4 are required:&nbsp;</P>
+<table cellpadding="5" class="auto-style5" style="width: 600">
+	<tr>
+		<td class="auto-style7" style="width: 256px"><strong>23 DataType Classes</strong></td>
+		<td class="auto-style7"><strong>Meaning</strong></td>
+	</tr>
+	<tr>
+		<td class="auto-style4" style="width: 256px"><strong>23.13 
+		ASCII_Date_YMD</strong></td>
+		<td class="auto-style4">Calendar date, in format<br>YYYY-MM-DD</td>
+	</tr>
+	<tr>
+		<td class="auto-style4" style="width: 256px"><strong>23.17 ASCII_Integer</strong></td>
+		<td class="auto-style4">Integer numbers</td>
+	</tr>
+	<tr>
+		<td class="auto-style4" style="width: 256px"><strong>23.28 ASCII_Real</strong></td>
+		<td class="auto-style4">Real numbers (i.e. has decimal places)</td>
+	</tr>
+	<tr>
+		<td class="auto-style4" style="width: 256px"><strong>23.34 
+		ASCII_Text_Preserved</strong></td>
+		<td class="auto-style4">Text, with spaces mantained</td>
+	</tr>
+</table>
+<P class="auto-style1">&nbsp;</P>
+<h2>Unit <span class="auto-style8">identifiers</span></h2>
+<P>The format types may be found in the&nbsp;
+<a href="https://pds.nasa.gov/datastandards/documents/im/v1/index_1E00.html#9.38%C2%A0%C2%A0class_pds_table_delimited&gt;.">
+PDS Standards</a> document in part <strong><span class="auto-style6">24 Unit of 
+Measure Classes</span></strong>. The list 
+is long, but only the following are required:&nbsp;&nbsp;</P>
+<table cellpadding="3" class="auto-style5" style="width: 700">
+	<tr>
+		<td class="auto-style7"><strong>24 Unit of Measure Classes</strong></td>
+		<td class="auto-style7"><strong>Unit</strong></td>
+		<td class="auto-style7" style="width: 265px"><strong>Meaning</strong></td>
+	</tr>
+	<tr>
+		<td class="auto-style4"><strong>24.4 Units_of_Angle</strong></td>
+		<td class="auto-style4">arcmin</td>
+		<td class="auto-style4" style="width: 265px">minute of arc</td>
+	</tr>
+	<tr>
+		<td class="auto-style4">&nbsp;</td>
+		<td class="auto-style4">arcsec</td>
+		<td class="auto-style4" style="width: 265px">second of arc</td>
+	</tr>
+	<tr>
+		<td class="auto-style4">&nbsp;</td>
+		<td class="auto-style4">deg</td>
+		<td class="auto-style4" style="width: 265px">degree</td>
+	</tr>
+	<tr>
+		<td class="auto-style4">&nbsp;</td>
+		<td class="auto-style4">hr</td>
+		<td class="auto-style4" style="width: 265px">hour (for time and RA)</td>
+	</tr>
+	<tr>
+		<td class="auto-style4">&nbsp;</td>
+		<td class="auto-style4">milliarcsec</td>
+		<td class="auto-style4" style="width: 265px">milli-arcsecond</td>
+	</tr>
+	<tr>
+		<td class="auto-style4"><strong>24.13 Units_of_Length</strong></td>
+		<td class="auto-style4">cm</td>
+		<td class="auto-style4" style="width: 265px">centimeter</td>
+	</tr>
+	<tr>
+		<td class="auto-style4">&nbsp;</td>
+		<td class="auto-style4">km</td>
+		<td class="auto-style4" style="width: 265px">kilometers</td>
+	</tr>
+	<tr>
+		<td class="auto-style4">&nbsp;</td>
+		<td class="auto-style4">m</td>
+		<td class="auto-style4" style="width: 265px">meters</td>
+	</tr>
+	<tr>
+		<td class="auto-style4"><strong>24.16 Units_of_Misc</strong></td>
+		<td class="auto-style4">earth_radius/hr</td>
+		<td class="auto-style4" style="width: 265px">hourly motion expressed in 
+		units of the Earth's radius</td>
+	</tr>
+	<tr>
+		<td class="auto-style4"><strong>24.17 Units_of_None</strong></td>
+		<td class="auto-style4">none</td>
+		<td class="auto-style4" style="width: 265px">indicates that no unit of 
+		measure applies</td>
+	</tr>
+	<tr>
+		<td class="auto-style4"><strong>24.33 Units_of_Time</strong></td>
+		<td class="auto-style4">day</td>
+		<td class="auto-style4" style="width: 265px">day number</td>
+	</tr>
+	<tr>
+		<td class="auto-style4"><strong></strong></td>
+		<td class="auto-style4">min</td>
+		<td class="auto-style4" style="width: 265px">minute of time</td>
+	</tr>
+	<tr>
+		<td class="auto-style4"><strong></strong></td>
+		<td class="auto-style4">s</td>
+		<td class="auto-style4" style="width: 265px">second of time</td>
+	</tr>
+	<tr>
+		<td class="auto-style4"><strong>24.34 Units_of_Velocity</strong></td>
+		<td class="auto-style4">km/hr</td>
+		<td class="auto-style4" style="width: 265px">kilometers per hour</td>
+	</tr>
+	<tr>
+		<td class="auto-style4">&nbsp;</td>
+		<td class="auto-style4">&nbsp;</td>
+		<td class="auto-style4" style="width: 265px">&nbsp;</td>
+	</tr>
+</table>
+<P class="auto-style1">&nbsp;</P>
+<h2>Description <span class="auto-style8">field</span></h2>
+<P>This field provides a textual description of the data in the particular item. 
+It should be as meaningful as possible.</P>
+<P>It can be useful for clarity to set out the possible options within a data 
+item by placing them on different lines within the start of its xml tag. To do this, 
+place a tilda ( <strong>~</strong> ) in the location of the text where a line break is intended. 
+The formatting is set up to align the lines with the start of the tag. 
+Obviously, do not use the tilda as a character to be displayed in the text.</P>
+
+
+
+<p>&nbsp;</p>
+<h1>The Editor</h1>
+<p>The editor form looks like:</p>
+<p>
+<img src=PDSHeader_Editor.png width="97%" vspace="5"></p>
+&nbsp;<p>It is designed to make editing as fool-proof as possible.</p>
+<p>Some key elements of the editor are:</p>
+<ol>
+	<li>There are 5 Header files, which are selected in the <strong>Header files</strong> 
+	group. To load the file, click the <strong>Load file </strong>button. To 
+	save the currently loaded file, click the <strong>Save</strong> button. Each 
+	Header file on the local computer is maintained in two file names. The end 
+	of the file name for an edited version of the header file ends with '_Rev.txt', 
+	whereas the file that will be used to create the .psv and .xml files does 
+	not include the '_Rev' characters.</li>
+	<li>The version of the file to be loaded, and that to be saved, is selected 
+	using the radio buttons. The default settings for these radio buttons are
+	<strong>Version for use</strong> for Load, and <strong>Edited Version
+	</strong>for Save. Whenever you load a file, the option for Save will always 
+	be set to <strong>Edited Version</strong>, to avoid inadvertent overwriting 
+	of the file used when creating the .psv and .xml files.</li>
+	<li>When you have loaded a file, made edits, and have not saved the file 
+	with those edits - a fresh Load of that file will replace all the displayed 
+	edited data without any alerts.</li>
+	<li>you cannot change the header file without having to confirm that you 
+	don't want to save the existing file. This ensures that you are reminded to 
+	save the file if you have made any changes.</li>
+	<li>When you change files, the data displayed is removed, and the <strong>
+	Save fil</strong>e button is disabled. This prevents you from inadvertently 
+	saving the file to the wrong file .</li>
+	<li>The data elements are ordered by the <strong>Line</strong> number. The 
+	line number cannot be manually edited. This preserves the data integrity.</li>
+	<li>You can sort the table by any of the columns - by clicking on the column 
+	header. But you can only save the data when the file is sorted by Line. This 
+	preserves the order of the data, which is critical for creating the .psv 
+	files.</li>
+	<li>You can manually edit any column except the <strong>Line</strong> 
+	column. Those edits will be retained while you do other editing. They will 
+	be saved when you save the file.</li>
+	<li>Under the group Insert/Delete/Move, you can do the following -
+	<span class="auto-style9">but only if the data is sorted by <strong>Line</strong></span>:<ol>
+		<li>Insert a new line at the selected line. The lines will be 
+		renumbered. </li>
+		<li>Delete the selected line. The lines will be renumbered. </li>
+		<li>Move a line to a different line. Specify the line number of the line 
+		to be moved, and the line number where you want the line to be moved to 
+		- using the up-down controls. The lines will be renumbered.</li>
+	</ol>
+	</li>
+	<li>A critical requirement of the .psv and .xml files is that the field 
+	identification Label is unique. That is, the items in the Label column must 
+	be unique within that header. This function is only reliable if the list is 
+	sorted by Label. Click Find duplicates, and you will get a report displayed 
+	that lists all duplicate labels and their line number. You can edit the 
+	Label field while the list is sorted by Label - or you can sort the list by 
+	line, and edit the relevant line from there.</li>
+	<li>The column Format is used to set the format for real numbers. This field 
+	is colored Pink when a format specification is not available for that data 
+	type. If a format can be specified but hasn't been set, it is colored green. 
+	If set, it is not colored. A format specification is not required - 
+	especially when the data item has a variable number of decimal places.&nbsp; </li>
+	<li>A zip file of the five Header files is maintained on the Occult Server, 
+	and can be downloaded clicking the Download button.</li>
+</ol>
+<h2>Maintaining the Header file on the Occult Server</h2>
+<p>The five header files are held on you computer in the subdirectory Occult 
+4\Asteroid\Results\PDS Files. To place those files onto the Occult Server, zip 
+the five files into a zip file called <strong>pds_headers.zip</strong>, and 
+upload it to the server. Note that the file name must be in lower case.</p>
+<p>&nbsp;</p>
+
+
+
+</BODY>
+</HTML>

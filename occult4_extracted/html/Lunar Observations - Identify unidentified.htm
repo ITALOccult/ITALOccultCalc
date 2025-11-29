@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Identify unidentified stars</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Identify unidentified stars</H1>
+<P>Occultation reports prepared outside of the Occult editor might not have all the stars identified. Or stars might be identified using a catalogue other than ZC, SAO and XZ. 
+
+<p>The function under <I>File... Identify unidentified stars</I> goes through the report, and for each entry where the star number is zero, or the star catalogue is not one of R, S, X, P or A, it displays the dialogue box that lists possible stars in the XZ catalogue. The options are:<p>
+
+<li>Double-click on a star to select that star for the event. The event record will be updated, and the program will move on to the next unidentified star.
+
+<li>Click <I>Not listed </I>to move on to the next event without updating the event record.
+
+<li>Click <I>Abort </I>to escape from the checking of that and subsequent events.
+
+<H2>Identifying stars from a GSC number</H2>
+The form for identifying a star includes a second section for identifying a star in the XZ catalogue from
+a number in the Guide Star Catalogue (GSC). Simply enter the GSC number in the two boxes provided, and click 'Match to XZ'. All stars in the XZ80Q catalogue that are within 20" of the position of the GSC star are listed, together with the magntude in XZ80Q, and the difference in position (in arc secs).
+<p>If the query to Vizier is successfull, the star coordinates will be displayed.
+<p>If no stars are listed, the relevant GSC star is not in the XZ80Q catalogue. However if a star is shown in the top part of the form as having a very small residual, the most likely explanation is that the GSC number has been incorrectly specified.
+
+<p><B>NOTE</B>. The functionality to match a GSC star to the XZ80Q catalogue operates by retrieving the GSC position from VisieR. Consequently the internet must be connected for this function to work. Note that it will take a few seconds for the GSC data to be returned from VizieR.
+</P>
+
+
+
+</BODY>
+</HTML>

@@ -1,0 +1,259 @@
+/**
+ * @file gaia_cache_downloader.cpp
+ * @brief Tool per scaricare e popolare cache locale Gaia DR3
+ * 
+ * Uso:
+ *   gaia_cache_downloader --ecliptic 20.0 15.0
+ *   gaia_cache_downloader --region 0 360 -30 30 15.0
+ *   gaia_cache_downloader --stats
+ * 
+ * @author Michele Bigi
+ * @date 2025-11-24
+ */
+
+#include "ioccultcalc/gaia_cache.h"
+#include "ioccultcalc/gaia_client.h"
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <cmath>
+
+using namespace ioccultcalc;
+
+void printUsage() {
+    std::cout << "\n";
+    std::cout << "╔══════════════════════════════════════════════════════════╗\n";
+    std::cout << "║         Gaia DR3 Cache Downloader - ITALOccultCalc       ║\n";
+    std::cout << "╚══════════════════════════════════════════════════════════╝\n\n";
+    
+    std::cout << "Usage:\n";
+    std::cout << "  gaia_cache_downloader [options]\n\n";
+    
+    std::cout << "Options:\n";
+    std::cout << "  --ecliptic <width_deg> <mag_limit>\n";
+    std::cout << "      Scarica fascia eclittica ±width gradi, mag < limit\n";
+    std::cout << "      Esempio: --ecliptic 20.0 15.0\n\n";
+    
+    std::cout << "  --region <ra_min> <ra_max> <dec_min> <dec_max> <mag_limit>\n";
+    std::cout << "      Scarica regione rettangolare\n";
+    std::cout << "      Esempio: --region 0 360 -30 30 15.0\n\n";
+    
+    std::cout << "  --mainbelt <mag_limit>\n";
+    std::cout << "      Scarica fascia asteroidi principale (eclittica ±25°)\n";
+    std::cout << "      Esempio: --mainbelt 15.0\n\n";
+    
+    std::cout << "  --stats\n";
+    std::cout << "      Mostra statistiche cache corrente\n\n";
+    
+    std::cout << "  --clear\n";
+    std::cout << "      Cancella cache esistente\n\n";
+    
+    std::cout << "  --validate\n";
+    std::cout << "      Valida integrità cache\n\n";
+    
+    std::cout << "  --export <file.csv>\n";
+    std::cout << "      Esporta cache in CSV\n\n";
+    
+    std::cout << "  --cache-dir <path>\n";
+    std::cout << "      Specifica directory cache (default: ~/.ioccultcalc/catalogs)\n\n";
+    
+    std::cout << "Examples:\n";
+    std::cout << "  # Scarica fascia principale asteroidi (mag < 15)\n";
+    std::cout << "  gaia_cache_downloader --mainbelt 15.0\n\n";
+    
+    std::cout << "  # Scarica eclittica ±20° (mag < 14)\n";
+    std::cout << "  gaia_cache_downloader --ecliptic 20.0 14.0\n\n";
+    
+    std::cout << "  # Mostra statistiche\n";
+    std::cout << "  gaia_cache_downloader --stats\n\n";
+}
+
+void printStats(const GaiaCacheStats& stats) {
+    std::cout << "\n";
+    std::cout << "╔══════════════════════════════════════════════════════════╗\n";
+    std::cout << "║            Statistiche Cache Gaia DR3                    ║\n";
+    std::cout << "╚══════════════════════════════════════════════════════════╝\n\n";
+    
+    std::cout << "Stelle totali:       " << stats.total_stars << "\n";
+    std::cout << "Regioni HEALPix:     " << stats.total_tiles << "\n";
+    std::cout << "Dimensione cache:    " << std::fixed << std::setprecision(2) 
+              << stats.total_size_mb << " MB\n";
+    std::cout << "Copertura cielo:     " << std::fixed << std::setprecision(1)
+              << stats.sky_coverage << "%\n";
+    std::cout << "Area coperta:        " << std::fixed << std::setprecision(0)
+              << stats.coverageDeg2 << " deg²\n";
+    std::cout << "Magnitudine range:   " << std::fixed << std::setprecision(2)
+              << stats.minMagnitude << " - " << stats.maxMagnitude << "\n";
+    std::cout << "Creazione:           " << stats.creationDate << "\n";
+    std::cout << "Ultimo aggiornamento: " << stats.lastUpdate << "\n\n";
+}
+
+void printProgress(const std::string& task, size_t current, size_t total, size_t stars = 0) {
+    double percentage = (current * 100.0) / total;
+    std::cout << "\r[" << std::setw(3) << (int)percentage << "%] " 
+              << task << ": " << current << "/" << total;
+    if (stars > 0) {
+        std::cout << " (" << stars << " stelle)";
+    }
+    std::cout << std::string(20, ' ') << std::flush;
+}
+
+int main(int argc, char* argv[]) {
+    try {
+        if (argc < 2) {
+            printUsage();
+            return 1;
+        }
+        
+        std::string command = argv[1];
+        
+        // Setup cache
+        GaiaCacheOptions options;
+        options.cacheDir = "";  // Use default
+        options.maxMagnitude = 18.0;
+        options.compressData = true;
+        options.healpixLevel = 6;
+        
+        // Parse cache directory se specificata
+        for (int i = 1; i < argc - 1; i++) {
+            if (std::string(argv[i]) == "--cache-dir") {
+                options.cacheDir = argv[i+1];
+            }
+        }
+        
+        GaiaCache cache(options);
+        
+        // Carica cache esistente
+        std::cout << "Caricamento cache esistente...\n";
+        if (cache.loadCache()) {
+            std::cout << "✓ Cache caricata da: " << cache.getCacheDirectory() << "\n\n";
+        } else {
+            std::cout << "Cache non trovata, sarà creata nuova.\n";
+            std::cout << "Directory: " << cache.getCacheDirectory() << "\n\n";
+        }
+        
+        // ====================================================================
+        // COMANDI
+        // ====================================================================
+        
+        if (command == "--stats") {
+            auto stats = cache.getStats();
+            printStats(stats);
+            
+        } else if (command == "--clear") {
+            std::cout << "Cancellazione cache...\n";
+            cache.clearCache();
+            cache.saveCache();
+            std::cout << "✓ Cache cancellata\n\n";
+            
+        } else if (command == "--validate") {
+            std::cout << "Validazione cache...\n";
+            bool valid = cache.validateCache();
+            if (valid) {
+                std::cout << "✓ Cache valida\n\n";
+            } else {
+                std::cout << "✗ Cache corrotta o invalida\n\n";
+                return 1;
+            }
+            
+        } else if (command == "--export" && argc >= 3) {
+            std::string filename = argv[2];
+            std::cout << "Esportazione cache in CSV...\n";
+            if (cache.exportToCSV(filename)) {
+                std::cout << "✓ Esportato in: " << filename << "\n\n";
+            } else {
+                std::cout << "✗ Errore esportazione\n\n";
+                return 1;
+            }
+            
+        } else if (command == "--ecliptic" && argc >= 4) {
+            double widthDeg = std::stod(argv[2]);
+            double magLimit = std::stod(argv[3]);
+            
+            std::cout << "╔══════════════════════════════════════════════════════════╗\n";
+            std::cout << "║         Download Fascia Eclittica                         ║\n";
+            std::cout << "╚══════════════════════════════════════════════════════════╝\n\n";
+            std::cout << "Larghezza:       ±" << widthDeg << "°\n";
+            std::cout << "Mag limite:      " << magLimit << "\n";
+            std::cout << "Compressione:    " << (options.compressData ? "Sì" : "No") << "\n";
+            std::cout << "HEALPix level:   " << options.healpixLevel << "\n\n";
+            
+            std::cout << "Inizio download...\n";
+            auto startTime = std::chrono::high_resolution_clock::now();
+            
+            size_t starsDownloaded = cache.downloadEclipticBand(widthDeg, magLimit);
+            
+            auto endTime = std::chrono::high_resolution_clock::now();
+            auto duration = std::chrono::duration_cast<std::chrono::seconds>(endTime - startTime);
+            
+            std::cout << "\n\n✓ Download completato!\n";
+            std::cout << "Stelle scaricate: " << starsDownloaded << "\n";
+            std::cout << "Tempo: " << duration.count() << " secondi\n\n";
+            
+            std::cout << "Salvataggio cache...\n";
+            if (cache.saveCache()) {
+                std::cout << "✓ Cache salvata\n\n";
+                auto stats = cache.getStats();
+                printStats(stats);
+            }
+            
+        } else if (command == "--mainbelt" && argc >= 3) {
+            double magLimit = std::stod(argv[2]);
+            
+            std::cout << "╔══════════════════════════════════════════════════════════╗\n";
+            std::cout << "║      Download Fascia Principale Asteroidi                ║\n";
+            std::cout << "╚══════════════════════════════════════════════════════════╝\n\n";
+            std::cout << "Regione:         Eclittica ±25°\n";
+            std::cout << "Mag limite:      " << magLimit << "\n\n";
+            
+            auto startTime = std::chrono::high_resolution_clock::now();
+            size_t starsDownloaded = cache.downloadEclipticBand(25.0, magLimit);
+            auto endTime = std::chrono::high_resolution_clock::now();
+            auto duration = std::chrono::duration_cast<std::chrono::seconds>(endTime - startTime);
+            
+            std::cout << "\n\n✓ Download completato!\n";
+            std::cout << "Stelle scaricate: " << starsDownloaded << "\n";
+            std::cout << "Tempo: " << duration.count() << " secondi\n\n";
+            
+            cache.saveCache();
+            std::cout << "✓ Cache salvata\n\n";
+            
+        } else if (command == "--region" && argc >= 7) {
+            double raMin = std::stod(argv[2]);
+            double raMax = std::stod(argv[3]);
+            double decMin = std::stod(argv[4]);
+            double decMax = std::stod(argv[5]);
+            double magLimit = std::stod(argv[6]);
+            
+            std::cout << "╔══════════════════════════════════════════════════════════╗\n";
+            std::cout << "║         Download Regione Personalizzata                   ║\n";
+            std::cout << "╚══════════════════════════════════════════════════════════╝\n\n";
+            std::cout << "RA:              " << raMin << "° - " << raMax << "°\n";
+            std::cout << "Dec:             " << decMin << "° - " << decMax << "°\n";
+            std::cout << "Mag limite:      " << magLimit << "\n\n";
+            
+            auto startTime = std::chrono::high_resolution_clock::now();
+            size_t starsDownloaded = cache.downloadRegion(raMin, raMax, decMin, decMax, magLimit);
+            auto endTime = std::chrono::high_resolution_clock::now();
+            auto duration = std::chrono::duration_cast<std::chrono::seconds>(endTime - startTime);
+            
+            std::cout << "\n\n✓ Download completato!\n";
+            std::cout << "Stelle scaricate: " << starsDownloaded << "\n";
+            std::cout << "Tempo: " << duration.count() << " secondi\n\n";
+            
+            cache.saveCache();
+            std::cout << "✓ Cache salvata\n\n";
+            
+        } else {
+            std::cout << "Comando non riconosciuto: " << command << "\n";
+            printUsage();
+            return 1;
+        }
+        
+        return 0;
+        
+    } catch (const std::exception& e) {
+        std::cerr << "✗ Errore: " << e.what() << "\n";
+        return 1;
+    }
+}

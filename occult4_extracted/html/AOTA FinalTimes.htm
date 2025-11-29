@@ -1,0 +1,375 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns:m="http://schemas.microsoft.com/office/2004/12/omml"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+ <meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+ <title>AOTA - Camera corrections and final times</title>
+</head>
+
+<body bgcolor="#FFFFDF" lang=EN-AU link=blue vlink=purple style='tab-interval:
+36.0pt'>
+
+
+
+<h2>AOTA Help topics</h2>
+<a href="AOTA%20Overview.htm">Overview and form layout</a><br><br>
+<a href="AOTA%20Read%20and%20integrate.htm">Tab 1. Read, Integrity, Set time, Bin and Normalise</a><br>
+<a href="AOTA%20Fourier.htm">Tab 2A. Fourier plot</a><br>
+<a href="AOTA%20Short.htm">Tab 2B. Short event check</a><br>
+<a href="AOTA%20Find%20events.htm">Tab 3. Find events</a><br>
+<a href="AOTA%20Select%20to%20analyse.htm">Tab 4. Select event to analyse</a><br>
+<a href="AOTA%20Analyse.htm">Tab 5. Analyse</a><br>
+<a href="AOTA%20FinalTimes.htm">Tab 6. Camera corrections, final results</a><br><br>
+<a href="AOTA%20Integrity.htm">Integrity check</a><br>
+<a href="AOTA%20Integration%20and%20binning.htm">Integration, binning & normalisation</a><br>
+<a href="AOTA%20Set%20time%20scale.htm">Set time scale</a><br>
+<a href="AOTA%20Verify.htm">Verify event times</a><br>
+<a href="AOTA%20VTI%20info.htm">VTI information</a><br><br>
+<a href="AOTA%20Hints%20and%20Tips.htm"><B>Hints and Tips</B></a><br>
+
+<h1><span style='mso-fareast-font-family:"Times New Roman"'><a
+href="AOTA%20Hints%20and%20Tips.htm"><span style='color:black;text-decoration:
+none;text-underline:none'>AOTA: Tab 6. Camera corrections and final times<o:p></o:p></span></a></span></h1>
+
+<p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'><a
+href="AOTA%20Hints%20and%20Tips.htm"><span style='color:black;text-decoration:
+none;text-underline:none'>Tab 5 converts the event location in frames to an
+event time. <o:p></o:p></span></a></span></p>
+
+<h2><span style='mso-fareast-font-family:"Times New Roman"'><a
+href="AOTA%20Hints%20and%20Tips.htm"><span style='color:black;text-decoration:
+none;text-underline:none'>Camera corrections<o:p></o:p></span></a></span></h2>
+
+<p><a href="AOTA%20Hints%20and%20Tips.htm"><span style='color:black;text-decoration:
+none;text-underline:none'>If the observation was made using an integrating
+camera, details of the integration used must be specified in order to derive
+the correct time. </span></a></p>
+
+<p><a href="AOTA%20Hints%20and%20Tips.htm"><span style='color:black;text-decoration:
+none;text-underline:none'>Depending upon the camera, corrections may be
+required for internal delays within the camera. </span></a></p>
+
+<p><a href="AOTA%20Hints%20and%20Tips.htm"><span style='color:black;text-decoration:
+none;text-underline:none'>These two aspects are dealt with in the following
+box: </span></a></p>
+
+<p style='margin-left:36.0pt'><a href="AOTA%20Hints%20and%20Tips.htm"><span
+style='color:black;text-decoration:none;text-underline:none'><span
+style='mso-no-proof:yes'><img border=0 width=350 height=154 id="_x0000_i1029"
+src="AOTA_camera%20corrections.png"></span></span></a></p>
+
+<p class=MsoListParagraphCxSpFirst style='margin-left:18.0pt;mso-add-space:
+auto;text-indent:-18.0pt;mso-list:l0 level1 lfo2'><span style='mso-fareast-font-family:
+"Times New Roman"'><a href="AOTA_camera%20corrections.png"><![if !supportLists]><span
+style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
+Symbol;color:black;text-decoration:none;text-underline:none'><span
+style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='color:black;text-decoration:none;
+text-underline:none'>Select the camera in the 'Video Camera' box using the
+drop-down list. <o:p></o:p></span></a></span></p>
+
+<p class=MsoListParagraphCxSpMiddle style='margin-left:18.0pt;mso-add-space:
+auto;text-indent:-18.0pt;mso-list:l0 level1 lfo2'><span style='mso-fareast-font-family:
+"Times New Roman"'><a href="AOTA_camera%20corrections.png"><![if !supportLists]><span
+style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
+Symbol;color:black;text-decoration:none;text-underline:none'><span
+style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='color:black;text-decoration:none;
+text-underline:none'>Specify the number of frames integrated in the bottom left
+box. If the camera is a non-integrating camera, specify 0. For a <span
+class=SpellE>Watec</span> 120N+ camera, use 0 for all the 'fast' settings, and
+1or larger for all the slow settings. [Slow 1 is <span class=GramE>an
+integration</span> over 1 frame]. <o:p></o:p></span></a></span></p>
+
+<p class=MsoListParagraphCxSpLast style='margin-left:18.0pt;mso-add-space:auto;
+text-indent:-18.0pt;mso-list:l0 level1 lfo2'><span style='mso-fareast-font-family:
+"Times New Roman"'><a href="AOTA_camera%20corrections.png"><![if !supportLists]><span
+style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
+Symbol;color:black;text-decoration:none;text-underline:none'><span
+style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='color:black;text-decoration:none;
+text-underline:none'>In the 'video system' box, specify whether the camera is
+NTSC or PAL, or ADVS. For videos measured with <span class=SpellE>Tangra</span>
+that information is not available in the .<span class=SpellE>csv</span> file
+versions; however AOTA will determine the setting if the frame times are
+included in the CSV file of <span class=SpellE>Tangra</span>. For users of <span
+class=SpellE>Tangra</span> version 3.0.81 or later accessing AOTA directly from
+<span class=SpellE>Tangra</span>, the system will be transferred. If the video
+system has not been set, the Video System box will appear as follows. <o:p></o:p></span></a></span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt'><a
+href="AOTA_camera%20corrections.png"><span style='mso-fareast-font-family:"Times New Roman";
+color:black;mso-no-proof:yes;text-decoration:none;text-underline:none'><img
+border=0 width=166 height=88 id="_x0000_i1028"
+src="AOTA_camera%20corrections2.png"></span><span style='mso-fareast-font-family:
+"Times New Roman";color:black;text-decoration:none;text-underline:none'><o:p></o:p></span></a></p>
+
+<p class=MsoListParagraph style='margin-left:18.0pt;mso-add-space:auto;
+text-indent:-18.0pt;mso-list:l0 level1 lfo2'><span style='mso-fareast-font-family:
+"Times New Roman"'><a href="AOTA_camera%20corrections2.png"><![if !supportLists]><span
+style='font-family:Symbol;mso-fareast-font-family:Symbol;mso-bidi-font-family:
+Symbol;color:black;text-decoration:none;text-underline:none'><span
+style='mso-list:Ignore'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='color:black;text-decoration:none;
+text-underline:none'>The total time correction applied is given in bold text at
+bottom right. <o:p></o:p></span></a></span></p>
+
+<h2><span style='mso-fareast-font-family:"Times New Roman"'><a
+href="AOTA_camera%20corrections2.png"><span style='color:black;text-decoration:
+none;text-underline:none'>Final times<o:p></o:p></span></a></span></h2>
+
+<p class=MsoNormal style='margin-left:36.0pt'><a
+href="AOTA_camera%20corrections2.png"><span style='mso-fareast-font-family:
+"Times New Roman";color:black;mso-no-proof:yes;text-decoration:none;text-underline:
+none'><img border=0 width=225 height=152 id="_x0000_i1027"
+src="AOTA_Final%20times.png"></span><span style='mso-fareast-font-family:"Times New Roman";
+color:black;text-decoration:none;text-underline:none'><o:p></o:p></span></a></p>
+
+<p><a href="AOTA_Final%20times.png"><span style='color:black;text-decoration:
+none;text-underline:none'>In this box the final results of the analysis are
+given for the current event being analysed. The event number is given at the
+top of the box. [Remember that up to five possible events in the light curve
+can be analysed.] </span></a></p>
+
+<p><a href="AOTA_Final%20times.png"><span style='color:black;text-decoration:
+none;text-underline:none'>The Final times box includes a button <b>Verify</b>
+which is enabled when AOTA is called directly from <span class=SpellE>Tangra</span>.
+This allows the observer to display (in <span class=SpellE>Tangra</span>) the
+video frame corresponding to the computed event time, to confirm the event time
+- with the ability to specify a correction if needed (which may be the case if
+the video suffers from missed or duplicate frames.) More details are <span
+style='mso-field-code:" HYPERLINK \0022AOTA%20Verify\.htm\0022 "'><u><span
+style='color:blue'>here</span></u></span>. </span></a></p>
+
+<h2><span style='mso-fareast-font-family:"Times New Roman"'><a
+href="AOTA%20Verify.htm"><span style='color:black;text-decoration:none;
+text-underline:none'>Saving and <span class=GramE>Copying</span> useful plots<o:p></o:p></span></a></span></h2>
+
+<p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'><a
+href="AOTA%20Verify.htm"><span style='color:black;text-decoration:none;
+text-underline:none'>It can be very useful to save an image of the analysis of
+an event. There are several ways of doing this<o:p></o:p></span></a></span></p>
+
+<ol start=1 type=i>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l6 level1 lfo5;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'><a href="AOTA%20Verify.htm"><span style='color:black;
+     text-decoration:none;text-underline:none'>From any tab, the menu item <b>'File
+     Save image of this form as currently displayed' </b>will save an image of the form as currently
+     displayed. </span></a>There are two submenus:<br>a. <strong>Save image of 
+ form</strong> - which actually saves an image of the form<br>b. <strong>Set 
+ scale (Currently xxx%) to match Monitor scale</strong>. This is important if 
+ you have set you monitor to display text and images at a scale greater than 
+ 100%. This Windows setting is found under <strong>Settings, Display, Scale and 
+ Layout.</strong>&nbsp; When selected the following form will appear. Simply 
+ select the button that matches the Windows setting, and close the form. The 
+ setting will be retained between sessions. For most users, the setting will be 
+ 100%.<br>
+ <img src="MonitorScale.png">.</span></li>
+	<li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l6 level1 lfo5;tab-stops:list 36.0pt'>
+	<span style='mso-fareast-font-family:
+     "Times New Roman"'><a href="AOTA%20Verify.htm">
+	<span style='color:black;
+     text-decoration:none;text-underline:none'>Similarly the menu item <b>Edit... copy form </b>will copy the
+     form as currently displayed to the clipboard. <o:p></o:p></span></a></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l6 level1 lfo5;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'><a href="AOTA%20Verify.htm"><span style='color:black;
+     text-decoration:none;text-underline:none'>From any tab, the menu item '<b>File
+     Save plot' </b>will save an image of the light curve plot (including, if the
+     plot is wider than the display, that part which is not displayed).
+     Similarly the menu item<b> Edit... copy plot </b>will copy the light curve plot
+     to the clipboard.<o:p></o:p></span></a></span></li>
+</ol>
+
+<p style='margin-left:36.0pt'><a href="AOTA%20Verify.htm"><span
+style='color:black;text-decoration:none;text-underline:none'><span
+style='mso-no-proof:yes'><img border=0 width=130 height=150 id="_x0000_i1026"
+src="AOTA_SaveImages.png"></span></span></a></p>
+
+<ol start=3 type=i>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l6 level1 lfo5;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'><a href="AOTA_SaveImages.png"><span style='color:black;
+     text-decoration:none;text-underline:none'>The buttons in the Save AOTA
+     images provide specific functions for the current event analysis:<o:p></o:p></span></a></span></li>
+ <ul type=circle>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;mso-list:l6 level2 lfo5;tab-stops:list 72.0pt'><span
+      style='mso-fareast-font-family:"Times New Roman"'><a
+      href="AOTA_SaveImages.png"><span style='color:black;text-decoration:none;
+      text-underline:none'>the <b>Save Tab 5 image for event #X </b>saves an
+      image of the form as displayed under Tab 5 - that is, it provides all the
+      details of the final analysis. The text under the button displays the 
+  current setting within Occult, which should match the Windows monitor scale 
+  setting. See item (i)(b) above. <o:p></o:p></span></a></span></li>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;mso-list:l6 level2 lfo5;tab-stops:list 72.0pt'><span
+      style='mso-fareast-font-family:"Times New Roman"'><a
+      href="AOTA_SaveImages.png"><span class=GramE><span style='color:black;
+      text-decoration:none;text-underline:none'>the</span></span><span
+      style='color:black;text-decoration:none;text-underline:none'> <b
+      style='mso-bidi-font-weight:normal'>Save Tab 4 image of plot analysis</b>
+      will save the entire plot as shown in Tab 4. This provides an overall
+      view of the entire light curve and what has been identified as possible
+      events. For Miss <span class=GramE>events</span>, it also assists in
+      confirming that a Miss was in fact recorded. <o:p></o:p></span></a></span></li>
+  <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:
+      auto;mso-list:l6 level2 lfo5;tab-stops:list 72.0pt'><span
+      style='mso-fareast-font-family:"Times New Roman"'><a
+      href="AOTA_SaveImages.png"><span class=GramE><span style='color:black;
+      text-decoration:none;text-underline:none'>the</span></span><span
+      style='color:black;text-decoration:none;text-underline:none'> file format
+      used for the save is specified in the drop-down box.<o:p></o:p></span></a></span></li>
+ </ul>
+</ol>
+
+<p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'><a
+href="AOTA_SaveImages.png"><span style='color:black;text-decoration:none;
+text-underline:none'>The files saved will be found in the same directory as the
+source file read by AOTA (or, in the case of AOTA being called from <span
+class=SpellE>Tangra</span>, the source file read by <span class=SpellE>Tangra</span>.)
+The file name will be the same as the source file name, except with additional
+text to indicate the nature of the saved data. <o:p></o:p></span></a></span></p>
+
+<h2><span style='mso-fareast-font-family:"Times New Roman"'><a
+href="AOTA_SaveImages.png"><span style='color:black;text-decoration:none;
+text-underline:none'>Final reports<o:p></o:p></span></a></span></h2>
+
+<p class=MsoNormal style='margin-left:36.0pt'><a href="AOTA_SaveImages.png"><span
+style='mso-fareast-font-family:"Times New Roman";color:black;mso-no-proof:yes;
+text-decoration:none;text-underline:none'><img border=0 width=128 height=151
+id="_x0000_i1025" src="AOTA_FinalReport.png"></span><span style='mso-fareast-font-family:
+"Times New Roman";color:black;text-decoration:none;text-underline:none'><o:p></o:p></span></a></p>
+
+<p><a href="AOTA_FinalReport.png"><span style='color:black;text-decoration:
+none;text-underline:none'>The top line advises of the number of events that
+AOTA believes need to be analysed. Under that, four buttons provide the
+following functions:</span></a></p>
+
+<ol start=1 type=1>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo9;tab-stops:list 36.0pt'><b><span style='mso-fareast-font-family:
+     "Times New Roman"'><a href="AOTA_FinalReport.png"><span style='color:black;
+     text-decoration:none;text-underline:none'>Set Event #X as a non-event</span><span
+     style='color:black;font-weight:normal;text-decoration:none;text-underline:
+     none'>. If an analysed event is considered to be a 'non-event' after due
+     consideration, click this button to set the event status to 'non-event'. A
+     label will appear over the Final Results Box to indicate the event is set
+     as a non-event. This setting can be cleared from Tab 4. <br
+     style='mso-special-character:line-break'>
+     <![if !supportLineBreakNewLine]><br style='mso-special-character:line-break'>
+     <![endif]><o:p></o:p></span></a></span></b></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo9;tab-stops:list 36.0pt'><b style='mso-bidi-font-weight:
+     normal'><span style='mso-fareast-font-family:"Times New Roman"'><a
+     href="AOTA_FinalReport.png"><span style='color:black;text-decoration:none;
+     text-underline:none'>View report</span><span style='color:black;
+     font-weight:normal;text-decoration:none;text-underline:none'>. This
+     displays the current analysis report, giving details for each of the
+     analysed events. An example report is: <o:p></o:p></span></a></span></b></li>
+</ol>
+
+<pre style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'>AOTA analysis of the file C:\Video\Agamemnom\Conard_Event1_RawCSV.csv</span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'>- analysed on Monday, 30 December 2013 at 7:36 AM UTC</span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'>- using AOTA v4.1.0.19</span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'><o:p>&nbsp;</o:p></span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'>Event #1</span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'><o:p>&nbsp;</o:p></span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'><span style='mso-spacerun:yes'>  </span>Event location in video frame ID's</span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'><span style='mso-spacerun:yes'>   </span>D: <span
+class=GramE>1139.5<span style='mso-spacerun:yes'>  </span>+</span>0.5/-0.5</span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'><span style='mso-spacerun:yes'>   </span>R: <span
+class=GramE>1454.0<span style='mso-spacerun:yes'>  </span>+</span>0.5/-0.5</span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'><o:p>&nbsp;</o:p></span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'><span style='mso-spacerun:yes'>  </span>Event time in UTC</span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'><span style='mso-spacerun:yes'>   </span>D: 11 31 40.59 ± 0.02</span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'><span style='mso-spacerun:yes'>   </span>R: 11 31 51.08 ± 0.02</span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'><o:p>&nbsp;</o:p></span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'><span style='mso-spacerun:yes'>  </span>Duration of transition in frames</span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'><span style='mso-spacerun:yes'>   </span>D: 1</span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'><span style='mso-spacerun:yes'>   </span>R: 4</span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'><o:p>&nbsp;</o:p></span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'><span style='mso-spacerun:yes'>  </span>SN at event locations</span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'><span style='mso-spacerun:yes'>   </span>D: 14.3</span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'><span style='mso-spacerun:yes'>   </span>R: 18.3</span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'><o:p>&nbsp;</o:p></span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'>===== Camera details =====</span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'>Camera<span style='mso-spacerun:yes'>                 </span>: PC164C-EX2</span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'>Frames integrated<span style='mso-spacerun:yes'>      </span>: 0</span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'>Video system<span style='mso-spacerun:yes'>           </span>: NTSC</span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'><o:p>&nbsp;</o:p></span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'>==== Measurement info ====</span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'>Measurement tool<span style='mso-spacerun:yes'>       </span>: Limovie</span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'>Measured at Field level: False</span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'># Measurements <span
+class=GramE>binned<span style='mso-spacerun:yes'>  </span>:</span> 1</span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'>Time scale from tool<span style='mso-spacerun:yes'>   </span>: True</span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'><o:p>&nbsp;</o:p></span></a></pre><pre
+style='margin-left:45.8pt'><a href="AOTA_FinalReport.png"><span
+style='color:black;text-decoration:none;text-underline:none'>===== end of report ======</span></a></pre>
+
+<ol start=3 type=1>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo9;tab-stops:list 36.0pt'><b><span style='mso-fareast-font-family:
+     "Times New Roman"'><a href="AOTA_FinalReport.png"><span style='color:black;
+     text-decoration:none;text-underline:none'>Save report</span><span
+     style='color:black;font-weight:normal;text-decoration:none;text-underline:
+     none'>. This saves the current analysis report. The file location and name
+     will be the same as the source file name, except that the name will end
+     with &quot;_Report.txt&quot; <br style='mso-special-character:line-break'>
+     <![if !supportLineBreakNewLine]><br style='mso-special-character:line-break'>
+     <![endif]><o:p></o:p></span></a></span></b></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo9;tab-stops:list 36.0pt'><b><span style='mso-fareast-font-family:
+     "Times New Roman"'><a href="AOTA_FinalReport.png"><span style='color:black;
+     text-decoration:none;text-underline:none'>Light curve report</span><span
+     style='color:black;font-weight:normal;text-decoration:none;text-underline:
+     none'>. This will take you into the functionality for reporting the light
+     curve (for archiving at VizieR). You will need to specify the event date,
+     asteroid number, star number, and site coordinates. Also you will need to
+     select that part of the entire light curve that is appropriate for
+     archiving. Unless you are sure you have finished with analysing the light
+     curve for the event times, you should avoid making any changes to Binning,
+     Integration, Normalisation, or Integrity check changes - as such changes
+     in the Light Curve reporter will affect the data being used to analyse the
+     event times. <o:p></o:p></span></a></span></b></li>
+ </body>
+ </html>

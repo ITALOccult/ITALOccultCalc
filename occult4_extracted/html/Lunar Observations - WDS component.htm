@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Identifying the WDS component</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Identifying the WDS component</H1>
+<p>WDS = Washington Double Star Catalogue
+
+<p>The report of a lunar occultation includes the identification of the WDS component identifier if the star is a known double. This allows the reduction software to automatically correct the position of the star to refer to the relevant component. <I>[Neither the Royal Greenwhich Observatory, or ILOC, applied any corrections for double stars in their reductions.]
+</I><p>It is important to understand that the concept of a double star system is essentially unrelated to how stars appear in astrometric star catalogues. Importantly, while for many double or multgiple star systems only the primary star appears in an astrometric catalogue, there are many systems where two or more of the components are in the astrometric catalogues.
+<p>In Occult predictions the component pairings are now identified with their WDS component identifiers. Importantly, the first pairing given in a prediction line will have two letters. The first letter is the component code for the star that is the subject of the prediction. The second letter is the component code of the companion star. 
+<p><B>It is important to recognise that the star  that is the subject of the prediction will not always be the 'A' component of a star system</B>
+<p>A full listing of WDS and Interferometric Catalogue entries can be displayed by clicking the WDS/IF button in the box where the star number is specified, or by clicking the small unmarked button above the drop-down box for setting the component identifier.
+
+<h3>How the WDS component identifier is used in reductions</h3>
+<li>When a star is observed, Occult extracts a list of all double star pairings which involve the specified star.
+<li>If the component identifier is the FIRST letter of the component pairings, no correction is made - the component is the identified star.
+<li>If the component identifier is the SECOND letter on the component pairings, Occult computes a correction to the position of the star to refer to the identified companion.
+<p>Hence it is important to specify the star number as listed in the prediction, and the relevant component identifier - recognising that the first letter refers to the star, and the second letter to the companion.
+
+<h2>Example</h2>
+<p>The following is a 'real life example, showing both the prediction and reporting issues. It involves the multiple star system centered on ZC2066, with double star pairings AB =  SHJ179, BC = BU225, and A_ = an occultation discovery that is not in the WDS. The occultation prediction for this system is as follows</p>
+
+<pre>Occultation prediction for Kambah
+E. Longitude  149  3 48.9,  Latitude -35 23 49.3,  Alt.  582m;  Telescope dia 35cm;  dMag 1.0
+
+       day  Time   P   Star  Sp  Mag  Mag    % Elon Sun  Moon   CA   PA  VA  AA
+ y   m  d  h  m  s      No  D     v    r V  ill     Alt Alt Az   o    o   o   o
+08 Aug  8  8 44 31 D  158556WA2  6.8        45+  84     66 304  44S 155  21 137
+    158556 is double: BA  7.0  6.6 35" 115.0
+08 Aug  8  8 44 32 D X128805D    8.4        45+  84     66 304  44S 155  21 136
+   X128805 is double: CB  8.4  7.3 1.2" 266.9
+08 Aug  8  8 46 15 D    2066SA1  6.6  6.6   45+  84     66 303  44S 155  22 136
+      2066 is quadruple: AB  6.8  7.7 0.10"   0.0 : BC  7.3  8.4 1.2"  86.9 : AB  6.6  7.0 35" 295.0
+</pre>
+
+<li>the first event is for 'BA'. This indicates that the star SAO158556 is component B in this system. The double star information in this line is limted to the A component referred to the B component.
+<li>the second event is for 'CB'. This indicates that the star XZ 128805 is component C in this system. The double star information in this line is limited to the B component referred to the C component.
+<li>the third event is for 'AB'. This indicates that the star ZC 2066 is component A in this system. The double star information in this line identifies all components. [AB appears twice because the program defaults an unofficial pairing to AB].
+
+<p>The following light cureves were recorded:
+<P align=center><img src="2008Aug08%20ZC2066%20BC.PNG">
+<P align=center><img src="2008Aug08%20ZC2066.PNG">
+
+<p>The first light curve covers the first two events. The occultation report identifies the stars as:
+<li>S158556B
+<li>X128805C
+<p>The second light curve corresponds to the third event. In the light curve, note that there are two points at the same height partway down the curve (at 800). A similar step event was independently observed in Sydney - indicating the presence of a very close double star system - cotrresponding to the occultation discovery. The step is higher than 50% of the light change - indicating that the fainter star disappeared first. So the report has two entries:
+<li>R 2066 
+<li>R 2066A
+
+<p>Note that the first entry does not include a WDS component identifier, as the component has not been recognised in the WDS.
+
+<p>In all instances, the reporting item for double stars is also completed. In the case of the third observed event, this double star item together with the ABSENCE of a WDS component identifier indicates a double star discovery (or confirmation of an otherwise unrecognised claim to double star status).
+
+
+</BODY>
+</HTML>

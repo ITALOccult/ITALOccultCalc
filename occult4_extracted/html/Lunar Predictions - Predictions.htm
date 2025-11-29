@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Lunar Occultation Predictions</Title>
+<style type="text/css">
+.auto-style1 {
+	color: #0000FF;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Lunar Occultation Predictions</H1>
+
+<H3>To generate occultation predictions, you need to: <ul>
+<li>Select the site for the predictions <A href="Lunar%20Predictions%20-%20Select%20Site.htm">details</a>
+<li>Select the star catalogue to use <A href="Lunar%20Predictions%20-%20Select%20Star%20catalogue.htm">details</a>
+<li>Select the objects to include in the predictions <A href="Lunar%20Predictions%20-%20Select%20objects.htm">details</a>
+<li>Set the date <A href="Lunar%20Predictions%20-%20Set%20dates.htm">details</a>; and
+<li>Generate the predictions <A href="Lunar%20Predictions%20-%20Generate%20predictions.htm">details</a>.</ul></h3>
+
+<H3>The details given in ORDINARY occultation predictions are explained <A href="Lunar%20Predictions%20PredictionContent.htm">here</a>.</H3>
+
+<h3>The details given in GRAZING occultation predictions are explained <A href="Lunar%20Predictions%20GrazeContent.htm">here</a></H3>
+
+<p>When predictions have been generated, additional functions are available by right-clicking on a prediction line. The following sets out the right-click functions that are available for ordinary occultations, and grazing occultations</p>
+
+<h2>Right-click : ordinary occultations</h2>
+<h3>The following items are always available</h3>
+<table columns=3 border=1>
+<TR><TH NOWRAP>Item</TH><TH>Explanation</TH></TR>
+<TR><TD>Moon map</TD><TD>Generates a map of the moon, showing the location of the occulted star. The map can be drawn in B&W or colour, normal or mirror-reversed, with or without crater names. Once drawn you can choose to include the next 10 or 20 events that night, or all events in the next 12 hours. <a href="Lunar%20Predictions%20-%20MoonMap.htm">More details...</a>
+<TR><TD NOWRAP>Star details</TD><TD>Displays all the catalogue details for the particular star, including 
+	variable and double star details. <a href="maintenance%20-%20stars%20-%20display%20details.htm">More details...</a></TD></TR>
+<TR><TD NOWRAP>Double and Variable star details</TD><TD>Displays all the double star details for the particular star that are contained in the Washington Double Star catalogue, and the Interferometric catalogue. <a href="FileFormat%20WDS%20and%20Interferometric.htm">More details...</a>. It alkso displays the details in the AAVSO Index file of variable stars, and the AAVSO light curve (if one exists) can be obtained from here. <A href="Maintenance%20-%20Stars%20-%20Light%20Curve.htm">(details)</a> </TD></TR>
+<TR><TD>Compute Occultations for xxxx</TD><TD>Many of the useful functions are only 
+	available for single-day predictions. When predictions have been run for several days, selecting an event and choosing this option will regenerate the predictions for that particular day only.</TD></TR>
+</table>
+</P>
+<h3>The following additional items are available if the prediction is for a single day ONLY</h3>
+<table columns=3 border=1>
+
+<TR><TH NOWRAP>Item</TH><TH>Explanation</TH></TR>
+<TR><TD>Compute graze</TD><TD>Generates a grazing occultation prediction for the star. The parameters for the graze prediction are set as:<ul>
+<li>Start longitude:  site longitude less 2.5 degrees, rounded down to the nearest degree
+<li>End longitude:  site longitude plus 2.5 degrees, rounded down to the nearest degree
+<li>Longitude interval:  0.25 deg
+<li>Nominal site altitude:  altitude of the site
+<li>Limit: if the Axis Angle is between 90 and 270 - Southern limit. Otherwise Northern limit.
+<br><br>These parameters cannot be adjusted..... 
+</ul>
+When a graze has been computed, the right-click menu on the graze prediction includes an option to re-list the ordinary occultations for that day.</TD></TR>
+
+<TR><TD>Multi-Site prediction</TD><TD><p>Generates predictions of the selected star for all sites in the current site file. Multisite predictions are usually generated for publishing predictions of special events in the media.</p>
+<p> Predictions are only given if the occultation meets the visibility requirements for the particular sites. The Multi-Site prediction has 
+either two or three blocks:<ul>
+<li>The first block [optional] provides predictions which include PA, WA and the differential corrections a and b. <li>The second block 
+		[optional] has merely the location, UT, altitude of sun and Moon, and Cusp angle. 
+<li>The third block gives the coordinates of each site that appears in the predictions.</ul>
+	<p>You can set the output to include either, or both, the first and second 
+	blocks, using the <span class="auto-style1"><strong>output</strong></span> 
+	button below the Multi-site button. The settings are retained between 
+	sessions.</p>
+Disappearance events are listed separately from Reappearance events.  If the D or R phase does not meet the visibility requirements for any site, the prediction will make no reference to that phase.
+</p>
+<p>The Multi-Site listing will include events involving bright stars that occur in daytime. Such events can be excluded from the listing by a User Setting (under the Maintenace tab). In the box for 'Lunar Occultation  Predictions - Grazes, Multisite predictions', check the box at the bottom - 'Exclude ALL events with a sun altitude <-6 deg.'
+<p>When a Multi-Site prediction has been computed, the right-click menu provides an option to plot a moon map showing the star paths for all sites, and to  re-list the ordinary occultations for that day.</p></TD></TR>
+<TR><TD>World map</TD><TD>Draws the occultation region on a Mercator projection of the world. The plot indicates various regions in the following way:<ul>
+<li>Night-time - white continuous line;
+<li>Twilight - blue continuous line (not distinguished from night-time in B&W plots)
+<li>Daylight - red dotted line
+<li>The region where only one of D or R is visible because of an intervening moonrise or moonset are indicated by ellipses at the end of the occultation path.
+</ul>
+If the path is near the poles the occultation path can appear quite distorted due to the Mercator projection.</TD></TR>
+<TR><TD>View in GoogleEarth </TD><TD>If GoogleEarth has been installed on the computer, clicking this will display the occultation path on GoogleEarth. This means you can use all the facilities of GoogleEarth to investigate possible observing locations.</TD></TR>
+<TR><TD>Save GoogleEarth kmz file</TD><TD>Clicking this will create a '.kmz' file that can be used to display the occultation path in GoogleEarth. [e.g. you could email the path to a friend for them to view on their computer.]</TD></TR>
+<TR><TD>Save GoogleMaps HTM file</TD><TD>Clicking this will create an '.htm' file for use with GoogleMaps to display the occultation path. This option is for people who run a web page to publicise events, enabling them to easily create a web page for the event. </p>
+For information on setting up a web page, click <a href="GoogleMapsHelp.htm">here</a></TD></TR>
+</table>
+</P>
+
+<h2><br>Right-click : grazing occultations</h2>
+
+<table columns=3 border=1>
+<TR><TH NOWRAP>Item</TH><TH>Explanation</TH></TR>
+<TR><TD>Graze path map</TD><TD>Draws a map showing the displayed graze path. Note that you can plot on the map sites in the site file according to their 'Include in Occult maps' setting.</TD></TR>
+<TR><TD>Graze profile [at selected line]</TD><TD>Plots the graze profile, drawn accurately for the selected line location. The graze profile form has a range of options for including past graze and ordinary occultations.  Graze profile details are <a href="Lunar%20predictions%20-%20GrazeProfile.htm">here</a>.</TD></TR>
+<TR><TD>Limiting magnitude table [at selected line]</TD><TD>This is used to generate the Limiting magnitude table for a desired location along the graze path.</TD></TR>
+<TR><TD>ReList occultations</TD><TD>Returns to the listing of ordinary occultations on that day.</TD></TR>
+<TR><TD>View in GoogleEarth </TD><TD>If GoogleEarth has been installed on the computer, clicking this will display the calculated graze path on GoogleEarth. This means you can use all the facilities of GoogleEarth to investigate possible observing locations.</TD></TR>
+<TR><TD>Save GoogleEarth kmz file</TD><TD>Clicking this will create a '.kmz' file that can be used to display the computed graze path in GoogleEarth. [e.g. you could email the path to a friend for them to view on their computer.]</TD></TR>
+<TR><TD>Save GoogleMaps HTM file</TD><TD>Clicking this will create an '.htm' file for use with GoogleMaps to display the computed graze path. This option is for people who run a web page to publicise events, enabling them to easily create a web page for the event. </p>
+For information on setting up a web page, click <a href="GoogleMapsHelp.htm">here</a></TD></TR>
+<TR><TD>Save in other map formats</TD><TD>The computed graze path can be saved to file in a format suitable for a range of mapping software. This means you can display the graze path on your mapping device as you drive to your location. Formats supported are:<ul>
+<li><B>.cmx </B> - <A href ="http://www.chicagomap.com/" target=_blank>Precision mapping streets</a>, covering USA and Canada. Note: if emailing these files, you must ZIP them to avoid corruption.
+<li><B>.gen</B> - for making ESRI shape files. <a href="http://en.wikipedia.org/wiki/Shapefile" target=_blank>Explanation of ESRI shape files</a>.
+<li><B>.gpx</B> - Easy GPS. EasyGPS can interface with Garmin, Magellan, or Lowrance GPS units. It is available as freeware from <a href="http://www.easygps.com/" target=_blank>here</a>.
+<li><B>.mif</B> - <a href="http://tinyurl.com/a6jds" target=_blank>MS Map Point</a>.
+<li><B>.plt</B> - <A href ="http://www.oziexplorer.com/" target=_blank>Ozi-Explorer</a>.
+<li><B>.txt </B> - <A href ="http://www.delorme.com/software.htm" target=_blank>DeLorme Street Atlas</a> 
+</table>
+</P>
+
+<h2><br>Right-click : Multi-Site predictions</h2>
+
+<table columns=3 border=1>
+<TR><TH NOWRAP>Item</TH><TH>Explanation</TH></TR>
+<TR><TD nowrap>Moon map</TD><TD>Generates a map of the moon, showing showing the star paths for all sites. The map can be drawn in B&W or colour, normal or mirror-reversed, with or without crater names and site tags.</TD></TR>
+</table>
+
+<h2><br>Weather predictions</h2>
+Occult can access the APanel component of the <A href="http://7timer.y234.cn/V3/index.php?language=en" target = _blank>7-Timer</a> numeric weather prediction system - by clicking on the menu item <B>3-day weather forecast</B>.. 
+
+<p>If ordinary occultations are displayed (or no other predictions have been generated), cloud coverage and temperature (Centigrade) are displayed at 3-hour intervals. The prediction is for the next 3 days at the location of the currently selected site.
+
+<p>If a graze prediction has been generated, and the prediction is less than 3 days in the future, cloud coverage and temperature (Centigrade) are displayed for locations along the path. If there are more than 20 prediction lines, the weather details are not obtained for each point - as it takes a few seconds to retrieve the data for each point from 7-Timer.  
+
+</BODY>
+</HTML>

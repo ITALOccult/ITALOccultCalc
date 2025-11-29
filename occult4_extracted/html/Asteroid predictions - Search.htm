@@ -1,0 +1,477 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Asteroid Search</Title>
+<style type="text/css">
+.auto-style1 {
+	color: #FF0000;
+}
+.auto-style2 {
+	font-size: medium;
+}
+.auto-style3 {
+	margin-left: 80px;
+}
+.auto-style4 {
+	color: #198B2D;
+}
+.auto-style5 {
+	color: #800080;
+}
+.auto-style6 {
+	color: #0000FF;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Asteroid Search</H1>
+<h2>Overview</h2>
+<P>An asteroidal occultation consists of a path across the Earth having a width 
+equal to the diameter of the asteroid. That is, the width of the path is only a 
+fraction of the Earth's diameter. Furthermore, some of the path may be in 
+locations which are sunlit at the time of the occultation, and/or may be in 
+locations which are relatively inaccessible.</P>
+<P>&nbsp;Occult generates predictions in a two-stage 
+process. </P>
+<h4>Stage 1 is</h4>
+<ul>
+	<li>specify the asteroid or asteroids to be considered in the search;</li>
+	<li>select the star catalogue to be used in the search;</li>
+	<li>set the start and end of the period to be covered by the search; and</li>
+	<li>generate a set of Besselian elements for all events where an edge of the 
+	occultation path comes within a specified distance of the Earth's center 
+	(default distance is 1.01 Earth radius - with allowance for the effects of 
+	stellar diameter being incorporated where appropriate).</li>
+</ul>
+<h4>Stage 2 is</h4>
+<ul>
+	<li>filter the list of events to those that are of potential 
+	interest. Those filters include parameters like solar elongation, local 
+	altitude, minimum duration, minimum magnitude drop, faintest star magnitude, 
+	and distance relevant to the observer's location.</li>
+	<li>save the list of events for future reference</li>
+	<li>create a 'personal feed' for Occult Watcher</li>
+	<li>sort the events according to a range of parameters</li>
+</ul>
+<p>At any stage, selected events can be displayed, with a wide range of related 
+information being accessible.</p>
+<p>The present topic deals with Stage 1. The <em>Help</em> topic for Stage 2 is
+<a href="#14/Help/html/Asteroid predictions - ListAndDisplay.htm" target="_blank">
+here</a></p>
+
+<h1>The Search<span class="auto-style2">&nbsp;&nbsp;&nbsp;&nbsp; (stage 1)</span></h1>
+<P>This is the form for generating the Besselian occultation elements required to generate predictions of asteroid occultations. Each part of the form is described below.</P>
+
+<h2>Set dates</h2>
+<img src="AsteroidSearch%20Dates.png"><br>
+<p>In this section, set the search period to be covered. Specify dates in years, months and days 
+- which are all treated as UT. Buttons facilitate the selection of various periods.  
+
+<ul>
+	<li>The <strong>Year</strong> button sets a 12 month period commencing at the start of the current month 
+	specified in the Start date;</li>
+	<li>The <strong>Month</strong> button sets a period for the entire current month 
+	specified in the Start date. </li>
+	<li>The <strong>Now</strong> button sets a period of 10 days starting from 
+	'today' (set on a UTC basis, not local time).</li>
+	<li>The three <I><strong>year</strong> </I>buttons set a search period of January 1 to December 31 for the current year, the following year, or two years in the future.  
+
+	</li>
+	<li>Click the text '<strong>Add one day</strong>' (located under the Start 
+	date and has a yellow background), and the end date is set to one day after 
+	the start date. Importantly, when this option is clicked, the end date is 
+	set to one day later, and the form for selecting an asteroid is opened. If a 
+	single asteroid is selected, the search will be automatically conducted&nbsp; 
+	[after having downloaded the orbital elements from Horizons if you are 
+	connected to the internet.]</li>
+</ul>
+
+<h2><br>Set star catalogue</h2>
+<img src="AsteroidSearch%20StarCat.png"><br>
+<p>At this location you specify the star catalogue to be used for the search. Catalogues that have not been installed are disabled. The primary catalogues are:
+<table columns=3 border=1>
+<TR><TH NOWRAP style="width: 122px">Catalogue</TH><TH>Comments</TH></TR>
+<TR><TD style="width: 122px"><B>Gaia</B></TD><TD class="auto-style3">The Gaia catalogues installed on 
+	your computer are listed in the adjacent box. Double-click on a Gaia catalogue listing and you will get a map of the catalogue coverage.
+	<strong><br><br>Versions based on Gaia Data Release EDR3<br>There are 
+	three catalogues available for download in Occult<br>*&nbsp; Gaia16_EDR3<br>*&nbsp; Gaia14_EDR3<br>
+	*&nbsp; Gaia12_EDR3<br>
+	Gaia16_EDR3 </strong>was 
+	created from the Gaia EDR3 data. It includes all information relevant to 
+	occultation predictions and reductions (and has a few more fields populated 
+	than the DR2 Occult versions). Stars were included if the 
+	Gaia G magnitude was brighter than 16.0. Stars 
+	were matched to one of Hipparcos2, Tycho2, and UCAC4 for the purpose of 
+	having a simple star identifier. Many thousands of Hipparcos stars were not 
+	present in the Gaia catalogue - and these were added. No attempt was made to 
+	add stars from Tycho2 that are not in the Gaia catalogue as the precision of 
+	the Tycho2 catalogue did not warrant their inclusion.<strong><br>Gaia14_EDR3 </strong>
+	and<strong> GAIA12_EDR3 </strong>were created as magnitude-limited subsets of<strong> Gaia16_EDR3.<br><br>Versions based on Gaia Data Release 2</strong><br>There are 
+	two catalogues that were available for download in Occult<strong>. </strong>
+	If previously downloaded, they can continue to be used.<strong>&nbsp; </strong>
+	<span class="auto-style1"><em><strong>They are no longer available for 
+	download.</strong></em></span><strong><br>*&nbsp; Gaia14_DR2<br>
+	*&nbsp; Gaia11_DR2</strong><br>
+	<strong>Gaia14_DR2</strong> was created from the Gaia DR2 data. It includes all 
+	information relevant to occultation predictions and reductions. Stars were 
+	included if either the Gaia G magnitude or Red photometer magnitude was 
+	brighter than 14.0. Stars were matched to one of Hipparcos2, Tycho2, and 
+	UCAC4 for the purpose of having a simple star identifier. Many thousands of Hipparcos stars were not present in the Gaia catalogue - and these were 
+	added. No attempt was made to add stars from Tycho2 that are not in the Gaia catalogue as the precision of 
+	the Tycho2 catalogue did not warrant their inclusion.<br><strong>Gaia11_DR2</strong> 
+	was created a a magnitude-limited subset of <strong>Gaia14_DR2</strong>.<br>
+	
+	<br><strong>Versions based on Gaia Data Release 1. <br> </strong>If 
+	previously downloaded, these can continue to be used. <strong>&nbsp;<span class="auto-style1"><em>Gaia14 
+	is no longer available for download.</em></span></strong><br><strong>* TychoGaia</strong> is a version of the Tycho2 catalogue previously used in Occult 
+	but with Gaia DR1 positions. Importantly, stars not in Gaia DR1 are not 
+	included - which means coverage of&nbsp; bright stars is poor. Consequently, 
+	for a comprehensive search involving bright stars, continue to use the 
+	original Tycho2 catalogue (where the positions of bright stars will have 
+	come from Hipparcos).&nbsp; Tycho-Gaia is available as a separate 66MB download as <strong>Download #38.
+	</strong>
+	<br><strong>* Gaia14</strong> is a catalogue created for Occult based on 
+	Gaia DR1 positions of all stars to mag 14.0, matched to the UCAC4 catalogue 
+	to derive proper motions.
+
+	<br><br>Both Tycho-Gaia and Gaia14 provide very accurate star positions together with proper motions, but are missing about 20% of stars.<p>
+	<strong><span class="auto-style2"><span class="auto-style4">Users can generate their own Gaia catalogue subsets from the functionality provided at the bottom-right of the Maintenance tab of Occult. 
+	</span>See </span></strong> 
+	<A href="Maintenance%20-%20Create%20Gaia%20catalogue.htm"><strong>
+	<span class="auto-style2">Create Gaia catalogue</span></strong></a><strong><span class="auto-style2">.
+
+	</span></strong>
+
+	</p>
+
+<TR><TD style="width: 122px"><B>Tycho2 (pre Gaia)</B></TD><TD>This is the 'original' <A href="FileFormat%20Tycho2%20creation.htm">Tycho2 </a>catalogue available for use with Occult. It is a combination of 
+	Hipparcos, Tycho2 and UCAC2 data. Generally, this catalogue should not be 
+	used, as the accuracy is not particularly great. However it is provided as a separate 61MB download as Download #32. 
+	It is limited to stars brighter than mag 12. UCAC2 positions were used in 
+	preference to Tycho2 positions; however UCAC2 coverage was from the south 
+	pole to about +20°.</TD></TR>
+<TR><TD style="width: 122px"><B>UCAC4</B></TD><TD>The 4th (and the intended final) UCAC catalogue. Can be accessed from hard/USB drive, or DVD drive. Magnitude coverage to ~16. 
+<p>The UCAC4 catalogue includes a flag (resulting from a match with the PPMXL catalogue) that indicates whether the object might be false, or might have an erroneous large proper motion. The UCAC4 
+catalogue states:<BR><I>Unless external data are consulted to verify UCAC4 results these stars should not be used. </I><BR>and 
+such stars are excluded from a search.</TD></TR>
+
+<TR><TD style="width: 122px"><B>PPMXL</B></TD><TD>The PPMXL catalogue. A binary, field-limited, version of the PPMXL catalogue has been created for use with Occult, for searching for occultations of faint stars. The catalogue is distributed on 5 DVDs 
+	- and as a result is not widely used. Also the accuracy is not particularly 
+	great (compared to Gaia)The PPMXL catalogue is 'complete' from the brightest stars through to about mag 20, with high-precision data for stars brighter than about 15. 
+<p>For stars brighter than about 12, the PPMXL catalogue effectively provides those stars from the PPMX catalogue that have independently-determined positions in that catalogue.
+	</TD></TR>
+<TR><TD style="width: 122px"><B>User Star</B></TD><TD>A special User Star can be specified using the <A href="User%20star%20editor.htm"> UserStar editor</a> which is accessed by clicking the <B>Set user star button</B> 
+	on the Search form, or <strong>Edit the coordinates of a 'User' star</strong> 
+	on the main Occult form, Asteroid predictions tab.&nbsp; This enables a search to be conducted with respect to a particular star/object.</TD></TR>
+<TR><TD nowrap style="width: 122px"><B>User catalogue</B></TD><TD>Occult supports up to 6 User catalogues 
+	labeled UserA to UserF. These can be created in the Maintenance tab under 
+	<strong>Create User catalogue from ASCII catalogue</strong> or by users converting catalogues to the format used in the <A href="FileFormat%20Tycho2.htm"> Tycho2 catalogue</table>
+</TD></TR>
+</table>
+
+<h2>&nbsp;</h2>
+<h2>Search Filters</h2>
+<img src="AsteroidSearch%20Filters.png"><br>
+<p>The search for occultations identifies events that may be visible in any part 
+of the world, and with no regard to duration or magnitude change at occultation. 
+As a result, the majority of events found in a basic search will be of no 
+interest to a particular location and observer. 
+<p>To ensure the results of a search are generally relevant to an observer, 
+six 'filters' are provided at the Search stage. (Extra, and detailed, filters 
+are provided on the <a href="#14/Help/html/Asteroid predictions - ListAndDisplay.htm" target="_blank">
+List &amp; Display form </a>)<ul style=i>
+
+<li><b>Mag drop less than an amount</b>. This excludes events with small magnitude drops. 
+<br>This test is not applied to Planets, as the considerations are more complex (eg an occultation against the dark limb of a crescent Mercury or Venus).
+<li><b>Diameter less than an amount</b>. Excludes asteroids and planetary moons on the basis of diameter. If the search is for a range of asteroids, you need to set the minimum asteroid diameter of 
+asteroids to include in the search. If you clear the check box, you will get a 
+warning message about the large number of events.
+The number of asteroids against diameter is shown in the following plot. The 
+vertical scale is log<sub>10</sub>, and ranges from 1,000 to 1,000,000.<br>&nbsp;<img src="AsteroidsVsDiameter.png" width="250">
+
+<li><b>Stars fainter than an amount</b>. Excludes stars based on magnitude. 
+Values between 6.0 and 21.0 can be set. When applying this filter, you should select an appropriate Gaia catalogue. For example, if the star magnitude was set to 12.5, a search using Gaia14 will give full coverage, but will be considerably faster as the number of stars to be skipped over is less. 
+
+<li><b>Duration less than an amount</b>. Excludes events based on duration. Values between 0.01 and 4.0 secs can be set. Generally a value of 0.3 to 0.5 would be most appropriate. This filter should usually be checked - to avoid a large number of events with very short durations. When you uncheck this filter, you will be given a warning message. 
+<br>For extensive searches involving small asteroids, the output may contain a large number of events having a duration too short for reasonable observing. 
+While such events can be filtered at in the List and Display form, the performance can be seriously degraded as a result of the large number of events. If the search is for a range of asteroids, you should set the minimum asteroid diameter of asteroids to include in the search. 
+<br>Clear the check box if you don't want the size limit to be applied. This is appropriate for predictions of a single small asteroid. If it is cleared for a search for many asteroids, you will be overwhelmed by the number of events for any asteroid that is small.
+
+<li><b>Taxonomy</b>. A drop-down box that provides a list of taxonomic classes 
+of asteroids. To limit the search to a specific taxonomic class, select the class from the list. The search can be limited to objects falling within any of the standard 
+taxonomic classes (which are explained
+<a href="Asteroid%20Taxonomy.htm">here</a>) by selecting the 
+taxonomic class in the drop-down box. For the usual search, set this to display 
+<span class="auto-style6"> <strong>All</strong></span>. All 
+classes are unique except for (i) Potentially Hazardous Asteroids (PHA) which 
+taxonomy that can 
+also apply to Amor, Aten and Apollo classes, and (ii) Binary asteroids, which 
+can apply to any.<br>To search for a set of asteroids within a class, first 
+select the Taxonomy class. Then&nbsp; use the <span class="auto-style6"><strong>
+Select asteroid... </strong></span>button to set the range of asteroids to be 
+considered. Only asteroids within that range having the selected taxonomy will 
+be considered.<li><b>Using xx cm Telescope with X variable exposure camera</b>. Set the aperture of your telescope, and 
+set the check for whether you are using a camera which you can set the exposure (for example, a CMOS camera, or integrating video).<br>
+This test works on the basis (assumption) that a 20cm telescope, using an exposure of 0.037 secs (half-way between PAL and NTSC video frame rates), can reliably record a star at magnitude 12.0 under reasonable conditions. Changes in the aperture appropriately changes the magnitude limit. If the exposure can be varied, the magnitude limit is set such that at at least 3 exposures can be taken during the maximum duration. If the predicted magnitude drop is less than 0.5 mags, a larger number of exposures must be possible during the maximum duration.
+
+
+<li><strong>Passes within</strong>  This identifies events where the occultation 
+path passes with a specified distance from the observer's location. The location 
+can be keyed in. Or it can be selected from any of the Site files the user has 
+in Occult. The distance calculation allows for the diameter of the asteroid. It 
+excludes events where<ul style=i>
+	<li>the distance to the edge of the path is greater than the specified 
+	distance. [This includes planetary moons, but not Planets.]<li>the star is more than 5° below the horizon at the time of the 
+	event<li>the sun is higher than 8° below the horizon, and the magnitude is 
+	fainter than 8.<li>the sun is above the horizon, and the magnitude is 
+	fainter than 5.</ul>
+	However if the motion of the asteroid is particularly slow (taking more than 2 hours to cross the Earth), these filters are not applied.<br>
+
+</ul>
+ 
+<h2><br>Select asteroids (or comets) to search, or planets to search</h2>
+<img src="AsteroidSearch%20SetAsteroid.png"> 
+
+<P>The options that are available depend upon whether the object is an asteroid, 
+or a planet (including moons of the major planets).<h3>Select asteroids to 
+search (main file of asteroid elements)</h3>
+<P>There are several options to select the asteroids to consider in a search. 
+All are accessed by clicking <B>Select Asteroids, </B>which brings up the 
+following form. This form is used both for the main file of asteroids, and the 
+User file of asteroids.<P>
+
+<img src="AsteroidSearch%20SelectAsteroid.png"><p>The options for 
+selecting asteroids are set out on the form.</p>
+<p>If a specified asteroid is not found in the file, you will be advised and 
+asked to re-enter the asteroid identifier. You can leave the form by selecting 
+<strong>Cancel</strong>.</p>
+<p>The bottom button <strong>Select from a list of asteroids</strong>, will list all the 
+asteroids in the main file (or the User file). From there you can select either 
+a single asteroid, or a range of asteroids. However you cannot select a series of 
+asteroids separated by other asteroids.</p>
+<p>&nbsp;</p>
+<h3>use Horizons elements</h3>
+<p>You can conduct a search based on orbital elements downloaded from the JPL 
+Horizons system. When the Internet is available, this option should be used when 
+possible.&nbsp; This is particularly the case where the basic integration scheme 
+in Occult is inadequate, which may be the case when:<ul>
+	<li>orbital eccentricity greater than about 0.4;</li>
+	<li>semimajor axis less than about 2</li>
+	<li>geocentric distance is less than about 0.5 AU</li>
+</ul>
+<p class="auto-style5"><strong><em>The functionality is only available for searches:</em></strong><ul>
+	<li>for a single asteroid; and</li>
+	<li>limited to 12 months duration;</li>
+</ul>
+<p>If you set the <strong>Set automatically</strong> check box, the <strong>use 
+Horizons Elements</strong> will be automatically set when the search meets the single 
+asteroid, less than 12 months, requirements.<p>Clear this check box when you do 
+not want to automatically download Horizons elements - for example, when using a 
+USER file of elements. This option will be automatically set when the conditions 
+for using this option are met .<p>&nbsp;<h3>use Horizons ephemeris (predictions will 
+be slow)</h3>
+<p>This option will result in the most accurate predictions. It is not limited 
+to any date range, nor to the number of asteroids included in the search. The 
+setting is also independent of the '<strong>use Horizons elements</strong>, or
+<strong>use USER file of elements</strong> settings. However there is a major 
+issue of execution time....<p>When set, Occult will download an ephemeris of the 
+asteroid (4 positions at 1-hour intervals, but at longer intervals when the 
+asteroid motion is very slow) for each event it finds, and use that ephemeris for the final 
+prediction details. When conducting a search, this download will occur for <em>
+<strong>each and every event </strong></em>that is added to the <strong>Search 
+Results </strong>listing. This necessarily slows the prediction speed - perhaps 
+by a factor of 10 or more. This may become a nuisance when a large number of predicted events are likely 
+- such as a search 
+covering a large number of days, or when the asteroid is crossing 
+a region with many stars.<p>When this is set, you will see a download notice as each 
+event found is added to the <strong>Search results</strong> list. On the 
+subsequent plot of the event, the ephemeris source (bottom right of the Header 
+block) will include the text <strong>Horizons Ephem</strong>. 
+<p><strong>This option is the most preferred way of generating the most accurate 
+predictions</strong>. It supersedes the option available in the <strong>List and 
+Display </strong>form.<p class="auto-style5"><strong><em>This setting is not 
+retained between sessions.</em></strong><p>&nbsp;<h3>Select asteroids to search - User file of elements</h3>
+<p>There can be occasions where a user wants to generate predictions based on orbital elements they have generated, rather than those available in sources such as MPCORB, 
+AstDyS2 and ASTORB. The option <A href="FileFormat%20UserStar_MinorPlanetSearch.htm">User file</a> allows predictions to be generated on the basis of elements contained in the user file, which is <A href="User%20asteroids%20Edit.htm"> edited</a> from the main asteroid predictions tab. 
+Check the 'with USER file of elements' check box to use the User file. <em>The search will be conducted for all objects in the file.
+</em>
+<p>&nbsp;<h2>Binary asteroids - Miriade</h2>
+<p>The <a href="http://vo.imcce.fr/webservices/miriade/">Miriade</a> system at IMCCE- Paris Observatory can provide an ephemeris for 
+the positions of the components of a small number of binary asteroids relative 
+to the system barycenter (which is otherwise the basis of predictions). When 
+Occult conducts a search for an asteroid included in the Miriade system, occult 
+will automatically access Miriade to obtain an ephemeris relevant to the event 
+date, and generate separate predictions for the each component. For some 
+asteroids the Miriade system includes multiple orbit solutions; by default 
+Occult will generate predictions for each component against each orbit solution.<p>
+<strong>The controls provided are as follows:</strong><ul>
+	<li>A list of asteroids 
+included in the Miriade system. <em>The Miriade system will only be accessed for asteroids 
+included in this list.</em> Currently (Feb 2019) this list includes 11 
+asteroids plus Pluto (134340). Over time more asteroids will be included in the 
+Miriade system. Occult will automatically update the list every 10 days - and 
+	the date of the last update of the list is displayed next to the box.. The
+	<strong>Update list </strong>button will also do an update - so that if you 
+become aware that a new asteroid has been added into Miriade and you want to 
+generate predictions before the next automatic update of the list, you can 
+manually update the list.</li>
+	<li>A check box to exclude the querying of Miriade. Check this if your 
+	internet connectivity is slow (such that the search speed is unacceptable 
+	for these asteroids), or you do not want the output to include the multiple 
+	entries for the varies components of a system.</li>
+	<li>A check box to limit the output to the first orbital solution. The 
+	Miriade system generally includes multiple orbit solutions for each system - 
+	with each resulting in a different occultation path location. There can also 
+	be differences in component diameters. By checking this box, the output will 
+	be limited to a prediction that takes no account of the Miriade data, plus 
+	predictions for each component using the first orbit solution (which&nbsp; 
+	IMCCE has assessed to be 'the best' solution.)</li>
+	<li>A button to display the basis of the orbit solutions available at 
+	Miriade. <a href="Asteroid%20predictions%20-Miriade%20solutions.htm">
+	Details</a></li>
+	<li>A check box to save the last Miriade response. This is provided solely 
+	for test purposes. The Miriade response is saved in the <strong>DownLoaded 
+	Files</strong> subdirectory with the file name <strong>
+	LastMiriadeResponse.xml&nbsp; </strong>Details about the content of the XML 
+	file are available
+	<a href="https://ssp.imcce.fr/webservices/miriade/api/ephemsys/">here</a></li>
+</ul>
+<p><strong>Output for Miriade binary asteroids</strong><p>Occult will provide 
+separate outputs for each component of a system, for each orbit solution - 
+structured as follows:<ul>
+	<li>the asteroid number is present for all components, with no modifications</li>
+	<li>The object name is the usual asteroid name for the primary component, 
+	and the satellite name for other components. The satellite name may be a 
+	'proper name' if it has been so named; or it may be a discovery designation 
+	(such as S2016-107-1 for the first satellite discovery in 2016 for the 
+	asteroid 107)</li>
+	<li>Where Miriade data has been used, the object name has added to it a 
+	solution identifier made up of '#' and a number 1, 2, 3 etc. representing 
+	the solution number. Note that&nbsp; an output that does not use the Miriade 
+	ephemeris will always be present - it will have the asteroid's name but no # 
+	tag.</li>
+</ul>
+<h2><br>Set planet</h2>
+<img src="AsteroidSearch%20SetPlanet.png"><br>
+<p>The choices available here are:
+
+<table columns=3 border=1>
+<TR><TH NOWRAP>Item</TH><TH>comments</TH></TR>
+<TR><TD>Planet</TD><TD>Select the relevant planet from the drop-down box. The planets can be selected individually, or in their entirety - with the selection of 'Mercury -> Pluto' being the initially displayed selection.</TD></TR>
+<TR><TD>For main planet, exclude stars....</TD><TD>Generally speaking, occultations of faint stars are not observable against the disk of the planets Mercury to Saturn. This check box allows you to exclude faint stars from consideration. The magnitude limit is set in the User Settings, in the box <B>Asteroid occultations - search and display</B>. The default values in the User Settings as distributed should be sufficient to include all events that will be observable in any practical sense.</TD></TR>
+<TR><TD>Include main moons</TD><TD>Checked this for the search to include the main moons of the planet. </TD></TR>
+<TR><TD nowrap>Include small moons</TD><TD>Check this to include the small moons of the planet. 
+	Only a limited number of small moons are included - entirely dependent upon 
+	the availability of a suitable orbit for prediction purposes. For the outer 
+	planets, predictions involving small moons are most likely of poor accuracy.</TD></TR>
+<tr><td nowrap>Use Horizons for Satellites</td><td>Check this to use JPL Horizons as the basis for the Ephemeris. For time efficiency, the scan to find events is conducted using the 'usual' ephemerides of the satellites as generated within Occult. However the 'final' prediction uses an ephemeris generated by Horizons. By default, this setting is checked (unless Internet access is not available). Each query to Horizons take a little time, which will extend the search time. This will only be of concern for searches covering long periods of time. It can also be a major issue for Mars, where many 10's of events per day can be generated.</td></tr>
+	</table>
+<p>At the bottom of this section, a list of the moons (if any) that will be included in the search is provided - as in the image above..
+
+<h2><br>Set output file</h2>
+<img src="AsteroidSearch%20SetOutput.png"><br>
+<p>Here you set parameters relating to the output of a file of the Occultation elements. Those parameters are<ul>
+<li>The file name. The currently set file name is displayed in a box. For convenience, a default file name is provided, based on the current UT date [yyyymmdd] at the time the form is opened. However the user can set another name and location. 
+Note that the output file is an XML file - so you should maintain the extension 
+as XML, as prompted. <span class="auto-style1"><strong>IMPORTANT</strong></span>. 
+If the file exists you will be asked whether you want 
+to overwrite that file; if you specify no, you will be taken back to the search 
+form where you can specify a new file name.<span class="auto-style1"> <em>Otherwise the previous file will be 
+overwritten.</em></span><li>whether the search results are automatically saved. 
+<br><B><font color=red>IMPORTANT</font></b>. Saving of search results is intended to occur 
+	under the List and Display functionality, where the output can be limited to events of interest. 
+	As a result, you should leave this box unchecked. However you can automatically save the search results by checking this check-box.
+<!--	<li>whether the data saved to the file is sorted by date. The file of occultation elements is written progressively as the search is conducted - which means that the results are essentially ordered by object number, and then date. Also, if the file already exists the results are added to the end of that existing file. This means that when displaying the results by stepping through the file, the events are not displayed in date order. If this box is checked, a date-sorted version of the file of occultation elements will be created when the search has finished. The file will have the same name as the file of occultation elements except that '<B>_by_T</B>' will be included. Note that the check status is retained between sessions.-->
+	<br>The status of this check box is retained between sessions.</ul>
+<p
+
+<p>It will often be desirable to give the output file a more meaningful name, or add the output to an existing file. Click the <B>Set output file </B>button, and specify the file name - either by selecting an existing file, or keying a file name in association with the directory of your choice.
+
+<p><B>Important</B>. If adding to an existing file, make sure it is a file of occultation elements. Otherwise the file may not be readable.
+
+<h2><br>Check/calculate coordinates for integration</h2>
+<img src="AsteroidSearch%20XYZ.png"><br>
+<p>This block at the bottom of the form indicates the availability of files needed for the numerical integration of the orbit. If a file is available, the 
+relevant button is disabled.  You need to make sure that the period from the osculating date of the orbital elements to both the start and end of the search period is covered by these files. [For searches of current events, only the <B>1995 Oct 10 == 2023 Feb 25 </B>button is required.]
+
+<P>If you  need to create one of these files, merely press the relevant button. The file will be generated in a few seconds, and the button disabled.
+
+<span class="auto-style1"><strong>HOWEVER</strong></span> you will need to have 
+downloaded the JPL_DE ephemeris file - using <strong>Download #34</strong>. If 
+you have downloaded several JPL files, it is not critical that you use the 
+latest DE version for the integration scheme. You merely need to ensure you are 
+using a version later than DE420.&nbsp; 
+
+<p>This functionality is also provided under the menu item 'numerical integration data...  '.
+
+<p>If you attempt to conduct a search which requires one or more files to cover 
+the interval that are not available, you will be prompted to create the file. 
+
+<h2><br>Do the search</h2>
+<img src="AsteroidSearch%20DoSearch.png"><br>
+<p>In this region, click Search to conduct the search. Items in this area are:
+ <table columns=3 border=1>
+<TR><TH NOWRAP>Item</TH><TH>Comment</TH></TR>
+<TR><TD>Adjust asteroid (Planet) position</TD><TD>This allows the user to apply a correction 
+	when computing a prediction. This ability is only enabled when the 
+	prediction is for a single asteroid, or a single planet. In the past such 
+	corrections were most relevant for Pluto (with a default correction being 
+	set in the User Settings, in the box <B>Asteroid occultations - search and display) 
+	-</B> where there were problems with its ephemeris. In recent times the need 
+	for a correction is associated with consistent offsets of an asteroid from 
+	its ephemeris, and for asteroidal satellites where an ephemeris is not 
+	available from Miriade 
+	<br> 
+	<br>The correction is specified in mas (up to &#177 2000mas) - with the 
+	correction being the angular separation in the sky plane. This is important for Right Ascension - as a 
+	difference in the Right Ascension coordinate values will need to be multiplied by cos(&#948) 
+	to give the offset in the sky plane in the RA direction.<br><br>Examples of possible offsets are:<br>* 
+	to specify the location of an satellite relative to an asteroid. Insert the 
+	sky plane offset of the satellite relative to the asteroid;<br>* to correct 
+	the position of the asteroid. &nbsp;Insert the sky plane correction to the 
+	asteroid's position; <br>* to correct the position of the star. &nbsp;Insert 
+	the <em>negative</em> values of the sky plane correction to the star's 
+	position; </TD></TR>
+<TR><TD>Increase miss distance by X earth radii</TD><TD>In a normal search, occultation elements are output if the minimum distance of the center of the occultation path from the center of the Earth is less than 1.01 earth radii 
+	plus the asteroid's radius Occasionally there is a need to identify 'close misses', or appulses. This option increases the 
+	allowable 'miss distance' for events to be fully calculated and output - 
+	with a range of up to 999 Earth Radii. </TD></TR>
+<TR><td>JWST </td><td>Check to generate predictions for the James West Space 
+	Telescope.&nbsp; Presently (2020) this option is provided for testing 
+	purposes only, and uses a crude approximation that the JWST is exactly at 
+	the L2 point. Events are output if the distance from the JWST location is 
+	less than 5% of the Earth's radius (i.e. 319km)</td></TR>
+<TR><TD>Clear the previous results from memory</TD><TD><B><font color=red>IMPORTANT</font></b>. Occult 4.5 introduces an important change in how search results are output. In previous versions all search results were written to file - and that file was separately analysed to select events of interest. In Occult 4.5, the 
+	primary output of search results is to memory, with the results being displayed for 
+	selection by filtering before saving. By default, each time you conduct a search, the search results held in memory are removed. However  if this check box is cleared, the results of 2nd and subsequent searches 
+	are added to the results of a first search. This way you can build up a set 
+	of predictions for multiple objects &amp;/or multiple dates.<br><br>The 
+	check state of this box is not retained between sessions, and defaults not 
+	not checked.</TD></TR>
+<TR><TD>Star Catalogue, Orbit Source</TD><TD>These text areas advise of the 
+	currently selected star catalogue, and the source of the orbital elements 
+	(for asteroids)</TD></TR>
+<TR><TD>Search/Cancel button<p>Progress bar</TD><TD>When the search is commenced, the search button is replaced by a cancel button. The functionality 
+	of cancel is slightly different between Asteroids and Planets. For Asteroids, the Cancel has effect at the conclusion of the search for the current asteroid, whereas for planets it has effect at the conclusion of the current search day.
+<p>The displayed progress bar has a similar difference. For asteroids, it displays how many asteroids have been completed in the search, whereas for planets the progress bar is reset at the end of each object, and displays the current position in the range of dates being searched</TD></TR>
+
+</table>
+<p>At the end of this section there is a label that indicates the orbital 
+elements being used, and their download date. If that date is more than a month 
+or two old, consider whether you need to do a fresh download and
+<A href="Maintenance%20Convert%20Astorb.htm"> conversion</a>.
+<h2>Results summary</h2>
+<img src="AsteroidSearch%20ResultList.png"><br>
+<p>This last section of the form gives a summary list of events found as the search progresses. The list is renewed for each new object being searched, with the current object being indicated at the top left of the box.. A '#' symbol after the star's identifier indicates the star may be a double star.
+
+At the end there is text that sets out the period covered by the search, and the 
+range of objects considered.<h2><br>Conclusion of the search</h2>
+When the search has concluded, you will be automatically taken to the <A href="Asteroid%20predictions%20-%20ListAndDisplay.htm"> List and Display</a> form, where you can filter the list of events, and view individual events.
+
+</BODY>
+</HTML>

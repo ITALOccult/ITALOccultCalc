@@ -1,0 +1,146 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\citation{Giorgini1996}
+\citation{Park2021}
+\citation{Folkner2014}
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}Planetary Ephemerides: JPL Development Ephemerides}{43}{chapter.5}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{chap:ephemerides}{{5}{43}{Planetary Ephemerides: JPL Development Ephemerides}{chapter.5}{}}
+\newlabel{chap:ephemerides@cref}{{[chapter][5][]5}{[1][43][]43}{}{}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.1}Introduction}{43}{section.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.2}JPL Development Ephemerides Overview}{43}{section.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.1}Historical Context}{43}{subsection.5.2.1}\protected@file@percent }
+\citation{Park2021}
+\citation{Moyer2003}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.2}Comparison: VSOP87 vs JPL DE441}{44}{subsection.5.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.3}Mathematical Formulation: Chebyshev Interpolation}{44}{section.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.1}Why Chebyshev Polynomials?}{44}{subsection.5.3.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces JPL DE441 coordinate system. Barycentric ICRF/J2000.0 rectangular coordinates: $X$ axis toward vernal equinox, $Z$ axis toward ecliptic north pole. IOccultCalc converts to heliocentric by subtracting Sun position.}}{45}{figure.5.1}\protected@file@percent }
+\newlabel{fig:jpl_coords}{{5.1}{45}{JPL DE441 coordinate system. Barycentric ICRF/J2000.0 rectangular coordinates: $X$ axis toward vernal equinox, $Z$ axis toward ecliptic north pole. IOccultCalc converts to heliocentric by subtracting Sun position}{figure.5.1}{}}
+\newlabel{fig:jpl_coords@cref}{{[figure][1][5]5.1}{[1][44][]45}{}{}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.1}{\ignorespaces VSOP87D vs JPL DE441 comparison}}{45}{table.5.1}\protected@file@percent }
+\newlabel{tab:vsop_vs_jpl}{{5.1}{45}{VSOP87D vs JPL DE441 comparison}{table.5.1}{}}
+\newlabel{tab:vsop_vs_jpl@cref}{{[table][1][5]5.1}{[1][44][]45}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.2}Chebyshev Polynomial Definition}{46}{subsection.5.3.2}\protected@file@percent }
+\newlabel{eq:chebyshev_recurrence}{{5.3}{46}{Chebyshev Polynomial Definition}{equation.5.3}{}}
+\newlabel{eq:chebyshev_recurrence@cref}{{[equation][3][5]5.3}{[1][44][]46}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.3}Position Interpolation}{46}{subsection.5.3.3}\protected@file@percent }
+\newlabel{eq:chebyshev_position}{{5.5}{46}{Position Interpolation}{equation.5.5}{}}
+\newlabel{eq:chebyshev_position@cref}{{[equation][5][5]5.5}{[1][46][]46}{}{}{}}
+\newlabel{eq:tau_normalization}{{5.6}{46}{Position Interpolation}{equation.5.6}{}}
+\newlabel{eq:tau_normalization@cref}{{[equation][6][5]5.6}{[1][46][]46}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.4}Velocity Computation}{46}{subsection.5.3.4}\protected@file@percent }
+\citation{Acton1996}
+\newlabel{eq:chebyshev_velocity}{{5.8}{47}{Velocity Computation}{equation.5.8}{}}
+\newlabel{eq:chebyshev_velocity@cref}{{[equation][8][5]5.8}{[1][46][]47}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.5}Example: Earth Position at 2025-01-01}{47}{subsection.5.3.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.4}SPICE SPK File Format}{48}{section.5.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4.1}Overview}{48}{subsection.5.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4.2}File Structure}{48}{subsection.5.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4.3}Body Identifiers}{48}{subsection.5.4.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5.2}{\ignorespaces NAIF body ID codes in JPL DE441}}{49}{table.5.2}\protected@file@percent }
+\newlabel{tab:naif_ids}{{5.2}{49}{NAIF body ID codes in JPL DE441}{table.5.2}{}}
+\newlabel{tab:naif_ids@cref}{{[table][2][5]5.2}{[1][48][]49}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4.4}Data Type 2: Chebyshev Polynomials}{49}{subsection.5.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.5}Coordinate Conversions}{49}{section.5.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.1}Barycentric to Heliocentric}{49}{subsection.5.5.1}\protected@file@percent }
+\newlabel{eq:bary_to_helio}{{5.16}{49}{Barycentric to Heliocentric}{equation.5.16}{}}
+\newlabel{eq:bary_to_helio@cref}{{[equation][16][5]5.16}{[1][49][]49}{}{}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces Barycentric vs heliocentric coordinates. JPL DE provides positions relative to Solar System Barycenter (SSB). IOccultCalc converts to heliocentric by subtracting Sun's barycentric position.}}{50}{figure.5.2}\protected@file@percent }
+\newlabel{fig:bary_helio}{{5.2}{50}{Barycentric vs heliocentric coordinates. JPL DE provides positions relative to Solar System Barycenter (SSB). IOccultCalc converts to heliocentric by subtracting Sun's barycentric position}{figure.5.2}{}}
+\newlabel{fig:bary_helio@cref}{{[figure][2][5]5.2}{[1][50][]50}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.2}ICRF to Ecliptic (Optional)}{50}{subsection.5.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.3}Heliocentric to Geocentric}{50}{subsection.5.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.6}Precision Analysis}{50}{section.5.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.6.1}Comparison with JPL Ephemerides}{50}{subsection.5.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.6.2}Error Budget by Component}{50}{subsection.5.6.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces Earth position error for VSOP87D compared to JPL DE430. Complete VSOP87D maintains sub-0.2 km accuracy over ±100 years. Reduced series (used in some older software like Occult4) degrades to several km.}}{51}{figure.5.3}\protected@file@percent }
+\newlabel{fig:vsop_accuracy}{{5.3}{51}{Earth position error for VSOP87D compared to JPL DE430. Complete VSOP87D maintains sub-0.2 km accuracy over ±100 years. Reduced series (used in some older software like Occult4) degrades to several km}{figure.5.3}{}}
+\newlabel{fig:vsop_accuracy@cref}{{[figure][3][5]5.3}{[1][50][]51}{}{}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.3}{\ignorespaces VSOP87D precision for Earth (1 $\sigma $ over ±50 years)}}{51}{table.5.3}\protected@file@percent }
+\newlabel{tab:vsop_precision}{{5.3}{51}{VSOP87D precision for Earth (1 $\sigma $ over ±50 years)}{table.5.3}{}}
+\newlabel{tab:vsop_precision@cref}{{[table][3][5]5.3}{[1][50][]51}{}{}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.7}Implementation Details}{52}{section.5.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.7.1}Data Storage}{52}{subsection.5.7.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.7.2}Evaluation Algorithm}{53}{subsection.5.7.2}\protected@file@percent }
+\@writefile{loa}{\contentsline {algorithm}{\numberline {4}{\ignorespaces VSOP87D Coordinate Evaluation}}{53}{algorithm.4}\protected@file@percent }
+\newlabel{alg:vsop_eval}{{4}{53}{Evaluation Algorithm}{algorithm.4}{}}
+\newlabel{alg:vsop_eval@cref}{{[algorithm][4][]4}{[1][52][]53}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.7.3}Optimization Techniques}{53}{subsection.5.7.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.8}Earth-Moon System}{53}{section.5.8}\protected@file@percent }
+\citation{ChaprontTouze1983}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.8.1}Geocenter vs. EMB}{54}{subsection.5.8.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.8.2}Lunar Ephemeris: ELP2000}{54}{subsection.5.8.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5.4}{\ignorespaces Earth-Moon barycenter (EMB) vs. geocenter. VSOP87D provides EMB position. The geocenter displacement (up to 4670 km) must be corrected using lunar ephemeris (ELP2000) for accurate occultation predictions.}}{54}{figure.5.4}\protected@file@percent }
+\newlabel{fig:emb_correction}{{5.4}{54}{Earth-Moon barycenter (EMB) vs. geocenter. VSOP87D provides EMB position. The geocenter displacement (up to 4670 km) must be corrected using lunar ephemeris (ELP2000) for accurate occultation predictions}{figure.5.4}{}}
+\newlabel{fig:emb_correction@cref}{{[figure][4][5]5.4}{[1][54][]54}{}{}{}}
+\citation{Park2021}
+\@writefile{lot}{\contentsline {table}{\numberline {5.4}{\ignorespaces EMB correction impact on shadow path}}{55}{table.5.4}\protected@file@percent }
+\newlabel{tab:emb_impact}{{5.4}{55}{EMB correction impact on shadow path}{table.5.4}{}}
+\newlabel{tab:emb_impact@cref}{{[table][4][5]5.4}{[1][54][]55}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.8.3}Practical Impact}{55}{subsection.5.8.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.9}Implementation and Performance}{55}{section.5.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.9.1}Evaluation Algorithm}{55}{subsection.5.9.1}\protected@file@percent }
+\@writefile{loa}{\contentsline {algorithm}{\numberline {5}{\ignorespaces JPL DE441 Position Evaluation}}{55}{algorithm.5}\protected@file@percent }
+\newlabel{alg:jpl_eval}{{5}{55}{Evaluation Algorithm}{algorithm.5}{}}
+\newlabel{alg:jpl_eval@cref}{{[algorithm][5][]5}{[1][54][]55}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.9.2}Memory and Storage}{55}{subsection.5.9.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5.5}{\ignorespaces JPL DE441 storage requirements}}{56}{table.5.5}\protected@file@percent }
+\newlabel{tab:jpl_storage}{{5.5}{56}{JPL DE441 storage requirements}{table.5.5}{}}
+\newlabel{tab:jpl_storage@cref}{{[table][5][5]5.5}{[1][55][]56}{}{}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.10}Validation and Accuracy}{56}{section.5.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.10.1}Internal Consistency}{56}{subsection.5.10.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.10.2}Accuracy Estimates}{56}{subsection.5.10.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5.6}{\ignorespaces JPL DE441 position uncertainties (1 $\sigma $)}}{56}{table.5.6}\protected@file@percent }
+\newlabel{tab:jpl_accuracy}{{5.6}{56}{JPL DE441 position uncertainties (1 $\sigma $)}{table.5.6}{}}
+\newlabel{tab:jpl_accuracy@cref}{{[table][6][5]5.6}{[1][56][]56}{}{}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.11}Comparison with Other Software}{56}{section.5.11}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5.7}{\ignorespaces Planetary ephemeris comparison}}{57}{table.5.7}\protected@file@percent }
+\newlabel{tab:ephemeris_comparison}{{5.7}{57}{Planetary ephemeris comparison}{table.5.7}{}}
+\newlabel{tab:ephemeris_comparison@cref}{{[table][7][5]5.7}{[1][56][]57}{}{}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.12}Comparison with Other Software}{57}{section.5.12}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5.8}{\ignorespaces Planetary ephemeris comparison across software}}{57}{table.5.8}\protected@file@percent }
+\newlabel{tab:software_comparison}{{5.8}{57}{Planetary ephemeris comparison across software}{table.5.8}{}}
+\newlabel{tab:software_comparison@cref}{{[table][8][5]5.8}{[1][57][]57}{}{}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.13}Summary}{57}{section.5.13}\protected@file@percent }
+\citation{Park2021}
+\citation{Folkner2014}
+\citation{Acton1996}
+\citation{Moyer2003}
+\citation{Giorgini1996}
+\@setckpt{chapters/04_planetary_ephemerides}{
+\setcounter{page}{59}
+\setcounter{equation}{22}
+\setcounter{enumi}{5}
+\setcounter{enumii}{0}
+\setcounter{enumiii}{0}
+\setcounter{enumiv}{0}
+\setcounter{footnote}{0}
+\setcounter{mpfootnote}{0}
+\setcounter{part}{0}
+\setcounter{chapter}{5}
+\setcounter{section}{13}
+\setcounter{subsection}{0}
+\setcounter{subsubsection}{0}
+\setcounter{paragraph}{0}
+\setcounter{subparagraph}{0}
+\setcounter{figure}{4}
+\setcounter{table}{8}
+\setcounter{parentequation}{0}
+\setcounter{section@level}{1}
+\setcounter{Item}{70}
+\setcounter{Hfootnote}{0}
+\setcounter{bookmark@seq@number}{149}
+\setcounter{LT@tables}{0}
+\setcounter{LT@chunks}{0}
+\setcounter{float@type}{16}
+\setcounter{algorithm}{5}
+\setcounter{ALC@unique}{54}
+\setcounter{ALC@line}{17}
+\setcounter{ALC@rem}{0}
+\setcounter{ALC@depth}{0}
+\setcounter{lstnumber}{30}
+\setcounter{NAT@ctr}{0}
+\setcounter{lstlisting}{0}
+}

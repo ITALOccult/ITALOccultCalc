@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Bayer.dat</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Bayer.dat</H1>
+
+<P>This file contains the Right ascension, declination, Bayer letter, and Flamsteed number, of stars. The data is contained in a random-access file, with a record length of 10, sorted by right ascension. The Right Ascension and declination are on the equinox of J2000, and are stored as decimal degrees. The data is stored as:
+
+<table columns=3 border=1>
+<TR><TH NOWRAP>Field  </TH><TH>Definition  </TH><TH>Data type  </TH></TR>
+<TR><TD> 1 </TD><TD>Right ascension  </TD><TD> Single precision  </TD></TR>
+<TR><TD>2  </TD><TD>Declination  </TD><TD> Single precision  </TD></TR>
+<TR><TD>3  </TD><TD>Bayer  </TD><TD>Byte   </TD></TR>
+<TR><TD> 4 </TD><TD>Flamsteed No  </TD><TD> Byte  </TD></TR>
+</table>  
+
+<p>The Bayer field specifies the relevant number in the Greek alphabet: 1=alpha, 24=omega.
+<p>Many stars have the same Bayer letter, with a numerical superscript. The value of that superscript is given in number field for the Flamsteed number.
+<p><B><I>If the value of the Bayer field is zero</I></B>, the Flamsteed number of the star is given in the field for the Flamsteed number.
+
+
+</BODY>
+</HTML>

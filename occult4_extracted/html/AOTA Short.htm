@@ -1,0 +1,548 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Short events</Title>
+<style type="text/css">
+.auto-style1 {
+	color: #008080;
+}
+.auto-style2 {
+	color: #800000;
+}
+.auto-style3 {
+	color: #000000;
+}
+.auto-style4 {
+	margin-left: 40px;
+}
+.auto-style5 {
+	margin-left: 80px;
+}
+.auto-style6 {
+	color: #0000FF;
+}
+.auto-style7 {
+	color: #FF0000;
+}
+.auto-style8 {
+	color: #008000;
+}
+.auto-style9 {
+	font-size: large;
+}
+.auto-style10 {
+	color: #FFFF00;
+	background-color: #0000FF;
+}
+.auto-style11 {
+	border: 2px solid #000000;
+}
+.auto-style12 {
+	border: 1px solid #800000;
+	text-align: center;
+}
+.auto-style13 {
+	color: #008000;
+	font-size: medium;
+}
+.auto-style14 {
+	color: #800000;
+	font-size: medium;
+}
+.auto-style15 {
+	border: 2px solid #000000;
+	margin-left: 80px;
+}
+.auto-style16 {
+	border: 1px solid #800000;
+	text-align: center;
+	color: #0000FF;
+}
+.auto-style17 {
+	text-decoration: underline;
+}
+.auto-style18 {
+	font-size: xx-small;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+<h2>AOTA Help topics</h2>
+<a href="AOTA%20Overview.htm">Overview and form layout</a><br><br>
+<a href="AOTA%20Read%20and%20integrate.htm">Tab 1. Read, Integrity, Set time, Bin and Normalise</a><br>
+<a href="AOTA%20Fourier.htm">Tab 2A. Fourier plot</a><br>
+<a href="AOTA%20Short.htm">Tab 2B. Short event check</a><br>
+<a href="AOTA%20Find%20events.htm">Tab 3. Find events</a><br>
+<a href="AOTA%20Select%20to%20analyse.htm">Tab 4. Select event to analyse</a><br>
+<a href="AOTA%20Analyse.htm">Tab 5. Analyse</a><br>
+<a href="AOTA%20FinalTimes.htm">Tab 6. Camera corrections, final results</a><br><br>
+<a href="AOTA%20Integrity.htm">Integrity check</a><br>
+<a href="AOTA%20Integration%20and%20binning.htm">Integration, binning & normalisation</a><br>
+<a href="AOTA%20Set%20time%20scale.htm">Set time scale</a><br>
+<a href="AOTA%20Verify.htm">Verify event times</a><br>
+<a href="AOTA%20VTI%20info.htm">VTI information</a><br><br>
+<a href="AOTA%20Hints%20and%20Tips.htm"><B>Hints and Tips</B></a><br>
+
+<H1>Short events - check</H1>
+<p class="auto-style9"><strong><span class="auto-style10">This functionality is 
+for assessing whether a light curve has a plausible occultation event lasting just 1 
+or 2 frames. It may also assist with 3 frame events.</span></strong></p>
+<!-- Insert Header in above line -->
+<h2 class="auto-style1">Purpose</h2>
+<P>This function is designed to check whether there are any very short duration 
+events in the light curve, that might reasonably be caused by an occultation, 
+but which cannot be definitely attributable to an occultation because the light 
+curve is too short to exhibit the classical criterion of having a flat bottom. 
+That is, events of 1 or 2 frame durations, and for 3-frame events where there is 
+doubt the existence of a flat bottom.</P>
+<P class="auto-style2">This check is <strong>not</strong> a determination of 
+whether such an event is definitely an occultation. It is <strong>not</strong> 
+equivalent to the 'Noise induced event' assessment of PyOTE. It is <strong>not</strong> 
+a general test for whether an event (generally) might be caused by noise.<span class="auto-style3"> 
+Rather it is simply a check of whether, in the absence of events spanning 
+multiple exposures (where the flat bottom test can be applied), an excursion in 
+a light curve can be reasonably attributed to an occultation event. </span></P>
+<P class="auto-style2"><span class="auto-style3"> 
+The check indicates whether the excursion, is '<strong>probably</strong>' or '<strong>possibly</strong>' 
+caused by an occultation. When the excursion falls below the <strong>'possibly'
+</strong>level, that excursion is not distinguishable from noise (whether or not 
+there was in fact an occultation)</span>.</P>
+<P>Subject to any other issues with the observation that may be relevant:</P>
+<ul>
+	<li>a <strong>Probable</strong> event will be routinely treated as being an 
+	occultation event (even though the fact of it being an occultation is not 
+	100% certain).</li>
+	<li>a <strong>Possible</strong> event will be routinely entered under the 
+	new <span class="auto-style2">Quality of Fit</span> setting of
+	<span class="auto-style2"><strong>Short duration event. No astrometry</strong></span>. 
+	However Astrometry will not be routinely reported for such events.</li>
+	<li>events that do not meet these two criteria 
+	are indistinguishable from the noise, with the presence of an occultation 
+	being indeterminate. <span class="auto-style6">Such events will be included in the data set of observations 
+	as an occultation <strong>if (and only if), the 
+	observer provides a written explanation of why they believe the light curve 
+	indicates the presence of an event. This explanation will become part of 
+	their observation, for future reference by those using the data.</strong></span> </li>
+</ul>
+<p>In all instances, the observer must provide a .csv file of the measurements 
+to be used for assessment, and to create a light curve file to be archived at 
+VizieR. <span class="auto-style7"><strong>Without a .csv file, such short events 
+will not be included in the events data base.</strong></span></p>
+<P>&nbsp;</P>
+<h2>Basis of the check</h2>
+<P>The check is based on the following proposition:</P>
+<P class="auto-style4"><span class="auto-style6">When the light curve is 
+smoothed to remove long-term variations:</P>
+<ol class="auto-style5">
+	<li>&nbsp;A very short event can only be distinguished from the noise if its 
+	excursion is significantly greater than all other excursions</li>
+	<li>&nbsp;The light curves of all comparison stars can be assumed to not 
+	involve any occultation events. Similarly they can be taken to have somewhat 
+	similar noise characteristics to the light curve of the target stars. 
+	Accordingly, when an excursion is found in the light curve of the 
+	target star, there should be no similarly large excursions at any point in the 
+	light curves of any of the comparison stars.</li>
+	<li>The length of the light curve must be long enough to exhibit a full 
+	range of noise variations.</span></li>
+</ol>
+<p>Proposition 2 is very important, on the basis that if an excursion similar to that 
+in the target star is found in a comparison star light curve, such an excursion 
+is properly attributable to noise. That is, full confidence in the existence of a 
+non-noise-related excursion in the target star light curve <em>requires</em> a 
+comparison with the light curves of one or more comparison stars. However, noise 
+characteristics/distribution of 
+the comparison brightness is likely to be different from the target star if 
+there is a large difference in their brightness, such that it may not 
+provide a reliable comparison.</p>
+<p>Proposition 3 is important for ensuring the noise characteristics of the 
+light curve are well represented. For integrated light curves, the length is 
+based on the number of points after the data has been binned to match the 
+integration.</p>
+<P>The results of the test include weighting based on the number of comparison 
+stars used, and the length of the light curve.</P>
+<h2>Methodology</h2>
+<P>For each light curve:</P>
+<ul>
+	<li>To reduce the effects of long-term noise variations, a running average 
+	of the light curve is generated. 7 possible values for 
+	the running value length are provided, with the default value being 25.
+	<ul>
+		<li>
+		<P class="auto-style4">Large values of the running average reduce the 
+		effect of long-term variations, with minimal effect on for mid-term and 
+		short-term variations. Small values reduce the effect of both mid-term&nbsp; 
+		&amp; long term variations. Use relatively short running averages only when the 
+		signal has clear periodic short-term variations.</P>
+		</li>
+	</ul>
+	</li>
+	<li>The light level of the star is 
+	then generated as a distance from that running average, for each point along 
+	the light curve</li>
+	<li>Compute the Mean, and Standard Deviation, of these distances.<ul>
+		<li class="auto-style7"><strong>IMPORTANT</strong>. The method uses the mathematics of a standard 
+		deviation provide a convenient basis to <em>compare</em> the data - both 
+		within a light curve, and between light curves. The numeric values derived using this approach 
+		are not used (and should not be used) to assess a formal probability of the result. </li>
+	</ul>
+	</li>
+	<li>Convert the distances to multiples of the standard deviation value. This 
+	provides a modified distance from the running average 
+	light curve that is based on the distribution of light curve values rather 
+	than the distance value.</li>
+	<li>Sort the modified distances by value, with the distance furthest below the 
+	light curve having the largest value (distances above the light curve are 
+	not used)</li>
+	<li>Repeat for each comparison star. This provides data for each comparison 
+	star that may be directly compared with the target star.</li>
+	<li>Apply the Evaluation criteria - see below.</li>
+</ul>
+<p>To assist with the assessment of the results:</p>
+<ul>
+	<li>The distribution of the modified distances, for all 
+	values greater than 2.0 is plotted for the target, and all comparison stars. 
+	Similarity in appearance is an indication of reliability of the comparisons 
+	stars for the evaluation. The values are binned in intervals of 0.1 units.</li>
+	<li>The horizontal scale for all plots is set by the largest modified 
+	distance from the 
+	target and&nbsp; all comparison stars. </li>
+	<li>The vertical scale is counts in each 
+	bin, with values of 10 or greater being at the top of the plot.</li>
+	<li>In each plot, the largest modified distance for that star is plotted in Red.</li>
+	<li>For the target star, if the 2nd, or 2nd +3rd, modified distances are 
+	consecutive with the largest modified distance, the modified distances for 
+	the 2nd, or 2nd + 3rd, are plotted in Yellow </li>
+	<li>Lists of the 20 largest modified distances, together with their frame number, 
+	is provided. for the target and all comparison stars. This allows for the user to readily access the 
+	numerical values of the modified distances 
+	and make a manual interpretation. Each list is generated specifically for 
+	that star, and generally has no correlation with any other list. The data in 
+	each list can be copied by placing the cursor over the box, and right-click. </li>
+	<li>The list for the target 
+	star also shows the modified distances for each Comparison star at the same 
+	frame. </li>
+	<li>Above each plot there is a number giving the relative brightness of the 
+	comparison stars relative to the Target star. Desirably, the comparison 
+	stars should be of similar brightness to the target. Relative brightness 
+	values greater than 5 times the brightness of the target,&nbsp; or less than 0.2 
+	times the target, are indicated in dark red, with the list of distance values in pink. This 
+	is to indicate that the values for this star may not be reliable.</li>
+	<li>At the left of the panel is a box for the evaluation of the data. The 
+	evaluation is whether an occultation event is either <strong>Probable</strong>, 
+	or <strong>Possible</strong> - with an occultation event otherwise being 
+	unlikely. The relevant frame # is given.</li>
+</ul>
+<h2>Evaluation criteria</h2>
+<P>The following criteria are used to evaluating the results, </P>
+<table class="auto-style11" style="width: 45%">
+	<tr>
+		<td style="width: 330px" class="auto-style16">&nbsp;</td>
+		<td style="width: 291px" class="auto-style12"><strong>
+		<span class="auto-style14"><span class="auto-style17">Possibly</span> an<br></span>
+		<span class="auto-style2">&nbsp;occultation:</span></strong><br>
+		</td>
+		<td style="width: 299px" class="auto-style12"><strong>
+		<span class="auto-style13"><span class="auto-style17">Probably</span> an<br></span>
+		<span class="auto-style8">occultation: </span> </strong>
+		<br></td>
+	</tr>
+	<tr>
+		<td style="width: 330px" class="auto-style16"><strong>Number of comparison stars&nbsp;</strong></td>
+		<td style="width: 291px" class="auto-style12">Ratio of 1st to 2nd 
+		modified distance values</td>
+		<td style="width: 299px" class="auto-style12">Ratio of 1st to 2nd modified distance values</td>
+	</tr>
+	<tr>
+		<td style="width: 330px" class="auto-style12">0</td>
+		<td style="width: 291px" class="auto-style12">1.30</td>
+		<td style="width: 299px" class="auto-style12">2.0</td>
+	</tr>
+	<tr>
+		<td style="width: 330px" class="auto-style12">1</td>
+		<td style="width: 291px" class="auto-style12">1.20</td>
+		<td style="width: 299px" class="auto-style12">1.7</td>
+	</tr>
+	<tr>
+		<td style="width: 330px" class="auto-style12">2</td>
+		<td style="width: 291px" class="auto-style12">1.15</td>
+		<td style="width: 299px" class="auto-style12">1.6</td>
+	</tr>
+	<tr>
+		<td style="width: 330px" class="auto-style12">3</td>
+		<td style="width: 291px" class="auto-style12">1.10</td>
+		<td style="width: 299px" class="auto-style12">1.5</td>
+	</tr>
+</table>
+
+<p>Additionally these ratios are scaled according to the number of points in the light curve. 
+(For a light 
+curve that involves integration, the number of points refers to the number after the light curve has been binned to match the integration interval.) The scaling factor is</p>
+&nbsp;<table style="width: 20%" class="auto-style15">
+	<tr>
+		<td class="auto-style12" style="width: 160px"><strong>Number of data points</strong></td>
+		<td class="auto-style12" style="width: 172px"><strong>Scaling factor</strong></td>
+	</tr>
+	<tr>
+		<td class="auto-style12" style="width: 160px">400 or more</td>
+		<td class="auto-style12" style="width: 172px">1</td>
+	</tr>
+	<tr>
+		<td class="auto-style12" style="width: 160px">200-399</td>
+		<td class="auto-style12" style="width: 172px">1.1</td>
+	</tr>
+	<tr>
+		<td class="auto-style12" style="width: 160px">150-199</td>
+		<td class="auto-style12" style="width: 172px">1.2</td>
+	</tr>
+		<tr>
+		<td class="auto-style12" style="width: 160px">100-149</td>
+		<td class="auto-style12" style="width: 172px">1.3</td>
+	</tr>
+	<tr>
+		<td class="auto-style12" style="width: 160px">50-99</td>
+		<td class="auto-style12" style="width: 172px">1.5</td>
+	</tr>
+
+	<tr>
+		<td class="auto-style12" style="width: 160px">less than 50</td>
+		<td class="auto-style12" style="width: 172px">10</td>
+	</tr>
+</table>&nbsp;<p>The practical effect of the last line of this table is to 
+exclude any light curve having fewer than 50 data points from assessment. For a 
+non-integrated video, this means the recording must last at least 1.7 secs (NTSC),&nbsp; 
+2.0 secs (PAL).</p>
+<p>&nbsp;</p>
+
+<p>Finally, there is a further modification of the ratios based on whether the 
+possible event extends for more than 1 frame. This modification only has regard to 
+adjacent frames if their modified distance values is also greater than any other 
+frame. <em>Where the modified distance values of the adjacent points are 
+slightly less than that for a small number of other frames, the user may use 
+their judgment as to whether the displayed ratio value should be adjusted 
+accordingly.</em></p>
+
+&nbsp;<table style="width: 20%" class="auto-style15">
+	<tr>
+		<td class="auto-style12" style="width: 160px"><strong>Number of Adjacent 
+		low points</strong></td>
+		<td class="auto-style12" style="width: 172px"><strong>Modification factor</strong></td>
+	</tr>
+	<tr>
+		<td class="auto-style12" style="width: 160px; height: 11px;">0</td>
+		<td class="auto-style12" style="width: 172px; height: 11px;">1</td>
+	</tr>
+	<tr>
+		<td class="auto-style12" style="width: 160px">1</td>
+		<td class="auto-style12" style="width: 172px">0.8</td>
+	</tr>
+	<tr>
+		<td class="auto-style12" style="width: 160px">2</td>
+		<td class="auto-style12" style="width: 172px">0.6</td>
+	</tr>
+</table>&nbsp;
+<p>The resulting Scaling factor is generated with</p>
+<p>&nbsp;<span class="auto-style6">Scaling factor</span> = Modification factor * 
+(<span class="auto-style6">Scaling factor</span> - 1) + 1 </p>
+&nbsp;<h2>Assessment</h2>
+<P>The assessment of whether an occultation event occurred is not a black and 
+white test. It is possible (but not a routine occurrence) that there are 
+additional characteristics or features of a particular light curve that might 
+outweigh the following criteria, which will need to be considered in the context 
+of that particular light curve. </P>
+<P>The issues to consider are:</P>
+<ol>
+	<li>The primary indicator is whether the maximum value in the target box is 
+	more than the scaled ratio value of the 2nd value. <br>The simple visual test for this 
+	is: in the graph for the Target star, is there a large gap between the data 
+	plotted in light blue, and the data point in Red - at the right side of the 
+	plot.<br>For two (&amp; 3) frame events, the 
+	height of an adjacent frame would be expected to be similar to that of the 
+	primary frame. Such frames are plotted in yellow, to indicate they are 
+	excluded from the test. That is, the 
+	scaled ratio test is applied between the 1st and 3rd (or 4th) values.</li>
+	<li>The light drop for the target star must be more than scaled ratio value 
+	of 
+	the largest value in all other light curve drops. When the largest light drop in 
+	the target star has a similar (or greater) light drop in any of the 
+	companion stars, you have a clear indication that the light drop in the 
+	target star is noise, not an occultation.<br>The simple visual test for this 
+	is: Is there a gap between the the red mark in the graph for the target 
+	star, and the right-hand end of that graph. A gap means there is a greater light drop in one of the comparison stars.<br>
+	However this interpretation may not be correct if the relevant companion star is much brighter or fainter than 
+	the target star. That is, when the relevant list is pink. Greater regard 
+	should be had to the other comparison stars.</li>
+	<li>The distribution of the data displayed in the target and comparison 
+	stars should be similar, as an indication that the noise signals are similar 
+	in nature. A major difference indicates that conclusions relying on that 
+	comparison star may be unreliable.</li>
+	<li>If there are no comparison stars, any confidence that a single (or 
+	short-term) event was not caused by noise is reduced compared to when the 
+	noise of one or more comparison stars are available. Hence the large ratio value when there are no comparison stars. <br></li>
+</ol>
+<h2>Automatic interpretation</h2>
+<P>The evaluation box gives the numeric value of the primary indicator. It is 
+color coded as follows:</P>
+<ul>
+	<li>Values above the scaled<span class="auto-style8"><strong> Probable Occultation ratio:</strong></span> Green, with a tick. Such events can be considered for 
+	reporting astrometry (subject to any other considerations that might arise 
+	with the overall event processing)</li>
+	<li>Values above the scaled<strong> </strong> <span class="auto-style2">
+	<strong>Possible Occultation ratio</strong></span>: Blue, with a question mark. An event which 
+	could plausibly have been caused by an occultation, but not sufficient 
+	evidence to report astrometry. Such events can be included in the file of 
+	observations, with the <span class="auto-style8"><strong>Quality of the Fit</strong></span> 
+	code set to '<strong>Short duration event. No astrometry</strong>'.</li>
+	<li>When the greatest value for the target star is less than the scaled 
+	<span class="auto-style2"><strong>Possible Occultation ratio </strong>
+	</span>of any star: Displayed in Orange, with
+	<strong>??</strong>. This will typically indicate the event is noise. 
+	However this may not be a reliable conclusion if the largest value is in a 
+	pink box. The relationship to the largest value in other comparison stars 
+	should be considered.</li>
+	<li>Values less than the scaled <span class="auto-style2"><strong>Possible 
+	Occultation ratio</strong></span>: Red, with a <strong>X</strong> . This indicates the 
+	largest excursion is indistinguishable from the noise.<span class="auto-style10"> 
+	<strong>Such an event will not be added to the file of observations unless the 
+	observer provides the reason they believe there is an occultation event, 
+	which will be included as part of their observation of the event. Such reasons should be less than 100 words, and 
+	expressed in plain ASCII text with no paragraph breaks</strong>.</span></li>
+	<li>When the two or three largest values for the target star are in adjacent frames, the numeric value is followed by <strong>&nbsp;*&nbsp; </strong>, 
+	with that numeric value being the ratio of the 1st and 3rd (or 4th) values.</li>
+</ul>
+<P>&nbsp;</P>
+<h2>Single chord events - coincidence with a prediction</h2>
+<P>The predicted time of an event is, without doubt, relevant to assessing where 
+in the recording one should start looking for an event. The length of the light 
+curve to be considered is typically several ten's of seconds. For slow-moving 
+asteroids, it may be minutes.</P>
+<P>This is the <span class="auto-style6"><strong><em>ONLY</em></strong></span> 
+purpose for using the predicted event time. The conclusion of whether a 
+particular dip in a light curve is caused by an occultation must stand on its 
+own. Coincidence, or near-coincidence, with the predicted time, is irrelevant 
+and does not constitute a basis for asserting the observation was an 
+occultation.</P>
+<P class="auto-style4">There are those that want to use a Bayesan argument to 
+give an event a higher probability if it occurs near the predicted time. That 
+argument assumes a 'prior' (all Bayesian calculations depend on the 'priors' 
+used) that is not flat - that is, we know the probability distribution of the 
+event time. However <span class="auto-style6"><em><strong>we do not know that 
+distribution</strong></em></span>. Bayesians reflect this lack of knowledge by 
+using a flat prior (that is, the event has an equal probability of occurring at 
+any time), and as a result the Bayesian calculation is unaffected by the 
+observed event time. </P>
+<P>&nbsp;</P>
+<h2>Multichord events - interpretation</h2>
+<P>The concerns raised with Single chord events apply to multichord events.</P>
+<P>The additional factor is coincidence with other observed chords. If the other 
+chords are multi-frame observations, and you have a single frame observation, 
+the possible interpretations are:</P>
+<ol>
+	<li>the single frame chord is close to the multiframe chords, such that from 
+	those multiframe chords we know an occultation would have occurred. As a 
+	result, the single frame result probably will add nothing to the multichord results. If 
+	it is included in the solution, the effect might reduce the 
+	accuracy/reliability of the overall result. In such cases, the event will be 
+	included in the file, but excluded from analysis.</li>
+	<li>the single frame chord is remote from the multiframe chords, such that 
+	the possibility of there being an occultation is remote (at best). The 
+	inference would be that the event that was considered to be a possible 
+	occultation was a noise event. Such an event would be included as reported, 
+	but excluded from any analysis.</li>
+	<li>The single frame chord is arguably near where the limb of the asteroid 
+	profile might pass, such that it could be considered a positive event that 
+	assists in determining the size/shape/position of the asteroid. However such 
+	a conclusion is dependent upon the level of certainty about whether the 
+	recording was caused by an occultation, because the same consequences arise 
+	when the chord is treated as a Miss chord. </li>
+</ol>
+<p>&nbsp;</p>
+<h2>Light curve - depth of drop</h2>
+<p>This tool does not include any consideration of whether the observed light 
+drop is consistent with the predicted drop. For asteroids larger than 1 or 2 km, 
+there should be consistency between the predicted and observed light drops. If 
+the observed light drop is significantly less than predicted, it is unlikely to 
+be caused by an occultation.</p>
+<p>For small asteroids, the effects of Fresnel diffraction need to be 
+considered.</p>
+<p>&nbsp;</p>
+<h2>Examples</h2>
+<P class="auto-style18">&nbsp;</P>
+<P class="auto-style18">20230217_38628_Huya_Nikitin.csv</P>
+<img src="AOTA_Short_Ex1.png" width="800">
+<p>Red mark in target well displaced from the light blue. Target has two consecutive high points, 
+with the 2nd plotted in yellow &amp; evaluation is 1st/3rd. Red mark in the 
+comparison plots nowhere near the right end, but are close to the light blue 
+areas. Evaluation of 2.78 is well above the Probable value of &gt;2.08. Would 
+strongly consider reporting astrometry</p>
+<P class="auto-style18">&nbsp;</P>
+<P class="auto-style18">2020Apr10_55_Pandora.PYOTE.csv</P>
+
+<img src="AOTA_Short_Ex2.png" width="800">
+<p>Target has one red point well separated from the blue. The evaluation is 1.53, 
+which is greater than the <strong>Possible</strong> limit but less than the
+<strong>Probable</strong> limit - so the event is assessed as being a possible 
+occultation event. However no comparison stars were measured; if 3 comparison 
+stars had been measured and provided satisfactory results, the event would have 
+been assessed as a <strong>probable</strong> occultation.</p>
+<P class="auto-style18">&nbsp;</P>
+<P class="auto-style18">20230426_34_Circe_Viscome_POS.csv</P>
+
+<img src="AOTA_Short_Ex3.png" width="800">
+<p>Two minute recording. The relevant frame is identified as #1104. Evaluation is 1.07, which is well below the <strong>
+Possible</strong> limit of &gt;1.20. The Red point in the target plot is not well 
+separated from the blue, so the largest light drop is indistinguishable from the 
+noise - preventing any conclusion that an occultation occurred. The light curve 
+for the companion has a similar distribution (graphs below) and similar 
+non-separation of the red point from the remainder. </p>
+
+<P>&nbsp;</P>
+<P class="auto-style18">2000 JX63-UCAC4 541-006861_pymovie.csv</P>
+<img src="AOTA_Short_Ex4a.png" width="800"><br>
+<img src="AOTA_Short_Ex4b.png" width="800">
+<p>Target red point is nowhere near the right end of the graph. Comparison #2 graph has red point at right end. Its largest value is 5.5, at frame 1560 and adjacent, and 1520. The orange line in the light curve plot 
+is the light curve of this comparison star, and shows these two noise drops. This indicates relative noise greater than anything in the target signal. 
+<strong><em>However</em></strong> this comparison star is only 0.2 as bright as the target, so it has very poor reliability 
+- and the list of modified distances is in Pink. In the Target plot there is no gap between the red marker and the blue, so the deepest drop is indistinguishable from all other noise. A 
+short duration occultation event is not apparent in this light curve.
+<p>&nbsp;<P class="auto-style18">20220925_2000 CC94_47692_HowellA_pos.csv</P>
+<img src="AOTA_Short_Ex5.png" width="800">
+<p>A light curve with multiple deep drops. Red mark in target plot not at the end, plus not a large gap - so no short-duration event. However this light curve has a definite multiframe event at around 1215. It is not detected in this test because it has that width. Any events lasting 3 or more frames should be assessed on the basis of whether it has a flat bottom.
+<P>&nbsp;</P>
+
+<h2>3-frame events - is the fact there are 3 consecutive points below the 
+average light level sufficient to assert it was an occultation?</h2>
+<p>Maybe, maybe not. The distinguishing feature of an occultation is a light 
+curve with a flat bottom. Apart from the particularly wide event   in the middle 
+of he plot, there are two other drops extending over 3 frames, each of which 
+might be construed as an occultation if it was the only such light drop in the 
+light curve. As a general proposition, such events should be considered under 
+this test; however the presence of three points at a similar light level may 
+justify not strictly applying the evaluation. However note how in this example 
+the 'flattest three frame drop (leftmost) is, in the context of this light 
+curve, definitely not an occultation event.</p>
+<p class="auto-style18">20231019_2444_Lederle</p>
+
+<img src="AOTA_Short_3Frame.png" width="800">
+<P>&nbsp;</P>
+
+<p>In this example there is a single 3-frame drop where two of the points could be 
+described as intermediate light levels. For events like this, additional issue 
+to consider are the predicted duration (3.0 secs) and the exposure duration (1.0 
+secs) [ which could explain the intermediate points]; the possibility of Fresnel 
+diffraction if the diameter is &lt; ~2km (14km) [which doesn't explain the 
+intermediate points]. The Comparison#3 plot (purple) has several single-frame drops in 
+its light curve, indicating that light drops that large are likely due to noise. 
+The target star light curve does not exhibit a flat bottom, so it fails the 
+flat-bottom test. This light curve is also quite short (99 frames) and therefore 
+has a poor representation of overall noise. A somewhat longer light curve would provide greater confidence in the 
+noise characteristics. </p>
+
+<p class="auto-style18">20231214_34230_2000 QF93</p>
+<img src="AOTA_Short_3FrameEx2.png" width="800">
+
+</BODY>
+</HTML>

@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Satellite solution</Title>
+<style type="text/css">
+.auto-style1 {
+	background-color: #00FFFF;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Satellite solution</H1>
+
+If the event involves a binary asteroid, a floating panel appears on the form:<br>
+<img Align=Middle Src="Asteroid%20Observations%20-%20Binaries.png"></p>
+
+<p>This panel allows up to 4 satellites to be added. Simply use the up-button on the up/don control at the top of the form to add an extra satellite.
+
+If you inadvertently add a non-existent satellite, you can delete it from the Observations Editor, using the menu item Solutions... 
+Delete current event satellite solution(s).&lt;/p&gt;</p>
+<p>For each satellite, you need to first fit the chords to the main body - as 
+that is the reference point for the Separation and PA offsets. It can happen 
+that only a satellite is recorded, and not the main body. In this situation you 
+need to create an observation record in the main editor using the prediction 
+from the main body, and in the Event Type block, check the box <strong>Satellite 
+parent (unseen)</strong>.<p>&nbsp;Once that is done, you manually select the 
+satellite (if there is more than one), select its name from the yellow box 
+listing (if it isn't listed here, the designation field is left blank), specify its name or designation, then 
+undertake a manual fit of the satellite ellipse (varying separation, Position 
+angle, Major and Minor axes, and PA of the major axis - to get the best fit. You 
+also need to specify the estimated uncertainties of the fit. Note that 
+separations are in mas,&nbsp; PAs are in degrees, and the axes are in km.<p>If 
+the event involves more than one satellite, you will also need to manually 
+specify the number of chords for each satellite.<p>When you are satisfied with 
+the fit, select the quality of the fit from the drop-down box.&nbsp; The options 
+are:<table class="auto-style1" style="width: 700">
+	<tr>
+		<td class="auto-style3" style="width: 200px"><strong>None</strong></td>
+		<td class="auto-style3" style="width: 356px">No fit to a/the satellite 
+		has been made</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 200px"><strong>Is it a satellite?</strong></td>
+		<td class="auto-style4" style="width: 356px">While the observation could 
+		be explained by a satellite, there is no reasonable certainty that other 
+		explanations have been excluded</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 200px"><strong>Approx offset</strong></td>
+		<td class="auto-style3" style="width: 356px">An approximate offset (PA 
+		and separation) can be derived, but the size is indeterminate</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 200px"><strong>Offset +&nbsp; size</strong></td>
+		<td class="auto-style3" style="width: 356px">The satellite's size is 
+		reasonably determined on the basis of it being spherical</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 200px"><strong>Offset + shape</strong></td>
+		<td class="auto-style3" style="width: 356px">An ellipse can be fitted to 
+		the satellite's profile</td>
+	</tr>
+</table>
+
+
+<p>Finally, for a number of system orbits are available for the satellites. 
+Where they are available the motions of the satellites can be allowed for in the 
+overall event solution. The bottom part of the panel is only displayed if orbits 
+are available. Click on the Get motion of satellite - from Miriade. Then from 
+the list that appears select the appropriate satellite. This will transfer the 
+motion of the satellite into the boxes at the bottom of the form.</p>
+<p>Frequently Miriade will return results from several different orbit 
+solutions. As a general rule, use the result first appearing in the list.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+
+</BODY>
+</HTML>

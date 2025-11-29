@@ -1,0 +1,89 @@
+{
+  "sections": [
+    {
+      "parameters": [
+        {
+          "comment": "Object ID",
+          "name": "id",
+          "type": "string",
+          "value": "0"
+        },
+        {
+          "comment": "Object name",
+          "name": "name",
+          "type": "string",
+          "value": "HighPrecision"
+        }
+      ],
+      "type": "object"
+    },
+    {
+      "parameters": [
+        {
+          "comment": "Integration step size (days)",
+          "name": "step_size",
+          "type": "double",
+          "value": "0.010000"
+        },
+        {
+          "comment": "Propagator type (RK4, RA15, ORBFIT)",
+          "name": "type",
+          "type": "string",
+          "value": "RA15"
+        }
+      ],
+      "type": "propag"
+    },
+    {
+      "parameters": [
+        {
+          "comment": "JPL ephemeris version (DE441, DE440)",
+          "name": "jpl_version",
+          "type": "string",
+          "value": "DE441"
+        }
+      ],
+      "type": "ephemeris"
+    },
+    {
+      "parameters": [
+        {
+          "comment": "Output format (JSON, KML, TEXT)",
+          "name": "format",
+          "type": "string",
+          "value": "JSON"
+        },
+        {
+          "comment": "Verbosity level (0=quiet, 1=normal, 2=verbose)",
+          "name": "verbosity",
+          "type": "int",
+          "value": "2"
+        }
+      ],
+      "type": "output"
+    },
+    {
+      "parameters": [
+        {
+          "comment": "Number of massive asteroids (0-17)",
+          "name": "asteroid_count",
+          "type": "int",
+          "value": "17"
+        },
+        {
+          "comment": "Include planetary perturbations",
+          "name": "planets",
+          "type": "bool",
+          "value": "true"
+        },
+        {
+          "comment": "Include relativistic corrections",
+          "name": "relativity",
+          "type": "bool",
+          "value": "true"
+        }
+      ],
+      "type": "perturbations"
+    }
+  ]
+}

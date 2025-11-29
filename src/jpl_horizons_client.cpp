@@ -4,6 +4,7 @@
  */
 
 #include "ioccultcalc/jpl_horizons_client.h"
+#include "ioccultcalc/orbital_elements.h"
 #include <curl/curl.h>
 #include <sstream>
 #include <iomanip>
@@ -241,9 +242,102 @@ std::pair<double, double> JPLHorizonsClient::getApparentCoordinates(
     return {0.0, 0.0};
 }
 
+OrbitalElements JPLHorizonsClient::getOsculatingElements(
+    const std::string& target,
+    const JulianDate& epoch,
+    const std::string& center) {
+    
+    // Costruisci query per elementi orbitali
+    // TABLE_TYPE='ELEMENTS' richiede elementi orbitali invece di vettori
+    std::string startDate = "JD" + std::to_string(epoch.jd);
+    std::string stopDate = "JD" + std::to_string(epoch.jd + 0.1); // +2.4 ore
+    
+    std::string params = "format=text"
+                        "&COMMAND='" + target + "'"
+                        "&OBJ_DATA='YES'"
+                        "&MAKE_EPHEM='YES'"
+                        "&EPHEM_TYPE='ELEMENTS'"
+                        "&CENTER='" + center + "'"
+                        "&START_TIME='" + startDate + "'"
+                        "&STOP_TIME='" + stopDate + "'"
+                        "&STEP_SIZE='1d'"
+                        "&REF_SYSTEM='ICRF'"
+                        "&REF_PLANE='ECLIPTIC'"
+                        "&OUT_UNITS='AU-D'"
+                        "&CSV_FORMAT='NO'"
+                        "&ELM_LABELS='YES'";
+    
+    std::string response = pImpl->performRequest(params);
+    
+    return parseOrbitalElements(response);
+}
+
 std::pair<double, double> JPLHorizonsClient::parseRADec(const std::string& response) {
     // TODO
     return {0.0, 0.0};
+}
+
+OrbitalElements JPLHorizonsClient::parseOrbitalElements(const std::string& response) {
+    OrbitalElements elem;
+    
+    // Trova la sezione con gli elementi orbitali
+    // Horizons output formato:
+    // $$SOE (Start Of Ephemeris)
+    // JDTDB    Calendar Date (TDB)    EC    QR   IN    OM    W    Tp    N    MA    TA    A    AD    PR
+    // 2461000.500000000 = A.D. 2025-Nov-21 00:00:00.0000 (TDB) ...elementi...
+    // $$EOE (End Of Ephemeris)
+    
+    size_t soePos = response.find("$$SOE");
+    size_t eoePos = response.find("$$EOE");
+    
+    if (soePos == std::string::npos || eoePos == std::string::npos) {
+        throw std::runtime_error("Impossibile trovare dati elementi orbitali in risposta Horizons");
+    }
+    
+    std::string ephData = response.substr(soePos + 5, eoePos - soePos - 5);
+    std::istringstream iss(ephData);
+    std::string line;
+    
+    // Salta linea header se presente
+    if (std::getline(iss, line) && line.find("JDTDB") != std::string::npos) {
+        // È l'header, leggi la linea dati
+        std::getline(iss, line);
+    }
+    
+    // Parse della linea dati
+    // Formato: JDTDB Date EC QR IN OM W Tp N MA TA A AD PR
+    std::istringstream lineStream(line);
+    std::string jdStr, dateStr;
+    double ec, qr, in_deg, om_deg, w_deg, tp, n, ma_deg, ta, a, ad, pr;
+    
+    lineStream >> jdStr >> dateStr; // Skip JDTDB e data
+    // Date è formato "A.D. YYYY-MMM-DD HH:MM:SS.SSSS (TDB)", skip finché non troviamo (TDB)
+    while (dateStr.find("(TDB)") == std::string::npos) {
+        lineStream >> dateStr;
+    }
+    
+    // Ora leggi gli elementi
+    if (!(lineStream >> ec >> qr >> in_deg >> om_deg >> w_deg >> tp >> n >> ma_deg >> ta >> a >> ad >> pr)) {
+        throw std::runtime_error("Errore nel parsing degli elementi orbitali da Horizons");
+    }
+    
+    // Converti da formato Horizons a OrbitalElements
+    elem.a = a;                              // Semi-major axis (AU)
+    elem.e = ec;                             // Eccentricity
+    elem.i = in_deg * M_PI / 180.0;         // Inclination (rad)
+    elem.Omega = om_deg * M_PI / 180.0;     // Long. of ascending node (rad)
+    elem.omega = w_deg * M_PI / 180.0;      // Argument of perihelion (rad)
+    elem.M = ma_deg * M_PI / 180.0;         // Mean anomaly (rad)
+    
+    // Epoch dal JDTDB
+    double jd;
+    if (sscanf(jdStr.c_str(), "%lf", &jd) == 1) {
+        elem.epoch.jd = jd;
+    } else {
+        throw std::runtime_error("Impossibile parsare JD dall'output Horizons");
+    }
+    
+    return elem;
 }
 
 bool JPLHorizonsClient::isTargetAvailable(const std::string& target) {

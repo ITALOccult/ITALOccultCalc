@@ -1,0 +1,382 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Gaia</Title>
+<style type="text/css">
+.auto-style1 {
+	margin-left: 40px;
+}
+.auto-style2 {
+	text-align: center;
+}
+.auto-style3 {
+	color: #FF0000;
+}
+.auto-style4 {
+	color: #035903;
+}
+.auto-style5 {
+	color: #067306;
+}
+.auto-style6 {
+	color: #0000FF;
+}
+.auto-style7 {
+	color: #6363E3;
+}
+.auto-style9 {
+	color: #035903;
+	font-size: small;
+	margin-left: 40px;
+}
+.auto-style10 {
+	font-size: small;
+}
+.auto-style11 {
+	margin-left: 80px;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1 class="auto-style2">Gaia format</H1>
+
+This format is designed to handle the precise positions provided by Gaia. It is used for Gaia-based catalogues, as well as 'user' catalogues derived from other catalogues downloaded from VizieR using the TAPVizieR tool.
+
+Two formats are specified below. The EDR3 format supersedes the DR2 format. The DR2 format is being retained in Occult for a period, so that catalogues created 
+using the DR2 format can continue to be used. However the capability of creating 
+Gaia catalogues in the DR2 format has been replaced by that for EDR3/DR3.
+
+<h1 class="auto-style1">Format for DR3 / EDR3</h1>
+
+
+<table columns=3 border=1 class="auto-style1">
+<TR><TH NOWRAP> Bytes </TH><TH style="width: 49px">Units  </TH><TH>Format  </TH><TH> Label </TH><TH>Explanations  </TH></TR>
+<TR><TD> 1-  4   </TD><TD style="width: 49px"> int32      </TD><TD> mas  </TD><TD>RA   </TD><TD>    Right ascension - truncated to 1 mas precision. </TD></TR>
+<TR><TD>5    </TD><TD style="width: 49px">byte   </TD><TD>4µas      </TD><TD> RA2    </TD><TD>  RA. component <1mas. Units of 4 µas.  Add to the right ascension  </TD></TR>
+<TR><TD>6-  9  </TD><TD style="width: 49px">int32   </TD><TD>mas  </TD><TD>Dec   </TD><TD> Declination - truncated (round towards -infinity) to 1 mas precision<br> truncation:  +10.123 = 10; -10.123 = -11 </TD></TR>
+<TR><TD>       10 </TD><TD style="width: 49px">   byte </TD><TD>      4µas</TD><TD>     Dec2     </TD><TD>    Dec component <1mas. Units of 4 µas.   
+  Value is always added to the signed value of declination. <br>e.g.  +10 + .124 = +10.124; -10 + .124 = -9.876
+  <TR><TD>  11- 12</TD><TD style="width: 49px">   uint16  </TD><TD>  12.5µas  </TD><TD>  Parallax. </TD><TD>  Stored in units of 12.5 µas (to include Proxima within range)</TD></TR>
+  <TR><TD>  13- 16 </TD><TD style="width: 49px">   int32   </TD><TD>  µas/yr  </TD><TD>  PM_RA      </TD><TD>  Annual proper motion in RA. Value has been multiplied by Cos(declination)</TD></TR>
+ <TR><TD nowrap>   17- 20  </TD><TD style="width: 49px">  int32   </TD><TD>  µas/yr  </TD><TD>  PM_Dec     </TD><TD>  Annual proper motion in Dec</TD></TR>
+ <TR><TD style="height: 33px">   21- 22 </TD>
+	 <TD style="width: 49px; height: 33px;">   int16    </TD>
+	 <TD style="height: 33px">   km/s  </TD><TD style="height: 33px">  RV         </TD>
+	 <TD style="height: 33px">  Radial velocity</TD></TR>
+  <TR><TD>  23- 24 </TD><TD style="width: 49px">   int16     </TD><TD>  ---   </TD><TD nowrap>  
+	  Epoch</TD><TD>  Epoch of the positions from 2000.0, in units 0.001 yr. 
+	  <br>For stars sourced from Hipparcos, Epoch = 1991.25 (coded as -8750)</TD></TR>
+  <TR><TD>  25- 26  </TD><TD style="width: 49px">  int16    </TD><TD>   mMag   </TD><TD>  Mag<sub>bp</sub>  </TD><TD>  
+	  Magnitude from the Blue photometer. Available for the majority of stars</TD></TR>
+  <TR><TD>  27- 28  </TD><TD style="width: 49px">  int16     </TD><TD>  mMag  </TD><TD>  Mag G      </TD><TD>  
+	  Magnitude from Green photometer (essentially, the Visual magnitude). 
+	  Available for all stars</TD></TR>
+  <TR><TD>  29- 30 </TD><TD style="width: 49px">   int16     </TD><TD>  mMag  </TD><TD>  Mag<sub>rp</sub></TD><TD>  Magnitude from Red photometer. 
+	  Available for the majority of stars</TD></TR>
+ <TR><TD>   31- 32 </TD><TD style="width: 49px">  uint16  </TD><TD>   10µas  </TD><TD>   e_RA      </TD><TD>   Uncertainty in RA units of 10 µas</TD></TR>
+  <TR><TD>  33- 34 </TD><TD style="width: 49px">  uint16   </TD><TD>  10µas   </TD><TD>  e_Dec     </TD><TD>   Uncertainty in Dec units of 10 µas</TD></TR>
+  <TR><TD>  35- 36 </TD><TD style="width: 49px">  uint16   </TD><TD>  10µas   </TD><TD>  e_Parx    </TD><TD>   Uncertainty in Parallax units of 10 µas</TD></TR>
+  <TR><TD style="height: 28px">  37- 38 </TD>
+	  <TD style="height: 28px; width: 49px;">  uint16   </TD>
+	  <TD style="height: 28px">  µas/yr  </TD><TD style="height: 28px">  e_PM_RA    </TD>
+	  <TD style="height: 28px">  Uncertainty in Proper motion in RA</TD></TR>
+  <TR><TD>  39- 40 </TD><TD style="width: 49px">  uint16   </TD><TD>  µas/yr  </TD><TD>  e_PM_Dec   </TD><TD>  Uncertainty in Proper motion in Dec</TD></TR>
+  <TR><TD>      41  </TD><TD style="width: 49px">  byte      </TD><TD>  km/s  </TD><TD>  e_RV       </TD><TD>  Uncertainty in Radial Velocity </TD></TR>
+  <TR><TD>      42</TD><TD style="width: 49px">  byte</TD><TD>   ---</TD><TD>  
+	  Reliability indicator</TD><TD>  
+	  &nbsp;The reliability indicator provides a broad indicator of whether 
+	  there are issues of concern that may affect the accuracy of the star's 
+	  position beyond the formal standard deviation measure. The range of the 
+	  indicator as provided is 0.0 to 12.6.<br><br>For stars where the position 
+	  has come from Gaia DR3, the reliability indicator is the Gaia 'RUWE' 
+	  value. Values of RUWE in Gaia range from about 0.3 to over 100; values 
+	  greater than 12.6 are all coded as 12.6 in this field. Values of RUWE 
+	  greater than 1.4 indicate reduced reliability of the position. Values of 
+	  zero can also exist; in such instances the position is of poor 
+	  reliability.<br><br>For the approximately 1000 star positions obtained 
+	  from TGAS (Gaia DR1), the 'astrometric_excess_noise' element of that 
+	  catalogue has been used as the reliability indicator.&nbsp; This is 
+	  described in 'Gaia Data Release 2 - the astrometric solution' A&amp;A, 616, A2 
+	  (2018). Also in the presentation &quot;Astrometry in Gaia DR1' at the Gaia DR1 
+	  workshop, ESAC, 2016 Nov 3.<br><br>For the small number of stars where the 
+	  position is taken from Hipparcos, the indicator is derived using Eqns 
+	  B1-B4 on page 15 of <em>Daniel Michalik et al: Joint astrometric solution 
+	  of Hipparcos &amp; Gaia, A&amp;A, Vol 571 (Nov 2014)</em>.These give the chi 
+	  statistic for the star position, 'which is expected to be around 1.0 for a 
+	  &quot;good&quot; solution'.</TD></TR>
+  <TR><TD>      43</TD><TD style="width: 49px">  byte</TD><TD>   ---</TD><TD>  
+	  Flags</TD><TD>  
+	  The bits in this field are used to flag a range of situations:<br>Bit 1 - 
+	  set if&nbsp; the Gaia Duplicate Source flag has been set<br>Bit 2 - set if 
+	  there is no Gaia proper motion for the star. <br>Bit 3 - when bit 2 set, 
+	  the proper motion has been derived using the UCAC4 position at 2000.0<br>
+	  Bit 4 - UCAC4 identifier based on a poor match</TD></TR>
+  <TR><TD>      44</TD><TD style="width: 49px">  byte</TD><TD>   0.1   mas</TD><TD>  
+	  Star diameter</TD><TD>  
+	  Apparent angular diameter of the star. Derived using the g<strong>aiadr3.Astrophysical_parameters_supp</strong> 
+	  file, field<strong> radius_flame_spec, </strong> &nbsp;(Rad-Flame in VizieR), 
+	  and&nbsp; g<strong>aiadr3.Astrophysical_parameters</strong> 
+	  file, field<strong> radius_flame, </strong> &nbsp;(Rad-Flame in VizieR). 
+	  <br>The solar radius value 
+	  is converted to apparent solar diameter with:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+	  diam(mas)= 9.304 * <strong>parallax(asec)</strong> * <strong>radius_flame<br>
+	  </strong>Field is empty in EDR3</TD></TR>
+  <TR><TD>      45</TD><TD style="width: 49px">  byte</TD><TD>   
+	  &nbsp;</TD><TD>  G_Version</TD><TD>  
+	  The Gaia version used for the positions and Source_ID. <br>0 = Hipparcos2 
+	  of 2008<br>1 = TGAS (DR1)<br>2 = DR2<br>3 = 
+	  EDR3<br>4 = DR3&nbsp; ??<br>5 = DR4&nbsp; ??<br>9 = UBSC&nbsp; [The 
+	  <span class="auto-style3">U</span>nited 
+	  States Naval Observatory <span class="auto-style3">B</span>right-<span class="auto-style3">S</span>tar
+	  <span class="auto-style3">C</span>atalog]</TD></TR>
+  <TR><TD>      46-53</TD><TD style="width: 49px">  uint64</TD><TD>   ---</TD><TD>  Source_ID</TD><TD>  
+	  The Source ID in the relevant version of Gaia (see G_Version). For stars 
+	  from Hipparcos, the Hipparcos number is specified.</TD></TR>
+   <TR><TD>     54  </TD><TD style="width: 49px">  byte     </TD><TD>   ---   </TD><TD>  CatID      </TD><TD>  Catalogue identifier  
+	   (to identify the star using a traditional catalogue entry)<br>0 = Not matched. Use star coords to identify&nbsp; Ghhmmss.s&#177ddmmss<br>
+	   2 = Hipparcos.<br>3 = Tycho2, '-1' stars<br>4 = Tycho2, '-2' stars<br>5 = Tycho2, '-3' 
+	   stars <br>6 = UCAC4<br></TD></TR>
+  <TR><TD>  55- 58</TD><TD style="width: 49px">   uint32     </TD><TD>  ---   </TD><TD>  CatNum     </TD><TD>  Sequential number in catalogue zone (or number in catalogue)</TD></TR>
+  </table>
+
+<h3 class="auto-style1">Star number coding</h3>
+
+<Table columns=4 border=2 class="auto-style1">
+<TR><TH> Catalogue:  </TH><TH>   Number format</TH><TH nowrap>  Contents of CatNum</TH><TH nowrap>   
+	Extra details</TH></TR>
+<TR><TD> Hipparcos  </TD><TD>   nnnnnnn</TD><TD>nnnnnnn </TD><TD>0</TD></TR>
+<TR><TD> Tycho2</TD><TD>   aaaa-bbbbb-c  </TD><TD>aaaabbbbb </TD><TD>The last 
+	digit (c) is indicated via the CatID </TD></TR>
+<TR><TD> UCAC4</TD><TD>   zzz-nnnnnn</TD><TD>zzznnnnnn </TD><TD> Issues 
+	regarding the source of proper motion, and reliability <br>of the UCAC4 
+	designation, are indicated via the CatID</TD></TR>
+</table>
+
+<h3 class="auto-style1">&nbsp;</h3>
+<h3 class="auto-style1">UCAC4 matching issues</h3>
+<ul>
+	<li>In general, matching of UCAC4 to Gaia is undertaken by comparing epoch 
+	2000 positions derived from Gaia with the UCAC4 catalogue positions. The 
+	categories for a match are:<ul>
+		<li>good match: Separation &lt; 0.2&quot;, and magnitude difference &lt; 2&nbsp; 
+		[about 97.5% of entries]</li>
+		<li>poor match: Separation &lt; 1.0&quot;, and magnitude difference &lt; 2&nbsp; 
+		{about 99.6% of entries]</li>
+		<li>No match: Separation &gt;1.0&quot; or magnitude difference &gt; 2&nbsp; 
+		[about 0.4% of entries]<br><br></li>
+	</ul>
+	</li>
+	<li>Where a Gaia star has no proper motion (RUWE is zero in such cases), a 
+	match of UCAC4 to Gaia is undertaken using UCAC4 positions with proper 
+	motion applied to the Gaia epoch of 
+	2016. If there is a match to better than 1.0&quot; and magnitude difference less 
+	than 2,
+	<ul>
+		<li>the UCAC4 number is added, </li>
+		<li>the catalogue identifier is set to 8, </li>
+		<li>RUWE is set to 0.05, </li>
+		<li>proper motions are added, being derived using the UCAC position at epoch 
+		2000 and the Gaia position at epoch 2016. </li>
+	</ul>
+	</li>
+
+Possible multiple allocations are dealt with in the general routine for 
+dealing with multiple matches.<br>
+</ul>
+<ul>
+	<li>Where there are two possible Gaia stars that match with the same UCAC4 star, 
+	the criteria for allocating the UCAC4 number to a star is as follows, in order 
+	of priority:<ul>
+		<li>if one or both the stars originally had no proper motion, the 
+		catalogue identification for the relevant one or both stars is removed, 
+		and the proper motions and RUWE are restored to 0.</li>
+		<li>If the match of one star is better than the other (as reflected in 
+		the Catalogue ID number of 6 or 7), the UCAC4 identification is removed 
+		for the star with CatID of 7</li>
+		<li>if RUWE is &gt;2.0 for one, and &lt;1.5 (but neither is less than 
+		0.15) for the other, the UCAC4 identification is removed for the star with the 
+		higher RUWE</li>
+		<li>if the separation for one star is greater than that for the other 
+		star by more then 0.1&quot;, the UCAC4 identification is removed for the 
+		star with the greater separation</li>
+		<li>Otherwise, the UCAC4 identification is removed for the fainter star 
+		(Green magnitude)</li>
+	</ul>
+	</li>
+	<li>The routine will only handle three close matches in seriatim if the 
+	match for the second&nbsp; star is not removed in the first instance.</li>
+</ul>
+<p>&nbsp;</p>
+<p class="auto-style1">&nbsp;</p>
+<h1 class="auto-style1">Format for DR2
+</h1>
+This format is designed to handle the precise positions provided by Gaia. It is used for Gaia-based catalogues, as well as 'user' catalogues derived from other catalogues downloaded from VizieR using the TAPVizieR tool.<p class="auto-style1">
+
+<table columns=3 border=1>
+<TR><TH NOWRAP> Bytes </TH><TH>Units  </TH><TH>Format  </TH><TH> Label </TH><TH>Explanations  </TH></TR>
+<TR><TD> 1-  4   </TD><TD> int32      </TD><TD> mas  </TD><TD>RA   </TD><TD>    Right ascension - truncated to 1 mas precision. </TD></TR>
+<TR><TD>5    </TD><TD>byte   </TD><TD>4µas      </TD><TD> RA2    </TD><TD>  RA. component <1mas. Units of 4 µas.  Add to the right ascension  </TD></TR>
+<TR><TD>6-  9  </TD><TD>int32   </TD><TD>mas  </TD><TD>Dec   </TD><TD> Declination - truncated (round towards -infinity) to 1 mas precision<br> truncation:  +10.123 = 10; -10.123 = -11 </TD></TR>
+<TR><TD>       10 </TD><TD>   byte </TD><TD>      4µas</TD><TD>     Dec2     </TD><TD>    Dec component <1mas. Units of 4 µas.   
+  Value is always added to the signed value of declination. <br>e.g.  +10 + .124 = +10.124; -10 + .124 = -9.876
+  <TR><TD>  11- 12</TD><TD>   uint16  </TD><TD>  12.5µas  </TD><TD>  Parallax. </TD><TD>  Stored in units of 12.5 µas (to include Proxima within range)</TD></TR>
+  <TR><TD>  13- 16 </TD><TD>   int32   </TD><TD>  µas/yr  </TD><TD>  PM_RA      </TD><TD>  Annual proper motion in RA. Value has been multiplied by Cos(declination)</TD></TR>
+ <TR><TD nowrap>   17- 20  </TD><TD>  int32   </TD><TD>  µas/yr  </TD><TD>  PM_Dec     </TD><TD>  Annual proper motion in Dec</TD></TR>
+ <TR><TD>   21- 22 </TD><TD>   int16    </TD><TD>   km/s  </TD><TD>  RV         </TD><TD>  Radial velocity</TD></TR>
+  <TR><TD>  23- 24 </TD><TD>   int16     </TD><TD>  ---   </TD><TD nowrap>  EpRA-2000  </TD><TD>  Epoch for RA, units 0.001 yr</TD></TR>
+  <TR><TD>  25- 26  </TD><TD>  int16    </TD><TD>   ---   </TD><TD>  EpDe-2000  </TD><TD>  Epoch for Declination, units 0.001 yr</TD></TR>
+  <TR><TD>  27- 28  </TD><TD>  int16     </TD><TD>  mMag  </TD><TD>  Mag G      </TD><TD>  Magnitude from 
+	  Green photometer</TD></TR>
+  <TR><TD>  29- 30 </TD><TD>   int16     </TD><TD>  mMag  </TD><TD>  Mag<sub>rp</sub></TD><TD>  Magnitude from Red photometer</TD></TR>
+ <TR><TD>   31- 32 </TD><TD>  uint16  </TD><TD>   10µas  </TD><TD>   e_RA      </TD><TD>   Uncertainty in RA units of 10 µas</TD></TR>
+  <TR><TD>  33- 34 </TD><TD>  uint16   </TD><TD>  10µas   </TD><TD>  e_Dec     </TD><TD>   Uncertainty in Dec units of 10 µas</TD></TR>
+  <TR><TD>  35- 36 </TD><TD>  uint16   </TD><TD>  10µas   </TD><TD>  e_Parx    </TD><TD>   Uncertainty in Parallax units of 10 µas</TD></TR>
+  <TR><TD>  37- 38 </TD><TD>  uint16   </TD><TD>  µas/yr  </TD><TD>  e_PM_RA    </TD><TD>  Uncertainty in Proper motion in RA</TD></TR>
+  <TR><TD>  39- 40 </TD><TD>  uint16   </TD><TD>  µas/yr  </TD><TD>  e_PM_Dec   </TD><TD>  Uncertainty in Proper motion in Dec</TD></TR>
+  <TR><TD>      41  </TD><TD>  byte      </TD><TD>  km/s  </TD><TD>  e_RV       </TD><TD>  Uncertainty in Radial Velocity </TD></TR>
+  <TR><TD>      42  </TD><TD>  byte     </TD><TD>   ---   </TD><TD>  Spec       </TD><TD>  Spectral type. High nibble = class, low nibble = subclass (****)</TD></TR>
+   <TR><TD>     43  </TD><TD>  byte     </TD><TD>   ---   </TD><TD>  CatID      </TD><TD>  Catalogue identifier  
+	   <br>2 = Hipparcos, 
+	   <br>3 = Tycho2, <br>4 = UCAC4, <br>5 = PPMXL</TD></TR>
+  <TR><TD>  44- 47</TD><TD>   uint32     </TD><TD>  ---   </TD><TD>  CatNum     </TD><TD>  Sequential number in catalogue zone (or number in catalogue)<br>
+	  * For PPMXL, the characters a, b, c, d in the zone identifier are added as 
+	  0, 100000000, 200000000 and 300000000 </TD></TR>
+  <TR><TD>      48  </TD><TD>  byte     </TD><TD>   ---   </TD><TD>  SupNum     </TD><TD>  Supplemental digit for Cat ID:
+                                       <br>* Hipparcos - zero<br>* UCAC4 : 0 = 
+	  no issue; 2 = Proper motion derived using UCAC4 position; 4 = Poor match<br>* Tycho-2 : the digit of the third field
+	  <br>* PPMXL. For southern declinations, 100 + the declination band. For 
+	  northern declinations, 101 + declination band.</TD></TR>
+</table>
+
+<p class="auto-style1">
+<h3 class="auto-style1">Star number coding</h3>
+<Table columns=4 border=2 class="auto-style1">
+<TR><TH> Catalogue:  </TH><TH>   Number format</TH><TH nowrap>  Contents of CatNum</TH><TH nowrap>   Content of SupNum</TH></TR>
+<TR><TD> Hipparcos  </TD><TD>   nnnnnnn</TD><TD>nnnnnnn </TD><TD>0</TD></TR>
+<TR><TD> Tycho2</TD><TD>   aaaa-bbbbb-c  </TD><TD>aaaabbbbb </TD><TD>c</TD></TR>
+<TR><TD> UCAC4</TD><TD>   zzz-nnnnnn</TD><TD>zzznnnnnn </TD><TD> 0</TD></TR>
+<TR><TD> PPMXL</TD><TD>   szzd-nnnnnnn  </TD><TD>nnnnnnn 
+	+ 100000000*d</TD><TD>+zz, -zz</TD></TR>
+</table>
+
+<p>&nbsp;</p>
+
+<H1 class="auto-style2">Gaia&nbsp; .inx file format</H1>
+
+This file is an index file to the Gaia 
+catalogue. The name is the file that it provides the index for, but with '.inx' 
+rather than '.bin'.&nbsp; It is used for all Gaia-based catalogues<p>The Gaia 
+catalogue is structured as 360 declination zones (0.5° wide) starting at +90°.</p>
+<p>The .inx file has 361 entries for each declination band. Each entry gives the 
+record number (as a long) for the first record in a band at intervals of 4 
+minutes in RA, with the last index entry in that band being for the last record 
+in that band. That is, the record number gives the first entry in a declination 
+band of a 4-minute block that contains the specified RA. The following record 
+entry gives the index of 1 more than the last entry in that block.</p>
+<p>Using a zero-based record number, the algorithm (in C#) to get the record number, 
+given the star's coordinates (RA, Dec) in radians, is:</p>
+<pre><ul><p><span class="auto-style6">int DecZone = 179 - (int)(2 * Radian * Dec);<br>&nbsp; if (Dec &lt; 0) 
+DecZone++;<br><br>int ZoneIndexStart = 361 * DecZone;</span><br><br>
+<span class="auto-style4">/</span><span class="auto-style5">/ensure a full 1-deg 
+RA coverage. Declination range enlarged to allow for the effect of proper motion</span><br>
+	<span class="auto-style6">int RAstart = (int)(</span><span class="auto-style7">Math.</span><span class="auto-style6">Floor(RA * Radian - 0.006 / </span>
+	<span class="auto-style7">Math</span><span class="auto-style6">.Cos(Dec)));<br>&nbsp;
+if (RAstart &lt; 0) RAstart = 0;<br>int RAend = (int)(</span><span class="auto-style7">Math</span><span class="auto-style6">.Ceiling(RA * Radian + 
+1.006 / </span>
+	<span class="auto-style7">Math</span><span class="auto-style6">.Cos(Dec)));<br>&nbsp; if (RAend &gt; 360) RAend = 360;<br><br>IndexFileStream.Seek((long)((ZoneIndexStart + RAstart) * 4), 0);<br>int 
+MinRecord = IndexFile.ReadInt32() - 1;<br>IndexFileStream.Seek((long)((ZoneIndexStart 
++ RAend) * 4), 0);<br>int MaxRecord = IndexFile.ReadInt32();</span></p>
+</ul></pre>
+
+<H1 class="auto-style2">Accessing a star using its Hipparcos number</H1>
+<p>For each Gaia... file, there is a corresponding Hipparcos_Gaia ....dat file. 
+This file is a binary file containing 120404 entries corresponding to full range 
+of Hipparcos star numbers. Each entry (a 32 bit integer) gives the records 
+number of that Hipparcos star in that Gaia catalog. The Hipparcos catalogue has 
+some gaps in the numeration, with there being only 117953 stars. Entries that do 
+not have a Hipparcos star have the record number set to zero.</p>
+<p>To retrieve a Hipparcos star, simply retrieve the Gaia file record number 
+from the record number in the Hipparcos...data file - then go to that record in 
+the Gaia file</p>
+
+
+
+<H1 class="auto-style2">Accessing a star using its Tycho2 number</H1>
+<p>The Tycho2 star numbers are that of the Guide Star Catalog - GSC. Stars in 
+the GSC have 3 elements. The first is a region number, the 2nd is a number 
+within that region, and the 3rd is for components of a star. For the huge 
+majority of stars, the 3rd component is 1. For a small number it is 2. Very 
+occasionally it is a&nbsp; numbers.</p>
+<p>The file format is <a href="FileFormat%20GSC%20Fields.htm">here (GSC Fields)</a></p>
+<P>To locate a specific star in a Gaia catalogue from its Tycho-2 number:</P>
+<ul>
+	<li>use the Region number (the first element in the Tycho2 number) to extract from the
+	<span class="auto-style4">GSC Fields</span> file, the&nbsp; file the limits in RA and Dec for that 
+	Tycho2 region. </li>
+	<li>for the Gaia file being accessed, use its corresponding .inx to obtain the range of records 
+	to be scanned in the 0.5° bands of that Gaia catalogue file. </li>
+	<li>Scan the Gaia file to find an entry with the required Tycho2 number</li>
+</ul>
+<p>Not all stars with a Tycho2 number will be found. There are two reason:
+</p>
+<ol>
+	<li>Each Gaia entry contains on a single star identifier. A Hipparcos number has precedence over a Tycho2 number, and as a result any Tycho2 stars which are also in Hipparcos cannot be located using the Tycho2 number.
+	</li>
+	<li>The Tycho2 numbers in the Gaia catalogues have been obtained via the TychoGaia file of Gaia DR1. Beyond that, no effort has been made to match Gaia stars to the original Tycho2 catalog.</li>
+</ol>
+<p><strong>NOTE 1</strong>: There are instances where a Tycho2 star from the 
+TychoGaia that could not be reliable matched to Gaia. In such circumstances the 
+star position from TychoGaia was added to the Gaia catalogue, with the 
+likelihood of there being a relevant Gaia star being already present - creating 
+(in effect) a double entry for that star. That Gaia star star will usually (but 
+not always)&nbsp; have a UCAC4 identifier. </p>
+<p><strong>NOTE 2</strong>: The Tycho2 star numbers within a Region are not 
+ordered by Right Ascension or Declination. As a result you should not try to 
+limit the scans by having regard to whether the current Tycho2 number is less 
+than the last-found Tycho2 star number..</p>
+
+<H1 class="auto-style2">Accessing a star using its UCAC4 number</H1>
+<p>The UCAC4 catalogue has 900 zones, from 001 to 900. Each zone is 0.2° wide, 
+with the zones being numbered from the south pole to the north pole. The UCAC4 
+number is a combination of the zone number, and the sequential number within 
+that zone. The binary file U4_Gaia14.inx (located in the Resource Files folder) 
+has 361 integers for each zone, corresponding to the start of 4-minute intervals 
+in RA. The integer value is the UCAC4 sequence number of the first star in that 
+interval. If this file is not present, Occult will download it automatically.<p>Sample code (in C#) to retrieve the Gaia declination zone numbers, 
+and the RA (in degrees) of the 4-minute interval containing the star number) is:
+<p class="auto-style1">//Get the Gaia 0.5° wide zones that cover the relevant UCAC4 zone<p class="auto-style1">
+	<span class="auto-style10">GaiaMaxZone 
+= (int)(Math.Floor((900 - Zone) / 2.5d));</span><br class="auto-style10">
+	<span class="auto-style10">GaiaMinZone = (int)(Math.Floor((900.5 
+- Zone) / 2.5d));</span><p class="auto-style9"> //Get the value (in degrees) of the 
+	1-degree (i.e. 4 minutes) value of the start of 1 1-degree block of numbers 
+	that include the requested UCAC4 number; 
+	<p class="auto-style1"><span class="auto-style10">U4IndexFile.Seek(1444 * (Zone - 1) + 4, 0);</span><br class="auto-style10">
+	<span class="auto-style10">RAindex = 
+0;</span><br class="auto-style10"><span class="auto-style10">do</span><br class="auto-style10">{<br class="auto-style10">
+<ul class="auto-style11">
+		<span class="auto-style10">ReadIndexNum = U4Index.ReadInt32();</span><br class="auto-style10">
+		<span class="auto-style10">if (ReadIndexNum &gt;= 
+NumInZone) break;</span><br class="auto-style10"><span class="auto-style10">RAindex++;</span><br class="auto-style10"></ul>
+	<p class="auto-style1">
+	<span class="auto-style10">} while (RAindex &lt; 360); </p>
+	<br>Use these values with the Gaia...inx file to identify the record numbers in the main Gaia file to be scanned to find the entry that contains the UCAC4 star number.<p>Not all stars with a UCAC4 number will be found. There are two reason: </p>
+<ol>
+	<li>Each Gaia entry contains on a single star identifier. Hipparcos&nbsp; 
+	and Tycho2 numbers have precedence over a UCAC4 number, and as a result any&nbsp; 
+	UCAC4 star that is also in Hipparcos or Tycho2 cannot be located using the 
+	UCAC4 number.
+	</li>
+	<li>There are a small number of UCAC4 stars that could not be reliably 
+	matched to a Gaia star entry. However a star that actually corresponds to 
+	the UCAC4 star may in fact be present. Such stars are identified with the 
+	usuyal IAU standard of Jhhmmss.s-ddmmss or Jhhmmss.ss-ddmmss.s</li>
+</ol>
+
+</BODY>
+</HTML>

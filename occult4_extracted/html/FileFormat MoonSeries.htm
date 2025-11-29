@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>MoonSeries</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1><A NAME="idh_4overview"></A>MoonSeries.bin</H1>
+<!-- Insert Header in above line -->
+
+<p>This file contains a series used to compute the position of the moon for periods not covered by the DE405 or DE413 ephemeris. It is an extraction of the series of Chapront (ELP-82) which was fitted to DE200. [The full series is available on the CD-Rom Astronomical Catalogues Vol. 3, from the Astronomical Data Centre.] All terms with coefficients >= 0.0005” have been included. The data within the file has been stored as follows:</p><ul>
+
+<li>Main problem, large terms (Number of terms in Longitude, Latitude & Distance = 27, 14, 26)<ul>
+    <li>D As Integer</li>
+    <li>Lp As Integer</li>
+    <li>l As Integer</li>
+    <li>f As Integer</li>
+    <li>Arg As Double</li></ul></li>
+
+<li>Main problem, small terms (422, 386, 332)<ul>
+    <li>D As Integer</li>
+    <li>Lp As Integer</li>
+    <li>l As Integer</li>
+    <li>f As Integer</li>
+    <li>Arg As Single</li></ul></li>
+
+<li>Planetary perturbations   [Neptune & D] (1398, 590, 1047 ; by Time 50, 8, 26 )<br>
+Planetary perturbations  [D & Lp] (30, 24, 27 ; by Time 65, 42, 57)<ul>
+    <li>Mercury As Integer</li>
+    <li>Venus As Integer</li>
+    <li>Earth As Integer</li>
+    <li>Mars As Integer</li>
+    <li>Jupiter As Integer</li>
+    <li>Saturn As Integer</li>
+    <li>Uranus As Integer</li>
+    <li>Neptune_D As Integer</li>
+    <li>D_Lp As Integer</li>
+    <li>l As Integer</li>
+    <li>f As Integer</li>
+    <li>Phase As Single</li>
+    <li>Arg As Single</li></ul></li>
+
+<li>Earth figure (75, 64, 62; by Time 1, 1, 0)<br>
+Tidal effects (1, 0, 0; by Time 1, 0, 2)<br>
+Moon figure (1, 0, 1)<br>
+Relativistic (2, 0, 2; by Time<sup>1</sup>, 0, 2)<br>
+Solar eccentricity (by Time<sup>2</sup>  5, 0, 4)<br><ul>
+    <li>Zeta As Integer</li>
+   <li> D As Integer</li>
+   <li> Lp As Integer</li>
+   <li> l As Integer</li>
+   <li> f As Integer</li>
+    <li>Phase As Single</li>
+    <li>Arg As Single</li></ul></li>
+</ul>
+Corrections applied are:<ul>
+<li>To longitude: -0.09845” (difference in 'departure point' between dynamical ecliptic & FK6)</li>
+<li>Light-time: computed using the 4 largest terms in distance.</li></ul>
+
+
+</BODY>
+</HTML>

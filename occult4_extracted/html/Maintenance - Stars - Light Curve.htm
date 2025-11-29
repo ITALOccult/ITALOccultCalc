@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Overview</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>AAVSO Light Curve</H1>
+<P>If a star is a variable star, Occult provides the ability to retrieve a light curve using the AAVSO Light Curve Generator. 
+
+<p>When Occult accesses the light curve generator, it does not use all the parameters that are available. Anyone wanting to vary the full range of parameters should directly access the <A  href="http://www.aavso.org/data/lcg/"  target=_blank> AAVSO light Curve Generator </a>.
+
+When retrieving a light curve, the parameters that can be set are:<ul>
+<li>The variable identifier. This will usually be pre-set when making the query. However the user can specify any variable star identifier. The format required is not  case sensitive. However it does require the presence of a space in the identifier. Examples of allowable identifiers are:<ul type=a>
+<li>R Sco
+<li>V1190 Sco
+<li>NSV 7477
+<li>alf Sco <I>[= alpha Sco. Care is required for variables identified by a  Bayer letter]</I>
+<li>ASAS J160849-8207.8
+</ul><p>
+<li>The start period for the data to be plotted. The default start date is January of 5 years before today's date. The plot includes all available observations since that date.
+<p><li>The data to be included in the plot. Five categories are available:<ul type=1>
+<li>U : Observations made in the photometric U band
+<li>B : Observations made in the photometric B band
+<li>V : Observations made in the photometric V band
+<li>R : Observations made in the photometric R band
+<li>Visual : Observations made visually
+</ul>
+The default selection is to include V, R and Visual observations.
+</ul>
+To retrieve the light curve, click <I>Get light curve</I>. The form will indicate that it is retrieving data from the AAVSO web site. 
+<p>If a light curve is available, the form will display the light curve, which can then be Copied, or Saved, from the <I>with Light Curve </I>menu item.
+<p>If a light curve is not available, the form will display the explanation provided by the AAVSO Light Curve Generator. 
+<p><B>NOTE</B>.The majority of variable stars will not have a light curve available from the AAVSO Light Curve Generator.
+<p>If several light curves are retrieved, buttons are provided to step back and forward between the light curves.
+
+
+
+</BODY>
+</HTML>

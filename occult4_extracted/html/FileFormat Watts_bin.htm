@@ -1,0 +1,29 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Watts.bin</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Watts.bin</H1>
+
+<P>The file Watts.bin contains the heights of the Watts charts at 0.2 degree intervals of L, B, and WA. The file is derived from the dataset archived at <A href="http://cdsarc.u-strasbg.fr/viz-bin/Cat?VI/122" target = _blank>Vizier</a>
+
+<P>The limb height is stored as a single byte, ordered as follows:<ul>
+<li>for each combination of L and B, there are 1800 height values (from Watts angle 0.0 to 359.8)
+<li>for each value of L, there are 81 sets of height values, corresponding to B= -8.0 to +8.0, at 0.2 deg intervals
+<li>There are 91 sets of Latitude groups, corresponding to L=-9 to L=+9 at 0.2 deg intervals.</ul>
+
+<p>The zero-based record number is obtained from:
+<pre>position = 145800 * Convert.ToInt32(Math.Floor(45-5*L +.001)) + 1800 * Convert.ToInt32(Math.Floor(40 - 5*B +.001)) + Convert.ToInt32(Math.Floor(5 * WAngle + 0.1))  </pre>
+
+ <p>The height is decoded from the byte value as:
+<p>Height = 0.027 * (Height - 128)
+
+
+</BODY>
+</HTML>

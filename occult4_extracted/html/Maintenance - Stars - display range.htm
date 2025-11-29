@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Stars - display range</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Stars - display catalogue details for a range of stars</H1>
+
+<P>This utility form enables the display of the catalogue details contained in any of the star catalogues that Occult uses. The display gives the full precision positions, parallax where known, proper motions and error values contained in the catalogues, as well as magnitudes. For NOMAD - only some of the several 
+magnitudes are listed, as well as some of the cross references.
+
+<p>The form has a set of boxes across the top corresponding to the various catalogues. If a catalogue is not available to Occult, the relevant box is disabled. 
+
+<p>The range for display is set using the drop-down boxes with the relevant catalogues. The drop-down boxes provide increments in right ascension and declination corresponding to how the catalogue has been indexed for retrieval. When values are selected, the output will be of stars with an RA between the selected RA value, and the next in the list.  And the declination will be of stars between the selected declination and the next on the list - that is, the stars will always be north of the selected value.
+
+<p>For the UCAC4 catalogue there is an additinal box 'use Hip', When checked, the data displayed is from the Hipparcos catalogue, rather than the position in UCAC4
+ {which may come from FK6 (for the brightest stars) or be a combination of the Hipparcos position and UCAC observations}.
+<p>The display for NOMAD works with both the full NOMAD catalogue, or the NOMAD_Short subset catalogue. If the subset 
+catalogue is being used, the NOMAD number is not available - so that the NOMAD number given at the start of a line is merely the zone number followed by an ellipsis.
+<p>The Nomad listing can include two error codes at teh end odf teh line. the codes are:<ul><li>p = invalid proper motion
+<li>x = invalid position</ul>
+
+
+<h3>GoogleSky</h3>
+<p>If you have GoogleEarth installed on your computer, you can view the region of the sky corresponding to the region of the catalogue displayed by clicking the GoogleSky button in the relevant catalogue box. 
+
+</BODY>
+</HTML>

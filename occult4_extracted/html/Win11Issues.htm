@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Overview</Title>
+<style type="text/css">
+.auto-style1 {
+	margin-left: 40px;
+}
+.auto-style2 {
+	color: #800000;
+	margin-left: 40px;
+}
+.auto-style3 {
+	margin-left: 80px;
+	text-decoration: underline;
+	color: #0000FF;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Windows11 issues</H1>
+<!-- Insert Header in above line -->
+<h2>Issue 1</h2>
+<P>A user experienced an issue in Windows11 that affected the 
+behavior of the print dialog in Occult. The user advised:</P>
+<p class="auto-style1">A while back, I wrote to you about how the Occult4 print dialog no longer worked as it used to. Instead, when printing from Occult4, I got a separate Windows print dialog box that always defaulted to my default print settings, so I got a printout in Portrait mode. This issue was specific to Occult4 and did not occur with other programs such as C2A. This has been quite annoying, as I use Occult4 Add-in from OW to print all my path maps for occultations.</p>
+<p class="auto-style1">Today, I did a bit of research and found that a recent Windows11 update changed the Registry so that old 32-bit programs no longer used the legacy program’s print dialog. 
+</p>
+<p class="auto-style1">There is a workaround for this problem. It requires reverting the Registry setting to the Legacy Print Dialog Registry used before the update. This is the link to the page that explains the issue and how to reset the Registry. 
+Paste it into your browser.</p>
+<p class="auto-style3">
+https://www.winhelponline.com/blog/restore-legacy-print-dialog-windows-11</p>
+<p class="auto-style1">Here is the exact entry to make the registry change from 
+the Command Prompt window. </p>
+<p class="auto-style2"><strong>reg add "HKCU\Software\Microsoft\Print\UnifiedPrintDialog" /v "PreferLegacyPrintDialog" /d 1 /t REG_DWORD /f
+</strong></p>
+<p class="auto-style1">I did this workaround and it worked for me. Now when I 
+print from the Occult4 Add-in, I get the old print dialog from Occult4 and it 
+automatically prints in Landscape mode as before. </p>
+<p>&nbsp;The spaces in the entry are critical. To avoid problems, do a copy and 
+paste. Avoid manually keying it.</p>
+<p>Note that for compatibility purposes, Occult is built to run on any processor 
+- both 32 &amp; 64 bit.</p>
+
+
+
+
+</BODY>
+</HTML>

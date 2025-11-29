@@ -1,0 +1,255 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>&Delta;T</Title>
+<style type="text/css">
+.auto-style1 {
+	color: #800000;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1><A NAME="idh_4overview">UTC, TT,  &Delta;T, and  &Delta;TA
+<p>Uncertainty in &Delta;T
+ <p>Download Earth Orientation Parameters
+</A></H1>
+
+<h2><br>Introduction</H2>
+<P>The civilian time scale UT is defined by the rotation of the Earth about its axis. However the Earth's rotation is non-constant, slowing down by an irregular amount, whereas the expressions for the motions of the planets use a strictly constant time scale. Consequently, to compute the position of astronomical objects in the sky, it is necessary to correct Universal Time (which is measured by the earth's slowing rotation) to obtain Terrestrial Dynamical Time (a strictly uniform time scale based on Time Atomique International).  For ancient times, this correction can be as large as several hours.</p> 
+<p>It needs to be remembered that for computing the position of an observer on the Earth's surface relative to the center of the Earth, the appropriate time scale to use is UT - which can differ from UTC by up to 0.9secs. Additionally, for accurate analysis it is necessary to correct site coordinates for polar motion.</p>
+<p>Further below is a summary of the various time scales, from the US Naval Observatory.</p>
+<p>In the following, the term <B>&Delta;T</B> is used loosely to refer to the difference between UT (or UTC) and the time scale of ephemerides</P>
+
+<h2>Application of corrections</h2> 
+Prior to 1962, all time measurements were made using the rotational position of 
+the Earth as the primary determinant of time. Coordinated Universal Time, based upon an atomic time standard rather than the rotational position of the Earth, began in 1962. UTC 
+compares to true Universal time in the following way:<ul>
+<li>Between 1962 and 1972 - constant small corrections were applied, so that the broadcast time signal UTC was very close to Universal Time</li>
+<li>From 1972, the broadcast time signal UTC is kept within 0.9s of true Universal Time with an adjustment by exactly 1 second (a leap second). The difference from UT (in tenths of a second) is included as code in the broadcast signal.</li></ul>
+
+<P>Occult applies corrections to the reported times of observations in the following way:
+<table columns=3 border=1>
+<TR><TH NOWRAP> Date Range </TH><TH> Planetary ephemerides </TH><TH>Rotational position of the Earth (esp. horizontal parallax.)  </TH></TR>
+<TR><TD>before 1961</TD><TD>Interpolate annual values of &Delta;T to date of observation, and add to the UT.</TD><TD>Use reported UT</TD></TR>
+<TR><TD nowrap>1962 &lt=&gt1971</TD><TD>Use expressions (below) to compute &Delta;T for the date of the observation, and add to the reported UTC</TD><TD>Use reported UTC as UT</TD></TR>
+<TR><TD>1972 and later</TD><TD>Add fixed offset of UTC from &Delta;TA, as applying from the last step adjustment prior to the observation, to the reported UTC.</TD><TD>Interpolate the value of dUT1 to the date of the observation. [Interpolate using the value applying at the last step adjustment prior to the observation, and 1 second less than the value applying at the next following adjustment.] Add this value to UTC to obtain UT.</TD></TR>
+</table>
+
+
+<H2>Obtaining the value of &Delta;T</h2>
+The method of obtaining the value of &Delta;T to use in calculations varies. 
+
+<table columns=2 border=1>
+<TR><TH NOWRAP style="width: 169px"> Date Range </TH><TH>Source of &Delta;T</TH></TR>
+<tr><td style="width: 169px">Before -2000</td><td>an expression that represents the long-term trend of &Delta;T</td></tr>
+<tr><td style="width: 169px">-2000 to 1961</td><td>a look-up table. The values 
+	have been derived from a variety of sources, including solar eclipses and lunar occultations.</td></tr>
+<tr><td style="width: 169px">1961 to 1972</td><td> an internal table (see below) 
+	that gives the offset between UTC and 
+	Atomic time </td></tr>
+<tr><td style="width: 169px">1972 to 'now'</td><td> the 
+	table &Delta;TA - which gives the offset between UTC and 
+	Atomic time </td></tr>
+<tr><td style="width: 169px">'now' to 2500</td><td> a look-up table. </td></tr>
+<tr><td style="width: 169px">After 2500</td><td> an expression that represents 
+	the long-term trend of &Delta;T</td></tr>
+</table>
+
+<p>The value of &Delta;T used in Occult is based based on the Moon's orbital tidal 
+deceleration being -25.82&quot;/cy<sup>2</sup>. This is the value used in DE430 and DE440. Other 
+ephemeris sources (earlier versions of the DE ephemerides, VSOP etc) use 
+different values, and the value of &Delta;T is not corrected for use with those 
+ephemerides. </p>
+
+
+<h2>Sources</h2>
+<h3>Before -2000</h3>
+&#916;T is calculated as -20 + 32.T2, where T = Centuries from 1820. 
+<BR>This value of &Delta;T is at best a fairly crude estimate.
+<h3>-2000 to 1961</h3>
+<p>See&nbsp;
+<a href="https://royalsocietypublishing.org/doi/10.1098/rspa.2016.0404">
+Measurement of the Earths rotation: 720 BC to AD 2015</a> and the
+<a href="https://royalsocietypublishing.org/doi/10.1098/rspa.2020.0776">Addendum 
+2020</a> to that paper. The data can be downloaded from
+<a href="https://astro.ukho.gov.uk/nao/lvm/">here (UK Nautical Almanac Office)</a></p>
+<H3>1961 to 1971</H3><nowrap>
+For the period 1961 to 1971, the value of TAI-UTC changed as follows:<pre>
+  1961  Jan.  1 - 1961  Aug.  1     1.422 818 0s + (MJD - 37 300) x 0.001 296s
+       Aug.  1 - 1962  Jan.  1     1.372 818 0s +        ""
+ 1962  Jan.  1 - 1963  Nov.  1     1.845 858 0s + (MJD - 37 665) x 0.001 123 2s
+ 1963  Nov.  1 - 1964  Jan.  1     1.945 858 0s +        ""
+ 1964  Jan.  1 -       April 1     3.240 130 0s + (MJD - 38 761) x 0.001 296s
+       April 1 -       Sept. 1     3.340 130 0s +        ""
+       Sept. 1 - 1965  Jan.  1     3.440 130 0s +        ""
+ 1965  Jan.  1 -       March 1     3.540 130 0s +        ""
+       March 1 -       Jul.  1     3.640 130 0s +        ""
+       Jul.  1 -       Sept. 1     3.740 130 0s +        ""
+       Sept. 1 - 1966  Jan.  1     3.840 130 0s +        ""
+ 1966  Jan.  1 - 1968  Feb.  1     4.313 170 0s + (MJD - 39 126) x 0.002 592s
+ 1968  Feb.  1 - 1972  Jan.  1     4.213 170 0s +        ""
+</nowrap></pre>
+<h3>1971 - to 'now'&nbsp; [The period of leap seconds]</h3>
+For planetary positions: Use times as UTC, with&nbsp; &Delta;T = &Delta;TA + 32.184
+, where  &Delta;TA is the value in the &Delta;TA table for the year entry immediately prior to the required date;<p>
+For UT, interpolate the value of dUT1 (the 3rd column in the &Delta;TA table) from the same year entry, to 1 second less than the value at the next year entry in the table&nbsp;</p>
+<p>
+The table of &Delta;TA can 
+be manually extended by informed guesses as to when the next several leap 
+seconds might occur.</p>
+<h3>'Now' to 2500</h3>
+<p>See&nbsp;
+<a href="https://royalsocietypublishing.org/doi/10.1098/rspa.2016.0404">
+Measurement of the Earths rotation: 720 BC to AD 2015</a> and the
+<a href="https://royalsocietypublishing.org/doi/10.1098/rspa.2020.0776">Addendum 
+2020</a> to that paper. The data can be downloaded from
+<a href="https://astro.ukho.gov.uk/nao/lvm/">here (UK Nautical Almanac Office)</a></p>
+
+<h3>After 2500</h3>
+&#916;T is calculated as -20 + 32.T2, where T = Centuries from 1820. 
+<BR>This value of &Delta;T is at best a fairly crude estimate.
+
+<h3>Graphical representation since 1972</h3>
+<p>A graphic showing the difference between UT1 and TAI from 1972 onwards is 
+available
+<a href="https://hpiers.obspm.fr/eop-pc/index.php?index=leapsecond&amp;lang=en">
+here</a>. Add 32.184 secs to the values in this plot to give the usual &#916;T. 
+Similarly you can generate a plot covering the years 1956 onwards from
+<a href="https://hpiers.obspm.fr/eop-pc/index.php?index=C01&amp;lang=en">here</a>, 
+using the <span class="auto-style1">Interactive Plots for C01</span> selecting
+<span class="auto-style1">UT1-TAI... </span></p>
+<h2>Uncertainty in &Delta;T</H2>
+For dates in modern times, and for a few years into the future, the uncertainty in &Delta;T is usually less than 1 second. Indeed, from 1950 to current dates, it is less than 0.1 secs.
+
+<p>However for historical events, or for dates in the future, the uncertainty can become significant. Indeed for dates prior to -9200, or after 10700, the uncertainty exceeds a full revolution of the Earth - making the conversion between TT and UT totally meaningless in any practical sense.
+
+<p>The uncertainty in the values of &Delta;T are incorporated from the tables downloaded (as above) from <a href="https://astro.ukho.gov.uk/nao/lvm/">here (UK Nautical Almanac Office)</a></p>
+<p>Estimates of the uncertainty in &Delta;T are provided for predictions of solar eclipses, lunar eclipses, and transits.
+
+
+<h2>&nbsp;</H2>
+<h2>Summary of Time Scales</H2>
+<P>The following, from the US  Naval Observatory, sets out the main time scales. For most practical purposes, the time scales of interest are UTC (the broadcast time signal) and TDT (the time argument for ephemerides)</p>
+<UL>
+<LI><B> Atomic Time </B>, with the unit of duration the <I>Systeme International (SI) second</I>  defined as the duration of 9,192,631,770 cycles of radiation
+corresponding to the transition between two hyperfine levels of the ground 
+state of cesium 133.  <B>TAI</B> is the International Atomic Time scale, a
+statistical timescale based on a large number of atomic clocks.
+<LI><B> Universal Time (UT)</B> is counted from 0 hours at midnight, with
+unit of duration the <I>mean solar day</I>, defined to be as uniform as possible
+despite variations in the rotation of the Earth. 
+<UL>
+<LI><B>UT0</B> is the rotational time of a particular place of observation.
+It is observed as the diurnal motion of stars or extraterrestrial radio sources.
+<LI><B>UT1</B> is computed by correcting UT0 for the effect of polar motion on the longitude of the observing site. It varies from uniformity because of the
+irregularities in the Earth's rotation. 
+</UL>
+<LI> <B>Coordinated Universal Time (UTC)</B> differs from TAI by an integral
+number of seconds. UTC is kept within 0.9 seconds of UT1 by the introduction
+of one-second steps to UTC, the "leap second."</B> 
+To date these steps have always been positive.
+
+<LI> <B>Dynamical Time</B> replaced <I>ephemeris time</I> as the independent
+argument in dynamical theories and ephemerides. Its unit of duration is based
+on the orbital motions of the Earth, Moon, and planets. 
+<UL>
+<LI><B> Terrestrial Time (TT)</B>, (or Terrestrial Dynamical Time, <B> TDT</B>), with unit of duration 86400 SI
+seconds on the geoid, is the independent argument of apparent <I>geocentric
+</I> ephemerides. TDT = TAI + 32.184 seconds.  
+<LI><B> Barycentric Dynamical Time (TDB)</B>, is the independent argument of 
+ephemerides and dynamical theories that are referred to the <I>solar system
+barycenter</I>.  TDB varies from TT only by periodic variations.  
+</ul></UL>
+
+<P><B> &Delta;T</B> is the difference between Earth rotational time (UT1) and dynamical
+time (TDT). <br>
+<B> &Delta;TA</B> is the difference between <B>UTC</B> and <B>TAI</B>.<br>
+The difference between <B>UTC</B> and <B>TAI</B> is  <B>&Delta;TA + 32.184s</B>. 
+
+<p>A more detailed discussion of time systems is provided <A href="http://www.cv.nrao.edu/~rfisher/Ephemerides/times.html" target = _blank>here.</a>
+
+<p>A summary of a host of time systems used over the centuries, and related issues, is provided <A href="http://ucolick.org/~sla/leapsecs/timescales.html" target = _blank>here.</a>
+
+<h2>&nbsp;</H2>
+<h2>Additional References</H2>
+Stephenson & Morrison <A href="http://www.caeno.org/_Feat/pdf/F53_Stephenson_Delta-T%20complex%20analysis.pdf" target=_blank><b>Long-term changes in the rotation of the Earth: 700BC to AD1980</b></a> <I>Phil Trans R Soc London </I>Ser A 313, 47-70 (1984). <br>
+Morrison, L. and Stephenson, F.R., <A href="http://articles.adsabs.harvard.edu/full/2004JHA....35..327M" target=_blank><b>Historical values of the Earth's Clock Error &#916T and the calculation of eclipses</b></a><i> J. Hist. Astron</i> Vol 35 Part 3, August 2004, No 120, 327-336 (2004)<br>
+Stephenson & Houlden. <A href="http://www.cambridge.org/catalogue/catalogue.asp?isbn=0521267234"><b> Atlas of Historical Eclipse Maps</b>,  </a><i>Cambridge Univ. Press</i>, 1986<br>
+<A href="http://adsabs.harvard.edu/abs/1986PEPI...44..281M" target=_blank>McCarthy & Babcock, 1986</a>
+
+<h1>&nbsp;</h1>
+<h1>Download Earth Orientation Parameters</h1>
+Two buttons are provided to download Earth Orientation parameters (EOP). These parameters are needed for precise analysis of lunar occultations and baily bead observations. Usually only the <I>Download EOP series - 1962 to present</I> option needs to be used.
+<p>Values of the EOP for any date can be displayed from the Ephemerides tab, general conversions button.
+<p>The data provided in the EOP series is as follows:<br>
+1846 - 1889 : x, y - at 0.1 year intervals [dUT1 =0]<br>
+1990 - 1961 : x, y - at 0.05 year intervals [dUT1 = 0]<br>
+1962 - present : x, y, dUT1 - at daily intervals. 
+
+
+<h1>&nbsp;</H1>
+<h1>Assessing the correction to &Delta;T using Lunar Occultation results</H1>
+In principle the quantity &Delta;T represents the difference in time between a uniformly rotating Earth, and the actual rotating Earth. Prior to 1961, all time measurements were based on the rotating Earth. 1961 saw the commencement of atomic clocks for precise time keeping. <p>The primary means for determining the value of &Delta;T for ancient epochs has been  from a comparison of solar eclipse observations. For the period 1700 to 1960, the primary determinant of &Delta;T has been lunar occultations - working on the principal that given a reliable lunar ephemeris, the mean residuals in longitude should come out as zero.
+
+<p>When determining &Delta;T using lunar occultations, it is important to recognise that the accuracy is affected by:<ul>
+<li>the overall accuracy of the lunar ephemeris
+<li>the effects of personal equation (as almost all lunar occultations were recorded visually)
+<li>the source of time used for the observation
+<li>the adopted value of the tidal acceleration of the moon
+<li>the reference frame used for the star positions - including the values used for precession
+<li>the basis of the proper motions of the stars
+</ul>
+<p>The following three plots show statistical data relevant to assessing the reliability of the 
+occultation results.
+<h2>Standard deviation of residuals (arc-secs), over 5-year periods</h2>
+<img src="LunarOccSDsAll.png">
+<h2>Standard deviation of residuals (arc-secs) from 1710 on, over 5-year periods</h2>
+<img src="LunarOccSDs1715_.png">
+<p>Noteworthy points in these two plots are:<ul type=i>
+<li>1656 - invention of the pendulum clock
+<li>1720 - invention of temperature-compensated pendulum clocks
+<li>The drop at about 1830 - appears to correspond with the widespread distribution of chronometers
+<li>The drop around 1920 to 1930 - introduction of radio distribution of time signals, and quartz clocks.
+<li>The drop from about 2000 - the move to video as the prime source of observations.</ul>
+<h2>Number of observations used, over 5-year periods</h2>
+<img src="LunarOccNumsAll.png">
+
+
+
+<h2>Process for listing the &Delta;T corrections</h2>
+The following steps are required. Note that Administrator access must be set to enable this functionality.
+<ul type = 1><li>The values are specific the the DE version used for the 
+	ephemerides. If necessary, download and install the latest DE version.<li>Click the <b>
+	Generate the Vizier Archive'</b> button above this section of the form. This 
+	creates the <A  href="Lunar%20Observations%20-%20Archive%20Global%20Coord.htm" > Vizier Archive file</a>. 
+	It will take several hours, depending on computing speed. If this file does not exist, the functionality below will not be enabled.
+<li>Under the box for <b>&Delta;T correction - from VizieR Archive</b> click <b>Get new values</b>. This will read the Vizier Archivefile and derive new values of &Delta;T. The data is 
+assessed in bins of odd numbers of years (7 years before 1750, 5 years between 
+1750 and 1800, 3 years between 1800 and 1830, 1 year thereafter). The values 
+displayed are:<ul>
+<li>the Mean year value for the bin</li>
+<li>The mean value of &delta;T used for the observations in that bin</li>
+<li>The correction (in seconds) to be added to the used &Delta;T value</li>
+<li>the Standard Deviation of that correction (in seconds)
+<li>the number of observations used</li></ul>
+
+The data in this table can be copied using <strong>Copy displayed list</strong>.
+</ul>
+
+To exclude observations affected by errors in timing, star identification and site location, the observations used to evaluate &#916T are limited to those where the residual is less than 
+	3 standard deviations from the mean. The observations in each bin are 
+	iterated 10 times. In each iteration, observations more than 3 Standard 
+	deviations from the mean of the previous iteration are excluded.&nbsp; In practice, 
+	the the number of iterations to obtain a stable solution was in the order of 
+	3.<p>Additionally, observations are excluded under the following circumstances:<ul type=i>
+<li>The event is flagged as one of - unknown or invalid site location, unidentified star, invalid observation, or unresolved errors;
+<li>The event type is one of Miss, Start, End, Other or Missing data;
+<li>The rate of motion of the star normal to the lunar limb, as a ratio of the rate of motion of the moon,  is less than 0.5 (before 1800), 0.6 (1800 to 1830) or 0.7 (after 1830)</ul> 
+
+</BODY>
+</HTML>

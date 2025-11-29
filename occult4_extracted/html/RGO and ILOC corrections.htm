@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>RGO and ILOC corrections</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Corrections made to the RGO and ILOC observation data</H1>
+
+<p>The files have been edited from the original data as supplied by ILOC to correct a range of errors. One of the dangers with any corrections of data is the potential to deducing a correction that meets the objective of a 'satisfactory' residual, but otherwise has no basis. This is a particular danger if more than one parameter is adjusted. In all instances where a correction to the data has been made, a comment line is included which gives full details of any correction made - so that the original data can be re-established if needed.
+
+<p>The correction process involved two steps. Firstly, a software scan of the data to automatically generate corrections. Secondly, a subsequent manual review of events with large residuals.
+
+<p>Corrections were automatically made on the following criteria:<ul>
+<li>The result was treated as acceptable if <ul type=i>
+<li>the limb-corrected residual was &lt4”, 
+<li>no valid observer site existed for the event, and 
+<li>if it was an event in a graze.</ul>
+<li>A check was done for whether the reported time would be satisfied with another star. Possible matches limited to stars with a smooth-limb residual &lt5” (for D's), and &lt6” (for R's) - with possible matches being sorted by absolute value of smooth-limb residual. As a prelude to this check, the faint magnitude limit for such a star was set in the following way:<ul type=i>
+<li>Magnitude limit of 14.0
+<li>If the reported star identifier was either R or S, limit of 10.0
+<li>If elongation &gt137.5 deg, limit of 9.0
+<li>If elongation &gt168.4 deg, limit of 8.0
+<li>If the event was a bright-limb event, limit of 6.0
+<li>If the event occurred during a lunar eclipse, limit of 14.0</ul>
+<li>Where possible stars were identified, a match was assigned to the star with the smallest smooth-limb residual that meets all the following criteria.<ul type=i>
+<li>Exclude a possible match if the magnitude is fainter than the magnitude limit
+<li>If observed event was a D - exclude a possible star if the predicted PA is in the range 210 to 330, and don't match with a non-SAO/non-ZC star if the elongation &gt145 - unless the event is during an eclipse
+<li>If observed event was an R - exclude a possible star if the predicted PA is in the range 30 to 150, and don't match with a non-SAO/non-ZC star if the elongation &gt145 - unless the event is during an eclipse.</ul>
+<li>If event not matched to another star, a check was done against the possibility of an error in the reported time. The time was varied in the following manner, and a match recorded if the limb-corrected residual &lt3” as well as less than 25% of the residual for the uncorrected time:<ul type=i>
+<li>Minutes, in range -20 to +20 min
+<li>If original residual &gt200”, hours, in range -6 to +6 hrs
+<li>If original residual &gt2000”, days, in range -6 to +6 days</ul></ul>
+
+<p>If a match is found, the record is updated with the corrected data. In addition, a comment line [a line starting with an asterisk (*)] is added immediately after. The comment line gives either the date/time or star number of the uncorrected data, and the correction made. The comment line is of two forms:<ul>
+<li>Example for correction of a star number:
+<li>* ILOC identifies as R300   Identified as X2405
+<li>Example for correction of the time
+<li>* ILOC gives 10d 18h 43m.   Adjusted by  -1 Mins</ul>
+
+<p>After corrections had been generated automatically, those events with large residuals (esp. &gt100”) were investigated manually. All such corrections include the symbol “=&gt” in the comment line. The corrections often involved significant changes in date (one was 1000 years!). For a very small number of events corrections were made to more than one parameter. Typically they were detected by predicting events for the night in question for the particular site (detecting errors in both the star number and time), or identifying possible dates for occultation of the specified star (detecting gross errors in the date of the occultation.
+
+<p>Numerous events that remain unidentified have residuals that suggest a possible error of 30secs. While this may be plausible in the context of many stop-watches having a 30-sec dial range, no corrections smaller than 1 minute have been applied.
+
+<p>For many of the other observations with totally unsatisfactory residuals, a possible cause is an incorrect link to the relevant telescope site is. Such corrections have not been investigated.
+
+<p>Finally, while the vast majority of the automatically generated corrections are valid, there are a small number where there has been a correction to the star identification where the proper correction would have been to leave the star number changed but to alter the event time. These are generally characterised by a small but unsatisfactory residual, and possibly a PA that is inconsistent with the event type. Such erroneously corrected events remain to be identified and corrected in any further revision of the basic data.
+
+
+</BODY>
+</HTML>

@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Recording Timer</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Recording Timer</H1>
+
+<P><font color=darkblue>This functionality is based on <I>VirtualDub Timer</I>, a utility created by 'Moitah'- VDTimer  © 2005-2007  Moitah (moitah@yahoo.com). The utility has been incorporated into Occult, and modified to use both Limovie and VirtualDub, with the approval of its author.</font>
+
+<h2>Overview</h2>
+Recording Timer is a utility to start and stop video recordings. It functions by detecting a video capture window on the monitor, and sending keystrokes to that window as though it was being used manually.The utility works with either Limovie or VirtualDub. For lunar occultations, and mutual satellite phenomena, the recording times can be set by right-clicking on the predictions generated within Occult. <br>
+<img src="RecordingTimer.png">
+
+<H2><font color=darkgreen>Using Recording Timer with <I>Limovie</I></font></h2>
+Limovie does not save a default file name between sessions. If you specify a file name for a session, it will use that name with an added sequential number for each recording. If no file name is set at the start of a session, Limovie will use <B><I>Untitled</I></B> as a default file name, and add a sequential number as needed. <br><B>Important</B>: make sure you have selected a Path that exists on your computer. If you have specified an invalid Path, Limovie will not report that as an error when a recording is started (and the video will not be recorded!)
+<p>As at version 0.9.98.2 of Limovie, Occult is not able to determine whether or not Limovie is recording. Consequently you need to avoid manually using the Limovie recording functionality if you have events set to be recorded using the Recording Timer. For example, if you have a recording running, and Timer Recording is set to record a short event, the fact that a recording is already running will not be detected by Timer Recording; Timer Recording will think it has started recording the short event, and there will not be any error messages. Subsequently Timer Recording will stop the recording at the end of the short event time, even if you intended the manual recording to continue for a longer period.
+
+<H2><font color=darkgreen>Using Recording Timer with <I>VirtualDub</I></font></h2>
+To successfully use VirtualDub Timerwith multiple events, you must set up VirtualDub to use a fixed standard file name, and to automatically increment the file name. These settings are made in the Capture window of Virtual Dub as follows:
+<ul type=i><li>Set the standard file name under <B><I>File... Set capture file... </I></B> In the dialog box specify the file name you want to use; check the box <b><I>Set this capture filename as the default</I></b>, then click <b><I>Save</I></b>
+<li>Set VirtualDub to automatically increment the file name under the menu item <b><I>Capture</I></b> by clicking on the item (near the bottom of the menu list) <b><I>Autoincrement filename after capture</I></b> - making sure this menu item is checked.</ul>
+Timer Recording can detect whether or not VirtualDub is currently recording. If VirtualDub is already recording when Recording timer tries to start a recording - a message to that effect will be displayed.
+
+<h2>Accessing RecordingTimer</h2>
+RecordingTimer is accessed from:<ul>
+<li> the Main menu bar of Occult;
+<li>the menu bar for Lunar occultation predictions;
+<li>the menu bar for Mutual events of satellites.</ul> 
+<B>Importantly</B>, it can also be directly accessed by adding events from lunar occultation predictions or mutual event predictions - using the right-click menu when on a prediction line.
+
+<H2>Entering times into Recording Timer</h2>
+Buttons are provided to
+<li><B>Add </B>an event
+<li><B>Edit </B>a seleted event
+<li><B>Remove selected</B> event
+<li><B>Remove all old </B>events - that is, all events in the past
+<li><B>Clear all</B> events</ul>
+Additionally, lunar occultation events, and mutual satellite events, can be added by right-clicking on the event line, and selecting 'Place event into Recording Timer ...'. This will add times for the event, fully corrected for time zone issues (see below) - and is the preferred way of adding event times.
+
+Adding or editing an event time displays the event details in the following form:<br> 
+<img src="RecordingTimerAdd.png">
+
+<li>move between the fields in a line using the Cursor Left/Right keys
+<li>change the values in a field using the Cursor Up/Down keys, or entering values from the keyboard
+<li>change lines in the form using the tab key
+<li>the date can also be changed using the calendar drop-down at the right of the fields. However Occult restricts entry of dates to being no more than 3 days into the future; events in the past cannot be entered.
+
+<p>The times are automatically sorted chronologically, and numbered sequentially. Events which overlap existing events cannot be entered. Additionally, to avoid problems that might arise if a new recording is started before your computer has finalised saving a previous recording, <B>there must be a time gap of at least 8 seconds between events</B>.
+
+<p>Times are entered by manually setting the start and end times, and any descriptor - making sure the times set are sufficient to cover any expected uncertainty in the prediction times.
+<P>For <B>lunar occultation </B>predictions: times are entered using the right-click option on an event. The comment line will give the event type, star number (including any double star code and spectral type), magnitude, cusp angle and position angle. The start and end time offsets are set using the right-click menu option <I>Select time offsets for Recording Timer</I>. The current setting is displayed as part of the right-click option to add the event. The start end end time offsets are typically only a few seconds; the start time offset is set to be 1 second larger than the end offset, to allow for any delay in the vidow capture process starting. When the star is a double star, you should review the start and end times to ensure the time for the companion is included.
+<p>For <B>Mutual Event </B>predictions: times are entered using the right-click option on an event. The start and end times are generated as the mid-time of the event, with a time offset of 60secs + 0.7*EventDuration. Events lasting 15 minutes or more are frequently asymmetrical - and it is important to review the graphic display to ensure the times cover the start and end of the event.
+
+<h3><font color=red>Very Important - Time zone issues</font></h3>
+<p> <font color=blue>The times in Recording Timer <B><I>must </I></B>be on the <B>time zone of the computer</B>. However all predictions generated in Occult are in UT. </font><font color=darkred> It is essential that the times entered manually are corrected from the predicted UT to the time zone of the computer (which is usually Local Time). </font><font color=green>For times entered into Recording Timer using the right-click menu [lunar occultations, and mutual event predictions], Occult converts the predicted UT time to the time zone of the computer. <B>As a result, this is the preferred way of entering times into Recording Timer.</b></font>
+
+<p>If you close Recording Timer, all events listed are saved and appear when the timer is re-opened. [The file is located in the Predictions subdirectory, and is called <I>Timer_schedule.txt</I>] When the timer is re-opened, any events that have already occurred will be deleted.
+
+<h2>Starting the timer</h2>
+The timer is started by clicking <B>click to Enable Timer</B> at the bottom left. Recording Timer searches first for a VirtualDub Capture window, and (if not found) a Limovie capture window. A message appears at the bottom right advising which capture window has been found. If a capture window has been found, a message appears at the top of the form stating <B>Enabled</B>. If no capture window has been found, the message at the top of the box will state <B>No video capture window</B>. These messages are dynamic - in that they change if the capture windows of Limovie or Virtual Dub are opened or closed. If both capture windows are open, recording Timer will use the VirtualDub window.
+<p>When the Timer is enabled, edits to the events are not possible. To edit, add or delete events, you must clear the check box <B>Disable Timer</B> that appears when the timer is enabled.
+
+</BODY>
+</HTML>

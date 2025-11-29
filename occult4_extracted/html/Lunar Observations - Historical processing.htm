@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Processing RGO & ILOC files</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Processing RGO & ILOC Grazes</H1>
+Occult holds the observation records for 3,058 grazes observed since 1706. The data for grazing occultations is held in two files. The first [OCCULTGrazes] contains the RGO graze data, and the ILOC grazes prior to 2002. There are 2,924 graze reports in this file, involving 48,689 timings. The second [RecentGrazes] contains the graze data from the reports collected by Mitsuru Soma. This data covers 134 grazes, 3168 timings. 
+
+The historical graze data has been sourced as follows:
+
+<h3>Grazes before 1981</h3>
+ From reports of grazes published by the Royal Greenwich Observatory. This data was not available in machine-readable form. Rather it has been converted form paper to machine-readable form by members of IOTA/ES (whose valuable work is hereby acknowledged). This data was subjected to a comprehensive data integrity checks to identify and remove a range of character identification and formatting errors that are typically with OCR'ing. While there remains a small possibility that the reported time in minutes and seconds includes OCR errors, the frequency of such errors is believed to be less than about 1 observation in 1000.
+
+<p>Once the RGO data was corrected, it was converted into report forms in the ILOC format as used by OCCULT. The data did not include all the data used in the ILOC reports, and used a different reporting scheme for some parameters. The transformations made in the conversion process were:<ul>
+<li>The telescope details were set to 'Other type, altazimuth mounting, manual drive, aperture=10cm, focal length 100cm.
+<li>Observer names were set as “Unknown ” followed by A, B, C……
+<li>Event types, from the value in column 25 of the RGO report, as 1=&gtDD, 2=&gtRD, 3=&gtDB, 4=&gtRB, 7=&gtB, 8=&gtF, 9=&gtM, 0=&gt?. Eclipse events (DU, RU) were identified when the value of column 44 was 8.
+<li>Method of time keeping, from the value in column 46, as 0=&gt“ ”, 1=&gtP, 2=&gtE, 3=&gtX, 4=&gtS, 5=&gtS, 6=&gtC, 7=&gtE, 8=&gtX, 9=&gtT
+<li>Time source, from the value in column 46, as 0=&gt “ ”, 1=&gt “ ”, 2=&gtR, 3=&gtC, 4=&gtR, 5=&gtT, 6=&gtM, 7=&gtC, 8=&gtC, 9=&gtR
+<li>Handling of personal equation, from the value in column 47, as 1=&gtN, 2=&gtS, 3=&gtE
+<li>Accuracy, from the value in column 43, as 0=&gt.3 1=&gt.2, 2=&gt.4, 3=&gt.6, 4=&gt.9, 5=&gt.9, 7=&gt.9, 8=&gt.9. [6 and 9 were not valid values]
+<li>Certainty, from the value in column 43, as 0=&gt1, 1=&gt1, 2=&gt1, 3=&gt2, 4=&gt2, 5=&gt3, 6=&gt2, 7=&gt2, 8=&gt2, 9=&gt3
+<li>Conditions, from the value in column 44, as:<ul>
+<li>Stability as 0=&gt1, 1=&gt1,2=&gt1, 3=&gt2, 4=&gt2, 5=&gt1, 6=&gt1, 7=&gt1, 8=&gt1, 9=&gt1
+<li>Transparency as 0=&gt1, 1=&gt1, 2=&gt2, 3=&gt3, 4=&gt3, 5=&gt1, 6=&gt1, 7=&gt1, 8=&gt1, 9=&gt1
+<li>Remarkable circumstances as 0=&gt “ ”, 1=&gt“ ”, 2=&gt5, 3=&gt6, 4=&gt7, 5=&gt1, 6=&gt2, 7=&gt3, 8=&gt“ ”, 9=&gt“ ”</ul></ul>
+
+<h3>Grazes for 1976 to 2001.</h3>
+ From the files of ILOC. The data consisted of 3 files - observations, telescopes, and observers/recorders. This data was converted back to the ILOC report format. When these grazes were reduced by OCCULT, a number of keying errors in the ILOC data were identified - which have been reported to ILOC. [These errors occurred mainly in the site coordinates, and the star number.] There is very little overlap with the RGO grazes.
+
+<p>In addition there are several 10's of grazes where the observations do not appear to be in the ILOC files. The data for these grazes was extracted from files supplied by Mitsuru Soma.
+
+<h3>Grazes for 2002 to 2005</h3>
+From reports held by Mitsuru Soma. These were already in the standard ILOC format. For use in OCCULT, the century component of the year was added to the report. [NOTE. Since the observation files held in OCCULT extend over almost 4 centuries of observations, it has been essential to include the century year in the data format used in Occult.]
+
+<h3>Grazes before 1978 : Van Flandern data from US Naval Observatory.</h3> Van Flandern of the US Naval Observatory collected graze observations up to 1977. Unfortunately some critical data files have been lost. The only extant file gives accurate times, but it does not provide accurate site co-ordinates (nor observer names or telescope details). Most significantly, the file only contains the site co-ordinates to a precision of 1 arc min. Also, the specified longitude includes an amount related to the earth's rotation over some period of time (apparently for reasons associated with the program for reducing the observations), and can differ from the actual site longitude by some 10's of arc minutes. However all these observations have been identified in the RGO files, and the site coordinates manually updated to the correct coordinates. 
+
+
+</BODY>
+</HTML>

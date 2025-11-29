@@ -1,4 +1,6 @@
 #include "ioccultcalc/astdys_client.h"
+#include "ioccultcalc/jpl_horizons_client.h"
+#include "ioccultcalc/orbit_propagator.h"
 #include "ioccultcalc/time_utils.h"
 #include <curl/curl.h>
 #include <sstream>
@@ -96,8 +98,8 @@ EquinoctialElements AstDysClient::getElements(const std::string& designation) {
     // Calcola il numero della directory (numero / 1000)
     int dirNumber = asteroidNumber / 1000;
     
-    // Formato senza parentesi
-    std::string url = pImpl->baseURL + "epoch/numbered/" + std::to_string(dirNumber) + "/" + designation + ".eq0";
+    // Usa .eq1 che ha epoche RECENTI invece di .eq0 (vecchio)
+    std::string url = pImpl->baseURL + "epoch/numbered/" + std::to_string(dirNumber) + "/" + designation + ".eq1";
     
     std::string content = pImpl->httpGet(url);
     return parseEquinoctialFile(content, designation);
@@ -205,6 +207,148 @@ EquinoctialElements AstDysClient::parseEquinoctialFile(const std::string& conten
     }
     
     return elem;
+}
+
+OrbitalElements AstDysClient::getRecentElements(const std::string& designation) {
+    // Scarica il catalogo completo con epoche recenti
+    std::string url = pImpl->baseURL + "catalogs/allnum.cat";
+    std::string catalogContent = pImpl->httpGet(url);
+    
+    // Cerca la linea dell'asteroide
+    // Formato: '704'  61000.000000  a e i node argperi M H G flag
+    std::string searchPattern = "'" + designation + "'";
+    
+    std::istringstream stream(catalogContent);
+    std::string line;
+    bool foundHeader = false;
+    
+    while (std::getline(stream, line)) {
+        // Salta header
+        if (line.find("END_OF_HEADER") != std::string::npos) {
+            foundHeader = true;
+            continue;
+        }
+        
+        if (!foundHeader) continue;
+        
+        // Cerca la linea con l'asteroide
+        if (line.find(searchPattern) == 0) {
+            // Parsing: 'num' epoch a e i node argperi M H G flag
+            OrbitalElements elem;
+            elem.designation = designation;
+            
+            // Rimuovi i quote dal numero
+            size_t firstQuote = line.find('\'');
+            size_t secondQuote = line.find('\'', firstQuote + 1);
+            std::string dataStr = line.substr(secondQuote + 1);
+            
+            std::istringstream iss(dataStr);
+            double mjd;
+            iss >> mjd >> elem.a >> elem.e >> elem.i >> elem.Omega >> elem.omega >> elem.M;
+            iss >> elem.H >> elem.G;
+            
+            // Converti MJD in JD
+            elem.epoch.jd = mjd + 2400000.5;
+            
+            // Converti angoli da gradi a radianti
+            // NOTA: Elementi sono in frame ECLM J2000
+            elem.i *= M_PI / 180.0;
+            elem.Omega *= M_PI / 180.0;
+            elem.omega *= M_PI / 180.0;
+            elem.M *= M_PI / 180.0;
+            
+            return elem;
+        }
+    }
+    
+    throw std::runtime_error("Asteroid " + designation + " not found in catalog");
+}
+
+OrbitalElements AstDysClient::getOsculatingElements(const std::string& designation,
+                                                    const JulianDate& epoch) {
+    // AstDyS fornisce solo elementi MEDI che richiedono propagazione OrbFit.
+    // Per elementi OSCULANTI (istantanei, direttamente convertibili in posizione/velocità)
+    // usiamo JPL Horizons.
+    
+    std::cout << "AstDysClient: Richiesta elementi osculanti da JPL Horizons per " 
+              << designation << " all'epoca JD " << epoch.jd << std::endl;
+    
+    JPLHorizonsClient horizons;
+    
+    // Horizons richiede target ID: numero per asteroidi numerati
+    std::string targetId = designation;
+    
+    // Se designation è un numero, usa direttamente
+    // Altrimenti, prova a estrarre il numero se è del tipo "(704)"
+    if (designation.find('(') != std::string::npos) {
+        size_t start = designation.find('(');
+        size_t end = designation.find(')');
+        if (end != std::string::npos) {
+            targetId = designation.substr(start + 1, end - start - 1);
+        }
+    }
+    
+    std::cout << "  Target ID per Horizons: " << targetId << std::endl;
+    
+    try {
+        OrbitalElements elem = horizons.getOsculatingElements(targetId, epoch, "@sun");
+        elem.designation = designation;
+        
+        std::cout << "  Ricevuti elementi osculanti:" << std::endl;
+        std::cout << "    a = " << elem.a << " AU" << std::endl;
+        std::cout << "    e = " << elem.e << std::endl;
+        std::cout << "    i = " << elem.i * 180.0 / M_PI << "°" << std::endl;
+        
+        return elem;
+        
+    } catch (const std::exception& e) {
+        throw std::runtime_error("Impossibile ottenere elementi osculanti da Horizons: " + 
+                                std::string(e.what()));
+    }
+}
+
+OrbitState AstDysClient::getStateFromHorizons(const std::string& designation,
+                                              const JulianDate& epoch) {
+    // Metodo PREFERITO: usa vettori di stato direttamente da Horizons
+    // Più veloce, più affidabile, nessun problema di parsing elementi
+    
+    std::cout << "AstDysClient: Richiesta vettori di stato da JPL Horizons per " 
+              << designation << " all'epoca MJD " << epoch.toMJD() << std::endl;
+    
+    JPLHorizonsClient horizons;
+    
+    // Estrai numero asteroide
+    std::string targetId = designation;
+    if (designation.find('(') != std::string::npos) {
+        size_t start = designation.find('(');
+        size_t end = designation.find(')');
+        if (end != std::string::npos) {
+            targetId = designation.substr(start + 1, end - start - 1);
+        }
+    }
+    
+    std::cout << "  Target ID per Horizons: " << targetId << std::endl;
+    
+    try {
+        auto [position, velocity] = horizons.getStateVectors(targetId, epoch, "@sun");
+        
+        OrbitState state(epoch, position, velocity);
+        
+        double r = position.magnitude();
+        double ra = atan2(position.y, position.x) * 180.0 / M_PI;
+        if (ra < 0) ra += 360.0;
+        double dec = asin(position.z / r) * 180.0 / M_PI;
+        
+        std::cout << "  Ricevuto stato orbitale:" << std::endl;
+        std::cout << "    r = " << r << " AU" << std::endl;
+        std::cout << "    RA = " << ra << "°, Dec = " << dec << "°" << std::endl;
+        
+        return state;
+        
+    } catch (const std::exception& e) {
+        throw std::runtime_error("Impossibile ottenere vettori da Horizons: " + 
+                                std::string(e.what()));
+    }
 }
 
 } // namespace ioccultcalc

@@ -24,6 +24,22 @@ Occult4XMLHandler::~Occult4XMLHandler() {
     xmlCleanupParser();
 }
 
+// Helper: Converti JD in data calendario
+void jdToCalendar(double jd, int& year, int& month, int& day, double& ut) {
+    int a = (int)(jd + 0.5);
+    int b = a + 1537;
+    int c = (int)((b - 122.1) / 365.25);
+    int d = (int)(365.25 * c);
+    int e = (int)((b - d) / 30.6001);
+    
+    day = b - d - (int)(30.6001 * e);
+    month = e - (e < 14 ? 1 : 13);
+    year = c - (month > 2 ? 4716 : 4715);
+    
+    double frac = jd + 0.5 - (int)(jd + 0.5);
+    ut = frac * 24.0;  // UT in decimal hours
+}
+
 // ============================================================================
 // IMPORT da XML
 // ============================================================================
@@ -271,27 +287,13 @@ bool Occult4XMLHandler::exportMultipleToXML(
 }
 
 std::string Occult4XMLHandler::generateXML(const OccultationEvent& event) {
-    Occult4Event o4 = toOccult4Event(event);
-    
     std::ostringstream xml;
-    xml << std::fixed << std::setprecision(6);
+    xml << std::fixed;
     
     xml << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-    xml << "<OccultationPrediction version=\"1.0\" generator=\"IOccultCalc\">\n";
-    xml << "  <Metadata>\n";
-    xml << "    <Organization>" << escapeXML(options_.organizationName) << "</Organization>\n";
-    if (!options_.observerName.empty()) {
-        xml << "    <Observer>" << escapeXML(options_.observerName) << "</Observer>\n";
-    }
-    // Current date/time
-    JulianDate now;
-    now.jd = 2400000.5 + (std::time(nullptr) / 86400.0);
-    xml << "    <GenerationDate>" << formatDateTime(now.jd) << "</GenerationDate>\n";
-    xml << "  </Metadata>\n\n";
-    
-    xml << generateEventXML(o4);
-    
-    xml << "</OccultationPrediction>\n";
+    xml << "<Occultations>\n";
+    xml << generateOccult4EventXML(event);
+    xml << "</Occultations>\n";
     
     return xml.str();
 }
@@ -300,28 +302,136 @@ std::string Occult4XMLHandler::generateXML(
     const std::vector<OccultationEvent>& events) {
     
     std::ostringstream xml;
-    xml << std::fixed << std::setprecision(6);
+    xml << std::fixed;
     
     xml << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-    xml << "<OccultationPrediction version=\"1.0\" generator=\"IOccultCalc\">\n";
-    xml << "  <Metadata>\n";
-    xml << "    <Organization>" << escapeXML(options_.organizationName) << "</Organization>\n";
-    if (!options_.observerName.empty()) {
-        xml << "    <Observer>" << escapeXML(options_.observerName) << "</Observer>\n";
-    }
-    // Current date/time
-    JulianDate now;
-    now.jd = 2400000.5 + (std::time(nullptr) / 86400.0);
-    xml << "    <GenerationDate>" << formatDateTime(now.jd) << "</GenerationDate>\n";
-    xml << "    <EventCount>" << events.size() << "</EventCount>\n";
-    xml << "  </Metadata>\n\n";
+    xml << "<Occultations>\n";
     
     for (const auto& event : events) {
-        Occult4Event o4 = toOccult4Event(event);
-        xml << generateEventXML(o4);
+        xml << generateOccult4EventXML(event);
     }
     
-    xml << "</OccultationPrediction>\n";
+    xml << "</Occultations>\n";
+    
+    return xml.str();
+}
+
+// Genera evento nel formato Occult4 CSV
+std::string Occult4XMLHandler::generateOccult4EventXML(const OccultationEvent& event) {
+    std::ostringstream xml;
+    xml << std::fixed << std::setprecision(8);
+    
+    // Estrai data e ora dall'evento
+    JulianDate jd = event.timeCA;
+    int year, month, day;
+    double ut;
+    jdToCalendar(jd.jd, year, month, day, ut);
+    
+    xml << "  <Event>\n";
+    
+    // <Elements> - Besselian elements
+    // Format: source, duration, year, month, day, UT, x, y, dX, dY, d2X, d2Y, d3X, d3Y
+    xml << "    <Elements>";
+    xml << options_.organizationName << " " << formatDateTime(2440587.5 + (std::time(nullptr) / 86400.0));
+    xml << "," << std::setprecision(2) << event.maxDuration;
+    xml << "," << year << "," << month << "," << day;
+    xml << "," << std::setprecision(6) << ut;
+    // X, Y coordinates (Earth radii) - approssimazione da coordinate geografiche
+    xml << ",0.0,0.0";  // x, y at closest approach
+    xml << ",0.0,0.0";  // dX, dY (rate of change)
+    xml << ",0.0,0.0";  // d2X, d2Y (2nd order)
+    xml << ",0.0,0.0";  // d3X, d3Y (3rd order)
+    xml << "</Elements>\n";
+    
+    // <Earth> - Earth orientation
+    // Format: SubstellarLong, SubstellarLat, SubsolarLong, SubsolarLat, JWST
+    xml << "    <Earth>";
+    if (!event.shadowPath.empty()) {
+        xml << std::setprecision(6) << event.shadowPath[0].location.longitude * 57.29577951308232; // rad to deg
+        xml << "," << event.shadowPath[0].location.latitude * 57.29577951308232;
+    } else {
+        xml << "0.0,0.0";
+    }
+    xml << ",0.0,0.0";  // Subsolar long/lat (would need sun position calculation)
+    xml << ",0";  // JWST flag
+    xml << "</Earth>\n";
+    
+    // <Star> - Star information
+    // Format: ID, RA(hrs), Dec(deg), Mb, Mv, Mr, dia(mas), double, K2, ApparentRA, ApparentDec, 
+    //         MdropV, MdropR, AdjustedForNearby, BrightNearbyCount, TotalNearbyCount
+    xml << "    <Star>";
+    xml << escapeXML(event.star.sourceId);
+    xml << "," << std::setprecision(8) << (event.star.pos.ra / 15.0);  // degrees to hours
+    xml << "," << event.star.pos.dec;
+    xml << "," << std::setprecision(2) << event.star.phot_g_mean_mag;  // Mb
+    xml << "," << event.star.phot_g_mean_mag;  // Mv
+    xml << "," << event.star.phot_g_mean_mag;  // Mr
+    xml << ",0.0";  // stellar diameter (mas)
+    xml << ",0";    // double star code
+    xml << ",";     // K2 flag (blank)
+    xml << "," << std::setprecision(8) << (event.star.pos.ra / 15.0);  // Apparent RA
+    xml << "," << event.star.pos.dec;  // Apparent Dec
+    double magDrop = 2.0;  // Stima del calo magnitudine
+    xml << "," << std::setprecision(2) << magDrop;  // MdropV
+    xml << "," << magDrop;  // MdropR
+    xml << ",0,-1,-1";  // AdjustedForNearby, BrightNearbyCount, TotalNearbyCount
+    xml << "</Star>\n";
+    
+    // <Object> - Asteroid/Object information
+    // Format: number, name, mag, diameter, distance, #rings, #moons, dRA, dDec, 
+    //         Taxonomy, DiamUncertainty, PlanetMoonInShadow, MagV, MagR
+    xml << "    <Object>";
+    xml << escapeXML(event.asteroid.designation);
+    xml << "," << escapeXML(event.asteroid.name);
+    xml << "," << std::setprecision(2) << event.asteroid.H;  // H magnitude as proxy
+    xml << "," << std::setprecision(1) << event.asteroid.diameter;  // diameter in km
+    double distance = event.asteroid.a;  // semimajor axis as approximate distance
+    xml << "," << std::setprecision(6) << distance;
+    xml << ",0,0";  // #rings, #moons
+    xml << ",0.0,0.0";  // dRA, dDec (hourly motion)
+    xml << ",";  // Taxonomy (blank if unknown)
+    xml << "," << std::setprecision(1) << (event.asteroid.diameter * 0.1);  // 10% uncertainty
+    xml << ",0";  // PlanetMoonInShadow
+    xml << "," << std::setprecision(2) << event.asteroid.H;  // MagV
+    xml << "," << event.asteroid.H;  // MagR
+    xml << "</Object>\n";
+    
+    // <Orbit> - Orbital elements (low precision for plotting)
+    // Format: equinox, MA, yr, month, day, peri, node, i, e, a, q, H0, CoeffLogR, G
+    xml << "    <Orbit>";
+    xml << "2000.0";  // Equinox
+    xml << ",0.0";    // Mean Anomaly
+    xml << "," << year << "," << month << "," << day;
+    xml << ",0.0,0.0,0.0";  // peri, node, i
+    xml << ",0.0,0.0,0.0";  // e, a, q
+    xml << ",0.0,0.0,0.15"; // H0, CoeffLogR, G
+    xml << "</Orbit>\n";
+    
+    // <Errors> - Prediction uncertainties
+    // Format: pathWidthFraction, majorAxis, minorAxis, PA, sigma, basis, RUWE, duplicate, nonGaiaPM, UCAC4PM
+    xml << "    <Errors>";
+    double uncertKm = (event.uncertaintyNorth + event.uncertaintySouth) / 2.0;
+    double pathWidthKm = 200.0;  // Valore tipico, dovrebbe essere calcolato
+    xml << std::setprecision(3) << (uncertKm / std::max(1.0, pathWidthKm));
+    xml << "," << std::setprecision(2) << uncertKm / 6371.0 * 206265.0;  // km to arcsec
+    xml << "," << uncertKm / 6371.0 * 206265.0;  // minor axis
+    xml << ",0.0";  // PA
+    xml << "," << std::setprecision(2) << uncertKm / 6371.0 * 206265.0;  // 1-sigma
+    xml << ",Star+Assumed";  // Error basis
+    xml << ",1.0";  // RUWE (default)
+    xml << ",0,0,0";  // duplicate, nonGaiaPM, UCAC4PM
+    xml << "</Errors>\n";
+    
+    // <ID> - Unique identifier
+    // Format: uniqueID, MJD of prediction
+    xml << "    <ID>";
+    char dateID[32];
+    snprintf(dateID, sizeof(dateID), "%04d%02d%02d", year, month, day);
+    xml << dateID << "_" << event.star.sourceId.substr(std::max(0, (int)event.star.sourceId.length() - 6));
+    xml << "," << std::setprecision(1) << (jd.jd - 2400000.5);  // MJD of prediction
+    xml << "</ID>\n";
+    
+    xml << "  </Event>\n";
     
     return xml.str();
 }

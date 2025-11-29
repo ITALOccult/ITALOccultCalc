@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>PPMXL</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>PPMXL Catalogue - file format</H1>
+
+<P>Occult uses a special binary format version of the PPMXL catalogue for use in searching for occultations of faint stars. The file structure and star content is the same as the original PPMXL catalogue. However the data has been limited to positional data (with error information) and B, V and R magnitudes.  
+
+<p>This catalogue has been created from the full PPMXL catalogue. The version of the catalogue used is that made available on Vizier on 6 June 2011. That is, the version that has a number of magnitude issues from PPMX and USNO-B1 corrected.
+
+<p>This catalogue has been created for the purpose of efficient searching for occultations of fainter stars. To save disk space, and to keep the catalogue at a reasonable size for distribution on DVD's, the data included has been limited to positional information (including uncertainties), and basic magnitude information. Index files have been created to allow for efficient searching for occultations. All data is stored as either 16-bit or 32-bit integers.
+
+<p>The catalogue consists of 720 zones, each 0.25 deg wide in declination. The file name is structured in 4 parts, as follows:<br>
+<B>XYYZ</B>
+<br>where:<ul>
+<li>X is either 'n' or 's', indicating the hemisphere;
+<li>YY is the declination band in integral degrees; and
+<li>Z is one of a, b, c or d - and indicates the relevant part of the declination band. a = 0 - 15'; b = 15' - 30'; c = 30'-45'; and d = 45' - 60'.</ul>
+
+Each file is present with two extensions:<ul>
+<li>dat = the data file. [File sizes range between 68,068 and 99,286,358 bytes]
+<li>.inx = the index file for that zone. [Each file has a length of 7,204 bytes]</ul>
+
+<p>The total file size of the catalogue is 30,957,481,984 bytes, equating to 910,514,176 entries [i.e. almost 1 billion entries].
+
+<P>The format of the star catalogue is a 34-byte record length random-access file with the following record definition.<BR>
+
+<TABLE  COLS = 3 BORDER=1>
+
+<TR><TH NOWRAP>Bytes</TH><TH>Meaning</TH><TH>Binary format:</TH></TR>
+<TR><TD>0 - 3 </TD><TD>RA at J2000, mas. </TD><TD>32-bit integer</TD></TR>
+<TR><TD>4 - 7 </TD><TD>Dec at J2000, mas</TD><TD>32-bit integer</TD></TR>
+<TR><TD>8 - 9 </TD><TD>Blue mag, units of 0.01 mag </TD><TD>16-bit integer.</TD></TR>
+<TR><TD>10 - 11 </TD><TD>Red mag, units of 0.01 mag </TD><TD>16-bit integer</TD></TR>
+<TR><TD>12 - 13 </TD><TD>Visual mag, units of 0.01 mag </TD><TD>16-bit integer</TD></TR>
+<TR><TD>14 - 17 </TD><TD>Annual Proper motion in RA*cos(dec), 0.1mas/yr </TD><TD>32-bit integer</TD></TR>
+<TR><TD>18 - 21 </TD><TD>Annual Proper motion in Declination, 0.1mas/yr </TD><TD>32-bit integer</TD></TR>
+<TR><TD>22 - 23 </TD><TD>Error in RA*cos(dec), mas</TD><TD>16-bit integer</TD></TR>
+<TR><TD>24 - 25 </TD><TD>Error in Declination, mas</TD><TD>16-bit integer</TD></TR>
+<TR><TD>26 - 27 </TD><TD>Error in pmRA*cos(dec), mas</TD><TD>16-bit integer</TD></TR>
+<TR><TD>28 - 29 </TD><TD>Error in pmDeclination, mas</TD><TD>16-bit integer</TD></TR>
+<TR><TD>30 - 31</TD><TD>Mean epoch in RA, 0.01 years from 2000</TD><TD>16-bit integer</TD></TR>
+<TR><TD>32 - 33 </TD><TD>Mean epoch in Declination, 0.01 years from 2000</TD><TD>16-bit integer</TD></TR>
+</table>
+
+<h3>Magnitudes</h3>
+The magnitudes in this version have been derived from the values given in the full PPMXL catalogue as follows:<ul type=A>
+<li>If the catalogue indicated the data had come from the PPMX catalogue:<ul>
+ <li>B mag: Johnson B mag when available in 'b2mag'; else the 'catalogue' mag in 'b1mag'
+<li> V mag: Johnson V mag from 'imag'
+<li> R Mag: The calculated Ru magnitude from source, from colun r1mag.</ul>
+
+<li>All other cases:<ul>
+ <li>B mag: The mean of columns b1mag and b2mag. If only one value given, that
+   value.
+ <li>V mag: Not specified
+ <li>R Mag: The mean of columns r1mag and r2mag. If only one value given, that
+   value.</ul>
+
+<li>If no magnitude is specified, the magnitude field is set to -1000 (ie, mag = -10)
+</ul>
+
+<h3>Data content of the .inx file</h3>
+
+The index file contains 1801 32-bit integers giving the record number of the first star
+in the zone file that has a right ascension greater than the corresponding increment in 
+Right Ascension. The increment is 0.8 mins (time) [0.2 deg] in RA. The last record gives 
+the record number of the last star in the file.
+
+
+</BODY>
+</HTML>

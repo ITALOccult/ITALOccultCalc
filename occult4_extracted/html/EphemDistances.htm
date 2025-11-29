@@ -1,0 +1,29 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Distances</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<p>These two  items are found on the Ephemerides tab, as <B>Distances between two points </B>.
+
+<H1>Distance between two points in the sky</H1>
+<P>This calculates the great-circle distance between two points on the sky. Simply enter the Right Ascension and Declination of the two objects. The distance between the two points, and the position angle of the 2nd point relative to the first, are displayed.
+
+<p>The option buttons DMS and Deg change the displayed output between decimal degrees, and deg-min-sec (for distance) and deg-min for PA.
+
+<H1>Distance between two points on the Earth</H1>
+<P>This calculates the great-circle distance between two points on the Earth's surface, taking into account the oblateness of the Earth. Simply enter the Longitude and Latitude of the two locations. The distance between the two points in km is displayed. The accuracy of the computed distance is better than 1 metre. [However the altitude of the locations, and the terrain in-between, is not taken into account!]
+<p><B>Note 1:</B> The longitudes must be greater than -180 deg, and less than +180deg
+<br><B>Note 2:</B> The latitudes must be greater than -90deg and less than +90 deg.
+<br><B>Note 3:</b> If the locations are very close to diametrically opposite, the solution may not converge. When this occurs (which will be for angular separations greater than about 179.4 deg), the distance will be flagged with <B>(not accurate)</B>.
+
+<p>The calculation is an implementation of <a href="http://en.wikipedia.org/wiki/Vincenty's_formulae" target=blank>Vincenty's formulae</a>. See also <a href="http://www.ngs.noaa.gov/PUBS_LIB/inverse.pdf" target=blank>Vincenty's original paper</a>. 
+
+
+</BODY>
+</HTML>

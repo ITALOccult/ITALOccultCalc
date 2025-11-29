@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Programming Notes</Title>
+<style type="text/css">
+.auto-style1 {
+	color: #0000FF;
+}
+.auto-style2 {
+	font-weight: normal;
+}
+.auto-style3 {
+	color: #800000;
+}
+.auto-style4 {
+	color: #010111;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1 class="auto-style4">Asteroid Observations - Programming notes</H1>
+<!-- Insert Header in above line -->
+<P>This topic is for the information of anyone who might get involved with 
+maintaining Occult. It is not relevant for users.</P>
+<P>The data structure for maintaining asteroid observations has a degree of 
+complexity hat can be confusing in maintenance. This topic endeavors to set out 
+the data structure to provide clarity of what needs to be reviewed when problems 
+arise.</P>
+<h2 class="auto-style3">Basic functions of the editor</h2>
+<P>The primary function of the asteroidal observations editor provides a set of 
+tools to achieve the following:</P>
+<ul>
+	<li>Create a file for an event by manually inputting all relevant data </li>
+	<li>Maintain a file of all historically observed occultations, including 
+	adding events to that file, adding observations to an event in that file, 
+	and updating the data for an event in that file.</li>
+	<li>Read one or more files of observations of a single event, process, and 
+	add to the file of historical observations</li>
+	<li>Paste data for one or more events, with the data being sourced from an 
+	Occult format, the Euraster web page, or the relevant Japanese web page, 
+	process, and add to the file of historical observations</li>
+</ul>
+<P>Associated functionality includes:</P>
+<ul>
+	<li>preparing astrometric reports to send to the Minor Planet Center</li>
+	<li>preparing files for annual archiving of the observation dataset at 
+	NASA's Planetary Data System</li>
+	<li>listing double star discoveries and details</li>
+	<li>generating summary reports of measured asteroid diameters, measured 
+	chord length, events by an observer, events involving Kepler2 stars, and 
+	general statistical summary</li>
+	<li>checking for possible issues with the data set, identifying events on 
+	the same day by the same asteroid, events where the star position may be 
+	poor, and events where the data elements do not fall within expected values.</li>
+</ul>
+<P>To achieve these functions, there are two possible directions of flow of 
+data.:</P>
+<ul>
+	<li>from the editor into an underlying data structure; or</li>
+	<li>into the underlying data structure from other sources, optionally to be 
+	displayed in the editor.</li>
+</ul>
+<P>Understanding these two directions of flow, and when they apply, is critical 
+to understanding the overall functionality.</P>
+<h2 class="auto-style3">The data structure</h2>
+<h3 class="auto-style1">internal class AllEvents</h3>
+<P>This is the basic structure for holding all the details of all observations 
+by way of a list structure:</P>
+<h4>&nbsp;OccEvents = <span class="auto-style1">new List&lt;LinesForAnEvent&gt;();</span></h4>
+<P>Several instances of the AllEvents class are used (&amp; defined in the class 
+Data_and_Plots):</P>
+<ul>
+	<li>Historical_AllEvents&nbsp;&nbsp; (used to hold all the events in the 
+	file of historical observations)</li>
+	<li>SingleEvent&nbsp; (used when an event in an Occult format is pasted. 
+	Only one event used)</li>
+	<li>EurasterEvent&nbsp;&nbsp; (used when an event from Euraster is pasted. 
+	Only one event used)</li>
+	<li>JapanEvent&nbsp;&nbsp; (used when an event from Japan is pasted. Only 
+	one event used)</li>
+</ul>
+<p>The class provides a single list structure OccEvents that holds all the data 
+for an event in a series of data lines - either as fixed-format lines, or XML 
+tagged lines. The number of lines for any event is unconstrained.</p>
+<p>&nbsp;</p>
+<h3 class="auto-style1">internal class LinesForAnEvent : IComparable</h3>
+<p>This class is used to hold lines for an event through a List structure:</p>
+<h4>&nbsp;Lines<span class="auto-style1"> = new List&lt;string&gt;();</span></h4>
+<p>The class also maintains:</p>
+<ul>
+	<li>a flag for whether the lines are in XML or fixed format;</li>
+	<li>the JD of the Event, and the JD of geocentric conjunction - which are 
+	used for sorting)</li>
+	<li>the text to display as a label for the event</li>
+	<li>An index line for display</li>
+	<li>a count of the number of observed chords</li>
+</ul>
+<p>&nbsp;</p>
+<h3><span class="auto-style1">static class EventDetails</span><br>
+<span class="auto-style2">This class acts as an intermediary repository of data 
+for an event. It is a static class (with all members being static) - which means 
+that the values contained in this class apply irrespective of instances of 
+AllEvents.</span></h3>
+<p>Event details includes the details of all observations for that event 
+(including prediction data), by way of a List structure</p>
+<h4>&nbsp;<strong>observers</strong><span class="auto-style1"> = new List&lt;ObserverData&gt;();</span></h4>
+<p>Besides holding all the decoded data for an event, this class contains 
+routines to:</p>
+<ul>
+	<li>Sort/renumber the list of observers</li>
+	<li>delete an observer</li>
+	<li>add or paste a new observer</li>
+	<li>add or paste a prediction </li>
+	<li>create an output of event details for PDS archiving</li>
+</ul>
+<h4 class="auto-style1">class ObserverData : IComparable</h4>
+<p>This class contains all the details for an observer (including prediction 
+data). The list of observer data can be sorted by a range of elements.</p>
+<p>The class also includes routines to :</p>
+<ul>
+	<li>generate a formatted hexadecimal longitude or latitude </li>
+	<li>create an output of observer details for PDS archiving</li>
+</ul>
+<p>[Note - there will also be classes to handle double star solutions, and fits 
+to shape models]</p>
+<p>&nbsp;</p>
+<h2 class="auto-style3">How the structures are used</h2>
+<p>On opening the Observations editor, the file of historical observations is 
+read into an instance of <span class="auto-style1">AllEvents</span> called
+<span class="auto-style1">Historical_AllEvents</span>. Individual events are 
+displayed in the editor by selecting the event in the editor, decoding the event 
+lines into <span class="auto-style1">EventDetails</span> using<span class="auto-style1"> 
+AllEvents.DecodeAnEvent_Into_EventDetail</span>s and transferring the Event 
+details into the observations editor via <span class="auto-style1">
+DisplayEventInEditor()</span> - a routine in the Observations Editor.</p>
+<p>A new, manually entered event involves the following steps:</p>
+<ul>
+	<li>create an instance of <span class="auto-style1">AllEvents</span> called
+	<span class="auto-style1">SingleEvent</span></li>
+	<li>enter event details into the editor</li>
+	<li>elements in <span class="auto-style1">EventDetails</span> are 
+	set/updated as data is entered into the editor</li>
+	<li>encode the details in AllEvents to XML lines or fixed format lines using 
+	the routine <span class="auto-style1">EncodeAnEvent(bool NewEvent, int 
+	EventNumber, bool InXML)</span> in the <span class="auto-style1">SingleEvent</span> 
+	instance of <span class="auto-style1">AllEvents</span></li>
+	<li>The data can be saved using <span class="auto-style1">(AllEvents).WriteHistoricalObservationsFile(false, 
+	Current_OBS_File, false)</span>, where CurrentOBS_File is the save file 
+	name, and the 3rd parameter controls whether it is written as fixed format 
+	or XML</li>
+	<li>The event can be added to the Historical Observations file using
+	<span class="auto-style1">Data_and_Plots.Historical_AllEvents.OccEvents.Add().</span> 
+	This creates a new entry in the <span class="auto-style1">
+	Historical_AllEvents</span> instance of <span class="auto-style1">AllEvents</span> 
+	corresponding to the event in the <span class="auto-style1">SingleEvent</span> 
+	instance.</li>
+</ul>
+<p>The same arrangement applies for pasted events - with the relevant instances 
+of <span class="auto-style1">AllEvents</span> being:</p>
+<ul>
+	<li>Occult-formatted observations - <span class="auto-style1">SingleEvent</span></li>
+	<li>Observations pasted from Euraster&nbsp; - <span class="auto-style1">
+	EurasterEvent</span></li>
+	<li>Observations pasted from JP observations - <span class="auto-style1">
+	JapanEvent</span></li>
+</ul>
+<p>For individual observer lines pasted into the editor, the data is added to 
+the list of observers in the editor, inherently being added to the current 
+instance of <span class="auto-style1">AllEvents</span> being used in the Editor.</p>
+<h2 class="auto-style3">Adding to/updating Historical observations</h2>
+<p>Events in the Historical observations can be edited (including by adding new 
+observers) and saved (updated) using <span class="auto-style1">
+Historical_AllEvents.WriteHistoricalObservationsFile(true, &quot;&quot;, false)</span>, 
+where the 3rd parameter has no effect.</p>
+<p>The historical observations data is written to file whenever the data is 
+updated, or events added to it. To maintain data integrity, if the time interval 
+between when the historical file was last written to and 'now' is greater than 1 
+day, the existing file is renamed by adding the UTC date, and the historical 
+observations data is written to a new file.</p>
+<h2 class="auto-style3">Running various checks and data extractions</h2>
+<p>The majority of routines for generating summary lists or results operate by 
+reading the file of historical observations into a new instance of
+<span class="auto-style1">AllEvents</span> specific to that routine,&nbsp; with 
+various routines in the <span class="auto-style1">AllEvents</span> class being 
+used.</p>
+
+
+
+</BODY>
+</HTML>

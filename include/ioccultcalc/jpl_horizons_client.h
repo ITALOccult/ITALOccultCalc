@@ -11,6 +11,7 @@
 
 #include "types.h"
 #include "time_utils.h"
+#include "orbital_elements.h"
 #include <string>
 #include <vector>
 #include <memory>
@@ -118,6 +119,26 @@ public:
                                                      const std::string& observerCode = "500");
     
     /**
+     * @brief Scarica elementi orbitali OSCULANTI
+     * 
+     * Richiede elementi orbitali osculanti (istantanei) da JPL Horizons.
+     * Questi elementi rappresentano l'orbita effettiva all'epoca specificata,
+     * includendo tutte le perturbazioni, e possono essere convertiti direttamente
+     * in posizione/velocità senza propagazione.
+     * 
+     * Nota: Diversi dai "mean elements" di AstDyS che richiedono propagazione OrbFit.
+     * 
+     * @param target ID oggetto (es: "704" per Interamnia)
+     * @param epoch Epoca per gli elementi osculanti
+     * @param center Centro di riferimento ("@sun" per heliocentrico)
+     * @return Elementi orbitali osculanti
+     * @throws std::runtime_error se query fallisce
+     */
+    OrbitalElements getOsculatingElements(const std::string& target,
+                                         const JulianDate& epoch,
+                                         const std::string& center = "@sun");
+    
+    /**
      * @brief Imposta URL base di Horizons
      * 
      * Default: https://ssd.jpl.nasa.gov/api/horizons.api
@@ -152,6 +173,7 @@ private:
     std::vector<HorizonsEphemeris> parseHorizonsOutput(const std::string& response);
     std::pair<Vector3D, Vector3D> parseVectors(const std::string& response);
     std::pair<double, double> parseRADec(const std::string& response);
+    OrbitalElements parseOrbitalElements(const std::string& response);
     
     // Costruzione query Horizons
     std::string buildQuery(const HorizonsQuery& query);

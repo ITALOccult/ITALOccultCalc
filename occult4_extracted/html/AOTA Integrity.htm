@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Overview</Title>
+<style type="text/css">
+.auto-style1 {
+	color: #0000FF;
+}
+.auto-style3 {
+	color: #800000;
+}
+.auto-style4 {
+	font-size: medium;
+}
+.auto-style5 {
+	color: #FF0000;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+<h2>AOTA Help topics</h2>
+<a href="AOTA%20Overview.htm">Overview and form layout</a><br><br>
+<a href="AOTA%20Read%20and%20integrate.htm">Tab 1. Read, Integrity, Set time, Bin and Normalise</a><br>
+<a href="AOTA%20Fourier.htm">Tab 2A. Fourier plot</a><br>
+<a href="AOTA%20Short.htm">Tab 2B. Short event check</a><br>
+<a href="AOTA%20Find%20events.htm">Tab 3. Find events</a><br>
+<a href="AOTA%20Select%20to%20analyse.htm">Tab 4. Select event to analyse</a><br>
+<a href="AOTA%20Analyse.htm">Tab 5. Analyse</a><br>
+<a href="AOTA%20FinalTimes.htm">Tab 6. Camera corrections, final results</a><br><br>
+<a href="AOTA%20Integrity.htm">Integrity check</a><br>
+<a href="AOTA%20Integration%20and%20binning.htm">Integration, binning & normalisation</a><br>
+<a href="AOTA%20Set%20time%20scale.htm">Set time scale</a><br>
+<a href="AOTA%20Verify.htm">Verify event times</a><br>
+<a href="AOTA%20VTI%20info.htm">VTI information</a><br><br>
+<a href="AOTA%20Hints%20and%20Tips.htm"><B>Hints and Tips</B></a><br>
+
+
+
+<H1>Integrity check of the data</H1>
+The correct interpretation of a video recording can be compromised by defects in the recording. Often these defects are not readily apparent. The most common defects are:
+<li> errors in the OCR of the time stamp
+<li>frames are dropped, as a result of the recording equipment not being able to keep up with the video stream
+<li>a frame is a duplicate of the previous frame - again, as a result of the recording equipment not being able to keep up with the video stream
+<li>duplicate frames being added to the video stream.
+
+<p>AOTA includes functionality to identify an possibly correct such errors. The functionality is accessed under the <B>1. Read, Integrity, Set Time, Bin & Normalise </B>tab. It is also opened automatically whenever a file is read into AOTA.
+
+<p>There are two levels of integrity check undertaken.<br>
+<p><strong><span class="auto-style4">The preliminary check 
+</span> 
+</strong>is of the consistency/validity of the data being read from a .csv file, or 
+pasted .csv data. This check looks at the data to confirm that (i) each data 
+entry for the light curve has the same number of fields, and (ii) that each of 
+those fields is populated. Any data line that fails these two requirements is 
+listed (up to 50 such lines...). The column header from the file is also 
+provided, so that the nature of the data in each column can be identified.
+<span class="auto-style1"><em>The result of this preliminary check is only 
+displayed if problems are found.</em></span><p>An 
+example of this check is:<pre class="auto-style3">FrameNo,Time (UT),Signal (1), Background (1),Signal (2), Background (2),Signal (3), Background (3),Signal (4), Background (4)Empty field(s) at: 681,[18:28:02.819],90559,47757,,,112810,47332,87085,47072
+Empty field(s) at: 702,[18:28:05.444],86340,49337,,,103590,43608,79646,49376
+Empty field(s) at: 784,[18:28:15.694],80726,49454,,,96399,48748,75631,49375
+Empty field(s) at: 809,[18:28:18.819],87960,53223,88724,51149,97419,50046,,
+Empty field(s) at: 812,[18:28:19.319],,,,,,,,Empty field(s) at: 868,[18:28:26.197],104210,58532,,,127810,57342,93328,55996
+Empty field(s) at: 940,[18:28:35.194],83832,54345,,,101860,55873,89398,51309
+
+Some of these errors may prevent the file from being read correctly.
+This is particularly the case if the empty column is the time, or the star brightness measurement.</pre>
+<p>In this example, the 2nd column specifies the time. The 3rd column specifies 
+the star brightness (signal), and the 4th is its background signal. In line 812, 
+the 3rd and 4th columns are empty. If during the subsequent processing the 
+program 'hangs' (which is unlikely) - the absence of data here Might be the 
+cause.</p>
+<p>Note that the column headings depend on the measurement software being used. </p>
+<h3>The main Integrity check involves the following:</h3>
+<ul type=a>
+<li>Check the time stamps for any OCR errors
+<li>Compare the time stamps to identify possible dropped frames - which will appear as a gap in the time sequence, with the time sequence being regular on either side of the gap
+<li>Compare the time stamps to identify possible duplicated frames - which will appear as identical times in sequential frames
+<li>Compare the brightness measurements of sequential frames - to detect possible duplicated frames by reason of full identity of measurement values. This option is only available when the video is not integrated (as such recordings will be expected to have identical (or near-identical) measurements during an integration period). If a comparison star is available, the check requires identity of the values for both the star, and for the comparison star.
+<li>for a recording involving integration, a plot of the recording folded on a value that is a power of 2. [Most integrating cameras integrate the number of frames in powers of 2]. If the recording does not involve dropped or added frames, the integration intervals will align across the folded light curve.
+</ul>
+
+<P><B>IMPORTANT</B> When the Integrity Check form is closed, you will automatically be taken to the form for setting the binning and 
+normalization. This step is essential to implement any changes made in the Integrity check - irrespective of whether you have an integrated video signal, or are not using comparison stars. Also you must leave the Integrity Check form by pressing <B>OK </B>rather than <B>Cancel</B>; if Cancel is selected, the data used within AOTA for the analysis will not have been updated for the changes made to the 'source' data in the Integrity check. Only use <B>Cancel</B> if you have not made any changes at all.
+
+<h2>OCR check</h2>
+Tools such as Limovie and Tangra can OCR the video-inserted time stamps to establish the time base. A huge advantage of this is that any irregularities in the camera output (such as dropped or duplicated frames) can be identified - and the data set corrected accordingly. However OCR is a complex process which can easily be comprised by the presence of stars (for example) closely adjacent the time stamp numerals.
+
+<p>As an extreme example, the following image shows the time stamp field on a recording where there were many background stars (faint target star located in Sagittarius...) As should be apparent, stars surrounding the outlines of the time stamp numerals can make their automatic interpretation difficult.
+<p><img src="AOTA_Integrity_OCRexample.png"><p>
+Tangra correctly OCRd these three time stamps (full marks to the author of Tangra!) - but reported a large number of OCR errors. The AOTA OCR check corrected the times for 3951 frames of the 15000 frames in the recording - with the most common correction being half a frame interval.
+
+<p>Occult now includes a check for OCR consistency, with automatic correction of OCR errors. The functionality is controlled from the Integrity Check form under the menu item <B>OCR of Time Stamps</B>. 
+If the initial integrity checks indicates problems with the data, the automatic 
+check of OCR is discouraged.<p><img src="AOTA_Integrity_OCRmenu.png">
+
+<p>The three options available are::
+<li><B>Autocheck OCR</B> When checked, the OCR check is done automatically whenever the Integrity form is opened. If you clear this check, you will instead be asked if you want to perform the OCR check. For those concerned about knowing the nature of the errors being corrected by the OCR check, this allows you to not do the OCR check - and then view the problems.
+If the initial integrity checks indicates problems with the data, the automatic 
+check of OCR is discouraged - as it may cause the program to hang. <li><B>Check OCR for errors</B> Clicking this conducts the OCR check.
+If the initial integrity checks indicates problems with the data, the automatic 
+check of OCR is discouraged - as it may cause the program to hang. <li><B>View OCR corrections</B> Clicking this will display a form showing all the frames where the time has been corrected by the OCR check. It is automatically displayed when the OCR check is run, but can be displayed at later times if needed.
+
+<p class="auto-style5"><strong>NOTE. </strong>The light curve canbe processed 
+without undergoing an OCR check, with frames having no data being treated as 
+non-existent.<li>
+<p>The following three images illustrate the process. The first image shows a section of OCR'd time stamps that contain some OCR errors. They are indicated in the list of possible dropped frames - and you can see that frames 913, 914 and 918 are inconsistent with the others. (The list of possible dropped frames in fact contained 20 entries.)
+
+<p><img src="AOTA_Integrity_OCR_before.png">
+<p>This image shows the results of the OCR check. The times for 12 frames have been corrected, with those frames being identified.
+<p><img src="AOTA_Integrity_OCRchanges.png">
+
+<p>Finally, this image is for the same set of frames as above - but following the OCR check. As can be readily seen, these time stamps are now fully regular.
+<p><img src="AOTA_Integrity_OCR_after.png">
+
+
+<p>The following image shows the whole Integrity Check form after the OCR check.<p>
+<img src = "AOTA_Integrity.png"> 
+<p>As can be seen, the checker now only lists 2 frames under <B>Possibly dropped frames</B>, with one of those being listed under <B>Possibly duplicated frames</B>. A close look at those frame times  indicates that frames 19 and 20 are duplicated frames, and frames for the seconds 1.261, 1.301, 1.341 and 1.381 do not exist. If such errors in the time base occur anywhere near an event being analysed, you will need to add or delete frames to ensure the points in the light curve are uniformly spaced in time despite such errors.
+<h3>OCR methodology</h3>
+The methodology used for the OCR check is as follows:<ul type = a>
+<li>An initial check establishes the first set of 21 sequential frames where the time stamp is regular throughout those 20 intervals. Differences between individual frames and the expected frame rate of greater than 0.001s is sufficient to reject that set from being fully reliable. This step also establishes the frame duration to be used in subsequent corrections
+<li>From the end of that block, successive frames are scanned. Provided the time difference between successive frames is no greater than 0.002 sec, the time is treated as valid.
+<li>When a difference greater than 0.002 secs is found, <ul type = i>
+<li> a search is done for the first subsequent set of 21 frames where the time stamp is regular (as before) to within 0.001s, with an additional requirement that the <I>average </I>frame duration for that set is the same as that in the the initial set of 21 frames to within 0.001 secs. 
+<li>the 'expected' number of frames between the two sets is computed on the the basis of the frame rate of the first set 
+<li> if the expected number of frames agrees with the actual number of frames, the times between the two sets are corrected using the frame duration determined in the first set. The process is to start at the last 'valid' time, compare the next time to that last valid time; if it differs by more than 0.002s, replace that time with the last valid time plus the time difference, and treat the correcetd time as the next valid time. This process is repeated. Note that in this process, time stamps that accord with the 'expected' time to 0.002s or better are not adjusted - so that otherwise valid OCR readings are maintained
+<li>If the expected number of frames differs by an integral number of frames, there is the possibility that the recording contains dropped or duplicated frames. In this situation, a message is generated about that possibility being present withing the frame range, no corrections are made, and the search for further OCR errors recommences with that last set.
+<li>If the expected number of frames differs by a <I>fractional </I>number of frames, the explanation is that the set that has been located is consistently offset by a fraction of a frame - and is therefore not consistent with the first set. In this case, the search is continued for a subsequent dataset that has both the same frame duration and involvesd an integral number of frames.
+</ul>
+<li>If the first set of sequential frames does not start at the beginning of the data set, the times before that set are not corrected.
+<li>Any errors in the last 21 frames will not get corrected. If there are many errors, the number of frames that are not corrected at the end of the record my become large - depending on where the last consistent group of 21 frames occurs. 
+</ul>
+
+
+<h2>Operation of the Integrity checker</h2>
+When the integrity form is opened, it automatically populates a grid-table containing frame ID's, the time when that frame commenced output from the camera, if an individual  measurement has been marked invalid (a feature of Tangra, plus editing in this form). The light curve is also plotted - on the basis of no integration.
+
+<h3>Selecting an entry in the table</h3>
+<li>If you have opened AOTA from Tangra - when you select an entry in the table, the corresponding frame will be displayed in Tangra - so you can immediately compare the time stamp to that on the video frame. 
+<li>Otherwise, to view the frame you will need to load the video into either Limovie, Tangra, or other video viewing software, and manually locate the frame number.
+
+<h3>Editing data in the table</h3>
+You can edit the table by selecting a row (and adjusting the time) or double-clicking on an entry in the columns headed 'invalid' or 'drop'.
+<p><B>NOTE</B> All editing affects only the data held in memory. No changes are made to the files used to load the data into AOTA, and the changes are lost when AOTA is closed.
+<p>You can adjust the <B>event time </B>by selecting the relevant row. Then use the boxes below the table to specify the correct time - and then click 'Set this time for the selected frame'. The change will be effected immediately. The most common need to change the time is OCR reading errors. 
+<p>You can mark a frame as being 'invalid' by double-clicking in the 'invalid' column. An X will appear, and the validity status will be updated immediately. Double-click again to clear the X. Note that an invalid frame is not considered when solving for the location of an event. However the presence of a surplus frame will distort the regular sequence of frames, thereby affecting the solution.
+<p>You can indicate that one or more frames should be added immediately prior to the selected frame, by double-clicking in the 'Add' column. [This is needed when frames have been dropped.] Each time you click, the number of frames to be added wil go through the cycle through blank, 1, 2, 3, && 4. If the Time check indicates multiple dropped frames, and this fact can be confirmed by inspection of the UTC time sequence for those frames - you can automatically tag all frames where a preceding frame needs to be added by clicking the 'Set all' button next to the list of possible dropped frames. To 'add' dropped frames (thereby regularising the spacing of the frames), click the button <B>Insert/Delete frames - and reload</B>. This will result in extra frames being added at all the required locations. ALL such frames will be marked as invalid such that they are not used in the analysis - however their presence ensure regularity in the time base.
+<p>You can indicate that a frame should be deleted, by double-clicking in the 'Del' column. [This is needed when frames have been duplicated.] An X will appear, which can be cleared by double-clicking again. To delete excess frames (thereby regularising the spacing of the frames), click the button <B>Insert/Delete frames - and reload</B>. You can check multiple entries before clicking the button. This will result in marked frames being deleted at the required locations.
+<p><B>NOTE </B>- you can have any number of frames marked for addition or deletion. However if a frame is marked for both addition and deletion, nothing will happen for that frame. 
+<br><B>NOTE 2 </B>- Additions can be reversed by simply deleting them. The only way to fully rectify the erroneous deletion of a frame is to reload the measurements. However if the frame in question is located well away from an event transition, the simple addition of a frame may be sufficient to rectify the erroneous deletion.
+
+<h3>Checks</h3>
+The two checks (of frame times, and of measurement values) are performed by clicking the <B>Check Times </B>and <B>Check Measures </B>buttons. Frames that might be suspect are listed in the several lists above the button. Double clicking on an entry in any of these lists will result in the corresponding entry in the table being selected. From here you can compare the values against adjacent frames. If you have accessed AOTA from Tangra, you can view the video frame merely by selecting the relevant entry in the table. Then make the decision about what editing (if any) you want to make to the data before analysing the light curve.
+
+<p>Note that the check of measurements from sequential frames is completely unreliable when the video has been integrated. As a result, when the light curve plot is set to an integration interval greater than 1, the Check Measures button is disabled.
+
+<h3>Light curve</h3>
+When the light curve has been recorded using an integrating camera, we can make use of the regularity of the integration within the camera to check for irregularities in the recoding - such as dropped frames or added frames. On the right of the form the light curve is plotted - with either 128, 256 or 512 points across the plot (plus an overlap region marked in yellow at the right) - depending upon the number of frames in the integration.
+<p>The plot has vertical green lines spaced apart by the integration size. The basic idea is to set the number of frames integrated (using the box at the bottom) to the integration used on the camera, and use the control to adjust the position of the lines to match the integration steps. The following plot shows a 16-frame integration where there is no evidence of any irregularities in the recording.<p>
+<img src = "AOTA_IntegrityEx1.png"> 
+<p>while the next plot is a 64-frame integration where there is some unexplained variation in the start location of each integration group.<p>
+<img src = "AOTA_IntegrityEx2.png"> 
+<p>Place the cursor on the plot, and the frame ID at the cursor location will appear as a tool tip. Click, and then move the cursor off the plot - and that frame will be selected in the table - and if you have accessed AOTA via Tangra, the relevant video frame will be displayed in Tangra - so that you can see what is 'going on'.
+
+<h3>Cameras that integrate 1-frame short</h3>
+The plot of the light curve is based on integration periods being a multiple of 2. That is, integrations, of 2, 4, 8, 16  etc frames. Some integrating cameras have been found to integrate one frame less than the expected number of frames. eg 255 frames rather than 256 frames. In this situation the folding of the light curve in the plot does not match the actual integration interval - and the vertical lines will not align with the start of the integration intervals. However this can be rectified by checking the box <B>Fold at 2^x-1 </B>at the bottom right of the form.
+
+<h2>An example</h2>
+Look at the first image above. The list of <B>Possible dropped frames </B>appears to list every frame. Something must be wrong.... Look at the lists of possible duplicated frames. The list based on duplicated times appears to be identical to the list based on identical measurements. Both these lists appear to give frames at intervals of 6, or 7. The first instance is for frame 4. The times specified for frames 2, 3, 4, and 5 are:
+<pre>23 47 3.233
+23 47 3.266
+23 47 3.266
+23 47 3.300</pre>
+This video was taken using NTSC - so has an expected frame interval of 0.033 secs - which is the time interval between the first pair and between the last pair. That is good. However there is no time difference between the middle two frames. What we see here is that the recording has duplicated a frame about every 6 frames or so. Looking at the graph, you can see several locations where the light curve is flat for many frames - and the data in the table indicates that such regions are a combination of one frame being used to populate several frames, plus the occasional extra frame.  Additionally, this anomaly as it appears in the timestamps happens to affect the 11th entry in the table - with the effect that the computed frame rate of the recording based on the time difference between the first and eleventh entries is too small - which leads to every frame being indicated as possibly dropped in the relevant list.
+<p>What to do about this? Editing the file to mark all such events as invalid would be time consuming. However editing the whole file is not needed. All that is required is editing in the region of the events - to make sure the sequence of frames for about 20 or so frames on either side of an event location is correct.
+<p>In this particular case, the duplicated frames need to be deleted. Reason? The fitting of the theoretical light curves to the event transitions is done on the basis that each data point is uniformly spaced in time. The duplicated frames invalidate this - as they result in extra spaces and false data points being inserted in the light curve. [You can see these false data points in the light curve near the event transitions on the 3rd line - as a line extending over two frames. One is just prior to the light drop, while another is one frame after the light rise. Another is just before the rise.] Without these duplicated frames being removed, the analysis of the light curve will be adversely affected.
+
+<h2>A 2nd example</h2>
+The following is a plot of a video taken with 16-frame integration. The box at middle-top lists a large number of possible dropped frames - based on the OCR reading of the time stamp. On this NTSC video, the time interval should be 0.033 secs between frames. However the interval immediately prior to each frame listed in the box is double this (at 0.067 secs). The effect of this is that while a vertical line is positions to align with the end of the occultation (4th line of the plot), changes in the integrated light level generally do not align with the vertical lines.
+<img src = "AOTA_Integrity2.png"> <br>
+<p>This defect can be easily remedied. Next to the box containing the list of possible dropped frames, click the button<B> Set all</B>. This will result in checks being placed in the table for each listed frame.<br>
+<img src = "AOTA_Integrity3.png"> 
+<p>Now click the button <B>Insert/Delete frames - and reload</B>. The form now appears as:<br>
+<img src = "AOTA_Integrity4.png"> 
+<p>In this plot the vertical lines have been re-aligned to match the end of the occultation. Each added frame is marked as 'invalid' so that it is not used in the analysis - and in the plot is marked as a drop in light in red dashes. However note how the vertical lines now generally correspond with the change in light levels from the integration. As a result the corrected measures can now be reliably binned in accordance with the integration interval, and the light curve reliably analysed. 
+
+
+
+</BODY>
+</HTML>

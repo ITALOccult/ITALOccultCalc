@@ -1,0 +1,37 @@
+{
+  "metadata": {
+    "name": "Trojan Asteroids Campaign",
+    "author": "Michele Bigi", 
+    "date": "2025-11-22",
+    "description": "Jupiter Trojans occultation survey"
+  },
+  "sections": [
+    {
+      "type": "asteroid_range",
+      "parameters": [
+        {
+          "name": "from",
+          "value": "588",
+          "type": "int",
+          "comment": "Start from 588 Achilles (first Trojan)"
+        },
+        {
+          "name": "to",
+          "value": "100000",
+          "type": "int"
+        },
+        {
+          "name": "where",
+          "value": [
+            "orbit_class in [L4, L5, Trojan]",
+            "diameter > 30",
+            "4.5 < a < 5.5",
+            "e < 0.15"
+          ],
+          "type": "array",
+          "comment": "Jupiter Trojans criteria"
+        }
+      ]
+    }
+  ]
+}

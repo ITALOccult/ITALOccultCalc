@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Select star catalogue</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Select star catalogue</H1>
+<p align=center><img src="SetStarCat.png">
+<P>The star catalogue used for all lunar occultation predictions is the <A HREF="http://vizier.u-strasbg.fr/viz-bin/qcat?xz80Q" target=_blank> XZ80Q catalogue</a>, which is provided in Occult in a reduced form suitable for generating predictions.</P>
+
+<p>The full XZ80 catalogue includes stars to mag 12.5. For many purposes, stars of such faint magnitudes will not be visible in an occultation. For example, lunar grazing occultations are rarely observed for stars fainter than magnitude 9. And searching for occultations of bright stars in a catalogue that has a huge number of faint stars is inefficient. Consequently Occult can create 4 subset catalogues from the main XZ catalogue using the Maintain XZ Catalogue button under the Maintenance tab. [When you first installed Occult v4, you will have been invited to create the subset catalogues.]</p>
+
+<p>The subset catalogues, and why you would choose them, are as follows:
+
+<table columns=3 border=1>
+<TR><TH NOWRAP>Catalogue</TH><TH>Explanation</TH></TR>
+<TR><TD>XZ</TD><TD>The full XZ catalogue with <B>244,051 </B>stars. Essential for 20cm or larger apertures for occultations against the crescent moon, or during a lunar eclipse</TD></TR>
+<TR><TD nowrap>XZ &gt;mag 9</TD><TD>This version has <B>13,425 </B>stars brighter than mag 9.0. <B>Ideal for searching for grazing occultations. </B>Should be the default catalogue if your telescope aperture is less than 20cm, or you are searching for occultations within 4 days of full moon.</TD></TR>
+<TR><TD>XZ &gt;mag 7</TD><TD>This version has <B>1,723 </B>stars brighter than mag 7.0. <B>Ideal for searching for easy to observe occultations and grazes. </B>Should be the default catalogue if your telescope aperture is less than 15cm, or you are searching for occultations near full moon.</TD></TR>
+<TR><TD>XZ &gt;mag 4</TD><TD>This version has <B>60 </B>stars brighter than mag 4.0. <B>Ideal for searching for bright-star occultations, and spectacular grazes</B>.</TD></TR>
+<TR><TD>ZC</TD><TD>This version has the 3,539 stars in the ZC catalogue. The magnitude limit of the ZC catalogue is about 7.5, but it includes a number of fainter stars.</TD></TR>
+</table>
+
+</BODY>
+</HTML>

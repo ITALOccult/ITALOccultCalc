@@ -1,0 +1,185 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Magnitude Calculator</Title>
+<style type="text/css">
+.auto-style1 {
+	font-size: medium;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Magnitude Calculator</H1>
+<!-- Insert Header in above line -->
+<P>This provides four utilities for performing magnitude calculations. The results of each of the 
+six&nbsp;calculations can be copied using the 'Copy' button associated with each.</P>
+
+<P align=left><img src="EphemMagCalculate.png"><br></p>
+
+<h2>1. Combined magnitude of two known stars</h2>
+<p>Enter the known magnitudes of the two stars and the combined magnitude is displayed.</p>
+<p>In an asteroidal occultation, the predicted 'magnitude drop' is the difference between the combined magnitude and the asteroid's magnitude.</p>
+
+<h2>&nbsp;</h2>
+<h2>2. Magnitude change to intensity change</h2>
+<p>Enter the change in magnitude and calculate the change in illumination as a ratio of the initial light intensity. Or enter the change in light intensity and calculate the magnitude change. The ratio is given as both direct and inverse values. Useful for analysing photometric light curves 
+or to determine the expected light drop given the magnitude drop. </p>
+
+<h2>&nbsp;</h2>
+<h2>3. Magnitudes from light levels, using two reference magnitudes</h2>
+<p>This function is designed to estimate the magnitudes of an object, using two 
+comparison objects of known magnitude. The magnitudes of the comparison stars 
+are converted to a relative brightness. These are matched to the measured 
+brightness levels of the two stars, deriving an equation of the form:</p>
+<p>Brightness = a*Level + b</p>
+<p>from which a measured level can be converted to a brightness relative to the 
+comparison stars, and from there the magnitude.</p>
+<p>This process assumes the camera response is linear. It also determines the 
+'true' zero light level, which is often different to the zero level of a 
+displayed light curve.</p>
+<p>To use, set the magnitudes and light levels of the two comparison stars. This 
+will calibrate the relationship, and the level corresponding to zero brightness 
+is displayed in the orange box. Set the light level for the object, and its 
+magnitude is displayed in the green box.</p>
+<h2>&nbsp;</h2>
+<h2>4. Magnitudes from stepped light curve values</h2>
+<p>This function is designed to estimate the magnitudes of the components of a double star from an 
+asteroidal occultation light curve. </p>
+<p>The underlying method is that used in <strong><span class="auto-style1">3</span></strong>. 
+The top of the light curve is set to the star magnitude plus the asteroid's 
+magnitude. The bottom of the light curve is set to the asteroid's magnitude. The 
+intermediate step level is the combination of one component of the star plus the 
+asteroid.</p>
+<p>The required inputs are the star's catalogue magnitude - implicitly including 
+both components. Plus the magnitude of the asteroid. These are used to set the 
+brightness at the top and bottom of the light curve. Then the levels as measured 
+for each arm of the light curve. While the routine uses both arms, it will work 
+if the levels are only set for one arm.</p>
+<p>If reference stars are present at a brightness near the bottom of the light 
+curve, those stars can be used to determine the magnitude corresponding to the 
+light curve at the bottom - that is, the asteroid's magnitude. This 'measured' 
+magnitude can be used instead of the 'usual' asteroid magnitude. In particular, 
+the measured magnitude is in the same color as the other stars, and the effects 
+of any rotational variation in the asteroid's magnitude are eliminated.</p>
+
+<p>To use the calculator:  Enter the light curve values for the D and R parts of the light curve. Make sure you enter the mean value of the relevant part of the light curve. The units are entirely arbitrary - just use whatever numbers come out of the photometric measurement (e.g. the values given on the LiMovie plot.) And enter the star's total magnitude. The magnitudes will be calculated as the data is entered.
+<p>The outputs are the derived magnitudes of each components of the star. There 
+are three outputs provided:
+<p>component sequence A - B - B - A<br>component sequence A - B - A - B<br>
+individual magnitudes associated with each drop&nbsp; A - B - C - D<p>The 
+component sequence solutions use the mean of the corresponding components in 
+each light curve arm.<p>&nbsp;Obviously it can be important to decide whether the occultation is of the  A-B-A-B or  A-B-B-A type. For a single observation this may be difficult. Generally a 'head-on' occultation will more likely be of the A-B-A-B type, whereas the A-B-B-A situation is more likely in near-grazing circumstance. But unless both stars are significantly brighter than the background, it may be impossible to resolve the sequence. However if there are plural observations (such as several chords in an asteroid occultation) the PA and separation can be determined, and the basis of the magnitude calculation can be resolved.
+
+
+<h2>&nbsp;</h2>
+<h2>5. Intermediate magnitudes from a light curve plot<br>&nbsp;&nbsp;&nbsp; + 
+Light drop levels for Asteroidal satellite detections</h2>
+<p>The main part of this group is to provide a tool that reliably estimates the 
+stellar magnitude at any level on a light curve. The calculations assume a 
+linear camera response to light levels.</p>
+<p>The usual mode for plotting a light curve is to plot Signal - Background. 
+This establishes an important factor. The zero light level on the light curve 
+plot is the sky background light level. This can equivalently be referred to as 
+the limiting magnitude of the image - which is the&nbsp; magnitude of the 
+faintest stars that can be consistently recorded in the image. Equivalently, the 
+recording is unable to record a light drop to a level fainter than these stars.</p>
+<p>Accordingly, the critical step for reliably determining the magnitude drop 
+from a light curve is to determine the limiting magnitude. The basic methodology 
+is to visually inspect the image to find the faintest stars, and match those to 
+star chart (or the like) to identify the star and establish its magnitude.&nbsp; 
+One way to do this is to use the
+<a href="EphemStarChart.htm">Occult Star Chart</a>, which can be made 
+transparent to that it can be overlaid on he image. Clicking any star on the 
+star chart will display the star identification, and its magnitude in blue, 
+green (visual), and red.</p>
+<p>As a general rule, you should aim at finding several 'faintest' stars, to 
+avoid any anomalies that might exist with a single selected star. The more 
+'faintest' stars that can be detected, the more-reliable the determination of 
+the limiting magnitude. Putting this another way, if you identify a star as the faintest star, you should be able to identify each and 
+every star of that magnitude or brighter that is located in the field of the 
+image. If such other stars are not present, the limiting magnitude is 
+necessarily 
+at a brighter magnitude; otherwise you cannot reasonably assert that a light 
+drop is to or below that limiting magnitude</p>
+<h3>Intermediate light levels on a light curve</h3>
+<p>The top part of the section uses the target star magnitude, and the limiting 
+magnitude, to derive the magnitude at various light curve heights - at 10% 
+steps. You can see the effect of the limiting magnitude by considering a light 
+intensity drop of 50% - which corresponds to a magnitude drop of 0.75 
+magnitudes. The light curve at 50% corresponds to that magnitude drop if the 
+limiting magnitude is at least 5 magnitudes fainter than the target star. If the 
+limiting magnitude is only 2 magnitudes fainter than the target, the 50% light 
+drop is at the 40% light level on the light curve. If it is only 1.0 magnitudes 
+fainter than the target, the 50% light drop is at the 20% light level on the 
+light curve.</p>
+<h3>Light drops for asteroidal satellite detections</h3>
+<p>The bottom part of this section indicates the magnitude drop that is to be 
+expected if a satellite is involved. A satellite detection will usually involve 
+to drops in the light level, with both drops being a full occultation. Important 
+considerations for detecting a satellite are:</p>
+<ul>
+	<li>if the predicted occultation&nbsp; light drop is well above the limiting 
+	magnitude of the recording, both light drops will obviously be of the same 
+	depth. If there is a significant difference in the light drops, it is most 
+	likely a double star.</li>
+	<li>When one component of double star having equal brightness is occulted, 
+	the light level drops by 50%. When assessing the presence of a satellite, a 
+	light level drop for the star is required to be at least 60%, to ensure the 
+	light curve is adequately distinguished from a double star explanation.</li>
+	<li>The overall light drop must take into account the presence of the 
+	asteroid. If the asteroid is much fainter than the star, the required 60% 
+	light drop will appear directly in the light curve (with a magnitude drop of 
+	0.99). The 50% light drop for an equal brightness double star have a 
+	magnitude drop of 0.75.</li>
+	<li>If the asteroid is not very faint, the magnitude drop must take into 
+	account the brightness of the asteroid. The bottom part of this section 
+	provides that calculation. It is based simply on the predicted magnitude 
+	drop - as that inherently includes the effects of the asteroid's brightness. 
+	Simply set the magnitude drop to the predicted value, and the required 
+	magnitude drop (of both light curve drops) is displayed. As a reminder for 
+	when the predicted light curve drop is not large, the maximum depth of the 
+	light curve drop is also displayed.</li>
+	<li>It follows that to have a basis to believe a satellite has been 
+	detected, you simply need to establish the light curve drops are of an equal 
+	depth which is deeper than the value displayed</li>
+	<li>To assist with this determination, make sure the top part of this 
+	section has correctly set the target full-light magnitude, and the limiting 
+	magnitude. Then check the box 'Show levels'. Light levels that are not deep 
+	enough, or are too deep, will be highlighted in Red. Light levels that would 
+	be expected from a satellite are highlighted in green. </li>
+	<li>When assessing the light curve levels, it will be important to allow for 
+	the uncertainty in determining a light level in the light curve. For 
+	example, a clear distinction of 10% in the light requires a light curve that 
+	has very little noise.</li>
+</ul>
+<p>The above is based on two assumptions. </p>
+<ul>
+	<li>Firstly, that the camera response in linear. The solution to this (and 
+	indeed, the preferable approach to ensuring the light curve drop is 
+	sufficiently deep) is to measure one of more comparison stars that are 
+	significantly fainter than the required magnitude drop, but brighter than 
+	the predicted magnitude drop. When such comparison stars are plotted with 
+	the target star, a light curve drop to below the comparison stars provides 
+	the best basis for asserting a satellite. </li>
+	<li>Secondly, that both components of the asteroid are sufficiently large 
+	(typically &gt;2 km) that the effects of Fresnel diffraction are minimal. If 
+	Fresnel diffraction is present, one or both light drops may not be as deep 
+	as expected - and this has the possibility of reducing the light drops to a 
+	level where they cannot be distinguished from a double star.</li>
+</ul>
+<p>&nbsp;</p>
+<h2>6. Asteroid diameter from Absolute magnitude H0</h2>
+<p>This uses a standard formula to convert the absolute magnitude of an asteroid 
+(H0) to its diameter in km.&nbsp;&nbsp;&nbsp; </p>
+<p>The default expression sets the albedo of the asteroid as 0.15. If the 
+asteroid is known to have a different albedo, specify that in the relevant 
+field. </p>
+
+
+</BODY>
+</HTML>

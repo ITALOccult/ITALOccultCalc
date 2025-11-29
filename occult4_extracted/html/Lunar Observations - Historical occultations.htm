@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Historical occultations</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Historical occultations - Overview</H1>
+<p>This form gives access to the data for observed occultations (other than Grazing occultations.) The functionality that is provided includes:<ul>
+
+<li>selecting all observations for a specified star, and reducing those observations
+<li>selecting all observations where the observer's name, and/or site name, includes a specified string; 
+<li>reconstructing observation reports for any specified site
+<li>viewing any observation in the file, including tools for detecting the cause of any error in the reported observation</ul>
+
+
+<p>The observations fall into two groupings:<ul>
+<li>those collected by Royal Greenwich Observatory (RGO) - which cover the period 1623 to 1980; and
+<li>those collected by the International Lunar Occultation Centre (ILOC) in Japan - which covers 1981 to the present.</ul>
+
+<p>The data is held in a series of files, as follows<ul>
+<li>The actual observations, in a consistent format, as a series of files. Each file covers a span of years. The files have either RGO or ILOC as part of their name.
+<li>Files containing the data concerning the site location and observer. For the RGO data, there is a single file containing limited information on the site and observer. For the ILOC data, there are separate files holding information for the site, and for the observer.</ul>
+
+<p>The observations in all the files have been processed to identify and remove a number of errors - details of this processing are <A href="RGO%20and%20ILOC%20corrections.htm">here</a>.
+<p>The RGO dataset is missing observer names in the period 1943-1971. The reasons are 
+explained <A href="RGO%20Observer%20names.htm">here</a>.
+
+<p><B>NOTE </B>The ILOC dataset includes observations for 2002 to 2005, which were received shortly before release. The observations were received in a different data structure to previous years - due to certain problems ILOC had with their previous data structures. In the medium term the entire dataset of ILOC observations used in Occult will need to be 
+reformatted, with consequential major code changes. In the short term the data is provided in the 'old' structure so that it can be accessed in Occult. Unfortunately until the ILOC data is fully reformatted into a new format, Occult cannot associate an observation with the observer's coordinates for many observations in the period 2002 to 2005 . 
+
+<p>People wanting to research the oldest lunar occultation observations should refer to Simon Newcomb's  <A href="http://articles.adsabs.harvard.edu/full/seri/USNOM/0015/0000682.000.html" target = _blank>Researches on the Motion of the Moon</a>, which analyses lunar observations made prior to 1750. This provides a useful understanding of the issues associated with times of old observations.
+
+<h1><br>To view all observations of a particular star</h1>
+<li>Set the option button to <B>search for a star</B>. The following controls will appear.
+<P align=center><img src="Historical%20SelectStars.png">
+<li>Specify the star of interest - you can select the star from the drop-down 
+box, or enter its number in any of the ZC, SAO or XZ boxes. For the drop-down 
+box there are 6 sets of names available under the menu item<B> 'Name of Star' list</B>. Those sets are:<ul>
+<li>All names
+<li>Proper names
+<li>Bayer letters
+<li>Magnitude brighter than 2
+<li>Magnitude brighter than 3
+<li>Magnitude brighter than 4</ul>
+<li>To clear the star number fields, set the XZ number to 0.
+
+<h3>Double star options</h3>
+<li>To highlight observations for the particular star where the report indicates actual or possible double star circumstances - check the <B>Highlight</B> box.
+<li>To list only those observations of the particular star where the report indicates actual or possible double star circumstances - check the <B>only list doubles</B> box..
+<li>To list all reports of unidentified double stars, check the <B>list ALL unidentified doubles </B>box.
+<p>Additionally, you can generate a set of double star report files for use with the Double Star analysis. The process requires manual selection and ordering of observations, and is decribed <a href="Lunar%20Observations%20-%20Doubles%20from%20Archive.htm">here</a>.
+
+<H3>click Read to display the list of events. </h3>
+
+<p>The file will be displayed. Selecting a record will result in the record being decoded and reduced, in the box at the bottom of the form. Also given are the observer's co-ordinates, and the name of the observer (which are retrieved from a separate file of observer names.)
+
+<p>If the Highlight check box was checked, potential double star reports are highlighted. Note that in this mode, clicking an entry will turn a highlight on or off.
+
+<p>A star will be identified as possibly double if the <B>Double star </B>field is set, or if <B>Remarkable Circumstances </B>is set to <B>Not instantaneous, gradual</B> [that is, a value of '1']. <I>[Note - the Remarkable Circumstances field is 3 columns to the right of the double star field]</I>
+
+<p>Under the list are some edit facilities for adjusting parameters where an observation would appear to be erroneous. Adjustments can be made to the year, month, day, hour or minute of the event, as well as the star number.   [<B>Note </B>- this adjustment facility does not make any changes to the data held in the file - it merely facilitates identifying what the correct data should be.]
+
+<h3>Reduction of all observations</h3>
+<p>You can generate a file containing the reductions of all observed occultations of the particular star, using the menu items <B>with List... Reduce all Valid & Save.</B>. or  <B>with List... Reduce all & Save.</B>. The <B>'all Valid' </B>option limits the output to events that have a phase of D, R, B or F, and which have not been flagged as invalid. The reduction process is apparent from 
+the form as each event is displayed at the bottom of the form. The reductions are saved to a file in the directory ...<B>Occult\Observations\Results</B>. The file name will be (in order of preference) the ZC number, the SAO number or the XZ number of the star - and is a .txt file.
+
+<h1><br>To view all observations made by a particular observer name, or at a site name</h1>
+<li>Set the option button to <B>search for name</B>. The following controls will appear.
+<P align=center><img src="Historical%20SelectNameOrSite.png">
+<li>Specify the characters you want included in the Observer's name field, or the Site name field. To ensure all instances of an observer or a site are retrieved, you need to limit the characters to those for which you are confident will appear in all instances of the observer's name or site. In doing this you need to consider pooptential format variations - such as whether the oberver's personal name is present as a full name, an initial followed by a space, or an initial followed by a decimal point (with or without a following space). Note that wild cards (?, *) should not be used. THe check made is a simple check of whether the observation record <I>contains </I>the specified text. Note also that the comparison made is not case-sensitive.
+
+<h3>Double star options</h3>
+<li>To highlight observations for the particular star where the report indicates actual or possible double star circumstances - check the <B>Highlight</B> box.
+<li>To list only those observations of the particular star where the report indicates actual or possible double star circumstances - check the <B>only list doubles</B> box..
+<li>To list all reports of unidentified double stars (irrespective of names), check the <B>list ALL unidentified doubles </B>box.
+
+<H3>click Read to display the list of events. </h3>
+
+<p>The file will be displayed. Selecting a record will result in the record being decoded and reduced, in the box at the bottom of the form. Also given are the observer's co-ordinates, and the name of the observer (which are retrieved from a separate file of observer names.)
+
+<p>If the Highlight check box was checked, potential double star reports are highlighted. Note that in this mode, clicking an entry will turn a highlight on or off.
+
+<p>A star will be identified as possibly double if the <B>Double star </B>field is set, or if <B>Remarkable Circumstances </B>is set to <B>Not instantaneous, gradual</B> [that is, a value of '1']. <I>[Note - the Remarkable Circumstances field is 3 columns to the right of the double star field]</I>
+
+<p>Under the list are some edit facilities for adjusting parameters where an observation would appear to be erroneous. Adjustments can be made to the year, month, day, hour or minute of the event, as well as the star number.   [<B>Note </B>- this adjustment facility does not make any changes to the data held in the file - it merely facilitates identifying what the correct data should be.]
+
+<h3>Reduction of all observations</h3>
+<p>You can generate a file containing the reductions of all observed occultations of the particular star, using the menu items <B>with List... Reduce all Valid & Save.</B>. or  <B>with List... Reduce all & Save.</B>. The <B>'all Valid' </B>option limits the output to events that have a phase of D, R, B or F, and which have not been flagged as invalid. The reduction process is apparent from the form as each event is displayed at the bottom of the form. The reductions are saved to a file in the directory ...<B>Occult\Observations\Results</B>. The file name will be one of <I>Name</I>, <I>Site </I>or <I>NameAndSite </I>(depending on which fields have been used for the listing), followed by a numeric value - and is a .txt file.
+
+
+
+
+
+<h1><br>To view all observations made from an RGO or ILOC site</h1>
+<li>set the option button to <B>read a file</B>
+<li>from the drop-down box, select either <B>RGO sites</B>, or <B>ILOC sites</B>, as appropriate.
+<p>The site file will be displayed, and the buttons to Create or Merge a report from a site are enabled.
+
+<p>The information provided for each site is:
+The data given for each site is:
+<li>Station number	<I>(3 digits for RGO, 5 for ILOC)
+</I><li>Telescope number	(2 digits)
+<li>Longitude
+<li>Latitude
+<li>Altitude (m)
+<li>Station name (generally Country, City)
+<li><I>Telescope aperture (cm) [ILOC only]
+</I><li><I>Telescope focal length (cm) [ILOC only]
+</I><li><I>Telescope code (type, mounting, driven) [ILOC only]
+</I><li>Number of observations for the site
+<li>Year range for the observations
+<li><I>Name of observer [RGO only]</i>
+<p><I>Note: The ILOC files have the observer names in a separate file that is not linked directly to the site details, the observer name does not appear with the site details.</I>
+
+
+<p>The list of sites can be sorted using the <B>Sort sites</B> menu item, by any of 
+<li>Number of observations
+<li>Site code
+<li>Longitude
+<li>Latitude
+<li><I>Observer name [RGO sites only]</I>
+<li>Site Name
+
+<h2>Viewing observations from a site</h2>
+<p>You can view and analyse all the observations from a particular site by transferring the observations for that site into the  <A href="Lunar%20Observations%20-%20Editor.htm">Lunar Occultation Observations Editor</a>. To do this:
+<li>select the site of interest; then
+<li>click the <B>Create report for.... </B>button [which will have the site identification listed in the button.]
+<p>You can add the observations of a site to those from another site by clicking the <B>Merge report for.... </B>button.
+<p>Once the observations are in the editor, you can use all the functionality of the editor to reduce and plot the observations, and to save them in a separate report.
+
+<p><I>Suggestion. If you have submitted occultation reports from several locations, you can create a consolidated list of all your reported occultations - by merging them into a single report.
+</I>
+
+
+<h1><br>To view a particular observation</h1>
+<li>set the option button to <B>read a file</B>
+<li>select the file covering the relevant year range from the drop-down box.</li>
+<p>The file will be displayed. Selecting a record will result in the record being decoded and reduced, in the box at the bottom of the form. Also given are the observer's co-ordinates, and the name of the observer (which are retrieved from a separate file of observer names.)
+
+<p>Under the list are some edit facilities for adjusting parameters where an observation would appear to be erroneous. Adjustments can be made to the year, month, day, hour or minute of the event, as well as the star number.   [<B>Note </B>- this adjustment facility does not make any changes to the data held in the file - it merely facilitates identifying what the correct data should be.]
+
+
+
+</BODY>
+</HTML>

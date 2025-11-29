@@ -1,0 +1,285 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Asteroid by star, plus stats</Title>
+<style type="text/css">
+.auto-style3 {
+	border: 1px solid #000000;
+}
+.auto-style6 {
+	margin-left: 80px;
+}
+</style>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Statistic of observations; Lists of observers; Find events by star</H1>
+<P>When an 'interesting' occultation observation is made, it can be very useful to identify all previous occultations of that star. It can also be useful to identify previous occultations of a star prior to an observation. However these tasks have not been readily available for asteroidal occultations,
+<p>This form provides the following functions:
+<h3>1. List all observers for the specified year range</h3>
+<p>Set the year range, and click <strong>List All observers for the Year range</strong>, 
+The output can be sorted either by the observer's family name, or by their 
+number of observations</p>
+<pre>
+Total number of observers = 434
+Period 2023 to 2023
+
+L. Abe                 1
+T. Abe                 3
+H. Akitaya             4
+M. Al                  1
+T. Allignol            1
+
+S. Alonso              1
+J. Alonso              2
+</pre>
+<p class="auto-style6">&nbsp;</p>
+<p>&nbsp;<h3>2. Regional statistics of occultation events</h3>
+<p>Set the year range, and click <strong>Num of Events by region</strong>, and a 
+report is generated of the number of events by region - as in:</p>
+<pre>                    Asteroidal occultations statistics for the period 2023 to 2023
+
+
+Numbers for diameter range, magnitude dop, and number of chords
+Region        Total             By diameter range (km)                     by magnitude drop               Number of chords
+                           <10km  10-20km  20-50km 50-100km   >100km   <0.2   0.2-0.5  0.5-1.0  >1.0        1   2-3   4-9   10+
+-------------------------------------------------------------------------------------------------------------------------------World       :  1678        287      268      467      364      292  |   26     152      220     1280 |   1224   360    83   10
+Australasia :   364         61       62       99       76       66  |    6      28       55      275 |    270    91     2    0
+Europe      :   537        107       90      140      117       83  |   10      65       60      402 |    400   103    29    5
+Japan       :   160          7       24       61       34       34  |    5      15       27      113 |     95    40    22    3
+Nth America :   616        112       92      167      136      109  |    5      44       78      489 |    459   125    30    2
+Sth America :     0          0        0        0        0        0  |    0       0        0        0 |      0     0     0    0
+Other       :     1
+
+
+Numbers by month
+Region        Total   Jan   Feb   Mar   Apr   May   Jun   Jul   Aug   Sep   Oct   Nov   Dec
+-------------------------------------------------------------------------------------------
+World       :  1678   104   114   122    90   123   114   125   134   208   184   186   174
+Australasia :   364     4     7    34    23    42    40    45    44    55    48    11    11
+Europe      :   537    51    57    46    26    31    31    35    43    83    48    40    46
+Japan       :   160     9     8    14    11    14     7    11     4    15    19    28    20
+Nth America :   616    40    42    28    30    36    36    34    43    55    69   106    97
+Sth America :     0     0     0     0     0     0     0     0     0     0     0     0     0
+
+-----------------------
+Double stars      :  32
+Binary asteroids  :   9
+
+---------------------------------
+Individual observations  :   3343
+
+-------------------------------------------------------------------------------
+Numbered asteroids observed  :  1210
+
+      1       2       3       5      12      13      15      16      18      20 
+     22      25      31      34      35      37      38      41      42      43 
+     45      46      48      52      53      54      64      67      70      72 
+<br></pre>
+<br><p>The regions are defined using the following coordinates</p>
+<table class="auto-style3" style="width: 500">
+	<tr>
+		<td class="auto-style3" style="width: 163px"><strong>Region</strong></td>
+		<td class="auto-style3" style="width: 147px"><strong>Longitudes</strong></td>
+		<td class="auto-style3"><strong>Latitudes</strong></td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 163px">Australasia</td>
+		<td class="auto-style3" style="width: 147px">+90 to +180</td>
+		<td class="auto-style3">0 to -60</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 163px">Europe</td>
+		<td class="auto-style3" style="width: 147px">-20 to +90</td>
+		<td class="auto-style3">+80 to 0</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 163px">Japan</td>
+		<td class="auto-style3" style="width: 147px">+110 to +170</td>
+		<td class="auto-style3">+80 to 0</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 163px">Nth America</td>
+		<td class="auto-style3" style="width: 147px">-180 to -50</td>
+		<td class="auto-style3">+80 to 0</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 163px">Sth America</td>
+		<td class="auto-style3" style="width: 147px">-83 to -34</td>
+		<td class="auto-style3">-10 to -55</td>
+	</tr>
+</table>
+<p>When the routine is run, an option is presented to save a list of event 
+identifications for each region. These lists provide the event date and asteroid 
+name. The files are written to the directory <strong>Generated Files,</strong> 
+using the fixed names <strong>Australasian.txt,</strong> <strong>European.txt</strong>,
+<strong>Japanese.txt</strong> and <strong>NthAmerican.txt</strong>.</p>
+<p>&nbsp;</p>
+<h3>3. Identify all previous occultations involving a specified star</h3>
+This function allows the identification of any observed asteroidal occultation events on the basis of the star's coordinates. It will also identify whether lunar occultations of the star have been reported, and whether there are any light curves available.
+<p>The coordinates can be entered manually in the boxes provided. More commonly, the user will specify the star by its catalogue number using the catalogue drop-down box, and the fields for the star number. However the ability to use the catalogue identification depends upon having the relevant catalogue installed in Occult.
+<p>Once the coordinates have been specified, click 'Find events for this star. The form will display:<ul>
+<li>all asteroidal occultation events involving that star
+<li>if the star is in the XZ80 catalogue (used for lunar occultation predictions)<ul>
+<li>the XZ catalogue number(s)
+<li>the number of lunar occultations of that star present  in the Lunar Archive
+<li>the number of light curves available for that star.</ul>
+</ul>
+
+<h3>4. Asteroids observed in one of more occultations</h3>
+Click the button, and the box will display a list of all asteroids observed in 
+an occultation.<br>
+<pre>
+List of the 3173 asteroids that have been involved in 1 or more occultations
+
+     1 Ceres
+     2 Pallas
+     3 Juno
+     4 Vesta
+     5 Astraea
+......     
+535168 2014 XU40
+541132 Leleakuhonua
+557165 2014 TT44
+612533 2002 XV93
+612911 2004 XR190
+     
+</pre>
+<br>
+
+<h3>5. Stars involved in more than one occultation, Star magnitude statistics</h3>
+Click the button, and the box will display:<ul>
+<li>for each instance where a star is involved in more than one occultation event, the events for that star. [Occultations by separate components of a binary asteroid are <I>not </I>treated as separate events].
+<li>a table giving the number of reported occultation events by magnitude range.
+<li>a list of bright-star events by magnitude range, up mag 6.</ul>
+
+<pre>Asteroidal occultations
+<br>List of stars occulted more than once
+<br>
+<br>    44 Nysa            2003 Jan  2      Tycho2 0654-00755-1
+<br>    72 Feronia         2009 Dec 19      Tycho2 0654-00755-1
+<br>
+<br>   109 Felicitas       2003 Mar 29      Tycho2 2389-01540-1
+<br>   564 Dudu            2008 Jan 12      Tycho2 2389-01540-1
+<br>   ...
+<br>
+<br>
+<br>Count of occulted stars by Magnitude
+<br>Magnitude range   Num.
+<br>          <2.0      5
+<br>   2.0 to  2.9      7
+<br>   3.0 to  3.9      5
+<br>   4.0 to  4.9     15
+<br>   5.0 to  5.9     38
+<br>   6.0 to  6.9     78
+<br>   7.0 to  7.9    165
+<br>   8.0 to  8.9    346
+<br>   9.0 to  9.9    640
+<br>  10.0 to 10.9   1036
+<br>  11.0 to 11.9   1521
+<br>  12.0 to 12.9   1572
+<br>  13.0 to 13.9   1454
+<br>  14.0 to 14.9    685
+<br>         >15.0    184
+<br>
+<br>
+<br>List of bright star events
+<br>
+<br>Stars brighter than mag. 2.0
+<br> P2M00 Venus           1959 Jul  7      HIP  49669     1.3  UBSC
+<br>   381 Myrrha          1991 Jan 13      HIP  31681     1.9  UBSC
+<br>   166 Rhodope         2005 Oct 19      HIP  49669     1.3  UBSC
+<br>  1669 Dagmar          2015 May 24      HIP  49669     1.3  UBSC
+<br>   268 Adorea          2016 Oct 13      HIP  49669     1.3  UBSC
+<br>
+<br>Stars between mag. 2.0 and 3.0
+<br> P5M00 Jupiter         1971 May 13      HIP  78820     2.6  GaiaEDR3
+<br> P2M00 Venus           1981 Nov 17      HIP  92855     2.0  UBSC
+<br>   287 Nephthys        2004 Sep  6      HIP  84012     2.8  GaiaEDR3
+<br>   824 Anastasia       2010 Apr  6      HIP  81377     2.6  GaiaEDR3
+<br>   472 Roma            2010 Jul  8      HIP  79593     2.0  GaiaEDR3
+<br>   369 Aeria           2018 Feb 18      HIP  84012     2.8  GaiaEDR3
+<br>  2826 Ahti            2022 Apr 13      HIP  28380     2.6  UBSC
+<br> ...</pre>
+<br>
+<h3>6. Small magnitude drop events</h3>
+Lists observed events with a small magnitude drop. The limiting magnitude drop is user-selected
+<pre>
+Mdrop      Date        Object
+0.00   1971 Jul 24  P4M00 Mars
+...
+0.03   2017 Mar 31  P5M02 Europa
+0.04   2017 Nov 29     20 Massalia
+0.04   2019 Jan 22      2 Pallas
+
+0.04   2019 Feb  4      6 Hebe
+0.05   2016 Dec  7      4 Vesta
+0.06   2022 Feb 23     11 Parthenope
+0.06   2021 Aug 25     80 Sappho
+0.06   2020 Jul 18      2 Pallas
+
+0.06   2020 Aug 20    444 Gyptis
+0.06   2010 Feb 10      4 Vesta
+0.06   2022 Nov 18    324 Bamberga
+0.06   2019 Jan  1      6 Hebe
+0.06   2018 Apr 26     13 Egeria
+
+</pre>
+<h3>7. Slow and fast events</h3>
+Lists observed events where the shadow takes more than 90 minutes to move 
+one Earth diameter, and those where it takes less than 6 minutes.
+<pre>
+Slow Events. Across-Earth Duration &gt 90 mins
+
+Duration   Diameter        Date        Object
+10.7 hrs   107.0 km    2021 Apr  2    140 Siwa
+ 8.7 hrs     7.7 km    2020 Feb 23  28915 2000 OU13
+ 7.1 hrs    65.5 km    2020 May 22    217 Eudora
+ 4.9 hrs     5.7 km    2023 Sep  3  94101 2000 YQ74
+ 4.2 hrs     7.9 km    2023 Nov  2   9977 Kentakunimoto
+.....
+ 1.5 hrs    47.3 km    2024 Feb 23   1596 Itzigsohn
+ 1.5 hrs     0.8 km    2023 Jan 18  65803 Didymos
+ 1.5 hrs   155.3 km    2019 Feb  8    776 Berbericia
+ 1.5 hrs     8.2 km    2021 Feb 26  71533 2000 CL91
+ 1.5 hrs   134.8 km    2011 Jul 11     69 Hesperia
+
+
+
+Fast Events. Across-Earth Duration &lt 360 seconds
+
+Duration   Diameter        Date        Object
+ 6.0 min    22.8 km    2019 Aug 16   1142 Aetolia
+ 6.0 min    53.8 km    2021 Nov 15    584 Semiramis
+ 6.0 min     9.6 km    2023 Nov  2 130369 2000 GZ124
+ 6.0 min    78.9 km    2023 Nov  9    414 Liriope
+ 6.0 min    22.5 km    2023 Nov  1   5528 1992 AJ
+.....
+ 4.7 min   208.4 km    2010 Mar  2     88 Thisbe
+ 4.7 min    93.6 km    2021 Dec 16    313 Chaldaea
+ 4.7 min   108.0 km    2007 Sep 27      5 Astraea
+ 4.6 min    45.2 km    2018 Nov 18    856 Backlunda
+ 4.5 min   185.1 km    2023 Apr 10    372 Palma
+
+ 4.4 min   231.0 km    2018 Jul  3    324 Bamberga
+ 4.1 min     5.0 km    2023 Nov 21   3200 Phaethon</pre>
+<pre>
+&nbsp;</pre>
+
+<h3>8. RUWE distribution</h3>
+<p>Displays a bar chart of the number of events for RUWE values between 0.50 and 
+3.00. For RUWE greater than 1.40, the bars are brown.</p>
+<p>The actual values used to plot the bar chart can be obtained using the menu 
+item, with <strong>List... Copy</strong>. The graphic of the bar chart can be 
+copied with <strong>List... Copy RUWE image</strong>. That menu option is only 
+listed when the bar chart is displayed.</p>
+
+
+
+
+</BODY>
+</HTML>

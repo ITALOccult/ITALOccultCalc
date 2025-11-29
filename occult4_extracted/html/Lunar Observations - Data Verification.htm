@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Data verification</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Data verification - Lunar observations</H1>
+
+The <B>File...   Conduct 5 data validity checks</B> function does a comprehensive check of data in the report against permitted ranges of data. The checks undertaken are detailed following.  
+
+<p>The last validity check <B>[Verify report content]</B> is is performed whenever a file is opened, imported or pasted - with results only being displayed if problems are identified.
+
+<H2>1.  Unidentified stars</H2>
+This check goes through the reprt looking for unidentified stars - indicated by a number of zero, or a caltalogue that is not  ' ', X, S, P or A. As it goes through the list, if an unidentified star is located the form for identifying a star is opened. You can escape this check by clicking <B>Abort </B>on the identification form. <A href="Lunar%20Observations%20-%20Identify%20unidentified.htm" > Details</a>
+
+<H2>2.  List possible doubles</H2>
+This merely lists those events where the coding indicates a possible double star, giving the event, and any WDS code that has been allocated in the report. This listing provides a prompt to review whether a WDS component code should be added.
+
+<H2>3. Verify Accuracy values</H2>
+This checks events for Accuracy values greater than 1.0 seconds - and for any such events asks if the value should be divided by 10. [The need for this code comes from old ILOC report forms, where an incorrectly positioned value could give an Accuracy 10-times larger than intended.]
+
+<H2>4.  Verify Temperature</H2>
+This checks events for Temperatures greater than 60 deg C - and for any such events asks if 100 deg should be subtracted from the temperature. [The need for this code comes from old ILOC report forms, where temperatures less than -9 could not be entered. Some observers added 100 deg to the temperature in these circumstances.]
+
+
+<H2>5.  Verify Report Content</H2>
+This checks a range of data items in the report for consistency with the value ranges. These checks are only needed when the report has been prepared outside of Occult. [If the data is entered in Occult, these data checks are part of the data entry process]
+
+<ul><H3>Report structure</H3>
+The data check occurs in the following order:
+<li>Sites
+<li>Events
+
+<p>All errors found on a report line are presented in a single line. The first part of the line indicates the relevant item in the report in the following manner:
+<li>Tel  X  = Site X
+<li>Line nn = event line nn
+
+<p>The errors on a line are presented in a comma-separated list. There is a short text identifier to indicate the relevant field, followed by brackets that contain the incorrect value. Note that the data check occurs in the order of the data in the line being checked (in the Iota 2008 format).
+
+<p><B>IMPORTANT</B>. Where a data item is displayed in a drop-down box, and the data item has an invalid value &#8211 when the relevant line is selected the drop-down box will display a default value. You should ensure that the drop-down box is set to the correct value for the observation.
+
+<h3>Items checked - Verify report Content</h3>
+<h4>Telescope line</h4><ul>
+<li>telescope code is one of " ", R,, N, C and O
+<li>mount code is one of " ", E and A
+<li>drive code is noe of " ", D and M
+<li>aperture less than zero, or greater than 190 cm
+<li>focal length  less than zero, or greater than 800 cm
+<p>
+<li>Longitude - deg in range -180 to +180, minutes 0 to 59, seconds 0 to 59.99
+<li>Latitude - deg in range -180 to +180, minutes 0 to 59, seconds 0 to 59.99
+<li>Horizontal datum code <1
+<li>Altitude in range -200 to +5000m
+<li>Vertical date code - either E or M
+
+</ul><h4>Event - date and type</h4><ul>
+<li>Year in range 1623 to 2100
+<li>Month in rang 1 to 12
+<li>Day in range 1 to 31
+<li>hour in range 0 to 23
+<li>Minute in range 0 to 59
+<li>Second in range 0 to 59.999 
+<li>The event type is one of D, R, B, F, M, S, E, O
+<li>The limb code is one of D, B, U
+<li>The graze code is one of " " and G
+
+</ul><h4>Event - star number</h4><ul>
+<li>catalogue is one of R, S, X, A, P, U
+<li>if catalogue is R, star number in range 0 to 3539
+<li>if catalogue is S, star is in the range 57982 to 210562
+<li>if catalogue is X, star is in the range 0 to 244437
+<li>if a WDS code is specifed, it is an alpha character in the ranges A - Z, a - z
+
+</ul><h4>Timing Methods, Circumstances</h4><ul>
+<li>PE less than 0 or > 2 secs
+<li>PE application code - one of S, A, B, U, E, X
+<li>Method of Recording 1 - one of " " G, V, M, S, T, E, P, K, X, C
+<li>Method of Recording 2 - one of " " G, V, M, S, T, E, P, K, X, C, A  
+<li>if Method of Recording 1 is blank, and Method of Recording 2 is specified.
+<li>Method of Timing - one of " ", G, R, N, C, T, M, O
+<li>Accuracy - in range 0 to 2.0 secs
+<li>Certainty - 1, 2 or 3
+<li>Signal-to-Noise - in range 0 to 9.9
+<li>Double star component - one of " ", W, E, N, S, B, F, U
+<li>Duration - range 0 to 2.0 secs
+<li>Light level - one of " ", T, F 
+<li>Stability - 0, 1, 2 or 3
+<li>Transparency - 0, 1, 2 or 3
+<li>Circumstances - integer in range 0 to 9
+<li>Temperature - in range -30 to + 50 C. 
+
+</ul></ul>
+
+
+
+</BODY>
+</HTML>

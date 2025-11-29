@@ -1,0 +1,26 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Moon_yyyy</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1><A NAME="idh_4overview"></A>Moon_yyyy.bin</H1>
+<!-- Insert Header in above line -->
+
+<p>These files are labeled <B>Moon_YYYY.bin</B>, where YYYY are the digits of the year. 
+The files are located in the directory ...\Resource Files\Moon.  There is one file created for any year - a random access file of record length 74. The data is stored as 17  fields as Integers (giving the 6 polynomial coefficients in RA, 6 in Dec, then 5 in Parallax), and three short integer fields  (giving any offset in longitude and latitude that has been applied to the ephemeris, and the basis of the ephemeris).<ul>
+
+<li>The values for RA have to be divided by 10<sup>7</sup> to get the coefficients in degrees, and then add 180.</li>
+<li>The values for Declination have to be divided by 10<sup>7</sup> to get the coefficients in degrees</li>
+<li>The values for parallax have to be divided by 10<sup>8</sup>.</li>
+<li>The values for the longitude correction and latitude correction have to be divided by 10,000 to get the correction in arcseconds.</li>
+<li>The field giving the basis of the ephemeris has values of '405' [DE405], '413' [DE413], or '87' for Chapront [effectively, DE200]</ul></p>
+
+<p>Each record corresponding to a day in the year. The file will only contain data for dates computed by OCCULT, with other dates having null values. [If the data is not present for a date for which predictions are requested, the program will compute the ephemeris for that date.]</p> 
+</BODY>
+</HTML>

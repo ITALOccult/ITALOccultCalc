@@ -1,9 +1,19 @@
-\contentsline {algorithm}{\numberline {1}{\ignorespaces Cartesian to Geodetic Conversion}}{13}{algorithm.1}%
-\contentsline {algorithm}{\numberline {2}{\ignorespaces Calendar Date to Julian Date}}{23}{algorithm.2}%
-\contentsline {algorithm}{\numberline {3}{\ignorespaces VSOP87D Coordinate Evaluation}}{35}{algorithm.3}%
-\contentsline {algorithm}{\numberline {4}{\ignorespaces JPL DE441 Position Evaluation}}{37}{algorithm.4}%
-\contentsline {algorithm}{\numberline {5}{\ignorespaces Orbital Elements to Cartesian State Vector}}{45}{algorithm.5}%
-\contentsline {algorithm}{\numberline {6}{\ignorespaces Kepler's Equation via Newton-Raphson}}{47}{algorithm.6}%
-\contentsline {algorithm}{\numberline {7}{\ignorespaces Light-Time Iteration}}{57}{algorithm.7}%
-\contentsline {algorithm}{\numberline {8}{\ignorespaces Differential Correction}}{65}{algorithm.8}%
-\contentsline {algorithm}{\numberline {9}{\ignorespaces Monte Carlo Uncertainty Propagation}}{71}{algorithm.9}%
+\contentsline {algorithm}{\numberline {1}{\ignorespaces Cartesian to Geodetic Conversion}}{16}{algorithm.1}%
+\contentsline {algorithm}{\numberline {2}{\ignorespaces Light-time iteration}}{32}{algorithm.2}%
+\contentsline {algorithm}{\numberline {3}{\ignorespaces Calendar Date to Julian Date}}{41}{algorithm.3}%
+\contentsline {algorithm}{\numberline {4}{\ignorespaces VSOP87D Coordinate Evaluation}}{57}{algorithm.4}%
+\contentsline {algorithm}{\numberline {5}{\ignorespaces JPL DE441 Position Evaluation}}{60}{algorithm.5}%
+\contentsline {algorithm}{\numberline {6}{\ignorespaces Iterative aberration correction}}{67}{algorithm.6}%
+\contentsline {algorithm}{\numberline {7}{\ignorespaces Orbital Elements to Cartesian State Vector}}{84}{algorithm.7}%
+\contentsline {algorithm}{\numberline {8}{\ignorespaces Kepler's Equation via Newton-Raphson}}{86}{algorithm.8}%
+\contentsline {algorithm}{\numberline {9}{\ignorespaces Light-Time Iteration}}{100}{algorithm.9}%
+\contentsline {algorithm}{\numberline {10}{\ignorespaces Differential Correction}}{112}{algorithm.10}%
+\contentsline {algorithm}{\numberline {11}{\ignorespaces Monte Carlo Uncertainty Propagation}}{120}{algorithm.11}%
+\contentsline {algorithm}{\numberline {12}{\ignorespaces Asteroid Ephemeris Generation}}{150}{algorithm.12}%
+\contentsline {algorithm}{\numberline {13}{\ignorespaces Closest Approach Detection}}{152}{algorithm.13}%
+\contentsline {algorithm}{\numberline {14}{\ignorespaces Shadow Path Computation}}{153}{algorithm.14}%
+\contentsline {algorithm}{\numberline {15}{\ignorespaces Complete Occultation Prediction}}{166}{algorithm.15}%
+\contentsline {algorithm}{\numberline {16}{\ignorespaces RKF78 Single Integration Step}}{167}{algorithm.16}%
+\contentsline {algorithm}{\numberline {17}{\ignorespaces Kepler Equation Newton-Raphson Solver}}{168}{algorithm.17}%
+\contentsline {algorithm}{\numberline {18}{\ignorespaces Besselian Shadow Path on Earth Surface}}{169}{algorithm.18}%
+\contentsline {algorithm}{\numberline {19}{\ignorespaces Monte Carlo Shadow Path Uncertainty}}{170}{algorithm.19}%

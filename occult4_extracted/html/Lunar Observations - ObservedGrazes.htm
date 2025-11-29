@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Lunar Occultations - Observed grazes</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Observed grazes</H1>
+<p>Details about the source of the graze data in Occult are given <A href="Graze%20data%20-%20sources.htm">here</a>. 
+
+<!-- <h2>Graze summary information</h2>
+<p>The menu item <B>Make summary of grazes </B>provides a tool for getting useful graze summary information. The options available are:
+<table columns=3 border=1>
+<TR><TH NOWRAP>Option</TH><TH>Result</TH></TR>
+<TR><TD nowrap>by star number</TD><TD>a list of all grazes, sorted by star number, and then date</TD></TR>
+<TR><TD>by date</TD><TD>a list of all grazes, sorted by date</TD></TR>
+<TR><TD>by observer</TD><TD>a list of all observers involved with grazes, sorted by observer </TD></TR>
+<TR><TD>for the following observer</TD><TD>Enter a string for part of an observer's name in the menu line under this menu option. The result is a list of all observers at all grazes that contain that search string. Note: the search is case-insensitive; no wild cards can be used.</TD></TR>
+</table>
+ -->
+
+
+<h2>List and analyse graze events</h2>
+<p>You can obtain full access to the observations made at grazing occultations. Grazes are identified by entering relevant search criteria in the following boxes at the top of the form.
+
+<P align=center><img src="Historical%20grazes.png">
+<p>The function will work with the old format files of graze observations used in Occult prior to version 4.0.4.1 - by checking the box 'use old format files'.
+
+<p>For the Date, you can specify any one or more of Year, month and day. For example, enter 28 in the Day, leaving year and month blank - and all grazes observed on the 28th day of any month will be returned. For the year, you can enter just some of the digits - eg '18' will retrieve all grazes in the 1800's, as well as for all years ending in 18, such as 1918.
+
+<p>For the star number, you can select the star from the drop-down box, or enter its number in any of the ZC, SAO or XZ boxes. For the drop-down box there are 6 sets of names available under the menu item<B> Set 'Name of Star' list</B>. Those sets are:
+<li>All names
+<li>Proper names
+<li>Bayer letters
+<li>Magnitude brighter than 2
+<li>Magnitude brighter than 3
+<li>Magnitude brighter than 4</li>
+To clear the star number fields, set the XZ number to 0.
+
+<p>For the observer's name, enter a string for part of an observer's name. The string is preferably part of the family name. Avoid personal names, or initials. The search based on the name string is case insensitive.
+
+<p>Click <B>List Events</B> to display all graze events that meet the search criteria.
+
+<p>The graze events are displayed on the form. The display depends on whether the new or old format files are being accessed:<ul>
+<li><b>New Format</b>Each event is separated by a short line of asterisks. The data for each event is as follows:<ul>
+<li>The date of the first event in the graze (year, Month, Day);
+<li>Graze identifier - a uniqe identifier applied to each graze;
+<li>The star involved in the graze
+<li>The number of events associated with the graze;
+<li>The number of different observer names associated with the graze. {Note. For many grazes in the 1960's there are no observer names available. All missing names are treated as the same observer in this count.}
+<li>A list of distinct observer names. [Note - occassionally typographcal errors result in a name appearing more than once - with different spelling.]</ul>
+
+<li><b>Old Format</b> Each event is separated by a short line of asterisks. The data for each event is presented like an ILOC occultation report - with the first section being Sites, the second section being observer names, and the third section being the reported events.</ul>
+
+<h3>Analysing an event</h3>
+<p>When an event of interest has been located, you can analyse it in full detail by transferring the observations to the <A href="Lunar%20Observations%20-%20Editor.htm">Lunar Occultation Observations Editor</a>, by placing the cursor anywhere on the particular graze results, Right-click, and select <B>Place event in Editor</B>. This will open up the Observations editor, loaded with the graze results.
+
+<p>Having placed one of those reports into the Observations Editor, you can merge other reports with it by placing the cursor anywhere on the further graze result, Right click, and select <B>Merge event with event in Editor</B>.
+
+<p>With the observation in the editor, you can reduce the observations and plot the results - including plotting the results against all other occultation observations against that part of the lunar limb.
+  
+
+
+</BODY>
+</HTML>

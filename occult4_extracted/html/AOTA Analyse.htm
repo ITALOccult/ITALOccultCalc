@@ -1,0 +1,619 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns:m="http://schemas.microsoft.com/office/2004/12/omml"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+
+<title>Overview</title>
+</head>
+
+<body bgcolor="#FFFFDF" lang=EN-AU link=blue vlink=purple style='tab-interval:
+36.0pt'>
+
+
+
+<h2>AOTA Help topics</h2>
+<a href="AOTA%20Overview.htm">Overview and form layout</a><br><br>
+<a href="AOTA%20Read%20and%20integrate.htm">Tab 1. Read, Integrity, Set time, Bin and Normalise</a><br>
+<a href="AOTA%20Fourier.htm">Tab 2A. Fourier plot</a><br>
+<a href="AOTA%20Short.htm">Tab 2B. Short event check</a><br>
+<a href="AOTA%20Find%20events.htm">Tab 3. Find events</a><br>
+<a href="AOTA%20Select%20to%20analyse.htm">Tab 4. Select event to analyse</a><br>
+<a href="AOTA%20Analyse.htm">Tab 5. Analyse</a><br>
+<a href="AOTA%20FinalTimes.htm">Tab 6. Camera corrections, final results</a><br><br>
+<a href="AOTA%20Integrity.htm">Integrity check</a><br>
+<a href="AOTA%20Integration%20and%20binning.htm">Integration, binning & normalisation</a><br>
+<a href="AOTA%20Set%20time%20scale.htm">Set time scale</a><br>
+<a href="AOTA%20Verify.htm">Verify event times</a><br>
+<a href="AOTA%20VTI%20info.htm">VTI information</a><br><br>
+<a href="AOTA%20Hints%20and%20Tips.htm"><B>Hints and Tips</B></a><br>
+
+<h1><span style='mso-fareast-font-family:"Times New Roman"'>AOTA: Tab 5. Analyse<o:p></o:p></span></h1>
+
+<p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman";
+mso-no-proof:yes'><img border=0 width=616 height=195 id="_x0000_i1039"
+src="AOTA_Analysis.png"></span><span style='mso-fareast-font-family:"Times New Roman"'><o:p></o:p></span></p>
+
+<h2><span style='mso-fareast-font-family:"Times New Roman"'><o:p>&nbsp;</o:p></span></h2>
+
+<h2><span style='mso-fareast-font-family:"Times New Roman"'>Methodology<o:p></o:p></span></h2>
+
+<p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>The
+detailed analysis of an event involves the fitting of a theoretical transition
+light curve to each of the transitions (the D and R events). Each transition is
+analysed separately. <o:p></o:p></span></p>
+
+<p>The theoretical transition signals are based on a uniform light level before
+and after the transition, and a transition region of variable length. The
+transition region is calculated on the basis of the effects of stellar
+diameter. The effects of Fresnel diffraction are not included. </p>
+
+<p>The default number of transition lengths that are investigated is 10.
+However the number can be varied between 5 and 30, using the <span
+class=SpellE>UpDown</span> box '# transitions'. The actual value used is
+non-critical - however the response time will increase when the number of
+transitions is large. </p>
+
+<p>The analysis requires an identified region <span class=SpellE>centered</span>
+on the transition - which is where the detailed comparison of the light curves <span
+class=GramE>occur</span>, and a region on either side to set the
+characteristics (mean and standard deviation) of the pre-and post-transition
+signals. These regions are coloured light yellow and light blue on the plot. </p>
+
+<p>The analysis proceeds by comparing the theoretical transition signal for a
+given transition length with the observed signal and generated a &#967;<sup>2</sup>
+statistic for each positioning of the theoretical signal along the measurement
+region of the observed signal. In this process the overall position of the
+theoretical signal remains fixed with respect to the observed signal; the
+variation is achieved by changing the positioning of the transition within the
+theoretical signal. The theoretical signal covers both the measurement region
+and the two regions on either side. However the transition region is moved only
+across the range of the measurement region. </p>
+
+<p>The event time is identified with the location that has the minimum &#967;<sup>2</sup>
+value. That value can be different for different length transitions. The
+uncertainties in the event times are estimated by way of a Monte Carlo analysis
+- on the basis of a user-selected transition length. The process involves:</p>
+
+<ol start=1 type=i>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l7 level1 lfo1;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>adding noise to one or other of the observed signal or
+     the test signal (preferably, the noise is added to the test signal) <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l7 level1 lfo1;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>performing the &#967;<sup>2</sup> assessment of the
+     event time - by determining the location for the minimum &#967;<sup>2</sup>
+     value for that particular noise-added situation <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l7 level1 lfo1;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>Repeating (<span class=SpellE>i</span>) and (ii) a
+     number of times; and <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l7 level1 lfo1;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>Recording the differences between the minimums
+     generated from each noise-added situation, and the original event time
+     computed on the basis of no added noise.<o:p></o:p></span></li>
+</ol>
+
+<h2><span style='mso-fareast-font-family:"Times New Roman"'>Setting the regions<o:p></o:p></span></h2>
+
+<p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman";
+mso-no-proof:yes'><img border=0 width=147 height=153 id="_x0000_i1038"
+src="AOTA_Analyse_Regions.png"></span><span style='mso-fareast-font-family:
+"Times New Roman"'><o:p></o:p></span></p>
+
+<p>When the tab is entered from the previous step, the various regions required
+for the analysis are pre-set using default values. <i><span style='color:red'>These
+values should be reviewed.</span></i> The mean and standard deviations derived
+from the settings can be displayed on the plot by checking the Show measurement
+means checkbox in the <span class=SpellE>center</span> of the form (see figure
+below under <span class=GramE><b><i>The</i></b></span><b><i> initial analysis,
+and plot information</i></b>). The following plot shows the means (black line)
+and standard deviations (dashed green line at no occultation, dashed purple
+line during occultation) in the three circled areas. <span style='mso-no-proof:
+yes'><img border=0 width=663 height=213 id="_x0000_i1037"
+src="AOTA_AnalysisWithAverages.png"></span></p>
+
+<p>During this part of the analysis, it is usually helpful to increase the plot
+scale - to 5 or 10 - so that you can view the detail of the transition region.
+[The program will automatically increase the plot scale when this tab is
+entered.] </p>
+
+<p>The regions are identified with Yellow for the measurement region, and light
+blue for the before/after regions. Data points within those regions now have
+associated uncertainty bars - being derived from the standard deviation of the
+data points in the before/after regions. </p>
+
+<p>Typically the uncertainty bars are smaller at the bottom of a light curve
+that at the top. By default the error bars are proportioned according to the <b><i>Variance
+</i></b>of the signals before and after the transition. However this may be
+changed to being proportioned according to <b><i>standard deviation </i></b>by
+checking the box '<b>Vary noise by <span class=GramE>Std</span> <span
+class=SpellE>Devn</span></b>'. </p>
+
+<p>Setting the regions incorrectly can have significant adverse effects on the
+analysis. The principles to follow are:</p>
+
+<ul type=disc>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l3 level1 lfo2;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>For a clean occultation event, have the start and end
+     of the measurement measurements fairly close to the start and end of the
+     observed light change (e.g. between 2 and 4 data points from the apparent
+     start/end. <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l3 level1 lfo2;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>For events where the start and end of the transition
+     are not well defined, make sure sufficient points are included in the
+     measurement region to cover all possibilities of when the occultation
+     occurred. <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l3 level1 lfo2;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>The regions on either side of the measurement region
+     need to be sufficiently long so that they are a good representation of the
+     signal. One indication is whether the mean line drawn through these data
+     points is reasonable close to the dotted black line that represents the
+     average used for the cross-correlation analysis.<o:p></o:p></span></li>
+</ul>
+
+<p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>The
+measurement regions are <span class=GramE>adjusted/set</span> as follows.<o:p></o:p></span></p>
+
+<ol start=1 type=i>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l2 level1 lfo3;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>Ensure the radio button in the Adjust Regions group is
+     set to 'Just before D' <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l2 level1 lfo3;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>Place the cursor at the location where you think the
+     measurement region for the D event should start, and click. The yellow
+     region will be adjusted, and the location will appear in the text box next
+     to the radio button. <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l2 level1 lfo3;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>The radio button will have been automatically changed
+     to 'Just after D'. Position the cursor at the desired location, and click.
+     <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l2 level1 lfo3;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>Repeat for the 'Just before R', and 'Just after R',
+     clicking as required.<o:p></o:p></span></li>
+</ol>
+
+<p>The extent of the side regions is adjusted using the 'Points outside of
+transition' <span class=SpellE>UpDown</span> box in the Adjust Regions group.
+This can be adjusted to being between 5 and 40. </p>
+
+<h2><span style='mso-fareast-font-family:"Times New Roman"'>Settings related to
+the &#967;<sup>2</sup> analysis<o:p></o:p></span></h2>
+
+<p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman";
+mso-no-proof:yes'><img border=0 width=167 height=70 id="_x0000_i1036"
+src="AOTA_Chi2Setting.png"></span><span style='mso-fareast-font-family:"Times New Roman"'><o:p></o:p></span></p>
+
+<p>The program fits multiple theoretical light curves to the observed light
+curve - differing by the duration (frames) over which the occultation
+transition occurs. The default setting is for 10 frames (plot points). However
+this can be adjusted to being between 5 and 30 frames (plot points) using the
+'# transitions' <span class=SpellE>UpDown</span> box in the &#967;<sup>2</sup>
+analysis group. </p>
+
+<p>In a typical occultation light curve, the noise at the bottom of the light
+curve is less than that at the top. For the &#967;<sup>2</sup> analysis the
+noise needs to be appropriate to the signal level of each data point - which
+requires interpolating/extrapolating the noise level dependent upon the height
+of the data point. The default method for doing this is to linearly
+interpolate/extrapolate the noise on the basis of its Variance (variance is the
+square of the standard deviation). Checking the radio button 'Vary noise by <span
+class=GramE>Std</span> <span class=SpellE>Devn</span>' will linearly
+interpolate/extrapolate the noise on the basis of its Standard Deviation. </p>
+
+<h2><span style='mso-fareast-font-family:"Times New Roman"'>Settings related to
+the Monte Carlo analysis<o:p></o:p></span></h2>
+
+<p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman";
+mso-no-proof:yes'><img border=0 width=163 height=84 id="_x0000_i1035"
+src="AOTA_MonteCarloSetting.png"></span><span style='mso-fareast-font-family:
+"Times New Roman"'><o:p></o:p></span></p>
+
+<h3><span style='mso-fareast-font-family:"Times New Roman"'>Number of trials<o:p></o:p></span></h3>
+
+<p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>The
+uncertainty in the event time is estimated using a Monte Carlo analysis. The
+process involves taking the original signal (either the observed signal, or the
+trial signal), adding noise, and computing the event time for that
+noise-affected situation. This process is repeated a large number of times
+(trials) to obtain a statistically reliable indication of the range of possible
+solutions given the level of noise present. <o:p></o:p></span></p>
+
+<p>The number of trials that are conducted is set by the <span class=SpellE>UpDown</span>
+box '# Monte Carlo trials' in the Monte Carlo Parameters group. The default
+setting is 200, but this can be changed to between 100 and 2000. Note that when
+the number of trial is large, the program responsiveness becomes slow. </p>
+
+<h3><span style='mso-fareast-font-family:"Times New Roman"'>Application of
+Noise<o:p></o:p></span></h3>
+
+<p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>When
+running the Monte Carlo trials, there are two options for applying the noise:<o:p></o:p></span></p>
+
+<ol start=1 type=i>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l6 level1 lfo4;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>Apply the noise as additional noise to the <b><i>measured
+     </i></b>light signal - and fit a 'pure' test signal to this
+     doubly-noise-affected signal; or <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l6 level1 lfo4;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>Apply the noise to the <b><i>test </i></b>signal - such
+     that a noise affected test signal is fitted to the observed (&amp;
+     therefore noise-affected) measured light signal.<o:p></o:p></span></li>
+</ol>
+
+<p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>The
+default setting is to apply the noise to the test signal. This can be changed
+to add the extra noise to the observed signal by checking the radio button
+'Noise applied to measured' {<i>signal</i>} in the Monte Carlo Parameters
+group. <o:p></o:p></span></p>
+
+<h3><span style='mso-fareast-font-family:"Times New Roman"'>Noise limitations<o:p></o:p></span></h3>
+
+<p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>The
+noise signal that is added uses a random number generator with a normal
+distribution. [The algorithm used is the <b>Box-Muller </b>algorithm]. This
+will generate numbers that potentially are many standard deviations away from
+the mean. Large noise deviations can be excluded from the noise applied in the
+Monte Carlo analysis by adjusting the setting in the <span class=SpellE>UpDown</span>
+box labelled <b>Std Dev limit on noise</b>' in the Monte Carlo Parameters
+group. The default setting is 3; it can be varied between 2 and 4. <o:p></o:p></span></p>
+
+<p>The distribution of the possible event times appear to frequently have
+significant differences associated with whether the Monte Carlo noise is added
+to the observed signal or the test signal. <i>It is believed that the results
+obtained when adding the noise to the test signal are more reliable.</i> </p>
+
+<h2><span style='mso-fareast-font-family:"Times New Roman"'>The initial
+analysis, and plot information<o:p></o:p></span></h2>
+
+<p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman";
+mso-no-proof:yes'><img border=0 width=608 height=155 id="_x0000_i1034"
+src="AOTA_Results.png"></span><span style='mso-fareast-font-family:"Times New Roman"'><o:p></o:p></span></p>
+
+<p>Click the button 'Get event locations' to conduct the initial analysis. The
+following data and plot information is generated - on the basis that the
+occultation transition occurred in a single frame:</p>
+
+<ul type=disc>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l5 level1 lfo5;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>Below that button, the frame identification for each
+     transition. That frame number is either a whole number or ends in 0.5. Two
+     frames will be given - corresponding to the start and end of the event
+     uncertainty region. Additionally, the length of the transition from full
+     light to occulted light for the fitted light curve is given. <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l5 level1 lfo5;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>In the two plots under the Heading '&#967;<sup>2</sup> for
+     different transitions', plots of the minimum &#967;<sup>2</sup> value <span
+     class=GramE>for each transition duration</span> assessed. [The plot is
+     actually inverted, such that the highest bar corresponds to the least
+     &#967;<sup>2</sup> value]. In this plot the bar that has been filled-in
+     green corresponds to the transition length used for the uncertainty
+     analysis. The numbers on the bars indicate the length of the transition
+     region for that bar. <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l5 level1 lfo5;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>In the two plots under the Heading 'Uncertainty range',
+     plots of the distribution of solutions for the event time arising from the
+     Monte Carlo trials. Each bar in these plots indicates the relative number
+     of event solutions, with the horizontal axis giving the frame (plot point)
+     offset of the trial solution from the 'original' solution. The range of
+     offset values is -9 to +9 frames. Anything that appears in the +10/-10
+     position corresponds to offsets of greater or equal to 10, and are
+     coloured red. As a general proposition, any solution that has data in this
+     region is likely to be unreliable or invalid. Occasionally the extreme
+     bars in the distribution will be <span class=SpellE>colored</span> orange.
+     This will occur when the total count of events included in that bar (plus
+     any bars at larger values) is less than 5% of the total number of trials.
+     Any such bars can be disregarded when assessing the uncertainty range. <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l5 level1 lfo5;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>On the plot of the event, the occultation curve is
+     plotted - in a pinkish-red. The limits of the uncertainty range in the
+     location of the occultation curve are plotted as a red dashed line - to
+     facilitate an understanding of the cause of the uncertainty when it is
+     more than a frame or two. The top and bottom of the light curve is
+     positioned according to the signal heights in the regions on either side
+     of the measurement region. The slope of the occultation curve is plotted
+     in accordance with the selected transition - see below. Also plotted (but
+     in faint black dotted line) is the square-wave occultation signal fitted
+     from the cross-correlation analysis. <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l5 level1 lfo5;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>Also plotted (in green) is the line representing the
+     variation of &#967;<sup>2</sup> over the measurement <span class=GramE>region.</span>
+     The event time corresponds to the minimum of this curve. The 'flatness' of
+     this curve is an indicator of how well the event time is defined. <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l5 level1 lfo5;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>Optionally, the cross-correlation curve can be plotted,
+     by checking <b>cross-<span class=SpellE>corrl</span></b> checkbox in the
+     purple region. <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l5 level1 lfo5;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>Optionally, the mean light levels used for the
+     theoretical light curve can be plotted by checking <b>meas. means</b>
+     checkbox in the purple region. <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l5 level1 lfo5;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>Optionally, the error bars associated with each data
+     point near the measurement region can be plotted by checking <b>error bars</b>
+     checkbox in the purple region. <o:p></o:p></span></li>
+</ul>
+
+<h2><span style='mso-fareast-font-family:"Times New Roman"'>Investigating
+different transition durations<o:p></o:p></span></h2>
+
+<p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>The
+effect of different transitions is ascertained using <b>&#967;<sup>2</sup> for
+different transitions </b>plot. This can be used as follows - with the D and R
+events being treated separately<o:p></o:p></span></p>
+
+<ol start=1 type=i>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo6;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>Click the cursor on the region labelled 'ALL'. That
+     region will now be coloured orange. The &#967;<sup>2</sup> curves for all
+     transitions will now appear on the main plot <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo6;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>Click the cursor on the first box. That box will appear
+     Green, to indicate it has been selected. The plot will show the &#967;<sup>2</sup>
+     curve for that transition (a transition over a single frame). The event
+     time displayed under 'Location of occultation' will be for that selected
+     transition duration. Also plotted in the Uncertainty range is the distribution
+     of event solutions - with the zero-point being the solution for the
+     selected transition duration. <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo6;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>Click the cursor on a different bar in the '&#967;<sup>2</sup>
+     for different transitions' plot. This will recalculate the solution and
+     uncertainties on the basis of the selected transition duration, with the
+     results being displayed as before. Note also that the plot of the
+     occultation light curve and &#967;<sup>2</sup> curve will also be updated.<o:p></o:p></span></li>
+</ol>
+
+<h2><span style='mso-fareast-font-family:"Times New Roman"'>Interpreting the
+results - Which transition duration to use<o:p></o:p></span></h2>
+
+<p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>For
+an event with instantaneous step events, the &#967;<sup>2</sup> evaluation of
+the time of the event is completely insensitive to the length of the transition
+used in the test signal. Consequently constancy in the heights of the &#967;<sup>2</sup>
+bars in the bar chart <span class=GramE>are</span> indicative of a step event.
+The heights of the bars in the &#967;<sup>2</sup> plot only have significant
+variation when the observed signal clearly involves transition duration. <o:p></o:p></span></p>
+
+<p>For guidance on how to select a relevant transition:</p>
+
+<ul type=disc>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l4 level1 lfo7;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>If the plot of '&#967;<sup>2</sup> for different
+     transitions' has little variation, or has a general slow increase or
+     decrease in height - analyse the observation on the basis of a single
+     transition <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l4 level1 lfo7;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>Only use a larger transition if the plot of '&#967;<sup>2</sup>
+     for different transitions' first increases, then decreases, with the
+     highest point in the plot being significantly higher (&gt;15%?) than the
+     bar for transition #1. <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l4 level1 lfo7;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>Keep an eye on the extent of the uncertainty as between
+     adjacent transition bars. If appropriate select the transition that
+     results in the smaller uncertainty range. HOWEVER remember that the uncertainty
+     range is derived from a Monte Carlo analysis, and different runs of the
+     Monte Carlo will result in slightly different results. So click the
+     selected transition bar several times and note the subsequent changes in
+     the distribution of the uncertainty results. <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l4 level1 lfo7;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>There can be systematic differences between odd- and
+     even- numbered transitions. This is usually an indication that the event
+     occurs either at the start of a frame, or half-way though a frame. In such
+     cases select the higher of two adjacent bars. <o:p></o:p></span></li>
+</ul>
+
+<h2><span style='mso-fareast-font-family:"Times New Roman"'>Interpretation of
+the &#967;<sup>2</sup> curve<o:p></o:p></span></h2>
+
+<p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>The
+plot includes a plot of the &#967;<sup>2</sup> curve corresponding to the
+selected slope. That curve is a plot of the &#967;<sup>2</sup> value for
+different positions of the test light signal along the transition region of the
+observed light signal. You can also plot the &#967;<sup>2</sup> curve for all
+transition lengths considered, by clicking the <b>ALL </b>region of the &#967;<sup>2</sup>
+bars. <o:p></o:p></span></p>
+
+<p>If the event is well defined (with an expectation that the uncertainty will
+be small), the &#967;<sup>2</sup> curve will be v-shaped with a narrow bottom,
+as in the following plot which shows the &#967;<sup>2</sup> curves for a series
+of transition slopes. This example also shows a situation where the event time
+is largely independent of the selected transition slope (the event time being
+located at the bottom of the series of &#967;<sup>2</sup> curves for different
+slopes.) </p>
+
+<p><span style='mso-no-proof:yes'><img border=0 width=167 height=308
+id="_x0000_i1033" src="AOTA_chi2Def.png"></span></p>
+
+<p>Sometimes the event is well defined on one side, but less certain on the
+other - leading to a &#967;<sup>2</sup> curve that is steep on one side, and
+shallow on the other - as in the following example. This example also shows a
+situation where the event time depends upon the selected transition slope (the
+event time being located at the bottom of the series of &#967;<sup>2</sup>
+curves for different slopes.) In these situations you can expect the
+uncertainty in the event time to be asymmetric. That is, the plus and minus
+uncertainty values will usually be different. </p>
+
+<p><span style='mso-no-proof:yes'><img border=0 width=201 height=304
+id="_x0000_i1032" src="AOTA_Chi2indef.png"></span></p>
+
+<p>Sometimes the event is poorly defined, with the &#967;<sup>2</sup> curve
+being broad with no well-defined bottom point, as in the following example. In
+such cases the uncertainty values are likely to be relatively large, with there
+being a real possibility that the 'event' was not an occultation. Indeed, the
+cross-correlation plot should be carefully reviewed to be satisfied the event
+was in fact an occultation. </p>
+
+<p><span style='mso-no-proof:yes'><img border=0 width=272 height=191
+id="_x0000_i1031" src="AOTA_Chi2indef2.png"></span></p>
+
+<p>An extreme example is the following from a light drop caused by cloud. The
+10 &#967;<sup>2</sup> curves that are plotted are very flat and virtually
+overlie each other. Events having these characteristics should be disregarded! </p>
+
+<p><span style='mso-no-proof:yes'><img border=0 width=299 height=195
+id="_x0000_i1030" src="AOTA_Chi2indef3.png"></span></p>
+
+<h2><span style='mso-fareast-font-family:"Times New Roman"'>Interpreting the
+uncertainty range plot<o:p></o:p></span></h2>
+
+<p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>The
+plot of the uncertainty range is a bar-chart plot of the distribution of
+results from the Monte Carlo analysis. The sum height of all the bars equals
+the height of the plot. When an event is very well defined, the plot will show
+a single bar, with perhaps a very small adjacent bar. Frequently the event will
+be well defined but 'between' two frames - resulting in two adjacent bars of
+similar height. These two situations are shown in the R and D plots
+(respectively) in the following: <o:p></o:p></span></p>
+
+<p><span style='mso-no-proof:yes'><img border=0 width=204 height=141
+id="_x0000_i1029" src="AOTA_UncertaintyEx1.png"></span></p>
+
+<p>When an event is poorly defined, the plot will have numerous bars spread
+across the plot. When there is a column at the left or right end of the plot
+(as in the D example in the next plot), you can assume that the event is quite
+unreliable. </p>
+
+<p>Sometimes the observation is such that there is more than one possible
+solution. This will be evidenced by two (or more) groups of bars with gaps
+between the groups - as in the Reappearance example in the following plot.
+These situations require careful inspection to be sure the possibilities are real.
+However note that it would be erroneous to try to prevent the situation by
+'judicious' setting the measurement regions to avoid 'inconvenient' parts of
+the light curve! </p>
+
+<p><span style='mso-no-proof:yes'><img border=0 width=205 height=140
+id="_x0000_i1028" src="AOTA_UncertaintyEx2.png"></span></p>
+
+<h2><span style='mso-fareast-font-family:"Times New Roman"'><br>
+<br>
+Changing the confidence level<o:p></o:p></span></h2>
+
+<p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>The
+uncertainties computed for the event times are based on a level of confidence
+that the event occurred within the specified uncertainty range. The default
+level of confidence is 90% - and that level is set <span class=SpellE>whenever</span>
+AOTA is run. <o:p></o:p></span></p>
+
+<p>The Uncertainty is calculated on the basis of the Monte Carlo trials. That
+is, with a level of confidence set at 90%, 90% of the Monte Carlo trials result
+in an event time that is within the uncertainty limits. </p>
+
+<p>There may be circumstances where the user believes the uncertainty range is
+too broad in the circumstances. A smaller uncertainty range can be generated by
+changing the level of confidence:</p>
+
+<p><span style='mso-no-proof:yes'><img border=0 width=195 height=158
+id="_x0000_i1027" src="AOTA_Confidence.png"></span></p>
+
+<p>Separate levels of confidence are available for both the D and R events. The
+levels of confidence used will be included in the report generated by AOTA. </p>
+
+<p><span class=GramE>As a general principle, reducing the level of confidence
+in order to reduce the uncertainties in the event time is not appropriate.</span>
+Where a level of confidence less than 90% is used in the analysis, this fact
+should be included in the report of the observations. </p>
+
+<h2><span style='mso-fareast-font-family:"Times New Roman"'><br>
+<br>
+Disregarding data points<o:p></o:p></span></h2>
+
+<p class=MsoNormal><span class=SpellE><span style='mso-fareast-font-family:
+"Times New Roman"'>Occasionally</span></span><span style='mso-fareast-font-family:
+"Times New Roman"'> the assessment of the location of an event can be adversely
+affected by the presence of an anomalous data point near the event. When such a
+data point is removed, the solution goes from having a large uncertainty to a
+small uncertainty. This is illustrated in the following example. The data point
+at frame 596 is very low compared to the data points on either side, but
+appears to result in a possible event time being associated with that frame. <o:p></o:p></span></p>
+
+<p><span style='mso-no-proof:yes'><img border=0 width=874 height=430
+id="_x0000_i1026" src="AOTA%20analyse%20anomalous1.png"></span></p>
+
+<p>When that single data point is removed from consideration, the following fit
+arises: </p>
+
+<p><span style='mso-no-proof:yes'><img border=0 width=885 height=442
+id="_x0000_i1025" src="AOTA%20analyse%20anomalous2.png"></span></p>
+
+<p>A point can be disregarded by pointing the cursor to the location of the
+point, hold down the CTRL key and Right-Click the mouse. [This is noted above
+the AOTA plot.] This will set the data point as being invalid - appearing as a
+tick on the axis at the bottom of the plot. It data point can be restored by
+repeating the CTRL + Right-Click. </p>
+
+<p>Disregarding data points should not be done as a matter of routine. There
+needs to be good reason to disregard a data point. Relevant considerations are:</p>
+
+<ol start=1 type=i>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo8;tab-stops:list 36.0pt'><span class=GramE><span
+     style='mso-fareast-font-family:"Times New Roman"'>Does</span></span><span
+     style='mso-fareast-font-family:"Times New Roman"'> <span class=SpellE>disregarding</span>
+     of a single data point make a <b>large </b>difference in the solution? If
+     so, this could suggest the data point has too great an effect on the
+     solution, which is an indication that it might be appropriate to disregard
+     the data point. <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo8;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>Does the plot of the uncertainty range indicate two
+     discrete solutions, or a broad band of uncertainty? Disregarding a data
+     point is generally not appropriate when the uncertainty plot shows a broad
+     range. In this example the uncertainty plot with frame 596 present (the
+     upper plot) has two separated peaks - indicating that it may be
+     appropriate to disregard a data point. <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo8;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>Is the uncertainty solution asymmetric? The dotted red
+     line in the fitted light curve shows the most-likely location of the
+     event, while the solid lines show the uncertainty limits. Where one
+     uncertainty limit is much greater than the other, the possibility of this
+     being caused by a single errant data point needs to be considered. <o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo8;tab-stops:list 36.0pt'><span style='mso-fareast-font-family:
+     "Times New Roman"'>What does a visual inspection of the relevant frame(s)
+     of the video show? In this example, inspection showed the star was clearly
+     present at frames 598-600, thereby establishing the D did not occur at
+     frame 596. This gave clear support to disregarding frame 596.<o:p></o:p></span></li>
+</ol>
+
+<p class=MsoNormal><span style='mso-fareast-font-family:"Times New Roman"'>When
+data points are disregarded in the region of an event, or there are invalid
+data points in that region, the number of such data points within 10 points of
+the transition will be included in the report generated by AOTA. As a general
+principle, the more disregarded or invalid data points in the region, the less
+reliable the result. <o:p></o:p></span></p>
+
+</div>
+
+</body>
+
+</html>

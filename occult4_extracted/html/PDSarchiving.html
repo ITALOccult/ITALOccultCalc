@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<title>Archiving Asteroid Observations at PDS</title>
+<style type="text/css">
+.auto-style10 {
+	margin-left: 40px;
+	color: #000000;
+}
+.auto-style12 {
+	color: #0000FF;
+}
+.auto-style13 {
+	font-size: large;
+}
+.auto-style1 {
+	margin-left: 40px;
+}
+.auto-style14 {
+	color: #800000;
+}
+.auto-style15 {
+	color: #FF0000;
+}
+</style>
+</head>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<h1>Archiving Asteroid Occultations at NASA's Planetary Data System (PDS)</h1>
+&nbsp;<div>
+	Each year the asteroidal occultation data is archived in <strong>NASA's Planetary 
+	Data System [PDS].</strong> The archive is located at 
+	<a href="https://sbn.psi.edu/pds/resource/occ.html" target="_blank">https://sbn.psi.edu/pds/resource/occ.html</a>&nbsp;
+	<br><br>A program to conveniently view the contents of an archive at PDS can 
+	be downloaded from <a href="https://sbnwiki.astro.umd.edu/wiki/PDS4_Viewer">
+	here</a>. You can point the viewer to a PDS archive via its URL. For those 
+	creating a PDS archive using the Occult functionality, you can view the 
+	contents of an archive file. The following shows the first few entries in 
+	the PlanetsSummary file - which you get when you Open File, locate the 
+	directory where you have created the archive files, and select the 
+	PlanetSummary.xml file, then click <strong>Table</strong>. The details of a 
+	field are obtained by hovering the cursor over the field header - as 
+	indicated in this image.<br>
+	<img src="PDSviewer.PNG" width="95%" border="2"><br><br>
+	<br>This Help topic is intended to guide persons who take on the responsibility for 
+	archiving the data set at <strong>PDS</strong> through the process that is involved.<br></div>
+	<div><br>
+		<h2>Step 1 - ensure observation file is up-to-date</h2>
+		<h2>Step 2 - open the form for processing the archive</h2>
+		Open the form for processing the PDS archive - from <strong>Asteroid 
+		Observations</strong> tab at bottom right ( <strong>Process reports for 
+		*Minor Planet Center * NASA PDS</strong> ) The required functions are on 
+		eth right half of this form.<br>
+		<h2>Step 3 - directory creation, and header download</h2>
+		<p>The 
+		header files need to be located in the directory <strong>d:\Occult 
+		4\Asteroid\Results\PDS Files\ 
+		</strong>If this directory does not exist on your computer, it will&nbsp; 
+		be automatically created when the Form is loaded. When that directory is 
+		first created (and only then), the 
+		header files required for creating the archive are automatically 
+		downloaded from the Occult server. This enables you to create the 
+		archive files - provided they are up-to-date with any changes to the 
+		fields in the <strong>Asteroid~Observations.xml</strong> file</p>
+		<h2>Step 4 - ensuring Header details and Authors are up-to-date</h2>
+		<h3 class="auto-style14">Edit the list of Authors.</h3>
+		On the Asteroid Observations tab, bottom 
+		right, click <strong>Edit Author List</strong>. Explanations of how to 
+		add/edit names are given on the form.<br><br>The list of names is made 
+		up as of the central 
+		coordinator, followed by each of the regional coordinators (in 
+		alphabetic order of family name). For first-time users, the list will initially be 
+		empty, and you will need to add the names. Those names will be retained.<h3 class="auto-style14">
+		Edit the Header files</h3>
+		<p>Before undertaking any editing, make sure you have downloaded the 
+		latest version of the header files.</p>
+		<p>The process makes use of 8 'Header' files that defines the labels and 
+		data content for each archive file.&nbsp; Those files are:</p>
+		<p>H<span class="auto-style12">eaderAsteroids.txt<br>HeaderAsteroidsSummary.txt<br>HeaderAstrometry.txt<br>HeaderDiameters.txt<br>HeaderDoubles.txt<br>HeaderPlanets.txt<br>HeaderPlanetsSummary.txt<br>HeaderTimes.txt</span></p>
+		<p>In addition, there are 3 description files</p>
+		<p><span class="auto-style12">PDS Abstract.txt<br>PDS Known issues.txt<br>
+		PDS Package Description.txt</span><br></p>
+		<p>The archive data uses the 
+		full data of each line in the <strong>Asteroid~Observations.xml</strong> file. If the 
+		format of that file has been changed to add/delete/move fields, the 
+		header files will need to be edited to match the changes. <br><br>For 
+		anyone responsible for the PDS Archiving, any edited Header files should 
+		be retained on the Occult server for the use by others. Update the 
+		Occult server by uploading&nbsp;a file called <strong>pds_headers.zip</strong> 
+		containing the 8 up-to-date header files, and the three description 
+		files.<br><br>To update the header 
+		files, open the <strong>Header 
+		editor</strong> by clicking <strong>PDS Header Files.</strong> 
+		Instructions on using the Editor are provided in the Help on the Editor.</p>
+		<p>To update the description files, open them in a text editor.
+		<span class="auto-style12">PDS Package Description.txt</span> should be 
+		reviewed for updating the text of other issues as required.
+		<span class="auto-style12">PDS Known issues.txt</span> should be 
+		reviewed for whether any new issues need to be added. PDS Abstract.txt 
+		will need review<br><span class="auto-style15"><strong>IMPORTANT.
+		</strong></span>These files contain a number of fields in square 
+		brackets, which are populated when the PDS Archive is created. Those 
+		fields are:</p>
+		<p>[<span class="auto-style12">Asteroid]<br>[AsteroidSummary]<br>[AsteroidTimes]<br>
+		[Planet]<br>[PlanetSummary]<br>[PlanetTimes]<br>[AsteroidAstrometry]<br>
+		PlanetAstrometry]<br>[AsteroidDiameters]<br>[DoubleStars]<br>[EventCount]<br>
+		[LastDate]</span></p>
+		Make sure the text of these fields is not changed in any way. And do not 
+		change their location within the text without losing the context.</p>
+		<h2>
+		Step 5 - build the archive files</h2>
+		<p>As previously noted, you must use up-to-date header files. If you 
+		believe your header files may not be up-to-date, download them using the 
+		button provided.</p>
+		<p>An initial step in creating the files is to create short test files - 
+		to make sure htere is consistentcu between the data and the header 
+		information. To do this, check the relevant box, and then Build...</p>
+		<p>When you click <strong>Build NASA PDS Archive files</strong> from the 
+		form that appears from <strong>Step 2,</strong> it will create the archive 
+		files in the directory 
+		<strong>d:\Occult 4\Asteroid\Results\PDS Files\yyyymmm\</strong>&nbsp;&nbsp;&nbsp; 
+		, where yyyy is the current year, and mmm is the current month. That 
+		directory will be automatically created as needed. The files created are:</p>
+<P class="auto-style1"><span class="auto-style12">Asteroid_2023Jul.xml<br>
+Asteroids_2023Jul.psv</P>
+		<P class="auto-style1">AsteroidAstrometry_2023Jul.psv<br>
+		AsteroidAstrometry_2023Jul.xml</P>
+		<P class="auto-style1"><br>AsteroidDiameter_2023Juls.xml<br>
+		AsteroidDiameters_2023Jul.psv<br><br>AsteroidsSummary_2023Jul.psv<br>
+		AsteroidSummary_2023Jul.xml</P>
+		<P class="auto-style1"><br>AsteroidTimes_2023Jul.psv<br>
+		AsteroidTimes_2023Jul.xml</P>
+		<P class="auto-style1"><br>DoubleStars_2023Jul.psv<br>
+		DoubleStars_2023Jul.xml</P>
+		<P class="auto-style1"><br>Planet.xml_2023Jul.xml<br>Planets_2023Jul.psv</P>
+		<P class="auto-style1"><br>PlanetAstrometry_2023Jul.psv<br>
+		PlanetAstrometry_2023Jul.xml</P>
+		<P class="auto-style1"><br>PlanetsSummary_2023Jul.psv<br>
+		PlanetSummary_2023Jul.xml</P>
+		<P class="auto-style1"><br>PlanetsTimes_2023Jul.psv<br>
+		PlanetTimes_2023Jul.xml</span></P>
+		<p class="auto-style10">&nbsp;</p>
+		<p>Note that the .psv files have the year and month of creation as part of their 
+		file name. <em> <strong><span class="auto-style13">DO NOT CHANGE OR EDIT ANY .psv FILE or FILE NAME - as the 
+		file name and size are included in the corresponding .xml file.</span></strong></em><span class="auto-style13"> 
+		If you need to make any changes, regenerate the files.</span></p>
+		<h2>Step 6 - submit the files</h2>
+		<p>Email the files created in Step 5 (in a zip file) to the relevant 
+		person at&nbsp; NASA' s PDS system.&nbsp;To 
+		get a current email address of the relevant person, 
+		go to the <a href="https://sbn.psi.edu/pds/olafs/">OLAF Archiving 
+		Facility</a> and contact the person listed at the bottom of the page. 
+		[NOTE: You do not use OLAF to submit the files.] </p>
+		&nbsp;<h2>S<strong>tep 7 - graphic images</strong></h2>
+		<span class="auto-style11">
+		<p>Create a set of image files, by clicking <strong>Generate Graphics 
+		files for Many Events. </strong>This is on the <strong>Asteroid 
+		Observations </strong>tab, in the group for<strong> Summary Lists
+		</strong>You will need to close the observations editor and plot form 
+		(if they are open). From the form that opens, set:</p>
+		<ul>
+			<li>Select events for Output - under 'by date' select&nbsp; <strong>All</strong>
+			</li>
+			<li>Set quality criterion to <strong>Reliable size. Can fit to shape 
+			models</strong> </li>
+			<li>Set Output directory. The default is a subdirectory under the 
+			directory the PDS files are written to ...<strong>\Occult 
+			4\Asteroid\Results\PDS Files\yyyymmm\Graphics\ </strong>- you will 
+			need to select that directory (including creating the <strong>
+			Graphics</strong> subdirectory if needed) </li>
+			<li>Set file format - set to <strong>png</strong> </li>
+			<li>Set image size - <strong>640 x 640</strong> </li>
+			<li>Check <strong>plot on black background</strong> </li>
+			<li>Check <strong>plot paths in color</strong> </li>
+			<li>Check <strong>create PDS Web page</strong> </li>
+		</ul>
+		<p>Then click <strong>Create Plots</strong>. </p>
+		<p>This will create a <strong>.png</strong> image file for each event 
+		that meets the selection criteria. It will also create a file <strong>
+		PDS.html </strong>that is an html document that contains links to the 
+		image files. In the html document, the images are sorted by asteroid 
+		number. Ultimately that document and the image files will be converted 
+		into a .pdf file. However for the moment all that is required is to zip 
+		all the .png files and the html file into a single zip file.&nbsp;</span></p>
+<p>The zip file needs to be emailed to the person referred to in Step 6. They will arrange for the files to be converted into a 
+.pdf file containing the html document with links to the images in the file, and 
+all the images. Public Domain pdf software generally does create the links in 
+the resulting pdf file. Of course, if 'you' have the capability of making that 
+conversion, you should do that conversion.</p>
+
+
+</body>
+
+</html>

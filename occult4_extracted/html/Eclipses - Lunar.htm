@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Lunar Eclipses</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Lunar Eclipses</H1>
+<p>The form for lunar eclipse predictions has a list at the top of all lunar and possible lunar eclipses that occur in a 10-year period. The 10-year period is set by changing the year to the left of the form (and pressing Enter).  The available range of years is -13000 to +17000 - corresponding to the coverage of the  DE431 ephemeris. To display a prediction for an eclipse, simply select the eclipse in the 10-year list.
+ 
+<h2>Example prediction</h2>
+<pre>         L U N A R   E C L I P S E   on     2022 Nov  8 (TT)
+
+                                             Overhead at  Offsets
+     Event                      UTC     P.A.  Long  Lat   Cha Dan
+                              h  m  s     o      o    o     s   s
+
+[1]  Moon Enters Penumbra     8  1 50    77   -126   16   -74  24
+[2]  Moon Enters Umbra        9  8 46    82   -142   16     7  25
+[3]  Total Eclipse Starts    10 16 10   282   -159   17     7  29
+[4]  Maximum Eclipse         10 59  9         -169   17          
+[5]  Total Eclipse Ends      11 41 49    33   -179   17     9 -12
+[6]  Moon Leaves Umbra       12 49 21   233    164   17     1 -18
+[7]  Moon Leaves Penumbra    13 56 29   238    148   17    79 -19
+
+     Magnitude of Umbral Eclipse = 1.361
+                       (Chauvenet: 1.364, Danjon: 1.359)
+     Elongations:  Uranus 60' E ‡  
+
+     delta T = 73.2 secs ±3s,   Ephemeris = DE430
+
+</pre>
+
+<p>Below the predicted times is a graphic display of the Earth showing the hemisphere that is facing the moon at the time of each event time. The events are identified against the display with the numeric identifier shown at the left of each predicted event, and below each image of the Earth. 
+<P align=center><img src="2022Nov8Lunar%20eclipse%20Earthmaps.png">
+
+<p>Next to the predicted times is a graphic showing the passage of the moon through the Earth's shadow 
+and the location of the moon at maximum eclipse, for each of the contact times. The first and last contacts are identified with "{1}" and "{7}" respectively - with the moon moving from right to left. This is displayed as a colour plot, giving a crude indication of the shadow density. 
+<P align=center><img src="2022Nov8Lunar%20eclipse%20shadow.png">
+
+<h2>Comments</h2>
+<ul>
+<li>The time of maximum eclipse is given for all eclipses. Times for Total Eclipse Start/End, and Moon Enters/Leaves Umbra, are not always present.
+<li>If there is no umbral eclipse, the magnitude of penumbral eclipse is given. This can exceed 1.000.
+<li>If the event occurs on the day preceding or following the UT date of the prediction, a '-' or '+' (respectively) occurs immediately after the predicted time.
+<li>The PA refers to the point on the limb of the moon at which the relevant event occurs.
+<li>The columns headed <I>Overhead at</I> give the location on the Earth where the moon is overhead at the relevant event. The longitude is measured +'ve to the east.
+<li>The columns headed <I>Offsets</I> give the time offset (in seconds) for predictions based on the Chauvenet method (<I>Cha</I>), and the traditional Danjon method (<I>Dan</I>). Details of the basis of the predictions are given below.
+<li>If a planet is within 3 degrees of the axis if the umbral shadow (as seen from the geocenter), its elongation will be specified in a line between the line giving the magnitude, and the line giving deltaT. If the planet has a dagger symbol [†] after it, the planet is located in the Earth's umbra as seen some some parts of the world. If the planet has a double dagger [‡] after it, the planet is located in the umbral shadow in some parts of the world, and is ALSO occulted by the moon from somewhere.
+<li>The value of deltaT, and its uncertainty (if greater than 1 sec) is given at the end of the prediction. Also provided is the ephemeris basis for the prediction.
+<li>Prediction times are in UT (or UTC) provided the uncertainty in deltaT is less than 12 hours. Otherwise the times are in TT. 
+<li>The plot of the Earth's orientation at each contact time, and the longitude where the moon is overhead, is based on the estimate of deltaT in all instances. The plot of the earth's orientation indicates the uncertainty in that orientation. When that uncertainty is greater than 180 deg, the uncertainty is specified in revolutions; in such situations the Earth's orientation should be treated as indeterminate.
+<li>The magnitude is computed as the fraction of the lunar diameter that is covered by the shadow - measured in the direction normal to the motion of the moon. When the moon is fully covered by the shadow, the distance is measured towards the closer edge of the shadow. The penumbral magnitude is only given when their is no umbral eclipse; the penumbral magnitude can be greater than 1.</ul>
+
+<h2>Basis of the predictions</h2>
+Lunar eclipse predictions have traditionally been computed on one of two bases:<ul type = a>
+<li><B>Chauvenet</B>. The shadow is treated as being circular. The Earth's radius is taken to be the radius at a latitude of 45deg. The geometric shadow radius is increased by 2% to account for the observed increase in the umbral radius.
+<li><B>Danjon</B>.  The shadow is treated as being circular. The Earth's radius is taken to be the radius at a latitude of 45deg. However when computing the geometric radius of the shadow, the Earth's radius is increased by 75km to account for the observed increase in the umbral radius.</ul>
+<B>The predictions in Occult use an enhanced form of the Danjon method.</B> Specifically<ul type=i>
+<li>The earth is treated as being oblate;
+<li>the apparent oblateness is computed having regard to the declination of the Sun at the time of the eclipse, with allowance for the conical nature of the shadow; 
+<li>the Earth's radius is increased by 86.9km - to match the observed  increase in the umbral radius.
+<li>the shadow radius used for each event is based on the latitude on the Earth corresponding to the contact point. Similarly the shadow radius at mid-eclipse (used for the magnitude calculation) is based on the Earth's radius in the direction of the moon's center from the shadow's center.</ul>
+The details of  the prediction are given in <I>Analysis of Lunar Crater Timings 1842 - 2012</I>, D Herald & R Sinnott, J. Brit. Astron. Assoc., 124(5), 247-253 (2014).
+
+<p>One consequence of allowing for the elliptic nature of the shadow is that the event times are less symmetric about the time of mid-eclipse than the times computed using the Chauvenet or traditional Danjon method.
+
+<p>To allow for comparison with other predictions, the predictions include the time difference (in seconds) between the times predicted using the elliptic shadow, and those computed using the Chauvenet or traditional Danjon methods. These are given for the umbral contacts in the columns headed <I>Offsets</I>, with <I>Cha </I>giving the offset for the Chauvenet predictions, and <I>Dan </I>giving the offset for the traditional Danjon predictions. Simply add those times to the predicted times to obtain the times predicted by the Chauvenet or traditional Danjon methods.
+
+<p>The Magnitude of the eclipse is computed using the elliptic shadow, with the magnitudes from the Chauvenet and traditional Danjon methods being also provided. For umbral eclipses the Chauvenet magnitude is usually about 0.004 greater than that using the elliptic shadow, while that for the traditional Danjon method is about 0.001 smaller. For penumbral magnitudes the differences are considerably larger.
+
+<p>The output of the offsets and magnitudes for the Chauvenet and Danjon methods can be turned off/on under  <B>with Predictions... Show Chauvenet and Danjon offsets</B>
+
+<h2>Finding eclipses where planets are nearby</h2>
+You can identify lunar eclipses where a planet is close (and, indeed, might be occulted) using the menu item <B>Find close planetary conjunctions</B>. The functionality is explained <a href="Eclipses%20-%20Solar%20-%20Planet%20conjunction.htm">here</a>.
+</BODY>
+</HTML>

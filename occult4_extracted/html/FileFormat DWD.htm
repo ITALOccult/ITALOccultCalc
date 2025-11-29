@@ -1,0 +1,29 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>DWD</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1><A NAME="idh_4overview">DWD file format</A></H1>
+<!-- Insert Header in above line -->
+<P>These files are for use as input files for some IOTA software. Most users will have no need for these files. OCCULT creates these files by converting <B>Occelmnt </B>files. When creating these files the user has the option of specifying the step interval for the output using the radio buttons. The default output is an interval of 1 day. But for fast-moving objects and (especially) planetary moons where the motion is seriously non-linear, intervals of 0.1 or 0.01 days can be selected.<p>
+
+<p>The data contained in the DWDFILE file is:</P>
+
+<table columns=3 border=1>
+<TR><TH NOWRAP>Line</TH><TH>Content</TH></TR>
+<TR><TD>1</TD><TD>Asteroid number, name, magnitude constant G, phase constant H, & diameter in km</TD></TR>
+<TR><TD>2</TD><TD>Star no, star RA, star Dec, Mv, Mp, and 3-letter catalogue identifier.</TD></TR>
+<TR><TD>3</TD><TD>Date (year, month, day, hr, min), minimum dist (earth radii), max duration, mag drop, solar elongation, lunar elongation, moon % illuminated.</TD></TR>
+<TR><TD nowrap>4 to 9</TD><TD>daily ephemeris for 6 days, giving:<br>
+JD, RA, Dec, dist from sun, dist from earth, mag, phase angle.</TD></TR>
+</table>
+<P></P>
+
+</BODY>
+</HTML>

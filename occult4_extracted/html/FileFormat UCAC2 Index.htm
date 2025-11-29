@@ -1,0 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<Title>UCAC2 Index</Title>
+</HEAD>
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+<H1><A NAME="idh_4overview"></A>UCAC2 Index.dat</H1>
+
+<P>The Tycho2 catalogue is structured in half-degree bands. UCAC2 Index is a random access file with record length 12, containing the number of the first 2UCAC star in each band of the catalogue, and the first and last records in the Tycho2 file that need to be scanned to find the 2UCAC star. The record structure is:</P>
+<TABLE COLUMNS = 2 BORDER = 1>
+
+<TR><TD>0 - 3</TD><TD>number of the first 2UCAC star in a declination zone (integer)</TD></TR>
+<TR><TD>4 - 7</TD><TD>first record (unary based) in Tycho2.bin for the scan</TD></TR>
+<TR><TD>8 -11</TD><TD>last record (unary based) in Tycho2.bin for the scan</TD></TR></TABLE>
+
+
+
+</BODY>
+</HTML>

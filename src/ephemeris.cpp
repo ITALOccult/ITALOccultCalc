@@ -1,5 +1,6 @@
 #include "ioccultcalc/ephemeris.h"
 #include "ioccultcalc/coordinates.h"
+#include "ioccultcalc/spice_spk_reader.h"
 #include <cmath>
 #include <stdexcept>
 
@@ -138,14 +139,29 @@ void Ephemeris::propagateOrbit(const JulianDate& targetJD,
     double vy_ref = vx_orb * sin_wp + vy_orb * cos_wp;
     double vz_ref = 0;
     
-    // Applica trasformazione al sistema equatoriale
-    helioPos.x = m11 * x_ref + m12 * y_ref + m13 * z_ref;
-    helioPos.y = m21 * x_ref + m22 * y_ref + m23 * z_ref;
-    helioPos.z = m31 * x_ref + m32 * y_ref + m33 * z_ref;
+    // Applica trasformazione al frame degli elementi equinoziali
+    // NOTA: Elementi equinoziali da AstDyS sono in frame eclittico J2000 (ECLM)
+    double x_ecl = m11 * x_ref + m12 * y_ref + m13 * z_ref;
+    double y_ecl = m21 * x_ref + m22 * y_ref + m23 * z_ref;
+    double z_ecl = m31 * x_ref + m32 * y_ref + m33 * z_ref;
     
-    helioVel.x = m11 * vx_ref + m12 * vy_ref + m13 * vz_ref;
-    helioVel.y = m21 * vx_ref + m22 * vy_ref + m23 * vz_ref;
-    helioVel.z = m31 * vx_ref + m32 * vy_ref + m33 * vz_ref;
+    double vx_ecl = m11 * vx_ref + m12 * vy_ref + m13 * vz_ref;
+    double vy_ecl = m21 * vx_ref + m22 * vy_ref + m23 * vz_ref;
+    double vz_ecl = m31 * vx_ref + m32 * vy_ref + m33 * vz_ref;
+    
+    // Converti da eclittico a equatoriale (J2000)
+    // Rotazione attorno asse X di ε = 23.4392811° (obliquità eclittica J2000)
+    constexpr double OBLIQUITY_J2000 = 23.4392911 * M_PI / 180.0;  // rad
+    double cos_eps = std::cos(OBLIQUITY_J2000);
+    double sin_eps = std::sin(OBLIQUITY_J2000);
+    
+    helioPos.x = x_ecl;
+    helioPos.y = y_ecl * cos_eps - z_ecl * sin_eps;
+    helioPos.z = y_ecl * sin_eps + z_ecl * cos_eps;
+    
+    helioVel.x = vx_ecl;
+    helioVel.y = vy_ecl * cos_eps - vz_ecl * sin_eps;
+    helioVel.z = vy_ecl * sin_eps + vz_ecl * cos_eps;
 }
 
 double Ephemeris::solveKeplerEquation(double M, double e, double tolerance) {
@@ -189,40 +205,75 @@ Vector3D Ephemeris::getSunPosition(const JulianDate& jd) {
 }
 
 Vector3D Ephemeris::getEarthPosition(const JulianDate& jd) {
-    // Orbita della Terra usando teoria semplificata (VSOP87 ridotta)
-    // Per precisione maggiore si dovrebbe usare VSOP87 completa o JPL DE
+    // Prova a usare SPK (JPL DE441/DE440) per massima precisione
+    static SPICESPKReader spkReader;
+    static bool spkInitialized = false;
     
-    double T = (jd.jd - 2451545.0) / 36525.0; // Secoli giuliani da J2000.0
+    if (!spkInitialized) {
+        // Prova a caricare DE441, DE440s o DE440
+        if (spkReader.ensureFileLoaded("de441.bsp") || 
+            spkReader.ensureFileLoaded("de440s.bsp") ||
+            spkReader.ensureFileLoaded("de440.bsp")) {
+            spkInitialized = true;
+        }
+    }
     
-    // Elementi orbitali medi della Terra
-    double L = 280.46646 + 36000.76983 * T + 0.0003032 * T * T; // Mean longitude
-    double M = 357.52911 + 35999.05029 * T - 0.0001537 * T * T; // Mean anomaly
-    double e = 0.016708634 - 0.000042037 * T - 0.0000001267 * T * T; // Eccentricità
+    if (spkReader.isLoaded()) {
+        try {
+            // NAIF ID: 399 = Terra, 10 = Sole, 0 = SSB (barycenter)
+            // Prova prima con Sole come centro (heliocentric)
+            try {
+                auto [pos, vel] = spkReader.getState(399, jd.jd, 10);
+                return pos;
+            } catch (...) {
+                // Se fallisce, prova SSB e sottrai posizione Sole
+                auto [earthPos, earthVel] = spkReader.getState(399, jd.jd, 0);
+                auto [sunPos, sunVel] = spkReader.getState(10, jd.jd, 0);
+                return earthPos - sunPos;
+            }
+        } catch (...) {
+            // Fallback a formula analitica
+        }
+    }
     
-    L = fmod(L, 360.0) * DEG_TO_RAD;
-    M = fmod(M, 360.0) * DEG_TO_RAD;
+    // FALLBACK: Formula analitica semplificata
+    // NOTA: Questa ha precisione limitata (~0.4 AU di errore!)
+    // Per occultazioni asteroidali serve JPL DE
+    
+    double T = (jd.jd - 2451545.0) / 36525.0;
+    
+    // Elementi orbitali medi Terra
+    double L = 280.46646 + 36000.76983 * T + 0.0003032 * T * T;
+    double M = 357.52911 + 35999.05029 * T - 0.0001537 * T * T;
+    
+    L = fmod(L, 360.0);
+    if (L < 0) L += 360.0;
+    M = fmod(M, 360.0);
+    if (M < 0) M += 360.0;
+    
+    double M_rad = M * DEG_TO_RAD;
+    double e = 0.016708634 - 0.000042037 * T - 0.0000001267 * T * T;
     
     // Equazione del centro
-    double C = (1.914602 - 0.004817 * T - 0.000014 * T * T) * sin(M) +
-               (0.019993 - 0.000101 * T) * sin(2 * M) +
-               0.000289 * sin(3 * M);
-    C *= DEG_TO_RAD;
+    double C = (1.914602 - 0.004817 * T - 0.000014 * T * T) * sin(M_rad) +
+               (0.019993 - 0.000101 * T) * sin(2.0 * M_rad) +
+               0.000289 * sin(3.0 * M_rad);
     
-    // True longitude
-    double trueLon = L + C;
+    double sunLon = L + C;
+    double R = (1.000001018 * (1.0 - e * e)) / (1.0 + e * cos(M_rad + C * DEG_TO_RAD));
     
-    // Distanza (AU)
-    double r = 1.000001018 * (1.0 - e * e) / (1.0 + e * cos(M + C));
+    // ATTENZIONE: Questa formula è imprecisa!
+    // Serve solo come fallback se SPK non disponibile
+    double earthLon = sunLon + 180.0;
+    if (earthLon >= 360.0) earthLon -= 360.0;
+    double earthLon_rad = earthLon * DEG_TO_RAD;
     
-    // Coordinate eclittiche
-    double x_ecl = r * cos(trueLon);
-    double y_ecl = r * sin(trueLon);
+    double x_ecl = R * cos(earthLon_rad);
+    double y_ecl = R * sin(earthLon_rad);
     double z_ecl = 0.0;
     
-    // Obliquità dell'eclittica
-    double eps = (23.439291 - 0.0130042 * T) * DEG_TO_RAD;
+    double eps = 23.4392911 * DEG_TO_RAD;
     
-    // Converti in coordinate equatoriali
     Vector3D earthPos;
     earthPos.x = x_ecl;
     earthPos.y = y_ecl * cos(eps) - z_ecl * sin(eps);
@@ -232,13 +283,129 @@ Vector3D Ephemeris::getEarthPosition(const JulianDate& jd) {
 }
 
 Vector3D Ephemeris::getEarthVelocity(const JulianDate& jd) {
-    // Calcola velocità con differenze finite
+    // Prova prima SPK per velocità diretta
+    static SPICESPKReader spkReader;
+    static bool spkInitialized = false;
+    
+    if (!spkInitialized) {
+        if (spkReader.ensureFileLoaded("de441.bsp") || 
+            spkReader.ensureFileLoaded("de440s.bsp") ||
+            spkReader.ensureFileLoaded("de440.bsp")) {
+            spkInitialized = true;
+        }
+    }
+    
+    if (spkReader.isLoaded()) {
+        try {
+            auto [pos, vel] = spkReader.getState(399, jd.jd, 10);
+            return vel;
+        } catch (...) {
+            // Fallback a differenze finite
+        }
+    }
+    
+    // FALLBACK: Calcola velocità con differenze finite
     double dt = 0.1; // 0.1 giorni
     
     Vector3D pos1 = getEarthPosition(JulianDate(jd.jd - dt / 2.0));
     Vector3D pos2 = getEarthPosition(JulianDate(jd.jd + dt / 2.0));
     
     return (pos2 - pos1) * (1.0 / dt);
+}
+
+Vector3D Ephemeris::getEarthPositionWithCorrections(const JulianDate& jd, 
+                                                     const Vector3D& observerPos) {
+    // Ottiene posizione base da SPK con interpolazione
+    Vector3D earthPos = getEarthPosition(jd);
+    Vector3D earthVel = getEarthVelocity(jd);
+    
+    // Costanti fisiche
+    constexpr double C_AU_PER_DAY = 173.1446326846693;  // Velocità luce in AU/day
+    constexpr double GM_SUN = 0.000295912208286;        // GM☉ in AU³/day²
+    constexpr double C_AU_PER_DAY_SQ = C_AU_PER_DAY * C_AU_PER_DAY;
+    
+    // === 1. ABERRAZIONE DELLA LUCE ===
+    // Correzione per il tempo di propagazione della luce
+    Vector3D toEarth = earthPos - observerPos;
+    double distance = toEarth.magnitude();
+    double lightTime = distance / C_AU_PER_DAY;
+    
+    // Iterazione per tempo luce (miglior accuratezza)
+    Vector3D earthPosIterative = earthPos;
+    for (int iter = 0; iter < 2; ++iter) {
+        JulianDate jdRetarded(jd.jd - lightTime);
+        earthPosIterative = getEarthPosition(jdRetarded);
+        Vector3D toEarthIter = earthPosIterative - observerPos;
+        lightTime = toEarthIter.magnitude() / C_AU_PER_DAY;
+    }
+    
+    // Aberrazione stellare (velocità osservatore)
+    Vector3D aberrationCorr = earthVel * (-lightTime);
+    earthPos = earthPos + aberrationCorr;
+    
+    // === 2. CORREZIONI RELATIVISTICHE ===
+    
+    // 2a. Effetto Shapiro (ritardo gravitazionale)
+    // Δt = (2*GM/c³) * ln[(r_e + r_o + d)/(r_e + r_o - d)]
+    // dove r_e = distanza Terra-Sole, r_o = distanza Osservatore-Sole
+    double r_earth = earthPos.magnitude();  // Distanza Terra-Sole
+    double r_obs = observerPos.magnitude(); // Distanza Osservatore-Sole
+    
+    if (r_earth > 0.01 && distance > 0.001) {  // Evita divisioni per zero
+        // Geometria del percorso luce
+        double sum_distances = r_earth + r_obs;
+        double arg1 = sum_distances + distance;
+        double arg2 = std::abs(sum_distances - distance);
+        
+        if (arg1 > 0 && arg2 > 0) {
+            // Ritardo Shapiro in giorni
+            double shapiroDelay = (2.0 * GM_SUN / (C_AU_PER_DAY * C_AU_PER_DAY_SQ)) * 
+                                 std::log(arg1 / arg2);
+            
+            // Correzione posizione: Δr = v * Δt
+            Vector3D shapiroCorr = earthVel * shapiroDelay;
+            earthPos = earthPos + shapiroCorr;
+        }
+    }
+    
+    // 2b. Deflexione gravitazionale (light bending)
+    // Δθ = (4*GM/c²) / b, dove b = parametro impatto
+    // Approssimazione: correzione proporzionale alla massa solare
+    Vector3D sunToEarth = earthPos;  // Terra rispetto al Sole
+    Vector3D sunToObs = observerPos; // Osservatore rispetto al Sole
+    
+    // Parametro impatto (distanza minima raggio luce dal Sole)
+    Vector3D lightDir = (sunToObs - sunToEarth);
+    double lightDist = lightDir.magnitude();
+    
+    if (lightDist > 0.001) {
+        lightDir = lightDir * (1.0 / lightDist);
+        
+        // Proiezione della posizione Terra sulla direzione luce
+        double projection = sunToEarth.x * lightDir.x + 
+                          sunToEarth.y * lightDir.y + 
+                          sunToEarth.z * lightDir.z;
+        
+        Vector3D closestPoint = lightDir * projection;
+        Vector3D impactVector = sunToEarth - closestPoint;
+        double impactParam = impactVector.magnitude();
+        
+        if (impactParam > 0.01) {  // Solo se non passa troppo vicino al Sole
+            // Angolo di deflessione (radianti)
+            double deflectionAngle = (4.0 * GM_SUN / C_AU_PER_DAY_SQ) / impactParam;
+            
+            // Correzione posizione (perpendicolare alla direzione luce)
+            Vector3D deflectionDir = impactVector * (1.0 / impactParam);
+            Vector3D deflectionCorr = deflectionDir * (deflectionAngle * distance);
+            
+            earthPos = earthPos + deflectionCorr;
+        }
+    }
+    
+    // === 3. INTERPOLAZIONE CHEBYSHEV (cache per query multiple) ===
+    // Implementata direttamente in SPK reader per migliore efficienza
+    
+    return earthPos;
 }
 
 } // namespace ioccultcalc

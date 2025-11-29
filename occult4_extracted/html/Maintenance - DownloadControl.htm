@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<Title>Create 'DownloadControl.txt' file</Title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFDF" TEXT="#000000">
+
+
+
+<H1>Create 'DownloadControl.txt' file</H1>
+
+<P>The availability of new data files for download, held at the IOTA site for Occult, are indicated via a file called <B>downloadcontrol.txt</B>. The file contains the file date of relevant files - less one day - in a format of ddmmyyyy. Occult compares the file date of relevant files with the file date indicated in the downloadcontrol.txt file. If the file date held in the downloadcontrol.txt file is later than the file date of the relevant file on the user's computer, the need for a download is indicated.
+
+<p>The <B>downloadcontrol.txt </B>file is created using the Administrator functionality on the Maintenance form - Create download control file. The file is created in the Resource Files directory. Once created, the Administrator will need to upload that to the IOTA site.
+
+<p><B>Note. VERY IMPORTANT. Do not run a new instance of Occult between creating the file and uploading it. Running a new instance of Occult will download the existing file from the IOTA site, overwriting the newly-created version</B>. A message to this effect is given when the file is created.
+
+<p>The form displays two columns of dates (or version). The first column is the version or dates that are contained in the current douwnloadcontrol file that exists on the IOTA site (it is freshly downloaded when this form is loaded.). The second column provides the version or date that the program expects on the basis of the files on the computer. The Default selection of dates is to use the existing dates. New dates are selected only if the file date on the computer is different to that indicated by the existing dates (NOTE - care is required as it might be an earlier date...!). If the relevant zip file does not exist on the computer, that fact will be marked by a red cross.
+
+<h2>Program files</h2>
+Updates to the program files are governed by the program version number associated with the Occult.exe program. If the version of Occult on the User's computer is less than the version indicated in the downloadcontrol file, a download will be indicated. <p>The following table lists the zip file name, and the files that need to be included in the zip file.
+
+<table columns=2 border=1>
+<TR><TH NOWRAP>ZIP file</TH><TH  NOWRAP>Files included in the ZIP file</TH></TR>
+<TR><TD>OccultUpdate.zip</TD><TD NOWRAP>AutoAsteroidPrediction.exe<br>AutoAsteroidPrediction.exe.config<br>DotNetZip.dll<br>LightCurveSimulator.chm<br>Occult.chm<br>Occult.exe<br>Occult.exe.config<br>Occult.SDK.dll<br>OccultUpdater.exe<br>OccultUpdater.exe.config<br>OccultUtilities.dll<br>OccultUtilities.dll.config</TD></TR>
+</table>
+When Occult performs the update:<ul>
+<li>Files are only updated if the date of the update file is more recent than the relevant file; and
+<li>Files that are updated are not deleted. Rather an additional extension of '.old' is added to the file name. this allows for easy recovery of the replaced file (if needed.)
+</ul>
+
+<h2>Data files</h2>
+<p>All but one of the files (Addresses.txt) is held on the IOTA site as a zip file. 
+<p>The relevant ZIP files are assumed to be maintained in the Resource Files directory. If the relevant zip file is not present, this fact will be indicated on the form with a red cross. In such instances the Administrator will need to create the required ZIP file, and then upload the ZIP file to the IOTA site.
+
+<p>To post an updated file, the Adminsitrator must update the relevant ZIP file with the latest data files, and then upload the ZIP file to the IOTA site. 
+
+<p>The form for creating the DownloadControl.txt file will automatically check the entry for a new date. If the Existing date is later than the indicated New date, the existing date will be indicated in red. In this situation the administrator needs to review the files to make sure the most recent file is available and listed.
+
+<p>The following table lists the subject matter, the zip file name, the files that need to be included in the zip file, and the file used for the date comparison.
+
+<table columns=4 border=1>
+<TR><TH NOWRAP>Subject</TH><TH>ZIP file for Uploading to the IOTA site</TH><TH  NOWRAP>Files included in the ZIP file</TH><TH  NOWRAP>File used for date check</TH></TR>
+<TR><TD>Asteroid obs </TD><TD> asteroid_observations.zip</TD><TD>Asteroid~Observations.xml<br></TD><TD>Asteroid~Observations.xml </TD></TR>
+<TR><TD>Recent lunar obs</TD><TD>latest_observations.zip</TD><TD  NOWRAP>Archive Graze Index.dat<br>
+	Archive Graze List.csv<br>Archive Observations recent.dat<br>RArchive Observations recent.dat</TD><TD  NOWRAP>Archive Observations recent.dat</TD></TR>
+<TR><TD  NOWRAP>Light curves</TD><TD>\Occult 4\LightCurves\lightcurves.zip</TD><TD>
+	LightCurves.txt</TD><TD>LightCurves.txt</TD></TR>
+<TR><TD  NOWRAP>Kepler2</TD><TD>kepler2.zip</TD><TD>Kepler2.dat</TD><TD>
+	Kepler2.dat</TD></TR>
+<TR><TD  NOWRAP>Binary asteroids</TD><TD>BinaryAsteroids.zip</TD><TD>
+	BinaryAsteroids.csv</TD><TD>BinaryAsteroids.csv</TD></TR>
+<TR><TD  NOWRAP>Asteroid classes</TD><TD>asteroidclasses.zip</TD><TD>
+	AsteroidClasses.csv</TD><TD>AsteroidClasses.csv</TD></TR>
+<TR><TD>XZ star catalogue</TD><TD>XZ.zip</TD><TD>Kepler2.dat<br>WDS Discovery Codes.dat<br>xz80.dat<br>
+	xz80.inx<br>XZ80Mag4.dat<br>XZ80Mag4.inx<br>XZ80Mag7.dat<br>XZ80Mag7.inx<br>XZ80Mag9.dat<br>XZ80Mag9.inx<br>XZDoubles Discoveries.dat<br>XZDoubles.dat<br>
+	XZDoubles_OCC_additions.dat<br>XZinKepler2.dat<br>XZVariables.dat<br>ZC.dat<br>ZC.inx</TD><TD>xz80.dat</TD></TR>
+<TR><TD  NOWRAP>ISAM asteroids</TD><TD>ISAMasteroids.zip</TD><TD>
+	ISAMasteroids.dat</TD><TD>ISAMasteroids.dat</TD></TR>
+<TR><TD  NOWRAP>Shape models</TD><TD>d:\Occult 4\ShapeModels\shapemodels.zip</TD><TD>
+	Individual files for all models</TD><TD>&nbsp;</TD></TR>
+<TR><TD  NOWRAP>Asteroid rings</TD><TD>asteroidrings.zip</TD><TD>
+	AsteroidRings.dat</TD><TD>AsteroidRings.dat</TD></TR>
+<TR><TD>deltaT</TD><TD>deltat.zip</TD><TD>DeltaT.dat<br>DeltaTA.dat</TD><TD>DeltaTA.dat</TD></TR>
+<TR><TD  NOWRAP>Addresses (Lunar)</TD><TD>addresses.zip<br> </TD><TD>addresses.txt</TD><TD>addresses.txt</TD></TR>
+<TR><TD>Camera delays</TD><TD>cameradelays.zip</TD><TD   NOWRAP>&nbsp;</TD><TD   NOWRAP>
+	&nbsp;</TD></TR>
+
+<TR><TD>Lunar occultation archive</TD><TD>archive_observations.zip</TD><TD   NOWRAP>Archive Graze Index.dat<br>Archive Graze List.csv<br>Archive ILOC Observers.dat<br>Archive ILOC Sites.dat<br>Archive Observations 1600_1949.dat<br>Archive Observations 1950_1969.dat<br>Archive Observations 1970_1975.dat<br>Archive Observations 1976_1980.dat<br>Archive Observations 1981_1985.dat<br>Archive Observations 1986_1989.dat<br>Archive Observations 1990_1994.dat<br>Archive Observations 1995_1999.dat<br>Archive Observations 2000_2005.dat<br>Archive Observations 2006_2015.dat<br>
+	Archive Observations 2016_2025.dat<br>Archive RGO Sites.dat<br>ILOC Site Statistics.dat<br>RArchive Observations 1600_1949.dat<br>RArchive Observations 1950_1969.dat<br>RArchive Observations 1970_1975.dat<br>RArchive Observations 1976_1980.dat<br>RArchive Observations 1981_1985.dat<br>RArchive Observations 1986_1989.dat<br>RArchive Observations 1990_1994.dat<br>RArchive Observations 1995_1999.dat<br>RArchive Observations 2000_2005.dat<br>RArchive Observations 2006_2015.dat<br>
+	RArchive Observations 2016_2025.dat<br>RArchive Observations recent.dat<br>RGO Site Statistics.dat</TD><TD   NOWRAP>Archive Observations 2000_2005.dat</TD></TR>
+
+<TR><TD>LRO LOLA</TD><TD>LOLA128.zip</TD><TD>LOLA128.bin</TD><TD>&nbsp;</TD></TR>
+
+<TR><TD>Gaia12_EDR3</TD><TD>\Occult 4\Resource Files\Gaia\Gaia12_EDR3.zip</TD><TD>
+	Gaia12_EDR3.bin<br>Hipparcos_Gaia12_EDR3.dat<br>Gaia12_EDR3.inx</TD><TD>&nbsp;</TD></TR>
+
+<TR><TD>Gaia14_EDR3</TD><TD>\Occult 4\Resource Files\Gaia\Gaia14_EDR3.zip</TD><TD>
+	Gaia14_EDR3.bin<br>Hipparcos_Gaia14_EDR3.dat<br>Gaia14_EDR3.inx</TD><TD>&nbsp;</TD></TR>
+
+<TR><TD>Gaia16_EDR3</TD><TD>\Occult 4\Resource Files\Gaia\Gaia16_EDR3.zip</TD><TD>
+	Gaia16_EDR3.bin<br>Hipparcos_Gaia16_EDR3.dat<br>Gaia16_EDR3.inx</TD><TD>&nbsp;</TD></TR>
+
+<TR><TD>Tycho2</TD><TD>Tycho2.zip</TD><TD>Tycho2.bin</TD><TD>Tycho2.bin</TD></TR>
+<TR><TD>JPL DE ephemeris</TD><TD>DE405_413.zip</TD><TD>DE405_413.bin</TD><TD>DE405_413.bin</TD></TR>
+<TR><TD>Asteroid diameters</TD><TD>asteroiddiameters.zip</TD><TD>Asteroid Diameters.dat</TD><TD>Asteroid Diameters.dat</TD></TR>
+<TR><TD>Star diameters</TD><TD>StarDia.zip</TD><TD>StarDia.bin</TD><TD>
+	StarDia.bin</TD></TR>
+</table>
+
+
+</BODY>
+</HTML>
