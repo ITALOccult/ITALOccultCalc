@@ -23,7 +23,7 @@
 // GaiaCache usato per query catalogo locale (via gaia_adapter.cpp)
 #include "ioccultcalc/gaia_cache.h"
 #include "ioccultcalc/occultation_predictor.h"
-// #include "ioccultcalc/chebyshev_detector.h"  // File mancante - strategia 2 fasi temporaneamente disabilitata
+// #include "ioccultcalc/chebyshev_detector.h"  // TODO: File da rigenerare
 #include "ioccultcalc/occult4_xml.h"
 #include "ioccultcalc/prediction_report.h"
 #include "ioccultcalc/time_utils.h"
@@ -1338,10 +1338,8 @@ std::vector<ItalOccultationEvent> detectOccultations(
             // STRATEGIA RICERCA A DUE FASI (temporaneamente disabilitata)
             // FASE 1: ChebyshevOccultationDetector - approssimazione veloce ~100-1000x
             // FASE 2: predictOccultation - refinement preciso con integratore configurato
-            // 
-            // NOTA: ChebyshevOccultationDetector richiede implementazione mancante
-            //       (chebyshev_approximation.cpp, chebyshev_detector.cpp)
-            // TODO: Implementare strategia a due fasi quando disponibili i file
+            //
+            // TODO: Implementare ChebyshevOccultationDetector quando file disponibili
             // ================================================================
             
             // FALLBACK: Loop diretto su tutte le stelle (più lento ma funzionale)

@@ -47,8 +47,8 @@ set(SOURCES
     src/orbital_elements.cpp
     src/ephemeris.cpp
     src/occultation_predictor.cpp
-    # src/chebyshev_approximation.cpp
-    # src/chebyshev_detector.cpp
+    # src/chebyshev_approximation.cpp  # TODO: File corrotto - da rigenerare
+    # src/chebyshev_detector.cpp  # TODO: File corrotto - da rigenerare
     src/kml_exporter.cpp
     src/occult4_xml.cpp
     src/prediction_report.cpp
