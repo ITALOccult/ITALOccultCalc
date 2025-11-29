@@ -3,6 +3,7 @@
 #include "ioccultcalc/spice_spk_reader.h"
 #include <cmath>
 #include <stdexcept>
+#include <iostream>
 
 namespace ioccultcalc {
 
@@ -222,15 +223,25 @@ Vector3D Ephemeris::getEarthPosition(const JulianDate& jd) {
         try {
             // NAIF ID: 399 = Terra, 10 = Sole, 0 = SSB (barycenter)
             // Prova prima con Sole come centro (heliocentric)
+            Vector3D posEcl;
             try {
                 auto [pos, vel] = spkReader.getState(399, jd.jd, 10);
-                return pos;
+                posEcl = pos;
             } catch (...) {
                 // Se fallisce, prova SSB e sottrai posizione Sole
                 auto [earthPos, earthVel] = spkReader.getState(399, jd.jd, 0);
                 auto [sunPos, sunVel] = spkReader.getState(10, jd.jd, 0);
-                return earthPos - sunPos;
+                posEcl = earthPos - sunPos;
             }
+            
+            // SPK restituisce in ECLIPJ2000 (frame eclittico)
+            // CONVERTE AD EQUATORIALE J2000 per compatibilità con RA/Dec
+            double eps = 23.4392911 * DEG_TO_RAD;  // Obliquità eclittica J2000
+            Vector3D posEq;
+            posEq.x = posEcl.x;
+            posEq.y = posEcl.y * cos(eps) - posEcl.z * sin(eps);
+            posEq.z = posEcl.y * sin(eps) + posEcl.z * cos(eps);
+            return posEq;
         } catch (...) {
             // Fallback a formula analitica
         }
@@ -298,7 +309,14 @@ Vector3D Ephemeris::getEarthVelocity(const JulianDate& jd) {
     if (spkReader.isLoaded()) {
         try {
             auto [pos, vel] = spkReader.getState(399, jd.jd, 10);
-            return vel;
+            
+            // CONVERTE VELOCITÀ DA ECLITTICO AD EQUATORIALE
+            double eps = 23.4392911 * DEG_TO_RAD;
+            Vector3D velEq;
+            velEq.x = vel.x;
+            velEq.y = vel.y * cos(eps) - vel.z * sin(eps);
+            velEq.z = vel.y * sin(eps) + vel.z * cos(eps);
+            return velEq;
         } catch (...) {
             // Fallback a differenze finite
         }
