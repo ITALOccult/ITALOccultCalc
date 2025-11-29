@@ -16,6 +16,19 @@ option(BUILD_EXAMPLES "Build examples" ON)
 find_package(CURL REQUIRED)
 find_package(LibXml2 REQUIRED)
 
+# OpenMP support (macOS requires libomp from Homebrew)
+if(APPLE)
+    set(OpenMP_C_FLAGS "-Xpreprocessor -fopenmp -I/opt/homebrew/opt/libomp/include")
+    set(OpenMP_C_LIB_NAMES "omp")
+    set(OpenMP_CXX_FLAGS "-Xpreprocessor -fopenmp -I/opt/homebrew/opt/libomp/include")
+    set(OpenMP_CXX_LIB_NAMES "omp")
+    set(OpenMP_omp_LIBRARY "/opt/homebrew/opt/libomp/lib/libomp.dylib")
+endif()
+find_package(OpenMP REQUIRED)
+
+# Add IOC_GaiaLib subdirectory
+add_subdirectory(external/IOC_GaiaLib)
+
 # Include directories
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -23,16 +36,19 @@ include_directories(
     ${LIBXML2_INCLUDE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/external/cspice/include
     ${CMAKE_CURRENT_SOURCE_DIR}/external
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/IOC_GaiaLib/include
 )
 
 # Source files
 set(SOURCES
     src/astdys_client.cpp
-    src/gaia_client.cpp
-    src/gaia_cache.cpp
+    # gaia_client.cpp and gaia_cache.cpp now provided by IOC_GaiaLib via adapter
+    src/gaia_adapter.cpp
     src/orbital_elements.cpp
     src/ephemeris.cpp
     src/occultation_predictor.cpp
+    src/chebyshev_approximation.cpp
+    src/chebyshev_detector.cpp
     src/kml_exporter.cpp
     src/occult4_xml.cpp
     src/prediction_report.cpp
@@ -45,6 +61,8 @@ set(SOURCES
     src/orbit_fitter.cpp
     src/orbit_determination_gauss.cpp
     src/force_model.cpp
+    src/orbfit_force_model.cpp
+    src/rkf78_integrator.cpp
     src/jpl_ephemeris.cpp
     src/orbit_propagator.cpp
     src/jpl_horizons_client.cpp
@@ -67,6 +85,8 @@ set(SOURCES
     src/cubic_spline.cpp
     src/parallel_algorithms.cpp
     src/output_manager.cpp
+    src/asteroid_list_reader.cpp
+    src/gaia_catalog_preloader.cpp
 )
 
 # Fortran wrapper for OrbFit
@@ -120,6 +140,7 @@ set(HEADERS
     include/planetary_aberration.h
     include/cubic_spline.h
     include/parallel_algorithms.h
+    include/ioccultcalc/gaia_catalog_preloader.h
 )
 
 # OrbFit integration via Fortran wrapper with bind(C)
@@ -198,6 +219,8 @@ target_link_libraries(ioccultcalc
     ${LIBXML2_LIBRARIES}
     ${CMAKE_CURRENT_SOURCE_DIR}/external/cspice/lib/cspice.a
     ${ORBFIT_ALL_LIBS}
+    ioc_gaialib
+    OpenMP::OpenMP_CXX
 )
 
 target_include_directories(ioccultcalc PUBLIC

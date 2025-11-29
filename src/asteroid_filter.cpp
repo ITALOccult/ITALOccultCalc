@@ -6,6 +6,7 @@
  */
 
 #include "ioccultcalc/asteroid_filter.h"
+#include "ioccultcalc/asteroid_list_reader.h"
 #include <algorithm>
 #include <sstream>
 #include <stdexcept>
@@ -400,8 +401,43 @@ AsteroidRangeBuilder& AsteroidRangeBuilder::whereNot(const std::string& conditio
     return *this;
 }
 
+AsteroidRangeBuilder& AsteroidRangeBuilder::addListFromFile(const std::string& filename) {
+    // Leggi numeri dal file
+    auto numbers = AsteroidListReader::readNumbersFromFile(filename);
+    
+    // Aggiungi alla lista esplicita
+    explicitList_.insert(explicitList_.end(), numbers.begin(), numbers.end());
+    useExplicitList_ = true;
+    
+    return *this;
+}
+
+void AsteroidRangeBuilder::addToList(const std::vector<int>& additional) {
+    explicitList_.insert(explicitList_.end(), additional.begin(), additional.end());
+    if (!additional.empty()) {
+        useExplicitList_ = true;
+    }
+}
+
+void AsteroidRangeBuilder::addToListFromFile(const std::string& filename) {
+    auto numbers = AsteroidListReader::readNumbersFromFile(filename);
+    addToList(numbers);
+}
+
 AsteroidRange AsteroidRangeBuilder::build() {
-    if (useExplicitList_) {
+    // Se abbiamo sia range che lista esplicita, dobbiamo combinare
+    if (useExplicitList_ && (from_ != 1 || to_ != 100000)) {
+        // Genera il range
+        std::vector<int> combined;
+        for (int i = from_; i <= to_; ++i) {
+            combined.push_back(i);
+        }
+        
+        // Aggiungi la lista esplicita
+        combined.insert(combined.end(), explicitList_.begin(), explicitList_.end());
+        
+        range_.setExplicitList(combined);
+    } else if (useExplicitList_) {
         range_.setExplicitList(explicitList_);
     } else {
         range_.setRange(from_, to_);

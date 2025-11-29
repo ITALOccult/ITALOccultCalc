@@ -65,3 +65,27 @@ target_link_libraries(test_vesta_propagation ioccultcalc)
 # Test SPK frames
 add_executable(test_spk_frames test_spk_frames.cpp)
 target_link_libraries(test_spk_frames ioccultcalc ${CSPICE_LIB})
+
+# Test ASTNUM output format
+add_executable(test_astnum_output test_astnum_output.cpp)
+target_link_libraries(test_astnum_output PRIVATE ioccultcalc)
+
+# Test Asteroid List Reader (input ASTNUM_LIST)
+add_executable(test_asteroid_list_reader test_asteroid_list_reader.cpp)
+target_link_libraries(test_asteroid_list_reader PRIVATE ioccultcalc)
+
+# Test Combined Lists (range + filtri + file multipli)
+add_executable(test_combined_lists test_combined_lists.cpp)
+target_link_libraries(test_combined_lists PRIVATE ioccultcalc)
+
+# Test con file localasteroid reale
+add_executable(test_localasteroid_real test_localasteroid_real.cpp)
+target_link_libraries(test_localasteroid_real PRIVATE ioccultcalc)
+
+# Test validazione file .oop preset
+add_executable(test_oop_presets test_oop_presets.cpp)
+# No dependencies - standalone parser
+
+# Test integrazione .oop con AsteroidListReader
+add_executable(test_oop_with_asteroid_lists test_oop_with_asteroid_lists.cpp)
+target_link_libraries(test_oop_with_asteroid_lists PRIVATE ioccultcalc)

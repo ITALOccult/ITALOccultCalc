@@ -33,7 +33,8 @@ enum class OutputFormat {
     PDF,            ///< PDF compilato da LaTeX (.pdf)
     XML_OCCULT4,    ///< XML compatibile Occult4 (.xml)
     JSON,           ///< JSON strutturato (.json)
-    IOTA_CARD       ///< Scheda grafica IOTA (.jpg)
+    IOTA_CARD,      ///< Scheda grafica IOTA (.jpg)
+    ASTNUM_LIST     ///< Lista numeri asteroidi con occultazioni (.txt)
 };
 
 /**
@@ -222,6 +223,9 @@ private:
     
     bool writeIotaCard(const OccultationEvent& event,
                       const std::string& filename);
+    
+    bool writeAstNumList(const std::vector<OccultationEvent>& events,
+                        const std::string& filename);
     
     // Utility rendering
     std::string generateAsciiMap(const OccultationEvent& event,

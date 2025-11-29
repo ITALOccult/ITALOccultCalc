@@ -153,6 +153,13 @@ public:
     // Lista esplicita
     AsteroidRangeBuilder& explicitList(const std::vector<int>& list);
     
+    // Aggiungi lista da file (fluent interface)
+    AsteroidRangeBuilder& addListFromFile(const std::string& filename);
+    
+    // Metodi helper per aggiungere liste
+    void addToList(const std::vector<int>& additional);
+    void addToListFromFile(const std::string& filename);
+    
     // Condizioni WHERE (inclusione)
     AsteroidRangeBuilder& where(const std::string& condition);
     

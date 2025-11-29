@@ -19,6 +19,9 @@ target_link_libraries(test_conversion ioccultcalc)
 add_executable(example_gauss example_gauss.cpp)
 target_link_libraries(example_gauss ioccultcalc)
 
+add_executable(example_combined_asteroid_lists example_combined_asteroid_lists.cpp)
+target_link_libraries(example_combined_asteroid_lists ioccultcalc)
+
 add_executable(test_propagator test_propagator.cpp)
 target_link_libraries(test_propagator ioccultcalc)
 
@@ -122,6 +125,12 @@ target_link_libraries(test_astdys_vs_orbfit ioccultcalc)
 add_executable(test_orbfit_fitted_elements test_orbfit_fitted_elements.cpp)
 target_link_libraries(test_orbfit_fitted_elements ioccultcalc)
 
+add_executable(replicate_orbfit replicate_orbfit.cpp)
+target_link_libraries(replicate_orbfit ioccultcalc)
+
+add_executable(test_pompeja test_pompeja.cpp)
+target_link_libraries(test_pompeja ioccultcalc)
+
 add_executable(test_frame_roundtrip test_frame_roundtrip.cpp)
 target_link_libraries(test_frame_roundtrip ioccultcalc)
 
@@ -159,6 +168,9 @@ target_link_libraries(test_database ioccultcalc)
 
 add_executable(test_gaia_cache test_gaia_cache.cpp)
 target_link_libraries(test_gaia_cache ioccultcalc)
+
+add_executable(test_gaia_edr3 test_gaia_edr3.cpp)
+target_link_libraries(test_gaia_edr3 ioccultcalc)
 
 add_executable(test_real_occultation test_real_occultation.cpp)
 target_link_libraries(test_real_occultation ioccultcalc)
