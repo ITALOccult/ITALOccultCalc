@@ -9,6 +9,7 @@
 #include "ioccultcalc/spice_spk_reader.h"
 #include "ioccultcalc/ephemeris.h"
 #include "ioccultcalc/ra15_integrator.hpp"
+#include "ioccultcalc/rkf78_integrator.h"
 #include <cmath>
 #include <iostream>
 #include <chrono>
@@ -673,6 +674,59 @@ OrbitState OrbitPropagator::integrateRK4(const OrbitState& state0, double dt) {
     return result;
 }
 
+OrbitState OrbitPropagator::integrateRKF78(const OrbitState& state0, double dt, double& errorEst) {
+    // Runge-Kutta-Fehlberg 7(8) adaptive integrator
+    // Uses RKF78Integrator class based on ITALOccultLibrary
+    // This is called ONCE for the entire propagation (not step-by-step like RK4)
+    
+    const Vector3D& r0 = state0.position;
+    const Vector3D& v0 = state0.velocity;
+    const JulianDate& t0 = state0.epoch;
+    
+    // Create RKF78 integrator with current options
+    RKF78Integrator integrator(options_.stepSize, options_.tolerance);
+    
+    // Create derivative function (lambda capturing this)
+    auto derivatives = [this](double t_jd, const StateVector& state) -> StateVector {
+        JulianDate jd(t_jd);
+        Vector3D pos(state.x, state.y, state.z);
+        Vector3D vel(state.vx, state.vy, state.vz);
+        Vector3D acc = this->computeAcceleration(jd, pos, vel);
+        return StateVector(state.vx, state.vy, state.vz, acc.x, acc.y, acc.z);
+    };
+    
+    // Initial state
+    StateVector y0(r0.x, r0.y, r0.z, v0.x, v0.y, v0.z);
+    
+    // Integrate (RKF78 handles entire propagation internally with adaptive steps)
+    double t_target = t0.jd + dt;
+    StateVector yf = integrator.integrate(derivatives, y0, t0.jd, t_target);
+    
+    // Extract statistics from RKF78
+    auto stats = integrator.statistics();
+    
+    // Update lastStats_ with RKF78 internal statistics
+    lastStats_.nSteps = stats.num_steps;
+    lastStats_.nEvaluations = stats.num_function_evals;
+    lastStats_.nRejections = stats.num_rejected_steps;
+    lastStats_.finalStepSize = (stats.max_step_size + stats.min_step_size) / 2.0;  // Average step
+    
+    // Estimate error (crude approximation based on step size variation)
+    double step_variation = (stats.max_step_size - stats.min_step_size) / stats.max_step_size;
+    errorEst = options_.tolerance * step_variation;
+    
+    // Build result
+    OrbitState result;
+    result.epoch = JulianDate(t_target);
+    result.position = Vector3D(yf.x, yf.y, yf.z);
+    result.velocity = Vector3D(yf.vx, yf.vy, yf.vz);
+    result.A1 = state0.A1;
+    result.A2 = state0.A2;
+    result.A3 = state0.A3;
+    
+    return result;
+}
+
 OrbitState OrbitPropagator::integrateRA15(const OrbitState& state0, const JulianDate& targetEpoch) {
     // Configura opzioni RA15
     RA15Options ra15opts;
@@ -756,26 +810,34 @@ OrbitState OrbitPropagator::propagate(const OrbitState& initialState,
         // Integra un passo
         if (options_.integrator == IntegratorType::RK4) {
             currentState = integrateRK4(currentState, current_step);
+            nSteps++;
+        } else if (options_.integrator == IntegratorType::RKF78) {
+            // RKF78 gestisce internamente l'integrazione completa con step adattivo
+            // Usa RKF78 per l'intera propagazione in un colpo solo (molto più efficiente!)
+            double errorEst = 0.0;
+            currentState = integrateRKF78(initialState, dt_total, errorEst);
+            maxError = errorEst;
+            // lastStats_ è già aggiornato da integrateRKF78() con statistiche reali
+            break;  // RKF78 ha già fatto tutto
         } else if (options_.integrator == IntegratorType::RA15) {
             // RA15 gestisce internamente l'integrazione completa
             // Usa RA15 per l'intera propagazione in un colpo solo
             currentState = integrateRA15(initialState, targetEpoch);
             break;  // RA15 ha già fatto tutto
         } else {
-            // Altri integratori TODO
+            // Fallback: usa RK4
             currentState = integrateRK4(currentState, current_step);
+            nSteps++;
         }
         
-        nSteps++;
-        
-        // Progress callback
-        if (progressCallback_ && nSteps % 100 == 0) {
+        // Progress callback (solo per RK4)
+        if (options_.integrator == IntegratorType::RK4 && progressCallback_ && nSteps % 100 == 0) {
             double progress = fabs(currentState.epoch.jd - initialState.epoch.jd) / fabs(dt_total);
             progressCallback_(progress, currentState);
         }
         
-        // Safety: max steps
-        if (nSteps > options_.maxSteps) {
+        // Safety: max steps (solo per RK4)
+        if (options_.integrator == IntegratorType::RK4 && nSteps > options_.maxSteps) {
             std::cerr << "WARNING: Max steps reached in propagation\n";
             break;
         }
@@ -784,10 +846,12 @@ OrbitState OrbitPropagator::propagate(const OrbitState& initialState,
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed = end - start;
     
-    // Salva statistiche
-    lastStats_.nSteps = nSteps;
-    lastStats_.finalStepSize = dt_step;
-    lastStats_.maxError = maxError;
+    // Salva statistiche (solo per RK4, RKF78/RA15 già salvate internamente)
+    if (options_.integrator == IntegratorType::RK4) {
+        lastStats_.nSteps = nSteps;
+        lastStats_.finalStepSize = dt_step;
+        lastStats_.maxError = maxError;
+    }
     lastStats_.computeTime = elapsed.count();
     
     return currentState;
