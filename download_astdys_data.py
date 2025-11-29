@@ -212,10 +212,11 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Esempi:
-  %(prog)s asteroids.txt
-  %(prog)s asteroids.txt -o test_astdys_download
-  %(prog)s asteroids.txt --only-eq1
-  %(prog)s asteroids.txt --force --delay 2
+  %(prog)s asteroids.txt                           # Usa default: test_astdys_download/
+  %(prog)s asteroids.txt my_data/                  # Parametro posizionale
+  %(prog)s asteroids.txt -o /path/to/output        # Opzione -o (override)
+  %(prog)s asteroids.txt --only-eq1                # Solo elementi orbitali
+  %(prog)s asteroids.txt my_data/ --force --delay 2
 
 Formati input supportati:
   - Lista numeri (uno per riga): 433, 11234, 203
@@ -244,8 +245,10 @@ Note:
     
     parser.add_argument('input_file', 
                        help='File con lista asteroidi (numeri o output IOccultCalc)')
-    parser.add_argument('--output-dir', '-o', default='test_astdys_download',
+    parser.add_argument('output_dir', nargs='?', default='test_astdys_download',
                        help='Directory output (default: test_astdys_download)')
+    parser.add_argument('-o', '--output-dir-alt', dest='output_dir_override',
+                       help='Directory output alternativa (override posizionale)')
     parser.add_argument('--only-eq1', action='store_true',
                        help='Scarica solo file .eq1 (elementi orbitali)')
     parser.add_argument('--only-rwo', action='store_true',
@@ -268,8 +271,14 @@ Note:
         print(f"Errore: file {args.input_file} non trovato")
         return 1
     
+    # Determina directory output (priorità: -o > posizionale > default)
+    if args.output_dir_override:
+        output_dir_str = args.output_dir_override
+    else:
+        output_dir_str = args.output_dir
+    
     # Crea directory output
-    output_dir = Path(args.output_dir)
+    output_dir = Path(output_dir_str)
     output_dir.mkdir(parents=True, exist_ok=True)
     
     print("╔═══════════════════════════════════════════════════════════╗")

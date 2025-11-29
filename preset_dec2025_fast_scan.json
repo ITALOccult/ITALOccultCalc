@@ -1,0 +1,110 @@
+{
+  "metadata": {
+    "name": "Dicembre 2025 - Fast Scan (>10km)",
+    "description": "Scan veloce occultazioni per asteroidi con diametro > 10km, magnitudine limite 14.0",
+    "created": "2025-11-29",
+    "purpose": "Fast screening - Generate candidate list for high precision analysis"
+  },
+  "sections": [
+    {
+      "type": "object",
+      "parameters": [
+        {"name": "id", "value": "0", "type": "string", "comment": "Object ID"},
+        {"name": "name", "value": "FastScan_7km", "type": "string", "comment": "Object name"},
+        {"name": "source", "value": "MPC", "type": "string", "comment": "Data source - Minor Planet Center"},
+        {"name": "auto_download", "value": "true", "type": "bool", "comment": "Download MPC data automatically"},
+        {"name": "min_diameter", "value": "7.0", "type": "double", "comment": "Minimum diameter 7 km"}
+      ]
+    },
+    {
+      "type": "propag",
+      "parameters": [
+        {"name": "type", "value": "RK4", "type": "string", "comment": "Propagator type - Runge-Kutta 4th order"},
+        {"name": "step_size", "value": "1.0", "type": "double", "comment": "Step 1.0 giorno (veloce)"}
+      ]
+    },
+    {
+      "type": "ephemeris",
+      "parameters": [
+        {"name": "jpl_version", "value": "DE441", "type": "string", "comment": "JPL planetary ephemeris"}
+      ]
+    },
+    {
+      "type": "perturbations",
+      "parameters": [
+        {"name": "planets", "value": "true", "type": "bool", "comment": "Include planetary perturbations"},
+        {"name": "asteroid_count", "value": "0", "type": "int", "comment": "No asteroid perturbations (veloce)"},
+        {"name": "relativity", "value": "false", "type": "bool", "comment": "No relativistic corrections (veloce)"}
+      ]
+    },
+    {
+      "type": "time",
+      "parameters": [
+        {"name": "start_date", "value": "2025-12-01", "type": "string", "comment": "Start date"},
+        {"name": "end_date", "value": "2025-12-31", "type": "string", "comment": "End date - full December 2025"}
+      ]
+    },
+    {
+      "type": "search",
+      "parameters": [
+        {"name": "mag_limit", "value": "14.0", "type": "double", "comment": "Maximum star magnitude"},
+        {"name": "search_radius_deg", "value": "0.1", "type": "double", "comment": "Search radius ridotto (veloce)"},
+        {"name": "min_probability", "value": "0.02", "type": "double", "comment": "Minimum probability 2% (skip low prob)"},
+        {"name": "time_step_hours", "value": "24.0", "type": "double", "comment": "Step 24 ore per velocità"}
+      ]
+    },
+    {
+      "type": "occultation",
+      "parameters": [
+        {"name": "shadow_threshold_factor", "value": "3.0", "type": "double", "comment": "Shadow threshold più stretto (veloce)"},
+        {"name": "star_uncertainty_base_mas", "value": "15.0", "type": "double", "comment": "Base star uncertainty"},
+        {"name": "star_pm_degradation_mas_per_year", "value": "5.0", "type": "double", "comment": "PM degradation"},
+        {"name": "use_chebyshev", "value": "true", "type": "bool", "comment": "Usa Chebyshev per posizioni asteroidi (100x più veloce)"},
+        {"name": "chebyshev_order", "value": "11", "type": "int", "comment": "Ordine 11 (ottimo compromesso)"},
+        {"name": "use_adaptive_timestep", "value": "true", "type": "bool", "comment": "Timestep adattivo"},
+        {"name": "coarse_timestep_hours", "value": "24.0", "type": "double", "comment": "Step grossolano 24 ore"},
+        {"name": "fine_timestep_hours", "value": "2.0", "type": "double", "comment": "Step fine 2 ore vicino eventi"}
+      ]
+    },
+    {
+      "type": "gaia",
+      "parameters": [
+        {"name": "catalog", "value": "GAIA_EDR3", "type": "string", "comment": "GAIA catalog version"},
+        {"name": "version", "value": "DR3", "type": "string", "comment": "Data release version"},
+        {"name": "max_magnitude", "value": "14.0", "type": "double", "comment": "Maximum star magnitude"},
+        {"name": "use_local_cache", "value": "true", "type": "bool", "comment": "Use local cache"},
+        {"name": "cache_directory", "value": "/Users/michelebigi/.ioccultcalc/gaia_cache", "type": "string", "comment": "Cache directory"}
+      ]
+    },
+    {
+      "type": "geographic",
+      "parameters": [
+        {"name": "min_latitude", "value": "36.0", "type": "double", "comment": "South Italy"},
+        {"name": "max_latitude", "value": "47.0", "type": "double", "comment": "North Italy"},
+        {"name": "min_longitude", "value": "6.0", "type": "double", "comment": "West Italy"},
+        {"name": "max_longitude", "value": "19.0", "type": "double", "comment": "East Italy"},
+        {"name": "min_sun_altitude_deg", "value": "-18.0", "type": "double", "comment": "Astronomical night"},
+        {"name": "min_target_altitude_deg", "value": "20.0", "type": "double", "comment": "Minimum altitude"}
+      ]
+    },
+    {
+      "type": "observer",
+      "parameters": [
+        {"name": "name", "value": "Italy-Center", "type": "string", "comment": "Observer name"},
+        {"name": "latitude", "value": "42.8333", "type": "double", "comment": "Latitude (Rome area)"},
+        {"name": "longitude", "value": "12.8333", "type": "double", "comment": "Longitude"},
+        {"name": "elevation_m", "value": "100.0", "type": "double", "comment": "Elevation in meters"}
+      ]
+    },
+    {
+      "type": "output",
+      "parameters": [
+        {"name": "format", "value": "LOCALASTEROIDS", "type": "string", "comment": "LocalAsteroids format"},
+        {"name": "output_file", "value": "/Users/michelebigi/ITALOccult/2025-12/localasteroids_dec2025_fast.txt", "type": "string", "comment": "LocalAsteroids output"},
+        {"name": "export_asteroid_list", "value": "true", "type": "bool", "comment": "Export asteroid list"},
+        {"name": "asteroid_list_file", "value": "/Users/michelebigi/ITALOccult/2025-12/asteroids_fast_scan.txt", "type": "string", "comment": "List for high precision step"},
+        {"name": "verbosity", "value": "1", "type": "int", "comment": "Verbosity level"}
+      ]
+    }
+  ]
+}
