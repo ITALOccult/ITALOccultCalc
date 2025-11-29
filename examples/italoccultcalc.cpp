@@ -20,10 +20,10 @@
 #include "ioccultcalc/config_manager.h"
 #include "ioccultcalc/asteroid_filter.h"
 #include "ioccultcalc/orbit_propagator.h"
-// GaiaCache usato per query catalogo locale (via gaia_adapter.cpp)
-#include "ioccultcalc/gaia_cache.h"
+// IOC_GaiaLib - UnifiedGaiaCatalog per formato multifile_v2
+#include "ioc_gaialib/unified_gaia_catalog.h"
 #include "ioccultcalc/occultation_predictor.h"
-// #include "ioccultcalc/chebyshev_detector.h"  // TODO: File da rigenerare
+#include "ioccultcalc/chebyshev_detector.h"
 #include "ioccultcalc/occult4_xml.h"
 #include "ioccultcalc/prediction_report.h"
 #include "ioccultcalc/time_utils.h"
@@ -285,6 +285,84 @@ std::vector<AsteroidCandidate> selectAsteroids(const ConfigManager& config) {
                 if (!explicitAsteroidList.empty()) useExplicitList = true;
             } else {
                 std::cerr << "Attenzione: impossibile aprire file lista asteroidi: " << filePath << "\n";
+            }
+        }
+    }
+    
+    // NUOVO: Supporto sezione asteroids.additional_files (multi-file survey)
+    // Cerca sezione personalizzata "asteroids"
+    auto asteroidsSection = config.getSection(ConfigSection::ASTEROIDS);
+    if (asteroidsSection) {
+        // Leggi additional_files come array: .additional_files = ['file1.txt', 'file2.txt']
+        if (asteroidsSection->hasParameter("additional_files")) {
+            std::string filesParam = asteroidsSection->getParameter("additional_files")->asString();
+            // Parse array format: ['file1.txt', 'file2.txt'] o semplicemente 'file1.txt'
+            std::vector<std::string> filesList;
+            
+            // Rimuovi brackets se presenti
+            if (filesParam.front() == '[') filesParam = filesParam.substr(1);
+            if (filesParam.back() == ']') filesParam.pop_back();
+            
+            // Split per virgola e processa ogni file
+            std::istringstream iss(filesParam);
+            std::string fileToken;
+            while (std::getline(iss, fileToken, ',')) {
+                // Rimuovi spazi, quotes e apostrofi
+                fileToken.erase(0, fileToken.find_first_not_of(" \t'\""));
+                fileToken.erase(fileToken.find_last_not_of(" \t'\"") + 1);
+                if (!fileToken.empty()) {
+                    filesList.push_back(fileToken);
+                }
+            }
+            
+            // Carica ogni file
+            for (const std::string& filePath : filesList) {
+                std::ifstream listFile(filePath);
+                if (listFile.is_open()) {
+                    std::string line;
+                    int lineNum = 0;
+                    while (std::getline(listFile, line)) {
+                        lineNum++;
+                        // Trim whitespace
+                        line.erase(0, line.find_first_not_of(" \t"));
+                        if (line.empty() || line[0] == '#') continue;
+                        
+                        // Rimuovi commenti inline
+                        size_t commentPos = line.find('#');
+                        if (commentPos != std::string::npos) {
+                            line = line.substr(0, commentPos);
+                        }
+                        line.erase(line.find_last_not_of(" \t") + 1);
+                        
+                        if (!line.empty()) {
+                            // Supporta vari formati: "10", "(10)", "10 # comment"
+                            std::string numStr = line;
+                            // Rimuovi parentesi se presenti
+                            numStr.erase(std::remove(numStr.begin(), numStr.end(), '('), numStr.end());
+                            numStr.erase(std::remove(numStr.begin(), numStr.end(), ')'), numStr.end());
+                            // Prendi solo il primo token (numero)
+                            std::istringstream numIss(numStr);
+                            numIss >> numStr;
+                            
+                            try {
+                                int num = std::stoi(numStr);
+                                explicitAsteroidList.insert(num);
+                            } catch (...) {
+                                std::cerr << "Attenzione: " << filePath << " linea " << lineNum 
+                                          << " - ignorato: '" << line << "'\n";
+                            }
+                        }
+                    }
+                    listFile.close();
+                    std::cout << "✓ Caricati asteroidi da: " << filePath << "\n";
+                } else {
+                    std::cerr << "Attenzione: impossibile aprire: " << filePath << "\n";
+                }
+            }
+            
+            if (!explicitAsteroidList.empty()) {
+                useExplicitList = true;
+                std::cout << "✓ Lista combinata: " << explicitAsteroidList.size() << " asteroidi\n";
             }
         }
     }
@@ -763,10 +841,27 @@ std::vector<StarData> queryCatalog(const ConfigManager& config,
     const double searchRadiusDeg = 7.0;   // Raggio query
     const double batchMergeDistDeg = 15.0; // Merge regioni entro 15°
     
-    // Inizializza GaiaCache locale
-    std::string gaiaCacheDir = cacheDir.empty() ? 
-        std::string(getenv("HOME")) + "/.ioccultcalc/gaia_cache" : cacheDir;
-    GaiaCache gaiaCache(gaiaCacheDir);
+    // Inizializza UnifiedGaiaCatalog (IOC_GaiaLib)
+    // CONFIGURAZIONE FISSA - NON MODIFICARE
+    // Format: multifile_v2 in ~/.catalog/gaia_mag18_v2_multifile
+    std::string home = std::string(getenv("HOME"));
+    std::string catalogPath = home + "/.catalog/gaia_mag18_v2_multifile";
+    
+    std::string catalogConfig = R"({
+        "catalog_type": "multifile_v2",
+        "multifile_directory": ")" + catalogPath + R"("
+    })";
+    
+    if (!ioc::gaia::UnifiedGaiaCatalog::initialize(catalogConfig)) {
+        std::cerr << "✗ Impossibile inizializzare catalogo Gaia: " << catalogPath << "\n";
+        std::cerr << "  Path richiesto: ~/.catalog/gaia_mag18_v2_multifile\n";
+        return std::vector<StarData>();
+    }
+    
+    auto& catalog = ioc::gaia::UnifiedGaiaCatalog::getInstance();
+    auto info = catalog.getCatalogInfo();
+    std::cout << "✓ Catalogo Gaia caricato: " << catalogPath << "\n";
+    std::cout << "  Catalogo: " << info.catalog_name << " | Stelle: " << info.total_stars << "\n";
     
     // Struttura per regione batched
     struct SkyRegion {
@@ -799,7 +894,7 @@ std::vector<StarData> queryCatalog(const ConfigManager& config,
             raDeg = ephData.geocentricPos.ra * RAD_TO_DEG;
             decDeg = ephData.geocentricPos.dec * RAD_TO_DEG;
             
-            if (g_verbose && i == 0) {
+            if (g_verbose) {
                 std::cout << "  Asteroide " << ast.elements.designation 
                           << ": RA=" << std::fixed << std::setprecision(2) << raDeg 
                           << "° Dec=" << decDeg << "° (calcolata)\n";
@@ -858,16 +953,21 @@ std::vector<StarData> queryCatalog(const ConfigManager& config,
     auto query_start = std::chrono::high_resolution_clock::now();
     
     // Pre-alloca vettori per risultati paralleli
-    std::vector<std::vector<GaiaStar>> region_results(regions.size());
-    
+    std::vector<std::vector<ioc::gaia::GaiaStar>> region_results(regions.size());
+
 #ifdef _OPENMP
     #pragma omp parallel for schedule(dynamic)
     for (size_t r = 0; r < regions.size(); r++) {
         const auto& region = regions[r];
         
-        // Query catalogo locale - thread-safe
-        region_results[r] = gaiaCache.queryRegion(
-            region.ra, region.dec, searchRadiusDeg, magLimit, false);
+        // Query catalogo con UnifiedGaiaCatalog API
+        ioc::gaia::QueryParams qparams;
+        qparams.ra_center = region.ra;
+        qparams.dec_center = region.dec;
+        qparams.radius = searchRadiusDeg;
+        qparams.max_magnitude = magLimit;
+        
+        region_results[r] = catalog.queryCone(qparams);
         
         #pragma omp critical
         {
@@ -881,8 +981,14 @@ std::vector<StarData> queryCatalog(const ConfigManager& config,
     // Sequential fallback
     for (size_t r = 0; r < regions.size(); r++) {
         const auto& region = regions[r];
-        region_results[r] = gaiaCache.queryRegion(
-            region.ra, region.dec, searchRadiusDeg, magLimit, false);
+        
+        ioc::gaia::QueryParams qparams;
+        qparams.ra_center = region.ra;
+        qparams.dec_center = region.dec;
+        qparams.radius = searchRadiusDeg;
+        qparams.max_magnitude = magLimit;
+        
+        region_results[r] = catalog.queryCone(qparams);
         
         if (!g_verbose && r % 5 == 0) {
             std::cout << "  [" << r << "/" << regions.size() << "] "
@@ -900,34 +1006,44 @@ std::vector<StarData> queryCatalog(const ConfigManager& config,
     }
     
     // STEP 3: Deduplica e converti in parallelo
+    size_t debugCount = 0;
     for (size_t r = 0; r < regions.size(); r++) {
         const auto& region = regions[r];
         const auto& regionStars = region_results[r];
         
         for (const auto& gaiaStar : regionStars) {
-            if (uniqueStarIds.insert(gaiaStar.sourceId).second) {
-                // Converti a StarData
+            if (uniqueStarIds.insert(std::to_string(gaiaStar.source_id)).second) {
+                // DEBUG: Stampa prime 3 stelle per vedere coordinate
+                if (g_verbose && debugCount < 3) {
+                    std::cout << "  [DEBUG] Stella " << gaiaStar.source_id 
+                              << ": RA=" << std::fixed << std::setprecision(2) << gaiaStar.ra 
+                              << "° Dec=" << gaiaStar.dec << "° Mag=" << gaiaStar.phot_g_mean_mag << "\n";
+                    debugCount++;
+                }
+                
+                // Converti ioc::gaia::GaiaStar a StarData
                 StarData star;
-                star.source_id = 0;
-                star.designation = "Gaia DR3 " + gaiaStar.sourceId;
-                star.position = gaiaStar.pos;
-                star.epoch.jd = 2457389.0;
+                star.source_id = gaiaStar.source_id;
+                star.designation = "Gaia DR3 " + std::to_string(gaiaStar.source_id);
+                star.position.ra = gaiaStar.ra;
+                star.position.dec = gaiaStar.dec;
+                star.epoch.jd = 2457389.0;  // Gaia DR3 epoch
                 star.properMotion.pmra = gaiaStar.pmra;
                 star.properMotion.pmdec = gaiaStar.pmdec;
-                star.properMotion.pmra_error = 0.1;
-                star.properMotion.pmdec_error = 0.1;
+                star.properMotion.pmra_error = gaiaStar.pmra_error;
+                star.properMotion.pmdec_error = gaiaStar.pmdec_error;
                 star.properMotion.pmra_pmdec_corr = 0.0;
                 star.parallax = gaiaStar.parallax;
-                star.parallax_error = 0.1;
+                star.parallax_error = gaiaStar.parallax_error;
                 star.G_mag = gaiaStar.phot_g_mean_mag;
                 star.BP_mag = gaiaStar.phot_bp_mean_mag;
                 star.RP_mag = gaiaStar.phot_rp_mean_mag;
                 star.hasRadialVelocity = false;
                 star.radialVelocity = 0.0;
                 star.radialVelocity_error = 0.0;
-                star.astrometric_excess_noise = 0.0;
-                star.astrometric_n_good_obs = 0;
-                star.ruwe = 1.0;
+                star.astrometric_excess_noise = gaiaStar.astrometric_excess_noise;
+                star.astrometric_n_good_obs = gaiaStar.visibility_periods_used;
+                star.ruwe = gaiaStar.ruwe;
                 
                 stars.push_back(star);
             }
@@ -1335,22 +1451,66 @@ std::vector<ItalOccultationEvent> detectOccultations(
             predictor.setOrbitalUncertainty(orbitalUncertainty);
             
             // ================================================================
-            // STRATEGIA RICERCA A DUE FASI (temporaneamente disabilitata)
+            // STRATEGIA RICERCA A DUE FASI (ATTIVATA)
             // FASE 1: ChebyshevOccultationDetector - approssimazione veloce ~100-1000x
             // FASE 2: predictOccultation - refinement preciso con integratore configurato
-            //
-            // TODO: Implementare ChebyshevOccultationDetector quando file disponibili
             // ================================================================
             
-            // FALLBACK: Loop diretto su tutte le stelle (più lento ma funzionale)
+            // Inizializza Ephemeris per l'asteroide
+            Ephemeris ephemeris(astElem);
+            
+            // Configura detector Chebyshev (FASE 1)
+            ChebyshevOccultationDetector::Config detectorConfig;
+            detectorConfig.order = 11;             // Ordine polinomio (come LinOccult)
+            detectorConfig.segmentDays = 1.0;      // Un segmento al giorno
+            detectorConfig.thresholdArcsec = 300.0; // 5 arcmin threshold ricerca
+            detectorConfig.refinementArcsec = 60.0; // 1 arcmin per refine
+            detectorConfig.verbose = false;
+            
+            ChebyshevOccultationDetector detector(detectorConfig);
+            detector.initialize(ephemeris, startJd, endJd);
+            
+            // Prepara lista stelle come coppie (RA, Dec)
+            std::vector<std::pair<double, double>> starCoords;
+            starCoords.reserve(stars.size());
+            for (const auto& s : stars) {
+                starCoords.push_back({s.position.ra, s.position.dec});
+            }
+            
+            // FASE 1: Trova candidati con algoritmo Chebyshev (veloce)
+            auto candidates = detector.findCandidates(starCoords);
+            
+            // DEBUG: Stampa statistiche distanze per capire perché non trova eventi
+            if (g_verbose) {
+                if (!candidates.empty()) {
+                    std::cout << " → Chebyshev: " << candidates.size() << " candidati" << std::flush;
+                } else {
+                    // Trova distanza minima tra tutte le stelle per debug
+                    double minDistAll = 1e10;
+                    for (size_t i = 0; i < std::min(starCoords.size(), size_t(100)); i++) {
+                        auto cand = detector.findCandidate(i, starCoords[i].first, starCoords[i].second);
+                        if (cand.minDistArcsec < minDistAll) {
+                            minDistAll = cand.minDistArcsec;
+                        }
+                    }
+                    std::cout << " → 0 candidati (min dist=" << std::fixed << std::setprecision(0) 
+                              << minDistAll << "\" thresh=" << detectorConfig.thresholdArcsec << "\")" << std::flush;
+                }
+            }
+            
+            // FASE 2: Per ogni candidato, refine con predictOccultation (preciso)
             std::vector<OccultationEvent> realEvents;
             
-            // Epoca media del periodo di ricerca
+            // Epoca di riferimento per predictOccultation (centro periodo)
             JulianDate midEpoch;
             midEpoch.jd = (startJd + endJd) / 2.0;
             
-            for (size_t starIdx = 0; starIdx < stars.size(); starIdx++) {
-                const auto& starData = stars[starIdx];
+            for (const auto& candidate : candidates) {
+                // Recupera dati stella dal catalogo
+                if (candidate.starIndex < 0 || candidate.starIndex >= (int)stars.size()) {
+                    continue;
+                }
+                const auto& starData = stars[candidate.starIndex];
                 
                 // Converti StarData in GaiaStar per OccultationPredictor
                 GaiaStar gaiaStar;
@@ -1825,6 +1985,9 @@ int main(int argc, char* argv[]) {
         std::cout << "Tempo totale: " << duration.count() << " secondi\n";
         std::cout << "Eventi trovati: " << events.size() << "\n";
         std::cout << "Report salvati in: output/\n\n";
+        
+        // Cleanup catalogo Gaia
+        ioc::gaia::UnifiedGaiaCatalog::shutdown();
         
         return 0;
         

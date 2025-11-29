@@ -42,6 +42,7 @@ enum class ConfigSection {
     ORBIT_FITTING, // Orbit fitting with observations
     VALIDATION,    // Validation and quality control
     CHEBYSHEV,     // Chebyshev approximation settings (LinOccult method)
+    ASTEROIDS,     // Asteroid list files and selection
     CUSTOM         // User-defined sections
 };
 

@@ -278,6 +278,7 @@ ConfigSection ConfigSectionData::stringToSectionType(const std::string& str) {
     if (str == "orbit_fitting") return ConfigSection::ORBIT_FITTING;
     if (str == "validation") return ConfigSection::VALIDATION;
     if (str == "chebyshev") return ConfigSection::CHEBYSHEV;
+    if (str == "asteroids") return ConfigSection::ASTEROIDS;
     return ConfigSection::CUSTOM;
 }
 
