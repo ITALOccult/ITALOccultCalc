@@ -1,0 +1,287 @@
+# ============================================================================
+# PRESET: Dicembre 2025 - HIGH PRECISION con Orbit Fitting
+# ============================================================================
+# Modalità MASSIMA ACCURATEZZA per asteroidi selezionati
+# Usa: elementi AstDyS + orbit fitting + RKF78 + tutte le perturbazioni
+# Input: lista asteroidi da preset_dec2025_fast_list.oop
+# ============================================================================
+
+# ════════════════════════════════════════════════════════════════════════
+# CONFIGURAZIONE GENERALE
+# ════════════════════════════════════════════════════════════════════════
+
+general.
+    .propagator = 'RKF78'               # Runge-Kutta-Fehlberg 7(8) - massima precisione
+    .step_size_days = 0.05              # Passo piccolo per accuratezza
+    .output_format = 'iota'             # Formato IOTA professionale
+    .verbose = .TRUE.
+
+# ════════════════════════════════════════════════════════════════════════
+# PROPAGATORE RKF78 - MASSIMA ACCURATEZZA
+# ════════════════════════════════════════════════════════════════════════
+
+propagator.
+    # RKF78 adattivo
+    .tolerance = 1.0e-13                # Tolleranza stretta
+    .min_step = 1.0e-8                  # Passo minimo [giorni]
+    .max_step = 0.1                     # Passo massimo [giorni]
+    
+    # TUTTE le perturbazioni planetarie
+    .use_planetary_perturbations = .TRUE.
+    .include_mercury = .TRUE.
+    .include_venus = .TRUE.
+    .include_earth = .TRUE.
+    .include_mars = .TRUE.
+    .include_jupiter = .TRUE.
+    .include_saturn = .TRUE.
+    .include_uranus = .TRUE.
+    .include_neptune = .TRUE.
+    
+    # Perturbazioni asteroidali AST17
+    .use_asteroid_perturbations = .TRUE.
+    .asteroid_model = 'AST17'           # 16 asteroidi massicci
+    
+    # Correzioni relativistiche
+    .use_relativistic_corrections = .TRUE.
+    
+    # Output diagnostico
+    .show_propagation_stats = .TRUE.
+
+# ════════════════════════════════════════════════════════════════════════
+# SORGENTE ELEMENTI ORBITALI - ASTDYS con ORBIT FITTING
+# ════════════════════════════════════════════════════════════════════════
+
+orbit_source.
+    .type = 'astdys'
+    
+    # Directory locali (da download_astdys_data.py)
+    .local_eq1_directory = 'test_astdys_download'
+    .local_rwo_directory = 'test_astdys_download'
+    
+    # Download automatico se non trovati
+    .auto_download = .TRUE.
+    .astdys_url_base = 'https://newton.spacedys.com/~astdys2'
+    
+    # ORBIT FITTING ABILITATO
+    .fit_orbit = .TRUE.
+    .outlier_threshold = 3.0            # 3-sigma per outlier detection
+    .max_iterations = 20                # Max iterazioni differential correction
+    .convergence_tolerance = 1.0e-8     # Convergenza stretta [AU]
+    .verbose_fitting = .TRUE.           # Mostra iterazioni fitting
+    
+    # Usa incertezza da fit
+    .use_fitted_uncertainty = .TRUE.
+
+# ════════════════════════════════════════════════════════════════════════
+# PERIODO TEMPORALE - DICEMBRE 2025
+# ════════════════════════════════════════════════════════════════════════
+
+time.
+    .start_date = '2025-12-01'
+    .end_date = '2025-12-31'
+    .interval_hours = 1.0               # Intervallo orario per massima precisione
+
+# ════════════════════════════════════════════════════════════════════════
+# SELEZIONE ASTEROIDI - DA LISTA CANDIDATI
+# ════════════════════════════════════════════════════════════════════════
+
+asteroids.
+    .selection_mode = 'from_file'
+    .asteroid_list_file = 'asteroids_dec2025_candidates.txt'
+    
+    # NO filtri (usa tutti dalla lista)
+    .min_absolute_magnitude = -99.0
+    .max_absolute_magnitude = 99.0
+
+# ════════════════════════════════════════════════════════════════════════
+# RICERCA OCCULTAZIONI - PARAMETRI PROFESSIONALI
+# ════════════════════════════════════════════════════════════════════════
+
+search.
+    .max_magnitude = 16.0               # Stelle fino a mag 16 (accessibili amatoriali)
+    .search_radius_deg = 0.05           # Raggio ristretto (alta precisione)
+    .min_probability = 0.01             # Soglia 1% (eventi significativi)
+
+occultation.
+    # Shadow threshold professionale LinOccult
+    .shadow_threshold_factor = 3.0      # Standard LinOccult
+    
+    # Incertezze stelle GAIA EDR3 (migliorate)
+    .star_uncertainty_base_mas = 7.0    # EDR3 baseline
+    .star_pm_degradation_mas_per_year = 2.5
+    .use_probability_cdf = .TRUE.
+    
+    # Usa incertezza da orbit fitting
+    .use_fitted_uncertainty = .TRUE.
+    .asteroid_position_uncertainty_mas = 100.0  # Fallback se no fit
+    
+    # NO Chebyshev (già massima precisione con RKF78)
+    .use_chebyshev = .FALSE.
+    .use_adaptive_timestep = .FALSE.
+
+# ════════════════════════════════════════════════════════════════════════
+# CATALOGO STELLE - GAIA EDR3
+# ════════════════════════════════════════════════════════════════════════
+
+gaia.
+    .use_local_cache = .TRUE.
+    .cache_directory = '/Users/michelebigi/.ioccultcalc/gaia_cache'
+    .auto_download = .TRUE.
+    .version = 'EDR3'                   # Early Data Release 3
+    .cone_search_radius_deg = 0.1
+    
+    # Filtri qualità
+    .min_quality_flag = 0               # Tutte le stelle
+    .use_proper_motion = .TRUE.
+    .proper_motion_epoch = 2025.917     # Dicembre 2025
+
+# ════════════════════════════════════════════════════════════════════════
+# OUTPUT - FORMATO IOTA PROFESSIONALE
+# ════════════════════════════════════════════════════════════════════════
+
+output.
+    .output_file = 'occultations_dec2025_highprec.txt'
+    .format = 'iota'                    # Formato IOTA standard
+    
+    # Opzioni dettagliate
+    .include_header = .TRUE.
+    .include_statistics = .TRUE.
+    .include_uncertainty = .TRUE.
+    .include_path_coordinates = .TRUE.
+    .include_observability = .TRUE.
+    
+    # Ordinamento
+    .sort_by = 'probability'            # Prima i più probabili
+    
+    # Esporta anche formato machine-readable
+    .export_json = .TRUE.
+    .json_file = 'occultations_dec2025_highprec.json'
+    
+    # Esporta elementi fittati
+    .export_fitted_elements = .TRUE.
+    .fitted_elements_file = 'fitted_elements_dec2025.txt'
+
+# ════════════════════════════════════════════════════════════════════════
+# FILTRI GEOGRAFICI - VISIBILITÀ ITALIA
+# ════════════════════════════════════════════════════════════════════════
+
+geographic.
+    # Italia + margini
+    .min_latitude = 35.0                # Include tutto il sud
+    .max_latitude = 48.0                # Include Alpi
+    .min_longitude = 5.0                # Ovest ampliato
+    .max_longitude = 20.0               # Est ampliato
+    
+    # Criteri visibilità stretti
+    .min_sun_altitude_deg = -18.0       # Solo notte astronomica
+    .max_sun_altitude_deg = -12.0       # No crepuscolo
+    .min_target_altitude_deg = 25.0     # Target sopra 25° (buona visibilità)
+    .max_target_altitude_deg = 85.0     # Sotto zenith (no problemi refrazione)
+    
+    # Distanza Luna
+    .min_lunar_distance_deg = 15.0      # Evita disturbo lunare
+
+# ════════════════════════════════════════════════════════════════════════
+# OSSERVATORI ITALIANI DI RIFERIMENTO
+# ════════════════════════════════════════════════════════════════════════
+
+observer.
+    # Multipli osservatori per coverage Italia
+    .name = 'Italy-Network'
+    .use_multiple_sites = .TRUE.
+    
+    # Siti principali (calcola visibilità per tutti)
+    .site1_name = 'Roma'
+    .site1_latitude = 41.9028
+    .site1_longitude = 12.4964
+    .site1_elevation_m = 50.0
+    
+    .site2_name = 'Milano'
+    .site2_latitude = 45.4642
+    .site2_longitude = 9.1900
+    .site2_elevation_m = 120.0
+    
+    .site3_name = 'Napoli'
+    .site3_latitude = 40.8518
+    .site3_longitude = 14.2681
+    .site3_elevation_m = 17.0
+    
+    .site4_name = 'Palermo'
+    .site4_latitude = 38.1157
+    .site4_longitude = 13.3615
+    .site4_elevation_m = 14.0
+    
+    .timezone = 'Europe/Rome'
+
+# ════════════════════════════════════════════════════════════════════════
+# PERFORMANCE - BILANCIATA
+# ════════════════════════════════════════════════════════════════════════
+
+performance.
+    .parallel_threads = 4               # Parallelizza asteroidi
+    .use_gpu_acceleration = .FALSE.
+    .cache_ephemerides = .TRUE.
+    .cache_size_mb = 1024
+
+# ════════════════════════════════════════════════════════════════════════
+# ORBIT FITTING - CONFIGURAZIONE DETTAGLIATA
+# ════════════════════════════════════════════════════════════════════════
+
+orbit_fitting.
+    .enable_fitting = .TRUE.
+    .observation_source = 'ASTDYS'
+    
+    # Parametri fitting
+    .max_iterations = 20
+    .convergence_tolerance = 1.0e-8     # [AU]
+    .outlier_sigma = 3.0                # 3-sigma rejection
+    
+    # Pesi osservazioni
+    .weight_by_accuracy = .TRUE.
+    .weight_by_age = .TRUE.
+    .age_degradation_years = 10.0       # Peso decade ogni 10 anni
+    
+    # Output fitting
+    .save_residuals = .TRUE.
+    .residuals_file = 'fitting_residuals_dec2025.txt'
+    .save_covariance = .TRUE.
+
+# ============================================================================
+# NOTE TECNICHE
+# ============================================================================
+# Questo preset usa MASSIMA ACCURATEZZA:
+#
+# Propagatore:
+# - RKF78 7(8) ordine adattivo
+# - Tolleranza 1e-13
+# - Tutte le perturbazioni (8 pianeti + AST17)
+# - Correzioni relativistiche
+#
+# Orbit Fitting:
+# - Osservazioni .rwo da AstDyS (directory locale test_astdys_download/)
+# - Differential correction fino a convergenza 1e-8 AU
+# - Outlier rejection 3-sigma
+# - Usa incertezza fittata per predizioni
+#
+# Stelle:
+# - GAIA EDR3 fino a mag 16
+# - Incertezze 7 mas + proper motion degradation
+# - Cone search ristretto 0.1°
+#
+# Tempi di calcolo stimati:
+# - ~30-60 secondi per asteroide (con fitting)
+# - ~10-20 minuti per 20 asteroidi
+# - ~1-2 ore per 100 asteroidi
+#
+# Workflow consigliato:
+# 1. Esegui preset_dec2025_fast_list.oop → genera asteroids_dec2025_candidates.txt
+# 2. Download osservazioni: python3 download_astdys_data.py asteroids_dec2025_candidates.txt
+# 3. Esegui questo preset per analisi dettagliata
+#
+# Output files:
+# - occultations_dec2025_highprec.txt (formato IOTA)
+# - occultations_dec2025_highprec.json (machine-readable)
+# - fitted_elements_dec2025.txt (elementi orbitali fittati)
+# - fitting_residuals_dec2025.txt (residui O-C)
+# ============================================================================
+

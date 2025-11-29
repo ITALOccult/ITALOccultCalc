@@ -228,6 +228,22 @@ target_include_directories(ioccultcalc PUBLIC
     $<INSTALL_INTERFACE:include>
 )
 
+# Se AstDyn è abilitato, aggiungi dipendenze Eigen e Boost
+if(USE_ASTDYN AND ASTDYN_LIBRARIES)
+    find_package(Eigen3 QUIET)
+    find_package(Boost QUIET)
+    
+    if(Eigen3_FOUND)
+        target_include_directories(ioccultcalc PRIVATE ${EIGEN3_INCLUDE_DIR})
+        target_link_libraries(ioccultcalc Eigen3::Eigen)
+    endif()
+    
+    if(Boost_FOUND)
+        target_include_directories(ioccultcalc PRIVATE ${Boost_INCLUDE_DIRS})
+        target_link_libraries(ioccultcalc ${Boost_LIBRARIES})
+    endif()
+endif()
+
 # Examples
 if(BUILD_EXAMPLES)
     add_subdirectory(examples)

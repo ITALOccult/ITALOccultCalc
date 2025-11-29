@@ -235,6 +235,106 @@ ObservationSet MPCClient::loadFromFile(const std::string& filename) {
     return obsSet;
 }
 
+ObservationSet MPCClient::loadFromRWOFile(const std::string& filename) {
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        throw std::runtime_error("Cannot open RWO file: " + filename);
+    }
+    
+    ObservationSet obsSet;
+    std::string line;
+    bool pastHeader = false;
+    int successCount = 0;
+    int failCount = 0;
+    int totalLines = 0;
+    int skippedShort = 0;
+    int skippedComment = 0;
+    int headerLines = 0;
+    
+    while (std::getline(file, line)) {
+        totalLines++;
+        
+        // Skip fino a END_OF_HEADER (se presente)
+        if (!pastHeader) {
+            if (line.find("END_OF_HEADER") != std::string::npos) {
+                pastHeader = true;
+                headerLines = totalLines;
+                std::cerr << "✓ Header trovato alla linea " << totalLines << "\n";
+            }
+            // Se non c'è header e la linea sembra un'osservazione, considera il file senza header
+            else if (totalLines > 10 && line.length() >= 150 && line[0] != '!' && line[0] != '#') {
+                pastHeader = true;
+                headerLines = totalLines - 1;
+                std::cerr << "⚠️  Header END_OF_HEADER non trovato, assumo file senza header\n";
+                // Non fare continue, processa questa linea!
+            } else {
+                continue;
+            }
+        }
+        
+        // Se abbiamo appena impostato pastHeader=true senza fare continue, processa la linea corrente
+        if (!pastHeader) {
+            continue;
+        }
+        
+        // Skip commenti e linee vuote
+        if (line.empty() || line[0] == '!' || line[0] == '#') {
+            skippedComment++;
+            continue;
+        }
+        
+        // Skip linee troppo corte (header lines, blank lines)
+        if (line.length() < 150) {
+            skippedShort++;
+            if (skippedShort == 1) {
+                std::cerr << "⚠️  Prima linea corta (" << line.length() 
+                          << " chars): " << line.substr(0, 50) << "...\n";
+            }
+            continue;
+        }
+        
+        // Prova a parsare la linea .rwo
+        try {
+            auto obs = parseRWOLine(line);
+            
+            // Estrai designation dalla prima osservazione valida
+            if (obsSet.objectDesignation.empty() && line.length() >= 10) {
+                obsSet.objectDesignation = line.substr(0, 10);
+                // Trim spaces
+                size_t end = obsSet.objectDesignation.find_last_not_of(" \t\n\r");
+                if (end != std::string::npos) {
+                    obsSet.objectDesignation = obsSet.objectDesignation.substr(0, end + 1);
+                }
+            }
+            
+            obsSet.observations.push_back(obs);
+            successCount++;
+        } catch (const std::exception& e) {
+            // Stampa il primo errore per debug
+            if (failCount == 0) {
+                std::cerr << "❌ Primo errore di parsing:\n";
+                std::cerr << "   Messaggio: " << e.what() << "\n";
+                std::cerr << "   Linea (" << line.length() << " chars): " 
+                          << line.substr(0, std::min(size_t(120), line.length())) << "...\n";
+            }
+            failCount++;
+            continue;
+        }
+    }
+    
+    // Debug info
+    std::cerr << "📊 RWO parser statistics:\n";
+    std::cerr << "   Linee totali: " << totalLines << "\n";
+    std::cerr << "   Linee header: " << headerLines << "\n";
+    std::cerr << "   Commenti/vuote: " << skippedComment << "\n";
+    std::cerr << "   Troppo corte: " << skippedShort << "\n";
+    std::cerr << "   Parse OK: " << successCount << "\n";
+    std::cerr << "   Parse falliti: " << failCount << "\n";
+    
+    obsSet.computeStatistics();
+    return obsSet;
+}
+
 bool MPCClient::saveToFile(const ObservationSet& observations, const std::string& filename) {
     std::ofstream file(filename);
     if (!file.is_open()) {

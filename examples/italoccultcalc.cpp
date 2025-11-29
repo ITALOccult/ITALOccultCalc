@@ -20,13 +20,18 @@
 #include "ioccultcalc/config_manager.h"
 #include "ioccultcalc/asteroid_filter.h"
 #include "ioccultcalc/orbit_propagator.h"
-#include "ioccultcalc/gaia_client.h"
+// GaiaCache usato per query catalogo locale (via gaia_adapter.cpp)
 #include "ioccultcalc/gaia_cache.h"
 #include "ioccultcalc/occultation_predictor.h"
+#include "ioccultcalc/chebyshev_detector.h"
 #include "ioccultcalc/occult4_xml.h"
 #include "ioccultcalc/prediction_report.h"
 #include "ioccultcalc/time_utils.h"
 #include "ioccultcalc/ephemeris.h"
+#include "ioccultcalc/observation.h"
+#include "ioccultcalc/orbit_fitter.h"
+#include "ioccultcalc/astdys_client.h"
+#include "ioccultcalc/mpc_client.h"
 #include "planetary_aberration.h"
 #include "cubic_spline.h"
 #include <nlohmann/json.hpp>
@@ -36,9 +41,16 @@
 #include <vector>
 #include <string>
 #include <chrono>
+#include <thread>
 #include <algorithm>
+
+#ifdef _OPENMP
+#include <omp.h>
+#endif
 #include <ctime>
 #include <cmath>
+#include <set>
+#include <sstream>
 
 using namespace ioccultcalc;
 
@@ -189,16 +201,21 @@ std::vector<AsteroidCandidate> selectAsteroids(const ConfigManager& config) {
     
     std::vector<AsteroidCandidate> candidates;
     
-    // Criteri di default
-    double maxMagnitude = 14.0;        
-    double minDiameter = 50.0;         
-    double maxDiameter = 1000.0;       
-    double minPerihelion = 1.5;        
-    double maxAphelion = 4.5;
-    int maxAsteroids = 0;  // 0 = nessun limite
+    // Criteri di default: valori sentinel (-1) = filtro non applicato
+    double maxMagnitude = -1.0;        // -1 = nessun filtro magnitudine
+    double minDiameter = -1.0;         // -1 = nessun filtro diametro minimo
+    double maxDiameter = -1.0;         // -1 = nessun filtro diametro massimo
+    double minPerihelion = -1.0;       // -1 = nessun filtro perielio
+    double maxAphelion = -1.0;         // -1 = nessun filtro afelio
+    int maxAsteroids = 0;              // 0 = nessun limite
+    
+    // NUOVO: Lista esplicita di asteroidi (bypass tutti i filtri)
+    std::set<int> explicitAsteroidList;
+    bool useExplicitList = false;
     
     // Leggi parametri da configurazione se presenti
     auto objectSection = config.getSection(ConfigSection::OBJECT);
+    
     if (objectSection) {
         if (objectSection->hasParameter("min_diameter")) {
             minDiameter = objectSection->getParameter("min_diameter")->asDouble();
@@ -208,6 +225,67 @@ std::vector<AsteroidCandidate> selectAsteroids(const ConfigManager& config) {
         }
         if (objectSection->hasParameter("max_asteroids")) {
             maxAsteroids = (int)objectSection->getParameter("max_asteroids")->asDouble();
+        }
+        
+        // NUOVO: Supporto lista esplicita di asteroidi
+        // 1. Singolo numero: asteroid_number = 10
+        if (objectSection->hasParameter("asteroid_number")) {
+            int num = objectSection->getParameter("asteroid_number")->asInt();
+            explicitAsteroidList.insert(num);
+            useExplicitList = true;
+        }
+        
+        // 2. Lista inline: asteroid_list = "10,4,1,433"
+        if (objectSection->hasParameter("asteroid_list")) {
+            std::string listStr = objectSection->getParameter("asteroid_list")->asString();
+            std::istringstream iss(listStr);
+            std::string token;
+            while (std::getline(iss, token, ',')) {
+                // Trim whitespace
+                token.erase(0, token.find_first_not_of(" \t"));
+                token.erase(token.find_last_not_of(" \t") + 1);
+                if (!token.empty()) {
+                    try {
+                        int num = std::stoi(token);
+                        explicitAsteroidList.insert(num);
+                    } catch (...) {
+                        std::cerr << "Attenzione: ignorato numero invalido '" << token << "'\n";
+                    }
+                }
+            }
+            if (!explicitAsteroidList.empty()) useExplicitList = true;
+        }
+        
+        // 3. File con lista: asteroid_list_file = "my_asteroids.txt"
+        if (objectSection->hasParameter("asteroid_list_file")) {
+            std::string filePath = objectSection->getParameter("asteroid_list_file")->asString();
+            std::ifstream listFile(filePath);
+            if (listFile.is_open()) {
+                std::string line;
+                while (std::getline(listFile, line)) {
+                    // Trim whitespace e ignora righe vuote/commenti
+                    line.erase(0, line.find_first_not_of(" \t"));
+                    if (line.empty() || line[0] == '#') continue;
+                    // Rimuovi commenti inline
+                    size_t commentPos = line.find('#');
+                    if (commentPos != std::string::npos) {
+                        line = line.substr(0, commentPos);
+                    }
+                    line.erase(line.find_last_not_of(" \t") + 1);
+                    if (!line.empty()) {
+                        try {
+                            int num = std::stoi(line);
+                            explicitAsteroidList.insert(num);
+                        } catch (...) {
+                            std::cerr << "Attenzione: ignorato numero invalido '" << line << "'\n";
+                        }
+                    }
+                }
+                listFile.close();
+                if (!explicitAsteroidList.empty()) useExplicitList = true;
+            } else {
+                std::cerr << "Attenzione: impossibile aprire file lista asteroidi: " << filePath << "\n";
+            }
         }
     }
     
@@ -229,13 +307,31 @@ std::vector<AsteroidCandidate> selectAsteroids(const ConfigManager& config) {
     }
     
     std::cout << "Criteri selezione:\n";
-    std::cout << "  Magnitudine max: " << maxMagnitude << "\n";
-    std::cout << "  Diametro: " << minDiameter << " - " 
-              << maxDiameter << " km\n";
-    std::cout << "  Distanza perielio/afelio: " << minPerihelion 
-              << " - " << maxAphelion << " AU\n";
-    if (maxAsteroids > 0) {
-        std::cout << "  Limite max asteroidi: " << maxAsteroids << "\n";
+    
+    // Mostra lista esplicita se usata
+    if (useExplicitList) {
+        std::cout << "  ★ LISTA ESPLICITA: " << explicitAsteroidList.size() << " asteroidi [";
+        int count = 0;
+        for (int num : explicitAsteroidList) {
+            if (count > 0) std::cout << ", ";
+            if (count >= 10) {
+                std::cout << "...";
+                break;
+            }
+            std::cout << num;
+            count++;
+        }
+        std::cout << "]\n";
+        std::cout << "  (filtri diametro/magnitudine ignorati)\n";
+    } else {
+        std::cout << "  Magnitudine max: " << (maxMagnitude > 0 ? std::to_string(maxMagnitude) : "nessun filtro") << "\n";
+        std::cout << "  Diametro: " << (minDiameter > 0 ? std::to_string((int)minDiameter) : "nessun min") 
+                  << " - " << (maxDiameter > 0 ? std::to_string((int)maxDiameter) : "nessun max") << " km\n";
+        std::cout << "  Distanza perielio/afelio: " << (minPerihelion > 0 ? std::to_string(minPerihelion) : "nessun min")
+                  << " - " << (maxAphelion > 0 ? std::to_string(maxAphelion) : "nessun max") << " AU\n";
+        if (maxAsteroids > 0) {
+            std::cout << "  Limite max asteroidi: " << maxAsteroids << "\n";
+        }
     }
     std::cout << "\n";
     
@@ -255,11 +351,22 @@ std::vector<AsteroidCandidate> selectAsteroids(const ConfigManager& config) {
     catalogFile >> catalogJson;
     catalogFile.close();
     
-    if (!catalogJson.contains("asteroids") || !catalogJson["asteroids"].is_array()) {
-        throw std::runtime_error("Formato catalogo non valido");
+    // Support both formats: MPC array direct [...] and legacy {"asteroids": [...]}
+    nlohmann::json asteroidsArray;
+    if (catalogJson.is_array()) {
+        // MPC Extended Format (direct array)
+        asteroidsArray = catalogJson;
+        std::cout << "✓ Formato MPC Extended rilevato\n";
+    }
+    else if (catalogJson.contains("asteroids") && catalogJson["asteroids"].is_array()) {
+        // Legacy format
+        asteroidsArray = catalogJson["asteroids"];
+        std::cout << "✓ Formato legacy rilevato\n";
+    }
+    else {
+        throw std::runtime_error("Formato catalogo non valido - serve array MPC o {\"asteroids\": [...]}");
     }
     
-    auto& asteroidsArray = catalogJson["asteroids"];
     std::cout << "✓ Catalogo caricato: " << asteroidsArray.size() << " asteroidi numerati\n";
     std::cout << "Filtraggio con criteri...\n";
     
@@ -275,40 +382,89 @@ std::vector<AsteroidCandidate> selectAsteroids(const ConfigManager& config) {
                       << " (accettati: " << accepted << ")...\r" << std::flush;
         }
         
-        // Leggi elementi orbitali REALI dal JSON
+        // Estrai numero asteroide per lista esplicita
+        int asteroidNumber = 0;
+        if (astJson.contains("Number")) {
+            std::string numStr = astJson["Number"].get<std::string>();
+            // Remove parentheses "(1)" -> "1"
+            numStr.erase(std::remove(numStr.begin(), numStr.end(), '('), numStr.end());
+            numStr.erase(std::remove(numStr.begin(), numStr.end(), ')'), numStr.end());
+            try { asteroidNumber = std::stoi(numStr); } catch (...) {}
+        } else if (astJson.contains("number")) {
+            asteroidNumber = astJson["number"].get<int>();
+        }
+        
+        // Se usiamo lista esplicita, accetta SOLO asteroidi nella lista
+        if (useExplicitList) {
+            if (explicitAsteroidList.find(asteroidNumber) == explicitAsteroidList.end()) {
+                continue;  // Non nella lista, skip
+            }
+            // Asteroide nella lista: bypassa tutti i filtri
+        } else {
+            // Modalità filtri standard
+            // Leggi elementi orbitali REALI dal JSON
+            double q = astJson.contains("Perihelion_dist") ? astJson["Perihelion_dist"].get<double>() : astJson.value("q", 0.0);
+            double Q = astJson.contains("Aphelion_dist") ? astJson["Aphelion_dist"].get<double>() : astJson.value("Q", 0.0);
+            double H = astJson.value("H", 99.0);
+            
+            // Applica filtri SOLO se configurati (valore > 0)
+            if (maxMagnitude > 0 && H > maxMagnitude) continue;
+            if (minPerihelion > 0 && q < minPerihelion) continue;
+            if (maxAphelion > 0 && Q > maxAphelion) continue;
+            
+            // Stima diametro approssimativo da H
+            double estimatedDiameter = 1329.0 / sqrt(0.15) * pow(10, -H / 5.0);
+            
+            if (minDiameter > 0 && estimatedDiameter < minDiameter) continue;
+            if (maxDiameter > 0 && estimatedDiameter > maxDiameter) continue;
+        }
+        
+        // Leggi elementi orbitali
         double a = astJson.value("a", 0.0);
         double e = astJson.value("e", 0.0);
-        double q = astJson.value("q", 0.0);
-        double Q = astJson.value("Q", 0.0);
         double H = astJson.value("H", 99.0);
-        
-        // Applica filtri
-        if (H > maxMagnitude) continue;
-        if (q < minPerihelion) continue;
-        if (Q > maxAphelion) continue;
-        
-        // Stima diametro approssimativo da H (formula standard)
-        // D (km) ≈ 1329 / sqrt(albedo) * 10^(-H/5)
-        // Usando albedo medio 0.15 per asteroidi tipo C
         double estimatedDiameter = 1329.0 / sqrt(0.15) * pow(10, -H / 5.0);
-        
-        if (estimatedDiameter < minDiameter) continue;
-        if (estimatedDiameter > maxDiameter) continue;
         
         // CREA CANDIDATO CON DATI REALI
         AsteroidCandidate candidate;
         candidate.elements.a = a;
         candidate.elements.e = e;
+        // Support both legacy and MPC Extended field names
         candidate.elements.i = astJson.value("i", 0.0) * DEG_TO_RAD;
-        candidate.elements.Omega = astJson.value("Omega", 0.0) * DEG_TO_RAD;
-        candidate.elements.omega = astJson.value("omega", 0.0) * DEG_TO_RAD;
+        candidate.elements.Omega = (astJson.contains("Node") ? astJson["Node"].get<double>() : astJson.value("Omega", 0.0)) * DEG_TO_RAD;
+        candidate.elements.omega = (astJson.contains("Peri") ? astJson["Peri"].get<double>() : astJson.value("omega", 0.0)) * DEG_TO_RAD;
         candidate.elements.M = astJson.value("M", 0.0) * DEG_TO_RAD;
-        candidate.elements.epoch.jd = astJson.value("epoch", 2460000.0);
+        candidate.elements.epoch.jd = astJson.contains("Epoch") ? astJson["Epoch"].get<double>() : astJson.value("epoch", 2460000.0);
         candidate.elements.H = H;
         candidate.elements.G = astJson.value("G", 0.15);
         candidate.elements.diameter = estimatedDiameter;
-        candidate.elements.designation = astJson.value("designation", "");
-        candidate.elements.name = astJson.value("name", "Unknown");
+        
+        // Get designation and name (support MPC format)
+        std::string designation = "";
+        std::string name = "Unknown";
+        if (astJson.contains("Number")) {
+            std::string numStr = astJson["Number"].get<std::string>();
+            // Remove parentheses "(1)" -> "1"
+            numStr.erase(std::remove(numStr.begin(), numStr.end(), '('), numStr.end());
+            numStr.erase(std::remove(numStr.begin(), numStr.end(), ')'), numStr.end());
+            designation = numStr;
+        }
+        else if (astJson.contains("Principal_desig")) {
+            designation = astJson["Principal_desig"].get<std::string>();
+        }
+        else if (astJson.contains("designation")) {
+            designation = astJson["designation"].get<std::string>();
+        }
+        
+        if (astJson.contains("Name")) {
+            name = astJson["Name"].get<std::string>();
+        }
+        else if (astJson.contains("name")) {
+            name = astJson["name"].get<std::string>();
+        }
+        
+        candidate.elements.designation = designation;
+        candidate.elements.name = name;
         
         // Calcola priorità basata su dimensione e luminosità
         double sizeFactor = std::min(estimatedDiameter / 300.0, 1.0);  // normalizzato a 300 km
@@ -372,25 +528,98 @@ void propagateOrbits(std::vector<AsteroidCandidate>& candidates,
         if (stepParam) stepDays = stepParam->asDouble();
     }
     
+    // Leggi configurazione propagatore e perturbazioni dal file .oop
+    PropagatorOptions opts;
+    
+    // Leggi tipo integratore dalla sezione propag
+    auto propagSection = config.getSection(ConfigSection::PROPAGATION);
+    if (propagSection) {
+        auto typeParam = propagSection->getParameter("type");
+        auto stepParam = propagSection->getParameter("step_size");
+        
+        if (typeParam) {
+            std::string integratorType = typeParam->asString();
+            if (integratorType == "RK4") {
+                opts.integrator = IntegratorType::RK4;
+            } else if (integratorType == "RA15") {
+                opts.integrator = IntegratorType::RA15;
+            } else if (integratorType == "RKF78") {
+                opts.integrator = IntegratorType::RKF78;
+            } else if (integratorType == "GAUSS_RADAU" || integratorType == "RADAU") {
+                opts.integrator = IntegratorType::GAUSS_RADAU;
+            }
+        }
+        
+        if (stepParam) {
+            opts.stepSize = stepParam->asDouble();
+        }
+    }
+    
+    // Leggi configurazione perturbazioni
+    auto pertSection = config.getSection(ConfigSection::PERTURBATIONS);
+    
+    if (pertSection) {
+        auto planetsParam = pertSection->getParameter("planets");
+        auto relativityParam = pertSection->getParameter("relativity");
+        auto asteroidCountParam = pertSection->getParameter("asteroid_count");
+        
+        if (planetsParam) {
+            opts.usePlanetaryPerturbations = planetsParam->asBool();
+        }
+        if (relativityParam) {
+            opts.useRelativisticCorrections = relativityParam->asBool();
+        }
+        
+        // Note: asteroid_count richiede refactoring OrbitPropagator
+        // Per ora AST17 si abilita automaticamente se file SPK esiste
+        if (asteroidCountParam) {
+            int astCount = asteroidCountParam->asInt();
+            if (astCount > 0 && !g_verbose) {
+                std::cout << "Configurazione AST17: " << astCount << " asteroidi massivi\n";
+            }
+        }
+    }
+    
     if (!g_verbose) {
         std::cout << "Periodo: JD " << startJd << " - " << endJd << "\n";
         std::cout << "Step: " << stepDays << " giorni\n";
-        std::cout << "Asteroidi da propagare: " << candidates.size() << "\n\n";
+        std::cout << "Asteroidi da propagare: " << candidates.size() << "\n";
         
-        // Inizializza propagatore con Phase 2 features
-        OrbitPropagator propagator;
+        // Mostra integratore configurato
+        std::cout << "Integratore: ";
+        switch (opts.integrator) {
+            case IntegratorType::RK4:
+                std::cout << "RK4 (Runge-Kutta 4° ordine)";
+                break;
+            case IntegratorType::RA15:
+                std::cout << "RA15 (Everhart)";
+                break;
+            case IntegratorType::RKF78:
+                std::cout << "RKF78 (Runge-Kutta-Fehlberg 7/8)";
+                break;
+            case IntegratorType::GAUSS_RADAU:
+                std::cout << "Gauss-Radau (implicito)";
+                break;
+        }
+        std::cout << "\n";
+        std::cout << "Step size: " << opts.stepSize << " giorni\n\n";
         
-        // Abilita correzioni avanzate
+        // Mostra correzioni configurate
         std::cout << "Correzioni abilitate:\n";
-        std::cout << "  ✓ Perturbazioni gravitazionali (8 pianeti)\n";
+        if (opts.usePlanetaryPerturbations) {
+            std::cout << "  ✓ Perturbazioni gravitazionali (8 pianeti)\n";
+        }
         std::cout << "  ✓ Aberrazione planetaria (light-time)\n";
-        std::cout << "  ✓ Effetti relativistici\n\n";
+        if (opts.useRelativisticCorrections) {
+            std::cout << "  ✓ Effetti relativistici\n";
+        }
+        std::cout << "\n";
     }
     
     auto startTime = std::chrono::high_resolution_clock::now();
     
-    // Inizializza propagatore REALE con Phase 2 features
-    OrbitPropagator propagator;
+    // Inizializza propagatore con opzioni da configurazione
+    OrbitPropagator propagator(opts);
     
     for (size_t i = 0; i < candidates.size(); i++) {
         if (g_verbose) {
@@ -438,8 +667,7 @@ void propagateOrbits(std::vector<AsteroidCandidate>& candidates,
 
 std::vector<StarData> queryCatalog(const ConfigManager& config,
                                    const std::vector<AsteroidCandidate>& asteroids) {
-    printHeader("QUERY CATALOGO STELLE GAIA DR3");
-    
+    std::cout << "\n=== [DEBUG] Inizio queryCatalog ===\n" << std::flush;
     std::vector<StarData> stars;
     
     // Parametri query da configurazione
@@ -460,8 +688,10 @@ std::vector<StarData> queryCatalog(const ConfigManager& config,
     // Controlla se usare cache locale o query online
     bool useLocalCache = false;
     std::string cacheDir = "";
+    GaiaVersion gaiaVersion = GaiaVersion::DR3;  // Default: DR3
     
     auto gaiaSection = config.getSection(ConfigSection::GAIA);
+    std::cout << "[DEBUG queryCatalog] gaiaSection trovata: " << (gaiaSection ? "SI" : "NO") << std::endl;
     if (gaiaSection) {
         if (gaiaSection->hasParameter("use_local_cache")) {
             useLocalCache = gaiaSection->getParameter("use_local_cache")->asBool();
@@ -469,11 +699,31 @@ std::vector<StarData> queryCatalog(const ConfigManager& config,
         if (gaiaSection->hasParameter("cache_directory")) {
             cacheDir = gaiaSection->getParameter("cache_directory")->asString();
         }
+        if (gaiaSection->hasParameter("version")) {
+            std::string versionStr = gaiaSection->getParameter("version")->asString();
+            std::cout << "[DEBUG] gaia.version letto: '" << versionStr << "'" << std::endl;
+            if (versionStr == "EDR3" || versionStr == "edr3") {
+                gaiaVersion = GaiaVersion::EDR3;
+                std::cout << "[DEBUG] Impostato GaiaVersion::EDR3" << std::endl;
+            } else if (versionStr == "DR3" || versionStr == "dr3") {
+                gaiaVersion = GaiaVersion::DR3;
+                std::cout << "[DEBUG] Impostato GaiaVersion::DR3" << std::endl;
+            }
+        } else {
+            std::cout << "[DEBUG] Parametro gaia.version NON trovato, uso default DR3" << std::endl;
+        }
     }
+    
+    const char* gaiaVersionName = (gaiaVersion == GaiaVersion::EDR3) ? "EDR3" : "DR3";
+    
+    // Stampa header con versione corretta
+    std::string headerTitle = "QUERY CATALOGO STELLE GAIA ";
+    headerTitle += gaiaVersionName;
+    printHeader(headerTitle);
     
     if (!g_verbose) {
         std::cout << "Parametri query:\n";
-        std::cout << "  Catalogo: Gaia DR3\n";
+        std::cout << "  Catalogo: Gaia " << gaiaVersionName << "\n";
         std::cout << "  Modalità: " << (useLocalCache ? "Cache locale" : "Query online") << "\n";
         if (useLocalCache) {
             std::cout << "  Cache dir: " << (cacheDir.empty() ? "(default)" : cacheDir) << "\n";
@@ -482,186 +732,225 @@ std::vector<StarData> queryCatalog(const ConfigManager& config,
         std::cout << "  Epoca target: JD " << std::fixed << std::setprecision(1) << targetJD << "\n\n";
     }
     
-    GaiaCache* gaiaCache = nullptr;
+    // ============================================================================
+    // NUOVA STRATEGIA: CATALOGO LOCALE SOLO
+    // ============================================================================
+    //
+    // Non facciamo più query pre-emptive di stelle!
+    // OccultationPredictor.findOccultations() interrogherà automaticamente
+    // il catalogo Mag18 locale tramite gaia_adapter.cpp per ogni asteroide.
+    //
+    // Vantaggi:
+    // - Query on-demand solo per stelle effettivamente necessarie
+    // - Nessun overhead di memoria per stelle inutilizzate
+    // - Catalogo Mag18 locale (303M stelle) già inizializzato in gaia_adapter
+    // - ZERO query online
+    //
+    // ============================================================================
     
-    try {
-        GaiaClient gaiaClient;
+    std::cout << "\n";
+    std::cout << "╔══════════════════════════════════════════════════════════╗\n";
+    std::cout << "║      ★ CATALOGO MAG18 LOCALE ATTIVO ★                   ║\n";
+    std::cout << "║  303M stelle (G≤18) - Query locale veloce               ║\n";
+    std::cout << "║  Nessuna query online - tutto da catalogo 9GB           ║\n";
+    std::cout << "╚══════════════════════════════════════════════════════════╝\n";
+    std::cout << "\n";
+    
+    // ============================================================================
+    // FASE 1 OPTIMIZATION: Query Batching
+    // Raggruppa asteroidi in regioni celesti per ridurre numero query
+    // ============================================================================
+    
+    std::set<std::string> uniqueStarIds;  // Deduplica
+    const double searchRadiusDeg = 7.0;   // Raggio query
+    const double batchMergeDistDeg = 15.0; // Merge regioni entro 15°
+    
+    // Inizializza GaiaCache locale
+    std::string gaiaCacheDir = cacheDir.empty() ? 
+        std::string(getenv("HOME")) + "/.ioccultcalc/gaia_cache" : cacheDir;
+    GaiaCache gaiaCache(gaiaCacheDir);
+    
+    // Struttura per regione batched
+    struct SkyRegion {
+        double ra, dec;                    // Centro regione
+        std::vector<size_t> asteroidIndices; // Asteroidi in questa regione
+    };
+    
+    // STEP 1: Raggruppa asteroidi in regioni celesti
+    std::vector<SkyRegion> regions;
+    
+    if (!g_verbose) {
+        std::cout << "Fase 1: Calcolo posizioni geocentriche e raggruppamento...\n";
+    }
+    
+    for (size_t i = 0; i < asteroids.size(); i++) {
+        const auto& ast = asteroids[i];
         
-        // Setup cache se richiesta
-        if (useLocalCache) {
-            gaiaCache = new GaiaCache(cacheDir);
+        // CALCOLA POSIZIONE GEOCENTRICA REALE usando Ephemeris
+        // Non usare Omega/i che sono parametri orbitali, non coordinate!
+        double raDeg, decDeg;
+        try {
+            EquinoctialElements astElem = EquinoctialElements::fromKeplerian(ast.elements);
+            Ephemeris ephemeris(astElem);
             
-            if (!g_verbose) {
-                std::cout << "Caricamento cache locale...\n";
-            }
-            if (gaiaCache->loadIndex()) {
-                auto stats = gaiaCache->getStats();
-                if (!g_verbose) {
-                    std::cout << "✓ Cache caricata: " << stats.total_stars << " stelle in " 
-                              << stats.total_tiles << " tiles HEALPix\n";
-                    std::cout << "  Copertura: " << std::fixed << std::setprecision(1) 
-                              << stats.sky_coverage << " deg²\n";
-                    std::cout << "  Magnitudine: " << stats.min_magnitude << " - " 
-                              << stats.max_magnitude << "\n\n";
-                }
-            } else {
-                if (!g_verbose) {
-                    std::cout << "⚠️  Cache non trovata. Usa:\n";
-                    std::cout << "   gaia_cache_downloader --mainbelt 15.0\n";
-                    std::cout << "   per scaricare la fascia principale.\n\n";
-                    std::cout << "Fallback a query online...\n\n";
-                }
-                delete gaiaCache;
-                gaiaCache = nullptr;
-                useLocalCache = false;
-            }
-        }
-        
-        // Calcola bounding box per tutti gli asteroidi
-        double minRA = 360.0, maxRA = 0.0, minDec = 90.0, maxDec = -90.0;
-        
-        if (!g_verbose) {
-            std::cout << "Calcolo regione cielo da interrogare...\n";
-        }
-        
-        for (const auto& ast : asteroids) {
-            // Stima posizione dell'asteroide (approssimazione)
-            // In produzione: usa Ephemeris.compute()
-            double ra_deg = ast.elements.Omega * RAD_TO_DEG;
-            double dec_deg = ast.elements.i * RAD_TO_DEG - 20.0; // offset verso eclittica
+            // Calcola posizione al centro del periodo di ricerca
+            JulianDate midTime;
+            midTime.jd = targetJD;  // Usa epoca centrale dalla config
+            EphemerisData ephData = ephemeris.compute(midTime);
             
-            // Espandi bounding box con margine di 5 gradi
-            double margin = 5.0;
-            minRA = std::min(minRA, ra_deg - margin);
-            maxRA = std::max(maxRA, ra_deg + margin);
-            minDec = std::min(minDec, dec_deg - margin);
-            maxDec = std::max(maxDec, dec_deg + margin);
-        }
-        
-        // Limita la regione a dimensioni ragionevoli
-        double raRange = maxRA - minRA;
-        double decRange = maxDec - minDec;
-        
-        if (raRange > 30.0 || decRange > 30.0) {
-            if (!g_verbose) {
-                std::cout << "⚠️  Regione troppo ampia (" << raRange << "° x " << decRange 
-                          << "°), limito a 20° x 20°\n";
-            }
-            raRange = std::min(raRange, 20.0);
-            decRange = std::min(decRange, 20.0);
-            maxRA = minRA + raRange;
-            maxDec = minDec + decRange;
-        }
-        
-        double raCenterDeg = (minRA + maxRA) / 2.0;
-        double decCenterDeg = (minDec + maxDec) / 2.0;
-        double radiusDeg = std::max(raRange, decRange) / 2.0;
-        
-        if (!g_verbose) {
-            std::cout << "  Centro: RA=" << std::fixed << std::setprecision(2) << raCenterDeg 
-                      << "° Dec=" << decCenterDeg << "°\n";
-            std::cout << "  Raggio: " << radiusDeg << "°\n";
-            std::cout << "  Limite mag: " << magLimit << "\n\n";
-        }
-        
-        std::vector<GaiaStar> gaiaStars;
-        
-        if (g_verbose) {
-            printUnifiedProgress(40.0, "Query Gaia", "Interrogazione database...");
-        }
-        
-        if (useLocalCache && gaiaCache) {
-            if (!g_verbose) {
-                std::cout << "Query cache locale...\n";
-            }
-            gaiaStars = gaiaCache->queryRegion(raCenterDeg, decCenterDeg, radiusDeg, magLimit);
-            if (!g_verbose) {
-                std::cout << "✓ Trovate " << gaiaStars.size() << " stelle in cache\n";
-            }
-        } else {
-            if (!g_verbose) {
-                std::cout << "Download stelle da Gaia DR3 (online)...\n";
-            }
-            gaiaStars = gaiaClient.queryRegion(raCenterDeg, decCenterDeg, radiusDeg, magLimit);
-            if (!g_verbose) {
-                std::cout << "✓ Scaricate " << gaiaStars.size() << " stelle\n";
-            }
-        }
-        
-        if (g_verbose) {
-            printUnifiedProgress(45.0, "Query Gaia", 
-                               "Trovate " + std::to_string(gaiaStars.size()) + " stelle");
-        }
-        
-        if (!g_verbose) {
-            std::cout << "Conversione e rimozione duplicati...\n";
-        }
-        
-        // Converti tutte in StarData
-        for (const auto& gaiaStar : gaiaStars) {
-            StarData star;
-            star.source_id = 0;  // Placeholder
-            star.position = gaiaStar.pos;
-            star.G_mag = gaiaStar.phot_g_mean_mag;
-            star.BP_mag = gaiaStar.phot_bp_mean_mag;
-            star.RP_mag = gaiaStar.phot_rp_mean_mag;
-            star.designation = "Gaia DR3 " + gaiaStar.sourceId;
-            star.parallax = gaiaStar.parallax;
-            star.parallax_error = 0.1;
-            star.properMotion.pmra = gaiaStar.pmra;
-            star.properMotion.pmdec = gaiaStar.pmdec;
-            star.properMotion.pmra_error = 0.1;
-            star.properMotion.pmdec_error = 0.1;
-            star.properMotion.pmra_pmdec_corr = 0.0;
-            star.epoch.jd = 2457389.0;  // J2016.0 epoca Gaia DR3
+            raDeg = ephData.geocentricPos.ra * RAD_TO_DEG;
+            decDeg = ephData.geocentricPos.dec * RAD_TO_DEG;
             
-            // Controllo duplicati semplificato (molto più veloce)
-            bool duplicate = false;
-            for (const auto& existing : stars) {
-                double dra = (star.position.ra - existing.position.ra) * RAD_TO_DEG * 3600.0;
-                double ddec = (star.position.dec - existing.position.dec) * RAD_TO_DEG * 3600.0;
-                if (std::abs(dra) < 1.0 && std::abs(ddec) < 1.0) {
-                    duplicate = true;
-                    break;
-                }
+            if (g_verbose && i == 0) {
+                std::cout << "  Asteroide " << ast.elements.designation 
+                          << ": RA=" << std::fixed << std::setprecision(2) << raDeg 
+                          << "° Dec=" << decDeg << "° (calcolata)\n";
             }
-            if (!duplicate) {
+        } catch (const std::exception& e) {
+            // Fallback: usa stima approssimativa (meno precisa)
+            raDeg = ast.elements.Omega * RAD_TO_DEG;
+            decDeg = (ast.elements.i * RAD_TO_DEG) - 20.0;
+            if (g_verbose) {
+                std::cerr << "  [WARN] Fallback per " << ast.elements.designation 
+                          << ": " << e.what() << "\n";
+            }
+        }
+        
+        // Cerca regione vicina esistente
+        bool merged = false;
+        for (auto& region : regions) {
+            double dra = std::abs(region.ra - raDeg);
+            double ddec = std::abs(region.dec - decDeg);
+            
+            // Merge se entro distanza soglia
+            if (dra < batchMergeDistDeg && ddec < batchMergeDistDeg) {
+                // Aggiorna centro (media pesata)
+                size_t n = region.asteroidIndices.size();
+                region.ra = (region.ra * n + raDeg) / (n + 1);
+                region.dec = (region.dec * n + decDeg) / (n + 1);
+                region.asteroidIndices.push_back(i);
+                merged = true;
+                break;
+            }
+        }
+        
+        if (!merged) {
+            // Crea nuova regione
+            SkyRegion newRegion;
+            newRegion.ra = raDeg;
+            newRegion.dec = decDeg;
+            newRegion.asteroidIndices.push_back(i);
+            regions.push_back(newRegion);
+        }
+    }
+    
+    if (!g_verbose) {
+        std::cout << "✓ Raggruppati " << asteroids.size() << " asteroidi in " 
+                 << regions.size() << " regioni celesti\n";
+        std::cout << "  Riduzione query: " << asteroids.size() << " → " << regions.size()
+                 << " (" << (100 - 100*regions.size()/asteroids.size()) << "% risparmio)\n\n";
+        std::cout << "Fase 2: Query catalogo locale per " << regions.size() << " regioni";
+#ifdef _OPENMP
+        std::cout << " (parallel)";
+#endif
+        std::cout << "...\n";
+    }
+    
+    // STEP 2: Query per regioni (FASE 2 OPTIMIZATION: parallel loading)
+    auto query_start = std::chrono::high_resolution_clock::now();
+    
+    // Pre-alloca vettori per risultati paralleli
+    std::vector<std::vector<GaiaStar>> region_results(regions.size());
+    
+#ifdef _OPENMP
+    #pragma omp parallel for schedule(dynamic)
+    for (size_t r = 0; r < regions.size(); r++) {
+        const auto& region = regions[r];
+        
+        // Query catalogo locale - thread-safe
+        region_results[r] = gaiaCache.queryRegion(
+            region.ra, region.dec, searchRadiusDeg, magLimit, false);
+        
+        #pragma omp critical
+        {
+            if (!g_verbose && r % 5 == 0) {
+                std::cout << "  [" << r << "/" << regions.size() << "] "
+                         << "Query in corso...\r" << std::flush;
+            }
+        }
+    }
+#else
+    // Sequential fallback
+    for (size_t r = 0; r < regions.size(); r++) {
+        const auto& region = regions[r];
+        region_results[r] = gaiaCache.queryRegion(
+            region.ra, region.dec, searchRadiusDeg, magLimit, false);
+        
+        if (!g_verbose && r % 5 == 0) {
+            std::cout << "  [" << r << "/" << regions.size() << "] "
+                     << "Query in corso...\r" << std::flush;
+        }
+    }
+#endif
+    
+    auto query_end = std::chrono::high_resolution_clock::now();
+    double query_time_ms = std::chrono::duration<double, std::milli>(query_end - query_start).count();
+    
+    if (!g_verbose) {
+        std::cout << "\n  ✓ Query parallele completate in " << (query_time_ms/1000.0) << " secondi\n\n";
+        std::cout << "Fase 3: Deduplica e conversione stelle...\n";
+    }
+    
+    // STEP 3: Deduplica e converti in parallelo
+    for (size_t r = 0; r < regions.size(); r++) {
+        const auto& region = regions[r];
+        const auto& regionStars = region_results[r];
+        
+        for (const auto& gaiaStar : regionStars) {
+            if (uniqueStarIds.insert(gaiaStar.sourceId).second) {
+                // Converti a StarData
+                StarData star;
+                star.source_id = 0;
+                star.designation = "Gaia DR3 " + gaiaStar.sourceId;
+                star.position = gaiaStar.pos;
+                star.epoch.jd = 2457389.0;
+                star.properMotion.pmra = gaiaStar.pmra;
+                star.properMotion.pmdec = gaiaStar.pmdec;
+                star.properMotion.pmra_error = 0.1;
+                star.properMotion.pmdec_error = 0.1;
+                star.properMotion.pmra_pmdec_corr = 0.0;
+                star.parallax = gaiaStar.parallax;
+                star.parallax_error = 0.1;
+                star.G_mag = gaiaStar.phot_g_mean_mag;
+                star.BP_mag = gaiaStar.phot_bp_mean_mag;
+                star.RP_mag = gaiaStar.phot_rp_mean_mag;
+                star.hasRadialVelocity = false;
+                star.radialVelocity = 0.0;
+                star.radialVelocity_error = 0.0;
+                star.astrometric_excess_noise = 0.0;
+                star.astrometric_n_good_obs = 0;
+                star.ruwe = 1.0;
+                
                 stars.push_back(star);
             }
         }
         
-        if (g_verbose) {
-            printUnifiedProgress(50.0, "Query Gaia", 
-                               "Completata - " + std::to_string(stars.size()) + " stelle uniche");
-            std::cout << "\n";
-        } else {
-            std::cout << "✓ Processate " << stars.size() << " stelle uniche da Gaia DR3\n\n";
+        // Progress
+        if (!g_verbose && r % 5 == 0) {
+            int pct = (r + 1) * 100 / regions.size();
+            std::cout << "  [" << (r+1) << "/" << regions.size() << "] "
+                     << "Regione RA=" << std::fixed << std::setprecision(1) << region.ra 
+                     << "° Dec=" << region.dec << "° | "
+                     << "Totale uniche: " << stars.size() 
+                     << " (" << pct << "%)   \r" << std::flush;
         }
-        
-        // Cleanup cache se usata
-        if (gaiaCache) {
-            delete gaiaCache;
-        }
-        
-    } catch (const std::exception& e) {
-        std::cerr << "⚠ Errore query Gaia (uso dati test): " << e.what() << "\n\n";
-        
-        // Cleanup cache anche in caso di errore
-        if (gaiaCache) {
-            delete gaiaCache;
-        }
-        
-        // Fallback: usa stella di test
-        StarData star;
-        star.position.ra = 4.8167 * DEG_TO_RAD;
-        star.position.dec = 23.3833 * DEG_TO_RAD;
-        star.G_mag = 7.5;
-        star.designation = "TYC 5865-00764-1";
-        star.parallax = 2.1;
-        star.parallax_error = 0.3;
-        stars.push_back(star);
-        
-        std::cout << "✓ Usando " << stars.size() << " stella di test\n\n";
+    }
+    
+    if (!g_verbose) {
+        std::cout << "\n\n✓ Completato: " << stars.size() 
+                 << " stelle uniche da catalogo locale\n";
+        std::cout << "  Tempo query totale: " << std::fixed << std::setprecision(2)
+                 << (query_time_ms/1000.0) << " secondi\n\n";
     }
     
     return stars;
@@ -737,6 +1026,65 @@ std::vector<ItalOccultationEvent> detectOccultations(
     
     std::vector<ItalOccultationEvent> events;
     
+    // Leggi configurazione directory AstDyS locali
+    std::string localEQ1Dir = "";
+    std::string localRWODir = "";
+    
+    auto astdysSection = config.getSection(ConfigSection::ASTDYS);
+    if (astdysSection) {
+        if (astdysSection->hasParameter("local_eq1_directory")) {
+            localEQ1Dir = astdysSection->getParameter("local_eq1_directory")->asString();
+        }
+        if (astdysSection->hasParameter("local_rwo_directory")) {
+            localRWODir = astdysSection->getParameter("local_rwo_directory")->asString();
+        }
+        
+        if (!localEQ1Dir.empty() || !localRWODir.empty()) {
+            std::cout << "📂 Configurazione directory AstDyS locali:\n";
+            if (!localEQ1Dir.empty()) {
+                std::cout << "   File .eq1: " << localEQ1Dir << "\n";
+            }
+            if (!localRWODir.empty()) {
+                std::cout << "   File .rwo: " << localRWODir << "\n";
+            }
+            std::cout << "\n";
+        }
+    }
+    
+    // Leggi configurazione orbit fitting
+    bool enableOrbitFitting = false;
+    std::string observationSource = "astdys";  // 'astdys' o 'mpc'
+    int maxIterations = 10;
+    double convergenceTolerance = 1e-6;
+    double outlierSigmaThreshold = 3.0;
+    
+    auto orbitFittingSection = config.getSection(ConfigSection::ORBIT_FITTING);
+    if (orbitFittingSection) {
+        if (orbitFittingSection->hasParameter("enable_fitting")) {
+            enableOrbitFitting = orbitFittingSection->getParameter("enable_fitting")->asBool();
+        }
+        if (orbitFittingSection->hasParameter("observation_source")) {
+            observationSource = orbitFittingSection->getParameter("observation_source")->asString();
+        }
+        if (orbitFittingSection->hasParameter("max_iterations")) {
+            maxIterations = orbitFittingSection->getParameter("max_iterations")->asInt();
+        }
+        if (orbitFittingSection->hasParameter("convergence_tolerance")) {
+            convergenceTolerance = orbitFittingSection->getParameter("convergence_tolerance")->asDouble();
+        }
+        if (orbitFittingSection->hasParameter("outlier_threshold_sigma")) {
+            outlierSigmaThreshold = orbitFittingSection->getParameter("outlier_threshold_sigma")->asDouble();
+        }
+        
+        if (enableOrbitFitting) {
+            std::cout << "🔬 Orbit Fitting ATTIVO:\n";
+            std::cout << "   Sorgente osservazioni: " << observationSource << "\n";
+            std::cout << "   Max iterazioni: " << maxIterations << "\n";
+            std::cout << "   Tolleranza convergenza: " << convergenceTolerance << "\n";
+            std::cout << "   Soglia outlier: " << outlierSigmaThreshold << " σ\n\n";
+        }
+    }
+    
     // Leggi parametri ricerca da config
     auto searchSection = config.getSection(ConfigSection::SEARCH);
     double maxMagnitude = 15.0;
@@ -782,25 +1130,128 @@ std::vector<ItalOccultationEvent> detectOccultations(
     int totalProcessed = 0;
     
     if (!g_verbose) {
-        std::cout << "Elaborazione " << asteroids.size() << " asteroidi con calcoli REALI e PRECISI...\n";
-        std::cout << "(Questo richiederà tempo per garantire precisione massima)\n\n";
+        std::cout << "Analisi " << asteroids.size() << " asteroidi vs " << stars.size() << " stelle...\n";
+        std::cout << "Metodo: Calcolo preciso con propagazione orbitale completa\n";
+        std::cout << "Per ogni asteroide:\n";
+        std::cout << "  1. Propaga orbita nel periodo specificato\n";
+        std::cout << "  2. Calcola posizione ogni 0.5 giorni\n";
+        std::cout << "  3. Verifica avvicinamenti con ogni stella\n";
+        std::cout << "  4. Calcola geometria occultazione se distanza < " << searchRadius << "°\n\n";
     }
     
-    // Per ogni asteroide, calcola REALMENTE le occultazioni
+    // FASE 3 OPTIMIZATION: Parallelize asteroid detection loop (CPU bound)
+    
+    // CRITICAL FIX: Pre-compute Earth positions for entire period
+    // SPICE is NOT thread-safe, so we pre-calculate all needed positions
+    // in the main thread BEFORE the parallel loop
+    
+    if (!g_verbose) {
+        std::cout << "Pre-calcolo posizioni Terra (SPICE thread-safe cache)...\n";
+    }
+    
+    // Pre-compute Earth positions for the entire search period
+    // Use fine time step to have positions available for interpolation
+    double earthCacheStep = 0.01;  // ~15 minuti - risoluzione sufficiente
+    std::vector<std::pair<double, Vector3D>> earthPositionCache;
+    
+    try {
+        for (double jd = startJd - 1.0; jd <= endJd + 1.0; jd += earthCacheStep) {
+            JulianDate jdTime;
+            jdTime.jd = jd;
+            Vector3D earthPos = Ephemeris::getEarthPosition(jdTime);
+            earthPositionCache.push_back({jd, earthPos});
+        }
+        if (!g_verbose) {
+            std::cout << "✓ Cache posizioni Terra: " << earthPositionCache.size() 
+                      << " punti pre-calcolati\n";
+        }
+    } catch (const std::exception& e) {
+        std::cerr << "⚠ Errore pre-calcolo Terra: " << e.what() << "\n";
+    }
+    
+    // Helper function to get Earth position from cache (thread-safe)
+    auto getEarthPosFromCache = [&earthPositionCache](double jd) -> Vector3D {
+        // Binary search for nearest cached position
+        if (earthPositionCache.empty()) {
+            // Fallback: questo non dovrebbe mai accadere
+            JulianDate jdTime;
+            jdTime.jd = jd;
+            return Ephemeris::getEarthPosition(jdTime);
+        }
+        
+        // Find bounding points for linear interpolation
+        size_t lo = 0, hi = earthPositionCache.size() - 1;
+        
+        // Clamp to cache bounds
+        if (jd <= earthPositionCache[lo].first) {
+            return earthPositionCache[lo].second;
+        }
+        if (jd >= earthPositionCache[hi].first) {
+            return earthPositionCache[hi].second;
+        }
+        
+        // Binary search
+        while (hi - lo > 1) {
+            size_t mid = (lo + hi) / 2;
+            if (earthPositionCache[mid].first <= jd) {
+                lo = mid;
+            } else {
+                hi = mid;
+            }
+        }
+        
+        // Linear interpolation between lo and hi
+        double t = (jd - earthPositionCache[lo].first) / 
+                   (earthPositionCache[hi].first - earthPositionCache[lo].first);
+        Vector3D result;
+        result.x = earthPositionCache[lo].second.x + t * (earthPositionCache[hi].second.x - earthPositionCache[lo].second.x);
+        result.y = earthPositionCache[lo].second.y + t * (earthPositionCache[hi].second.y - earthPositionCache[lo].second.y);
+        result.z = earthPositionCache[lo].second.z + t * (earthPositionCache[hi].second.z - earthPositionCache[lo].second.z);
+        return result;
+    };
+    
+    if (!g_verbose) {
+        std::cout << "✓ Ephemeris cache pronta (thread-safe)\n\n";
+    }
+    
+    // Set the global cache function so all Ephemeris::getEarthPosition calls use it
+    // This makes the parallel loop thread-safe
+    Ephemeris::setEarthPositionCache(getEarthPosFromCache);
+    
+    // Pre-allocate per-thread event vectors
+    std::vector<std::vector<ItalOccultationEvent>> thread_events;
+    
+    // NOTA: Parallelize DISABILITATO per detection loop
+    // SPICE/CSPICE non è thread-safe neanche con cache Earth positions
+    // perché OrbitPropagator e altri componenti usano anch'essi SPICE
+    // TODO: Pre-calcolare TUTTE le posizioni planetarie per abilitare parallelismo
+    
+    // Sequential execution (SPICE-safe)
+    thread_events.resize(1);
+    std::cout << "Calcolo sequenziale (SPICE thread-safety)...\n\n";
+    
     for (size_t astIdx = 0; astIdx < asteroids.size(); astIdx++) {
+        int thread_id = 0;
+        
         const auto& asteroid = asteroids[astIdx];
         
-        if (g_verbose) {
-            // Fase 2: Rilevamento = 50-100% del totale
-            double phasePercentage = (astIdx * 100.0) / asteroids.size();
-            double totalPercentage = 50.0 + (phasePercentage * 0.50);  // 50% + 50% del totale
-            
-            std::string details = "(" + asteroid.elements.designation + ") " + 
-                                  asteroid.elements.name + 
-                                  " (" + std::to_string((int)asteroid.elements.diameter) + "km)";
-            printUnifiedProgress(totalPercentage, "Rilevamento", details);
-        } else {
-            printProgress("Analisi", astIdx + 1, asteroids.size());
+        {
+            if (g_verbose) {
+                // Output ordinato e pulito
+                std::cout << "\n[" << std::setw(4) << (astIdx + 1) << "/" << asteroids.size() << "] "
+                          << "(" << std::setw(6) << asteroid.elements.designation << ") "
+                          << std::setw(20) << std::left << asteroid.elements.name << std::right
+                          << " - D=" << std::setw(4) << (int)asteroid.elements.diameter << "km"
+                          << " - Analisi " << stars.size() << " stelle..." << std::flush;
+            } else {
+                // Barra di progresso compatta per modalità non-verbose
+                int percentage = (int)((astIdx * 100) / asteroids.size());
+                std::cout << "  [" << std::setw(3) << percentage << "%] Asteroide " 
+                          << std::setw(3) << (astIdx + 1) << "/" << asteroids.size()
+                          << " | " << std::setw(20) << std::left << asteroid.elements.name << std::right
+                          << " | Diam: " << std::setw(4) << (int)asteroid.elements.diameter << " km"
+                          << " | Verifico " << stars.size() << " stelle...   \r" << std::flush;
+            }
         }
         
         try {
@@ -812,8 +1263,76 @@ std::vector<ItalOccultationEvent> detectOccultations(
             astElem.designation = asteroid.elements.designation;
             astElem.name = asteroid.elements.name;
             
+            // ================================================================
+            // ORBIT FITTING: Se abilitato, carica osservazioni e migliora orbita
+            // ================================================================
+            if (enableOrbitFitting && observationSource == "astdys" && !localRWODir.empty()) {
+                try {
+                    // Inizializza AstDysClient per caricare osservazioni
+                    AstDysClient astdysClient;
+                    astdysClient.setLocalRWODirectory(localRWODir);
+                    
+                    // Carica osservazioni .rwo
+                    auto obsLines = astdysClient.getObservations(asteroid.elements.designation);
+                    
+                    if (!obsLines.empty() && obsLines.size() > 10) {
+                        // Salva temporaneamente per parsing con MPCClient
+                        std::string tempRWO = "/tmp/ioccultcalc_" + asteroid.elements.designation + ".rwo";
+                        std::ofstream tempOut(tempRWO);
+                        for (const auto& line : obsLines) {
+                            tempOut << line << "\n";
+                        }
+                        tempOut.close();
+                        
+                        // Parsa osservazioni con MPCClient::loadFromRWOFile()
+                        MPCClient mpcClient;
+                        ObservationSet obsSet = mpcClient.loadFromRWOFile(tempRWO);
+                        std::remove(tempRWO.c_str());
+                        
+                        if (obsSet.numberOfObservations >= 10) {
+                            // Configura orbit fitter
+                            OrbitFitter fitter;
+                            OrbitFitOptions options;
+                            options.maxIterations = maxIterations;
+                            options.convergenceThreshold = convergenceTolerance;
+                            options.outlierSigma = outlierSigmaThreshold;
+                            
+                            // Esegui fitting
+                            OrbitFitResult fitResult = fitter.fit(asteroid.elements, obsSet, options);
+                            
+                            if (fitResult.converged && fitResult.rmsResidual < 2.0) {
+                                // Usa elementi fitted se migliorati
+                                astElem = EquinoctialElements::fromKeplerian(fitResult.fittedElements);
+                                astElem.H = asteroid.elements.H;
+                                astElem.G = asteroid.elements.G;
+                                astElem.diameter = asteroid.elements.diameter;
+                                astElem.designation = asteroid.elements.designation;
+                                astElem.name = asteroid.elements.name;
+                                
+                                if (g_verbose) {
+                                    std::cout << " [Fitted: RMS=" << std::fixed << std::setprecision(2) 
+                                              << fitResult.rmsResidual << "\" Nobs=" << fitResult.nObservations 
+                                              << "]" << std::flush;
+                                }
+                            }
+                        }
+                    }
+                } catch (const std::exception& e) {
+                    // Silently continue con elementi iniziali se fitting fallisce
+                    if (g_verbose) {
+                        std::cout << " [Fitting failed]" << std::flush;
+                    }
+                }
+            }
+            
             // Inizializza OccultationPredictor per questo asteroide
             OccultationPredictor predictor;
+            
+            // Configura directory locali AstDyS se specificate
+            if (!localEQ1Dir.empty() || !localRWODir.empty()) {
+                predictor.setLocalAstDySDirectories(localEQ1Dir, localRWODir);
+            }
+            
             predictor.setAsteroid(astElem);
             predictor.setAsteroidDiameter(astElem.diameter);
             
@@ -821,12 +1340,48 @@ std::vector<ItalOccultationEvent> detectOccultations(
             double orbitalUncertainty = 2.0;  // km, conservativo
             predictor.setOrbitalUncertainty(orbitalUncertainty);
             
-            // Per ogni stella, calcola se c'è occultazione REALE nel periodo
-            std::vector<OccultationEvent> realEvents;
-            int starsProcessed = 0;
+            // ================================================================
+            // NUOVO: Usa ChebyshevOccultationDetector per ricerca efficiente
+            // Algoritmo: intersezione curva Chebyshev con cerchio attorno a stella
+            // ================================================================
             
-            for (const auto& starData : stars) {
-                starsProcessed++;
+            // Inizializza Ephemeris per l'asteroide (usa astElem già convertito)
+            Ephemeris ephemeris(astElem);
+            
+            // Configura detector Chebyshev
+            ChebyshevOccultationDetector::Config detectorConfig;
+            detectorConfig.order = 11;             // Ordine polinomio (come LinOccult)
+            detectorConfig.segmentDays = 1.0;      // Un segmento al giorno
+            detectorConfig.thresholdArcsec = 300.0; // 5 arcmin threshold ricerca
+            detectorConfig.refinementArcsec = 60.0; // 1 arcmin per refine
+            detectorConfig.verbose = false;
+            
+            ChebyshevOccultationDetector detector(detectorConfig);
+            detector.initialize(ephemeris, startJd, endJd);
+            
+            // Prepara lista stelle come coppie (RA, Dec)
+            std::vector<std::pair<double, double>> starCoords;
+            starCoords.reserve(stars.size());
+            for (const auto& s : stars) {
+                starCoords.push_back({s.position.ra, s.position.dec});
+            }
+            
+            // Trova candidati occultazione con algoritmo Chebyshev
+            auto candidates = detector.findCandidates(starCoords);
+            
+            if (g_verbose && !candidates.empty()) {
+                std::cout << " → Chebyshev: " << candidates.size() << " candidati" << std::flush;
+            }
+            
+            // Per ogni candidato, refine con predictOccultation
+            std::vector<OccultationEvent> realEvents;
+            
+            for (const auto& candidate : candidates) {
+                // Recupera dati stella dal catalogo
+                if (candidate.starIndex < 0 || candidate.starIndex >= (int)stars.size()) {
+                    continue;
+                }
+                const auto& starData = stars[candidate.starIndex];
                 
                 // Converti StarData in GaiaStar per OccultationPredictor
                 GaiaStar gaiaStar;
@@ -840,11 +1395,11 @@ std::vector<ItalOccultationEvent> detectOccultations(
                 gaiaStar.phot_rp_mean_mag = starData.RP_mag;
                 
                 try {
-                    // Usa la data centrale del periodo come approssimazione iniziale
+                    // Usa il tempo del candidato Chebyshev come approssimazione
                     JulianDate approxTime;
-                    approxTime.jd = (startJd + endJd) / 2.0;
+                    approxTime.jd = candidate.jd;
                     
-                    // Calcola occultazione REALE per questa stella
+                    // Calcola occultazione REALE con refine preciso
                     OccultationEvent realEvent = predictor.predictOccultation(gaiaStar, approxTime);
                     
                     // Verifica se l'evento è nel periodo richiesto
@@ -852,15 +1407,30 @@ std::vector<ItalOccultationEvent> detectOccultations(
                         // Verifica probabilità minima
                         if (realEvent.probability >= minProbability) {
                             realEvents.push_back(realEvent);
+                            
+                            if (g_verbose) {
+                                std::cout << "\n    ★ Occultazione: " << starData.source_id 
+                                          << " dist=" << std::fixed << std::setprecision(1) 
+                                          << candidate.minDistArcsec << "\"" << std::flush;
+                            }
                         }
                     }
                 } catch (const std::exception& e) {
-                    // Stella non produce occultazione - normale, continua
+                    // Candidato non valido dopo refine - normale
                     continue;
                 }
             }
             
             totalProcessed++;
+            
+            // Output risultato elaborazione asteroide (verbose mode)
+            if (g_verbose) {
+                if (realEvents.size() > 0) {
+                    std::cout << " → Trovati " << realEvents.size() << " eventi! ✓" << std::endl;
+                } else {
+                    std::cout << " → 0 eventi" << std::endl;
+                }
+            }
             
             // Converti eventi reali nel formato italiano
             for (const auto& realEvent : realEvents) {
@@ -938,14 +1508,26 @@ std::vector<ItalOccultationEvent> detectOccultations(
                 event.priority_score = asteroid.priority_score;
                 event.visible_from_italy = {"Roma"};
                 
-                events.push_back(event);
+                // Store in thread-local vector
+                thread_events[thread_id].push_back(event);
             }
             
         } catch (const std::exception& e) {
+#ifdef _OPENMP
+            #pragma omp atomic
+#endif
             totalRejected++;
             continue;
         }
     }
+    
+    // FASE 3: Merge thread-local events into global vector
+    for (const auto& tevents : thread_events) {
+        events.insert(events.end(), tevents.begin(), tevents.end());
+    }
+    
+    // Clear the Earth position cache after parallel section
+    Ephemeris::clearEarthPositionCache();
     
     // Completa la barra di avanzamento al 100%
     if (g_verbose) {
@@ -955,11 +1537,16 @@ std::vector<ItalOccultationEvent> detectOccultations(
     }
     
     if (!g_verbose) {
+        std::cout << "\n\n✓ Analisi completata!\n";
+        std::cout << "  Asteroidi processati: " << asteroids.size() << "\n";
+        std::cout << "  Stelle verificate: " << stars.size() << "\n";
+        std::cout << "  Eventi trovati: " << events.size() << "\n";
+        if (totalCandidates > 0) {
+            std::cout << "  Candidati testati: " << totalCandidates << "\n";
+            std::cout << "  Rifiutati (geometria sfavorevole): " << totalRejected << "\n";
+        }
         std::cout << "\n";
     }
-    std::cout << "✓ Trovati " << events.size() << " eventi osservabili\n";
-    std::cout << "  Candidati testati: " << totalCandidates << "\n";
-    std::cout << "  Rifiutati (non osservabili): " << totalRejected << "\n\n";
     
     // Ordina per priorità
     std::sort(events.begin(), events.end(),
@@ -1154,16 +1741,10 @@ void generateReports(const std::vector<ItalOccultationEvent>& events,
         oe.maxDuration = event.duration_sec;
         oe.probability = 0.8;  // Placeholder
         
-        // Shadow path - usa coordinate geografiche in RADIANTI
-        // Il codice XML le riconverte in gradi, quindi serve partire da radianti
-        ShadowPathPoint centerPoint;
-        centerPoint.location.latitude = observerLat * DEG_TO_RAD;   // Roma: 41.9° → radianti
-        centerPoint.location.longitude = observerLon * DEG_TO_RAD;  // Roma: 12.5° → radianti
-        centerPoint.location.altitude = 0.0;                        // Livello del mare
-        centerPoint.time = event.event_time;
-        centerPoint.duration = event.duration_sec;
-        centerPoint.centerlineDistance = 0.0;
-        oe.shadowPath.push_back(centerPoint);
+        // Shadow path - TODO: calcolare vero centerline dall'occultazione
+        // Per ora lasciamo vuoto, sarà calcolato dall'XML handler
+        // (L'XML handler può generare una traccia approssimata se necessario)
+        oe.shadowPath.clear();
         
         // Uncertainties
         oe.uncertaintyNorth = event.uncertainty_km;

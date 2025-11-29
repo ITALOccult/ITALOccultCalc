@@ -38,7 +38,10 @@ enum class ConfigSection {
     PERFORMANCE,   // Performance and optimization
     DATABASE,      // Asteroid database filters
     GAIA,          // Gaia catalog settings
+    ASTDYS,        // AstDyS local data directories
+    ORBIT_FITTING, // Orbit fitting with observations
     VALIDATION,    // Validation and quality control
+    CHEBYSHEV,     // Chebyshev approximation settings (LinOccult method)
     CUSTOM         // User-defined sections
 };
 
