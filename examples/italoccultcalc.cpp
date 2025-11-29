@@ -23,7 +23,7 @@
 // GaiaCache usato per query catalogo locale (via gaia_adapter.cpp)
 #include "ioccultcalc/gaia_cache.h"
 #include "ioccultcalc/occultation_predictor.h"
-#include "ioccultcalc/chebyshev_detector.h"
+// #include "ioccultcalc/chebyshev_detector.h"  // File mancante - strategia 2 fasi temporaneamente disabilitata
 #include "ioccultcalc/occult4_xml.h"
 #include "ioccultcalc/prediction_report.h"
 #include "ioccultcalc/time_utils.h"

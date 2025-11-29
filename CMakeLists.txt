@@ -42,13 +42,13 @@ include_directories(
 # Source files
 set(SOURCES
     src/astdys_client.cpp
-    # gaia_client.cpp and gaia_cache.cpp now provided by IOC_GaiaLib via adapter
-    src/gaia_adapter.cpp
+    src/gaia_client.cpp
+    src/gaia_cache.cpp
     src/orbital_elements.cpp
     src/ephemeris.cpp
     src/occultation_predictor.cpp
-    src/chebyshev_approximation.cpp
-    src/chebyshev_detector.cpp
+    # src/chebyshev_approximation.cpp
+    # src/chebyshev_detector.cpp
     src/kml_exporter.cpp
     src/occult4_xml.cpp
     src/prediction_report.cpp
@@ -61,7 +61,7 @@ set(SOURCES
     src/orbit_fitter.cpp
     src/orbit_determination_gauss.cpp
     src/force_model.cpp
-    src/orbfit_force_model.cpp
+    # src/orbfit_force_model.cpp
     src/rkf78_integrator.cpp
     src/jpl_ephemeris.cpp
     src/orbit_propagator.cpp
@@ -86,7 +86,7 @@ set(SOURCES
     src/parallel_algorithms.cpp
     src/output_manager.cpp
     src/asteroid_list_reader.cpp
-    src/gaia_catalog_preloader.cpp
+    # src/gaia_catalog_preloader.cpp
 )
 
 # Fortran wrapper for OrbFit
@@ -128,7 +128,7 @@ set(HEADERS
     include/ioccultcalc/star_catalog.h
     include/ioccultcalc/asteroid_shape.h
     include/ioccultcalc/uncertainty_propagation.h
-    include/ioccultcalc/ra15_integrator.hpp
+    # include/ioccultcalc/ra15_integrator.hpp  # File mancante
     include/ioccultcalc/initial_orbit.h
     include/ioccultcalc/config_manager.h
     include/ioccultcalc/asteroid_filter.h
@@ -140,7 +140,7 @@ set(HEADERS
     include/planetary_aberration.h
     include/cubic_spline.h
     include/parallel_algorithms.h
-    include/ioccultcalc/gaia_catalog_preloader.h
+    # include/ioccultcalc/gaia_catalog_preloader.h  # File mancante
 )
 
 # OrbFit integration via Fortran wrapper with bind(C)

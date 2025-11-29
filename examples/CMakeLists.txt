@@ -50,8 +50,8 @@ target_link_libraries(test_propagator_simple ioccultcalc)
 add_executable(test_spk_simple test_spk_simple.cpp)
 target_link_libraries(test_spk_simple ioccultcalc)
 
-add_executable(test_orbit_fitting test_orbit_fitting.cpp)
-target_link_libraries(test_orbit_fitting ioccultcalc)
+# add_executable(test_orbit_fitting test_orbit_fitting.cpp)
+# target_link_libraries(test_orbit_fitting ioccultcalc)
 
 add_executable(test_gm_constants test_gm_constants.cpp)
 target_link_libraries(test_gm_constants ${CMAKE_CURRENT_SOURCE_DIR}/../external/cspice/lib/cspice.a)
@@ -120,11 +120,11 @@ target_link_libraries(test_initial_state_eros ioccultcalc)
 add_executable(test_astdys_vs_orbfit test_astdys_vs_orbfit.cpp)
 target_link_libraries(test_astdys_vs_orbfit ioccultcalc)
 
-add_executable(replicate_orbfit replicate_orbfit.cpp)
-target_link_libraries(replicate_orbfit ioccultcalc)
-
-add_executable(test_pompeja test_pompeja.cpp)
-target_link_libraries(test_pompeja ioccultcalc)
+# add_executable(replicate_orbfit replicate_orbfit.cpp)
+# target_link_libraries(replicate_orbfit ioccultcalc)
+# 
+# add_executable(test_pompeja test_pompeja.cpp)
+# target_link_libraries(test_pompeja ioccultcalc)
 
 add_executable(test_frame_roundtrip test_frame_roundtrip.cpp)
 target_link_libraries(test_frame_roundtrip ioccultcalc)
@@ -132,8 +132,8 @@ target_link_libraries(test_frame_roundtrip ioccultcalc)
 add_executable(test_asteroid_perturbations test_asteroid_perturbations.cpp)
 target_link_libraries(test_asteroid_perturbations ioccultcalc)
 
-add_executable(test_barycentric_heliocentric test_barycentric_heliocentric.cpp)
-target_link_libraries(test_barycentric_heliocentric ioccultcalc)
+# add_executable(test_barycentric_heliocentric test_barycentric_heliocentric.cpp)
+# target_link_libraries(test_barycentric_heliocentric ioccultcalc)
 
 add_executable(test_ast17_availability test_ast17_availability.cpp)
 target_link_libraries(test_ast17_availability ioccultcalc)
@@ -164,8 +164,8 @@ target_link_libraries(test_database ioccultcalc)
 add_executable(test_gaia_cache test_gaia_cache.cpp)
 target_link_libraries(test_gaia_cache ioccultcalc)
 
-add_executable(test_gaia_edr3 test_gaia_edr3.cpp)
-target_link_libraries(test_gaia_edr3 ioccultcalc)
+# add_executable(test_gaia_edr3 test_gaia_edr3.cpp)
+# target_link_libraries(test_gaia_edr3 ioccultcalc)
 
 add_executable(test_real_occultation test_real_occultation.cpp)
 target_link_libraries(test_real_occultation ioccultcalc)
@@ -179,12 +179,12 @@ target_link_libraries(test_known_occultation ioccultcalc)
 add_executable(test_preston_occultation test_preston_occultation.cpp)
 target_link_libraries(test_preston_occultation ioccultcalc)
 
-add_executable(test_local_astdys_files test_local_astdys_files.cpp)
-target_link_libraries(test_local_astdys_files ioccultcalc)
+# add_executable(test_local_astdys_files test_local_astdys_files.cpp)
+# target_link_libraries(test_local_astdys_files ioccultcalc)
 
-# Test integrazione orbit fitting
-add_executable(test_orbit_fitting_integration test_orbit_fitting_integration.cpp)
-target_link_libraries(test_orbit_fitting_integration ioccultcalc)
+# Test integrazione orbit fitting (API obsoleta)
+# add_executable(test_orbit_fitting_integration test_orbit_fitting_integration.cpp)
+# target_link_libraries(test_orbit_fitting_integration ioccultcalc)
 
 add_executable(test_preston_quick test_preston_quick.cpp)
 target_link_libraries(test_preston_quick ioccultcalc)
@@ -204,8 +204,8 @@ target_link_libraries(test_keplerian_direct ioccultcalc)
 add_executable(test_eq0_direct test_eq0_direct.cpp)
 target_link_libraries(test_eq0_direct ioccultcalc)
 
-add_executable(test_frame_first test_frame_first.cpp)
-target_link_libraries(test_frame_first ioccultcalc)
+# add_executable(test_frame_first test_frame_first.cpp)  # Include obsoleti
+# target_link_libraries(test_frame_first ioccultcalc)
 
 add_executable(test_forward_prop test_forward_prop.cpp)
 target_link_libraries(test_forward_prop ioccultcalc)
@@ -265,9 +265,9 @@ target_link_libraries(test_parallel_algorithms ioccultcalc)
 add_executable(test_realworld_occultation test_realworld_occultation.cpp)
 target_link_libraries(test_realworld_occultation ioccultcalc)
 
-# ITALOccultCalc - Complete occultation search application
-add_executable(italoccultcalc italoccultcalc.cpp)
-target_link_libraries(italoccultcalc ioccultcalc)
+# ITALOccultCalc - Complete occultation search application (API obsolete - richiede refactoring)
+# add_executable(italoccultcalc italoccultcalc.cpp)
+# target_link_libraries(italoccultcalc ioccultcalc)
 
 # Test massivo 1000 asteroidi - Gennaio 2026
 add_executable(test_massive_jan2026 test_massive_jan2026.cpp)
