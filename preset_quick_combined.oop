@@ -1,0 +1,54 @@
+# IOccultCalc Preset - Quick Combined List
+# Quick setup for range + localasteroid
+# Usage: ./italoccultcalc.sh preset_quick_combined.oop
+
+general.preset_name = 'Quick Survey - Top 1000 + Local Targets'
+general.description = 'Fast survey with combined asteroid lists'
+general.propagator = 'RK4'
+general.step_size_days = 0.1
+
+time.start_date = '2026-01-01'
+time.end_date = '2026-01-31'
+time.interval_days = 2.0
+
+# Combined selection: range + file
+asteroids.selection_mode = 'combined'
+asteroids.range_from = 1
+asteroids.range_to = 1000
+# Additional files merged without filters
+asteroids.additional_files = ['../etc/localasteroid']
+asteroids.file_format = 'auto_detect'
+
+search.max_magnitude = 14.0
+search.min_duration_sec = 1.0
+search.min_elevation_deg = 15.0
+search.search_radius_deg = 0.1
+
+gaia.use_local_cache = .TRUE.
+gaia.cache_directory = './gaia_cache'
+gaia.catalog_file = 'gaia_edr3.cat.gz'
+gaia.auto_download = .TRUE.
+gaia.version = 'EDR3'
+
+observer.latitude = 45.4642
+observer.longitude = 9.1900
+observer.altitude = 239.0
+observer.site_name = 'Turin'
+
+output.format = 'json'
+output.formats = ['JSON', 'ASTNUM_LIST']
+output.directory = './results'
+output.filename_prefix = 'quick_survey'
+output.verbosity = 1
+output.include_uncertainties = .TRUE.
+
+astnum_list.include_event_count = .TRUE.
+astnum_list.include_names = .TRUE.
+astnum_list.sort_by = 'event_count'
+astnum_list.sort_order = 'descending'
+
+performance.use_parallel = .TRUE.
+performance.num_threads = 0
+performance.use_cache = .TRUE.
+performance.use_chebyshev = .TRUE.
+performance.chebyshev_order = 11

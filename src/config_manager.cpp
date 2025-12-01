@@ -248,7 +248,10 @@ std::string ConfigSectionData::sectionTypeToString() const {
         case ConfigSection::PERFORMANCE: return "performance";
         case ConfigSection::DATABASE: return "database";
         case ConfigSection::GAIA: return "gaia";
+        case ConfigSection::ASTDYS: return "astdys";
+        case ConfigSection::ORBIT_FITTING: return "orbit_fitting";
         case ConfigSection::VALIDATION: return "validation";
+        case ConfigSection::CHEBYSHEV: return "chebyshev";
         case ConfigSection::CUSTOM: return "custom";
         default: return "unknown";
     }
@@ -271,7 +274,11 @@ ConfigSection ConfigSectionData::stringToSectionType(const std::string& str) {
     if (str == "performance") return ConfigSection::PERFORMANCE;
     if (str == "database") return ConfigSection::DATABASE;
     if (str == "gaia") return ConfigSection::GAIA;
+    if (str == "astdys") return ConfigSection::ASTDYS;
+    if (str == "orbit_fitting") return ConfigSection::ORBIT_FITTING;
     if (str == "validation") return ConfigSection::VALIDATION;
+    if (str == "chebyshev") return ConfigSection::CHEBYSHEV;
+    if (str == "asteroids") return ConfigSection::ASTEROIDS;
     return ConfigSection::CUSTOM;
 }
 

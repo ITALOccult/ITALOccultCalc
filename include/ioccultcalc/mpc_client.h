@@ -26,6 +26,9 @@ public:
     // Scarica da file locale MPC format
     ObservationSet loadFromFile(const std::string& filename);
     
+    // Carica da file .rwo (formato AstDyS)
+    ObservationSet loadFromRWOFile(const std::string& filename);
+    
     // Salva osservazioni in formato MPC
     bool saveToFile(const ObservationSet& observations, const std::string& filename);
     

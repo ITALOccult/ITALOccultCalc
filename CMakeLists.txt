@@ -16,6 +16,19 @@ option(BUILD_EXAMPLES "Build examples" ON)
 find_package(CURL REQUIRED)
 find_package(LibXml2 REQUIRED)
 
+# OpenMP support (macOS requires libomp from Homebrew)
+if(APPLE)
+    set(OpenMP_C_FLAGS "-Xpreprocessor -fopenmp -I/opt/homebrew/opt/libomp/include")
+    set(OpenMP_C_LIB_NAMES "omp")
+    set(OpenMP_CXX_FLAGS "-Xpreprocessor -fopenmp -I/opt/homebrew/opt/libomp/include")
+    set(OpenMP_CXX_LIB_NAMES "omp")
+    set(OpenMP_omp_LIBRARY "/opt/homebrew/opt/libomp/lib/libomp.dylib")
+endif()
+find_package(OpenMP REQUIRED)
+
+# Add IOC_GaiaLib subdirectory
+add_subdirectory(external/IOC_GaiaLib)
+
 # Include directories
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -23,6 +36,7 @@ include_directories(
     ${LIBXML2_INCLUDE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/external/cspice/include
     ${CMAKE_CURRENT_SOURCE_DIR}/external
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/IOC_GaiaLib/include
 )
 
 # Source files
@@ -33,6 +47,8 @@ set(SOURCES
     src/orbital_elements.cpp
     src/ephemeris.cpp
     src/occultation_predictor.cpp
+    # src/chebyshev_approximation.cpp  # TODO: File corrotto - da rigenerare
+    # src/chebyshev_detector.cpp  # TODO: File corrotto - da rigenerare
     src/kml_exporter.cpp
     src/occult4_xml.cpp
     src/prediction_report.cpp
@@ -45,6 +61,8 @@ set(SOURCES
     src/orbit_fitter.cpp
     src/orbit_determination_gauss.cpp
     src/force_model.cpp
+    # src/orbfit_force_model.cpp
+    src/rkf78_integrator.cpp
     src/jpl_ephemeris.cpp
     src/orbit_propagator.cpp
     src/ra15_integrator.cpp
@@ -69,6 +87,8 @@ set(SOURCES
     src/cubic_spline.cpp
     src/parallel_algorithms.cpp
     src/output_manager.cpp
+    src/asteroid_list_reader.cpp
+    # src/gaia_catalog_preloader.cpp
 )
 
 # Fortran wrapper for OrbFit
@@ -110,7 +130,7 @@ set(HEADERS
     include/ioccultcalc/star_catalog.h
     include/ioccultcalc/asteroid_shape.h
     include/ioccultcalc/uncertainty_propagation.h
-    include/ioccultcalc/ra15_integrator.hpp
+    # include/ioccultcalc/ra15_integrator.hpp  # File mancante
     include/ioccultcalc/initial_orbit.h
     include/ioccultcalc/config_manager.h
     include/ioccultcalc/asteroid_filter.h
@@ -122,6 +142,7 @@ set(HEADERS
     include/planetary_aberration.h
     include/cubic_spline.h
     include/parallel_algorithms.h
+    # include/ioccultcalc/gaia_catalog_preloader.h  # File mancante
 )
 
 # OrbFit integration via Fortran wrapper with bind(C)
@@ -200,12 +221,30 @@ target_link_libraries(ioccultcalc
     ${LIBXML2_LIBRARIES}
     ${CMAKE_CURRENT_SOURCE_DIR}/external/cspice/lib/cspice.a
     ${ORBFIT_ALL_LIBS}
+    ioc_gaialib
+    OpenMP::OpenMP_CXX
 )
 
 target_include_directories(ioccultcalc PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
+
+# Se AstDyn è abilitato, aggiungi dipendenze Eigen e Boost
+if(USE_ASTDYN AND ASTDYN_LIBRARIES)
+    find_package(Eigen3 QUIET)
+    find_package(Boost QUIET)
+    
+    if(Eigen3_FOUND)
+        target_include_directories(ioccultcalc PRIVATE ${EIGEN3_INCLUDE_DIR})
+        target_link_libraries(ioccultcalc Eigen3::Eigen)
+    endif()
+    
+    if(Boost_FOUND)
+        target_include_directories(ioccultcalc PRIVATE ${Boost_INCLUDE_DIRS})
+        target_link_libraries(ioccultcalc ${Boost_LIBRARIES})
+    endif()
+endif()
 
 # Examples
 if(BUILD_EXAMPLES)

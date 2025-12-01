@@ -11,6 +11,8 @@
 #include <cmath>
 #include <algorithm>
 #include <cstdlib>
+#include <set>
+#include <map>
 
 namespace ioccultcalc {
 
@@ -73,6 +75,7 @@ void OutputManager::configure(const ConfigManager& config) {
         else if (formatStr == "XML") options_.format = OutputFormat::XML_OCCULT4;
         else if (formatStr == "JSON") options_.format = OutputFormat::JSON;
         else if (formatStr == "IOTA_CARD") options_.format = OutputFormat::IOTA_CARD;
+        else if (formatStr == "ASTNUM_LIST") options_.format = OutputFormat::ASTNUM_LIST;
         
         // File output
         options_.output_file = outputSection->getParameter("file")->asString();
@@ -159,6 +162,9 @@ bool OutputManager::writeEvents(const std::vector<OccultationEvent>& events,
                 }
                 return success;
             }
+        
+        case OutputFormat::ASTNUM_LIST:
+            return writeAstNumList(events, filename);
         
         default:
             return false;
@@ -708,6 +714,68 @@ bool OutputManager::writeIotaCard(const OccultationEvent& event,
     int result = std::system(cmd.c_str());
     
     return (result == 0);
+}
+
+// ============================================================================
+// ASTNUM_LIST FORMAT
+// ============================================================================
+
+bool OutputManager::writeAstNumList(const std::vector<OccultationEvent>& events,
+                                   const std::string& filename) {
+    if (events.empty()) return false;
+    
+    std::ofstream file(filename, options_.append_mode ? std::ios::app : std::ios::out);
+    if (!file.is_open()) return false;
+    
+    // Raccogli numeri asteroidi unici (rimuovi duplicati)
+    std::set<int> asteroid_numbers;
+    for (const auto& evt : events) {
+        asteroid_numbers.insert(evt.asteroid_number);
+    }
+    
+    // Header (solo se non in append mode)
+    if (!options_.append_mode) {
+        file << "# ITALOccultCalc - Asteroid List with Occultations\n";
+        file << "# Generated: " << events[0].computation_date << "\n";
+        file << "# Software: " << events[0].software_version << "\n";
+        file << "# Total asteroids with occultations: " << asteroid_numbers.size() << "\n";
+        file << "# Total events: " << events.size() << "\n";
+        file << "#\n";
+        file << "# Format: asteroid_number [asteroid_name] - event_count\n";
+        file << "# =====================================================\n";
+        file << "\n";
+    }
+    
+    // Conta eventi per asteroide
+    std::map<int, int> event_count;
+    std::map<int, std::string> asteroid_names;
+    for (const auto& evt : events) {
+        event_count[evt.asteroid_number]++;
+        asteroid_names[evt.asteroid_number] = evt.asteroid_name;
+    }
+    
+    // Scrivi lista ordinata per numero
+    for (int ast_num : asteroid_numbers) {
+        // Formato: (numero) # nome - (N events)
+        file << "(" << ast_num << ")";
+        
+        // Aggiungi nome se disponibile
+        if (!asteroid_names[ast_num].empty()) {
+            file << " # " << std::left << std::setw(20) << asteroid_names[ast_num];
+        }
+        
+        // Aggiungi conteggio eventi
+        file << " (" << event_count[ast_num] << " event";
+        if (event_count[ast_num] > 1) file << "s";
+        file << ")";
+        
+        file << "\n";
+    }
+    
+    file << "\n# End of list\n";
+    file.close();
+    
+    return true;
 }
 
 // ============================================================================
