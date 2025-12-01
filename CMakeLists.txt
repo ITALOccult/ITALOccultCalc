@@ -47,6 +47,8 @@ set(SOURCES
     src/force_model.cpp
     src/jpl_ephemeris.cpp
     src/orbit_propagator.cpp
+    src/ra15_integrator.cpp
+    src/rkf78_integrator.cpp
     src/jpl_horizons_client.cpp
     src/jpl_de_downloader.cpp
     src/spk_reader.cpp
