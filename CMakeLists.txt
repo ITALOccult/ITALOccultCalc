@@ -37,6 +37,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/external/cspice/include
     ${CMAKE_CURRENT_SOURCE_DIR}/external
     ${CMAKE_CURRENT_SOURCE_DIR}/external/IOC_GaiaLib/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/ITALOccultLibrary/italoccultlibrary/include
 )
 
 # Source files
@@ -47,8 +48,16 @@ set(SOURCES
     src/orbital_elements.cpp
     src/ephemeris.cpp
     src/occultation_predictor.cpp
-    # src/chebyshev_approximation.cpp  # TODO: File corrotto - da rigenerare
-    # src/chebyshev_detector.cpp  # TODO: File corrotto - da rigenerare
+    # src/chebyshev_approximation.cpp  # RIMOSSO: Usa quello di ITALOccultLibrary
+    src/chebyshev_detector.cpp
+    src/chebyshev_occultation_manager.cpp
+    src/phase1_candidate_screening.cpp
+    src/phase2_occultation_geometry.cpp
+    external/ITALOccultLibrary/italoccultlibrary/src/eq1_parser.cpp
+    external/ITALOccultLibrary/italoccultlibrary/src/astdyn_wrapper.cpp
+    external/ITALOccultLibrary/italoccultlibrary/src/orbital_conversions.cpp
+    external/ITALOccultLibrary/italoccultlibrary/src/chebyshev_approximation.cpp
+    external/ITALOccultLibrary/italoccultlibrary/src/chebyshev_rkf78_propagation.cpp
     src/kml_exporter.cpp
     src/occult4_xml.cpp
     src/prediction_report.cpp
@@ -142,6 +151,8 @@ set(HEADERS
     include/planetary_aberration.h
     include/cubic_spline.h
     include/parallel_algorithms.h
+    include/phase1_candidate_screening.h
+    include/phase2_occultation_geometry.h
     # include/ioccultcalc/gaia_catalog_preloader.h  # File mancante
 )
 
@@ -220,6 +231,7 @@ target_link_libraries(ioccultcalc
     CURL::libcurl
     ${LIBXML2_LIBRARIES}
     ${CMAKE_CURRENT_SOURCE_DIR}/external/cspice/lib/cspice.a
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/build/src/libastdyn.a
     ${ORBFIT_ALL_LIBS}
     ioc_gaialib
     OpenMP::OpenMP_CXX
@@ -230,15 +242,19 @@ target_include_directories(ioccultcalc PUBLIC
     $<INSTALL_INTERFACE:include>
 )
 
-# Se AstDyn è abilitato, aggiungi dipendenze Eigen e Boost
+# Trova Eigen3 (richiesto da ChebyshevOccultationManager e AstDyn)
+find_package(Eigen3 QUIET)
+if(Eigen3_FOUND)
+    target_include_directories(ioccultcalc PRIVATE ${EIGEN3_INCLUDE_DIR})
+    target_link_libraries(ioccultcalc Eigen3::Eigen)
+    message(STATUS "Eigen3 found: ${EIGEN3_INCLUDE_DIR}")
+else()
+    message(WARNING "Eigen3 not found - ChebyshevOccultationManager requires Eigen3")
+endif()
+
+# Se AstDyn è abilitato, aggiungi anche dipendenze Boost
 if(USE_ASTDYN AND ASTDYN_LIBRARIES)
-    find_package(Eigen3 QUIET)
     find_package(Boost QUIET)
-    
-    if(Eigen3_FOUND)
-        target_include_directories(ioccultcalc PRIVATE ${EIGEN3_INCLUDE_DIR})
-        target_link_libraries(ioccultcalc Eigen3::Eigen)
-    endif()
     
     if(Boost_FOUND)
         target_include_directories(ioccultcalc PRIVATE ${Boost_INCLUDE_DIRS})
@@ -269,4 +285,182 @@ install(TARGETS ioccultcalc
 
 install(DIRECTORY include/ioccultcalc
     DESTINATION include
+)
+
+# Test 17030 position
+add_executable(test_17030_position test_17030_position.cpp)
+target_link_libraries(test_17030_position PRIVATE ioccultcalc cspice)
+
+# Test 17030 effemeridi geocentriche (usa AstDyn wrapper)
+add_executable(test_17030_geocentric 
+    test_17030_geocentric.cpp
+    external/ITALOccultLibrary/italoccultlibrary/src/chebyshev_rkf78_propagation.cpp
+    external/ITALOccultLibrary/italoccultlibrary/src/astdyn_wrapper.cpp
+    external/ITALOccultLibrary/italoccultlibrary/src/eq1_parser.cpp
+    external/ITALOccultLibrary/italoccultlibrary/src/orbital_conversions.cpp
+)
+target_include_directories(test_17030_geocentric PRIVATE
+    ${CMAKE_SOURCE_DIR}/external/ITALOccultLibrary/italoccultlibrary/include
+    ${CMAKE_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/include
+)
+target_link_libraries(test_17030_geocentric PRIVATE
+    ${CMAKE_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/build/src/libastdyn.a
+    /opt/homebrew/lib/libboost_filesystem.dylib
+    /opt/homebrew/lib/libboost_atomic.dylib  
+    /opt/homebrew/lib/libboost_program_options.dylib
+    /opt/homebrew/lib/libboost_date_time.dylib
+    Eigen3::Eigen
+)
+
+# Test 17030 geocentrico usando direttamente AstDyn Propagator
+add_executable(test_17030_geocentric_astdyn 
+    test_17030_geocentric_astdyn.cpp
+)
+target_include_directories(test_17030_geocentric_astdyn PRIVATE
+    ${CMAKE_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/include
+)
+target_link_libraries(test_17030_geocentric_astdyn PRIVATE
+    ${CMAKE_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/build/src/libastdyn.a
+    /opt/homebrew/lib/libboost_filesystem.dylib
+    /opt/homebrew/lib/libboost_atomic.dylib  
+    /opt/homebrew/lib/libboost_program_options.dylib
+    /opt/homebrew/lib/libboost_date_time.dylib
+    Eigen3::Eigen
+)
+
+# Test 17030 geocentrico caricando elementi da archivio
+add_executable(test_17030_geocentric_from_archive 
+    test_17030_geocentric_from_archive.cpp
+)
+target_include_directories(test_17030_geocentric_from_archive PRIVATE
+    ${CMAKE_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/include
+)
+target_link_libraries(test_17030_geocentric_from_archive PRIVATE
+    ${CMAKE_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/build/src/libastdyn.a
+    /opt/homebrew/lib/libboost_filesystem.dylib
+    /opt/homebrew/lib/libboost_atomic.dylib  
+    /opt/homebrew/lib/libboost_program_options.dylib
+    /opt/homebrew/lib/libboost_date_time.dylib
+    Eigen3::Eigen
+)
+
+# Test 17030 effemeridi con Chebyshev polynomials
+add_executable(test_17030_chebyshev_ephemerides 
+    test_17030_chebyshev_ephemerides.cpp
+)
+target_include_directories(test_17030_chebyshev_ephemerides PRIVATE
+    ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/include
+)
+target_link_libraries(test_17030_chebyshev_ephemerides PRIVATE
+    ioccultcalc
+    ioc_gaialib
+    ${CMAKE_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/build/src/libastdyn.a
+    /opt/homebrew/lib/libboost_filesystem.dylib
+    /opt/homebrew/lib/libboost_atomic.dylib  
+    /opt/homebrew/lib/libboost_program_options.dylib
+    /opt/homebrew/lib/libboost_date_time.dylib
+    Eigen3::Eigen
+)
+
+# Test validazione Corridor API per 17030
+add_executable(test_17030_corridor_validation
+    test_17030_corridor_validation.cpp
+)
+target_link_libraries(test_17030_corridor_validation PRIVATE
+    ioccultcalc
+    ioc_gaialib
+    ${CMAKE_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/build/src/libastdyn.a
+    /opt/homebrew/lib/libboost_filesystem.dylib
+    /opt/homebrew/lib/libboost_atomic.dylib  
+    /opt/homebrew/lib/libboost_program_options.dylib
+    /opt/homebrew/lib/libboost_date_time.dylib
+    Eigen3::Eigen
+)
+
+# Test occultazione specifica 17030 × UCAC4 552-011427
+add_executable(test_17030_occultation_ucac4
+    test_17030_occultation_ucac4_552_011427.cpp
+)
+target_link_libraries(test_17030_occultation_ucac4 PRIVATE
+    ${CMAKE_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/build/src/libastdyn.a
+    /opt/homebrew/lib/libboost_filesystem.dylib
+    /opt/homebrew/lib/libboost_atomic.dylib  
+    Eigen3::Eigen
+)
+
+# Test FASE 1: Screening stelle candidate con path ad alta risoluzione
+add_executable(test_17030_phase1_screening
+    test_17030_phase1_candidate_screening.cpp
+)
+target_link_libraries(test_17030_phase1_screening PRIVATE
+    ioccultcalc
+    ioc_gaialib
+    ${CMAKE_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/build/src/libastdyn.a
+    /opt/homebrew/lib/libboost_filesystem.dylib
+    /opt/homebrew/lib/libboost_atomic.dylib  
+    /opt/homebrew/lib/libboost_program_options.dylib
+    /opt/homebrew/lib/libboost_date_time.dylib
+    Eigen3::Eigen
+)
+
+# Test classe Phase1CandidateScreening
+add_executable(test_phase1_class
+    test_phase1_class.cpp
+)
+target_link_libraries(test_phase1_class PRIVATE
+    ioccultcalc
+    ioc_gaialib
+    ${CMAKE_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/build/src/libastdyn.a
+    /opt/homebrew/lib/libboost_filesystem.dylib
+    /opt/homebrew/lib/libboost_atomic.dylib  
+    /opt/homebrew/lib/libboost_program_options.dylib
+    /opt/homebrew/lib/libboost_date_time.dylib
+    Eigen3::Eigen
+)
+
+# Test Chebyshev RA/Dec + Grid Search Optimization
+add_executable(test_chebyshev_ar_dec
+    test_chebyshev_ar_dec_optimization.cpp
+)
+target_link_libraries(test_chebyshev_ar_dec PRIVATE
+    ioccultcalc
+    ioc_gaialib
+    ${CMAKE_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/build/src/libastdyn.a
+    /opt/homebrew/lib/libboost_filesystem.dylib
+    /opt/homebrew/lib/libboost_atomic.dylib  
+    /opt/homebrew/lib/libboost_program_options.dylib
+    /opt/homebrew/lib/libboost_date_time.dylib
+    Eigen3::Eigen
+)
+
+# Test comparativo con 16, 32, 48 punti di controllo
+add_executable(test_chebyshev_comparison
+    test_chebyshev_comparison.cpp
+)
+target_link_libraries(test_chebyshev_comparison PRIVATE
+    ioccultcalc
+    ioc_gaialib
+    ${CMAKE_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/build/src/libastdyn.a
+    /opt/homebrew/lib/libboost_filesystem.dylib
+    /opt/homebrew/lib/libboost_atomic.dylib  
+    /opt/homebrew/lib/libboost_program_options.dylib
+    /opt/homebrew/lib/libboost_date_time.dylib
+    Eigen3::Eigen
+)
+
+# Test Phase 2 con orbital fitting
+add_executable(test_phase2_orbital_fitting
+    test_phase2_orbital_fitting.cpp
+)
+target_link_libraries(test_phase2_orbital_fitting PRIVATE
+    ioccultcalc
+    ioc_gaialib
+    ${CMAKE_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/build/src/libastdyn.a
+    /opt/homebrew/lib/libboost_filesystem.dylib
+    /opt/homebrew/lib/libboost_atomic.dylib  
+    /opt/homebrew/lib/libboost_program_options.dylib
+    /opt/homebrew/lib/libboost_date_time.dylib
+    Eigen3::Eigen
+    CURL::libcurl
 )
