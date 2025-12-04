@@ -480,3 +480,20 @@ target_link_libraries(test_phase1_phase2_integration PRIVATE
     Eigen3::Eigen
     CURL::libcurl
 )
+
+# Test integrazione Phase 1 → Phase 2 (collegato)
+add_executable(test_phase1_phase2_linked
+    test_phase1_phase2_linked.cpp
+)
+target_link_libraries(test_phase1_phase2_linked PRIVATE
+    ioccultcalc
+    ioc_gaialib
+    ${CMAKE_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/build/src/libastdyn.a
+    /opt/homebrew/lib/libboost_filesystem.dylib
+    /opt/homebrew/lib/libboost_atomic.dylib  
+    /opt/homebrew/lib/libboost_program_options.dylib
+    /opt/homebrew/lib/libboost_date_time.dylib
+    Eigen3::Eigen
+    CURL::libcurl
+)
+
