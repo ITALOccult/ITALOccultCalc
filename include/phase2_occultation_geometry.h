@@ -253,6 +253,14 @@ public:
     bool loadAsteroidFromEQ1(const std::string& eq1_path);
     
     /**
+     * @brief Carica elementi orbitali dal database JSON locale
+     * @param asteroid_number Numero dell'asteroide (es: 17030)
+     * @param json_path Path al file JSON (default: ~/.ioccultcalc/data/all_numbered_asteroids.json)
+     * @return true se caricamento riuscito
+     */
+    bool loadAsteroidFromJSON(int asteroid_number, const std::string& json_path = "");
+    
+    /**
      * @brief Imposta elementi orbitali direttamente
      */
     void setOrbitalElements(const astdyn::propagation::KeplerianElements& elements);

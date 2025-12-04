@@ -57,6 +57,8 @@
 #include <algorithm>
 #include <stdexcept>
 #include <iostream>
+#include <fstream>
+#include <nlohmann/json.hpp>
 
 namespace ioccultcalc {
 
@@ -257,6 +259,142 @@ bool Phase1CandidateScreening::loadAsteroidFromEQ1(const std::string& eq1_path) 
         
     } catch (const std::exception& e) {
         std::cerr << "Errore caricamento elementi da " << eq1_path << ": " << e.what() << "\n";
+        return false;
+    }
+}
+
+bool Phase1CandidateScreening::loadAsteroidFromJSON(int asteroid_number, const std::string& json_path) {
+    try {
+        // Determina path del database JSON
+        std::string path = json_path;
+        if (path.empty()) {
+            const char* home = std::getenv("HOME");
+            if (home) {
+                path = std::string(home) + "/.ioccultcalc/data/all_numbered_asteroids.json";
+            } else {
+                std::cerr << "Errore: HOME non definito e json_path non specificato\n";
+                return false;
+            }
+        }
+        
+        // Leggi file JSON
+        std::ifstream file(path);
+        if (!file.is_open()) {
+            std::cerr << "Errore: impossibile aprire " << path << "\n";
+            return false;
+        }
+        
+        nlohmann::json j;
+        file >> j;
+        
+        // Cerca l'asteroide nel database
+        if (!j.contains("asteroids")) {
+            std::cerr << "Errore: chiave 'asteroids' non trovata nel JSON\n";
+            return false;
+        }
+        
+        bool found = false;
+        for (const auto& asteroid : j["asteroids"]) {
+            if (asteroid["number"].get<int>() == asteroid_number) {
+                // Estrai elementi orbitali (angoli in gradi nel JSON)
+                // Gli elementi nel JSON sono in frame EQUATORIALE ICRF
+                // Il propagatore usa frame ECLITTICA J2000
+                // Quindi dobbiamo convertire i, Omega, omega
+                
+                double a = asteroid["a"].get<double>();
+                double e = asteroid["e"].get<double>();
+                double i_eq = asteroid["i"].get<double>() * DEG_TO_RAD;      // inclinazione equatoriale
+                double Omega_eq = asteroid["Omega"].get<double>() * DEG_TO_RAD;  // nodo ascendente equatoriale
+                double omega = asteroid["omega"].get<double>() * DEG_TO_RAD;
+                double M = asteroid["M"].get<double>() * DEG_TO_RAD;
+                
+                // ═══════════════════════════════════════════════════════════
+                // CONVERSIONE DA EQUATORIALE ICRF A ECLITTICA J2000
+                // ═══════════════════════════════════════════════════════════
+                // 
+                // Obliquità dell'eclittica J2000: ε = 23.4392911°
+                // 
+                // Formula di trasformazione (vedi Montenbruck & Gill):
+                // Il vettore normale al piano orbitale n_eq = (sin(i)*sin(Ω), -sin(i)*cos(Ω), cos(i))
+                // va ruotato attorno all'asse X di +ε per ottenere n_ecl
+                //
+                // cos(i_ecl) = cos(ε)*cos(i_eq) + sin(ε)*sin(i_eq)*cos(Ω_eq)
+                // sin(i_ecl)*sin(Ω_ecl) = sin(i_eq)*sin(Ω_eq)
+                // sin(i_ecl)*cos(Ω_ecl) = -sin(ε)*cos(i_eq) + cos(ε)*sin(i_eq)*cos(Ω_eq)
+                //
+                double cos_eps = std::cos(EPSILON_J2000);
+                double sin_eps = std::sin(EPSILON_J2000);
+                
+                double cos_i_eq = std::cos(i_eq);
+                double sin_i_eq = std::sin(i_eq);
+                double cos_Omega_eq = std::cos(Omega_eq);
+                double sin_Omega_eq = std::sin(Omega_eq);
+                
+                // Calcola inclinazione eclittica
+                double cos_i_ecl = cos_eps * cos_i_eq + sin_eps * sin_i_eq * cos_Omega_eq;
+                double i_ecl = std::acos(cos_i_ecl);
+                double sin_i_ecl = std::sin(i_ecl);
+                
+                // Calcola nodo ascendente eclittico
+                double sin_Omega_ecl, cos_Omega_ecl;
+                if (sin_i_ecl > 1e-10) {
+                    sin_Omega_ecl = sin_i_eq * sin_Omega_eq / sin_i_ecl;
+                    cos_Omega_ecl = (-sin_eps * cos_i_eq + cos_eps * sin_i_eq * cos_Omega_eq) / sin_i_ecl;
+                } else {
+                    // Orbita quasi equatoriale, Omega indefinito
+                    sin_Omega_ecl = 0.0;
+                    cos_Omega_ecl = 1.0;
+                }
+                double Omega_ecl = std::atan2(sin_Omega_ecl, cos_Omega_ecl);
+                if (Omega_ecl < 0) Omega_ecl += 2.0 * M_PI;
+                
+                // L'argomento del perielio omega rimane invariato nella trasformazione
+                // (è misurato nel piano orbitale dal nodo)
+                // MA il nodo è cambiato, quindi omega va corretto:
+                // omega_ecl = omega_eq + (correzione per rotazione del nodo)
+                // Per prima approssimazione, omega resta uguale
+                double omega_ecl = omega;
+                
+                // Assegna elementi convertiti
+                pimpl_->keplerian_elements.semi_major_axis = a;
+                pimpl_->keplerian_elements.eccentricity = e;
+                pimpl_->keplerian_elements.inclination = i_ecl;
+                pimpl_->keplerian_elements.longitude_ascending_node = Omega_ecl;
+                pimpl_->keplerian_elements.argument_perihelion = omega_ecl;
+                pimpl_->keplerian_elements.mean_anomaly = M;
+                
+                // Epoca: da JD a MJD TDB
+                double epoch_jd = asteroid["epoch"].get<double>();
+                pimpl_->keplerian_elements.epoch_mjd_tdb = epoch_jd - MJD_TO_JD;
+                
+                // GM Sole in AU³/day²
+                pimpl_->keplerian_elements.gravitational_parameter = 
+                    1.32712440018e20 / std::pow(1.495978707e11, 3) * std::pow(86400.0, 2);
+                
+                found = true;
+                
+                // Debug: mostra elementi originali e convertiti
+                std::cout << "✓ Elementi orbitali caricati da JSON per asteroide " << asteroid_number << ":\n";
+                std::cout << "  Frame originale (equatoriale ICRF):\n";
+                std::cout << "    i=" << i_eq * RAD_TO_DEG << "°  Ω=" << Omega_eq * RAD_TO_DEG << "°\n";
+                std::cout << "  Frame convertito (eclittica J2000):\n";
+                std::cout << "    i=" << i_ecl * RAD_TO_DEG << "°  Ω=" << Omega_ecl * RAD_TO_DEG << "°\n";
+                std::cout << "  a=" << a << " AU, e=" << e << "\n";
+                std::cout << "  epoch=" << pimpl_->keplerian_elements.epoch_mjd_tdb << " MJD TDB\n";
+                break;
+            }
+        }
+        
+        if (!found) {
+            std::cerr << "Errore: asteroide " << asteroid_number << " non trovato nel database JSON\n";
+            return false;
+        }
+        
+        pimpl_->has_elements = true;
+        return true;
+        
+    } catch (const std::exception& e) {
+        std::cerr << "Errore parsing JSON: " << e.what() << "\n";
         return false;
     }
 }

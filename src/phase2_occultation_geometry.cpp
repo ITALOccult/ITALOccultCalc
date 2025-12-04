@@ -63,6 +63,7 @@
 #include <fstream>
 #include <sstream>
 #include <Eigen/Dense>
+#include <nlohmann/json.hpp>
 
 // Per download HTTP (curl)
 #include <curl/curl.h>
@@ -181,6 +182,81 @@ bool Phase2OccultationGeometry::loadAsteroidFromEQ1(const std::string& eq1_path)
         
     } catch (const std::exception& e) {
         std::cerr << "Phase2: Errore caricamento " << eq1_path << ": " << e.what() << "\n";
+        return false;
+    }
+}
+
+bool Phase2OccultationGeometry::loadAsteroidFromJSON(int asteroid_number, const std::string& json_path) {
+    try {
+        // Determina path del database JSON
+        std::string path = json_path;
+        if (path.empty()) {
+            const char* home = std::getenv("HOME");
+            if (home) {
+                path = std::string(home) + "/.ioccultcalc/data/all_numbered_asteroids.json";
+            } else {
+                std::cerr << "Phase2: Errore HOME non definito e json_path non specificato\n";
+                return false;
+            }
+        }
+        
+        // Leggi file JSON
+        std::ifstream file(path);
+        if (!file.is_open()) {
+            std::cerr << "Phase2: Errore impossibile aprire " << path << "\n";
+            return false;
+        }
+        
+        nlohmann::json j;
+        file >> j;
+        
+        // Cerca l'asteroide nel database
+        if (!j.contains("asteroids")) {
+            std::cerr << "Phase2: Errore chiave 'asteroids' non trovata\n";
+            return false;
+        }
+        
+        bool found = false;
+        for (const auto& asteroid : j["asteroids"]) {
+            if (asteroid["number"].get<int>() == asteroid_number) {
+                // Estrai elementi orbitali (angoli in gradi nel JSON)
+                pimpl_->keplerian_elements.semi_major_axis = asteroid["a"].get<double>();
+                pimpl_->keplerian_elements.eccentricity = asteroid["e"].get<double>();
+                pimpl_->keplerian_elements.inclination = asteroid["i"].get<double>() * DEG_TO_RAD;
+                pimpl_->keplerian_elements.longitude_ascending_node = asteroid["Omega"].get<double>() * DEG_TO_RAD;
+                pimpl_->keplerian_elements.argument_perihelion = asteroid["omega"].get<double>() * DEG_TO_RAD;
+                pimpl_->keplerian_elements.mean_anomaly = asteroid["M"].get<double>() * DEG_TO_RAD;
+                
+                // Epoca: da JD a MJD TDB
+                double epoch_jd = asteroid["epoch"].get<double>();
+                pimpl_->keplerian_elements.epoch_mjd_tdb = epoch_jd - MJD_TO_JD;
+                
+                // GM Sole in AU³/day²
+                pimpl_->keplerian_elements.gravitational_parameter = 
+                    1.32712440018e20 / std::pow(1.495978707e11, 3) * std::pow(86400.0, 2);
+                
+                // Salva designazione per uso futuro
+                if (asteroid.contains("name")) {
+                    pimpl_->asteroid_designation = asteroid["name"].get<std::string>();
+                }
+                
+                found = true;
+                
+                std::cout << "✓ Phase2: Elementi orbitali caricati per asteroide " << asteroid_number << "\n";
+                break;
+            }
+        }
+        
+        if (!found) {
+            std::cerr << "Phase2: Asteroide " << asteroid_number << " non trovato nel database JSON\n";
+            return false;
+        }
+        
+        pimpl_->has_elements = true;
+        return true;
+        
+    } catch (const std::exception& e) {
+        std::cerr << "Phase2: Errore parsing JSON: " << e.what() << "\n";
         return false;
     }
 }
