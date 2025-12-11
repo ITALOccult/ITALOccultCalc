@@ -2,6 +2,101 @@
 
 Utility a riga di comando per il calcolo delle occultazioni asteroidali.
 
+## Asteroid Database Management
+
+### build_allnum_database
+
+C++ tool per creare/aggiornare database SQLite da AstDyS `allnum.cat`:
+- Scarica `allnum.cat` da AstDyS (formato OEF2.0)
+- Parsa elementi orbitali kepleriani con conversioni corrette gradi/radianti
+- Inserisce in SQLite con tracciamento data download
+- Verifica automaticamente se database è vecchio (> 30 giorni) e aggiorna
+
+**Usage:**
+```bash
+# Build/update database (updates if older than 30 days)
+./build/tools/build_allnum_database
+
+# Force update regardless of age
+./build/tools/build_allnum_database --force
+
+# Custom database path
+./build/tools/build_allnum_database --db-path /path/to/allnum.db
+
+# Custom max age (update if older than N days)
+./build/tools/build_allnum_database --max-age 15
+```
+
+**Monthly Auto-Update:**
+```bash
+# Manual update
+./tools/update_allnum_database.sh
+
+# Update if older than 15 days
+./tools/update_allnum_database.sh 15
+
+# Add to crontab (runs on 1st of each month at 2 AM)
+0 2 1 * * /path/to/IOccultCalc/tools/update_allnum_database.sh
+```
+
+**Database Schema:**
+- `allnum_asteroids`: elementi orbitali kepleriani (a, e, i, Omega, omega, M in radianti)
+- `allnum_metadata`: tracciamento data download, totale record, epoca dati
+
+**Data Source:**
+- AstDyS allnum.cat: https://newton.spacedys.com/~astdys2/catalogs/allnum.cat
+
+### build_asteroid_database.py
+
+Builds a unified asteroid database combining:
+- **Orbital elements** from AstDyS `allnum.cat` (high precision)
+- **Physical properties** from MPC Extended JSON (diameter, albedo, spectral type)
+
+**Features:**
+- Downloads latest data from AstDyS and MPC
+- Merges orbital elements with physical properties
+- Tracks parsing date for periodic updates
+- Auto-checks if update is needed (default: 30 days)
+
+**Usage:**
+```bash
+# Build/update database (updates if older than 30 days)
+python3 tools/build_asteroid_database.py
+
+# Force update regardless of age
+python3 tools/build_asteroid_database.py --force
+
+# Custom output location
+python3 tools/build_asteroid_database.py --output /path/to/asteroids.json
+
+# Custom max age (update if older than N days)
+python3 tools/build_asteroid_database.py --max-age 15
+```
+
+**Monthly Auto-Update:**
+
+Add to crontab for monthly updates:
+```bash
+# Edit crontab
+crontab -e
+
+# Add this line (runs on 1st of each month at 2 AM)
+0 2 1 * * /path/to/IOccultCalc/tools/update_asteroid_database.sh
+```
+
+Or use the wrapper script:
+```bash
+# Manual update
+./tools/update_asteroid_database.sh
+
+# Update if older than 15 days
+./tools/update_asteroid_database.sh 15
+```
+
+**Data Sources:**
+- AstDyS allnum.cat: https://newton.spacedys.com/astdys2/index.php?pc=4
+- MPC Extended JSON: https://minorplanetcenter.net/Extended_Files/mpcorb_extended.json.gz
+
 ## occult_calc
 
 Calcola le occultazioni stellari per un asteroide in una data specifica.
