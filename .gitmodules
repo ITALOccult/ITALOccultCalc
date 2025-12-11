@@ -4,12 +4,6 @@
 [submodule "external/ITALOccultLibrary"]
 	path = external/ITALOccultLibrary
 	url = https://github.com/manvalan/ITALOccultLibrary.git
-[submodule "external/ITALOccultLibrary"]
-	path = external/ITALOccultLibrary
-	url = https://github.com/manvalan/ITALOccultLibrary
-[submodule "external/ITALOccultLibrary"]
-	path = external/ITALOccultLibrary
-	url = https://github.com/manvalan/ITALOccultLibrary.git
 [submodule "external/IOC_Config"]
 	path = external/IOC_Config
 	url = https://github.com/manvalan/IOC_Config.git
