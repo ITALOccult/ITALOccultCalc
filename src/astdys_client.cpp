@@ -7,8 +7,14 @@
 #include <iostream>
 #include <stdexcept>
 #include <regex>
+#include "ioccultcalc/astdyn_propagation_helper.h"  // ← AGGIUNGI per convertFromEquinoctial
+#include "ioccultcalc/astdyn_interface.h"  // ← AGGIUNGI per AstDySElements
 
 namespace ioccultcalc {
+
+// Forward declarations
+struct OrbitState;
+struct AstDySElements;  // ← AGGIUNGI forward declaration
 
 // Callback per ricevere dati da libcurl
 static size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* output) {
@@ -78,6 +84,24 @@ void AstDysClient::setBaseURL(const std::string& url) {
 
 void AstDysClient::setTimeout(int seconds) {
     pImpl->timeout = seconds;
+}
+
+// Metodi statici per compatibilità con AstDySClient API
+AstDySElements AstDysClient::downloadElements(int asteroid_number) {
+    AstDysClient client;
+    std::string designation = std::to_string(asteroid_number);
+    EquinoctialElements eq = client.getElements(designation);
+    
+    // Converti EquinoctialElements -> AstDySElements
+    return AstDynPropagationHelper::convertFromEquinoctial(eq);
+}
+
+AstDySElements AstDysClient::downloadElements(const std::string& designation) {
+    AstDysClient client;
+    EquinoctialElements eq = client.getElements(designation);
+    
+    // Converti EquinoctialElements -> AstDySElements
+    return AstDynPropagationHelper::convertFromEquinoctial(eq);
 }
 
 EquinoctialElements AstDysClient::getElements(const std::string& designation) {
@@ -182,10 +206,19 @@ EquinoctialElements AstDysClient::parseEquinoctialFile(const std::string& conten
             continue;
         }
         
-        // Linea EQU con elementi
+        // Linea EQU con elementi equinoziali
+        // Formato: EQU a h k p q lambda
+        // NOTA IMPORTANTE UNITÀ:
+        //   - a: semiasse maggiore in AU (nessuna conversione)
+        //   - h, k, p, q: elementi equinoziali adimensionali (nessuna conversione)
+        //   - lambda: longitudine media in GRADI nel file AstDyS
+        //             ma EquinoctialElements.lambda deve essere in RADIANTI
+        //   CONVERSIONE: lambda_rad = lambda_deg * (π / 180.0)
         if (line.find("EQU") == 0) {
             std::istringstream iss_line(line.substr(3)); // Salta "EQU"
-            iss_line >> elem.a >> elem.h >> elem.k >> elem.p >> elem.q >> elem.lambda;
+            double lambda_deg;
+            iss_line >> elem.a >> elem.h >> elem.k >> elem.p >> elem.q >> lambda_deg;
+            elem.lambda = lambda_deg * M_PI / 180.0; // Converti da GRADI a RADIANTI
             continue;
         }
         
@@ -233,29 +266,94 @@ OrbitalElements AstDysClient::getRecentElements(const std::string& designation) 
         
         // Cerca la linea con l'asteroide
         if (line.find(searchPattern) == 0) {
-            // Parsing: 'num' epoch a e i node argperi M H G flag
+            // Parsing FIXED-WIDTH del formato AstDyS allnum.cat
+            // Formato (fixed-width columns):
+            // Col 1-7: Number (tra virgolette: '704')
+            // Col 9-26: Designation/Name
+            // Col 28-41: Epoch (MJD)
+            // Col 43-55: a (AU)
+            // Col 57-68: e
+            // Col 70-81: i (deg) - INCLINAZIONE IN GRADI
+            // Col 83-95: Omega (deg) - NODO ASCENDENTE IN GRADI
+            // Col 97-109: omega (deg) - ARGOMENTO PERIELIO IN GRADI
+            // Col 111-123: M (deg) - ANOMALIA MEDIA IN GRADI
+            // Col 125-130: H
+            // Col 132-136: G
+            
+            if (line.length() < 140) {
+                throw std::runtime_error("Line too short for allnum.cat format");
+            }
+            
             OrbitalElements elem;
             elem.designation = designation;
             
-            // Rimuovi i quote dal numero
-            size_t firstQuote = line.find('\'');
-            size_t secondQuote = line.find('\'', firstQuote + 1);
-            std::string dataStr = line.substr(secondQuote + 1);
+            // Parse usando colonne fixed-width per evitare errori di parsing
+            // NOTA IMPORTANTE: Tutti gli angoli nel file allnum.cat sono in GRADI,
+            // ma OrbitalElements li memorizza in RADIANTI.
             
-            std::istringstream iss(dataStr);
-            double mjd;
-            iss >> mjd >> elem.a >> elem.e >> elem.i >> elem.Omega >> elem.omega >> elem.M;
-            iss >> elem.H >> elem.G;
-            
-            // Converti MJD in JD
+            // Epoch (MJD) - colonne 27-40 (0-indexed: 27-41 escluso)
+            // CONVERSIONE: JD = MJD + 2400000.5
+            std::string mjd_str = line.substr(27, 14);
+            double mjd = std::stod(mjd_str);
             elem.epoch.jd = mjd + 2400000.5;
             
-            // Converti angoli da gradi a radianti
-            // NOTA: Elementi sono in frame ECLM J2000
-            elem.i *= M_PI / 180.0;
-            elem.Omega *= M_PI / 180.0;
-            elem.omega *= M_PI / 180.0;
-            elem.M *= M_PI / 180.0;
+            // a (semiasse maggiore) - colonne 42-54 (0-indexed: 42-55 escluso)
+            // UNITÀ: AU (nessuna conversione)
+            std::string a_str = line.substr(42, 13);
+            elem.a = std::stod(a_str);
+            
+            // e (eccentricità) - colonne 56-67 (0-indexed: 56-68 escluso)
+            // UNITÀ: adimensionale (nessuna conversione)
+            std::string e_str = line.substr(56, 12);
+            elem.e = std::stod(e_str);
+            
+            // i (inclinazione) - colonne 69-80 (0-indexed: 69-81 escluso)
+            // UNITÀ NEL FILE: GRADI
+            // UNITÀ IN MEMORIA: RADIANTI
+            // CONVERSIONE: i_rad = i_deg * (π / 180.0)
+            std::string i_str = line.substr(69, 12);
+            double i_deg = std::stod(i_str);
+            elem.i = i_deg * M_PI / 180.0;
+            
+            // Omega (longitudine nodo ascendente) - colonne 82-94 (0-indexed: 82-95 escluso)
+            // UNITÀ NEL FILE: GRADI
+            // UNITÀ IN MEMORIA: RADIANTI
+            // CONVERSIONE: Omega_rad = Omega_deg * (π / 180.0)
+            std::string Omega_str = line.substr(82, 13);
+            double Omega_deg = std::stod(Omega_str);
+            elem.Omega = Omega_deg * M_PI / 180.0;
+            
+            // omega (argomento del perielio) - colonne 96-108 (0-indexed: 96-109 escluso)
+            // UNITÀ NEL FILE: GRADI
+            // UNITÀ IN MEMORIA: RADIANTI
+            // CONVERSIONE: omega_rad = omega_deg * (π / 180.0)
+            std::string omega_str = line.substr(96, 13);
+            double omega_deg = std::stod(omega_str);
+            elem.omega = omega_deg * M_PI / 180.0;
+            
+            // M (anomalia media) - colonne 110-122 (0-indexed: 110-123 escluso)
+            // UNITÀ NEL FILE: GRADI
+            // UNITÀ IN MEMORIA: RADIANTI
+            // CONVERSIONE: M_rad = M_deg * (π / 180.0)
+            std::string M_str = line.substr(110, 13);
+            double M_deg = std::stod(M_str);
+            elem.M = M_deg * M_PI / 180.0;
+            
+            // H - colonne 124-129 (0-indexed: 124-130 escluso)
+            std::string H_str = line.substr(124, 6);
+            if (!H_str.empty() && H_str.find_first_not_of(" \t") != std::string::npos) {
+                elem.H = std::stod(H_str);
+            } else {
+                elem.H = 15.0; // default
+            }
+            
+            // G - colonne 131-135 (0-indexed: 131-136 escluso)
+            std::string G_str = line.substr(131, 5);
+            if (!G_str.empty() && G_str.find_first_not_of(" \t") != std::string::npos) {
+                elem.G = std::stod(G_str);
+            } else {
+                elem.G = 0.15; // default
+            }
             
             return elem;
         }
