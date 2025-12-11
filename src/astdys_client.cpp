@@ -266,89 +266,89 @@ OrbitalElements AstDysClient::getRecentElements(const std::string& designation) 
         
         // Cerca la linea con l'asteroide
         if (line.find(searchPattern) == 0) {
-            // Parsing FIXED-WIDTH del formato AstDyS allnum.cat
-            // Formato (fixed-width columns):
-            // Col 1-7: Number (tra virgolette: '704')
-            // Col 9-26: Designation/Name
-            // Col 28-41: Epoch (MJD)
-            // Col 43-55: a (AU)
-            // Col 57-68: e
-            // Col 70-81: i (deg) - INCLINAZIONE IN GRADI
-            // Col 83-95: Omega (deg) - NODO ASCENDENTE IN GRADI
-            // Col 97-109: omega (deg) - ARGOMENTO PERIELIO IN GRADI
-            // Col 111-123: M (deg) - ANOMALIA MEDIA IN GRADI
-            // Col 125-130: H
-            // Col 132-136: G
+            // Parsing FIXED-WIDTH del formato AstDyS allnum.cat (OEF2.0)
+            // Formato reale basato su analisi file:
+            // Posizione 0-7:   Number (tra virgolette, lunghezza variabile: '1' o '17030')
+            // Posizione 15-27: Epoch (MJD) - formato: 61000.000000
+            // Posizione 30-52: a (AU) - formato scientifico: 3.1754732060579491E+00
+            // Posizione 55-77: e - formato scientifico: 4.5420656480446929E-02
+            // Posizione 80-102: i (deg) - formato scientifico, IN GRADI
+            // Posizione 105-127: Omega (deg) - formato scientifico, IN GRADI
+            // Posizione 130-152: omega (deg) - formato scientifico, IN GRADI
+            // Posizione 155-177: M (deg) - formato scientifico, IN GRADI
+            // Posizione 178-183: H - formato: 13.29
+            // Posizione 185-189: G - formato: 0.15
+            // Posizione 191-192: flag
             
-            if (line.length() < 140) {
-                throw std::runtime_error("Line too short for allnum.cat format");
+            if (line.length() < 190) {
+                throw std::runtime_error("Line too short for allnum.cat format (OEF2.0)");
             }
             
             OrbitalElements elem;
             elem.designation = designation;
             
-            // Parse usando colonne fixed-width per evitare errori di parsing
+            // Parse usando colonne fixed-width basate sul formato reale OEF2.0
             // NOTA IMPORTANTE: Tutti gli angoli nel file allnum.cat sono in GRADI,
             // ma OrbitalElements li memorizza in RADIANTI.
             
-            // Epoch (MJD) - colonne 27-40 (0-indexed: 27-41 escluso)
+            // Epoch (MJD) - posizioni 15-27 (0-indexed: 15-28 escluso)
             // CONVERSIONE: JD = MJD + 2400000.5
-            std::string mjd_str = line.substr(27, 14);
+            std::string mjd_str = line.substr(15, 13);
             double mjd = std::stod(mjd_str);
             elem.epoch.jd = mjd + 2400000.5;
             
-            // a (semiasse maggiore) - colonne 42-54 (0-indexed: 42-55 escluso)
-            // UNITÀ: AU (nessuna conversione)
-            std::string a_str = line.substr(42, 13);
+            // a (semiasse maggiore) - posizioni 30-52 (0-indexed: 30-53 escluso)
+            // UNITÀ: AU (formato scientifico, nessuna conversione)
+            std::string a_str = line.substr(30, 23);
             elem.a = std::stod(a_str);
             
-            // e (eccentricità) - colonne 56-67 (0-indexed: 56-68 escluso)
-            // UNITÀ: adimensionale (nessuna conversione)
-            std::string e_str = line.substr(56, 12);
+            // e (eccentricità) - posizioni 55-77 (0-indexed: 55-78 escluso)
+            // UNITÀ: adimensionale (formato scientifico, nessuna conversione)
+            std::string e_str = line.substr(55, 23);
             elem.e = std::stod(e_str);
             
-            // i (inclinazione) - colonne 69-80 (0-indexed: 69-81 escluso)
-            // UNITÀ NEL FILE: GRADI
+            // i (inclinazione) - posizioni 80-102 (0-indexed: 80-103 escluso)
+            // UNITÀ NEL FILE: GRADI (formato scientifico)
             // UNITÀ IN MEMORIA: RADIANTI
             // CONVERSIONE: i_rad = i_deg * (π / 180.0)
-            std::string i_str = line.substr(69, 12);
+            std::string i_str = line.substr(80, 23);
             double i_deg = std::stod(i_str);
             elem.i = i_deg * M_PI / 180.0;
             
-            // Omega (longitudine nodo ascendente) - colonne 82-94 (0-indexed: 82-95 escluso)
-            // UNITÀ NEL FILE: GRADI
+            // Omega (longitudine nodo ascendente) - posizioni 105-127 (0-indexed: 105-128 escluso)
+            // UNITÀ NEL FILE: GRADI (formato scientifico)
             // UNITÀ IN MEMORIA: RADIANTI
             // CONVERSIONE: Omega_rad = Omega_deg * (π / 180.0)
-            std::string Omega_str = line.substr(82, 13);
+            std::string Omega_str = line.substr(105, 23);
             double Omega_deg = std::stod(Omega_str);
             elem.Omega = Omega_deg * M_PI / 180.0;
             
-            // omega (argomento del perielio) - colonne 96-108 (0-indexed: 96-109 escluso)
-            // UNITÀ NEL FILE: GRADI
+            // omega (argomento del perielio) - posizioni 130-152 (0-indexed: 130-153 escluso)
+            // UNITÀ NEL FILE: GRADI (formato scientifico)
             // UNITÀ IN MEMORIA: RADIANTI
             // CONVERSIONE: omega_rad = omega_deg * (π / 180.0)
-            std::string omega_str = line.substr(96, 13);
+            std::string omega_str = line.substr(130, 23);
             double omega_deg = std::stod(omega_str);
             elem.omega = omega_deg * M_PI / 180.0;
             
-            // M (anomalia media) - colonne 110-122 (0-indexed: 110-123 escluso)
-            // UNITÀ NEL FILE: GRADI
+            // M (anomalia media) - posizioni 155-177 (0-indexed: 155-178 escluso)
+            // UNITÀ NEL FILE: GRADI (formato scientifico)
             // UNITÀ IN MEMORIA: RADIANTI
             // CONVERSIONE: M_rad = M_deg * (π / 180.0)
-            std::string M_str = line.substr(110, 13);
+            std::string M_str = line.substr(155, 23);
             double M_deg = std::stod(M_str);
             elem.M = M_deg * M_PI / 180.0;
             
-            // H - colonne 124-129 (0-indexed: 124-130 escluso)
-            std::string H_str = line.substr(124, 6);
+            // H - posizioni 178-183 (0-indexed: 178-184 escluso)
+            std::string H_str = line.substr(178, 6);
             if (!H_str.empty() && H_str.find_first_not_of(" \t") != std::string::npos) {
                 elem.H = std::stod(H_str);
             } else {
                 elem.H = 15.0; // default
             }
             
-            // G - colonne 131-135 (0-indexed: 131-136 escluso)
-            std::string G_str = line.substr(131, 5);
+            // G - posizioni 185-189 (0-indexed: 185-190 escluso)
+            std::string G_str = line.substr(185, 5);
             if (!G_str.empty() && G_str.find_first_not_of(" \t") != std::string::npos) {
                 elem.G = std::stod(G_str);
             } else {
