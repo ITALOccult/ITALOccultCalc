@@ -82,17 +82,23 @@ int main() {
     
     std::vector<std::string> testAsteroids = {"1", "433", "704", "17030", "4"};
     AstDysClient client;
+    client.setTimeout(60); // Timeout più lungo per download catalogo grande
     
     int passedTests = 0;
     int totalTests = 0;
     
+    std::cout << CYAN << "NOTA: Questo test scarica allnum.cat da AstDyS (file grande, ~30MB)\n";
+    std::cout << "      Potrebbe richiedere alcuni secondi per il download...\n" << RESET << std::endl;
+    
     for (const auto& designation : testAsteroids) {
         std::cout << "\n" << YELLOW << "━━━ Asteroide " << designation << " ━━━" << RESET << "\n";
+        std::cout << "Scaricamento elementi da allnum.cat..." << std::flush;
         
         try {
             // Test 1: Parsing elementi da allnum.cat
             totalTests++;
             OrbitalElements elem = client.getRecentElements(designation);
+            std::cout << GREEN << " ✓" << RESET << "\n";
             
             std::cout << "\nElementi parsati:\n";
             printValue("Epoca (JD)", elem.epoch.jd);
@@ -233,7 +239,13 @@ int main() {
             }
             
         } catch (const std::exception& e) {
+            std::cout << RED << " ✗" << RESET << "\n";
             std::cout << RED << "✗ Errore nel parsing: " << e.what() << RESET << "\n";
+            std::cout << "  (Skipping questo asteroide)\n";
+        } catch (...) {
+            std::cout << RED << " ✗" << RESET << "\n";
+            std::cout << RED << "✗ Errore sconosciuto durante il parsing" << RESET << "\n";
+            std::cout << "  (Skipping questo asteroide)\n";
         }
     }
     
