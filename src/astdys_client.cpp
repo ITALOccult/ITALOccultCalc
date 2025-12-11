@@ -2,11 +2,13 @@
 #include "ioccultcalc/jpl_horizons_client.h"
 #include "ioccultcalc/orbit_propagator.h"
 #include "ioccultcalc/time_utils.h"
+#include "ioccultcalc/allnum_database.h"
 #include <curl/curl.h>
 #include <sstream>
 #include <iostream>
 #include <stdexcept>
 #include <regex>
+#include <memory>
 #include "ioccultcalc/astdyn_propagation_helper.h"  // ← AGGIUNGI per convertFromEquinoctial
 #include "ioccultcalc/astdyn_interface.h"  // ← AGGIUNGI per AstDySElements
 
@@ -243,7 +245,30 @@ EquinoctialElements AstDysClient::parseEquinoctialFile(const std::string& conten
 }
 
 OrbitalElements AstDysClient::getRecentElements(const std::string& designation) {
-    // Scarica il catalogo completo con epoche recenti
+    // Prova prima il database locale SQLite (più veloce, offline)
+    static std::unique_ptr<AllnumDatabaseReader> db_reader;
+    static bool db_checked = false;
+    
+    if (!db_checked) {
+        db_reader = std::make_unique<AllnumDatabaseReader>();
+        db_checked = true;
+        
+        if (db_reader && db_reader->isAvailable()) {
+            int count = db_reader->getRecordCount();
+            std::string last_update = db_reader->getLastUpdateDate();
+            // Silently use database - no verbose output unless needed
+        }
+    }
+    
+    if (db_reader && db_reader->isAvailable()) {
+        auto elem_opt = db_reader->getElement(designation);
+        if (elem_opt.has_value()) {
+            return elem_opt.value();
+        }
+        // Se non trovato nel database locale, continua con download online
+    }
+    
+    // Fallback: scarica il catalogo completo con epoche recenti da AstDyS
     std::string url = pImpl->baseURL + "catalogs/allnum.cat";
     std::string catalogContent = pImpl->httpGet(url);
     

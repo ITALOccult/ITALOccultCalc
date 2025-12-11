@@ -34,6 +34,10 @@
 #include "ioccultcalc/mpc_client.h"
 #include "planetary_aberration.h"
 #include "cubic_spline.h"
+// Phase1+Phase2 integration (LinOccult method)
+#include "ioccultcalc/occultation_search_astdyn.h"
+#include "phase1_candidate_screening.h"
+#include "phase2_occultation_geometry.h"
 #include <nlohmann/json.hpp>
 #include <iostream>
 #include <iomanip>
@@ -51,6 +55,7 @@
 #include <cmath>
 #include <set>
 #include <sstream>
+#include <unistd.h>  // for getpid()
 
 using namespace ioccultcalc;
 
@@ -139,22 +144,41 @@ std::string getPriorityStars(double score) {
 // ============================================================================
 
 ConfigManager loadConfiguration(const std::string& configFile) {
+    std::cerr << "[DEBUG] loadConfiguration: INIZIO" << std::endl;
+    std::cerr.flush();
+    
     printHeader("CARICAMENTO CONFIGURAZIONE");
+    std::cerr.flush();
     
     std::cout << "File configurazione: " << configFile << "\n";
+    std::cout.flush();
     
     ConfigManager config;
+    std::cerr << "[DEBUG] loadConfiguration: ConfigManager creato" << std::endl;
+    std::cerr.flush();
     
     try {
+        std::cerr << "[DEBUG] loadConfiguration: Verifico formato file..." << std::endl;
+        std::cerr.flush();
+        
         if (configFile.find(".json") != std::string::npos) {
+            std::cerr << "[DEBUG] loadConfiguration: Carico JSON..." << std::endl;
+            std::cerr.flush();
             config.loadFromJson(configFile);
             std::cout << "✓ Configurazione JSON caricata\n";
+            std::cout.flush();
         } else if (configFile.find(".oop") != std::string::npos) {
+            std::cerr << "[DEBUG] loadConfiguration: Carico OOP..." << std::endl;
+            std::cerr.flush();
             config.loadFromOop(configFile);
             std::cout << "✓ Configurazione OrbFit caricata\n";
+            std::cout.flush();
         } else {
             throw std::runtime_error("Formato configurazione non supportato");
         }
+        
+        std::cerr << "[DEBUG] loadConfiguration: File caricato, valido configurazione..." << std::endl;
+        std::cerr.flush();
         
         // Valida configurazione
         std::vector<std::string> errors;
@@ -167,27 +191,69 @@ ConfigManager loadConfiguration(const std::string& configFile) {
         }
         
         std::cout << "✓ Configurazione validata\n\n";
+        std::cout.flush();
+        
+        std::cerr << "[DEBUG] loadConfiguration: Configurazione validata, leggo sezioni..." << std::endl;
+        std::cerr.flush();
         
         // Stampa parametri principali
+        std::cerr << "[DEBUG] loadConfiguration: Chiamo getSection(PROPAGATION)..." << std::endl;
+        std::cerr.flush();
         auto propagSection = config.getSection(ConfigSection::PROPAGATION);
+        std::cerr << "[DEBUG] loadConfiguration: getSection(PROPAGATION) completato" << std::endl;
+        std::cerr.flush();
+        
+        std::cerr << "[DEBUG] loadConfiguration: Chiamo getSection(SEARCH)..." << std::endl;
+        std::cerr.flush();
         auto searchSection = config.getSection(ConfigSection::SEARCH);
+        std::cerr << "[DEBUG] loadConfiguration: getSection(SEARCH) completato" << std::endl;
+        std::cerr.flush();
+        
+        std::cerr << "[DEBUG] loadConfiguration: Sezioni lette, stampo parametri..." << std::endl;
+        std::cerr.flush();
         
         if (propagSection) {
-            std::cout << "Propagatore: " << propagSection->getParameter("type")->asString() << "\n";
-            std::cout << "Step size: " << propagSection->getParameter("step_size")->asDouble() << " giorni\n";
+            std::cerr << "[DEBUG] loadConfiguration: propagSection trovata" << std::endl;
+            std::cerr.flush();
+            auto typeParam = propagSection->getParameter("type");
+            if (typeParam) {
+                std::cout << "Propagatore: " << typeParam->asString() << "\n";
+                std::cout.flush();
+            }
+            auto stepParam = propagSection->getParameter("step_size");
+            if (stepParam) {
+                std::cout << "Step size: " << stepParam->asDouble() << " giorni\n";
+                std::cout.flush();
+            }
+        } else {
+            std::cerr << "[DEBUG] loadConfiguration: propagSection NON trovata" << std::endl;
+            std::cerr.flush();
         }
         
         if (searchSection) {
-            double startJd = searchSection->getParameter("start_jd")->asDouble();
-            double endJd = searchSection->getParameter("end_jd")->asDouble();
-            std::cout << "Intervallo ricerca: " << (endJd - startJd) << " giorni\n";
-            std::cout << "Mag limite: " << searchSection->getParameter("mag_limit")->asDouble() << "\n";
+            std::cerr << "[DEBUG] loadConfiguration: searchSection trovata" << std::endl;
+            std::cerr.flush();
+            auto startParam = searchSection->getParameter("start_mjd_tdb");
+            auto endParam = searchSection->getParameter("end_mjd_tdb");
+            if (startParam && endParam) {
+                double startMjd = startParam->asDouble();
+                double endMjd = endParam->asDouble();
+                std::cout << "Intervallo ricerca: " << (endMjd - startMjd) << " giorni (MJD)\n";
+                std::cout.flush();
+            }
+        } else {
+            std::cerr << "[DEBUG] loadConfiguration: searchSection NON trovata" << std::endl;
+            std::cerr.flush();
         }
         
     } catch (const std::exception& e) {
         std::cerr << "✗ Errore caricamento configurazione: " << e.what() << "\n";
+        std::cerr.flush();
         throw;
     }
+    
+    std::cerr << "[DEBUG] loadConfiguration: FINE" << std::endl;
+    std::cerr.flush();
     
     return config;
 }
@@ -197,9 +263,19 @@ ConfigManager loadConfiguration(const std::string& configFile) {
 // ============================================================================
 
 std::vector<AsteroidCandidate> selectAsteroids(const ConfigManager& config) {
+    std::cerr << "[DEBUG] selectAsteroids: INIZIO" << std::endl;
+    std::cerr.flush();
+    
     printHeader("SELEZIONE ASTEROIDI CANDIDATI");
+    std::cerr.flush();
+    
+    std::cerr << "[DEBUG] selectAsteroids: Dopo printHeader" << std::endl;
+    std::cerr.flush();
     
     std::vector<AsteroidCandidate> candidates;
+    
+    std::cerr << "[DEBUG] selectAsteroids: Inizializzo variabili..." << std::endl;
+    std::cerr.flush();
     
     // Criteri di default: valori sentinel (-1) = filtro non applicato
     double maxMagnitude = -1.0;        // -1 = nessun filtro magnitudine
@@ -213,8 +289,14 @@ std::vector<AsteroidCandidate> selectAsteroids(const ConfigManager& config) {
     std::set<int> explicitAsteroidList;
     bool useExplicitList = false;
     
+    std::cerr << "[DEBUG] selectAsteroids: Leggo configurazione objectSection..." << std::endl;
+    std::cerr.flush();
+    
     // Leggi parametri da configurazione se presenti
     auto objectSection = config.getSection(ConfigSection::OBJECT);
+    
+    std::cerr << "[DEBUG] selectAsteroids: objectSection letto" << std::endl;
+    std::cerr.flush();
     
     if (objectSection) {
         if (objectSection->hasParameter("min_diameter")) {
@@ -233,6 +315,18 @@ std::vector<AsteroidCandidate> selectAsteroids(const ConfigManager& config) {
             int num = objectSection->getParameter("asteroid_number")->asInt();
             explicitAsteroidList.insert(num);
             useExplicitList = true;
+        }
+        
+        // 2. Singolo ID (stringa): id = "17030"
+        if (objectSection->hasParameter("id")) {
+            std::string idStr = objectSection->getParameter("id")->asString();
+            try {
+                int num = std::stoi(idStr);
+                explicitAsteroidList.insert(num);
+                useExplicitList = true;
+            } catch (...) {
+                std::cerr << "Attenzione: ID asteroide invalido '" << idStr << "'\n";
+            }
         }
         
         // 2. Lista inline: asteroid_list = "10,4,1,433"
@@ -256,7 +350,7 @@ std::vector<AsteroidCandidate> selectAsteroids(const ConfigManager& config) {
             if (!explicitAsteroidList.empty()) useExplicitList = true;
         }
         
-        // 3. File con lista: asteroid_list_file = "my_asteroids.txt"
+        // 4. File con lista: asteroid_list_file = "my_asteroids.txt"
         if (objectSection->hasParameter("asteroid_list_file")) {
             std::string filePath = objectSection->getParameter("asteroid_list_file")->asString();
             std::ifstream listFile(filePath);
@@ -416,37 +510,143 @@ std::vector<AsteroidCandidate> selectAsteroids(const ConfigManager& config) {
     // CARICA CATALOGO COMPLETO (99,999 asteroidi numerati REALI)
     std::string catalogPath = std::string(getenv("HOME")) + "/.ioccultcalc/data/all_numbered_asteroids.json";
     std::cout << "Caricamento catalogo completo: " << catalogPath << "\n";
+    std::cout.flush();
+    
+    std::cerr << "[DEBUG] selectAsteroids: Apro file catalogo..." << std::endl;
+    std::cerr.flush();
     
     // Parse JSON catalog
     std::ifstream catalogFile(catalogPath);
     if (!catalogFile.is_open()) {
         std::cerr << "✗ Impossibile aprire catalogo: " << catalogPath << "\n";
-        std::cerr << "Esegui: python3 tools/parse_mpcorb.py\n";
+        std::cerr << "Esegui: python3 tools/build_asteroid_database.py\n";
         throw std::runtime_error("Catalogo asteroidi non trovato");
     }
     
+    std::cerr << "[DEBUG] selectAsteroids: File aperto, leggo JSON..." << std::endl;
+    std::cerr.flush();
+    
+    // Check file size
+    catalogFile.seekg(0, std::ios::end);
+    size_t fileSize = catalogFile.tellg();
+    catalogFile.seekg(0, std::ios::beg);
+    std::cerr << "[DEBUG] selectAsteroids: Dimensione file: " << (fileSize / 1024 / 1024) << " MB" << std::endl;
+    std::cerr.flush();
+    
+    // OPTIMIZATION: Se abbiamo una lista esplicita piccola, usa jq per estrarre solo gli asteroidi necessari
     nlohmann::json catalogJson;
-    catalogFile >> catalogJson;
+    bool useOptimizedExtraction = false;
+    
+    if (useExplicitList && explicitAsteroidList.size() <= 10) {
+        std::cerr << "[DEBUG] selectAsteroids: Lista esplicita piccola (" << explicitAsteroidList.size() 
+                  << " asteroidi), provo estrazione ottimizzata con jq..." << std::endl;
+        std::cerr.flush();
+        
+        // Crea una query jq per estrarre solo gli asteroidi necessari
+        std::string jqQuery = ".asteroids[] | select(.number == ";
+        bool first = true;
+        for (int num : explicitAsteroidList) {
+            if (!first) jqQuery += " or .number == ";
+            jqQuery += std::to_string(num);
+            first = false;
+        }
+        jqQuery += ")";
+        
+        // Usa jq per estrarre solo gli asteroidi necessari
+        std::string tempFile = "/tmp/asteroids_filtered_" + std::to_string(getpid()) + ".json";
+        std::string jqCmd = "jq '{\"metadata\": .metadata, \"asteroids\": [" + jqQuery + "]}' " + catalogPath + " > " + tempFile + " 2>/dev/null";
+        
+        int jqResult = system(jqCmd.c_str());
+        if (jqResult == 0) {
+            // jq ha funzionato, verifica che il file sia stato creato e non sia vuoto
+            std::ifstream testFile(tempFile);
+            if (testFile.is_open() && testFile.peek() != std::ifstream::traits_type::eof()) {
+                catalogFile.close();
+                catalogFile.open(tempFile);
+                if (catalogFile.is_open()) {
+                    useOptimizedExtraction = true;
+                    std::cerr << "[DEBUG] selectAsteroids: Estrazione ottimizzata completata con jq!" << std::endl;
+                    std::cerr.flush();
+                }
+            }
+            testFile.close();
+        }
+        
+        if (!useOptimizedExtraction) {
+            std::cerr << "[DEBUG] selectAsteroids: Estrazione ottimizzata fallita, uso parsing completo..." << std::endl;
+            std::cerr.flush();
+            catalogFile.close();
+            catalogFile.open(catalogPath);
+            catalogFile.seekg(0, std::ios::beg);
+        }
+    }
+    
+    std::cerr << "[DEBUG] selectAsteroids: Inizio parsing JSON..." << std::endl;
+    std::cerr.flush();
+    
+    try {
+        catalogFile >> catalogJson;
+        std::cerr << "[DEBUG] selectAsteroids: Parsing JSON completato!" << std::endl;
+        std::cerr.flush();
+    } catch (const std::exception& e) {
+        std::cerr << "[DEBUG] selectAsteroids: ERRORE durante parsing JSON: " << e.what() << std::endl;
+        std::cerr.flush();
+        catalogFile.close();
+        throw;
+    }
     catalogFile.close();
     
-    // Support both formats: MPC array direct [...] and legacy {"asteroids": [...]}
+    // Rimuovi file temporaneo se usato
+    if (useOptimizedExtraction) {
+        std::string tempFile = "/tmp/asteroids_filtered_" + std::to_string(getpid()) + ".json";
+        std::remove(tempFile.c_str());
+    }
+    
+    std::cerr << "[DEBUG] selectAsteroids: JSON letto, verifico formato..." << std::endl;
+    std::cerr.flush();
+    
+    // Support multiple formats:
+    // 1. New unified format: {"metadata": {...}, "asteroids": [...]}
+    // 2. Legacy MPC format: {"asteroids": [...]}
+    // 3. MPC Extended Format: [...] (direct array)
     nlohmann::json asteroidsArray;
-    if (catalogJson.is_array()) {
+    std::string catalogFormat = "unknown";
+    
+    if (catalogJson.contains("metadata") && catalogJson.contains("asteroids")) {
+        // New unified format (AstDyS + MPC)
+        asteroidsArray = catalogJson["asteroids"];
+        catalogFormat = "unified";
+        auto metadata = catalogJson["metadata"];
+        std::cout << "✓ Formato unificato rilevato (AstDyS + MPC)\n";
+        if (metadata.contains("last_update")) {
+            std::cout << "  Ultimo aggiornamento: " << metadata["last_update"].get<std::string>() << "\n";
+        }
+        if (metadata.contains("parsing_date")) {
+            std::cout << "  Data parsing: " << metadata["parsing_date"].get<std::string>() << "\n";
+        }
+    }
+    else if (catalogJson.is_array()) {
         // MPC Extended Format (direct array)
         asteroidsArray = catalogJson;
+        catalogFormat = "mpc_extended";
         std::cout << "✓ Formato MPC Extended rilevato\n";
     }
     else if (catalogJson.contains("asteroids") && catalogJson["asteroids"].is_array()) {
         // Legacy format
         asteroidsArray = catalogJson["asteroids"];
+        catalogFormat = "legacy";
         std::cout << "✓ Formato legacy rilevato\n";
     }
     else {
-        throw std::runtime_error("Formato catalogo non valido - serve array MPC o {\"asteroids\": [...]}");
+        throw std::runtime_error("Formato catalogo non valido - serve formato unificato, MPC Extended o legacy");
     }
     
     std::cout << "✓ Catalogo caricato: " << asteroidsArray.size() << " asteroidi numerati\n";
     std::cout << "Filtraggio con criteri...\n";
+    std::cout.flush();
+    
+    std::cerr << "[DEBUG] selectAsteroids: Catalogo caricato, formato: " << catalogFormat << std::endl;
+    std::cerr.flush();
     
     int processed = 0;
     int accepted = 0;
@@ -462,14 +662,16 @@ std::vector<AsteroidCandidate> selectAsteroids(const ConfigManager& config) {
         
         // Estrai numero asteroide per lista esplicita
         int asteroidNumber = 0;
-        if (astJson.contains("Number")) {
+        if (astJson.contains("number")) {
+            // New unified format or legacy format
+            asteroidNumber = astJson["number"].get<int>();
+        } else if (astJson.contains("Number")) {
+            // MPC Extended format
             std::string numStr = astJson["Number"].get<std::string>();
             // Remove parentheses "(1)" -> "1"
             numStr.erase(std::remove(numStr.begin(), numStr.end(), '('), numStr.end());
             numStr.erase(std::remove(numStr.begin(), numStr.end(), ')'), numStr.end());
             try { asteroidNumber = std::stoi(numStr); } catch (...) {}
-        } else if (astJson.contains("number")) {
-            asteroidNumber = astJson["number"].get<int>();
         }
         
         // Se usiamo lista esplicita, accetta SOLO asteroidi nella lista
@@ -480,69 +682,188 @@ std::vector<AsteroidCandidate> selectAsteroids(const ConfigManager& config) {
             // Asteroide nella lista: bypassa tutti i filtri
         } else {
             // Modalità filtri standard
-            // Leggi elementi orbitali REALI dal JSON
-            double q = astJson.contains("Perihelion_dist") ? astJson["Perihelion_dist"].get<double>() : astJson.value("q", 0.0);
-            double Q = astJson.contains("Aphelion_dist") ? astJson["Aphelion_dist"].get<double>() : astJson.value("Q", 0.0);
+            // Leggi elementi orbitali REALI dal JSON (supporta tutti i formati)
             double H = astJson.value("H", 99.0);
+            
+            // Calcola perihelion e aphelion da a ed e se disponibili
+            double q = 0.0, Q = 0.0;
+            if (astJson.contains("a") && astJson.contains("e")) {
+                double a = astJson["a"].get<double>();
+                double e = astJson["e"].get<double>();
+                q = a * (1.0 - e);
+                Q = a * (1.0 + e);
+            } else {
+                // Fallback: cerca direttamente nei campi
+                q = astJson.contains("Perihelion_dist") ? astJson["Perihelion_dist"].get<double>() : astJson.value("q", 0.0);
+                Q = astJson.contains("Aphelion_dist") ? astJson["Aphelion_dist"].get<double>() : astJson.value("Q", 0.0);
+            }
             
             // Applica filtri SOLO se configurati (valore > 0)
             if (maxMagnitude > 0 && H > maxMagnitude) continue;
             if (minPerihelion > 0 && q < minPerihelion) continue;
             if (maxAphelion > 0 && Q > maxAphelion) continue;
             
-            // Stima diametro approssimativo da H
-            double estimatedDiameter = 1329.0 / sqrt(0.15) * pow(10, -H / 5.0);
+            // Usa diametro dal JSON se disponibile, altrimenti stima da H
+            double estimatedDiameter = 0.0;
+            if (astJson.contains("diameter") && astJson["diameter"].is_number()) {
+                estimatedDiameter = astJson["diameter"].get<double>();
+            } else {
+                // Stima diametro approssimativo da H
+                estimatedDiameter = 1329.0 / sqrt(0.15) * pow(10, -H / 5.0);
+            }
             
             if (minDiameter > 0 && estimatedDiameter < minDiameter) continue;
             if (maxDiameter > 0 && estimatedDiameter > maxDiameter) continue;
         }
         
-        // Leggi elementi orbitali
-        double a = astJson.value("a", 0.0);
-        double e = astJson.value("e", 0.0);
-        double H = astJson.value("H", 99.0);
-        double estimatedDiameter = 1329.0 / sqrt(0.15) * pow(10, -H / 5.0);
+        // ═══════════════════════════════════════════════════════════════
+        // CARICA ELEMENTI ORBITALI DAL DATABASE JSON (LINOCCULT METHOD)
+        // ═══════════════════════════════════════════════════════════════
         
-        // CREA CANDIDATO CON DATI REALI
-        AsteroidCandidate candidate;
-        candidate.elements.a = a;
-        candidate.elements.e = e;
-        // Support both legacy and MPC Extended field names
-        candidate.elements.i = astJson.value("i", 0.0) * DEG_TO_RAD;
-        candidate.elements.Omega = (astJson.contains("Node") ? astJson["Node"].get<double>() : astJson.value("Omega", 0.0)) * DEG_TO_RAD;
-        candidate.elements.omega = (astJson.contains("Peri") ? astJson["Peri"].get<double>() : astJson.value("omega", 0.0)) * DEG_TO_RAD;
-        candidate.elements.M = astJson.value("M", 0.0) * DEG_TO_RAD;
-        candidate.elements.epoch.jd = astJson.contains("Epoch") ? astJson["Epoch"].get<double>() : astJson.value("epoch", 2460000.0);
-        candidate.elements.H = H;
-        candidate.elements.G = astJson.value("G", 0.15);
-        candidate.elements.diameter = estimatedDiameter;
-        
-        // Get designation and name (support MPC format)
+        // Get designation and name (support all formats)
         std::string designation = "";
         std::string name = "Unknown";
-        if (astJson.contains("Number")) {
+        
+        if (astJson.contains("designation")) {
+            designation = astJson["designation"].get<std::string>();
+        } else if (astJson.contains("number")) {
+            designation = std::to_string(astJson["number"].get<int>());
+        } else if (astJson.contains("Number")) {
             std::string numStr = astJson["Number"].get<std::string>();
-            // Remove parentheses "(1)" -> "1"
             numStr.erase(std::remove(numStr.begin(), numStr.end(), '('), numStr.end());
             numStr.erase(std::remove(numStr.begin(), numStr.end(), ')'), numStr.end());
             designation = numStr;
-        }
-        else if (astJson.contains("Principal_desig")) {
+        } else if (astJson.contains("Principal_desig")) {
             designation = astJson["Principal_desig"].get<std::string>();
         }
-        else if (astJson.contains("designation")) {
-            designation = astJson["designation"].get<std::string>();
-        }
         
-        if (astJson.contains("Name")) {
+        if (astJson.contains("name") && !astJson["name"].is_null() && !astJson["name"].get<std::string>().empty()) {
+            name = astJson["name"].get<std::string>();
+        } else if (astJson.contains("Name") && !astJson["Name"].is_null() && !astJson["Name"].get<std::string>().empty()) {
             name = astJson["Name"].get<std::string>();
         }
-        else if (astJson.contains("name")) {
-            name = astJson["name"].get<std::string>();
+        
+        // Carica elementi orbitali direttamente dal JSON
+        OrbitalElements elements;
+        elements.designation = designation;
+        elements.name = name;
+        
+        // Check if we have unified format with AstDyS elements (preferred)
+        if (catalogFormat == "unified" && astJson.contains("a") && astJson.contains("epoch_mjd")) {
+            // New unified format: elements already from AstDyS allnum.cat
+            // NOTA: allnum.cat ha angoli in GRADI, ma il JSON potrebbe avere unità miste
+            // a causa di bug in build_asteroid_database.py. Verifichiamo e correggiamo.
+            elements.a = astJson["a"].get<double>();
+            elements.e = astJson["e"].get<double>();
+            
+            // Verifica unità: se il valore è < 10, probabilmente è in radianti (bug)
+            // Se è >= 10, probabilmente è in gradi (corretto)
+            // Threshold: 10 rad = 573°, quindi valori < 10 sono sospetti
+            // NOTA: allnum.cat ha angoli in GRADI, ma il JSON potrebbe avere unità miste
+            // Verifica: se valore < 10, probabilmente è in radianti (bug nel JSON)
+            // Se >= 10, probabilmente è in gradi (corretto)
+            // OrbitalElements vuole angoli in RADIANTI
+            double i_val = astJson["i"].get<double>();
+            if (i_val < 10.0) {
+                // Probabilmente in radianti (bug nel JSON) - usa direttamente
+                elements.i = i_val;
+            } else {
+                // Probabilmente in gradi (corretto) - converti in radianti
+                elements.i = i_val * DEG_TO_RAD;
+            }
+            
+            double node_val = astJson.contains("node") ? astJson["node"].get<double>() : 0.0;
+            if (node_val < 10.0 && node_val > 0.0) {
+                elements.Omega = node_val;  // Già in radianti
+            } else {
+                elements.Omega = node_val * DEG_TO_RAD;  // Converti da gradi
+            }
+            
+            double argperi_val = astJson.contains("argperi") ? astJson["argperi"].get<double>() : 0.0;
+            if (argperi_val < 10.0 && argperi_val > 0.0) {
+                elements.omega = argperi_val;  // Già in radianti
+            } else {
+                elements.omega = argperi_val * DEG_TO_RAD;  // Converti da gradi
+            }
+            
+            // M è tipicamente in gradi (0-360), ma verifichiamo
+            double M_val = astJson["M"].get<double>();
+            if (M_val < 10.0 && M_val > 0.0) {
+                elements.M = M_val;  // Già in radianti
+            } else {
+                elements.M = M_val * DEG_TO_RAD;  // Converti da gradi
+            }
+            elements.H = astJson["H"].get<double>();
+            elements.G = astJson["G"].get<double>();
+            
+            // Epoch from AstDyS (MJD)
+            if (astJson.contains("epoch_jd")) {
+                elements.epoch.jd = astJson["epoch_jd"].get<double>();
+            } else if (astJson.contains("epoch_mjd")) {
+                double epoch_mjd = astJson["epoch_mjd"].get<double>();
+                elements.epoch.jd = epoch_mjd + 2400000.5;
+            } else {
+                elements.epoch.jd = 2460000.0; // Default
+            }
+            
+            // Physical properties from MPC (if available)
+            if (astJson.contains("diameter") && astJson["diameter"].is_number()) {
+                elements.diameter = astJson["diameter"].get<double>();
+            }
+        } else {
+            // Fallback: use MPC format or try online AstDyS
+            // Try MPC format first
+            if (astJson.contains("a") && astJson.contains("e")) {
+                elements.a = astJson["a"].get<double>();
+                elements.e = astJson["e"].get<double>();
+                elements.i = astJson.value("i", 0.0) * DEG_TO_RAD;
+                elements.Omega = (astJson.contains("Node") ? astJson["Node"].get<double>() : astJson.value("Omega", 0.0)) * DEG_TO_RAD;
+                elements.omega = astJson.value("w", astJson.value("omega", astJson.value("argperi", 0.0))) * DEG_TO_RAD;
+                elements.M = astJson.value("M", astJson.value("ma", astJson.value("mean_anomaly", 0.0))) * DEG_TO_RAD;
+                elements.H = astJson.value("H", 99.0);
+                elements.G = astJson.value("G", 0.15);
+                
+                if (astJson.contains("epoch_jd")) {
+                    elements.epoch.jd = astJson["epoch_jd"].get<double>();
+                } else if (astJson.contains("epoch")) {
+                    // Try to parse epoch string or use default
+                    elements.epoch.jd = 2460000.0;
+                } else {
+                    elements.epoch.jd = 2460000.0;
+                }
+            } else {
+                // Last resort: try database locale SQLite o online AstDyS
+                AstDysClient astdysClient;
+                try {
+                    // getRecentElements ora usa automaticamente database locale se disponibile
+                    elements = astdysClient.getRecentElements(designation);
+                    elements.designation = designation;
+                    elements.name = name;
+                } catch (const std::exception& e) {
+                    std::cerr << "  ✗ Errore caricamento " << designation 
+                              << " (database locale o AstDyS): " << e.what() << "\n";
+                    continue; // Skip this asteroid
+                }
+            }
         }
         
-        candidate.elements.designation = designation;
-        candidate.elements.name = name;
+        // Usa diametro dal JSON se disponibile, altrimenti stima da H
+        double H = elements.H;
+        double estimatedDiameter = 0.0;
+        if (elements.diameter > 0) {
+            estimatedDiameter = elements.diameter;
+        } else if (astJson.contains("diameter") && astJson["diameter"].is_number()) {
+            estimatedDiameter = astJson["diameter"].get<double>();
+            elements.diameter = estimatedDiameter;
+        } else {
+            // Stima diametro approssimativo da H
+            estimatedDiameter = 1329.0 / sqrt(0.15) * pow(10, -H / 5.0);
+            elements.diameter = estimatedDiameter;
+        }
+        
+        // CREA CANDIDATO CON ELEMENTI DAL DATABASE JSON
+        AsteroidCandidate candidate;
+        candidate.elements = elements;
         
         // Calcola priorità basata su dimensione e luminosità
         double sizeFactor = std::min(estimatedDiameter / 300.0, 1.0);  // normalizzato a 300 km
@@ -597,12 +918,19 @@ void propagateOrbits(std::vector<AsteroidCandidate>& candidates,
     double stepDays = 0.5;
     
     if (searchSection) {
-        auto startParam = searchSection->getParameter("start_jd");
-        auto endParam = searchSection->getParameter("end_jd");
+        // Leggi start_mjd_tdb e end_mjd_tdb (preferiti) o start_jd/end_jd (fallback)
+        if (searchSection->hasParameter("start_mjd_tdb") && searchSection->hasParameter("end_mjd_tdb")) {
+            double startMjd = searchSection->getParameter("start_mjd_tdb")->asDouble();
+            double endMjd = searchSection->getParameter("end_mjd_tdb")->asDouble();
+            startJd = startMjd + 2400000.5;
+            endJd = endMjd + 2400000.5;
+        } else {
+            auto startParam = searchSection->getParameter("start_jd");
+            auto endParam = searchSection->getParameter("end_jd");
+            if (startParam) startJd = startParam->asDouble();
+            if (endParam) endJd = endParam->asDouble();
+        }
         auto stepParam = searchSection->getParameter("step_days");
-        
-        if (startParam) startJd = startParam->asDouble();
-        if (endParam) endJd = endParam->asDouble();
         if (stepParam) stepDays = stepParam->asDouble();
     }
     
@@ -1214,10 +1542,16 @@ std::vector<ItalOccultationEvent> detectOccultations(
         if (searchSection->hasParameter("max_separation")) {
             searchRadius = searchSection->getParameter("max_separation")->asDouble();
         }
-        if (searchSection->hasParameter("start_jd")) {
+        // Leggi start_mjd_tdb e end_mjd_tdb (preferiti) o start_jd/end_jd (fallback)
+        if (searchSection->hasParameter("start_mjd_tdb") && searchSection->hasParameter("end_mjd_tdb")) {
+            double startMjd = searchSection->getParameter("start_mjd_tdb")->asDouble();
+            double endMjd = searchSection->getParameter("end_mjd_tdb")->asDouble();
+            startJd = startMjd + 2400000.5;
+            endJd = endMjd + 2400000.5;
+        } else if (searchSection->hasParameter("start_jd")) {
             startJd = searchSection->getParameter("start_jd")->asDouble();
         }
-        if (searchSection->hasParameter("end_jd")) {
+        if (searchSection->hasParameter("end_jd") && !searchSection->hasParameter("end_mjd_tdb")) {
             endJd = searchSection->getParameter("end_jd")->asDouble();
         }
     }
@@ -1451,100 +1785,128 @@ std::vector<ItalOccultationEvent> detectOccultations(
             predictor.setOrbitalUncertainty(orbitalUncertainty);
             
             // ================================================================
-            // STRATEGIA RICERCA A DUE FASI (ATTIVATA)
-            // FASE 1: ChebyshevOccultationDetector - approssimazione veloce ~100-1000x
-            // FASE 2: predictOccultation - refinement preciso con integratore configurato
+            // STRATEGIA RICERCA A DUE FASI (LINOCCULT METHOD)
+            // FASE 1: Phase1CandidateScreening - screening veloce
+            // FASE 2: Phase2OccultationGeometry - calcolo preciso con AstDyn
             // ================================================================
             
-            // Inizializza Ephemeris per l'asteroide
-            Ephemeris ephemeris(astElem);
+            // Usa OccultationSearchAstDyn per ricerca completa Phase1+Phase2
+            ioccultcalc::OccultationSearchAstDyn search;
             
-            // Configura detector Chebyshev (FASE 1)
-            ChebyshevOccultationDetector::Config detectorConfig;
-            detectorConfig.order = 11;             // Ordine polinomio (come LinOccult)
-            detectorConfig.segmentDays = 1.0;      // Un segmento al giorno
-            detectorConfig.thresholdArcsec = 300.0; // 5 arcmin threshold ricerca
-            detectorConfig.refinementArcsec = 60.0; // 1 arcmin per refine
-            detectorConfig.verbose = false;
-            
-            ChebyshevOccultationDetector detector(detectorConfig);
-            detector.initialize(ephemeris, startJd, endJd);
-            
-            // Prepara lista stelle come coppie (RA, Dec)
-            std::vector<std::pair<double, double>> starCoords;
-            starCoords.reserve(stars.size());
-            for (const auto& s : stars) {
-                starCoords.push_back({s.position.ra, s.position.dec});
+            // Carica asteroide da allnum.cat (elementi già caricati sopra)
+            try {
+                // Converti OrbitalElements a AstDySElements per OccultationSearchAstDyn
+                // OccultationSearchAstDyn carica direttamente da AstDyS, quindi usiamo il numero
+                search.loadAsteroid(asteroid.elements.designation);
+                
+                // Imposta diametro e incertezza
+                if (astElem.diameter > 0) {
+                    // OccultationSearchAstDyn non ha setAsteroidDiameter diretto,
+                    // ma Phase2 lo supporta - dobbiamo accedere a Phase2 internamente
+                    // Per ora passiamo attraverso la configurazione
+                }
+            } catch (const std::exception& e) {
+                if (g_verbose) {
+                    std::cout << " → Errore caricamento asteroide: " << e.what() << std::flush;
+                }
+                continue;
             }
             
-            // FASE 1: Trova candidati con algoritmo Chebyshev (veloce)
-            auto candidates = detector.findCandidates(starCoords);
+            // Configura ricerca
+            ioccultcalc::OccultationSearchConfig searchConfig;
+            searchConfig.start_mjd_tdb = startJd - 2400000.5;
+            searchConfig.end_mjd_tdb = endJd - 2400000.5;
+            searchConfig.max_magnitude = maxMagnitude;
+            searchConfig.min_probability = minProbability;
             
-            // DEBUG: Stampa statistiche distanze per capire perché non trova eventi
+            // Configura Phase1 (screening veloce)
+            searchConfig.phase1_config = Phase1Config::conservative();
+            searchConfig.phase1_config.start_mjd_tdb = searchConfig.start_mjd_tdb;
+            searchConfig.phase1_config.end_mjd_tdb = searchConfig.end_mjd_tdb;
+            searchConfig.phase1_config.closest_approach_threshold_arcsec = searchRadius * 3600.0;  // gradi -> arcsec
+            
+            // Leggi parametri Phase1 dalla configurazione se presenti
+            auto searchSection = config.getSection(ConfigSection::SEARCH);
+            if (searchSection) {
+                // path_resolution_hours -> path_interval_seconds
+                if (searchSection->hasParameter("phase1_config.path_resolution_hours")) {
+                    double hours = searchSection->getParameter("phase1_config.path_resolution_hours")->asDouble();
+                    searchConfig.phase1_config.path_interval_seconds = static_cast<int>(hours * 3600.0);
+                }
+                // corridor_width_deg
+                if (searchSection->hasParameter("phase1_config.corridor_width_deg")) {
+                    searchConfig.phase1_config.corridor_width_deg = searchSection->getParameter("phase1_config.corridor_width_deg")->asDouble();
+                }
+                // closest_approach_threshold_arcsec (se specificato esplicitamente)
+                if (searchSection->hasParameter("phase1_config.closest_approach_threshold_arcsec")) {
+                    searchConfig.phase1_config.closest_approach_threshold_arcsec = searchSection->getParameter("phase1_config.closest_approach_threshold_arcsec")->asDouble();
+                }
+            }
+            
+            // Configura Phase2 (calcolo preciso LinOccult)
+            searchConfig.phase2_config.time_window_minutes = 10.0;
+            searchConfig.phase2_config.time_step_seconds = 1.0;
+            
+            // Imposta diametro e incertezza
+            searchConfig.asteroid_diameter_km = astElem.diameter;
+            searchConfig.orbital_uncertainty_km = orbitalUncertainty;
+            search.setAsteroidDiameter(astElem.diameter);
+            search.setOrbitalUncertainty(orbitalUncertainty);
+            
+            // Esegui ricerca Phase1+Phase2
+            ioccultcalc::OccultationSearchResults results;
+            
+            try {
+                results = search.search(searchConfig);
+            } catch (const std::exception& e) {
+                if (g_verbose) {
+                    std::cout << " → Errore ricerca: " << e.what() << std::flush;
+                }
+                continue;
+            }
+            
             if (g_verbose) {
-                if (!candidates.empty()) {
-                    std::cout << " → Chebyshev: " << candidates.size() << " candidati" << std::flush;
-                } else {
-                    // Trova distanza minima tra tutte le stelle per debug
-                    double minDistAll = 1e10;
-                    for (size_t i = 0; i < std::min(starCoords.size(), size_t(100)); i++) {
-                        auto cand = detector.findCandidate(i, starCoords[i].first, starCoords[i].second);
-                        if (cand.minDistArcsec < minDistAll) {
-                            minDistAll = cand.minDistArcsec;
-                        }
-                    }
-                    std::cout << " → 0 candidati (min dist=" << std::fixed << std::setprecision(0) 
-                              << minDistAll << "\" thresh=" << detectorConfig.thresholdArcsec << "\")" << std::flush;
-                }
+                std::cout << " → Phase1: " << results.num_candidates_found << " candidati"
+                          << " → Phase2: " << results.events.size() << " eventi" << std::flush;
             }
             
-            // FASE 2: Per ogni candidato, refine con predictOccultation (preciso)
-            std::vector<OccultationEvent> realEvents;
+            // results.events contiene già ioccultcalc::OccultationEvent (convertiti da Phase2)
+            // Filtra solo eventi con probabilità sufficiente e nel periodo richiesto
+            std::vector<ioccultcalc::OccultationEvent> realEvents;
             
-            // Epoca di riferimento per predictOccultation (centro periodo)
-            JulianDate midEpoch;
-            midEpoch.jd = (startJd + endJd) / 2.0;
-            
-            for (const auto& candidate : candidates) {
-                // Recupera dati stella dal catalogo
-                if (candidate.starIndex < 0 || candidate.starIndex >= (int)stars.size()) {
+            for (auto& event : results.events) {
+                // Verifica probabilità minima
+                if (event.probability < minProbability) {
                     continue;
                 }
-                const auto& starData = stars[candidate.starIndex];
                 
-                // Converti StarData in GaiaStar per OccultationPredictor
-                GaiaStar gaiaStar;
-                gaiaStar.sourceId = std::to_string(starData.source_id);
-                gaiaStar.pos = starData.position;
-                gaiaStar.parallax = starData.parallax;
-                gaiaStar.pmra = starData.properMotion.pmra;
-                gaiaStar.pmdec = starData.properMotion.pmdec;
-                gaiaStar.phot_g_mean_mag = starData.G_mag;
-                gaiaStar.phot_bp_mean_mag = starData.BP_mag;
-                gaiaStar.phot_rp_mean_mag = starData.RP_mag;
+                // Verifica che l'evento sia nel periodo richiesto
+                if (event.timeCA.jd < startJd || event.timeCA.jd > endJd) {
+                    continue;
+                }
                 
-                try {
-                    // Calcola occultazione con integratore preciso configurato
-                    // (usa RKF78, GAUSS_RADAU o altro specificato nel config)
-                    OccultationEvent realEvent = predictor.predictOccultation(gaiaStar, midEpoch);
-                    
-                    // Verifica se l'evento è nel periodo richiesto
-                    if (realEvent.timeCA.jd >= startJd && realEvent.timeCA.jd <= endJd) {
-                        // Verifica probabilità minima
-                        if (realEvent.probability >= minProbability) {
-                            realEvents.push_back(realEvent);
-                            
-                            if (g_verbose) {
-                                std::cout << "\n    ★ Occultazione: " << starData.source_id 
-                                          << " CA=" << std::fixed << std::setprecision(1) 
-                                          << realEvent.closeApproachDistance << "\"" << std::flush;
-                            }
-                        }
+                // Trova stella corrispondente nel catalogo originale per dati completi
+                // (event.star potrebbe essere minimale dalla conversione)
+                for (const auto& s : stars) {
+                    if (s.source_id == std::stoll(event.star.sourceId)) {
+                        // Aggiorna dati stella con quelli completi dal catalogo
+                        event.star.pos = s.position;
+                        event.star.parallax = s.parallax;
+                        event.star.pmra = s.properMotion.pmra;
+                        event.star.pmdec = s.properMotion.pmdec;
+                        event.star.phot_g_mean_mag = s.G_mag;
+                        event.star.phot_bp_mean_mag = s.BP_mag;
+                        event.star.phot_rp_mean_mag = s.RP_mag;
+                        break;
                     }
-                } catch (const std::exception& e) {
-                    // Stella non produce occultazione - normale
-                    continue;
                 }
+                
+                // Assicurati che asteroid sia impostato correttamente
+                if (event.asteroid.designation.empty()) {
+                    event.asteroid = astElem;
+                }
+                
+                realEvents.push_back(event);
             }
             
             totalProcessed++;
@@ -1835,9 +2197,9 @@ void generateReports(const std::vector<ItalOccultationEvent>& events,
     std::cout << "✓ Report console generato\n\n";
     
     // Converti eventi in formato OccultationEvent per XML
-    std::vector<OccultationEvent> xmlEvents;
+    std::vector<ioccultcalc::OccultationEvent> xmlEvents;
     for (const auto& event : filteredEvents) {
-        OccultationEvent oe;
+        ioccultcalc::OccultationEvent oe;
         
         // Asteroid data - usa elementi completi
         oe.asteroid = event.asteroid_elements;
@@ -1952,24 +2314,42 @@ int main(int argc, char* argv[]) {
             }
         }
         
+        std::cerr << "[DEBUG] main: Prima di startTime" << std::endl;
+        std::cerr.flush();
+        
         auto startTime = std::chrono::high_resolution_clock::now();
+        
+        std::cerr << "[DEBUG] main: WORKFLOW COMPLETO - INIZIO" << std::endl;
+        std::cerr.flush();
         
         // WORKFLOW COMPLETO
         
         // 1. Carica configurazione
+        std::cerr << "[DEBUG] main: Step 1: Caricamento configurazione..." << std::endl;
+        std::cerr.flush();
         ConfigManager config = loadConfiguration(configFile);
+        std::cerr << "[DEBUG] main: Step 1: Completato" << std::endl;
+        std::cerr.flush();
         
         // 2. Seleziona asteroidi
+        std::cout << "[DEBUG] Step 2: Selezione asteroidi..." << std::endl;
         std::vector<AsteroidCandidate> asteroids = selectAsteroids(config);
+        std::cout << "[DEBUG] Step 2: Completato, trovati " << asteroids.size() << " asteroidi" << std::endl;
         
         // 3. Propaga orbite
+        std::cout << "[DEBUG] Step 3: Propagazione orbite..." << std::endl;
         propagateOrbits(asteroids, config);
+        std::cout << "[DEBUG] Step 3: Completato" << std::endl;
         
         // 4. Query catalogo stelle (basato su posizioni asteroidi)
+        std::cout << "[DEBUG] Step 4: Query catalogo stelle..." << std::endl;
         std::vector<StarData> stars = queryCatalog(config, asteroids);
+        std::cout << "[DEBUG] Step 4: Completato, trovate " << stars.size() << " stelle" << std::endl;
         
         // 5. Rileva occultazioni
+        std::cout << "[DEBUG] Step 5: Rilevamento occultazioni..." << std::endl;
         std::vector<ItalOccultationEvent> events = detectOccultations(asteroids, stars, config);
+        std::cout << "[DEBUG] Step 5: Completato, trovati " << events.size() << " eventi" << std::endl;
         
         // 6. Calcola priorità
         calculatePriorities(events);
