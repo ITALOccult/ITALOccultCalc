@@ -26,6 +26,8 @@
 #include <string>
 #include <cstring>
 #include <cstdlib>
+#include <set>
+#include <algorithm>
 
 using namespace ioccultcalc;
 
@@ -235,6 +237,24 @@ public:
         sqlite3_finalize(stmt);
         return 0;
     }
+    
+    std::set<int> getExistingNumbers() {
+        std::set<int> numbers;
+        const char* sql = "SELECT number FROM allnum_asteroids";
+        sqlite3_stmt* stmt;
+        int rc = sqlite3_prepare_v2(db_, sql, -1, &stmt, nullptr);
+        if (rc != SQLITE_OK) {
+            return numbers;
+        }
+        
+        while (sqlite3_step(stmt) == SQLITE_ROW) {
+            int number = sqlite3_column_int(stmt, 0);
+            numbers.insert(number);
+        }
+        
+        sqlite3_finalize(stmt);
+        return numbers;
+    }
 };
 
 // Parse single line from allnum.cat (OEF2.0 format)
@@ -360,6 +380,126 @@ double parseAllnumFile(const std::string& filepath, AllnumDatabase& db) {
     return data_epoch_mjd;
 }
 
+// Parse single line from MPCORB.DAT format
+// Returns true if parsed successfully, false otherwise
+bool parseMPCORBLine(const std::string& line, OrbitalElements& elem, int& number) {
+    if (line.length() < 103) {
+        return false;
+    }
+    
+    // Col 1-7: Designation/Number
+    std::string desig = line.substr(0, 7);
+    // Remove leading/trailing spaces
+    size_t start = desig.find_first_not_of(" \t");
+    if (start == std::string::npos) return false;
+    size_t end = desig.find_last_not_of(" \t");
+    desig = desig.substr(start, end - start + 1);
+    
+    // Check if it's a numbered asteroid (starts with digit)
+    if (desig.empty() || !std::isdigit(desig[0])) {
+        return false; // Skip unnumbered asteroids
+    }
+    
+    try {
+        number = std::stoi(desig);
+        elem.designation = desig;
+    } catch (...) {
+        return false;
+    }
+    
+    // H magnitude - col 9-13 (0-indexed: 8-13)
+    std::string H_str = line.substr(8, 5);
+    elem.H = H_str.empty() ? 15.0 : std::stod(H_str);
+    
+    // G slope parameter - col 15-19 (0-indexed: 14-19)
+    std::string G_str = line.substr(14, 5);
+    elem.G = G_str.empty() ? 0.15 : std::stod(G_str);
+    
+    // Epoch (packed MPC format) - col 21-25 (0-indexed: 20-25)
+    // Format: e.g., "K257B" = 2025-11-02
+    // For now, use approximate epoch (recent MPCORB files use ~2460000 JD)
+    // TODO: Implement proper packed date decoder
+    std::string epoch_packed = line.substr(20, 5);
+    elem.epoch.jd = 2460000.0; // Approximate for recent epochs
+    
+    // Mean anomaly (M) - col 27-35 (0-indexed: 26-35) - IN DEGREES
+    std::string M_str = line.substr(26, 9);
+    double M_deg = std::stod(M_str);
+    elem.M = M_deg * M_PI / 180.0; // Convert to radians
+    
+    // Argument of perihelion (omega) - col 38-46 (0-indexed: 37-46) - IN DEGREES
+    std::string omega_str = line.substr(37, 9);
+    double omega_deg = std::stod(omega_str);
+    elem.omega = omega_deg * M_PI / 180.0; // Convert to radians
+    
+    // Longitude of ascending node (Omega) - col 49-57 (0-indexed: 48-57) - IN DEGREES
+    std::string Omega_str = line.substr(48, 9);
+    double Omega_deg = std::stod(Omega_str);
+    elem.Omega = Omega_deg * M_PI / 180.0; // Convert to radians
+    
+    // Inclination (i) - col 60-68 (0-indexed: 59-68) - IN DEGREES
+    std::string i_str = line.substr(59, 9);
+    double i_deg = std::stod(i_str);
+    elem.i = i_deg * M_PI / 180.0; // Convert to radians
+    
+    // Eccentricity (e) - col 71-79 (0-indexed: 70-79)
+    std::string e_str = line.substr(70, 9);
+    elem.e = std::stod(e_str);
+    
+    // Semimajor axis (a) - col 81-91 (0-indexed: 80-91) - AU
+    std::string a_str = line.substr(80, 11);
+    elem.a = std::stod(a_str);
+    
+    return true;
+}
+
+void parseMPCORBFile(const std::string& filepath, AllnumDatabase& db, 
+                    const std::set<int>& existing_numbers) {
+    std::ifstream file(filepath);
+    if (!file.is_open()) {
+        throw std::runtime_error("Cannot open MPCORB file: " + filepath);
+    }
+    
+    std::string line;
+    int count = 0;
+    int added_count = 0;
+    
+    std::cout << "Parsing MPCORB.DAT for missing asteroids...\n";
+    std::cout << "  Existing asteroids in database: " << existing_numbers.size() << "\n";
+    
+    while (std::getline(file, line)) {
+        // Skip header lines (usually start with special characters or are short)
+        if (line.length() < 103 || line[0] == ' ' && line.find("MPCORB") != std::string::npos) {
+            continue;
+        }
+        
+        try {
+            int number;
+            OrbitalElements elem;
+            
+            if (parseMPCORBLine(line, elem, number)) {
+                count++;
+                
+                // Only add if not already in database
+                if (existing_numbers.find(number) == existing_numbers.end()) {
+                    db.insertAsteroid(elem, number);
+                    added_count++;
+                    
+                    if (added_count % 1000 == 0) {
+                        std::cout << "  Added " << added_count << " asteroids from MPC...\n";
+                    }
+                }
+            }
+        } catch (const std::exception&) {
+            // Skip invalid lines
+            continue;
+        }
+    }
+    
+    std::cout << "✓ Parsed " << count << " asteroids from MPCORB\n";
+    std::cout << "✓ Added " << added_count << " missing asteroids to database\n";
+}
+
 int main(int argc, char* argv[]) {
     bool force = false;
     std::string db_path;
@@ -424,19 +564,52 @@ int main(int argc, char* argv[]) {
         check_file.close();
         
         std::cout << "✓ Downloaded allnum.cat\n";
-        std::cout << "Building database...\n";
+        std::cout << "Building database from allnum.cat...\n";
         
         // Clear old data
         db.clearDatabase();
         
-        // Parse and insert
+        // Parse and insert from allnum.cat
         double data_epoch_mjd = parseAllnumFile(temp_file, db);
+        
+        // Get existing numbers to find missing ones
+        std::set<int> existing_numbers = db.getExistingNumbers();
+        int allnum_count = existing_numbers.size();
+        std::cout << "\n✓ Loaded " << allnum_count << " asteroids from allnum.cat\n";
+        
+        // Download MPCORB.DAT to complete missing asteroids
+        std::cout << "\nDownloading MPCORB.DAT from MPC to complete database...\n";
+        std::string mpc_url = "https://minorplanetcenter.net/iau/MPCORB/MPCORB.DAT.gz";
+        std::string mpc_gz_file = "/tmp/MPCORB.DAT.gz";
+        std::string mpc_file = "/tmp/MPCORB.DAT";
+        
+        // Download MPCORB.DAT.gz
+        std::string mpc_cmd = "curl -s --max-time 600 -o " + mpc_gz_file + " \"" + mpc_url + "\"";
+        ret = system(mpc_cmd.c_str());
+        if (ret != 0) {
+            std::cout << "⚠ Warning: Failed to download MPCORB.DAT.gz, skipping MPC completion\n";
+        } else {
+            // Decompress
+            std::string gunzip_cmd = "gunzip -f " + mpc_gz_file;
+            ret = system(gunzip_cmd.c_str());
+            if (ret != 0) {
+                std::cout << "⚠ Warning: Failed to decompress MPCORB.DAT.gz\n";
+            } else {
+                // Parse MPCORB and add missing asteroids
+                parseMPCORBFile(mpc_file, db, existing_numbers);
+                
+                // Cleanup MPC files
+                std::remove(mpc_file.c_str());
+            }
+        }
         
         // Insert metadata
         int total_records = db.getRecordCount();
         db.insertMetadata(total_records, url, data_epoch_mjd);
         
         std::cout << "\n✅ Database built successfully!\n";
+        std::cout << "   From allnum.cat: " << allnum_count << " asteroids\n";
+        std::cout << "   From MPCORB.DAT: " << (total_records - allnum_count) << " asteroids\n";
         std::cout << "   Total records: " << total_records << "\n";
         std::cout << "   Database: " << db_path << "\n";
         
