@@ -11,8 +11,7 @@
 namespace ioccultcalc {
 
 AllnumDatabaseReader::AllnumDatabaseReader() {
-    DataManager dm;
-    std::string default_path = dm.getDatabasePath() + "/allnum.db";
+    std::string default_path = DataManager::instance().getDatabaseDir() + "/allnum.db";
     initializeDatabase(default_path);
 }
 
@@ -77,7 +76,7 @@ std::optional<OrbitalElements> AllnumDatabaseReader::getElement(const std::strin
     }
     
     const char* sql = R"(
-        SELECT number, designation, epoch_mjd, a, e, i, Omega, omega, M, H, G
+        SELECT number, designation, epoch_mjd, a, e, i, node_long, peri_arg, M, H, G
         FROM allnum_asteroids
         WHERE number = ?
         LIMIT 1
@@ -86,6 +85,7 @@ std::optional<OrbitalElements> AllnumDatabaseReader::getElement(const std::strin
     sqlite3_stmt* stmt;
     int rc = sqlite3_prepare_v2(db_, sql, -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
+        std::cerr << "[AllnumDatabaseReader] Prepare error: " << sqlite3_errmsg(db_) << "\n";
         return std::nullopt;
     }
     

@@ -9,14 +9,14 @@
 #include <stdexcept>
 #include <regex>
 #include <memory>
-#include "ioccultcalc/astdyn_propagation_helper.h"  // ← AGGIUNGI per convertFromEquinoctial
-#include "ioccultcalc/astdyn_interface.h"  // ← AGGIUNGI per AstDySElements
+// #include "ioccultcalc/astdyn_propagation_helper.h"  // REMOVED: missing file
+// #include "ioccultcalc/astdyn_interface.h"  // REMOVED: missing file
 
 namespace ioccultcalc {
 
 // Forward declarations
 struct OrbitState;
-struct AstDySElements;  // ← AGGIUNGI forward declaration
+// struct AstDySElements;  // REMOVED
 
 // Callback per ricevere dati da libcurl
 static size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* output) {
@@ -89,13 +89,15 @@ void AstDysClient::setTimeout(int seconds) {
 }
 
 // Metodi statici per compatibilità con AstDySClient API
+/*
 AstDySElements AstDysClient::downloadElements(int asteroid_number) {
     AstDysClient client;
     std::string designation = std::to_string(asteroid_number);
     EquinoctialElements eq = client.getElements(designation);
     
     // Converti EquinoctialElements -> AstDySElements
-    return AstDynPropagationHelper::convertFromEquinoctial(eq);
+    // return AstDynPropagationHelper::convertFromEquinoctial(eq);
+    throw std::runtime_error("AstDyn helper not available");
 }
 
 AstDySElements AstDysClient::downloadElements(const std::string& designation) {
@@ -103,8 +105,10 @@ AstDySElements AstDysClient::downloadElements(const std::string& designation) {
     EquinoctialElements eq = client.getElements(designation);
     
     // Converti EquinoctialElements -> AstDySElements
-    return AstDynPropagationHelper::convertFromEquinoctial(eq);
+    // return AstDynPropagationHelper::convertFromEquinoctial(eq);
+    throw std::runtime_error("AstDyn helper not available");
 }
+*/
 
 EquinoctialElements AstDysClient::getElements(const std::string& designation) {
     // Costruisci URL per scaricare file .eq

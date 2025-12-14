@@ -63,6 +63,7 @@ OrbitalElements EquinoctialElements::toKeplerian() const {
     orb.diameter = diameter;
     orb.designation = designation;
     orb.name = name;
+    orb.aliases = aliases;
     
     // Converti elementi
     toKeplerian(orb.e, orb.i, orb.omega, orb.Omega, orb.M);
@@ -71,7 +72,14 @@ OrbitalElements EquinoctialElements::toKeplerian() const {
 }
 
 EquinoctialElements EquinoctialElements::fromKeplerian(const OrbitalElements& orb) {
-    return fromKeplerian(orb.a, orb.e, orb.i, orb.omega, orb.Omega, orb.M, orb.epoch);
+    EquinoctialElements eq = fromKeplerian(orb.a, orb.e, orb.i, orb.omega, orb.Omega, orb.M, orb.epoch);
+    eq.name = orb.name;
+    eq.designation = orb.designation;
+    eq.aliases = orb.aliases;
+    eq.diameter = orb.diameter;
+    eq.H = orb.H;
+    eq.G = orb.G;
+    return eq;
 }
 
 EquinoctialElements OrbitalElements::toEquinoctial() const {

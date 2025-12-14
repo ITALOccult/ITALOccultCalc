@@ -56,6 +56,9 @@ public:
     
     // Imposta il numero massimo di righe restituite
     void setMaxRows(int rows);
+
+    // Imposta la verbosità
+    void setVerbose(bool verbose);
     
 private:
     class Impl;

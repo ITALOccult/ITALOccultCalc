@@ -252,6 +252,8 @@ std::string ConfigSectionData::sectionTypeToString() const {
         case ConfigSection::ORBIT_FITTING: return "orbit_fitting";
         case ConfigSection::VALIDATION: return "validation";
         case ConfigSection::CHEBYSHEV: return "chebyshev";
+        case ConfigSection::ASTEROIDS: return "asteroids";
+        case ConfigSection::DEBUG: return "debug";
         case ConfigSection::CUSTOM: return "custom";
         default: return "unknown";
     }
@@ -279,6 +281,7 @@ ConfigSection ConfigSectionData::stringToSectionType(const std::string& str) {
     if (str == "validation") return ConfigSection::VALIDATION;
     if (str == "chebyshev") return ConfigSection::CHEBYSHEV;
     if (str == "asteroids") return ConfigSection::ASTEROIDS;
+    if (str == "debug") return ConfigSection::DEBUG;
     return ConfigSection::CUSTOM;
 }
 
@@ -342,6 +345,10 @@ void ConfigManager::loadFromJson(const std::string& filepath) {
     file >> j;
     
     *this = fromJson(j);
+}
+
+void ConfigManager::loadFromYaml(const std::string& filepath) {
+    throw std::runtime_error("YAML support not yet implemented in ConfigManager. Please use .oop or .json format.");
 }
 
 void ConfigManager::saveToJson(const std::string& filepath) const {

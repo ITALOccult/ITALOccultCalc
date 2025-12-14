@@ -43,6 +43,7 @@ enum class ConfigSection {
     VALIDATION,    // Validation and quality control
     CHEBYSHEV,     // Chebyshev approximation settings (LinOccult method)
     ASTEROIDS,     // Asteroid list files and selection
+    DEBUG,         // Debugging features (single epoch check, watch star)
     CUSTOM         // User-defined sections
 };
 
@@ -130,6 +131,7 @@ public:
     // File I/O
     void loadFromJson(const std::string& filepath);
     void saveToJson(const std::string& filepath) const;
+    void loadFromYaml(const std::string& filepath);
     void loadFromOop(const std::string& filepath);
     void saveToOop(const std::string& filepath) const;
     

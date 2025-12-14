@@ -3,6 +3,7 @@
 
 #include "types.h"
 #include <string>
+#include <vector>
 
 namespace ioccultcalc {
 
@@ -31,6 +32,7 @@ struct OrbitalElements {
     
     std::string designation;
     std::string name;
+    std::vector<std::string> aliases;
     
     OrbitalElements()
         : a(0), e(0), i(0), Omega(0), omega(0), M(0),
@@ -66,6 +68,7 @@ struct EquinoctialElements {
     
     std::string designation; // Designazione dell'asteroide
     std::string name;        // Nome dell'asteroide
+    std::vector<std::string> aliases; // Alias (es. designazioni provvisorie)
     
     EquinoctialElements() 
         : a(0), h(0), k(0), p(0), q(0), lambda(0), 

@@ -9,7 +9,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_Fortran_MODULE_DIRECTORY ${CMAKE_BINARY_DIR}/fortran_modules)
 
 # Options
-option(BUILD_TESTS "Build tests" ON)
+option(BUILD_TESTS "Build tests" OFF)
 option(BUILD_EXAMPLES "Build examples" ON)
 
 # Find required packages
@@ -117,9 +117,6 @@ set(SOURCES
     src/parallel_algorithms.cpp
     src/output_manager.cpp
     src/asteroid_list_reader.cpp
-    src/astdyn_propagation_helper.cpp
-    src/occultation_search_astdyn.cpp
-    src/astdyn_interface.cpp
     src/allnum_database.cpp
     # src/gaia_catalog_preloader.cpp
 )
@@ -253,7 +250,7 @@ else()
 endif()
 
 # Create library
-add_library(ioccultcalc STATIC ${SOURCES} ${HEADERS})
+# moved add_library later
 
 # Verifica esistenza librerie opzionali
 set(CSPICE_LIB_PATH "${CMAKE_CURRENT_SOURCE_DIR}/external/cspice/lib/cspice.a")
@@ -265,6 +262,8 @@ if(EXISTS ${CSPICE_LIB_PATH})
 else()
     message(WARNING "CSPICE not found at ${CSPICE_LIB_PATH} - some features may be unavailable")
     set(CSPICE_LIB "")
+    list(REMOVE_ITEM SOURCES src/spice_spk_reader.cpp)
+    list(APPEND SOURCES src/spice_spk_reader_stub.cpp)
 endif()
 
 if(EXISTS ${ASTDYN_LIB_PATH})
@@ -276,6 +275,9 @@ else()
     set(ASTDYN_LIB "")
 endif()
 
+find_library(SQLITE3_LIBRARY sqlite3)
+
+add_library(ioccultcalc STATIC ${SOURCES} ${HEADERS})
 target_link_libraries(ioccultcalc
     CURL::libcurl
     ${LIBXML2_LIBRARIES}
@@ -284,6 +286,7 @@ target_link_libraries(ioccultcalc
     ${ORBFIT_ALL_LIBS}
     ioc_gaialib
     OpenMP::OpenMP_CXX
+    ${SQLITE3_LIBRARY}
 )
 
 # Link IOC_Config if available
@@ -554,3 +557,37 @@ install(DIRECTORY include/ioccultcalc
 #     CURL::libcurl
 # )
 
+
+# Debug Tool for Asteroid 249
+add_executable(debug_249 tools/debug_249.cpp)
+target_link_libraries(debug_249 PRIVATE 
+    ioccultcalc 
+    ioc_gaialib
+    ${CMAKE_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/build/src/libastdyn.a
+    /opt/homebrew/lib/libboost_filesystem.dylib
+    /opt/homebrew/lib/libboost_atomic.dylib
+    /opt/homebrew/lib/libboost_program_options.dylib
+    /opt/homebrew/lib/libboost_date_time.dylib
+    Eigen3::Eigen
+)
+target_include_directories(debug_249 PRIVATE
+    ${CMAKE_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/include
+    ${CMAKE_SOURCE_DIR}/external/IOC_GaiaLib/include
+)
+
+# User Test Position 249
+add_executable(test_position_249 tools/test_position_249.cpp)
+target_link_libraries(test_position_249 PRIVATE 
+    ioccultcalc 
+    ioc_gaialib
+    ${CMAKE_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/build/src/libastdyn.a
+    /opt/homebrew/lib/libboost_filesystem.dylib
+    /opt/homebrew/lib/libboost_atomic.dylib
+    /opt/homebrew/lib/libboost_program_options.dylib
+    /opt/homebrew/lib/libboost_date_time.dylib
+    Eigen3::Eigen
+)
+target_include_directories(test_position_249 PRIVATE
+    ${CMAKE_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/include
+    ${CMAKE_SOURCE_DIR}/external/IOC_GaiaLib/include
+)

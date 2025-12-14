@@ -137,10 +137,11 @@ public:
     std::string tapURL;
     int timeout;
     int maxRows;
+    bool verbose;
     CURL* curl;
     
     Impl() : tapURL("https://gea.esac.esa.int/tap-server/tap/"), 
-             timeout(60), maxRows(10000) {
+             timeout(60), maxRows(10000), verbose(false) {
         curl_global_init(CURL_GLOBAL_DEFAULT);
         curl = curl_easy_init();
     }
@@ -192,6 +193,10 @@ void GaiaClient::setTimeout(int seconds) {
 
 void GaiaClient::setMaxRows(int rows) {
     pImpl->maxRows = rows;
+}
+
+void GaiaClient::setVerbose(bool verbose) {
+    pImpl->verbose = verbose;
 }
 
 std::vector<GaiaStar> GaiaClient::queryRegion(double raCenterDeg, double decCenterDeg,
@@ -268,10 +273,7 @@ std::vector<GaiaStar> GaiaClient::queryAlongPath(
 }
 
 std::string GaiaClient::executeADQL(const std::string& adqlQuery) {
-    std::cerr << "[GaiaClient::executeADQL] DEBUG: Query ADQL:\n" << adqlQuery << "\n\n";
-    
     std::string url = pImpl->tapURL + "sync";
-    std::cerr << "[GaiaClient::executeADQL] DEBUG: URL: " << url << "\n";
     
     // Prepara i dati POST
     // NOTA: Usa CSV invece di VOTable perché BINARY2 è complesso da parsare
@@ -284,34 +286,32 @@ std::string GaiaClient::executeADQL(const std::string& adqlQuery) {
     postData << encodedQuery;
     curl_free(encodedQuery);
     
-    std::cerr << "[GaiaClient::executeADQL] DEBUG: POST data length: " << postData.str().length() << "\n";
-    
     try {
         std::string result = pImpl->httpPost(url, postData.str());
-        std::cerr << "[GaiaClient::executeADQL] DEBUG: Response length: " << result.length() << " bytes\n";
-        std::cerr << "[GaiaClient::executeADQL] DEBUG: First 500 chars:\n" << result.substr(0, 500) << "\n\n";
         return result;
     } catch (const std::exception& e) {
-        std::cerr << "[GaiaClient::executeADQL] ERROR: " << e.what() << "\n";
+        if (pImpl->verbose) {
+            std::cerr << "[GaiaClient::executeADQL] ERROR: " << e.what() << "\n";
+        }
         throw;
     }
 }
 
 std::vector<GaiaStar> GaiaClient::parseVOTable(const std::string& votable) {
-    std::cerr << "[GaiaClient::parseVOTable] DEBUG: Parsing response, length = " << votable.length() << "\n";
+    // Debug disabled
     
     std::vector<GaiaStar> stars;
     
     // Rileva se è CSV o VOTable
     if (votable.find("source_id,ra,dec") == 0 || votable.find("source_id,ra,dec") != std::string::npos) {
         // Parse CSV
-        std::cerr << "[GaiaClient::parseVOTable] DEBUG: Detected CSV format\n";
+        if (pImpl->verbose) std::cerr << "[GaiaClient::parseVOTable] DEBUG: Detected CSV format\n";
         std::istringstream stream(votable);
         std::string line;
         
         // Salta header
         if (std::getline(stream, line)) {
-            std::cerr << "[GaiaClient::parseVOTable] DEBUG: CSV Header: " << line << "\n";
+            if (pImpl->verbose) std::cerr << "[GaiaClient::parseVOTable] DEBUG: CSV Header: " << line << "\n";
         }
         
         int rowCount = 0;
@@ -355,7 +355,7 @@ std::vector<GaiaStar> GaiaClient::parseVOTable(const std::string& votable) {
             }
         }
         
-        std::cerr << "[GaiaClient::parseVOTable] DEBUG: Parsed " << stars.size() << " stars from CSV\n";
+        if (pImpl->verbose) std::cerr << "[GaiaClient::parseVOTable] DEBUG: Parsed " << stars.size() << " stars from CSV\n";
         return stars;
     }
     

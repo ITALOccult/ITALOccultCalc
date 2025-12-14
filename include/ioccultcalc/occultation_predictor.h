@@ -32,17 +32,33 @@ struct OccultationEvent {
     double positionAngle;            // Angolo di posizione (gradi)
     double probability;              // Probabilità di occultazione
     double maxDuration;              // Durata massima (secondi)
+    double pathWidth;                // Larghezza path (km) (diametro asteroide)
+    double magnitudeDrop;            // Calo di magnitudine
     
     std::vector<ShadowPathPoint> shadowPath;  // Traccia sulla Terra
     
     // Limiti di incertezza (1-sigma)
     double uncertaintyNorth;  // km
+
     double uncertaintySouth;  // km
+    
+    // Elementi Besseliani (calcolati approssimativamenti)
+    double besselianX;    // Earth Radii
+    double besselianY;    // Earth Radii
+    double besselianDX;   // Earth Radii/Hour
+    double besselianDY;   // Earth Radii/Hour
+    
+    // Coordinate Osservatore (per riferimento)
+    double observerLongitude; // gradi
+    double observerLatitude;  // gradi
+    double observerAltitude;  // metri
     
     OccultationEvent() 
         : closeApproachDistance(0), positionAngle(0), 
-          probability(0), maxDuration(0),
-          uncertaintyNorth(0), uncertaintySouth(0) {}
+          probability(0), maxDuration(0), pathWidth(0), magnitudeDrop(0),
+          uncertaintyNorth(0), uncertaintySouth(0),
+          besselianX(0), besselianY(0), besselianDX(0), besselianDY(0),
+          observerLongitude(0), observerLatitude(0), observerAltitude(0) {}
     
     // Verifica se l'evento è visibile da una certa posizione
     bool isVisibleFrom(const GeographicCoordinates& observer, 

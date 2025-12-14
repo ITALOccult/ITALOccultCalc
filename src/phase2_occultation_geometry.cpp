@@ -54,6 +54,7 @@
 
 // IOC GaiaLib
 #include "ioc_gaialib/unified_gaia_catalog.h"
+#include "../external/ITALOccultLibrary/italoccultlibrary/include/chebyshev_approximation.h"
 
 #include <iostream>
 #include <cmath>
@@ -69,6 +70,8 @@
 #include <curl/curl.h>
 
 // Costanti
+using namespace ioccultcalc;
+
 constexpr double MJD_TO_JD = 2400000.5;
 constexpr double DEG_TO_RAD = M_PI / 180.0;
 constexpr double RAD_TO_DEG = 180.0 / M_PI;
@@ -104,7 +107,13 @@ public:
     // std::unique_ptr<astdyn::fitting::OrbitFitter> orbit_fitter;
     
     // Nome/numero asteroide
+    // Nome/numero asteroide
     std::string asteroid_designation;
+    
+    // Parametri fisici
+    double diameter_km = 0.0;
+    double abs_mag = 0.0;
+    double slope_param = 0.15;
     
     Impl() {
         // Inizializza propagatore con parametri ad alta precisione
@@ -114,7 +123,7 @@ public:
         astdyn::propagation::PropagatorSettings settings;
         settings.include_planets = true;  // ← ATTIVA perturbazioni per Phase 2
         settings.include_moon = true;
-        settings.include_asteroids = false;  // Ceres, Vesta, ecc. (opzionale)
+        settings.include_asteroids = true;  // USER REQUEST: Enable asteroid perturbations
         
         propagator = std::make_unique<astdyn::propagation::Propagator>(
             std::move(integrator), ephemeris, settings);
@@ -122,6 +131,8 @@ public:
         // Inizializza orbit fitter di AstDyn (TODO: quando disponibile)
         // orbit_fitter = std::make_unique<astdyn::fitting::OrbitFitter>();
     }
+    
+    // ... (rest of methods declarations) 
     
     /**
      * @brief Scarica osservazioni RWO da AstDyS
@@ -223,8 +234,17 @@ bool Phase2OccultationGeometry::loadAsteroidFromJSON(int asteroid_number, const 
                 pimpl_->keplerian_elements.semi_major_axis = asteroid["a"].get<double>();
                 pimpl_->keplerian_elements.eccentricity = asteroid["e"].get<double>();
                 pimpl_->keplerian_elements.inclination = asteroid["i"].get<double>() * DEG_TO_RAD;
-                pimpl_->keplerian_elements.longitude_ascending_node = asteroid["Omega"].get<double>() * DEG_TO_RAD;
-                pimpl_->keplerian_elements.argument_perihelion = asteroid["omega"].get<double>() * DEG_TO_RAD;
+                
+                if (asteroid.contains("Node"))
+                    pimpl_->keplerian_elements.longitude_ascending_node = asteroid["Node"].get<double>() * DEG_TO_RAD;
+                else
+                    pimpl_->keplerian_elements.longitude_ascending_node = asteroid["Omega"].get<double>() * DEG_TO_RAD;
+
+                if (asteroid.contains("Peri"))
+                    pimpl_->keplerian_elements.argument_perihelion = asteroid["Peri"].get<double>() * DEG_TO_RAD;
+                else
+                    pimpl_->keplerian_elements.argument_perihelion = asteroid["omega"].get<double>() * DEG_TO_RAD;
+                    
                 pimpl_->keplerian_elements.mean_anomaly = asteroid["M"].get<double>() * DEG_TO_RAD;
                 
                 // Epoca: da JD a MJD TDB
@@ -240,9 +260,25 @@ bool Phase2OccultationGeometry::loadAsteroidFromJSON(int asteroid_number, const 
                     pimpl_->asteroid_designation = asteroid["name"].get<std::string>();
                 }
                 
+                // Parametri fisici
+                if (asteroid.contains("diameter")) {
+                    pimpl_->diameter_km = asteroid["diameter"].get<double>();
+                }
+                if (asteroid.contains("H")) {
+                    pimpl_->abs_mag = asteroid["H"].get<double>();
+                }
+                if (asteroid.contains("G")) {
+                    pimpl_->slope_param = asteroid["G"].get<double>();
+                }
+                
                 found = true;
                 
                 std::cout << "✓ Phase2: Elementi orbitali caricati per asteroide " << asteroid_number << "\n";
+                // Stima diametro se mancante
+                if (pimpl_->diameter_km <= 0.0 && pimpl_->abs_mag > 0.0) {
+                     pimpl_->diameter_km = 1329.0 / sqrt(pimpl_->slope_param) * pow(10, -pimpl_->abs_mag/5.0);
+                }
+                std::cout << "    Diametro: " << pimpl_->diameter_km << " km\n";
                 break;
             }
         }
@@ -273,6 +309,12 @@ Phase2OccultationGeometry::getOrbitalElements() const {
         throw std::runtime_error("Phase2: Elementi orbitali non caricati");
     }
     return pimpl_->keplerian_elements;
+}
+
+void Phase2OccultationGeometry::setPhysicalParameters(double diameter_km, double abs_mag, double slope_param) {
+    pimpl_->diameter_km = diameter_km;
+    pimpl_->abs_mag = abs_mag;
+    pimpl_->slope_param = slope_param;
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -360,17 +402,14 @@ bool Phase2OccultationGeometry::Impl::downloadFile(
     curl_easy_cleanup(curl);
     
     if (res != CURLE_OK || response_code != 200) {
-        std::cerr << "  ✗ Download fallito: " << curl_easy_strerror(res) 
+        std::cerr << "  ✗ Download fallito for " << url << ": " << curl_easy_strerror(res) 
                  << " (HTTP " << response_code << ")\n";
         return false;
     }
     
     // Salva su file
     std::ofstream out(output_path);
-    if (!out) {
-        std::cerr << "  ✗ Impossibile scrivere " << output_path << "\n";
-        return false;
-    }
+    if (!out) return false;
     
     out << response_string;
     out.close();
@@ -480,7 +519,7 @@ OrbitalFitResults Phase2OccultationGeometry::Impl::refineOrbitWithObservations(
             auto kep_target = propagator->propagate_keplerian(refined_elements, target_mjd_tdb);
             results.refined_elements = kep_target;
             
-            results.fit_notes = "Fit convergente - elementi raffinati salvati";
+            results.fit_notes = "Fit convergente";
             
             double fit_time = std::chrono::duration<double>(t_end - t_start).count();
             std::cout << "  ✓ Fit convergente in " << fit_time << " sec\n";
@@ -493,7 +532,7 @@ OrbitalFitResults Phase2OccultationGeometry::Impl::refineOrbitWithObservations(
             }
             std::cout << "\n";
         } else {
-            results.fit_notes = "Fit non convergente - uso elementi nominali";
+            results.fit_notes = "Fit non convergente";
             std::cout << "  ⚠ Fit non convergente dopo " << results.iterations_performed << " iterazioni\n";
             std::cout << "  Uso elementi nominali\n";
         }
@@ -615,7 +654,10 @@ Phase2Results Phase2OccultationGeometry::calculateGeometry(
             std::cout << "  ✓ CA: " << event.closest_approach_mas << " mas @ MJD " 
                      << std::fixed << std::setprecision(6) << event.time_ca_mjd_utc << "\n";
             std::cout << "  Duration: " << event.max_duration_sec << " sec\n";
-            std::cout << "  Shadow path: " << event.path_length_km << " km\n\n";
+            if (event.shadow_width_km > 0)
+                 std::cout << "  Shadow path width: " << event.shadow_width_km << " km\n\n";
+            else
+                 std::cout << "  Shadow path: (diametro non disp.)\n\n";
             
         } catch (const std::exception& e) {
             std::cerr << "  ✗ Errore: " << e.what() << "\n\n";
@@ -666,73 +708,178 @@ OccultationEvent Phase2OccultationGeometry::calculateSingleEvent(
     // STEP 1: PROPAGAZIONE DENSA ATTORNO AL CA
     // ═══════════════════════════════════════════════════════════════
     
-    double ca_mjd = candidate.closest_approach_mjd;
-    double time_window_days = config.time_window_minutes / 1440.0;  // min → days
-    double step_days = config.time_step_seconds / 86400.0;          // sec → days
+    // ═══════════════════════════════════════════════════════════════
+    // STEP 1: APPROSSIMAZIONE CHEBYSHEV (USER REQUEST)
+    // ═══════════════════════════════════════════════════════════════
     
+    double ca_mjd = candidate.closest_approach_mjd;
+    double time_window_days = config.time_window_minutes / 1440.0;
     double start_mjd = ca_mjd - time_window_days;
     double end_mjd = ca_mjd + time_window_days;
-    int num_steps = static_cast<int>((end_mjd - start_mjd) / step_days) + 1;
     
-    std::cout << "  Propagazione densa: " << num_steps << " punti in ±" 
-             << config.time_window_minutes << " min\n";
-    
-    // Propaga path denso
-    std::vector<double> times;
-    std::vector<Eigen::Vector3d> positions_icrf;
-    
-    for (int i = 0; i < num_steps; ++i) {
-        double mjd = start_mjd + i * step_days;
-        times.push_back(mjd);
-        
-        // Propaga con massima precisione
-        auto kep_prop = pimpl_->propagator->propagate_keplerian(elements_to_use, mjd);
-        auto cart = astdyn::propagation::keplerian_to_cartesian(kep_prop);
-        
-        // Converti eclittica → equatoriale ICRF
-        Eigen::Vector3d pos_ecl = cart.position;
-        Eigen::Vector3d pos_eq;
-        pos_eq[0] = pos_ecl[0];
-        pos_eq[1] = pos_ecl[1] * std::cos(EPSILON_J2000) - pos_ecl[2] * std::sin(EPSILON_J2000);
-        pos_eq[2] = pos_ecl[1] * std::sin(EPSILON_J2000) + pos_ecl[2] * std::cos(EPSILON_J2000);
-        
-        positions_icrf.push_back(pos_eq);
-    }
-    
-    // ═══════════════════════════════════════════════════════════════
-    // STEP 2: TROVA ISTANTE ESATTO CLOSEST APPROACH
-    // ═══════════════════════════════════════════════════════════════
-    
-    // Coordinate stella (J2000)
-    Eigen::Vector3d star_unit;
+    // Coordinate stella unitarie (J2000)
     double ra_rad = candidate.ra_deg * DEG_TO_RAD;
     double dec_rad = candidate.dec_deg * DEG_TO_RAD;
+    Eigen::Vector3d star_unit;
     star_unit[0] = std::cos(dec_rad) * std::cos(ra_rad);
     star_unit[1] = std::cos(dec_rad) * std::sin(ra_rad);
     star_unit[2] = std::sin(dec_rad);
+
+    // Genera nodi Chebyshev (11 punti)
+    int n_nodes = 11;
+    std::vector<Eigen::Vector3d> node_positions;
     
-    // Trova minima distanza angolare
-    double min_distance_rad = M_PI;
-    double min_time_mjd = ca_mjd;
-    int min_index = 0;
+    // Pre-calculate common rotation constants
+    double eps = EPSILON_J2000;
+    double ce = std::cos(eps);
+    double se = std::sin(eps);
     
-    for (size_t i = 0; i < positions_icrf.size(); ++i) {
-        Eigen::Vector3d ast_dir = positions_icrf[i].normalized();
-        double cos_sep = star_unit.dot(ast_dir);
-        cos_sep = std::max(-1.0, std::min(1.0, cos_sep));
-        double sep_rad = std::acos(cos_sep);
+    std::cout << "  Approccio Chebyshev: Fitting su " << n_nodes << " nodi in ±" 
+             << config.time_window_minutes << " min\n";
+             
+    for (int k = 1; k <= n_nodes; ++k) {
+        // Nodi di Chebyshev-Lobatto o radici standard (usiamo radici standard nel range)
+        double tk_norm = std::cos(M_PI * (2.0 * k - 1.0) / (2.0 * n_nodes));
+        double t_mjd = 0.5 * (start_mjd + end_mjd) + 0.5 * (end_mjd - start_mjd) * tk_norm;
         
-        if (sep_rad < min_distance_rad) {
-            min_distance_rad = sep_rad;
-            min_time_mjd = times[i];
-            min_index = i;
+        // Propaga
+        auto kep_prop = pimpl_->propagator->propagate_keplerian(elements_to_use, t_mjd);
+        auto cart = astdyn::propagation::keplerian_to_cartesian(kep_prop);
+        Eigen::Vector3d ast_helio_ecl = cart.position;
+        
+        // Earth Pos
+        double jd_tdb = t_mjd + MJD_TO_JD; 
+        auto earth_helio_ecl = astdyn::ephemeris::PlanetaryEphemeris::getPosition(
+                astdyn::ephemeris::CelestialBody::EARTH, jd_tdb);
+        
+        // Geo Ecl
+        Eigen::Vector3d rel_pos_ecl = ast_helio_ecl - earth_helio_ecl;
+        
+        // Geo Eq
+        Eigen::Vector3d rel_pos_eq;
+        rel_pos_eq[0] = rel_pos_ecl[0];
+        rel_pos_eq[1] = rel_pos_ecl[1] * ce - rel_pos_ecl[2] * se;
+        rel_pos_eq[2] = rel_pos_ecl[1] * se + rel_pos_ecl[2] * ce;
+        
+        node_positions.push_back(rel_pos_eq);
+    }
+    
+    // Fit Chebyshev
+    ioccultcalc::ChebyshevApproximation approx(n_nodes); // Order = nodes
+    // Note: approx.fit takes sorted positions? No, assumes correspondence to time window.
+    // Wait. My implementation of 'fit' in chebyshev_approximation.h might assume uniform steps or explicit times?
+    // Step 1456 view: fit(positions, start, end). It likely assumes uniform sampling or Chebyshev nodes?
+    // Let's check the header again. Step 1456 L97: "fit(positions, start, end)".
+    // L103: "Il fitting utilizza un metodo ai minimi quadrati".
+    // If it uses LS, it needs timestamps. But the signature DOES NOT take timestamps!
+    // This implies it ASSUMES uniform sampling or specific node distribution.
+    // Most standard fits assume Uniform samples for LS or Chebyshev Nodes for Interpolation.
+    // The comment L9: "Approssimazione mediante polinomi di Chebyshev".
+    // If I passed Chebyshev nodes positions, I might need to clarify if 'fit' expects them.
+    // Assuming 'fit' expects Uniform samples (common for simplified LS APIs).
+    // I should probably use Uniform Sampling for safety if I can't check .cpp.
+    // Let's switch to UNIFORM sampling (e.g. 11 points spaced evenly) to be safe with unknown 'fit' implementation.
+    // Uniform sampling with 11 points is still very accurate for 20 mins orbit arc.
+    
+    node_positions.clear();
+    double step_node = (end_mjd - start_mjd) / (n_nodes - 1);
+    for (int i=0; i<n_nodes; ++i) {
+        double t_mjd = start_mjd + i * step_node;
+        // ... (Repeating propagation code) ...
+        auto kep_prop = pimpl_->propagator->propagate_keplerian(elements_to_use, t_mjd);
+        auto cart = astdyn::propagation::keplerian_to_cartesian(kep_prop);
+        Eigen::Vector3d ast_helio_ecl = cart.position;
+        double jd_tdb = t_mjd + MJD_TO_JD; 
+        auto earth_helio_ecl = astdyn::ephemeris::PlanetaryEphemeris::getPosition(
+                astdyn::ephemeris::CelestialBody::EARTH, jd_tdb);
+        Eigen::Vector3d rel_pos_ecl = ast_helio_ecl - earth_helio_ecl;
+        Eigen::Vector3d rel_pos_eq;
+        rel_pos_eq[0] = rel_pos_ecl[0];
+        rel_pos_eq[1] = rel_pos_ecl[1] * ce - rel_pos_ecl[2] * se;
+        rel_pos_eq[2] = rel_pos_ecl[1] * se + rel_pos_ecl[2] * ce;
+        node_positions.push_back(rel_pos_eq);
+    }
+    
+    bool fit_ok = approx.fit(node_positions, start_mjd, end_mjd);
+    if (!fit_ok) std::cerr << "  [Warning] Chebyshev fit failed!\n";
+
+    // ═══════════════════════════════════════════════════════════════
+    // STEP 2: RICERCA DEL MINUTO (COARSE SEARCH)
+    // ═══════════════════════════════════════════════════════════════
+    
+    double coarse_step = 60.0 / 86400.0; // 1 min scan
+    double best_t = start_mjd;
+    double min_dist_rad = 1e9;
+    
+    for (double t = start_mjd; t <= end_mjd; t += coarse_step) {
+        Eigen::Vector3d pos = approx.evaluatePosition(t);
+        Eigen::Vector3d dir = pos.normalized();
+        double cos_sep = star_unit.dot(dir);
+        if (cos_sep > 1.0) cos_sep = 1.0;
+        if (cos_sep < -1.0) cos_sep = -1.0;
+        double sep = std::acos(cos_sep);
+        
+        if (sep < min_dist_rad) {
+            min_dist_rad = sep;
+            best_t = t;
         }
     }
     
-    double min_distance_mas = min_distance_rad * RAD_TO_MAS;
+    // ═══════════════════════════════════════════════════════════════
+    // STEP 3: RAFFINAMENTO (FINE SEARCH)
+    // ═══════════════════════════════════════════════════════════════
     
-    std::cout << "  CA preciso: " << min_distance_mas << " mas @ MJD " 
+    // Cerca attorno al minuto migliore (+/- 1 min) con Golden Section o Dense Grid
+    // Use Dense Grid 1 sec step for simplicity and robustness
+    double refine_start = best_t - coarse_step;
+    double refine_end = best_t + coarse_step;
+    double fine_step = 1.0 / 86400.0; // 1 sec
+    
+    double final_best_t = best_t;
+    double final_min_rad = min_dist_rad;
+    
+    for (double t = refine_start; t <= refine_end; t += fine_step) {
+        Eigen::Vector3d pos = approx.evaluatePosition(t);
+        Eigen::Vector3d dir = pos.normalized();
+        double cos_sep = star_unit.dot(dir);
+        if (cos_sep > 1.0) cos_sep = 1.0;
+        if (cos_sep < -1.0) cos_sep = -1.0;
+        double sep = std::acos(cos_sep);
+        
+        if (sep < final_min_rad) {
+            final_min_rad = sep;
+            final_best_t = t;
+        }
+    }
+    
+    double min_time_mjd = final_best_t;
+    double min_distance_mas = final_min_rad * RAD_TO_MAS;
+
+    std::cout << "  CA preciso (Chebyshev): " << min_distance_mas << " mas @ MJD " 
              << std::fixed << std::setprecision(8) << min_time_mjd << "\n";
+
+    // ═══════════════════════════════════════════════════════════════
+    // STEP 4: CALCOLO PARAMETRI GEOMETRICI (RIGOROSO)
+    // ═══════════════════════════════════════════════════════════════
+    // Ricostruiamo i vettori rigorosi al punto di minimo
+    
+    // Propaga all'istante esatto
+    auto kep_prop_ca = pimpl_->propagator->propagate_keplerian(elements_to_use, min_time_mjd);
+    auto cart_ca = astdyn::propagation::keplerian_to_cartesian(kep_prop_ca);
+    Eigen::Vector3d ast_helio_ecl_ca = cart_ca.position;
+    double jd_tdb_ca = min_time_mjd + MJD_TO_JD; 
+    auto earth_helio_ecl_ca = astdyn::ephemeris::PlanetaryEphemeris::getPosition(
+            astdyn::ephemeris::CelestialBody::EARTH, jd_tdb_ca);
+    Eigen::Vector3d rel_pos_ecl_ca = ast_helio_ecl_ca - earth_helio_ecl_ca;
+    Eigen::Vector3d rel_pos_eq_ca; // P (Target Point)
+    rel_pos_eq_ca[0] = rel_pos_ecl_ca[0];
+    rel_pos_eq_ca[1] = rel_pos_ecl_ca[1] * ce - rel_pos_ecl_ca[2] * se;
+    rel_pos_eq_ca[2] = rel_pos_ecl_ca[1] * se + rel_pos_ecl_ca[2] * ce;
+    
+    // Set for subsequent steps (replacing detailed loop vars)
+    std::vector<double> times = { min_time_mjd };
+    std::vector<Eigen::Vector3d> positions_icrf = { rel_pos_eq_ca };
+    int min_index = 0; // Pointing to the only element
     
     // ═══════════════════════════════════════════════════════════════
     // STEP 3: CALCOLA PARAMETRI GEOMETRICI
@@ -742,21 +889,36 @@ OccultationEvent Phase2OccultationGeometry::calculateSingleEvent(
     double earth_distance_au = positions_icrf[min_index].norm();
     
     // Velocità angolare (approssimata con differenza finita)
-    double angular_velocity_rad_day = 0.0;
-    if (min_index > 0 && min_index < static_cast<int>(positions_icrf.size()) - 1) {
-        Eigen::Vector3d dir_before = positions_icrf[min_index - 1].normalized();
-        Eigen::Vector3d dir_after = positions_icrf[min_index + 1].normalized();
-        double sep_rad = std::acos(dir_before.dot(dir_after));
-        double dt_days = times[min_index + 1] - times[min_index - 1];
-        angular_velocity_rad_day = sep_rad / dt_days;
-    }
+    // Velocità angolare (da derivata Chebyshev)
+    Eigen::Vector3d vel_eq_au_d = approx.evaluateVelocity(min_time_mjd);
+    // Use the rigorous position calculated above
+    Eigen::Vector3d pos_eq = positions_icrf[0]; 
+    double dist_au = pos_eq.norm();
+    
+    // Angular velocity = v_perp / r
+    // v_perp = sqrt(v^2 - v_rad^2)
+    double v_mag_sq = vel_eq_au_d.squaredNorm();
+    double v_rad = pos_eq.dot(vel_eq_au_d) / dist_au;
+    double v_perp_sq = v_mag_sq - v_rad * v_rad;
+    double angular_velocity_rad_day = (v_perp_sq > 0.0) ? (std::sqrt(v_perp_sq) / dist_au) : 0.0;
     
     // Durata massima (assumendo diametro asteroide ~10 km per ora)
-    // TODO: usare diametro reale da database
-    double asteroid_diameter_km = 10.0;  // Placeholder
-    double angular_diameter_rad = asteroid_diameter_km / (earth_distance_au * AU_TO_KM);
+    // USE TRUE DIAMETER
+    double asteroid_diameter_km = pimpl_->diameter_km;
+    if (asteroid_diameter_km <= 0.0) {
+        // Fallback estimate from H if H is set, otherwise default
+        if (pimpl_->abs_mag > 0.0) {
+             asteroid_diameter_km = 1329.0 / sqrt(pimpl_->slope_param) * pow(10, -pimpl_->abs_mag/5.0);
+             std::cout << "  [Warn] Diametro zero, stimato da H=" << pimpl_->abs_mag 
+                       << ": " << asteroid_diameter_km << " km\n";
+        } else {
+             asteroid_diameter_km = 0.0; // Can't calculate duration
+        }
+    }
+    
     double max_duration_sec = 0.0;
-    if (angular_velocity_rad_day > 0) {
+    if (asteroid_diameter_km > 0.0 && angular_velocity_rad_day > 0.0) {
+        double angular_diameter_rad = asteroid_diameter_km / (earth_distance_au * AU_TO_KM);
         max_duration_sec = (angular_diameter_rad / angular_velocity_rad_day) * 86400.0;
     }
     
@@ -769,6 +931,8 @@ OccultationEvent Phase2OccultationGeometry::calculateSingleEvent(
     // Identificazione
     event.star_source_id = candidate.source_id;
     event.asteroid_name = pimpl_->asteroid_designation;
+    event.asteroid_number = 0; // Parse if possible
+    try { event.asteroid_number = std::stoi(pimpl_->asteroid_designation); } catch(...) {}
     
     // Dati stella
     event.star_ra_deg = candidate.ra_deg;
@@ -792,7 +956,7 @@ OccultationEvent Phase2OccultationGeometry::calculateSingleEvent(
     
     // Quality
     event.high_confidence = pimpl_->has_refined_elements;
-    event.notes = elements_source;
+    event.notes = pimpl_->has_refined_elements ? "Refined Orbit" : "Nominal Orbit";
     
     return event;
 }

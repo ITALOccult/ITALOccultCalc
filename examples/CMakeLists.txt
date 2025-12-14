@@ -280,3 +280,7 @@ target_link_libraries(test_output_formats ioccultcalc)
 # Genera scheda IOTA per Hygiea
 add_executable(generate_hygiea_iota_card generate_hygiea_iota_card.cpp)
 target_link_libraries(generate_hygiea_iota_card ioccultcalc)
+
+# 249 Equatorial Test
+add_executable(test_249_equatorial test_249_equatorial.cpp)
+target_link_libraries(test_249_equatorial ioccultcalc)
