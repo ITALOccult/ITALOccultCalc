@@ -70,39 +70,33 @@ using namespace ioccultcalc;
 
 // Helper: Convert Ecliptic Elements (from DB/AstDyS) to Equatorial (for Propagator)
 // Assumes Mean Obliquity J2000 for the rotation.
+// Helper: Convert Ecliptic Elements (from DB/AstDyS) to Osculating Equatorial using AstDyn API
 astdyn::propagation::KeplerianElements convert_ecliptic_to_equatorial(const ioccultcalc::OrbitalElements& startElem) {
-    // 1. Convert to astdyn Keplerian structure (Ecliptic)
-    astdyn::propagation::KeplerianElements kEcl;
-    kEcl.epoch_mjd_tdb = startElem.epoch.toMJD();
-    kEcl.semi_major_axis = startElem.a;
-    kEcl.eccentricity = startElem.e;
-    kEcl.inclination = startElem.i;
-    kEcl.longitude_ascending_node = startElem.Omega;
-    kEcl.argument_perihelion = startElem.omega;
-    kEcl.mean_anomaly = startElem.M;
-    // Standard Solar GM (AU^3/d^2) matches JPL DE441 approx
-    kEcl.gravitational_parameter = 1.32712440018e20 / std::pow(1.495978707e11, 3) * std::pow(86400.0, 2);
+    // 1. Map to AstDyn Keplerian (Mean Ecliptic)
+    astdyn::propagation::KeplerianElements kMeanEcl;
+    kMeanEcl.epoch_mjd_tdb = startElem.epoch.toMJD();
+    kMeanEcl.semi_major_axis = startElem.a;
+    kMeanEcl.eccentricity = startElem.e;
+    kMeanEcl.inclination = startElem.i;
+    kMeanEcl.longitude_ascending_node = startElem.Omega;
+    kMeanEcl.argument_perihelion = startElem.omega;
+    kMeanEcl.mean_anomaly = startElem.M;
+    kMeanEcl.gravitational_parameter = astdyn::constants::GMS;
 
-    // 2. Convert to Cartesian (Ecliptic)
-    auto cEcl = astdyn::propagation::keplerian_to_cartesian(kEcl);
+    // 2. Convert to Equinoctial (Mean Ecliptic)
+    auto eqMeanEcl = astdyn::propagation::keplerian_to_equinoctial(kMeanEcl);
 
-    // 3. Rotate Position & Velocity to Equatorial (x_eq = x_ec, y_eq... rotation around X by -eps)
-    // Wait, Ecliptic to Equatorial is rotation around X-axis by -epsilon (obliquity).
-    // R_x(-eps) = [1 0 0; 0 c s; 0 -s c] -- No, standard is:
-    // y_eq = y_ec * cos(eps) - z_ec * sin(eps)
-    // z_eq = y_ec * sin(eps) + z_ec * cos(eps)
-    double eps = 23.4392911 * (M_PI / 180.0); // Mean Obliquity J2000
-    double ce = std::cos(eps);
-    double se = std::sin(eps);
+    // 3. Use API to convert Mean Equinoctial (Ecliptic) -> Osculating Keplerian (Equatorial)
+    // This handles the geometric frame rotation (Ecliptic J2000 -> Equatorial J2000)
+    // and prepares elements for the equatorial propagator.
+    // Note: This API treats input as "Mean" geometrically. 
+    // For physical Mean->Osculating (J2), use mean_to_osculating() additionally if needed.
+    auto kOscEq = astdyn::api::OrbitFitAPI::convert_mean_equinoctial_to_osculating(eqMeanEcl);
+    
+    // (Optional) Apply physical Mean->Osculating correction (J2)
+    // kOscEq = astdyn::propagation::mean_to_osculating(kOscEq); 
 
-    astdyn::propagation::CartesianElements cEq = cEcl;
-    cEq.position.y() = cEcl.position.y() * ce - cEcl.position.z() * se;
-    cEq.position.z() = cEcl.position.y() * se + cEcl.position.z() * ce;
-    cEq.velocity.y() = cEcl.velocity.y() * ce - cEcl.velocity.z() * se;
-    cEq.velocity.z() = cEcl.velocity.y() * se + cEcl.velocity.z() * ce;
-
-    // 4. Convert back to Keplerian (Equatorial)
-    return astdyn::propagation::cartesian_to_keplerian(cEq);
+    return kOscEq;
 }
 
 
@@ -116,7 +110,7 @@ astdyn::propagation::KeplerianElements convert_ecliptic_to_equatorial(const iocc
 // VARIABILI GLOBALI
 // ============================================================================
 
-static bool g_verbose = false;  // Flag per output verboso
+static bool g_verbose = true;  // Flag per output verboso (default true, può essere disabilitato da config)
 static int g_verbosityLevel = 0; // 0=quiet, 1=monitor, 2=debug
 
 // ============================================================================
@@ -237,6 +231,20 @@ ConfigManager loadConfiguration(const std::string& configFile) {
             std::cerr.flush();
             config.loadFromOop(configFile);
             std::cout << "✓ Configurazione OrbFit caricata\n";
+            
+            // AUTOMATIC CONVERSION: Save as JSON
+            std::string jsonPath = configFile;
+            size_t extPos = jsonPath.rfind(".oop");
+            if (extPos != std::string::npos) {
+                jsonPath.replace(extPos, 4, ".json");
+                std::cout << "  Auto-converting to JSON: " << jsonPath << " ... ";
+                try {
+                    config.saveToJson(jsonPath);
+                    std::cout << "OK\n";
+                } catch (const std::exception& e) {
+                    std::cerr << "FAILED (" << e.what() << ")\n";
+                }
+            }
             std::cout.flush();
         } else {
             throw std::runtime_error("Formato configurazione non supportato");
@@ -397,19 +405,56 @@ std::vector<AsteroidCandidate> selectAsteroids(const ConfigManager& config) {
         // 2. Lista inline: asteroid_list = "10,4,1,433"
         if (objectSection->hasParameter("asteroid_list")) {
             std::string listStr = objectSection->getParameter("asteroid_list")->asString();
+            
+            // CLEAN QUOTES: The parser might pass raw strings like "'1..1000'"
+            listStr.erase(std::remove(listStr.begin(), listStr.end(), '\''), listStr.end());
+            listStr.erase(std::remove(listStr.begin(), listStr.end(), '\"'), listStr.end());
+            
+            std::cout << "[DEBUG] Parsing asteroid_list: " << listStr << "\n";
+
             std::istringstream iss(listStr);
             std::string token;
             while (std::getline(iss, token, ',')) {
                 // Trim whitespace
                 token.erase(0, token.find_first_not_of(" \t"));
                 token.erase(token.find_last_not_of(" \t") + 1);
-                if (!token.empty()) {
+                
+                if (token.empty()) continue;
+                
+                // RANGE PARSING: Check for ".." or "..."
+                size_t rangePos = token.find("..");
+                if (rangePos != std::string::npos) {
                     try {
-                        int num = std::stoi(token);
-                        explicitAsteroidList.insert(num);
-                    } catch (...) {
-                        std::cerr << "Attenzione: ignorato numero invalido '" << token << "'\n";
+                        std::string startStr = token.substr(0, rangePos);
+                        std::string endStr = token.substr(rangePos + 2); // default skip 2 chars for ".."
+                        
+                        // Handle "..."
+                        if (endStr.length() > 0 && endStr[0] == '.') {
+                            endStr = endStr.substr(1);
+                        }
+                        
+                        int startNum = std::stoi(startStr);
+                        int endNum = std::stoi(endStr);
+                        
+                        if (startNum <= endNum) {
+                            for (int i = startNum; i <= endNum; ++i) {
+                                explicitAsteroidList.insert(i);
+                            }
+                            // Feedback utente
+                            std::cout << "  ✓ Range rilevato: " << startNum << ".." << endNum 
+                                      << " -> Espanso in " << (endNum - startNum + 1) << " asteroidi\n";
+                        }
+                    } catch (const std::exception& e) {
+                        std::cout << "  ⚠ Attenzione: errore parsing range '" << token << "': " << e.what() << "\n";
                     }
+                    continue;
+                }
+
+                try {
+                    int num = std::stoi(token);
+                    explicitAsteroidList.insert(num);
+                } catch (...) {
+                    std::cout << "  ⚠ Attenzione: ignorato token non valido '" << token << "'\n";
                 }
             }
             if (!explicitAsteroidList.empty()) useExplicitList = true;
@@ -618,7 +663,8 @@ std::vector<AsteroidCandidate> selectAsteroids(const ConfigManager& config) {
                 cand.elements.H = H;
                 cand.elements.G = elem.G;
                 
-                // Filtri base
+                // Filtri base (ORA APPLICATI ANCHE ALLE LISTE ESPLICITE)
+                // Se presenti filtri > 0, applicali
                 if (maxMagnitude > 0 && H > maxMagnitude) continue;
                 if (minDiameter > 0 && diameter < minDiameter) continue;
                 if (maxDiameter > 0 && diameter > maxDiameter) continue;
@@ -815,42 +861,43 @@ std::vector<AsteroidCandidate> selectAsteroids(const ConfigManager& config) {
             if (explicitAsteroidList.find(asteroidNumber) == explicitAsteroidList.end()) {
                 continue;  // Non nella lista, skip
             }
-            // Asteroide nella lista: bypassa tutti i filtri
+            // Asteroide nella lista: MA ora applichiamo i filtri se definiti!
+        } 
+        
+        // Modalità filtri standard + Filtri su lista esplicita
+        // Leggi elementi orbitali REALI dal JSON (supporta tutti i formati)
+        double H = astJson.value("H", 99.0);
+        
+        // Calcola perihelion e aphelion da a ed e se disponibili
+        double q = 0.0, Q = 0.0;
+        if (astJson.contains("a") && astJson.contains("e")) {
+            double a = astJson["a"].get<double>();
+            double e = astJson["e"].get<double>();
+            q = a * (1.0 - e);
+            Q = a * (1.0 + e);
         } else {
-            // Modalità filtri standard
-            // Leggi elementi orbitali REALI dal JSON (supporta tutti i formati)
-            double H = astJson.value("H", 99.0);
-            
-            // Calcola perihelion e aphelion da a ed e se disponibili
-            double q = 0.0, Q = 0.0;
-            if (astJson.contains("a") && astJson.contains("e")) {
-                double a = astJson["a"].get<double>();
-                double e = astJson["e"].get<double>();
-                q = a * (1.0 - e);
-                Q = a * (1.0 + e);
-            } else {
-                // Fallback: cerca direttamente nei campi
-                q = astJson.contains("Perihelion_dist") ? astJson["Perihelion_dist"].get<double>() : astJson.value("q", 0.0);
-                Q = astJson.contains("Aphelion_dist") ? astJson["Aphelion_dist"].get<double>() : astJson.value("Q", 0.0);
-            }
-            
-            // Applica filtri SOLO se configurati (valore > 0)
-            if (maxMagnitude > 0 && H > maxMagnitude) continue;
-            if (minPerihelion > 0 && q < minPerihelion) continue;
-            if (maxAphelion > 0 && Q > maxAphelion) continue;
-            
-            // Usa diametro dal JSON se disponibile, altrimenti stima da H
-            double estimatedDiameter = 0.0;
-            if (astJson.contains("diameter") && astJson["diameter"].is_number()) {
-                estimatedDiameter = astJson["diameter"].get<double>();
-            } else {
-                // Stima diametro approssimativo da H
-                estimatedDiameter = 1329.0 / sqrt(0.15) * pow(10, -H / 5.0);
-            }
-            
-            if (minDiameter > 0 && estimatedDiameter < minDiameter) continue;
-            if (maxDiameter > 0 && estimatedDiameter > maxDiameter) continue;
+            // Fallback: cerca direttamente nei campi
+            q = astJson.contains("Perihelion_dist") ? astJson["Perihelion_dist"].get<double>() : astJson.value("q", 0.0);
+            Q = astJson.contains("Aphelion_dist") ? astJson["Aphelion_dist"].get<double>() : astJson.value("Q", 0.0);
         }
+        
+        // Applica filtri SOLO se configurati (valore > 0)
+        // NOTA: Ora si applicano ANCHE se useExplicitList è true
+        if (maxMagnitude > 0 && H > maxMagnitude) continue;
+        if (minPerihelion > 0 && q < minPerihelion) continue;
+        if (maxAphelion > 0 && Q > maxAphelion) continue;
+        
+        // Usa diametro dal JSON se disponibile, altrimenti stima da H
+        double estimatedDiameter = 0.0;
+        if (astJson.contains("diameter") && astJson["diameter"].is_number()) {
+            estimatedDiameter = astJson["diameter"].get<double>();
+        } else {
+            // Stima diametro approssimativo da H
+            estimatedDiameter = 1329.0 / sqrt(0.15) * pow(10, -H / 5.0);
+        }
+        
+        if (minDiameter > 0 && estimatedDiameter < minDiameter) continue;
+        if (maxDiameter > 0 && estimatedDiameter > maxDiameter) continue;
         
         // ═══════════════════════════════════════════════════════════════
         // CARICA ELEMENTI ORBITALI DAL DATABASE JSON (LINOCCULT METHOD)
@@ -1001,8 +1048,9 @@ std::vector<AsteroidCandidate> selectAsteroids(const ConfigManager& config) {
         }
         
         // Usa diametro dal JSON se disponibile, altrimenti stima da H
-        double H = elements.H;
-        double estimatedDiameter = 0.0;
+        // Re-assign existing variables with better values from elements
+        H = elements.H;
+        estimatedDiameter = 0.0;
         if (elements.diameter > 0) {
             estimatedDiameter = elements.diameter;
         } else if (astJson.contains("diameter") && astJson["diameter"].is_number()) {
@@ -1852,12 +1900,13 @@ std::vector<ItalOccultationEvent> detectOccultations(
             double orbitalUncertainty = 2.0;  // km, conservativo
             predictor.setOrbitalUncertainty(orbitalUncertainty);
             
-            // ================================================================
+
             // DEBUG: Controlla sezione DEBUG per operazioni speciali
             // ================================================================
             double checkEpochMJD = 0.0;
             double checkTimeHint = 0.0;
             uint64_t targetStarID = 0;
+            bool forceTargetStar = false; // Default: non forzare inserimento
             
             auto debugSection = config.getSection(ConfigSection::DEBUG);
             if (debugSection) {
@@ -1874,6 +1923,16 @@ std::vector<ItalOccultationEvent> detectOccultations(
                     } catch (...) {
                         std::cerr << "Warning: Invalid target_star ID in debug section\n";
                     }
+                }
+                if (debugSection->hasParameter("force_target_star")) {
+                    forceTargetStar = debugSection->getParameter("force_target_star")->asBool();
+                }
+            }
+            
+            auto outputSection = config.getSection(ConfigSection::OUTPUT);
+            if (outputSection) {
+                if (outputSection->hasParameter("verbose")) {
+                    g_verbose = outputSection->getParameter("verbose")->asBool();
                 }
             }
             
@@ -2025,32 +2084,34 @@ std::vector<ItalOccultationEvent> detectOccultations(
                 auto candidates = p1Results.candidates;
                 results.num_candidates_found = candidates.size();
                 
-                if (!candidates.empty() || true) { // Force run to allow injection
+                if (!candidates.empty() || forceTargetStar) { // Run if candidates exist OR forced injection
                     // Check and Inject Target Star if missing (use variable from config)
                     uint64_t targetID = (targetStarID > 0) ? targetStarID : 877859914797936896ULL;
                     
-                    bool foundTarget = false;
-                    for(const auto& c : candidates) if(c.source_id == targetID) foundTarget = true;
-                    
-                    if (!foundTarget) {
-                        std::cout << "Debug: Target star " << targetID << " missing. Fetching manually...\n";
-                        auto targetOpt = ioc::gaia::UnifiedGaiaCatalog::getInstance().queryBySourceId(targetID);
-                        if (targetOpt) {
-                            ioccultcalc::CandidateStar specialCand;
-                            specialCand.source_id = targetOpt->source_id;
-                            specialCand.ra_deg = targetOpt->ra;
-                            specialCand.dec_deg = targetOpt->dec;
-                            specialCand.phot_g_mean_mag = targetOpt->phot_g_mean_mag;
-                            // Set initial search time
-                            if (checkTimeHint > 0.0) {
-                                specialCand.closest_approach_mjd = checkTimeHint;
+                    if (forceTargetStar) {
+                        bool foundTarget = false;
+                        for(const auto& c : candidates) if(c.source_id == targetID) foundTarget = true;
+                        
+                        if (!foundTarget) {
+                            if (g_verbose) std::cout << "Debug: Target star " << targetID << " missing. Fetching manually...\n";
+                            auto targetOpt = ioc::gaia::UnifiedGaiaCatalog::getInstance().queryBySourceId(targetID);
+                            if (targetOpt) {
+                                ioccultcalc::CandidateStar specialCand;
+                                specialCand.source_id = targetOpt->source_id;
+                                specialCand.ra_deg = targetOpt->ra;
+                                specialCand.dec_deg = targetOpt->dec;
+                                specialCand.phot_g_mean_mag = targetOpt->phot_g_mean_mag;
+                                // Set initial search time
+                                if (checkTimeHint > 0.0) {
+                                    specialCand.closest_approach_mjd = checkTimeHint;
+                                } else {
+                                    specialCand.closest_approach_mjd = (phase1Conf.start_mjd_tdb + phase1Conf.end_mjd_tdb) / 2.0; 
+                                }
+                                candidates.push_back(specialCand);
+                                if (g_verbose) std::cout << "Debug: Target star added manually to candidates (T0=" << specialCand.closest_approach_mjd << ").\n";
                             } else {
-                                specialCand.closest_approach_mjd = (phase1Conf.start_mjd_tdb + phase1Conf.end_mjd_tdb) / 2.0; 
+                                 if (g_verbose) std::cout << "Debug: Target star NOT FOUND in catalog DB.\n";
                             }
-                            candidates.push_back(specialCand);
-                            std::cout << "Debug: Target star added manually to candidates (T0=" << specialCand.closest_approach_mjd << ").\n";
-                        } else {
-                             std::cout << "Debug: Target star NOT FOUND in catalog DB.\n";
                         }
                     }
 
@@ -2062,30 +2123,35 @@ std::vector<ItalOccultationEvent> detectOccultations(
                     
                     Phase2Config phase2Conf;
                     phase2Conf.time_window_minutes = 10.0;
-                    phase2Conf.fit_asteroid_perturbations = true; // USER REQUEST
-                    phase2Conf.mpc_code = asteroid.elements.designation; // For info
+                    phase2Conf.use_planetary_perturbations = true;
+                    phase2Conf.verbose = g_verbose; // Imposta verbosità da globale
+                    // USER REQUEST: Enable automatic orbit refinement using AstDyS RWO data
+                    phase2Conf.refine_orbit_from_observations = true; 
+                    phase2Conf.mpc_code = asteroid.elements.designation;
                     
                     auto p2Results = phase2.calculateGeometry(candidates, phase2Conf);
                     
                     // USER REQUEST: Specialized check for Star 877859914797936896 (or configured target)
-                    std::cout << "Debug: Checking " << candidates.size() << " candidates for target ID " << targetID << "\n";
-                    for (const auto& cand : candidates) {
-                        std::cout << "Cand ID: " << cand.source_id << "\n"; // Uncomment for full dump
-                        if (cand.source_id == targetID) {
-                            std::cout << "\n======================================================\n";
-                            std::cout << " SPECIAL CHECK FOR STAR: " << cand.source_id << "\n";
-                            std::cout << "======================================================\n";
-                            auto singleEv = phase2.calculateSingleEvent(cand, phase2Conf);
-                            std::cout << "  > Calculated MJD: " << std::fixed << std::setprecision(6) << singleEv.time_ca_mjd_utc << "\n";
-                            std::cout << "  > Closest Approach: " << std::setprecision(3) << singleEv.closest_approach_mas << " mas\n";
-                            std::cout << "  > Shadow Width: " << singleEv.shadow_width_km << " km\n";
-                            std::cout << "  > Shadow Path Points: " << singleEv.shadow_path.size() << "\n";
-                            if (singleEv.shadow_path.empty()) {
-                                std::cout << "  > RESULT: MISS (No shadow path on Earth)\n";
-                            } else {
-                                std::cout << "  > RESULT: HIT (Shadow path found)\n";
+                    if (g_verbose) {
+                        std::cout << "Debug: Checking " << candidates.size() << " candidates for target ID " << targetID << "\n";
+                        for (const auto& cand : candidates) {
+                            // std::cout << "Cand ID: " << cand.source_id << "\n"; // Uncomment for full dump
+                            if (cand.source_id == targetID) {
+                                std::cout << "\n======================================================\n";
+                                std::cout << " SPECIAL CHECK FOR STAR: " << cand.source_id << "\n";
+                                std::cout << "======================================================\n";
+                                auto singleEv = phase2.calculateSingleEvent(cand, phase2Conf);
+                                std::cout << "  > Calculated MJD: " << std::fixed << std::setprecision(6) << singleEv.time_ca_mjd_utc << "\n";
+                                std::cout << "  > Closest Approach: " << std::setprecision(3) << singleEv.closest_approach_mas << " mas\n";
+                                std::cout << "  > Shadow Width: " << singleEv.shadow_width_km << " km\n";
+                                std::cout << "  > Shadow Path Points: " << singleEv.shadow_path.size() << "\n";
+                                if (singleEv.shadow_path.empty()) {
+                                    std::cout << "  > RESULT: MISS (No shadow path on Earth)\n";
+                                } else {
+                                    std::cout << "  > RESULT: HIT (Shadow path found)\n";
+                                }
+                                std::cout << "======================================================\n\n";
                             }
-                            std::cout << "======================================================\n\n";
                         }
                     }
                     
@@ -2767,6 +2833,8 @@ void generateReports(const std::vector<ItalOccultationEvent>& events,
 // ============================================================================
 
 int main(int argc, char* argv[]) {
+    std::cout << "DEBUG: Main started.\n";
+    std::cout.flush();
     std::cout << "\n";
     std::cout << "╔═══════════════════════════════════════════════════════════════╗\n";
     std::cout << "║                     ITALOccultCalc v1.0                        ║\n";

@@ -237,6 +237,13 @@ public:
      * @param catalog Puntatore al catalogo
      */
     void setCatalog(ioc::gaia::UnifiedGaiaCatalog* catalog);
+
+    /**
+     * @brief Imposta il livello di verbosità
+     * @param level 0=quiet, 1=minimal, 2=full
+     */
+    void setVerbose(int level);
+
     
 private:
     class Impl;

@@ -40,6 +40,9 @@
  */
 
 #include "phase2_occultation_geometry.h"
+#include <cmath>
+#include <iostream>
+#include <iomanip>
 
 // Astdyn
 #include "../external/ITALOccultLibrary/astdyn/include/astdyn/io/parsers/OrbFitEQ1Parser.hpp"
@@ -137,8 +140,8 @@ public:
     /**
      * @brief Scarica osservazioni RWO da AstDyS
      */
-    std::vector<astdyn::observations::OpticalObservation> downloadRWOObservations(
-        const std::string& designation);
+    std::vector<astdyn::observations::OpticalObservation> 
+    downloadRWOObservations(const std::string& designation, bool verbose = true);
     
     /**
      * @brief Esegue fit orbitale preciso con tutte le correzioni
@@ -422,9 +425,9 @@ bool Phase2OccultationGeometry::Impl::downloadFile(
 // ═══════════════════════════════════════════════════════════════
 
 std::vector<astdyn::observations::OpticalObservation> 
-Phase2OccultationGeometry::Impl::downloadRWOObservations(const std::string& designation) {
+Phase2OccultationGeometry::Impl::downloadRWOObservations(const std::string& designation, bool verbose) {
     
-    std::cout << "  [RWO Download] Scaricamento osservazioni per " << designation << "...\n";
+    if (verbose) std::cout << "  [RWO Download] Scaricamento osservazioni per " << designation << "...\n";
     
     try {
         // Costruisci URL AstDyS
@@ -483,6 +486,71 @@ OrbitalFitResults Phase2OccultationGeometry::Impl::refineOrbitWithObservations(
     
     std::cout << "  [Orbital Fit] Fitting con " << observations.size() << " osservazioni...\n";
     
+    // ═══════════════════════════════════════════════════════════════
+    // PRE-CHECK: Calcola residui iniziali per evitare crash
+    // ═══════════════════════════════════════════════════════════════
+    try {
+        double sum_sq_resid = 0.0;
+        int valid_obs = 0;
+        
+        for (const auto& obs : observations) {
+            // Usa propagazione approssimata (2-body) veloce
+            // Nota: obs.mjd_utc usata come TDB per semplicità in questo check
+            auto kep = propagator->propagate_keplerian(keplerian_elements, obs.mjd_utc);
+            auto cart = astdyn::propagation::keplerian_to_cartesian(kep);
+            
+            double jd = obs.mjd_utc + 2400000.5;
+            auto earth = astdyn::ephemeris::PlanetaryEphemeris::getPosition(
+                astdyn::ephemeris::CelestialBody::EARTH, jd);
+                
+            // Vettore Asteroide-Terra (Equatoriale J2000)
+            Eigen::Vector3d rho = cart.position - earth;
+            double dist = rho.norm();
+            
+            if (dist < 1e-6) continue;
+            
+            double ra_rad = std::atan2(rho[1], rho[0]);
+            if (ra_rad < 0) ra_rad += 2.0 * M_PI;
+            double dec_rad = std::asin(rho[2] / dist);
+            
+            // Obs in radianti (assumendo obs.ra in gradi)
+            double obs_ra_rad = obs.ra * DEG_TO_RAD;
+            double obs_dec_rad = obs.dec * DEG_TO_RAD;
+            
+            double d_ra = (ra_rad - obs_ra_rad);
+            while (d_ra > M_PI) d_ra -= 2.0*M_PI;
+            while (d_ra < -M_PI) d_ra += 2.0*M_PI;
+            d_ra *= std::cos(dec_rad); // Projection
+            
+            double d_dec = dec_rad - obs_dec_rad;
+            
+            sum_sq_resid += (d_ra*d_ra + d_dec*d_dec);
+            valid_obs++;
+        }
+        
+        if (valid_obs > 0) {
+            double rms_rad = std::sqrt(sum_sq_resid / valid_obs);
+            double rms_sec = rms_rad * RAD_TO_DEG * 3600.0;
+            
+            std::cout << "  [Pre-Check] RMS Residui Nominali: " << std::fixed 
+                      << std::setprecision(2) << rms_sec << " arcsec\n";
+            
+            if (rms_sec > 100.0) {
+                std::cout << "  ⚠ Residui troppo alti (>100\"). Skipping fit per sicurezza.\n";
+                results.fit_notes = "Skipped: Initial RMS too high (" + std::to_string((int)rms_sec) + "\")";
+                results.fit_successful = false;
+                return results;
+            }
+        }
+    } catch (const std::exception& e) {
+        std::cout << "  [Pre-Check] Warning: " << e.what() << "\n";
+        // In caso di errore nel check, proviamo comunque il fit standard
+    }
+    
+    // ═══════════════════════════════════════════════════════════════
+    // FIT ASTDYN
+    // ═══════════════════════════════════════════════════════════════
+    
     try {
         // Crea il fitter di AstDyn
         astdyn::io::AstDysOrbitFitter fitter;
@@ -512,28 +580,51 @@ OrbitalFitResults Phase2OccultationGeometry::Impl::refineOrbitWithObservations(
         
         // Se converge, salva gli elementi raffinati
         if (results.fit_successful) {
-            refined_elements = fit_result.fitted_orbit;
-            has_refined_elements = true;
-            
-            // Propaga elementi raffinati all'epoca target (CA)
-            auto kep_target = propagator->propagate_keplerian(refined_elements, target_mjd_tdb);
-            results.refined_elements = kep_target;
-            
-            results.fit_notes = "Fit convergente";
-            
-            double fit_time = std::chrono::duration<double>(t_end - t_start).count();
-            std::cout << "  ✓ Fit convergente in " << fit_time << " sec\n";
-            std::cout << "    RMS: " << results.rms_residuals_arcsec << " arcsec\n";
-            std::cout << "    Chi²: " << results.chi_squared << "\n";
-            std::cout << "    Osservazioni: " << results.num_observations_used 
-                     << " / " << fit_result.num_observations_loaded;
-            if (fit_result.num_outliers > 0) {
-                std::cout << " (" << fit_result.num_outliers << " outlier rimossi)";
+            // [DEBUG] Check validity of the fit
+            if (results.rms_residuals_arcsec > 10.0) {
+                 std::cout << "  ⚠ Fit tecnicamente convergente ma RMS eccessivo (" 
+                           << results.rms_residuals_arcsec << " > 10.0arcsec). Scarto risultati.\n";
+                 results.fit_successful = false;
+                 results.fit_notes = "Fit convergente ma RMS alto";
             }
-            std::cout << "\n";
-        } else {
-            results.fit_notes = "Fit non convergente";
-            std::cout << "  ⚠ Fit non convergente dopo " << results.iterations_performed << " iterazioni\n";
+            // Check for NaNs
+            else if (std::isnan(fit_result.fitted_orbit.semi_major_axis) || 
+                     std::isnan(fit_result.fitted_orbit.eccentricity)) {
+                 std::cout << "  ⚠ Fit ha prodotto valori NaN. Scarto risultati.\n";
+                 results.fit_successful = false;
+                 results.fit_notes = "Fit prodotto NaN";
+            }
+            else {
+                refined_elements = fit_result.fitted_orbit;
+                has_refined_elements = true;
+                
+                // Propaga elementi raffinati all'epoca target (CA)
+                auto kep_target = propagator->propagate_keplerian(refined_elements, target_mjd_tdb);
+                results.refined_elements = kep_target;
+                
+                results.fit_notes = "Fit convergente";
+                
+                double fit_time = std::chrono::duration<double>(t_end - t_start).count();
+                std::cout << "  ✓ Fit convergente in " << fit_time << " sec\n";
+                std::cout << "    RMS: " << results.rms_residuals_arcsec << " arcsec\n";
+                std::cout << "    Chi²: " << results.chi_squared << "\n";
+                std::cout << "    Osservazioni: " << results.num_observations_used 
+                         << " / " << fit_result.num_observations_loaded;
+                if (fit_result.num_outliers > 0) {
+                    std::cout << " (" << fit_result.num_outliers << " outlier rimossi)";
+                }
+                std::cout << "\n";
+                
+                std::cout << "    Elementi (a,e,i): " << refined_elements.semi_major_axis << " AU, "
+                          << refined_elements.eccentricity << ", " 
+                          << refined_elements.inclination * 180.0/M_PI << " deg\n";
+            }
+        } 
+        
+        if (!results.fit_successful) {
+            // Logica di fallback già presente, ma aggiorniamo il messaggio per chiarezza
+            if (results.fit_notes.empty()) results.fit_notes = "Fit non convergente";
+            std::cout << "  ⚠ Fit non valido: " << results.fit_notes << "\n";
             std::cout << "  Uso elementi nominali\n";
         }
         
@@ -561,31 +652,38 @@ Phase2Results Phase2OccultationGeometry::calculateGeometry(
     Phase2Results results;
     auto t_start = std::chrono::high_resolution_clock::now();
     
-    std::cout << "\n╔════════════════════════════════════════════════════════════╗\n";
-    std::cout << "║  PHASE 2: Geometria Precisa con Orbital Refinement        ║\n";
-    std::cout << "╚════════════════════════════════════════════════════════════╝\n\n";
-    std::cout << "Candidati da processare: " << candidates.size() << "\n";
-    std::cout << "Orbital refinement: " << (config.refine_orbit_from_observations ? "ATTIVO" : "DISATTIVO") << "\n";
-    std::cout << "Finestra temporale: ±" << config.time_window_minutes << " min\n";
-    std::cout << "Risoluzione: " << config.time_step_seconds << " sec\n\n";
+    if (config.verbose) {
+        std::cout << "\n╔════════════════════════════════════════════════════════════╗\n";
+        std::cout << "║  PHASE 2: Geometria Precisa con Orbital Refinement        ║\n";
+        std::cout << "╚════════════════════════════════════════════════════════════╝\n\n";
+        std::cout << "Candidati da processare: " << candidates.size() << "\n";
+        std::cout << "Orbital refinement: " << (config.refine_orbit_from_observations ? "ATTIVO" : "DISATTIVO") << "\n";
+        std::cout << "Finestra temporale: ±" << config.time_window_minutes << " min\n";
+        std::cout << "Risoluzione: " << config.time_step_seconds << " sec\n\n";
+    }
     
     // ═══════════════════════════════════════════════════════════════
     // STEP 1: ORBITAL REFINEMENT (se richiesto)
     // ═══════════════════════════════════════════════════════════════
     if (config.refine_orbit_from_observations && !config.mpc_code.empty()) {
-        std::cout << "══════════════════════════════════════════════════════════\n";
-        std::cout << "STEP 1: ORBITAL REFINEMENT\n";
-        std::cout << "══════════════════════════════════════════════════════════\n\n";
+        if (config.verbose) {
+            std::cout << "══════════════════════════════════════════════════════════\n";
+            std::cout << "STEP 1: ORBITAL REFINEMENT\n";
+            std::cout << "══════════════════════════════════════════════════════════\n\n";
+        }
         
         // Salva designation per riferimento
         pimpl_->asteroid_designation = config.mpc_code;
         
         // Download osservazioni RWO da AstDyS
+        // TODO: Pass verbose flag to downloadRWOObservations? 
+        // For now, we assume it prints. To silence it, we'd need to modify that method signature or implementation.
+        // Let's modify downloadRWOObservations implementation later in this file.
         std::vector<astdyn::observations::OpticalObservation> all_observations = 
-            pimpl_->downloadRWOObservations(config.mpc_code);
+            pimpl_->downloadRWOObservations(config.mpc_code, config.verbose);
         
         if (!all_observations.empty() && !candidates.empty()) {
-            std::cout << "  [Observations] Scaricate " << all_observations.size() << " osservazioni\n";
+            if (config.verbose) std::cout << "  [Observations] Scaricate " << all_observations.size() << " osservazioni\n";
             
             // Seleziona le N osservazioni più recenti (se richiesto)
             std::vector<astdyn::observations::OpticalObservation> observations;
@@ -604,16 +702,20 @@ Phase2Results Phase2OccultationGeometry::calculateGeometry(
                 observations.assign(all_observations.begin(), 
                                   all_observations.begin() + config.max_observations_for_fit);
                 
-                std::cout << "  [Observations] Selezionate " << observations.size() 
-                         << " osservazioni più recenti per il fit\n";
-                std::cout << "  [Observations] Epoca più recente: MJD " 
-                         << std::fixed << std::setprecision(2) << observations[0].mjd_utc << "\n";
-                std::cout << "  [Observations] Epoca più vecchia: MJD " 
-                         << observations.back().mjd_utc << "\n";
+                if (config.verbose) {
+                    std::cout << "  [Observations] Selezionate " << observations.size() 
+                             << " osservazioni più recenti per il fit\n";
+                    std::cout << "  [Observations] Epoca più recente: MJD " 
+                             << std::fixed << std::setprecision(2) << observations[0].mjd_utc << "\n";
+                    std::cout << "  [Observations] Epoca più vecchia: MJD " 
+                             << observations.back().mjd_utc << "\n";
+                }
             } else {
                 observations = all_observations;
-                std::cout << "  [Observations] Uso tutte le " << observations.size() 
-                         << " osservazioni disponibili\n";
+                if (config.verbose) {
+                    std::cout << "  [Observations] Uso tutte le " << observations.size() 
+                             << " osservazioni disponibili\n";
+                }
             }
             
             // Usa il primo candidato per determinare l'epoca target (CA time)
@@ -625,10 +727,12 @@ Phase2Results Phase2OccultationGeometry::calculateGeometry(
             
             if (results.orbital_fit.fit_successful) {
                 results.orbit_refined = true;
-                std::cout << "\n  ✓✓✓ ORBITA RAFFINATA CON SUCCESSO ✓✓✓\n";
-                std::cout << "  Elementi propagati al CA per massima precisione\n\n";
+                if (config.verbose) {
+                    std::cout << "\n  ✓✓✓ ORBITA RAFFINATA CON SUCCESSO ✓✓✓\n";
+                    std::cout << "  Elementi propagati al CA per massima precisione\n\n";
+                }
             } else {
-                std::cout << "\n  ⚠ Fit fallito - uso elementi nominali\n\n";
+                if (config.verbose) std::cout << "\n  ⚠ Fit fallito - uso elementi nominali\n\n";
             }
         }
     }
@@ -636,28 +740,34 @@ Phase2Results Phase2OccultationGeometry::calculateGeometry(
     // ═══════════════════════════════════════════════════════════════
     // STEP 2: CALCOLO GEOMETRIA PER OGNI CANDIDATO
     // ═══════════════════════════════════════════════════════════════
-    std::cout << "══════════════════════════════════════════════════════════\n";
-    std::cout << "STEP 2: CALCOLO GEOMETRIA OCCULTAZIONI\n";
-    std::cout << "══════════════════════════════════════════════════════════\n\n";
+    if (config.verbose) {
+        std::cout << "══════════════════════════════════════════════════════════\n";
+        std::cout << "STEP 2: CALCOLO GEOMETRIA OCCULTAZIONI\n";
+        std::cout << "══════════════════════════════════════════════════════════\n\n";
+    }
     
     for (size_t i = 0; i < candidates.size(); ++i) {
         const auto& candidate = candidates[i];
         
         try {
-            std::cout << "Candidato " << (i+1) << "/" << candidates.size() 
-                     << " - Stella " << candidate.source_id << "...\n";
+            if (config.verbose) {
+                std::cout << "Candidato " << (i+1) << "/" << candidates.size() 
+                         << " - Stella " << candidate.source_id << "...\n";
+            }
             
             OccultationEvent event = calculateSingleEvent(candidate, config);
             results.events.push_back(event);
             results.successful_calculations++;
             
-            std::cout << "  ✓ CA: " << event.closest_approach_mas << " mas @ MJD " 
-                     << std::fixed << std::setprecision(6) << event.time_ca_mjd_utc << "\n";
-            std::cout << "  Duration: " << event.max_duration_sec << " sec\n";
-            if (event.shadow_width_km > 0)
-                 std::cout << "  Shadow path width: " << event.shadow_width_km << " km\n\n";
-            else
-                 std::cout << "  Shadow path: (diametro non disp.)\n\n";
+            if (config.verbose) {
+                std::cout << "  ✓ CA: " << event.closest_approach_mas << " mas @ MJD " 
+                         << std::fixed << std::setprecision(6) << event.time_ca_mjd_utc << "\n";
+                std::cout << "  Duration: " << event.max_duration_sec << " sec\n";
+                if (event.shadow_width_km > 0)
+                     std::cout << "  Shadow path width: " << event.shadow_width_km << " km\n\n";
+                else
+                     std::cout << "  Shadow path: (diametro non disp.)\n\n";
+            }
             
         } catch (const std::exception& e) {
             std::cerr << "  ✗ Errore: " << e.what() << "\n\n";
@@ -670,20 +780,24 @@ Phase2Results Phase2OccultationGeometry::calculateGeometry(
     results.total_computation_time_ms = 
         std::chrono::duration<double, std::milli>(t_end - t_start).count();
     
-    std::cout << "══════════════════════════════════════════════════════════\n";
-    std::cout << "PHASE 2 COMPLETATA\n";
-    std::cout << "══════════════════════════════════════════════════════════\n";
-    std::cout << "  Orbital refinement: " << (results.orbit_refined ? "✓ Successo" : "✗ Non eseguito") << "\n";
-    if (results.orbit_refined) {
-        std::cout << "    RMS residui: " << results.orbital_fit.rms_residuals_arcsec << " arcsec\n";
-        std::cout << "    Osservazioni: " << results.orbital_fit.num_observations_used << "\n";
+    if (config.verbose) {
+        std::cout << "══════════════════════════════════════════════════════════\n";
+        std::cout << "PHASE 2 COMPLETATA\n";
+        std::cout << "══════════════════════════════════════════════════════════\n";
+        std::cout << "  Orbital refinement: " << (results.orbit_refined ? "✓ Successo" : "✗ Non eseguito") << "\n";
+        if (results.orbit_refined) {
+            std::cout << "    RMS residui: " << results.orbital_fit.rms_residuals_arcsec << " arcsec\n";
+            std::cout << "    Osservazioni: " << results.orbital_fit.num_observations_used << "\n";
+        }
+        std::cout << "  Eventi calcolati: " << results.successful_calculations << "\n";
+        std::cout << "  Falliti: " << results.failed_calculations << "\n";
+        std::cout << "  Tempo totale: " << results.total_computation_time_ms << " ms\n\n";
     }
-    std::cout << "  Eventi calcolati: " << results.successful_calculations << "\n";
-    std::cout << "  Falliti: " << results.failed_calculations << "\n";
-    std::cout << "  Tempo totale: " << results.total_computation_time_ms << " ms\n\n";
     
     return results;
 }
+
+
 
 OccultationEvent Phase2OccultationGeometry::calculateSingleEvent(
     const ioccultcalc::CandidateStar& candidate,
@@ -702,20 +816,23 @@ OccultationEvent Phase2OccultationGeometry::calculateSingleEvent(
         ? "elementi raffinati da fit RWO" 
         : "elementi nominali";
     
-    std::cout << "  Usando: " << elements_source << "\n";
+    if (config.verbose) {
+        std::cout << "  Usando: " << elements_source << "\n";
+    }
     
     // ═══════════════════════════════════════════════════════════════
     // STEP 1: PROPAGAZIONE DENSA ATTORNO AL CA
     // ═══════════════════════════════════════════════════════════════
     
     // ═══════════════════════════════════════════════════════════════
-    // STEP 1: APPROSSIMAZIONE CHEBYSHEV (USER REQUEST)
+    // STEP 1: RICERCA TEMPO CA (RIGOROSA)
     // ═══════════════════════════════════════════════════════════════
+    // Sostituisce Approccio Chebyshev con Ricerca Diretta (più affidabile)
     
-    double ca_mjd = candidate.closest_approach_mjd;
+    double ca_mjd_guess = candidate.closest_approach_mjd;
     double time_window_days = config.time_window_minutes / 1440.0;
-    double start_mjd = ca_mjd - time_window_days;
-    double end_mjd = ca_mjd + time_window_days;
+    double start_mjd = ca_mjd_guess - time_window_days;
+    double end_mjd = ca_mjd_guess + time_window_days;
     
     // Coordinate stella unitarie (J2000)
     double ra_rad = candidate.ra_deg * DEG_TO_RAD;
@@ -725,238 +842,291 @@ OccultationEvent Phase2OccultationGeometry::calculateSingleEvent(
     star_unit[1] = std::cos(dec_rad) * std::sin(ra_rad);
     star_unit[2] = std::sin(dec_rad);
 
-    // Genera nodi Chebyshev (11 punti)
-    int n_nodes = 11;
-    std::vector<Eigen::Vector3d> node_positions;
-    
-    // Pre-calculate common rotation constants
+    if (config.verbose) {
+        std::cout << "  Ricerca CA: Scansione rigida in ±" 
+                 << config.time_window_minutes << " min attorno a MJD " << std::fixed << std::setprecision(5) << ca_mjd_guess << "\n";
+    }
+
+    // Costanti per rotazione Ecliptic -> Equatorial
     double eps = EPSILON_J2000;
     double ce = std::cos(eps);
     double se = std::sin(eps);
-    
-    std::cout << "  Approccio Chebyshev: Fitting su " << n_nodes << " nodi in ±" 
-             << config.time_window_minutes << " min\n";
-             
-    for (int k = 1; k <= n_nodes; ++k) {
-        // Nodi di Chebyshev-Lobatto o radici standard (usiamo radici standard nel range)
-        double tk_norm = std::cos(M_PI * (2.0 * k - 1.0) / (2.0 * n_nodes));
-        double t_mjd = 0.5 * (start_mjd + end_mjd) + 0.5 * (end_mjd - start_mjd) * tk_norm;
-        
-        // Propaga
-        auto kep_prop = pimpl_->propagator->propagate_keplerian(elements_to_use, t_mjd);
-        auto cart = astdyn::propagation::keplerian_to_cartesian(kep_prop);
-        Eigen::Vector3d ast_helio_ecl = cart.position;
-        
-        // Earth Pos
-        double jd_tdb = t_mjd + MJD_TO_JD; 
-        auto earth_helio_ecl = astdyn::ephemeris::PlanetaryEphemeris::getPosition(
-                astdyn::ephemeris::CelestialBody::EARTH, jd_tdb);
-        
-        // Geo Ecl
-        Eigen::Vector3d rel_pos_ecl = ast_helio_ecl - earth_helio_ecl;
-        
-        // Geo Eq
-        Eigen::Vector3d rel_pos_eq;
-        rel_pos_eq[0] = rel_pos_ecl[0];
-        rel_pos_eq[1] = rel_pos_ecl[1] * ce - rel_pos_ecl[2] * se;
-        rel_pos_eq[2] = rel_pos_ecl[1] * se + rel_pos_ecl[2] * ce;
-        
-        node_positions.push_back(rel_pos_eq);
-    }
-    
-    // Fit Chebyshev
-    ioccultcalc::ChebyshevApproximation approx(n_nodes); // Order = nodes
-    // Note: approx.fit takes sorted positions? No, assumes correspondence to time window.
-    // Wait. My implementation of 'fit' in chebyshev_approximation.h might assume uniform steps or explicit times?
-    // Step 1456 view: fit(positions, start, end). It likely assumes uniform sampling or Chebyshev nodes?
-    // Let's check the header again. Step 1456 L97: "fit(positions, start, end)".
-    // L103: "Il fitting utilizza un metodo ai minimi quadrati".
-    // If it uses LS, it needs timestamps. But the signature DOES NOT take timestamps!
-    // This implies it ASSUMES uniform sampling or specific node distribution.
-    // Most standard fits assume Uniform samples for LS or Chebyshev Nodes for Interpolation.
-    // The comment L9: "Approssimazione mediante polinomi di Chebyshev".
-    // If I passed Chebyshev nodes positions, I might need to clarify if 'fit' expects them.
-    // Assuming 'fit' expects Uniform samples (common for simplified LS APIs).
-    // I should probably use Uniform Sampling for safety if I can't check .cpp.
-    // Let's switch to UNIFORM sampling (e.g. 11 points spaced evenly) to be safe with unknown 'fit' implementation.
-    // Uniform sampling with 11 points is still very accurate for 20 mins orbit arc.
-    
-    node_positions.clear();
-    double step_node = (end_mjd - start_mjd) / (n_nodes - 1);
-    for (int i=0; i<n_nodes; ++i) {
-        double t_mjd = start_mjd + i * step_node;
-        // ... (Repeating propagation code) ...
-        auto kep_prop = pimpl_->propagator->propagate_keplerian(elements_to_use, t_mjd);
-        auto cart = astdyn::propagation::keplerian_to_cartesian(kep_prop);
-        Eigen::Vector3d ast_helio_ecl = cart.position;
-        double jd_tdb = t_mjd + MJD_TO_JD; 
-        auto earth_helio_ecl = astdyn::ephemeris::PlanetaryEphemeris::getPosition(
-                astdyn::ephemeris::CelestialBody::EARTH, jd_tdb);
-        Eigen::Vector3d rel_pos_ecl = ast_helio_ecl - earth_helio_ecl;
-        Eigen::Vector3d rel_pos_eq;
-        rel_pos_eq[0] = rel_pos_ecl[0];
-        rel_pos_eq[1] = rel_pos_ecl[1] * ce - rel_pos_ecl[2] * se;
-        rel_pos_eq[2] = rel_pos_ecl[1] * se + rel_pos_ecl[2] * ce;
-        node_positions.push_back(rel_pos_eq);
-    }
-    
-    bool fit_ok = approx.fit(node_positions, start_mjd, end_mjd);
-    if (!fit_ok) std::cerr << "  [Warning] Chebyshev fit failed!\n";
 
-    // ═══════════════════════════════════════════════════════════════
-    // STEP 2: RICERCA DEL MINUTO (COARSE SEARCH)
-    // ═══════════════════════════════════════════════════════════════
-    
-    double coarse_step = 60.0 / 86400.0; // 1 min scan
+    // 1. COARSE GRID SEARCH (Step 60 sec)
+    double step_coarse = 60.0 / 86400.0;
     double best_t = start_mjd;
-    double min_dist_rad = 1e9;
+    double min_dist_sq = 1e9;
     
-    for (double t = start_mjd; t <= end_mjd; t += coarse_step) {
-        Eigen::Vector3d pos = approx.evaluatePosition(t);
-        Eigen::Vector3d dir = pos.normalized();
-        double cos_sep = star_unit.dot(dir);
-        if (cos_sep > 1.0) cos_sep = 1.0;
-        if (cos_sep < -1.0) cos_sep = -1.0;
-        double sep = std::acos(cos_sep);
+    // Pre-allocate for performance
+    Eigen::Vector3d earth_pos;
+    
+    for (double t = start_mjd; t <= end_mjd; t += step_coarse) {
+        // Propagazione Asteroide (Ecliptic)
+        auto kep_prop = pimpl_->propagator->propagate_keplerian(elements_to_use, t);
+        auto cart_prop = astdyn::propagation::keplerian_to_cartesian(kep_prop);
+        Eigen::Vector3d ast_ecl = cart_prop.position;
         
-        if (sep < min_dist_rad) {
-            min_dist_rad = sep;
+        // Converti Asteroide in Equatorial
+        Eigen::Vector3d ast_eq;
+        ast_eq[0] = ast_ecl[0];
+        ast_eq[1] = ast_ecl[1] * ce - ast_ecl[2] * se;
+        ast_eq[2] = ast_ecl[1] * se + ast_ecl[2] * ce;
+        
+        // Posizione Terra (JPL DE is typically Equatorial J2000)
+        double jd_tdb = t + MJD_TO_JD;
+        earth_pos = astdyn::ephemeris::PlanetaryEphemeris::getPosition(
+                astdyn::ephemeris::CelestialBody::EARTH, jd_tdb);
+        
+        // Rho Geocentrico Equatoriale
+        Eigen::Vector3d rho = ast_eq - earth_pos; 
+        
+        double dist = rho.norm();
+        double dot = rho.dot(star_unit);
+        double metric = 1.0 - (dot / dist); // 1 - cos(theta)
+        
+        if (metric < min_dist_sq) {
+            min_dist_sq = metric;
             best_t = t;
         }
     }
     
-    // ═══════════════════════════════════════════════════════════════
-    // STEP 3: RAFFINAMENTO (FINE SEARCH)
-    // ═══════════════════════════════════════════════════════════════
-    
-    // Cerca attorno al minuto migliore (+/- 1 min) con Golden Section o Dense Grid
-    // Use Dense Grid 1 sec step for simplicity and robustness
-    double refine_start = best_t - coarse_step;
-    double refine_end = best_t + coarse_step;
-    double fine_step = 1.0 / 86400.0; // 1 sec
+    // 2. FINE SEARCH
+    double search_radius = step_coarse * 1.5;
+    double start_fine = std::max(start_mjd, best_t - search_radius);
+    double end_fine = std::min(end_mjd, best_t + search_radius);
+    double step_fine = 1.0 / 86400.0; // 1 sec
     
     double final_best_t = best_t;
-    double final_min_rad = min_dist_rad;
+    double final_min_metric = min_dist_sq;
     
-    for (double t = refine_start; t <= refine_end; t += fine_step) {
-        Eigen::Vector3d pos = approx.evaluatePosition(t);
-        Eigen::Vector3d dir = pos.normalized();
-        double cos_sep = star_unit.dot(dir);
-        if (cos_sep > 1.0) cos_sep = 1.0;
-        if (cos_sep < -1.0) cos_sep = -1.0;
-        double sep = std::acos(cos_sep);
+    for (double t = start_fine; t <= end_fine; t += step_fine) {
+        auto kep_prop = pimpl_->propagator->propagate_keplerian(elements_to_use, t);
+        auto cart_prop = astdyn::propagation::keplerian_to_cartesian(kep_prop);
+        Eigen::Vector3d ast_ecl = cart_prop.position;
         
-        if (sep < final_min_rad) {
-            final_min_rad = sep;
+        Eigen::Vector3d ast_eq;
+        ast_eq[0] = ast_ecl[0];
+        ast_eq[1] = ast_ecl[1] * ce - ast_ecl[2] * se;
+        ast_eq[2] = ast_ecl[1] * se + ast_ecl[2] * ce;
+        
+        double jd_tdb = t + MJD_TO_JD;
+        earth_pos = astdyn::ephemeris::PlanetaryEphemeris::getPosition(
+                astdyn::ephemeris::CelestialBody::EARTH, jd_tdb);
+        Eigen::Vector3d rho = ast_eq - earth_pos; 
+        
+        double dist = rho.norm();
+        double dot = rho.dot(star_unit);
+        double metric = 1.0 - (dot / dist);
+        
+        if (metric < final_min_metric) {
+            final_min_metric = metric;
             final_best_t = t;
         }
     }
     
+    // 3. REFINE (Final Calculation)
     double min_time_mjd = final_best_t;
-    double min_distance_mas = final_min_rad * RAD_TO_MAS;
-
-    std::cout << "  CA preciso (Chebyshev): " << min_distance_mas << " mas @ MJD " 
-             << std::fixed << std::setprecision(8) << min_time_mjd << "\n";
-
-    // ═══════════════════════════════════════════════════════════════
-    // STEP 4: CALCOLO PARAMETRI GEOMETRICI (RIGOROSO)
-    // ═══════════════════════════════════════════════════════════════
-    // Ricostruiamo i vettori rigorosi al punto di minimo
     
-    // Propaga all'istante esatto
+    // Calcola stato finale per uso successivo
     auto kep_prop_ca = pimpl_->propagator->propagate_keplerian(elements_to_use, min_time_mjd);
-    auto cart_ca = astdyn::propagation::keplerian_to_cartesian(kep_prop_ca);
-    Eigen::Vector3d ast_helio_ecl_ca = cart_ca.position;
-    double jd_tdb_ca = min_time_mjd + MJD_TO_JD; 
-    auto earth_helio_ecl_ca = astdyn::ephemeris::PlanetaryEphemeris::getPosition(
-            astdyn::ephemeris::CelestialBody::EARTH, jd_tdb_ca);
-    Eigen::Vector3d rel_pos_ecl_ca = ast_helio_ecl_ca - earth_helio_ecl_ca;
-    Eigen::Vector3d rel_pos_eq_ca; // P (Target Point)
-    rel_pos_eq_ca[0] = rel_pos_ecl_ca[0];
-    rel_pos_eq_ca[1] = rel_pos_ecl_ca[1] * ce - rel_pos_ecl_ca[2] * se;
-    rel_pos_eq_ca[2] = rel_pos_ecl_ca[1] * se + rel_pos_ecl_ca[2] * ce;
+    auto cart_prop_ca = astdyn::propagation::keplerian_to_cartesian(kep_prop_ca);
+    Eigen::Vector3d ast_ecl_ca = cart_prop_ca.position;
     
-    // Set for subsequent steps (replacing detailed loop vars)
-    std::vector<double> times = { min_time_mjd };
-    std::vector<Eigen::Vector3d> positions_icrf = { rel_pos_eq_ca };
-    int min_index = 0; // Pointing to the only element
+    Eigen::Vector3d rel_pos_eq_ca; // P (Target Point / Rho)
+    rel_pos_eq_ca[0] = ast_ecl_ca[0];
+    rel_pos_eq_ca[1] = ast_ecl_ca[1] * ce - ast_ecl_ca[2] * se;
+    rel_pos_eq_ca[2] = ast_ecl_ca[1] * se + ast_ecl_ca[2] * ce;
+    
+    double jd_tdb = min_time_mjd + MJD_TO_JD; 
+    earth_pos = astdyn::ephemeris::PlanetaryEphemeris::getPosition(
+             astdyn::ephemeris::CelestialBody::EARTH, jd_tdb);
+             
+    // Subtract Earth to get Geocentric
+    rel_pos_eq_ca = rel_pos_eq_ca - earth_pos;
+    
+    double cos_sep = rel_pos_eq_ca.dot(star_unit) / rel_pos_eq_ca.norm();
+    if (cos_sep > 1.0) cos_sep = 1.0;
+    if (cos_sep < -1.0) cos_sep = -1.0;
+    double sep_rad = std::acos(cos_sep);
+    double min_distance_mas = sep_rad * RAD_TO_MAS;
+
+    if (config.verbose) {
+        std::cout << "  CA preciso (Rigorous): " << std::fixed << std::setprecision(2) << min_distance_mas << " mas @ MJD " 
+                 << std::setprecision(8) << min_time_mjd << "\n";
+    }
+
+    // (Logic moved to Step 3 and 4)
     
     // ═══════════════════════════════════════════════════════════════
-    // STEP 3: CALCOLA PARAMETRI GEOMETRICI
+    // STEP 4: CALCOLO PARAMETRI GEOMETRICI (BESSELIAN FUNDAMENTAL PLANE)
     // ═══════════════════════════════════════════════════════════════
     
-    // Distanza asteroide dalla Terra al CA
-    double earth_distance_au = positions_icrf[min_index].norm();
+    // Recovery of earth_distance_au (missing from previous edit)
+    double earth_distance_au = rel_pos_eq_ca.norm();
+
+    // Riferimento: "Occultations by Asteroids", J.L. Hilton (USNO)
+    // Riferimento: "Solar System Occultations", Herald, D.
     
-    // Velocità angolare (approssimata con differenza finita)
-    // Velocità angolare (da derivata Chebyshev)
-    Eigen::Vector3d vel_eq_au_d = approx.evaluateVelocity(min_time_mjd);
-    // Use the rigorous position calculated above
-    Eigen::Vector3d pos_eq = positions_icrf[0]; 
-    double dist_au = pos_eq.norm();
+    // 1. Definisci il piano fondamentale (x, y)
+    // L'asse z è diretto verso la stella.
+    // L'asse x è nell'equatore terrestre (o parallelo all'eclittica, a seconda della convenzione Besseliana).
+    // La convenzione standard per occultazioni stellari usa Coordinate Equatoriali.
+    // z_unit = star_unit (verso la stella)
+    // x_unit = (pole x z) / |pole x z| (Est nel piano fondamentale)
+    // y_unit = z x x (Nord nel piano fondamentale)
     
-    // Angular velocity = v_perp / r
-    // v_perp = sqrt(v^2 - v_rad^2)
-    double v_mag_sq = vel_eq_au_d.squaredNorm();
-    double v_rad = pos_eq.dot(vel_eq_au_d) / dist_au;
-    double v_perp_sq = v_mag_sq - v_rad * v_rad;
-    double angular_velocity_rad_day = (v_perp_sq > 0.0) ? (std::sqrt(v_perp_sq) / dist_au) : 0.0;
+    // Polo Nord Celeste (J2000)
+    Eigen::Vector3d pole(0, 0, 1);
     
-    // Durata massima (assumendo diametro asteroide ~10 km per ora)
-    // USE TRUE DIAMETER
-    double asteroid_diameter_km = pimpl_->diameter_km;
-    if (asteroid_diameter_km <= 0.0) {
-        // Fallback estimate from H if H is set, otherwise default
-        if (pimpl_->abs_mag > 0.0) {
-             asteroid_diameter_km = 1329.0 / sqrt(pimpl_->slope_param) * pow(10, -pimpl_->abs_mag/5.0);
-             std::cout << "  [Warn] Diametro zero, stimato da H=" << pimpl_->abs_mag 
-                       << ": " << asteroid_diameter_km << " km\n";
-        } else {
-             asteroid_diameter_km = 0.0; // Can't calculate duration
-        }
+    // Versore stella (k)
+    Eigen::Vector3d k_vec = star_unit; // Dallo step precedente (calcolato da RA/Dec stella)
+    
+    // Versore i (asse x piano fondamentale, verso Est)
+    Eigen::Vector3d i_vec = pole.cross(k_vec);
+    double i_norm = i_vec.norm();
+    if (i_norm < 1e-9) {
+        // Stella al polo! Caso degenere raro.
+        i_vec = Eigen::Vector3d(1, 0, 0); // Arbitrario
+    } else {
+        i_vec /= i_norm;
     }
     
-    double max_duration_sec = 0.0;
-    if (asteroid_diameter_km > 0.0 && angular_velocity_rad_day > 0.0) {
-        double angular_diameter_rad = asteroid_diameter_km / (earth_distance_au * AU_TO_KM);
-        max_duration_sec = (angular_diameter_rad / angular_velocity_rad_day) * 86400.0;
+    // Versore j (asse y piano fondamentale, verso Nord)
+    Eigen::Vector3d j_vec = k_vec.cross(i_vec); // Già unitario
+    
+    // 2. Proietta Asteroide sul piano fondamentale (x, y)
+    // Posizione asteroide relativa alla Terra (Equatoriale J2000)
+    // rel_pos_eq_ca è il vettore Terra->Asteroide
+    // Attenzione: gli elementi Besseliani (x,y) sono le coordinate dell'OMBRA (o dell'asteroide)
+    // proiettate sul piano passante per il centro della Terra, perpendicolare alla direzione della stella.
+    
+    double x_bessel = rel_pos_eq_ca.dot(i_vec);
+    double y_bessel = rel_pos_eq_ca.dot(j_vec);
+    // z_bessel = dist (positivo verso la stella)
+    // La distanza 'min_distance_mas' calcolata prima era angolare. Ora calcoliamo quella fisica proiettata.
+    
+    double shadow_dist_au = std::sqrt(x_bessel*x_bessel + y_bessel*y_bessel);
+    double shadow_dist_km = shadow_dist_au * AU_TO_KM;
+    
+    // 3. Proietta Asteroide VELOCITA' sul piano fondamentale (x', y')
+    // Usiamo la velocità al CA
+    // Propaga un secondo step per differenza finita precisa o usa evaluateVelocity
+    double dt_sec = 1.0;
+    double t_plus = min_time_mjd + dt_sec/86400.0;
+    
+    // Re-do propagation correctly
+    astdyn::propagation::KeplerianElements kep_plus = pimpl_->propagator->propagate_keplerian(elements_to_use, t_plus);
+    auto cart_plus = astdyn::propagation::keplerian_to_cartesian(kep_plus);
+    Eigen::Vector3d ast_ecl_plus = cart_plus.position;
+    
+    // Earth Vel (Numerical or Analytical diff)
+    double jd_plus = t_plus + MJD_TO_JD;
+    auto earth_plus = astdyn::ephemeris::PlanetaryEphemeris::getPosition(
+             astdyn::ephemeris::CelestialBody::EARTH, jd_plus);
+
+    Eigen::Vector3d rel_eq_plus; // Rotate to Eq
+    rel_eq_plus[0] = ast_ecl_plus[0];
+    rel_eq_plus[1] = ast_ecl_plus[1] * ce - ast_ecl_plus[2] * se;
+    rel_eq_plus[2] = ast_ecl_plus[1] * se + ast_ecl_plus[2] * ce;
+    
+    rel_eq_plus = rel_eq_plus - earth_plus;
+    
+    Eigen::Vector3d vel_eq = (rel_eq_plus - rel_pos_eq_ca) / dt_sec; // AU/sec
+    
+    double xp_bessel = vel_eq.dot(i_vec); // x'
+    double yp_bessel = vel_eq.dot(j_vec); // y'
+    double vp_norm = std::sqrt(xp_bessel*xp_bessel + yp_bessel*yp_bessel); // Velocity on fundamental plane (AU/sec)
+    double velocity_km_s = vp_norm * AU_TO_KM;
+    
+    // 4. Calcola MISS DISTANCE geometrica
+    // Al CA geometrico nel piano fondamentale (t0 = - (x x' + y y') / v^2)
+    // Ma siamo già al CA temporale, quindi (x, y) dovrebbero essere già vicini al minimo.
+    // shadow_dist_km è la "Impact Parameter"
+    
+    // 5. Verifica intersezione Terra
+    // Raggio Terra ~6378 km
+    // Se shadow_dist_km < (EarthRadius + ShadowRadius), l'ombra colpisce la Terra
+    
+    double earth_radius_km = EARTH_EQUATORIAL_RADIUS_KM; 
+    // Correzione raggio polare per y locale? 
+    // Per semplicità usiamo raggio equatoriale come first pass per HIT/MISS.
+    // Se vogliamo essere precisi: raggio locale dipende dall'angolo di posizione.
+    
+    double asteroid_radius_km = pimpl_->diameter_km / 2.0;
+    // Fallback estimate if zero
+    if (asteroid_radius_km <= 0.0 && pimpl_->abs_mag > 0.0) {
+          double d_km = 1329.0 / sqrt(pimpl_->slope_param) * pow(10, -pimpl_->abs_mag/5.0);
+          asteroid_radius_km = d_km / 2.0;
+    }
+        
+    double miss_distance_km = shadow_dist_km;
+    
+    bool is_hit = miss_distance_km < (earth_radius_km + asteroid_radius_km);
+    
+    if (config.verbose) {
+        std::cout << "  Geometria (Piano Fondamentale):\n";
+        std::cout << "    Impact Parameter: " << std::fixed << std::setprecision(1) << miss_distance_km << " km\n";
+        std::cout << "    Earth Radius Limit: " << (earth_radius_km + asteroid_radius_km) << " km\n";
+        std::cout << "    Shadow Velocity: " << std::setprecision(2) << velocity_km_s << " km/s\n";
+        std::cout << "    Esito geometrico: " << (is_hit ? "HIT (Ombra interseca Terra)" : "MISS (Ombra manca Terra)") << "\n";
     }
     
     // ═══════════════════════════════════════════════════════════════
-    // STEP 4: CREA EVENTO
+    // STEP 5: POPOLA EVENTO
     // ═══════════════════════════════════════════════════════════════
     
     OccultationEvent event;
     
-    // Identificazione
     event.star_source_id = candidate.source_id;
     event.asteroid_name = pimpl_->asteroid_designation;
-    event.asteroid_number = 0; // Parse if possible
-    try { event.asteroid_number = std::stoi(pimpl_->asteroid_designation); } catch(...) {}
+    // Number check
+    event.asteroid_number = 0; try { event.asteroid_number = std::stoi(pimpl_->asteroid_designation); } catch(...) {}
     
-    // Dati stella
     event.star_ra_deg = candidate.ra_deg;
     event.star_dec_deg = candidate.dec_deg;
     event.star_magnitude = candidate.phot_g_mean_mag;
-    event.star_pm_ra_mas_yr = 0.0;   // TODO: prendere da Gaia
+    event.star_pm_ra_mas_yr = 0.0; // TODO da Gaia
     event.star_pm_dec_mas_yr = 0.0;
     
-    // Geometria
-    event.time_ca_mjd_utc = min_time_mjd;  // TODO: convertire TDB→UTC
+    event.time_ca_mjd_utc = min_time_mjd; // Approx UTC=TDB for this level
     event.closest_approach_mas = min_distance_mas;
-    event.max_duration_sec = max_duration_sec;
+    
+    // Duration
+    if (velocity_km_s > 0.0 && asteroid_radius_km > 0.0) {
+        event.max_duration_sec = (asteroid_radius_km * 2.0) / velocity_km_s;
+    } else {
+        event.max_duration_sec = 0.0;
+    }
+    
     event.asteroid_distance_au = earth_distance_au;
-    event.position_angle_deg = 0.0;  // TODO: calcolare
     
-    // Shadow path
-    event.chord_length_km = 0.0;     // TODO: calcolare proiezione su Terra
-    event.shadow_width_km = asteroid_diameter_km;
-    event.path_length_km = 0.0;      // TODO: calcolare
-    event.path_duration_sec = 0.0;
+    // Chord Length (Geocentrica)
+    // Lunghezza corda attraverso la Terra AL CA.
+    // Se interseca: 2 * sqrt(R_earth^2 - impact^2)
+    // Non è la corda dell'asteroide, ma la lunghezza del tracciato sulla Terra? 
+    // No, chord length di solito è la dimensione dell'ombra proiettata, ma qui forse si intende path length?
+    // "path_length_km": lunghezza della traccia sulla terra.
+    // "chord_length_km": non standard per l'evento globale, forse intende max chord asteroide?
+    // Assumiamo max chord asteroide = diamond.
+    event.chord_length_km = 0.0; 
+    if (is_hit) {
+        // Calcoliamo la lunghezza del percorso dell'ombra SULLA Terra
+        // Approssimazione: 2 * sqrt(R_e^2 - impact^2)
+        if (miss_distance_km < earth_radius_km) {
+             event.path_length_km = 2.0 * std::sqrt(earth_radius_km*earth_radius_km - miss_distance_km*miss_distance_km);
+        } else {
+             event.path_length_km = 0.0; // "Graze" apparente
+        }
+    } else {
+        event.path_length_km = 0.0;
+    }
     
-    // Quality
+    event.shadow_width_km = asteroid_radius_km * 2.0;
+    event.path_duration_sec = (velocity_km_s > 0) ? (event.path_length_km / velocity_km_s) : 0.0;
+    
     event.high_confidence = pimpl_->has_refined_elements;
-    event.notes = pimpl_->has_refined_elements ? "Refined Orbit" : "Nominal Orbit";
+    event.notes = (is_hit ? "HIT" : "MISS");
+    if (pimpl_->has_refined_elements) event.notes += " (Refined Orbit)";
     
     return event;
 }

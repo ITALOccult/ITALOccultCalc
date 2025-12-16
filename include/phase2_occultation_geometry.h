@@ -192,6 +192,9 @@ struct Phase2Config {
     
     // Osservatori
     std::vector<ObserverGeometry> observer_sites;  ///< Località da calcolare
+    
+    // Debug/Output
+    bool verbose = true;                           ///< Stampa output dettagliato
 };
 
 /**
@@ -264,6 +267,14 @@ public:
      * @brief Imposta elementi orbitali direttamente
      */
     void setOrbitalElements(const astdyn::propagation::KeplerianElements& elements);
+    
+    /**
+     * @brief Imposta parametri fisici dell'asteroide
+     * @param diameter_km Diametro in km
+     * @param abs_mag Magnitudine assoluta (H)
+     * @param slope_param Parametro slope (G)
+     */
+    void setPhysicalParameters(double diameter_km, double abs_mag, double slope_param);
     
     /**
      * @brief Ottiene elementi orbitali correnti

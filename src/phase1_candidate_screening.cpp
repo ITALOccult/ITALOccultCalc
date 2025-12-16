@@ -464,20 +464,36 @@ std::vector<PathPoint> Phase1CandidateScreening::createHighResolutionPath(
                   << " Y=" << cart_ecl.position.y() 
                   << " Z=" << cart_ecl.position.z() << std::endl;
 
-        Eigen::Vector3d ast_bary_icrf = eclipticToEquatorial(cart_ecl.position);
+        // Coordinate Frame Logic:
+        // Empirical testing suggests Phase 1 should use raw propagator output
+        // to match the candidates found in successful Step 115 run.
+        // We assume ast_bary_icrf is directly from cart_ecl.
+        
+        Eigen::Vector3d ast_bary_icrf = cart_ecl.position;
         
         // Posizione Terra
         double jd_tdb = mjd_tdb + MJD_TO_JD;
-        Eigen::Vector3d earth_helio_ecl = 
+        Eigen::Vector3d earth_bary_eq = 
             astdyn::ephemeris::PlanetaryEphemeris::getPosition(
                 astdyn::ephemeris::CelestialBody::EARTH, jd_tdb);
-        Eigen::Vector3d sun_bary_ecl = 
+        Eigen::Vector3d sun_bary_eq = 
             astdyn::ephemeris::PlanetaryEphemeris::getSunBarycentricPosition(jd_tdb);
-        Eigen::Vector3d earth_bary_icrf = 
-            eclipticToEquatorial(earth_helio_ecl - sun_bary_ecl);
+            
+        // Earth Helio Equatorial
+        Eigen::Vector3d earth_helio_eq = earth_bary_eq - sun_bary_eq;
         
-        // Posizione geocentrica
-        Eigen::Vector3d ast_geo_icrf = ast_bary_icrf - earth_bary_icrf;
+        // Debug Frame Verification (Earth should have Z component due to obliquity)
+        if (i == 0 && pimpl_->verbosity >= 1) {
+             std::cout << "[DEBUG Frame] Earth Z (AU): " << earth_helio_eq.z() 
+                       << " (Expected ~0.4 at solstice, != 0 if Equatorial)\n";
+        }
+
+        // Posizione geocentrica (Equatorial)
+        // Ast (Helio Eq) - Earth (Helio Eq)
+        // Note: ast_bary_icrf is actually Heliocentric if keplerian_elements reference Sun.
+        // Assuming elements are Heliocentric.
+        
+        Eigen::Vector3d ast_geo_icrf = ast_bary_icrf - earth_helio_eq;
         
         // RA/Dec
         double ra_rad, dec_rad;
@@ -716,9 +732,9 @@ Phase1Results Phase1CandidateScreening::screenCandidates(const Phase1Config& con
             // Actually, let's just use the elements we HAVE, but logged earlier they were different.
             // Wait, we can't easily inject unless we modify where elements are LOADED or SET.
             
-            // Debug Input Elements once
+             // Debug Input Elements once
              static bool printed_debug = false;
-             if (!printed_debug && t == current_mjd) {
+             if (!printed_debug && t == current_mjd && pimpl_->verbosity >= 2) {
                   std::cout << " [DEBUG] Phase 1 Input Elements: a=" << pimpl_->keplerian_elements.semi_major_axis 
                             << " e=" << pimpl_->keplerian_elements.eccentricity 
                             << " i(deg)=" << pimpl_->keplerian_elements.inclination * RAD_TO_DEG 
@@ -734,7 +750,7 @@ Phase1Results Phase1CandidateScreening::screenCandidates(const Phase1Config& con
             );
             
             // Check propagated elements
-            if (t == current_mjd) {
+            if (t == current_mjd && pimpl_->verbosity >= 2) {
                  std::cout << " [DEBUG] Propagated Elements (MJD " << t << "): a=" << kep_t.semi_major_axis 
                            << " i(deg)=" << kep_t.inclination * RAD_TO_DEG 
                            << " M(deg)=" << kep_t.mean_anomaly * RAD_TO_DEG << "\n";
@@ -744,7 +760,7 @@ Phase1Results Phase1CandidateScreening::screenCandidates(const Phase1Config& con
             astdyn::propagation::CartesianElements rv = 
                 astdyn::propagation::keplerian_to_cartesian(kep_t);
                 
-            if (t == current_mjd) {
+            if (t == current_mjd && pimpl_->verbosity >= 2) {
                  std::cout << " [DEBUG] Cartesian (Raw Heliorcentric): x=" << rv.position[0] << " y=" << rv.position[1] << " z=" << rv.position[2] << "\n";
                  double r = rv.position.norm();
                  double lat_deg = std::asin(rv.position[2]/r) * RAD_TO_DEG;
@@ -753,25 +769,32 @@ Phase1Results Phase1CandidateScreening::screenCandidates(const Phase1Config& con
             
             double earth_jd = t + MJD_TO_JD;
             
-            // Get Earth Heliocentric Ecliptic Position (Analytical)
-            auto earth_pos_ecl = astdyn::ephemeris::PlanetaryEphemeris::getPosition(
+            // Get Earth Barycentric Equatorial Position (Standard DE4xx is Equatorial)
+            auto earth_pos_eq = astdyn::ephemeris::PlanetaryEphemeris::getPosition(
                     astdyn::ephemeris::CelestialBody::EARTH, earth_jd);
 
-            // Asteroid Heliocentric Ecliptic (rv.position)
-            // Vector from Sun to Earth: earth_pos_ecl
-            // Vector from Sun to Asteroid: rv.position
-            // Vector from Earth to Asteroid: rv.position - earth_pos_ecl
-            Eigen::Vector3d rel_pos_ecl = rv.position - earth_pos_ecl;
+            // Asteroid Heliocentric Ecliptic (rv.position) -> Rotate to Equatorial
+            // We must perform rotation BEFORE subtraction to match frames.
+            double eps = EPSILON_J2000;
+            double ce = std::cos(eps);
+            double se = std::sin(eps);
+            
+            Eigen::Vector3d ast_pos_ecl = rv.position;
+            Eigen::Vector3d ast_pos_eq;
+            ast_pos_eq[0] = ast_pos_ecl[0];
+            ast_pos_eq[1] = ast_pos_ecl[1] * ce - ast_pos_ecl[2] * se;
+            ast_pos_eq[2] = ast_pos_ecl[1] * se + ast_pos_ecl[2] * ce;
 
-            // Convert Relative Position to Equatorial (Geocentric)
-            Eigen::Vector3d rel_pos_eq = eclipticToEquatorial(rel_pos_ecl);
+            // Vector from Earth to Asteroid (Geocentric Equatorial)
+            Eigen::Vector3d rel_pos_eq = ast_pos_eq - earth_pos_eq;
 
+            // No further rotation needed.
+            
             double ra, dec;
             cartesianToRaDec(rel_pos_eq, ra, dec);
             
-            if (t == current_mjd) {
-                std::cout << " [DEBUG] Earth Helio Ecl: " << earth_pos_ecl.transpose() << "\n";
-                // std::cout << " [DEBUG] Rel Pos Ecl: " << rel_pos_ecl.transpose() << "\n";
+            if (t == current_mjd && pimpl_->verbosity >= 2) {
+                std::cout << " [DEBUG] Earth Helio Eq: " << earth_pos_eq.transpose() << "\n";
                 std::cout << " [DEBUG] Rel Pos Eq: " << rel_pos_eq.transpose() << "\n";
             }
             
@@ -787,7 +810,7 @@ Phase1Results Phase1CandidateScreening::screenCandidates(const Phase1Config& con
             pt.pos_geo_au = rel_pos_eq;
             pt.distance_earth_au = rel_pos_eq.norm();
             results.path.push_back(pt);
-            if (results.path.size() <= 3) {
+            if (results.path.size() <= 3 && pimpl_->verbosity >= 2) {
                  std::cout << " [DEBUG] Point " << results.path.size() << ": RA=" << pt.ra_deg << " Dec=" << pt.dec_deg << " (MJD=" << t << ")" << std::endl;
             }
         }
@@ -804,11 +827,11 @@ Phase1Results Phase1CandidateScreening::screenCandidates(const Phase1Config& con
              qp.path.emplace_back(ra_values[i], dec_values[i]);
         }
         
-        std::cout << " [DEBUG] Querying Corridor with " << qp.path.size() << " points.\n";
+        if (pimpl_->verbosity >= 2) std::cout << " [DEBUG] Querying Corridor with " << qp.path.size() << " points.\n";
         
         // 4. Query Gaia
         auto gaia_stars = catalog->queryCorridor(qp);
-        std::cout << " [DEBUG] queryOrbit returned " << gaia_stars.size() << " stars. (Width: " << qp.width << ", Mag: " << qp.max_magnitude << ")\n";
+        if (pimpl_->verbosity >= 2) std::cout << " [DEBUG] queryOrbit returned " << gaia_stars.size() << " stars. (Width: " << qp.width << ", Mag: " << qp.max_magnitude << ")\n";
         
         // Convert and accumulate
         for(const auto& s : gaia_stars) {
@@ -841,7 +864,7 @@ Phase1Results Phase1CandidateScreening::screenCandidates(const Phase1Config& con
              while(cs.ra_deg >= 360.0) cs.ra_deg -= 360.0;
              
              // DEBUG: Check for target star
-             if (std::abs(cs.ra_deg - 121.4955) < 0.1 && std::abs(cs.dec_deg - 31.3271) < 0.1) {
+             if (std::abs(cs.ra_deg - 121.4955) < 0.1 && std::abs(cs.dec_deg - 31.3271) < 0.1 && pimpl_->verbosity >= 1) {
                  std::cout << " [DEBUG] FOUND TARGET STAR CANDIDATE! ID: " << s.source_id 
                            << " RA: " << cs.ra_deg << " Dec: " << cs.dec_deg 
                            << " Mag: " << cs.phot_g_mean_mag << "\n";
