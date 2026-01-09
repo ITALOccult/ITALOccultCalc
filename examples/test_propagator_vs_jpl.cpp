@@ -32,9 +32,9 @@ void printSubSeparator() {
  * @param pos Posizione (AU)
  * @param vel Velocità (AU/day)
  * @param epoch Epoca
- * @return EquinoctialElements
+ * @return AstDynEquinoctialElements
  */
-EquinoctialElements stateToEquinoctialElements(const Vector3D& pos, 
+AstDynEquinoctialElements stateToAstDynEquinoctialElements(const Vector3D& pos, 
                                                const Vector3D& vel,
                                                const JulianDate& epoch) {
     // Costante gravitazionale (AU³/day²)
@@ -110,7 +110,7 @@ EquinoctialElements stateToEquinoctialElements(const Vector3D& pos,
     double M = E - e * sin(E);
     
     // Converti in elementi equinoziali
-    EquinoctialElements elements;
+    AstDynEquinoctialElements elements;
     elements.a = a;
     elements.h = e * sin(omega + Omega);
     elements.k = e * cos(omega + Omega);
@@ -168,7 +168,7 @@ int main(int argc, char** argv) {
         
         // 4. Converti in elementi orbitali
         std::cout << "4. Conversione in elementi orbitali equinoziali...\n";
-        auto elements = stateToEquinoctialElements(pos0_jpl, vel0_jpl, epoch0);
+        auto elements = stateToAstDynEquinoctialElements(pos0_jpl, vel0_jpl, epoch0);
         
         auto kep = elements.toKeplerian();
         std::cout << "   a = " << std::setprecision(8) << kep.a << " AU\n";

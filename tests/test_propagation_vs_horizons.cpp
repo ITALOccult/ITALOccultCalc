@@ -85,7 +85,7 @@ std::vector<HorizonsState> horizons_data = {
 
 // Elementi orbitali Ceres all'epoca centrale (JD 2460645.5)
 // Estratti da JPL Small-Body Database
-EquinoctialElements getCeresElements() {
+AstDynEquinoctialElements getCeresElements() {
     // Elementi Keplerian da JPL SBDB (epoca 2460645.5)
     double a = 2.7665435;  // AU
     double e = 0.0755869;
@@ -95,7 +95,7 @@ EquinoctialElements getCeresElements() {
     double M = 304.38642 * M_PI / 180.0;
     
     // Converti in equinoziali
-    EquinoctialElements elem;
+    AstDynEquinoctialElements elem;
     elem.a = a;
     elem.h = e * std::sin(omega + Omega);
     elem.k = e * std::cos(omega + Omega);
@@ -129,7 +129,7 @@ int main() {
     std::cout << std::endl;
     
     // Ottieni elementi Ceres
-    EquinoctialElements elements = getCeresElements();
+    AstDynEquinoctialElements elements = getCeresElements();
     
     std::cout << "Orbital elements (Equinoctial, Ecliptic J2000):" << std::endl;
     std::cout << "  a = " << elements.a << " AU" << std::endl;

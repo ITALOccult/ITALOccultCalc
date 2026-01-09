@@ -5,124 +5,137 @@
 #include "ephemeris.h"
 #include "gaia_client.h"
 #include "types.h"
+#include "isp_reader.h"
 #include <string>
 #include <vector>
 #include <memory>
+#include <Eigen/Dense>
+#include "ioccultcalc/output_manager.h"
 
 namespace ioccultcalc {
 
-// Punto sulla traccia dell'occultazione
+/**
+ * @struct ShadowPathPoint
+ * @brief Punto sulla traccia dell'ombra terrestre
+ */
 struct ShadowPathPoint {
     JulianDate time;
     GeographicCoordinates location;
-    double duration;        // durata in secondi
-    double centerlineDistance; // distanza dalla linea centrale (km)
+    double duration;        // secondi
+    double centerlineDistance; // km
     
     ShadowPathPoint() : duration(0), centerlineDistance(0) {}
 };
 
-// Informazioni complete su un'occultazione
-struct OccultationEvent {
+/**
+ * @struct OccultationEvent
+ * @brief Risultato raffinato di una previsione di occultazione
+ * Hereditary from OutputEvent for legacy and output compatibility.
+ */
+struct OccultationEvent : public OutputEvent {
     std::string eventId;
-    EquinoctialElements asteroid;
+    AstDynEquinoctialElements asteroid;
     GaiaStar star;
     
-    JulianDate timeCA;              // Tempo di closest approach
-    double closeApproachDistance;   // Distanza minima (arcsec)
-    double positionAngle;            // Angolo di posizione (gradi)
-    double probability;              // Probabilità di occultazione
-    double maxDuration;              // Durata massima (secondi)
-    double pathWidth;                // Larghezza path (km) (diametro asteroide)
-    double magnitudeDrop;            // Calo di magnitudine
+    JulianDate timeCA;              // Istante di massimo avvicinamento (TDB)
+    double closeApproachDistance;   // Separazione minima (arcsec)
+    double positionAngle;           // Angolo di posizione (gradi)
+    double probability;             // Probabilità (SVD-based)
+    double maxDuration;             // Durata massima (sec)
+    double pathWidth;               // Larghezza ombra (diametro asteroide km)
+    double magnitudeDrop;           // Calo di luce (HG model)
     
-    std::vector<ShadowPathPoint> shadowPath;  // Traccia sulla Terra
+    std::vector<ShadowPathPoint> shadowPath;
     
-    // Limiti di incertezza (1-sigma)
-    double uncertaintyNorth;  // km
-
-    double uncertaintySouth;  // km
+    // Incertezza 1-sigma (km)
+    double uncertaintyNorth;
+    double uncertaintySouth;
+    double asteroidDistanceAu;
     
-    // Elementi Besseliani (calcolati approssimativamenti)
-    double besselianX;    // Earth Radii
-    double besselianY;    // Earth Radii
-    double besselianDX;   // Earth Radii/Hour
-    double besselianDY;   // Earth Radii/Hour
+    // Parametri geometrici B-Plane
+    double besselianX;
+    double besselianY;
+    double besselianDX; // km/s
+    double besselianDY; // km/s
     
-    // Coordinate Osservatore (per riferimento)
-    double observerLongitude; // gradi
-    double observerLatitude;  // gradi
-    double observerAltitude;  // metri
+    // Compatibility with legacy code (shadow names)
+    // Most fields are already in OutputEvent (asteroid_number, star_id, etc.)
+    
+    double observerLongitude;
+    double observerLatitude;
+    double observerAltitude;
     
     OccultationEvent() 
         : closeApproachDistance(0), positionAngle(0), 
           probability(0), maxDuration(0), pathWidth(0), magnitudeDrop(0),
-          uncertaintyNorth(0), uncertaintySouth(0),
+          uncertaintyNorth(0), uncertaintySouth(0), asteroidDistanceAu(0),
           besselianX(0), besselianY(0), besselianDX(0), besselianDY(0),
           observerLongitude(0), observerLatitude(0), observerAltitude(0) {}
-    
-    // Verifica se l'evento è visibile da una certa posizione
-    bool isVisibleFrom(const GeographicCoordinates& observer, 
-                      double minElevationDeg = 15.0) const;
 };
 
+/**
+ * @class OccultationPredictor
+ * @brief Motore di ricerca e previsione ad alta precisione
+ */
 class OccultationPredictor {
 public:
-    OccultationPredictor();
+    OccultationPredictor(std::shared_ptr<ISPReader> reader = nullptr);
     ~OccultationPredictor();
     
-    // Imposta l'asteroide da analizzare
-    void setAsteroid(const EquinoctialElements& elements);
-    
-    // Carica l'asteroide da AstDyS
+    void setAsteroid(const AstDynEquinoctialElements& elements);
     void loadAsteroidFromAstDyS(const std::string& designation);
     
-    // Cerca occultazioni in un intervallo temporale
     std::vector<OccultationEvent> findOccultations(
         const JulianDate& startJD,
         const JulianDate& endJD,
-        double maxMagnitude = 12.0,     // Magnitudine limite stelle
-        double searchRadius = 0.1,       // Raggio di ricerca in gradi
-        double minProbability = 0.01     // Probabilità minima
+        double maxMagnitude = 14.0,
+        double searchRadius = 0.2,
+        double minProbability = 0.001
     );
     
-    // Calcola i dettagli di un'occultazione per una stella specifica
+    // Alias per compatibilità (deprecated)
+    std::vector<OccultationEvent> find_occultations(
+        const JulianDate& startJD,
+        const JulianDate& endJD,
+        double maxMagnitude = 14.0,
+        double searchRadius = 0.2,
+        double minProbability = 0.001) {
+        return findOccultations(startJD, endJD, maxMagnitude, searchRadius, minProbability);
+    }
+    
+    // Previsione puntuale (Alta Precisione)
     OccultationEvent predictOccultation(const GaiaStar& star, 
                                        const JulianDate& approximateTime);
     
-    // Calcola la traccia dell'ombra sulla Terra
-    std::vector<ShadowPathPoint> calculateShadowPath(
-        const EphemerisData& asteroidPos,
-        const GaiaStar& star,
-        const JulianDate& centralTime,
-        double timeSpanMinutes = 120.0
-    );
-    
-    // Imposta il diametro dell'asteroide (km) per calcoli più precisi
     void setAsteroidDiameter(double diameter);
     
-    // Imposta l'errore orbitale (sigma in km) per calcolo incertezze
-    void setOrbitalUncertainty(double sigmaKm);
+    // Metodo di compatibilità (deprecated)
+    void setOrbitalUncertainty(double sigma_km) { (void)sigma_km; }
     
+    // Genera la traccia dell'ombra terrestre
+    std::vector<ShadowPathPoint> generateShadowPath(const OccultationEvent& event, 
+                                                   const std::vector<std::vector<double>>& covariance, 
+                                                   double windowMinutes = 30.0);
+
 private:
     class Impl;
     std::unique_ptr<Impl> pImpl;
     
-    // Trova il momento di closest approach tra asteroide e stella
-    JulianDate findClosestApproach(const GaiaStar& star,
-                                   const JulianDate& startJD,
-                                   const JulianDate& endJD);
+    // Algoritmo: PrepareStarForDate (PM + Stellar Parallax)
+    static Vector3D prepareStarForDate(const GaiaStar& star, const JulianDate& jd, const Vector3D& earthHelioPos);
     
-    // Calcola la geometria dell'occultazione
-    void calculateGeometry(const EphemerisData& asteroidPos,
-                          const GaiaStar& star,
-                          const JulianDate& time,
-                          double& separation,
-                          double& posAngle);
+    // Algoritmo: Precision Search Loop (RA15 + Light-Time)
+    JulianDate findPrecisionCA(const GaiaStar& star, const JulianDate& startJD, const JulianDate& endJD);
     
-    // Calcola la probabilità di occultazione
-    double calculateProbability(double separation, 
-                               double asteroidAngularSize,
-                               double uncertainty);
+    // Algoritmo: Uncertainty Analysis (Covariance -> B-Plane)
+    double calculateProbabilitySVD(const OccultationEvent& event, const std::vector<std::vector<double>>& covariance);
+    
+    // Algoritmo: PredictEventUncertainty (Time and Path error)
+    struct UncertaintyProfile {
+        double timeUncertainty; // secondi
+        double pathUncertainty; // km
+    };
+    UncertaintyProfile predictEventUncertainty(const OccultationEvent& event, const std::vector<std::vector<double>>& covariance);
 };
 
 } // namespace ioccultcalc

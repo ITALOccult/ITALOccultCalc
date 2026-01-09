@@ -392,7 +392,7 @@ bool CatalogManager::updateCatalog(bool force) {
     }
 }
 
-EquinoctialElements CatalogManager::getElements(
+AstDynEquinoctialElements CatalogManager::getElements(
     const std::string& designation,
     double* epoch_out) {
     
@@ -422,7 +422,7 @@ EquinoctialElements CatalogManager::getElements(
         sqlite3_bind_null(stmt, 2);
     }
     
-    EquinoctialElements elements;
+    AstDynEquinoctialElements elements;
     bool found = false;
     
     if (sqlite3_step(stmt) == SQLITE_ROW) {

@@ -260,28 +260,31 @@ std::string ConfigSectionData::sectionTypeToString() const {
 }
 
 ConfigSection ConfigSectionData::stringToSectionType(const std::string& str) {
-    if (str == "object") return ConfigSection::OBJECT;
-    if (str == "propag" || str == "propagation") return ConfigSection::PROPAGATION;
-    if (str == "ephemeris") return ConfigSection::EPHEMERIS;
-    if (str == "output") return ConfigSection::OUTPUT;
-    if (str == "error_model") return ConfigSection::ERROR_MODEL;
-    if (str == "operations") return ConfigSection::OPERATIONS;
-    if (str == "perturbations") return ConfigSection::PERTURBATIONS;
-    if (str == "search") return ConfigSection::SEARCH;
-    if (str == "star") return ConfigSection::STAR;
-    if (str == "IERS" || str == "iers") return ConfigSection::IERS;
-    if (str == "observer") return ConfigSection::OBSERVER;
-    if (str == "filtering") return ConfigSection::FILTERING;
-    if (str == "scoring") return ConfigSection::SCORING;
-    if (str == "performance") return ConfigSection::PERFORMANCE;
-    if (str == "database") return ConfigSection::DATABASE;
-    if (str == "gaia") return ConfigSection::GAIA;
-    if (str == "astdys") return ConfigSection::ASTDYS;
-    if (str == "orbit_fitting") return ConfigSection::ORBIT_FITTING;
-    if (str == "validation") return ConfigSection::VALIDATION;
-    if (str == "chebyshev") return ConfigSection::CHEBYSHEV;
-    if (str == "asteroids") return ConfigSection::ASTEROIDS;
-    if (str == "debug") return ConfigSection::DEBUG;
+    std::string lower = str;
+    std::transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
+
+    if (lower == "object") return ConfigSection::OBJECT;
+    if (lower == "propag" || lower == "propagation") return ConfigSection::PROPAGATION;
+    if (lower == "ephemeris") return ConfigSection::EPHEMERIS;
+    if (lower == "output") return ConfigSection::OUTPUT;
+    if (lower == "error_model") return ConfigSection::ERROR_MODEL;
+    if (lower == "operations") return ConfigSection::OPERATIONS;
+    if (lower == "perturbations") return ConfigSection::PERTURBATIONS;
+    if (lower == "search") return ConfigSection::SEARCH;
+    if (lower == "star") return ConfigSection::STAR;
+    if (lower == "iers") return ConfigSection::IERS;
+    if (lower == "observer") return ConfigSection::OBSERVER;
+    if (lower == "filtering") return ConfigSection::FILTERING;
+    if (lower == "scoring") return ConfigSection::SCORING;
+    if (lower == "performance") return ConfigSection::PERFORMANCE;
+    if (lower == "database") return ConfigSection::DATABASE;
+    if (lower == "gaia") return ConfigSection::GAIA;
+    if (lower == "astdys") return ConfigSection::ASTDYS;
+    if (lower == "orbit_fitting") return ConfigSection::ORBIT_FITTING;
+    if (lower == "validation") return ConfigSection::VALIDATION;
+    if (lower == "chebyshev") return ConfigSection::CHEBYSHEV;
+    if (lower == "asteroids") return ConfigSection::ASTEROIDS;
+    if (lower == "debug") return ConfigSection::DEBUG;
     return ConfigSection::CUSTOM;
 }
 
@@ -423,11 +426,61 @@ ConfigManager ConfigManager::fromJson(const nlohmann::json& j) {
         config.metadata_ = j["metadata"].get<std::map<std::string, std::string>>();
     }
     
-    // Load sections
-    if (j.contains("sections")) {
+    // 1. Support Strict/Internal Format (with "sections" array)
+    if (j.contains("sections") && j["sections"].is_array()) {
         for (const auto& sectionJson : j["sections"]) {
             ConfigSectionData section = ConfigSectionData::fromJson(sectionJson);
             config.addSection(section);
+        }
+    }
+    
+    // 2. Support User-Friendly Flat Format (top-level keys are sections)
+    for (auto& [key, val] : j.items()) {
+        if (key == "metadata" || key == "sections") continue;
+        
+        // Try to identify section from key
+        ConfigSection sectionType = ConfigSectionData::stringToSectionType(key);
+        
+        // If it's a known section type and the value is an object
+        if (val.is_object()) {
+            // Check if it's already in strict format (has "parameters" array)
+            // If so, we probably already handled it or it's a hybrid. 
+            // But strict format usually puts sections in "sections" array.
+            // Let's assume top-level keys are simple objects unless they have "type" and "parameters"
+            
+            if (val.contains("parameters") && val["parameters"].is_array()) {
+                // It's a strict section object but placed at top level?? Rare case.
+                ConfigSectionData section = ConfigSectionData::fromJson(val);
+                config.addSection(section);
+            } else {
+                // Simple Format: "key": value
+                ConfigSectionData section(sectionType, ""); // Name empty for now
+                bool hasData = false;
+                
+                for (auto& [pKey, pVal] : val.items()) {
+                    if (pVal.is_string()) {
+                        section.setParameter(pKey, pVal.get<std::string>());
+                        hasData = true;
+                    }
+                    else if (pVal.is_boolean()) {
+                        section.setParameter(pKey, pVal.get<bool>());
+                        hasData = true;
+                    }
+                    else if (pVal.is_number_integer()) {
+                        section.setParameter(pKey, pVal.get<int>());
+                        hasData = true;
+                    }
+                    else if (pVal.is_number()) {
+                        section.setParameter(pKey, pVal.get<double>());
+                        hasData = true;
+                    }
+                    // TODO: Array support if needed
+                }
+                
+                if (hasData) {
+                    config.addSection(section);
+                }
+            }
         }
     }
     
@@ -526,14 +579,19 @@ void ConfigManager::parseOopLine(const std::string& line, ConfigSection& current
                                   std::string& currentSectionName) {
     // Skip comments and empty lines
     std::string trimmed = line;
-    trimmed.erase(0, trimmed.find_first_not_of(" \t"));
+    trimmed.erase(0, trimmed.find_first_not_of(" \t\r\n"));
+    trimmed.erase(trimmed.find_last_not_of(" \t\r\n") + 1);
+    
     if (trimmed.empty() || trimmed[0] == '!') {
         return;
     }
     
-    // Section header detection (ends with '.')
-    if (trimmed.back() == '.') {
+    // Section header detection (ends with '.' but DOES NOT contain '=')
+    if (trimmed.back() == '.' && trimmed.find('=') == std::string::npos) {
         std::string sectionStr = trimmed.substr(0, trimmed.length() - 1);
+        // Remove trailing dots (OrbFit sometimes uses multiple)
+        while(!sectionStr.empty() && sectionStr.back() == '.') sectionStr.pop_back();
+        
         currentSection = ConfigSectionData::stringToSectionType(sectionStr);
         currentSectionName = sectionStr;
         
@@ -548,6 +606,7 @@ void ConfigManager::parseOopLine(const std::string& line, ConfigSection& current
         if (eqPos == std::string::npos) return;
         
         std::string paramName = trimmed.substr(1, eqPos - 1);
+        paramName.erase(0, paramName.find_first_not_of(" \t"));
         paramName.erase(paramName.find_last_not_of(" \t") + 1);
         
         std::string valueStr = trimmed.substr(eqPos + 1);
@@ -563,10 +622,11 @@ void ConfigManager::parseOopLine(const std::string& line, ConfigSection& current
         }
         
         // Remove trailing whitespace from value
-        valueStr.erase(valueStr.find_last_not_of(" \t") + 1);
+        valueStr.erase(valueStr.find_last_not_of(" \t\r\n") + 1);
         
         // Remove quotes if present
-        if (!valueStr.empty() && valueStr.front() == '\'' && valueStr.back() == '\'') {
+        if (!valueStr.empty() && (valueStr.front() == '\'' || valueStr.front() == '\"') && 
+            (valueStr.back() == '\'' || valueStr.back() == '\"') && valueStr.length() >= 2) {
             valueStr = valueStr.substr(1, valueStr.length() - 2);
         }
         

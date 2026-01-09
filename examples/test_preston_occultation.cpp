@@ -32,7 +32,7 @@ struct SearchResult {
 };
 
 SearchResult searchClosestApproach(
-    const EquinoctialElements& elements,
+    const AstDynEquinoctialElements& elements,
     double starRA,   // degrees
     double starDec,  // degrees
     const JulianDate& startDate,

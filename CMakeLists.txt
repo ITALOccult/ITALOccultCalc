@@ -3,7 +3,7 @@ project(IOccultCalc VERSION 1.0.0 LANGUAGES CXX Fortran)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_EXTENSIONS ON)
 
 # Fortran settings for OrbFit wrapper
 set(CMAKE_Fortran_MODULE_DIRECTORY ${CMAKE_BINARY_DIR}/fortran_modules)
@@ -15,6 +15,9 @@ option(BUILD_EXAMPLES "Build examples" ON)
 # Find required packages
 find_package(CURL REQUIRED)
 find_package(LibXml2 REQUIRED)
+find_package(nlohmann_json REQUIRED)
+find_package(SQLite3 REQUIRED)
+find_package(ZLIB REQUIRED)
 
 # OpenMP support (macOS requires libomp from Homebrew)
 if(APPLE)
@@ -26,41 +29,60 @@ if(APPLE)
 endif()
 find_package(OpenMP REQUIRED)
 
-# Add IOC_GaiaLib subdirectory
-add_subdirectory(external/IOC_GaiaLib)
+# --- Local System Libraries Configuration (~/.local) ---
+set(LOCAL_INSTALL_DIR "$ENV{HOME}/.local")
+list(APPEND CMAKE_PREFIX_PATH ${LOCAL_INSTALL_DIR})
 
-# Add IOC_Config subdirectory
-if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/external/IOC_Config/CMakeLists.txt")
-    # Disable examples and tests when used as submodule to avoid name conflicts
-    set(BUILD_EXAMPLES_OLD ${BUILD_EXAMPLES})
-    set(BUILD_TESTS_OLD ${BUILD_TESTS})
-    set(BUILD_EXAMPLES OFF)
-    set(BUILD_TESTS OFF)
-    add_subdirectory(external/IOC_Config)
-    set(BUILD_EXAMPLES ${BUILD_EXAMPLES_OLD})
-    set(BUILD_TESTS ${BUILD_TESTS_OLD})
-    set(IOC_CONFIG_FOUND TRUE)
-    message(STATUS "IOC_Config found and will be used")
-else()
-    set(IOC_CONFIG_FOUND FALSE)
-    message(WARNING "IOC_Config not found, using built-in config_manager")
+# 1. CSPICE
+find_library(CSPICE_LIB NAMES libcspice.a PATHS ${LOCAL_INSTALL_DIR}/lib REQUIRED NO_DEFAULT_PATH)
+find_path(CSPICE_INCLUDE_DIR cspice/SpiceUsr.h PATHS ${LOCAL_INSTALL_DIR}/include REQUIRED NO_DEFAULT_PATH)
+
+# 2. AstDyn
+find_library(ASTDYN_LIB NAMES libastdyn.a PATHS ${LOCAL_INSTALL_DIR}/lib REQUIRED NO_DEFAULT_PATH)
+find_path(ASTDYN_INCLUDE_DIR astdyn/AstDynEngine.hpp PATHS ${LOCAL_INSTALL_DIR}/include REQUIRED NO_DEFAULT_PATH)
+
+# 3. IOC_Config
+find_library(IOC_CONFIG_LIB NAMES libioc_config.a PATHS ${LOCAL_INSTALL_DIR}/lib REQUIRED NO_DEFAULT_PATH)
+find_path(IOC_CONFIG_INCLUDE_DIR ioc_config/oop_parser.h PATHS ${LOCAL_INSTALL_DIR}/include REQUIRED NO_DEFAULT_PATH)
+
+# 4. IOC_GaiaLib
+find_library(GAIALIB_LIB NAMES libioc_gaialib.a PATHS ${LOCAL_INSTALL_DIR}/lib REQUIRED NO_DEFAULT_PATH)
+find_path(GAIALIB_INCLUDE_DIR ioc_gaialib/unified_gaia_catalog.h PATHS ${LOCAL_INSTALL_DIR}/include REQUIRED NO_DEFAULT_PATH)
+
+# 5. IOC_StarMap
+set(BUILD_SHARED_LIBS OFF)
+set(BUILD_EXAMPLES_SAVE ${BUILD_EXAMPLES})
+set(BUILD_TESTS_SAVE ${BUILD_TESTS})
+set(BUILD_EXAMPLES OFF)
+set(BUILD_TESTS OFF)
+if(NOT TARGET starmap)
+    add_subdirectory(external/IOC_StarMap EXCLUDE_FROM_ALL)
 endif()
+set(BUILD_EXAMPLES ${BUILD_EXAMPLES_SAVE})
+set(BUILD_TESTS ${BUILD_TESTS_SAVE})
+set(STARMAP_LIB starmap)
+set(STARMAP_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external/IOC_StarMap/include")
 
-# Include directories
+# 6. IOC_Earth
+# Se non esiste la versione statica, usiamo quella dinamica per ora
+if(EXISTS "${LOCAL_INSTALL_DIR}/lib/libioc_earth.a")
+    set(IOC_EARTH_LIB "${LOCAL_INSTALL_DIR}/lib/libioc_earth.a" CACHE FILEPATH "Path to IOC_Earth static library" FORCE)
+else()
+    find_library(IOC_EARTH_LIB NAMES ioc_earth PATHS ${LOCAL_INSTALL_DIR}/lib REQUIRED NO_DEFAULT_PATH)
+endif()
+set(IOC_EARTH_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external/IOC_Earth/include")
+
+# -----------------------------------------------------
+
+# Include directories (Global)
 include_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CURL_INCLUDE_DIRS}
     ${LIBXML2_INCLUDE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/external/cspice/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/external
-    ${CMAKE_CURRENT_SOURCE_DIR}/external/IOC_GaiaLib/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/external/ITALOccultLibrary/italoccultlibrary/include
+    ${CSPICE_INCLUDE_DIR}
+    ${CSPICE_INCLUDE_DIR}/cspice
 )
 
-# Add IOC_Config include if available
-if(IOC_CONFIG_FOUND)
-    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external/IOC_Config/include)
-endif()
+# (IOC_Earth, IOC_Config inclusions removed as they are now system-wide)
 
 # Source files
 set(SOURCES
@@ -75,9 +97,9 @@ set(SOURCES
     #src/chebyshev_occultation_manager.cpp
     src/phase1_candidate_screening.cpp
     src/phase2_occultation_geometry.cpp
-    external/ITALOccultLibrary/italoccultlibrary/src/eq1_parser.cpp
-    external/ITALOccultLibrary/italoccultlibrary/src/astdyn_wrapper.cpp
-    external/ITALOccultLibrary/italoccultlibrary/src/orbital_conversions.cpp
+    src/eq1_parser.cpp
+    src/astdyn_wrapper.cpp
+    src/orbital_conversions.cpp
     external/ITALOccultLibrary/italoccultlibrary/src/chebyshev_approximation.cpp
     external/ITALOccultLibrary/italoccultlibrary/src/chebyshev_rkf78_propagation.cpp
     src/kml_exporter.cpp
@@ -118,7 +140,10 @@ set(SOURCES
     src/output_manager.cpp
     src/asteroid_list_reader.cpp
     src/allnum_database.cpp
-    # src/gaia_catalog_preloader.cpp
+    src/occultation_map_utility.cpp
+    src/config_resolver.cpp
+    src/simulation_engine.cpp
+    src/math_utils.cpp
 )
 
 # Fortran wrapper for OrbFit
@@ -175,7 +200,11 @@ set(HEADERS
     include/parallel_algorithms.h
     include/phase1_candidate_screening.h
     include/phase2_occultation_geometry.h
-    # include/ioccultcalc/gaia_catalog_preloader.h  # File mancante
+    include/ioccultcalc/occultation_map_utility.h
+    include/ioccultcalc/config_resolver.h
+    include/ioccultcalc/simulation_engine.h
+    include/ioccultcalc/simulation_types.h
+    include/ioccultcalc/math_utils.h
 )
 
 # RIMUOVI questa riga - è codice C++, non CMake
@@ -250,57 +279,39 @@ else()
 endif()
 
 # Create library
-# moved add_library later
-
-# Verifica esistenza librerie opzionali
-set(CSPICE_LIB_PATH "${CMAKE_CURRENT_SOURCE_DIR}/external/cspice/lib/cspice.a")
-set(ASTDYN_LIB_PATH "${CMAKE_CURRENT_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/build/src/libastdyn.a")
-
-if(EXISTS ${CSPICE_LIB_PATH})
-    message(STATUS "Found CSPICE: ${CSPICE_LIB_PATH}")
-    set(CSPICE_LIB ${CSPICE_LIB_PATH})
-else()
-    message(WARNING "CSPICE not found at ${CSPICE_LIB_PATH} - some features may be unavailable")
-    set(CSPICE_LIB "")
-    list(REMOVE_ITEM SOURCES src/spice_spk_reader.cpp)
-    list(APPEND SOURCES src/spice_spk_reader_stub.cpp)
-endif()
-
-if(EXISTS ${ASTDYN_LIB_PATH})
-    message(STATUS "Found AstDyn: ${ASTDYN_LIB_PATH}")
-    set(ASTDYN_LIB ${ASTDYN_LIB_PATH})
-else()
-    message(WARNING "AstDyn not found at ${ASTDYN_LIB_PATH} - test_astdyn_integration will fail")
-    message(STATUS "To build AstDyn: cd external/ITALOccultLibrary/astdyn && ./build.sh")
-    set(ASTDYN_LIB "")
-endif()
-
-find_library(SQLITE3_LIBRARY sqlite3)
-
 add_library(ioccultcalc STATIC ${SOURCES} ${HEADERS})
+target_include_directories(ioccultcalc BEFORE PUBLIC 
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${STARMAP_INCLUDE_DIR}
+    ${IOC_EARTH_INCLUDE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/ITALOccultLibrary/italoccultlibrary/include
+)
+
+target_include_directories(ioccultcalc PUBLIC
+    ${ASTDYN_INCLUDE_DIR}
+    ${IOC_CONFIG_INCLUDE_DIR}
+    ${GAIALIB_INCLUDE_DIR}
+)
 target_link_libraries(ioccultcalc
     CURL::libcurl
     ${LIBXML2_LIBRARIES}
+    ${SQLite3_LIBRARIES}
+    ZLIB::ZLIB
+    ${STARMAP_LIB}
+    ${IOC_EARTH_LIB}
     ${CSPICE_LIB}
     ${ASTDYN_LIB}
     ${ORBFIT_ALL_LIBS}
-    ioc_gaialib
+    ${GAIALIB_LIB}
+    ${STARMAP_LIB}
+    ${IOC_EARTH_LIB}
+    ${IOC_CONFIG_LIB}
     OpenMP::OpenMP_CXX
     ${SQLITE3_LIBRARY}
+    nlohmann_json::nlohmann_json
 )
-
-# Link IOC_Config if available
-if(IOC_CONFIG_FOUND)
-    target_link_libraries(ioccultcalc ioc_config_static)
-    target_compile_definitions(ioccultcalc PRIVATE IOC_CONFIG_AVAILABLE)
-endif()
 
 # Rimuovi il blocco if separato per CSPICE se esiste
-
-target_include_directories(ioccultcalc PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:include>
-)
 
 # Trova Eigen3 (richiesto da ChebyshevOccultationManager e AstDyn)
 find_package(Eigen3 QUIET)
@@ -558,36 +569,38 @@ install(DIRECTORY include/ioccultcalc
 # )
 
 
-# Debug Tool for Asteroid 249
-add_executable(debug_249 tools/debug_249.cpp)
-target_link_libraries(debug_249 PRIVATE 
-    ioccultcalc 
-    ioc_gaialib
-    ${CMAKE_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/build/src/libastdyn.a
-    /opt/homebrew/lib/libboost_filesystem.dylib
-    /opt/homebrew/lib/libboost_atomic.dylib
-    /opt/homebrew/lib/libboost_program_options.dylib
-    /opt/homebrew/lib/libboost_date_time.dylib
-    Eigen3::Eigen
-)
-target_include_directories(debug_249 PRIVATE
-    ${CMAKE_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/include
-    ${CMAKE_SOURCE_DIR}/external/IOC_GaiaLib/include
-)
+# # Debug Tool for Asteroid 249
+# add_executable(debug_249 tools/debug_249.cpp)
+# target_link_libraries(debug_249 PRIVATE 
+#     ioccultcalc 
+#     ioc_gaialib
+#     ${CMAKE_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/build/src/libastdyn.a
+#     /opt/homebrew/lib/libboost_filesystem.dylib
+#     /opt/homebrew/lib/libboost_atomic.dylib
+#     /opt/homebrew/lib/libboost_program_options.dylib
+#     /opt/homebrew/lib/libboost_date_time.dylib
+#     Eigen3::Eigen
+# )
+# target_include_directories(debug_249 PRIVATE
+#     ${CMAKE_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/include
+#     ${CMAKE_SOURCE_DIR}/external/IOC_GaiaLib/include
+# )
+
+# test_a4_vertical removed (synthetic data)
 
 # User Test Position 249
-add_executable(test_position_249 tools/test_position_249.cpp)
-target_link_libraries(test_position_249 PRIVATE 
-    ioccultcalc 
-    ioc_gaialib
-    ${CMAKE_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/build/src/libastdyn.a
-    /opt/homebrew/lib/libboost_filesystem.dylib
-    /opt/homebrew/lib/libboost_atomic.dylib
-    /opt/homebrew/lib/libboost_program_options.dylib
-    /opt/homebrew/lib/libboost_date_time.dylib
-    Eigen3::Eigen
-)
-target_include_directories(test_position_249 PRIVATE
-    ${CMAKE_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/include
-    ${CMAKE_SOURCE_DIR}/external/IOC_GaiaLib/include
-)
+# add_executable(test_position_249 tools/test_position_249.cpp)
+# target_link_libraries(test_position_249 PRIVATE 
+#     ioccultcalc 
+#     ioc_gaialib
+#     ${CMAKE_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/build/src/libastdyn.a
+#     /opt/homebrew/lib/libboost_filesystem.dylib
+#     /opt/homebrew/lib/libboost_atomic.dylib
+#     /opt/homebrew/lib/libboost_program_options.dylib
+#     /opt/homebrew/lib/libboost_date_time.dylib
+#     Eigen3::Eigen
+# )
+# target_include_directories(test_position_249 PRIVATE
+#     ${CMAKE_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/include
+#     ${CMAKE_SOURCE_DIR}/external/IOC_GaiaLib/include
+# )

@@ -136,7 +136,7 @@ void OrbitPropagator::setOptions(const PropagatorOptions& options) {
     options_ = options;
 }
 
-OrbitState OrbitPropagator::elementsToState(const EquinoctialElements& elements) {
+OrbitState OrbitPropagator::elementsToState(const AstDynEquinoctialElements& elements) {
     // Implementation following OrbFit's prop2b function EXACTLY
     // Reference: OrbFit/src/suit/orb_els.f90, subroutine prop2b
     // This propagates equinoctial elements using 2-body Kepler dynamics
@@ -249,10 +249,28 @@ OrbitState OrbitPropagator::elementsToState(const EquinoctialElements& elements)
     velocity.y = velocity_ecl.y * cos_eps - velocity_ecl.z * sin_eps;
     velocity.z = velocity_ecl.y * sin_eps + velocity_ecl.z * cos_eps;
     
+    // Check if input elements were already EQUATORIAL
+    if (elements.frame == FrameType::EQUATORIAL_ICRF) {
+        // If elements indicate they are already Equatorial, we shouldn't have applied 
+        // the rotation from Ecliptic. 
+        // However, the calculation above (prop2b algorithm) assumes the Keplerian/Equinoctial 
+        // elements define the orbit relative to the reference plane.
+        
+        // If 'elements' defines Inclination relative to Equator, then 'position_ecl' 
+        // (calculated above) is actually 'position_equ'.
+        // So applying the rotation was wrong. We should revert it or just use position_ecl directly.
+        
+        // Let's assume the math above generated coordinates in the frame defined by the elements.
+        position = position_ecl;
+        velocity = velocity_ecl;
+        
+        // Note: prop2b generates in the frame of the elements.
+    }
+    
     return OrbitState(elements.epoch, position, velocity);
 }
 
-EquinoctialElements OrbitPropagator::stateToElements(const OrbitState& state) {
+AstDynEquinoctialElements OrbitPropagator::stateToElements(const OrbitState& state) {
     // Converti vettori di stato in elementi orbitali equinoziali
     // Algoritmo standard: r,v → (a, e, i, Ω, ω, M) → (a, h, k, p, q, λ)
     
@@ -343,7 +361,7 @@ EquinoctialElements OrbitPropagator::stateToElements(const OrbitState& state) {
     if (M < 0) M += 2.0 * M_PI;
     
     // Converti in elementi equinoziali
-    EquinoctialElements elem;
+    AstDynEquinoctialElements elem;
     elem.a = a;
     elem.h = e * sin(omega + Omega);
     elem.k = e * cos(omega + Omega);
@@ -761,7 +779,7 @@ OrbitState OrbitPropagator::integrateRA15(const OrbitState& state0, const Julian
     return result;
 }
 
-OrbitState OrbitPropagator::propagate(const EquinoctialElements& initialElements,
+OrbitState OrbitPropagator::propagate(const AstDynEquinoctialElements& initialElements,
                                      const JulianDate& targetEpoch) {
     // Salva parametri non gravitazionali dagli elementi
     currentA1_ = initialElements.A1;

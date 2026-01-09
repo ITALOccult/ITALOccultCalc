@@ -85,8 +85,8 @@ public:
      * @param nSamples Numero campioni
      * @return Vettore elementi campionati
      */
-    std::vector<EquinoctialElements> sampleOrbitalElements(
-        const EquinoctialElements& nominalElements,
+    std::vector<AstDynEquinoctialElements> sampleOrbitalElements(
+        const AstDynEquinoctialElements& nominalElements,
         const std::vector<std::vector<double>>& covariance,
         int nSamples);
     
@@ -252,7 +252,7 @@ public:
      * @return Risultato completo probabilità
      */
     static OccultationProbability computeMonteCarloProbability(
-        const EquinoctialElements& nominalElements,
+        const AstDynEquinoctialElements& nominalElements,
         const std::vector<std::vector<double>>& covariance,
         const EquatorialCoordinates& starPos,
         const AsteroidShape& asteroidShape,

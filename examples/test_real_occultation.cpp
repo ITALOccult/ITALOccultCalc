@@ -61,7 +61,7 @@ double calculateSeparation(double ra1, double dec1, double ra2, double dec2) {
  * @brief Cerca momento di closest approach
  */
 OccultationPrediction searchClosestApproach(
-    const EquinoctialElements& elements,
+    const AstDynEquinoctialElements& elements,
     const GaiaStar& star,
     const JulianDate& startDate,
     const JulianDate& endDate,

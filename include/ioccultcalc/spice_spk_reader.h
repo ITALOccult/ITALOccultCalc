@@ -8,6 +8,8 @@
 #ifndef IOCCULTCALC_SPICE_SPK_READER_H
 #define IOCCULTCALC_SPICE_SPK_READER_H
 
+#include "ioccultcalc/types.h"
+#include "ioccultcalc/isp_reader.h"
 #include <string>
 #include <vector>
 #include <memory>
@@ -20,7 +22,7 @@ namespace ioccultcalc {
  * 
  * Supporta file SPK standard (format SPICE) per asteroidi e altri corpi
  */
-class SPICESPKReader {
+class SPICESPKReader : public ISPReader {
 public:
     SPICESPKReader();
     ~SPICESPKReader();

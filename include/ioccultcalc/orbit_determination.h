@@ -11,8 +11,8 @@ namespace ioccultcalc {
 
 // Risultati del fit orbitale
 struct OrbitFitResult {
-    EquinoctialElements improvedElements;  // Elementi migliorati
-    EquinoctialElements initialElements;   // Elementi iniziali
+    AstDynEquinoctialElements improvedElements;  // Elementi migliorati
+    AstDynEquinoctialElements initialElements;   // Elementi iniziali
     
     // Matrice covarianza (6x6 per i 6 elementi)
     std::vector<std::vector<double>> covarianceMatrix;
@@ -52,7 +52,7 @@ public:
     ~OrbitDetermination();
     
     // Imposta elementi orbitali iniziali (approssimati)
-    void setInitialElements(const EquinoctialElements& elements);
+    void setInitialElements(const AstDynEquinoctialElements& elements);
     
     // Imposta osservazioni
     void setObservations(const ObservationSet& observations);
@@ -68,18 +68,18 @@ public:
     );
     
     // Calcola residui per elementi dati
-    void computeResiduals(const EquinoctialElements& elements,
+    void computeResiduals(const AstDynEquinoctialElements& elements,
                          ObservationSet& observations);
     
     // Orbit determination iniziale da 3 osservazioni (metodo Gauss)
-    static EquinoctialElements gaussMethod(
+    static AstDynEquinoctialElements gaussMethod(
         const AstrometricObservation& obs1,
         const AstrometricObservation& obs2,
         const AstrometricObservation& obs3
     );
     
     // Orbit determination da 2 osservazioni molto distanti (metodo Laplace)
-    static EquinoctialElements laplaceMethod(
+    static AstDynEquinoctialElements laplaceMethod(
         const AstrometricObservation& obs1,
         const AstrometricObservation& obs2
     );
@@ -116,12 +116,12 @@ private:
     
     // Calcola matrice Jacobiana (derivate parziali)
     std::vector<std::vector<double>> computeJacobian(
-        const EquinoctialElements& elements,
+        const AstDynEquinoctialElements& elements,
         const ObservationSet& observations);
     
     // Calcola vettore residui
     std::vector<double> computeResidualVector(
-        const EquinoctialElements& elements,
+        const AstDynEquinoctialElements& elements,
         const ObservationSet& observations);
     
     // Risolve sistema lineare per correzioni
@@ -132,7 +132,7 @@ private:
     
     // Calcola effemeridi per osservazione
     EquatorialCoordinates computeEphemeris(
-        const EquinoctialElements& elements,
+        const AstDynEquinoctialElements& elements,
         const AstrometricObservation& obs);
 };
 

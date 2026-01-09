@@ -37,7 +37,7 @@ int main() {
         
         // Converti in elementi equinoziali per il propagatore
         std::cout << "2. Converting to equinoctial for propagation...\n";
-        EquinoctialElements equElements = kepElements.toEquinoctial();
+        AstDynEquinoctialElements equElements = kepElements.toEquinoctial();
         std::cout << "   ✓ Converted\n\n";
         
         // Setup propagator

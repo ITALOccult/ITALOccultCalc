@@ -1,4 +1,6 @@
 #include "ioccultcalc/chebyshev_detector.h"
+#include "ioccultcalc/ephemeris.h"
+#include "ioccultcalc/types.h"
 #include <cmath>
 #include <algorithm>
 
@@ -8,13 +10,28 @@ ChebyshevOccultationDetector::ChebyshevOccultationDetector(const Config& cfg)
     : config_(cfg) {}
 
 bool ChebyshevOccultationDetector::initialize(Ephemeris& ephemeris, double startJD, double endJD) {
-    ChebyshevConfig chebConfig;
-    chebConfig.order = config_.order;
-    chebConfig.segmentDays = config_.segmentDays;
-    chebConfig.geocentric = true;
+    approximation_ = std::make_unique<ChebyshevApproximation>(config_.order);
     
-    approximation_ = std::make_unique<ChebyshevApproximation>(chebConfig);
-    bool success = approximation_->generate(ephemeris, startJD, endJD);
+    // Sample positions for the fitting
+    std::vector<Eigen::Vector3d> positions;
+    int nPoints = std::max(16, (int)config_.order * 2);
+    for (int i = 0; i < nPoints; ++i) {
+        double jd = startJD + (endJD - startJD) * i / (nPoints - 1);
+        EphemerisData data = ephemeris.compute(JulianDate(jd));
+        
+        // Convert to Cartesian (Geocentric Equatorial J2000)
+        double r = data.distance;
+        double ra_rad = data.geocentricPos.ra;
+        double dec_rad = data.geocentricPos.dec;
+        
+        double x = r * std::cos(dec_rad) * std::cos(ra_rad);
+        double y = r * std::cos(dec_rad) * std::sin(ra_rad);
+        double z = r * std::sin(dec_rad);
+        
+        positions.push_back(Eigen::Vector3d(x, y, z));
+    }
+
+    bool success = approximation_->fit(positions, startJD - 2400000.5, endJD - 2400000.5);
     
     if (success) {
         startJD_ = startJD;
@@ -63,8 +80,13 @@ OccultationCandidate ChebyshevOccultationDetector::findCandidate(int starIndex, 
     for (int i = 0; i < nSamples; i++) {
         double jd = jdStart + (jdEnd - jdStart) * i / (nSamples - 1);
         
-        double ast_ra, ast_dec, ast_dist;
-        if (!approximation_->evaluate(jd, ast_ra, ast_dec, ast_dist)) continue;
+        // Evaluate position using MJD
+        double mjd = jd - 2400000.5;
+        Eigen::Vector3d pos = approximation_->evaluatePosition(mjd);
+        double r = pos.norm();
+        double ast_dec = std::asin(pos.z() / r) * 180.0 / M_PI;
+        double ast_ra = std::atan2(pos.y(), pos.x()) * 180.0 / M_PI;
+        if (ast_ra < 0) ast_ra += 360.0;
         
         double dist = angularDistance(ast_ra, ast_dec, ra, dec);
         
@@ -82,8 +104,13 @@ OccultationCandidate ChebyshevOccultationDetector::findCandidate(int starIndex, 
         for (int i = 0; i < nSamples; i++) {
             double jd = jdStart + (jdEnd - jdStart) * i / (nSamples - 1);
             
-            double ast_ra, ast_dec, ast_dist;
-            if (!approximation_->evaluate(jd, ast_ra, ast_dec, ast_dist)) continue;
+            // Evaluate position using MJD
+            double mjd = jd - 2400000.5;
+            Eigen::Vector3d pos = approximation_->evaluatePosition(mjd);
+            double r = pos.norm();
+            double ast_dec = std::asin(pos.z() / r) * 180.0 / M_PI;
+            double ast_ra = std::atan2(pos.y(), pos.x()) * 180.0 / M_PI;
+            if (ast_ra < 0) ast_ra += 360.0;
             
             double dist = angularDistance(ast_ra, ast_dec, ra, dec);
             

@@ -49,7 +49,7 @@ int main() {
         PropagatorOptions opts;
         OrbitPropagator prop(opts);
         
-        EquinoctialElements elements = prop.stateToElements(state);
+        AstDynEquinoctialElements elements = prop.stateToElements(state);
         
         std::cout << "  Elementi calcolati:\n";
         std::cout << "    a      = " << std::fixed << std::setprecision(6) << elements.a << " AU\n";

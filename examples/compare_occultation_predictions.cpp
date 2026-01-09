@@ -25,7 +25,7 @@ struct PredictionResult {
 };
 
 PredictionResult predictOccultation(
-    const EquinoctialElements& elements,
+    const AstDynEquinoctialElements& elements,
     double starRA, double starDec,
     const JulianDate& startDate,
     const JulianDate& endDate,

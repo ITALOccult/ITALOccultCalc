@@ -30,7 +30,7 @@ int main() {
         JulianDate epoch0(2461000.5);
         
         // Elementi orbitali da JPL SBDB (orbit_id 281, epoca 2461000.5)
-        EquinoctialElements elements;
+        AstDynEquinoctialElements elements;
         elements.epoch = epoch0;
         elements.a = 0.9223815982266211;        // AU
         elements.designation = "99942";
@@ -43,7 +43,7 @@ int main() {
         double omega = 126.404394025686 * M_PI / 180.0;
         double M = 228.3776978652904 * M_PI / 180.0;
         
-        elements = EquinoctialElements::fromKeplerian(elements.a, e, i, omega, Omega, M, epoch0);
+        elements = AstDynEquinoctialElements::fromKeplerian(elements.a, e, i, omega, Omega, M, epoch0);
         
         // Parametri non gravitazionali da JPL SBDB (orbit_id 281)
         elements.A1 = 5.0e-13;              // AU/day² (radial)

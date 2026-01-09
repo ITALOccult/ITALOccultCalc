@@ -18,7 +18,7 @@ public:
     
     // Scarica elementi orbitali equinoziali per un asteroide specifico
     // designation può essere numero (es. "433") o designazione (es. "2024 AA")
-    EquinoctialElements getElements(const std::string& designation);
+    AstDynEquinoctialElements getElements(const std::string& designation);
     
     // Scarica elementi orbitali KEPLERIAN per un asteroide (epoca recente)
     // Usa il catalogo allnum.cat che ha epoche vicine al presente
@@ -37,7 +37,7 @@ public:
                                    const JulianDate& epoch);
     
     // Scarica elementi per una lista di asteroidi
-    std::vector<EquinoctialElements> getElementsBatch(const std::vector<std::string>& designations);
+    std::vector<AstDynEquinoctialElements> getElementsBatch(const std::vector<std::string>& designations);
     
     // Cerca asteroidi per nome (restituisce lista di possibili match)
     std::vector<std::string> searchByName(const std::string& name);
@@ -53,7 +53,7 @@ private:
     std::unique_ptr<Impl> pImpl;
     
     // Parsing del file .eq (equinoctial elements)
-    EquinoctialElements parseEquinoctialFile(const std::string& content, 
+    AstDynEquinoctialElements parseEquinoctialFile(const std::string& content, 
                                             const std::string& designation);
 };
 

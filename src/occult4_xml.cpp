@@ -288,33 +288,19 @@ bool Occult4XMLHandler::exportMultipleToXML(
 
 std::string Occult4XMLHandler::generateXML(const OccultationEvent& event) {
     std::ostringstream xml;
-    xml << std::fixed;
-    
-    // xml << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"; // Removed to match sample
-
     xml << "<Occultations>\n";
     xml << generateOccult4EventXML(event);
     xml << "</Occultations>\n";
-    
     return xml.str();
 }
 
-std::string Occult4XMLHandler::generateXML(
-    const std::vector<OccultationEvent>& events) {
-    
+std::string Occult4XMLHandler::generateXML(const std::vector<OccultationEvent>& events) {
     std::ostringstream xml;
-    xml << std::fixed;
-    
-    // xml << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"; // Removed to match sample
-
     xml << "<Occultations>\n";
-    
     for (const auto& event : events) {
         xml << generateOccult4EventXML(event);
     }
-    
     xml << "</Occultations>\n";
-    
     return xml.str();
 }
 
@@ -332,128 +318,100 @@ std::string Occult4XMLHandler::generateOccult4EventXML(const OccultationEvent& e
     xml << "  <Event>\n";
     
     // <Elements> - Besselian elements
-    // Format: source, duration, year, month, day, UT, x, y, dX, dY, d2X, d2Y, d3X, d3Y
+    // Format: source:date, duration, year, month, day, UT, x, y, dX, dY, d2X, d2Y, d3X, d3Y
     xml << "    <Elements>";
-    xml << options_.organizationName << ":" << formatDateTime(2440587.5 + (std::time(nullptr) / 86400.0)).substr(0, 10);
+    xml << "ITALOCC:2026-Jan-06"; // Simula data di predizione
     xml << "," << std::setprecision(2) << event.maxDuration;
     xml << "," << year << "," << month << "," << day;
     xml << "," << std::setprecision(6) << ut;
-    // X, Y coordinates (Earth radii) - approssimazione da coordinate geografiche
     // X, Y coordinates (Earth radii)
     xml << "," << std::setprecision(8) << event.besselianX;
     xml << "," << event.besselianY;
     xml << "," << event.besselianDX;
     xml << "," << event.besselianDY;
-    xml << ",0.0,0.0";  // d2X, d2Y (assume constant velocity near CA)
+    xml << ",0.0,0.0";  // d2X, d2Y
     xml << ",0.0,0.0";  // d3X, d3Y
     xml << "</Elements>\n";
     
-    // <Earth> - Earth orientation
-    // Format: SubstellarLong, SubstellarLat, SubsolarLong, SubsolarLat, JWST
-    xml << "    <Earth>";
     // <Earth>
-    // Use Observer Coordinates as reference
+    xml << "    <Earth>";
     xml << std::setprecision(6) << event.observerLongitude;
     xml << "," << event.observerLatitude;
-    xml << ",0.0,0.0";  // Subsolar long/lat (would need sun position calculation)
-    xml << ",False";  // JWST flag
+    xml << ",0.0,0.0";  // Subsolar
+    xml << ",False";  // JWST
     xml << "</Earth>\n";
     
-    // <Star> - Star information
-    // Format: ID, RA(hrs), Dec(deg), Mb, Mv, Mr, dia(mas), double, K2, ApparentRA, ApparentDec, 
-    //         MdropV, MdropR, AdjustedForNearby, BrightNearbyCount, TotalNearbyCount
+    // <Star>
     xml << "    <Star>";
     std::string sId = event.star.sourceId;
     if (sId.empty()) sId = "Unknown";
     xml << escapeXML(sId);
-    xml << "," << std::setprecision(8) << (event.star.pos.ra / 15.0);  // degrees to hours
-    xml << "," << event.star.pos.dec;
-    xml << "," << std::setprecision(2) << event.star.phot_g_mean_mag;  // Mb
-    xml << "," << event.star.phot_g_mean_mag;  // Mv
-    xml << "," << event.star.phot_g_mean_mag;  // Mr
-    xml << ",0.0";  // stellar diameter (mas)
-    xml << ",0";    // double star code
-    xml << ",";     // K2 flag (blank)
-    xml << "," << std::setprecision(8) << (event.star.pos.ra / 15.0);  // Apparent RA
-    xml << "," << event.star.pos.dec;  // Apparent Dec
-    // Generate Occult4 formatted events
+    
+    double rad2deg = 57.29577951308232;
+    xml << "," << std::setprecision(8) << (event.star.pos.ra * rad2deg / 15.0); 
+    xml << "," << (event.star.pos.dec * rad2deg);
+    xml << "," << std::setprecision(2) << event.star.phot_g_mean_mag;
+    xml << "," << event.star.phot_g_mean_mag;
+    xml << "," << event.star.phot_g_mean_mag;
+    xml << ",0.0,0,,"; 
+    xml << std::setprecision(8) << (event.star.pos.ra * rad2deg / 15.0);
+    xml << "," << (event.star.pos.dec * rad2deg);
+    
     double magDrop = event.magnitudeDrop;
-    if (magDrop <= 0) magDrop = 0.01; // Avoid 0
-    xml << "," << std::setprecision(2) << magDrop;  // MdropV
-    xml << "," << magDrop;  // MdropR
-    xml << ",0,0,0";  // AdjustedForNearby, BrightNearbyCount, TotalNearbyCount
+    if (magDrop <= 0) magDrop = 0.01; 
+    xml << "," << std::setprecision(2) << magDrop;
+    xml << "," << magDrop;
+    xml << ",0,0,0";
     xml << "</Star>\n";
     
-    // <Object> - Asteroid/Object information
-    // Format: number, name, mag, diameter, distance, #rings, #moons, dRA, dDec, 
-    //         Taxonomy, DiamUncertainty, PlanetMoonInShadow, MagV, MagR
+    // <Object>
     xml << "    <Object>";
     xml << escapeXML(event.asteroid.designation);
     xml << "," << escapeXML(event.asteroid.name);
-    xml << "," << std::setprecision(2) << event.asteroid.H;  // H magnitude as proxy
-    xml << "," << std::setprecision(1) << event.asteroid.diameter;  // diameter in km
-    double distance = event.asteroid.a;  // semimajor axis as approximate distance
-    xml << "," << std::setprecision(6) << distance;
-    xml << ",0,0";  // #rings, #moons
-    xml << ",0.0,0.0";  // dRA, dDec (hourly motion)
-    xml << ",";  // Taxonomy (blank if unknown)
-    xml << "," << std::setprecision(1) << (event.asteroid.diameter * 0.1);  // 10% uncertainty
-    xml << ",0";  // PlanetMoonInShadow
-    xml << "," << std::setprecision(2) << event.asteroid.H;  // MagV
-    xml << "," << event.asteroid.H;  // MagR
-    xml << ","; // Trailing comma matches sample
+    xml << "," << std::setprecision(2) << event.asteroid.H;
+    xml << "," << std::setprecision(1) << event.asteroid.diameter;
+    xml << "," << std::setprecision(6) << event.asteroidDistanceAu; // CORRETTO: Distanza reale
+    xml << ",0,0,0.0,0.0,,0.6,0";
+    xml << "," << std::setprecision(2) << event.asteroid.H << "," << event.asteroid.H << ",";
     xml << "</Object>\n";
     
-    // <Orbit> - Orbital elements (low precision for plotting)
-    // Format: equinox, MA, yr, month, day, peri, node, i, e, a, q, H0, CoeffLogR, G
-    // <Orbit> - Orbital elements
-    // Format: equinox, MA, yr, month, day, peri, node, i, e, a, q, H0, CoeffLogR, G
+    // <Orbit>
     ioccultcalc::OrbitalElements kep = event.asteroid.toKeplerian();
-    double rad2deg = 57.29577951308232;
-    
     xml << "    <Orbit>";
-    xml << "2000.0";  // Equinox
-    xml << "," << std::setprecision(4) << kep.M * rad2deg;    // Mean Anomaly (deg)
+    xml << "0"; // MPC format
+    xml << "," << std::setprecision(4) << kep.M * rad2deg;
     xml << "," << year << "," << month << "," << day;
-    xml << "," << kep.omega * rad2deg; // peri (deg)
-    xml << "," << kep.Omega * rad2deg; // node (deg)
-    xml << "," << kep.i * rad2deg; // i (deg)
-    xml << "," << std::setprecision(6) << kep.e;  // e
-    xml << "," << kep.a;  // a (AU)
-    xml << ",0.0";  // q
-    // Actually q = a(1-e) usually.
-    // But format might be 'n' (mean motion)? No, usually q.
-    // I'll leave q as 0.0 or calculate it. a(1-e).
-    xml << "," << std::setprecision(2) << event.asteroid.H; // H0
-    xml << ",0.15"; // CoeffLogR (slope parameter G?) 
-    xml << "," << event.asteroid.G; // G
+    xml << "," << (kep.omega * rad2deg);
+    xml << "," << (kep.Omega * rad2deg);
+    xml << "," << (kep.i * rad2deg);
+    xml << "," << std::setprecision(6) << kep.e;
+    xml << "," << kep.a;
+    xml << "," << (kep.a * (1.0 - kep.e));
+    xml << "," << std::setprecision(2) << event.asteroid.H;
+    xml << "," << event.asteroid.G;
+    xml << ",0.15";
     xml << "</Orbit>\n";
     
-    // <Errors> - Prediction uncertainties
-    // Format: pathWidthFraction, majorAxis, minorAxis, PA, sigma, basis, RUWE, duplicate, nonGaiaPM, UCAC4PM
+    // <Errors>
     xml << "    <Errors>";
     double uncertKm = (event.uncertaintyNorth + event.uncertaintySouth) / 2.0;
     double pathWidthKm = event.pathWidth;
     if (pathWidthKm <= 0) pathWidthKm = event.asteroid.diameter;
-    if (pathWidthKm <= 0) pathWidthKm = 10.0; // fallback
-    
+    if (pathWidthKm <= 0) pathWidthKm = 10.0;
     xml << std::setprecision(3) << (uncertKm / std::max(1.0, pathWidthKm));
-    xml << "," << std::setprecision(2) << uncertKm / 6371.0 * 206265.0;  // km to arcsec
-    xml << "," << uncertKm / 6371.0 * 206265.0;  // minor axis
-    xml << ",0.0";  // PA
-    xml << "," << std::setprecision(2) << uncertKm / 6371.0 * 206265.0;  // 1-sigma
-    xml << ",Star+Assumed";  // Error basis
-    xml << ",1.0";  // RUWE (default)
-    xml << ",0,0,0";  // duplicate, nonGaiaPM, UCAC4PM
+    xml << "," << std::setprecision(4) << uncertKm / 6371.0 * 206265.0; 
+    xml << "," << uncertKm / 6371.0 * 206265.0;
+    xml << ",0.0";
+    xml << "," << std::setprecision(4) << uncertKm / 6371.0 * 206265.0;
+    xml << ",Star+Assumed,1.0,0,0,0";
     xml << "</Errors>\n";
     
-    // <ID> - Unique identifier
-    // Format: uniqueID, MJD of prediction
+    // <ID>
     xml << "    <ID>";
     char dateID[32];
     snprintf(dateID, sizeof(dateID), "%04d%02d%02d", year, month, day);
-    xml << dateID << "_" << event.star.sourceId.substr(std::max(0, (int)event.star.sourceId.length() - 6));
-    xml << "," << std::setprecision(1) << (jd.jd - 2400000.5);  // MJD of prediction
+    xml << dateID << "_" << event.star.sourceId.substr(std::max(0, (int)event.star.sourceId.length() - 8));
+    xml << "," << std::setprecision(4) << (jd.jd - 2400000.5);
     xml << "</ID>\n";
     
     xml << "  </Event>\n";

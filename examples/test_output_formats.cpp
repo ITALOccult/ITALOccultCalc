@@ -14,6 +14,7 @@
  */
 
 #include "ioccultcalc/output_manager.h"
+#include "ioccultcalc/occultation_predictor.h"
 #include <iostream>
 #include <iomanip>
 
@@ -23,8 +24,8 @@ using namespace ioccultcalc;
 // DATI TEST
 // ============================================================================
 
-OccultationEvent createTestEvent() {
-    OccultationEvent evt;
+OutputEvent createTestEvent() {
+    OutputEvent evt;
     
     // Asteroide: (324) Bamberga
     evt.asteroid_number = 324;
@@ -120,14 +121,14 @@ OccultationEvent createTestEvent() {
     return evt;
 }
 
-std::vector<OccultationEvent> createTestEvents() {
-    std::vector<OccultationEvent> events;
+std::vector<OutputEvent> createTestEvents() {
+    std::vector<OutputEvent> events;
     
     // Evento 1: Bamberga (già definito)
     events.push_back(createTestEvent());
     
     // Evento 2: (10) Hygiea
-    OccultationEvent evt2;
+    OutputEvent evt2;
     evt2.asteroid_number = 10;
     evt2.asteroid_name = "Hygiea";
     evt2.asteroid_designation = "1849 Hygiea";
@@ -170,7 +171,7 @@ std::vector<OccultationEvent> createTestEvents() {
     events.push_back(evt2);
     
     // Evento 3: (4) Vesta
-    OccultationEvent evt3;
+    OutputEvent evt3;
     evt3.asteroid_number = 4;
     evt3.asteroid_name = "Vesta";
     evt3.asteroid_designation = "1807 FA";

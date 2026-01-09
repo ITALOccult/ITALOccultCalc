@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
         
         std::cout << "Scaricamento elementi orbitali...\n\n";
         
-        EquinoctialElements elem = client.getElements(asteroidNumber);
+        AstDynEquinoctialElements elem = client.getElements(asteroidNumber);
         
         std::cout << "\n========================================\n";
         std::cout << "SUCCESSO!\n";

@@ -17,7 +17,7 @@ int main() {
     
     try {
         // (704) Interamnia elementi da AstDyS .eq1 (MJD 61000 = 2025-11-21)
-        EquinoctialElements eq;
+        AstDynEquinoctialElements eq;
         eq.a = 3.0562188547464153;
         eq.h = 0.038274930727971;
         eq.k = 0.150456045083743;

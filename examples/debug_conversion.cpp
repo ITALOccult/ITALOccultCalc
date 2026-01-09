@@ -18,7 +18,7 @@ int main() {
     
     try {
         // Hardcoded (704) Interamnia from AstDyS .eq1 file
-        EquinoctialElements eq;
+        AstDynEquinoctialElements eq;
         eq.a = 3.0562188547464153;
         eq.h = 0.038274930727971;
         eq.k = 0.150456045083743;

@@ -94,12 +94,12 @@ public:
      * @brief Carica elementi orbitali per un asteroide
      * @param designation Designazione (es: "17030", "433", "2025 AB123")
      * @param epoch_out [OUT] Epoca degli elementi (MJD)
-     * @return EquinoctialElements in frame ECLM J2000
+     * @return AstDynEquinoctialElements in frame ECLM J2000
      * @throw std::runtime_error se asteroide non trovato
      * 
      * Performance: O(1) lookup via indice SQLite
      */
-    EquinoctialElements getElements(
+    AstDynEquinoctialElements getElements(
         const std::string& designation,
         double* epoch_out = nullptr
     );

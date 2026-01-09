@@ -76,7 +76,7 @@ std::optional<OrbitalElements> AllnumDatabaseReader::getElement(const std::strin
     }
     
     const char* sql = R"(
-        SELECT number, designation, epoch_mjd, a, e, i, node_long, peri_arg, M, H, G
+        SELECT number, designation, name, epoch_mjd, a, e, i, node_long, peri_arg, M, H, G, frame_type, element_type
         FROM allnum_asteroids
         WHERE number = ?
         LIMIT 1
@@ -95,23 +95,64 @@ std::optional<OrbitalElements> AllnumDatabaseReader::getElement(const std::strin
     
     if (sqlite3_step(stmt) == SQLITE_ROW) {
         OrbitalElements elem;
-        elem.designation = designation;
+        
+        // Designation e Name
+        const char* desig_str = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+        const char* name_str = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+        
+        elem.designation = desig_str ? desig_str : designation;
+        std::string raw_name = name_str ? name_str : elem.designation;
+        
+        // Pulizia nome: se contiene il numero tra parentesi, rimuovilo
+        // Es: "(34713) Yesiltas" -> "Yesiltas"
+        size_t startBracket = raw_name.find('(');
+        size_t endBracket = raw_name.find(')');
+        if (startBracket != std::string::npos && endBracket != std::string::npos && endBracket > startBracket) {
+            std::string numInBrackets = raw_name.substr(startBracket + 1, endBracket - startBracket - 1);
+            // Se il numero tra parentesi corrisponde alla designazione, lo rimuoviamo
+            if (numInBrackets == elem.designation || numInBrackets == designation) {
+                raw_name.erase(startBracket, endBracket - startBracket + 1);
+            }
+        }
+        
+        // Rimuovi spazi extra iniziali/finali
+        raw_name.erase(0, raw_name.find_first_not_of(" \t"));
+        size_t last = raw_name.find_last_not_of(" \t");
+        if (last != std::string::npos) raw_name.erase(last + 1);
+        
+        elem.name = raw_name;
         
         // Epoch (MJD) -> JD
-        double epoch_mjd = sqlite3_column_double(stmt, 2);
+        double epoch_mjd = sqlite3_column_double(stmt, 3);
         elem.epoch.jd = epoch_mjd + 2400000.5;
         
-        // Elementi orbitali (già in radianti nel database)
-        elem.a = sqlite3_column_double(stmt, 3);
-        elem.e = sqlite3_column_double(stmt, 4);
-        elem.i = sqlite3_column_double(stmt, 5);  // già in radianti
-        elem.Omega = sqlite3_column_double(stmt, 6);  // già in radianti
-        elem.omega = sqlite3_column_double(stmt, 7);  // già in radianti
-        elem.M = sqlite3_column_double(stmt, 8);  // già in radianti
+        // Elementi orbitali (già in radianti nel database allnum.db)
+        elem.a = sqlite3_column_double(stmt, 4);
+        elem.e = sqlite3_column_double(stmt, 5);
+        elem.i = sqlite3_column_double(stmt, 6);
+        elem.Omega = sqlite3_column_double(stmt, 7);
+        elem.omega = sqlite3_column_double(stmt, 8);
+        elem.M = sqlite3_column_double(stmt, 9);
         
         // H e G
-        elem.H = sqlite3_column_double(stmt, 9);
-        elem.G = sqlite3_column_double(stmt, 10);
+        elem.H = sqlite3_column_double(stmt, 10);
+        elem.G = sqlite3_column_double(stmt, 11);
+        
+        // Metadata di frame e tipo
+        const char* frame_sql = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 12));
+        const char* type_sql = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 13));
+        
+        if (frame_sql) {
+            std::string frame(frame_sql);
+            if (frame == "EQUATORIAL_ICRF") elem.frame = FrameType::EQUATORIAL_ICRF;
+            else elem.frame = FrameType::ECLIPTIC_J2000;
+        }
+        
+        if (type_sql) {
+            std::string type(type_sql);
+            if (type == "MEAN_ASTDYS") elem.type = ElementType::MEAN_ASTDYS;
+            else elem.type = ElementType::OSCULATING;
+        }
         
         result = elem;
     }

@@ -22,6 +22,10 @@
 #include <memory>
 #include <string>
 #include <Eigen/Dense>
+#include "ioccultcalc/astdyn_wrapper.h"
+#include "ioccultcalc/orbital_elements.h"
+#include "ioccultcalc/spice_spk_reader.h"
+#include <nlohmann/json.hpp>
 
 // Forward declarations FUORI dal namespace ioccultcalc
 namespace astdyn {
@@ -67,6 +71,11 @@ struct CandidateStar {
     double closest_approach_mjd;           ///< Epoca del closest approach [MJD TDB]
     int closest_segment_index;             ///< Indice segmento path con CA minimo
     double angular_velocity_arcsec_per_sec; ///< Velocità angolare al CA [arcsec/sec]
+    
+    // Gaia DR3 Additional details for high-precision geometry
+    double pmra = 0;                       ///< Proper motion RA [mas/yr]
+    double pmdec = 0;                      ///< Proper motion Dec [mas/yr]
+    double parallax = 0;                   ///< Parallax [mas]
 };
 
 /**
@@ -96,7 +105,23 @@ struct Phase1Config {
         , max_magnitude(18.0)                 // Stelle visibili da terra con setup amatoriale
         , min_parallax(-1.0)                  // Nessun limite su parallasse
         , closest_approach_threshold_arcsec(15.0)  // Solo CA < 15 arcsec (3x ombra tipica)
+        , debug_asteroid_equ(false)
+        , debug_asteroid_ecl(false)
+        , debug_asteroid_vec(false)
+        , debug_elements_equ(false)
+        , debug_elements_ecl(false)
+        , debug_star_position(false)
+        , debug_json_path("")
     {}
+
+    // === DEBUG FLAGS (User requested keywords) ===
+    bool debug_asteroid_equ;           ///< Asteroid_Phase1_EQU
+    bool debug_asteroid_ecl;           ///< Asteroid_Phase1_ECL
+    bool debug_asteroid_vec;           ///< Asteroid_Phase1_VEC
+    bool debug_elements_equ;           ///< Asteroid_Phase1_ELMENTS_EQU
+    bool debug_elements_ecl;           ///< Asteroid_Phase1_ELMENTS_Ecl
+    bool debug_star_position;          ///< StarPosition
+    std::string debug_json_path;       ///< Path to JSON debug output file
     
     /**
      * @brief Configurazione conservativa (più stelle, più sicuro, più lento)
@@ -186,6 +211,7 @@ struct Phase1Results {
 class Phase1CandidateScreening {
 public:
     Phase1CandidateScreening();
+    explicit Phase1CandidateScreening(std::shared_ptr<ISPReader> reader);
     ~Phase1CandidateScreening();
     
     // Non copiabile
@@ -211,7 +237,10 @@ public:
      * @brief Imposta elementi orbitali direttamente
      * @param elements Elementi kepleriani
      */
-    void setOrbitalElements(const astdyn::propagation::KeplerianElements& elements);
+    void setOrbitalElements(const astdyn::propagation::KeplerianElements& elements, 
+                            const std::string& name = "",
+                            FrameType frame = FrameType::ECLIPTIC_J2000,
+                            ElementType type = ElementType::OSCULATING);
     
     /**
      * @brief Esegue lo screening completo di Fase 1

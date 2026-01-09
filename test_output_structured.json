@@ -1,97 +1,434 @@
-{
-  "metadata": {
-    "generator": "ITALOccultCalc",
-    "software": "v1.0.0",
-    "date_generated": "2025-11-23",
-    "event_count": 3
-  },
-  "events": [
+[
     {
-      "asteroid": {
-        "number": 324,
-        "name": "Bamberga",
-        "diameter_km": 228.00,
-        "absolute_magnitude": 6.82
-      },
-      "star": {
-        "catalog": "TYC",
-        "id": "5865-00764-1",
-        "ra_deg": 56.82340000,
-        "dec_deg": 8.45670000,
-        "magnitude": 7.50
-      },
-      "occultation": {
-        "time_utc": "2025-12-08 22:44:13",
-        "jd": 2460653.447370,
-        "mag_drop": 3.07,
-        "duration_sec": 11.50,
-        "shadow_width_km": 228.0,
-        "shadow_velocity_kms": 19.80,
-        "path_uncertainty_km": 12.0,
-        "time_uncertainty_sec": 2.50
-      },
-      "priority": {
-        "score": 11,
-        "class": "★★★"
-      }
+        "asteroid": {
+            "H": 13.86,
+            "designation": "34713",
+            "diameter_km": 5.80068592433752,
+            "name": "Yesiltas"
+        },
+        "event_id": "34713_GAIA DR3 3441366322859801216",
+        "occultation": {
+            "ca_dist_arcsec": 0.18341347227479024,
+            "duration_sec": 0.5592573714114952,
+            "jd": 2461050.5771643845,
+            "mag_drop": 2.588065853424048,
+            "path_uncertainty_km": 0.0,
+            "shadow_width_km": 5.80068592433752,
+            "time_utc": "2026-01-10 01:51:07"
+        },
+        "priority": {
+            "score": 8.0
+        },
+        "star": {
+            "dec_deg": 26.512137872910518,
+            "mag_g": 14.10830020904541,
+            "ra_deg": 85.94997507049803,
+            "source_id": "3441366322859801216"
+        }
     },
     {
-      "asteroid": {
-        "number": 10,
-        "name": "Hygiea",
-        "diameter_km": 407.10,
-        "absolute_magnitude": 5.43
-      },
-      "star": {
-        "catalog": "GAIA",
-        "id": "DR3 1234567890123456",
-        "ra_deg": 123.45670000,
-        "dec_deg": 23.45670000,
-        "magnitude": 10.20
-      },
-      "occultation": {
-        "time_utc": "2026-01-09 18:35:48",
-        "jd": 2460685.274866,
-        "mag_drop": 7.45,
-        "duration_sec": 22.20,
-        "shadow_width_km": 407.1,
-        "shadow_velocity_kms": 18.30,
-        "path_uncertainty_km": 18.0,
-        "time_uncertainty_sec": 3.20
-      },
-      "priority": {
-        "score": 9,
-        "class": "★★★"
-      }
+        "asteroid": {
+            "H": 13.86,
+            "designation": "34713",
+            "diameter_km": 5.80068592433752,
+            "name": "Yesiltas"
+        },
+        "event_id": "34713_GAIA DR3 3441366292796919296",
+        "occultation": {
+            "ca_dist_arcsec": 9.097749672579907,
+            "duration_sec": 0.5582704457118065,
+            "jd": 2461050.491552703,
+            "mag_drop": 0.42478153579269873,
+            "path_uncertainty_km": 0.0,
+            "shadow_width_km": 5.80068592433752,
+            "time_utc": "2026-01-09 23:47:50"
+        },
+        "priority": {
+            "score": 5.0
+        },
+        "star": {
+            "dec_deg": 26.514609970066704,
+            "mag_g": 17.38949966430664,
+            "ra_deg": 85.96799701046675,
+            "source_id": "3441366292796919296"
+        }
     },
     {
-      "asteroid": {
-        "number": 4,
-        "name": "Vesta",
-        "diameter_km": 525.40,
-        "absolute_magnitude": 3.20
-      },
-      "star": {
-        "catalog": "HIP",
-        "id": "45678",
-        "ra_deg": 234.56780000,
-        "dec_deg": -12.34560000,
-        "magnitude": 8.90
-      },
-      "occultation": {
-        "time_utc": "2026-01-24 15:00:00",
-        "jd": 2460700.125000,
-        "mag_drop": 5.12,
-        "duration_sec": 24.40,
-        "shadow_width_km": 525.4,
-        "shadow_velocity_kms": 21.50,
-        "path_uncertainty_km": 22.0,
-        "time_uncertainty_sec": 2.80
-      },
-      "priority": {
-        "score": 7,
-        "class": "★★"
-      }
+        "asteroid": {
+            "H": 13.86,
+            "designation": "34713",
+            "diameter_km": 5.80068592433752,
+            "name": "Yesiltas"
+        },
+        "event_id": "34713_GAIA DR3 3441366357219555328",
+        "occultation": {
+            "ca_dist_arcsec": 14.73860825977633,
+            "duration_sec": 0.5585962383773456,
+            "jd": 2461050.5177634717,
+            "mag_drop": 0.42398357266699915,
+            "path_uncertainty_km": 0.0,
+            "shadow_width_km": 5.80068592433752,
+            "time_utc": "2026-01-10 00:25:34"
+        },
+        "priority": {
+            "score": 5.0
+        },
+        "star": {
+            "dec_deg": 26.51944708210662,
+            "mag_g": 17.39240074157715,
+            "ra_deg": 85.96051203460429,
+            "source_id": "3441366357219555328"
+        }
+    },
+    {
+        "asteroid": {
+            "H": 13.86,
+            "designation": "34713",
+            "diameter_km": 5.80068592433752,
+            "name": "Yesiltas"
+        },
+        "event_id": "34713_GAIA DR3 3441366705113768192",
+        "occultation": {
+            "ca_dist_arcsec": 14.878265272705676,
+            "duration_sec": 0.556660670447367,
+            "jd": 2461050.3469464895,
+            "mag_drop": 0.7988815875141896,
+            "path_uncertainty_km": 0.0,
+            "shadow_width_km": 5.80068592433752,
+            "time_utc": "2026-01-09 20:19:36"
+        },
+        "priority": {
+            "score": 5.0
+        },
+        "star": {
+            "dec_deg": 26.529128799197526,
+            "mag_g": 16.49679946899414,
+            "ra_deg": 85.99490897232073,
+            "source_id": "3441366705113768192"
+        }
+    },
+    {
+        "asteroid": {
+            "H": 13.86,
+            "designation": "34713",
+            "diameter_km": 5.80068592433752,
+            "name": "Yesiltas"
+        },
+        "event_id": "34713_GAIA DR3 3441346153693288576",
+        "occultation": {
+            "ca_dist_arcsec": 16.141535047440478,
+            "duration_sec": 0.5693442017975404,
+            "jd": 2461051.43170087,
+            "mag_drop": 2.02663997666043,
+            "path_uncertainty_km": 0.0,
+            "shadow_width_km": 5.80068592433752,
+            "time_utc": "2026-01-10 22:21:38"
+        },
+        "priority": {
+            "score": 8.0
+        },
+        "star": {
+            "dec_deg": 26.46812149179666,
+            "mag_g": 14.761500358581543,
+            "ra_deg": 85.77909522330599,
+            "source_id": "3441346153693288576"
+        }
+    },
+    {
+        "asteroid": {
+            "H": 13.86,
+            "designation": "34713",
+            "diameter_km": 5.80068592433752,
+            "name": "Yesiltas"
+        },
+        "event_id": "34713_GAIA DR3 3441366975694827520",
+        "occultation": {
+            "ca_dist_arcsec": 16.195489726210752,
+            "duration_sec": 0.5605255073022284,
+            "jd": 2461050.6859079367,
+            "mag_drop": 0.28606957928578597,
+            "path_uncertainty_km": 0.0,
+            "shadow_width_km": 5.80068592433752,
+            "time_utc": "2026-01-10 04:27:42"
+        },
+        "priority": {
+            "score": 5.0
+        },
+        "star": {
+            "dec_deg": 26.510333422251165,
+            "mag_g": 17.895099639892578,
+            "ra_deg": 85.92666537488691,
+            "source_id": "3441366975694827520"
+        }
+    },
+    {
+        "asteroid": {
+            "H": 13.86,
+            "designation": "34713",
+            "diameter_km": 5.80068592433752,
+            "name": "Yesiltas"
+        },
+        "event_id": "34713_GAIA DR3 3441366597737738624",
+        "occultation": {
+            "ca_dist_arcsec": 19.93929786799897,
+            "duration_sec": 0.5553420342571526,
+            "jd": 2461050.2328692977,
+            "mag_drop": 1.4011074233604828,
+            "path_uncertainty_km": 0.0,
+            "shadow_width_km": 5.80068592433752,
+            "time_utc": "2026-01-09 17:35:19"
+        },
+        "priority": {
+            "score": 5.0
+        },
+        "star": {
+            "dec_deg": 26.526332082059877,
+            "mag_g": 15.533900260925293,
+            "ra_deg": 86.02119384228334,
+            "source_id": "3441366597737738624"
+        }
+    },
+    {
+        "asteroid": {
+            "H": 13.86,
+            "designation": "34713",
+            "diameter_km": 5.80068592433752,
+            "name": "Yesiltas"
+        },
+        "event_id": "34713_GAIA DR3 3441343237412532608",
+        "occultation": {
+            "ca_dist_arcsec": 20.511924004017768,
+            "duration_sec": 0.5670651917001661,
+            "jd": 2461051.246433629,
+            "mag_drop": 2.4684362583588575,
+            "path_uncertainty_km": 0.0,
+            "shadow_width_km": 5.80068592433752,
+            "time_utc": "2026-01-10 17:54:51"
+        },
+        "priority": {
+            "score": 8.0
+        },
+        "star": {
+            "dec_deg": 26.46891957228184,
+            "mag_g": 14.252099990844727,
+            "ra_deg": 85.81893625666626,
+            "source_id": "3441343237412532608"
+        }
+    },
+    {
+        "asteroid": {
+            "H": 13.86,
+            "designation": "34713",
+            "diameter_km": 5.80068592433752,
+            "name": "Yesiltas"
+        },
+        "event_id": "34713_GAIA DR3 3441356702133169920",
+        "occultation": {
+            "ca_dist_arcsec": 20.558067655776963,
+            "duration_sec": 0.5489596091057696,
+            "jd": 2461049.6463044067,
+            "mag_drop": 0.28955168780451873,
+            "path_uncertainty_km": 0.0,
+            "shadow_width_km": 5.80068592433752,
+            "time_utc": "2026-01-09 03:30:40"
+        },
+        "priority": {
+            "score": 5.0
+        },
+        "star": {
+            "dec_deg": 26.570130115341847,
+            "mag_g": 17.863100051879883,
+            "ra_deg": 86.13724004251377,
+            "source_id": "3441356702133169920"
+        }
+    },
+    {
+        "asteroid": {
+            "H": 13.86,
+            "designation": "34713",
+            "diameter_km": 5.80068592433752,
+            "name": "Yesiltas"
+        },
+        "event_id": "34713_GAIA DR3 3441366322859786240",
+        "occultation": {
+            "ca_dist_arcsec": 21.073454730525636,
+            "duration_sec": 0.5593551058305645,
+            "jd": 2461050.5878231553,
+            "mag_drop": 0.31157559381799016,
+            "path_uncertainty_km": 0.0,
+            "shadow_width_km": 5.80068592433752,
+            "time_utc": "2026-01-10 02:06:27"
+        },
+        "priority": {
+            "score": 5.0
+        },
+        "star": {
+            "dec_deg": 26.506000804885606,
+            "mag_g": 17.787399291992188,
+            "ra_deg": 85.9497843421683,
+            "source_id": "3441366322859786240"
+        }
+    },
+    {
+        "asteroid": {
+            "H": 13.86,
+            "designation": "34713",
+            "diameter_km": 5.80068592433752,
+            "name": "Yesiltas"
+        },
+        "event_id": "34713_GAIA DR3 3441366361516398080",
+        "occultation": {
+            "ca_dist_arcsec": 22.03270744899612,
+            "duration_sec": 0.5588434648026899,
+            "jd": 2461050.5387004903,
+            "mag_drop": 0.45484304143585674,
+            "path_uncertainty_km": 0.0,
+            "shadow_width_km": 5.80068592433752,
+            "time_utc": "2026-01-10 00:55:43"
+        },
+        "priority": {
+            "score": 5.0
+        },
+        "star": {
+            "dec_deg": 26.520197442411533,
+            "mag_g": 17.299999237060547,
+            "ra_deg": 85.95562681358967,
+            "source_id": "3441366361516398080"
+        }
+    },
+    {
+        "asteroid": {
+            "H": 13.86,
+            "designation": "34713",
+            "diameter_km": 5.80068592433752,
+            "name": "Yesiltas"
+        },
+        "event_id": "34713_GAIA DR3 3441366705113771520",
+        "occultation": {
+            "ca_dist_arcsec": 25.32492548072849,
+            "duration_sec": 0.5572651575600379,
+            "jd": 2461050.39945896,
+            "mag_drop": 2.150746322661678,
+            "path_uncertainty_km": 0.0,
+            "shadow_width_km": 5.80068592433752,
+            "time_utc": "2026-01-09 21:35:13"
+        },
+        "priority": {
+            "score": 8.0
+        },
+        "star": {
+            "dec_deg": 26.52893386216675,
+            "mag_g": 14.598799705505371,
+            "ra_deg": 85.98334447272039,
+            "source_id": "3441366705113771520"
+        }
+    },
+    {
+        "asteroid": {
+            "H": 13.86,
+            "designation": "34713",
+            "diameter_km": 5.80068592433752,
+            "name": "Yesiltas"
+        },
+        "event_id": "34713_GAIA DR3 3441356805212382336",
+        "occultation": {
+            "ca_dist_arcsec": 26.060219076159544,
+            "duration_sec": 0.5494919585577588,
+            "jd": 2461049.6952805785,
+            "mag_drop": 0.4894215645916073,
+            "path_uncertainty_km": 0.0,
+            "shadow_width_km": 5.80068592433752,
+            "time_utc": "2026-01-09 04:41:12"
+        },
+        "priority": {
+            "score": 5.0
+        },
+        "star": {
+            "dec_deg": 26.56883457672597,
+            "mag_g": 17.188100814819336,
+            "ra_deg": 86.12666570546605,
+            "source_id": "3441356805212382336"
+        }
+    },
+    {
+        "asteroid": {
+            "H": 13.86,
+            "designation": "34713",
+            "diameter_km": 5.80068592433752,
+            "name": "Yesiltas"
+        },
+        "event_id": "34713_GAIA DR3 3441366803896186368",
+        "occultation": {
+            "ca_dist_arcsec": 27.89859867931051,
+            "duration_sec": 0.5557464938995877,
+            "jd": 2461050.2642900855,
+            "mag_drop": 0.3357046109976805,
+            "path_uncertainty_km": 0.0,
+            "shadow_width_km": 5.80068592433752,
+            "time_utc": "2026-01-09 18:20:34"
+        },
+        "priority": {
+            "score": 5.0
+        },
+        "star": {
+            "dec_deg": 26.53724656006842,
+            "mag_g": 17.688400268554688,
+            "ra_deg": 86.01041579893017,
+            "source_id": "3441366803896186368"
+        }
+    },
+    {
+        "asteroid": {
+            "H": 13.86,
+            "designation": "34713",
+            "diameter_km": 5.80068592433752,
+            "name": "Yesiltas"
+        },
+        "event_id": "34713_GAIA DR3 3441366602034549888",
+        "occultation": {
+            "ca_dist_arcsec": 28.230682143365023,
+            "duration_sec": 0.5557738617028116,
+            "jd": 2461050.2722884817,
+            "mag_drop": 0.4610701966319427,
+            "path_uncertainty_km": 0.0,
+            "shadow_width_km": 5.80068592433752,
+            "time_utc": "2026-01-09 18:32:05"
+        },
+        "priority": {
+            "score": 5.0
+        },
+        "star": {
+            "dec_deg": 26.521910071590135,
+            "mag_g": 17.27750015258789,
+            "ra_deg": 86.01398282032132,
+            "source_id": "3441366602034549888"
+        }
+    },
+    {
+        "asteroid": {
+            "H": 13.86,
+            "designation": "34713",
+            "diameter_km": 5.80068592433752,
+            "name": "Yesiltas"
+        },
+        "event_id": "34713_GAIA DR3 3441346123630569088",
+        "occultation": {
+            "ca_dist_arcsec": 28.3818355749296,
+            "duration_sec": 0.570138294653982,
+            "jd": 2461051.4957285076,
+            "mag_drop": 2.8936427678164995,
+            "path_uncertainty_km": 0.0,
+            "shadow_width_km": 5.80068592433752,
+            "time_utc": "2026-01-10 23:53:50"
+        },
+        "priority": {
+            "score": 8.0
+        },
+        "star": {
+            "dec_deg": 26.467729101002874,
+            "mag_g": 13.791500091552734,
+            "ra_deg": 85.76540487436036,
+            "source_id": "3441346123630569088"
+        }
     }
-  ]
-}
+]

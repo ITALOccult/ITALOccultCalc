@@ -77,7 +77,7 @@ std::vector<HorizonsState> horizons_vesta = {
 // Elementi orbitali (4) Vesta all'epoca attuale (JD 2460645.5 = Nov 29, 2025)
 // Estratti DIRETTAMENTE da stato JPL Horizons (non elementi osculating)
 // Questo approccio usa la posizione/velocità JPL e la converte in elementi
-EquinoctialElements getVestaElements() {
+AstDynEquinoctialElements getVestaElements() {
     // Stato cartesiano da JPL Horizons per (4) Vesta
     // JD 2460645.5 (Nov 29, 2025 00:00 UT)
     // Heliocentric ecliptic J2000 coordinates
@@ -134,7 +134,7 @@ EquinoctialElements getVestaElements() {
     if (M < 0) M += 2.0 * M_PI;
     
     // Converti in elementi equinoziali
-    EquinoctialElements elem;
+    AstDynEquinoctialElements elem;
     elem.a = a;
     elem.h = e * std::sin(omega + Omega);
     elem.k = e * std::cos(omega + Omega);
@@ -173,7 +173,7 @@ int main() {
     state0.velocity = Vector3D(-0.010509711554891, 0.003370907565738, 0.003069018264533); // AU/day
     
     // Calcola elementi solo per display (ma propagazione usa stato cartesiano!)
-    EquinoctialElements elements = getVestaElements();
+    AstDynEquinoctialElements elements = getVestaElements();
     
     std::cout << "Orbital Elements (computed from JPL state):" << std::endl;
     std::cout << "  a      = " << std::setw(12) << elements.a << " AU" << std::endl;

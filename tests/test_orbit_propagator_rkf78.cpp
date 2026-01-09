@@ -25,7 +25,7 @@ int main() {
     std::cout << std::endl;
     
     // Elementi di (17030) Sierks all'epoca JD 2461000.5 (Nov 4, 2026)
-    EquinoctialElements elements;
+    AstDynEquinoctialElements elements;
     elements.a = 2.9082508;
     elements.h = 0.1606632 * std::sin((348.14001 + 221.95336) * M_PI / 180.0);
     elements.k = 0.1606632 * std::cos((348.14001 + 221.95336) * M_PI / 180.0);

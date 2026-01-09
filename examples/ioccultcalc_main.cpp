@@ -81,7 +81,7 @@ double angularSeparation(double ra1, double dec1, double ra2, double dec2) {
 /**
  * @brief Scarica elementi orbitali da AstDyS per qualsiasi asteroide
  */
-EquinoctialElements getOrbitalElements(const std::string& targetId, JulianDate epoch) {
+AstDynEquinoctialElements getOrbitalElements(const std::string& targetId, JulianDate epoch) {
     std::cout << "📡 Downloading orbital elements for asteroid: " << targetId << "\n";
     std::cout << "   Source: AstDyS/Lowell Observatory system\n";
     
@@ -129,7 +129,7 @@ EquinoctialElements getOrbitalElements(const std::string& targetId, JulianDate e
 /**
  * @brief Propaga elementi orbitali a una nuova epoca usando propagatore condiviso
  */
-OrbitState propagateToEpoch(OrbitPropagator& propagator, const EquinoctialElements& elements, JulianDate targetEpoch) {
+OrbitState propagateToEpoch(OrbitPropagator& propagator, const AstDynEquinoctialElements& elements, JulianDate targetEpoch) {
     // Converti elementi in stato vettoriale all'epoca iniziale
     OrbitState initialState = propagator.elementsToState(elements);
     
@@ -331,7 +331,7 @@ int main(int argc, char* argv[]) {
         JulianDate startDate = TimeUtils::isoToJD(startDateStr);
         JulianDate endDate = TimeUtils::isoToJD(endDateStr);
         
-        EquinoctialElements elements = getOrbitalElements(asteroidId, startDate);
+        AstDynEquinoctialElements elements = getOrbitalElements(asteroidId, startDate);
         
         // Converti a Kepleriani per leggere H e diameter
         OrbitalElements kepler = elements.toKeplerian();

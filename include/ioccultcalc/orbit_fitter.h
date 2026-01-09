@@ -4,8 +4,9 @@
 #include "ioccultcalc/orbital_elements.h"
 #include "ioccultcalc/observation.h"
 #include "ioccultcalc/ephemeris.h"
-#include <vector>
+#include <memory>
 #include <functional>
+#include "ioccultcalc/isp_reader.h"
 
 namespace ioccultcalc {
 
@@ -68,7 +69,7 @@ struct OrbitFitOptions {
 // Classe per il fit orbitale differenziale
 class OrbitFitter {
 public:
-    OrbitFitter();
+    explicit OrbitFitter(std::shared_ptr<ISPReader> reader = nullptr);
     ~OrbitFitter();
     
     // Fit degli elementi orbitali usando le osservazioni

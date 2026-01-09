@@ -1,53 +1,44 @@
 /**
  * @file phase1_candidate_screening.cpp
  * @brief Implementazione classe per FASE 1: Screening stelle candidate
- * @date 4 Dicembre 2025
+ * @date 4 Dicembre 2025 (Aggiornato 9 Gennaio 2026)
  * 
- * STRATEGIA FINALE OTTIMIZZATA (16 punti + proiezione su segmenti):
- * ==================================================================
+ * STRATEGIA ATTUALE:
+ * ==================
  * 
- * Dopo test comparativi approfonditi, questa strategia è risultata ottimale:
+ * La classe gestisce lo screening sistematico di stelle candidate per eventi di occultazione.
+ * La strategia implementata segue un approccio robusto a campionamento denso:
  * 
- * 1. PROPAGAZIONE: Solo 16 punti di controllo
- *    - Sufficienti per corridor query accurato su 24 ore
- *    - ~0.1 ms (vs 174 ms con 2881 punti) = 1740x speedup
- *    - NO interpolazione Chebyshev: overhead inutile
+ * 1. PROPAGAZIONE E CAMPIONAMENTO:
+ *    - L'intervallo temporale viene suddiviso in blocchi giornalieri (STEP_DAY = 1.0).
+ *    - Per ogni giorno, l'orbita dell'asteroide viene campionata con un passo di 15 minuti.
+ *    - Viene utilizzato AstDynWrapper per calcolare l'osservazione (RA/Dec ICRF).
  * 
- * 2. CORRIDOR QUERY: Usa i 16 punti direttamente
- *    - ~0.5 sec (vs 42 sec con 2881 punti) = 80x speedup
- *    - UnifiedGaiaCatalog gestisce path sparso senza problemi
- *    - Nessuna stella candidata persa
+ * 2. CORRIDOR QUERY:
+ *    - Per ogni giorno, viene costruito un corridoio geometrico denso utilizzando tutti i punti campionati.
+ *    - Viene effettuata una query al catalogo UnifiedGaiaCatalog per recuperare tutte le stelle entro il corridoio.
+ *    - Viene applicata la correzione del moto proprio (PM) alle stelle (Gaia J2016.0 -> Epoca Evento).
  * 
- * 3. CLOSEST APPROACH: Proiezione geometrica su segmenti
- *    - Algoritmo robusto: proietta stella su ogni segmento del path
- *    - ~0.02 ms per 10 stelle
- *    - Affidabilità 100%: trova TUTTI i candidati
+ * 3. CLOSEST APPROACH:
+ *    - Per ogni stella trovata, viene calcolato il punto di massimo avvicinamento (Closest Approach) 
+ *      rispetto al path campionato mediante proiezione geometrica sui segmenti.
+ *    - Le stelle che soddisfano la soglia di distanza (arcsec) vengono salvate come candidati.
  * 
- * APPROCCI ALTERNATIVI TESTATI E SCARTATI:
- * - Chebyshev su RA/Dec + grid search: problemi fitting su angoli, missing candidati
- * - Chebyshev + Newton-Raphson: veloce ma inaffidabile (missing 60% candidati)
- * - 32/48 punti con Chebyshev: stesso problema, nessun vantaggio
- * 
- * PERFORMANCE COMPLESSIVA:
- * - Tempo totale: ~600 ms (72x speedup vs approccio iniziale 43 sec)
- * - Affidabilità: 100% (tutti i 5 candidati trovati, inclusa target star)
- * - Semplicità: codice pulito, facile da debuggare
- * - Scalabilità: OK per batch processing di centinaia di asteroidi
+ * NOTE SULLE PERFORMANCE:
+ * - L'approccio bypassa l'interpolazione Chebyshev per le query iniziali per garantire 
+ *   la massima affidabilità ed evitare problemi di fitting su range angolari ampi.
+ * - De-duplicazione sistematica delle stelle tra giorni sovrapposti.
+ * - Supporto per logging diagnostico dei frame Equatorial/Ecliptic J2000.
  */
 
 #include "phase1_candidate_screening.h"
 
-// Header astdyn senza namespace annidato
-#include "../external/ITALOccultLibrary/astdyn/include/astdyn/io/parsers/OrbFitEQ1Parser.hpp"
-#include "../external/ITALOccultLibrary/astdyn/include/astdyn/propagation/Propagator.hpp"
-#include "../external/ITALOccultLibrary/astdyn/include/astdyn/propagation/Integrator.hpp"
-#include "../external/ITALOccultLibrary/astdyn/include/astdyn/propagation/OrbitalElements.hpp"
-#include "../external/ITALOccultLibrary/astdyn/include/astdyn/ephemeris/PlanetaryEphemeris.hpp"
-#include "../external/ITALOccultLibrary/astdyn/include/astdyn/core/Constants.hpp"
-
-// Chebyshev interpolation
-#include "../external/ITALOccultLibrary/italoccultlibrary/include/chebyshev_approximation.h"
-#include "../external/ITALOccultLibrary/italoccultlibrary/include/chebyshev_rkf78_propagation.h"
+// AstDynWrapper integrate high-precision propagation
+#include "astdyn_wrapper.h"
+#include "orbital_conversions.h"
+#include "ioccultcalc/debug_logger.h"
+#include "chebyshev_approximation.h"
+#include "chebyshev_rkf78_propagation.h"
 
 #include "ioc_gaialib/unified_gaia_catalog.h"
 #include "ioc_gaialib/types.h"
@@ -64,8 +55,6 @@ namespace ioccultcalc {
 
 // Costanti
 constexpr double MJD_TO_JD = 2400000.5;
-constexpr double DEG_TO_RAD = M_PI / 180.0;
-constexpr double RAD_TO_DEG = 180.0 / M_PI;
 constexpr double EPSILON_J2000 = 23.4392911 * DEG_TO_RAD;  // Obliquità eclittica J2000
 
 // ===== CLASSE PIMPL =====
@@ -74,14 +63,19 @@ class Phase1CandidateScreening::Impl {
 public:
     bool has_elements;
     astdyn::propagation::KeplerianElements keplerian_elements;
-    std::unique_ptr<astdyn::propagation::Propagator> propagator;
-    std::shared_ptr<astdyn::ephemeris::PlanetaryEphemeris> ephemeris;
+    FrameType current_frame;
+    ElementType current_type;
+    std::string object_name;
+    std::unique_ptr<AstDynWrapper> astdyn_wrapper;
+    std::shared_ptr<ISPReader> spk_reader;
 
     ioc::gaia::UnifiedGaiaCatalog* catalog;
     int verbosity;
     
     Impl() 
         : has_elements(false)
+        , current_frame(FrameType::ECLIPTIC_J2000)
+        , current_type(ElementType::OSCULATING)
         , catalog(nullptr)
         , verbosity(0)
     {
@@ -89,71 +83,35 @@ public:
     }
     
     void initializePropagator() {
-        // Crea ephemeris planetaria
-        ephemeris = std::make_shared<astdyn::ephemeris::PlanetaryEphemeris>();
+        // Usa AstDynWrapper con impostazioni Fast per la Fase 1
+        astdyn_wrapper = std::make_unique<AstDynWrapper>(PropagationSettings::fast());
+    }
+
+    void verifyInitialState() {
+        if (!has_elements) return;
+
+        double t0 = keplerian_elements.epoch_mjd_tdb;
         
-        // FASE 1 OTTIMIZZATA: Usa Keplero puro senza perturbazioni
-        // Per lo screening iniziale non servono perturbazioni precise
-        // Questo è 100x più veloce e l'errore è <1 arcsec per 24h
-        // La Fase 2 userà propagazione completa per i candidati
+        // Calcola stato ELIOCENTRICO all'epoca degli elementi
+        ioccultcalc::CartesianStateICRF state = astdyn_wrapper->propagateToEpoch(t0); 
         
-        // Crea integrator RKF78 con tolleranza RIDOTTA per Fase 1
-        auto integrator = std::make_unique<astdyn::propagation::RKF78Integrator>(0.5, 1e-6); // Relaxed tolerance
-        
-        // Configura settings SENZA perturbazioni per velocità massima
-        astdyn::propagation::PropagatorSettings settings;
-        settings.include_planets = true;
-        settings.include_asteroids = true;
-        settings.include_relativity = true;
-        settings.perturb_mercury = true;
-        settings.perturb_venus = true;
-        settings.perturb_earth = true;
-        settings.perturb_mars = true;
-        settings.perturb_jupiter = true;
-        settings.perturb_saturn = true;
-        settings.perturb_uranus = true;
-        settings.perturb_neptune = true;
-        
-        // Crea propagatore ottimizzato per Fase 1
-        propagator = std::make_unique<astdyn::propagation::Propagator>(
-            std::move(integrator), ephemeris, settings);
+        double r = state.position.norm(); // Distanza eliocentrica in AU
+
+        double a = keplerian_elements.semi_major_axis;
+        double e = keplerian_elements.eccentricity;
+        double r_min = a * (1.0 - e);
+        double r_max = a * (1.0 + e);
+
+        if (r < r_min * 0.9 || r > r_max * 1.1) {
+             std::cerr << "[CRITICAL SANITY CHECK] Mismatch distanza iniziale!\n"
+                       << "  Distanza Eliocentrica calcolata (AU): " << r << "\n"
+                       << "  Range teorico [q, Q]: [" << r_min << ", " << r_max << "]\n"
+                       << "  -> Probabile errore unità (es. M in gradi vs rad) o frame parsing.\n";
+        }
     }
 };
 
 // ===== UTILITY FUNCTIONS =====
-
-namespace {
-
-// Conversione eclittica J2000 -> equatoriale ICRF J2000
-Eigen::Vector3d eclipticToEquatorial(const Eigen::Vector3d& ecl) {
-    double cos_eps = std::cos(EPSILON_J2000);
-    double sin_eps = std::sin(EPSILON_J2000);
-    // Rotate around X-axis by -epsilon (if transforming vector components FROM ecliptic TO equatorial)
-    // Wait. Angle from Eq to Ecl is +eps.
-    // If v_ecl is given.
-    // y_eq = y_ecl * cos(eps) - z_ecl * sin(eps)
-    // z_eq = y_ecl * sin(eps) + z_ecl * cos(eps)
-    // Checking M&G or standard texts: 
-    // "Transformation from Ecliptic to Equatorial Coordinates"
-    // Xeq = Xecl
-    // Yeq = Yecl cos e - Zecl sin e
-    // Zeq = Yecl sin e + Zecl cos e
-    // Ecliptic J2000 to Equatorial J2000
-    // Rotation around X-axis by -epsilon (obliquity)
-    // y_eq = y_ecl * cos(eps) - z_ecl * sin(-eps) = y c + z s
-    
-    // sin(-e) = -sin(e)
-    // cos(-e) = cos(e)
-    
-    // Rotazione asse X (Eclittica -> Equatoriale)
-    double eps = EPSILON_J2000;
-    
-    double x_eq = ecl[0];
-    double y_eq = ecl[1] * std::cos(eps) - ecl[2] * std::sin(eps);
-    double z_eq = ecl[1] * std::sin(eps) + ecl[2] * std::cos(eps);
-    
-    return Eigen::Vector3d(x_eq, y_eq, z_eq);
-}
 
 // Conversione cartesiano -> RA/Dec
 void cartesianToRaDec(const Eigen::Vector3d& pos, double& ra_rad, double& dec_rad) {
@@ -250,7 +208,6 @@ double closestApproachToSegment(double star_ra_deg, double star_dec_deg,
     return std::asin(std::min(1.0, dist / 2.0)) * 2.0 * RAD_TO_DEG * 3600.0; // arcsec
 }
 
-} // anonymous namespace
 
 // ===== IMPLEMENTAZIONE CLASSE =====
 
@@ -259,31 +216,20 @@ Phase1CandidateScreening::Phase1CandidateScreening()
 {
 }
 
+Phase1CandidateScreening::Phase1CandidateScreening(std::shared_ptr<ISPReader> reader)
+    : pimpl_(std::make_unique<Impl>())
+{
+    pimpl_->spk_reader = reader;
+}
+
 Phase1CandidateScreening::~Phase1CandidateScreening() = default;
 
 bool Phase1CandidateScreening::loadAsteroidFromEQ1(const std::string& eq1_path) {
-    try {
-        astdyn::io::parsers::OrbFitEQ1Parser parser;
-        auto elements = parser.parse(eq1_path);
-        
-        // Converti in KeplerianElements
-        pimpl_->keplerian_elements.semi_major_axis = elements.semi_major_axis;
-        pimpl_->keplerian_elements.eccentricity = elements.eccentricity;
-        pimpl_->keplerian_elements.inclination = elements.inclination;
-        pimpl_->keplerian_elements.longitude_ascending_node = elements.longitude_asc_node;
-        pimpl_->keplerian_elements.argument_perihelion = elements.argument_perihelion;
-        pimpl_->keplerian_elements.mean_anomaly = elements.mean_anomaly;
-        pimpl_->keplerian_elements.epoch_mjd_tdb = elements.epoch_mjd_tdb;
-        pimpl_->keplerian_elements.gravitational_parameter = 
-            1.32712440018e20 / std::pow(1.495978707e11, 3) * std::pow(86400.0, 2);
-        
+    if (pimpl_->astdyn_wrapper->loadFromEQ1File(eq1_path)) {
         pimpl_->has_elements = true;
         return true;
-        
-    } catch (const std::exception& e) {
-        std::cerr << "Errore caricamento elementi da " << eq1_path << ": " << e.what() << "\n";
-        return false;
     }
+    return false;
 }
 
 bool Phase1CandidateScreening::loadAsteroidFromJSON(int asteroid_number, const std::string& json_path) {
@@ -320,9 +266,9 @@ bool Phase1CandidateScreening::loadAsteroidFromJSON(int asteroid_number, const s
         for (const auto& asteroid : j["asteroids"]) {
             if (asteroid["number"].get<int>() == asteroid_number) {
                 // Estrai elementi orbitali (angoli in gradi nel JSON)
-                // Gli elementi nel JSON sono in frame EQUATORIALE ICRF
-                // Il propagatore usa frame ECLITTICA J2000
-                // Quindi dobbiamo convertire i, Omega, omega
+                // Gli elementi nel JSON derivano da AstDyS (.cat) e sono in frame ECLITTICA J2000
+                // Il propagatore (AstDynWrapper) sa gestirli se passati con FrameType::ECLIPTIC_J2000.
+                // NON DOBBIAMO convertire manualmente qui se setKeplerianElements riceve il flag corretto.
                 
                 // Extract elements (angles in degrees in JSON)
                 // JSON keys from AstDyS: "a", "e", "i", "Node", "Peri", "M"
@@ -343,28 +289,37 @@ bool Phase1CandidateScreening::loadAsteroidFromJSON(int asteroid_number, const s
                 
                 double M = asteroid["M"].get<double>() * DEG_TO_RAD;
 
-                // Assign to KeplerianElements
-                // Assumed frame: Ecliptic J2000 (standard for AstDyS/MPC)
+                // Assign to Wrapper
+                // JSON is from AstDyS/MPC - typically Ecliptic J2000
+                pimpl_->astdyn_wrapper->setKeplerianElements(
+                    a, e, i, Omega, omega, M, 
+                    asteroid["epoch"].get<double>() - MJD_TO_JD,
+                    asteroid.contains("name") ? asteroid["name"].get<std::string>() : "",
+                    FrameType::ECLIPTIC_J2000,
+                    ElementType::OSCULATING
+                );
+                
                 pimpl_->keplerian_elements.semi_major_axis = a;
                 pimpl_->keplerian_elements.eccentricity = e;
                 pimpl_->keplerian_elements.inclination = i;
                 pimpl_->keplerian_elements.longitude_ascending_node = Omega;
                 pimpl_->keplerian_elements.argument_perihelion = omega;
                 pimpl_->keplerian_elements.mean_anomaly = M;
+                pimpl_->keplerian_elements.epoch_mjd_tdb = asteroid["epoch"].get<double>() - MJD_TO_JD;
                 
-                // Epoca: da JD a MJD TDB
-                double epoch_jd = asteroid["epoch"].get<double>();
-                pimpl_->keplerian_elements.epoch_mjd_tdb = epoch_jd - MJD_TO_JD;
-                
-                // GM Sole in AU³/day²
-                pimpl_->keplerian_elements.gravitational_parameter = 
-                    1.32712440018e20 / std::pow(1.495978707e11, 3) * std::pow(86400.0, 2);
+                pimpl_->current_frame = FrameType::ECLIPTIC_J2000;
+                pimpl_->current_type = ElementType::OSCULATING;
+                pimpl_->object_name = asteroid.contains("name") ? asteroid["name"].get<std::string>() : "";
                 
                 found = true;
                 
+                
                 std::cout << "✓ Elementi caricati per asteroide " << asteroid_number 
                           << " (Ecliptic J2000)\n";
-                // std::cout << "  i=" << i * RAD_TO_DEG << "°  Ω=" << Omega * RAD_TO_DEG << "°\n";
+                
+                // Sanity Check Immediato
+                pimpl_->verifyInitialState();
+                
                 break;
             }
         }
@@ -384,8 +339,25 @@ bool Phase1CandidateScreening::loadAsteroidFromJSON(int asteroid_number, const s
 }
 
 void Phase1CandidateScreening::setOrbitalElements(
-    const astdyn::propagation::KeplerianElements& elements) {
-    pimpl_->keplerian_elements = elements;
+    const astdyn::propagation::KeplerianElements& elements,
+    const std::string& name,
+    FrameType frame,
+    ElementType type) {
+    pimpl_->astdyn_wrapper->setKeplerianElements(
+        elements.semi_major_axis,
+        elements.eccentricity,
+        elements.inclination,
+        elements.longitude_ascending_node,
+        elements.argument_perihelion,
+        elements.mean_anomaly,
+        elements.epoch_mjd_tdb,
+        name,
+        frame,
+        type
+    );
+    pimpl_->keplerian_elements = elements; // Persist elements locally
+    pimpl_->current_frame = frame;
+    pimpl_->current_type = type;
     pimpl_->has_elements = true;
 }
 
@@ -394,6 +366,9 @@ Phase1CandidateScreening::getOrbitalElements() const {
     if (!pimpl_->has_elements) {
         throw std::runtime_error("Elementi orbitali non caricati");
     }
+    // Nota: AstDynWrapper non espone direttamente KeplerianElements struct di astdyn
+    // per ora usiamo una copia locale se necessario, o modifichiamo il wrapper.
+    // Ma per "non fare molto", manterrò una copia locale nel PIMPL per non rompere l'API.
     return pimpl_->keplerian_elements;
 }
 
@@ -452,59 +427,24 @@ std::vector<PathPoint> Phase1CandidateScreening::createHighResolutionPath(
         double mjd_tdb = config.start_mjd_tdb + 
                         fraction * (config.end_mjd_tdb - config.start_mjd_tdb);
         
-        // Propaga asteroide (barycentric ecliptic J2000)
-        auto kep_prop = pimpl_->propagator->propagate_keplerian(
-            pimpl_->keplerian_elements, mjd_tdb);
-        auto cart_ecl = astdyn::propagation::keplerian_to_cartesian(kep_prop);
+        // Calcola osservazione con wrapper (gestisce internamente posizioni Earth/Sun, light-time e frame ICRF)
+        auto obs = pimpl_->astdyn_wrapper->calculateObservation(mjd_tdb);
         
-        // DEBUG: Print positions for verification
-        std::cout << std::fixed << std::setprecision(8);
-        std::cout << "DEBUG_POS: MJD=" << mjd_tdb << " JD=" << (mjd_tdb + 2400000.5) 
-                  << " X=" << cart_ecl.position.x() 
-                  << " Y=" << cart_ecl.position.y() 
-                  << " Z=" << cart_ecl.position.z() << std::endl;
-
-        // Coordinate Frame Logic:
-        // Empirical testing suggests Phase 1 should use raw propagator output
-        // to match the candidates found in successful Step 115 run.
-        // We assume ast_bary_icrf is directly from cart_ecl.
-        
-        Eigen::Vector3d ast_bary_icrf = cart_ecl.position;
-        
-        // Posizione Terra
-        double jd_tdb = mjd_tdb + MJD_TO_JD;
-        Eigen::Vector3d earth_bary_eq = 
-            astdyn::ephemeris::PlanetaryEphemeris::getPosition(
-                astdyn::ephemeris::CelestialBody::EARTH, jd_tdb);
-        Eigen::Vector3d sun_bary_eq = 
-            astdyn::ephemeris::PlanetaryEphemeris::getSunBarycentricPosition(jd_tdb);
-            
-        // Earth Helio Equatorial
-        Eigen::Vector3d earth_helio_eq = earth_bary_eq - sun_bary_eq;
-        
-        // Debug Frame Verification (Earth should have Z component due to obliquity)
-        if (i == 0 && pimpl_->verbosity >= 1) {
-             std::cout << "[DEBUG Frame] Earth Z (AU): " << earth_helio_eq.z() 
-                       << " (Expected ~0.4 at solstice, != 0 if Equatorial)\n";
-        }
-
-        // Posizione geocentrica (Equatorial)
-        // Ast (Helio Eq) - Earth (Helio Eq)
-        // Note: ast_bary_icrf is actually Heliocentric if keplerian_elements reference Sun.
-        // Assuming elements are Heliocentric.
-        
-        Eigen::Vector3d ast_geo_icrf = ast_bary_icrf - earth_helio_eq;
-        
-        // RA/Dec
-        double ra_rad, dec_rad;
-        cartesianToRaDec(ast_geo_icrf, ra_rad, dec_rad);
+        std::cout << "[PHASE1] Asteroid MJD=" << std::fixed << std::setprecision(6) << mjd_tdb 
+                  << " DEC=" << obs.dec_deg << "\n";
         
         PathPoint pt;
         pt.mjd_tdb = mjd_tdb;
-        pt.ra_deg = ra_rad * RAD_TO_DEG;
-        pt.dec_deg = dec_rad * RAD_TO_DEG;
-        pt.pos_geo_au = ast_geo_icrf;
-        pt.distance_earth_au = ast_geo_icrf.norm();
+        pt.ra_deg = obs.ra_deg;
+        pt.dec_deg = obs.dec_deg;
+        double ra_rad = obs.ra_deg * DEG_TO_RAD;
+        double dec_rad = obs.dec_deg * DEG_TO_RAD;
+        pt.pos_geo_au = Eigen::Vector3d(
+            obs.dist_au * std::cos(dec_rad) * std::cos(ra_rad),
+            obs.dist_au * std::cos(dec_rad) * std::sin(ra_rad),
+            obs.dist_au * std::sin(dec_rad)
+        );
+        pt.distance_earth_au = obs.dist_au;
         
         path.push_back(pt);
     }
@@ -556,8 +496,15 @@ std::vector<CandidateStar> Phase1CandidateScreening::queryCorridor(
         cs.closest_approach_mjd = 0.0;
         cs.closest_segment_index = -1;
         cs.angular_velocity_arcsec_per_sec = 0.0;
+        cs.pmra = gs.pmra;   // GaiaStar has pmra, pmdec, parallax
+        cs.pmdec = gs.pmdec;
+        cs.parallax = gs.parallax;
         
         stars.push_back(cs);
+        
+        std::cout << "[PHASE1] Star ID=" << gs.source_id 
+                  << " RA=" << std::fixed << std::setprecision(5) << gs.ra 
+                  << " DEC=" << gs.dec << "\n";
     }
     
     return stars;
@@ -660,37 +607,37 @@ Phase1Results Phase1CandidateScreening::screenCandidates(const Phase1Config& con
         throw std::runtime_error("start_mjd_tdb deve essere < end_mjd_tdb");
     }
     
-    // FASE 1: High Precision Propagation & Chebyshev Screening
-    // ==================================================================
-    // 1. Propagate with full precision to start time
-    // 2. Loop daily/chunked
-    // 3. Fit Chebyshev polynomials (RA/Dec)
-    // 4. Query Gaia using queryOrbit API
+    // FASE 1: Screening stelle candidate
+    // ===================================
+    // 1. Configura il wrapper AstDyn per la propagazione
+    // 2. Itera su base giornaliera nell'intervallo richiesto
+    // 3. Campiona l'orbita ogni 15 minuti
+    // 4. Esegue query su corridor denso nel catalogo Gaia
+    // 5. Corregge moto proprio e filtra per Closest Approach
     
     Phase1Results results;
     
-    // 1. Configure High Precision Propagator
-    // We reuse existing propagator but ensure settings are correct
-    // Note: initializePropagator called in constructor set it to FAST.
-    // We need to re-initialize for ACCURATE propagation as requested.
-    {
-        astdyn::propagation::PropagatorSettings settings;
-        // FASE 1 OTTIMIZZATA RICHIESTA: Usa tutte le perturbazioni (tranne asteroidi per ora se non specificato altrimenti) in modo esplicito
-        settings.include_planets = true; 
-        settings.include_asteroids = true; // Use asteroids if available
-        settings.include_relativity = true;
-        settings.perturb_mercury = true;
-        settings.perturb_venus = true;
-        settings.perturb_earth = true;
-        settings.perturb_mars = true;
-        settings.perturb_jupiter = true; 
-        settings.perturb_saturn = true;
-        settings.perturb_uranus = true;
-        settings.perturb_neptune = true;
-        
-        auto integrator = std::make_unique<astdyn::propagation::RKF78Integrator>(0.1, 1e-12);
-        pimpl_->propagator = std::make_unique<astdyn::propagation::Propagator>(
-            std::move(integrator), pimpl_->ephemeris, settings);
+    // 1. Configure Fast/Low Precision AstDynWrapper for Phase 1
+    pimpl_->astdyn_wrapper = std::make_unique<AstDynWrapper>(PropagationSettings::lowAccuracy());
+    
+    // RESTORE ELEMENTS to new wrapper
+    if (pimpl_->has_elements) {
+        // Also ensure object name is preserved if possible, but KeplerianElements struct might not have it.
+        // pimpl_->keplerian_elements is just the struct. 
+        // We might lose name "Unknown" if not saved.
+        // But for propagation, elements are key.
+        pimpl_->astdyn_wrapper->setKeplerianElements(
+            pimpl_->keplerian_elements.semi_major_axis,
+            pimpl_->keplerian_elements.eccentricity,
+            pimpl_->keplerian_elements.inclination,
+            pimpl_->keplerian_elements.longitude_ascending_node,
+            pimpl_->keplerian_elements.argument_perihelion,
+            pimpl_->keplerian_elements.mean_anomaly,
+            pimpl_->keplerian_elements.epoch_mjd_tdb,
+            pimpl_->object_name,
+            pimpl_->current_frame,
+            pimpl_->current_type
+        );
     }
     
     auto t_start_proc = std::chrono::high_resolution_clock::now();
@@ -711,6 +658,61 @@ Phase1Results Phase1CandidateScreening::screenCandidates(const Phase1Config& con
             double cur_jd = current_mjd + 2400000.5;
             std::cout << "  [Phase1] Processing MJD " << std::fixed << std::setprecision(1) 
                       << current_mjd << " (JD " << cur_jd << ")...\r" << std::flush;
+        }
+
+        if (current_mjd == config.start_mjd_tdb) {
+            if (config.debug_elements_ecl) {
+                std::cout << "[DEBUG] Asteroid_Phase1_ELMENTS_Ecl (Ecliptic J2000):\n";
+                std::cout << "  a=" << pimpl_->keplerian_elements.semi_major_axis << " AU, e=" << pimpl_->keplerian_elements.eccentricity 
+                          << ", i=" << pimpl_->keplerian_elements.inclination * RAD_TO_DEG << " deg\n";
+                std::cout << "  Node=" << pimpl_->keplerian_elements.longitude_ascending_node * RAD_TO_DEG 
+                          << " deg, Peri=" << pimpl_->keplerian_elements.argument_perihelion * RAD_TO_DEG << " deg\n";
+                std::cout << "  M=" << pimpl_->keplerian_elements.mean_anomaly * RAD_TO_DEG << " deg, Epoch=" << pimpl_->keplerian_elements.epoch_mjd_tdb + MJD_TO_JD << " JD\n";
+
+                if (!config.debug_json_path.empty()) {
+                    DebugLogger::getInstance().setFilename(config.debug_json_path);
+                    nlohmann::json j;
+                    j["a"] = pimpl_->keplerian_elements.semi_major_axis;
+                    j["e"] = pimpl_->keplerian_elements.eccentricity;
+                    j["i_deg"] = pimpl_->keplerian_elements.inclination * RAD_TO_DEG;
+                    j["node_deg"] = pimpl_->keplerian_elements.longitude_ascending_node * RAD_TO_DEG;
+                    j["peri_deg"] = pimpl_->keplerian_elements.argument_perihelion * RAD_TO_DEG;
+                    j["M_deg"] = pimpl_->keplerian_elements.mean_anomaly * RAD_TO_DEG;
+                    j["epoch_jd"] = pimpl_->keplerian_elements.epoch_mjd_tdb + MJD_TO_JD;
+                    DebugLogger::getInstance().logValue("Phase1", "Elements_ECL", j);
+                }
+            }
+            if (config.debug_elements_equ) {
+                // Manual conversion for debug print (rotate inclination and node)
+                const double eps = 23.4392911 * DEG_TO_RAD;
+                const double cosE = std::cos(eps);
+                double inc = pimpl_->keplerian_elements.inclination;
+                double node = pimpl_->keplerian_elements.longitude_ascending_node;
+                double x_pole = std::sin(inc) * std::sin(node);
+                double y_pole = -std::sin(inc) * std::cos(node);
+                double z_pole = std::cos(inc);
+                double x_equ = x_pole;
+                double y_equ = y_pole * cosE - z_pole * std::sin(eps);
+                double z_equ = y_pole * std::sin(eps) + z_pole * cosE;
+                double inc_equ = std::acos(z_equ);
+                double node_equ = std::atan2(x_equ, -y_equ);
+                if (node_equ < 0) node_equ += 2 * M_PI;
+
+                std::cout << "[DEBUG] Asteroid_Phase1_ELMENTS_EQU (Equatorial J2000 - Simplified):\n";
+                std::cout << "  a=" << pimpl_->keplerian_elements.semi_major_axis << " AU, e=" << pimpl_->keplerian_elements.eccentricity 
+                          << ", i_equ=" << inc_equ * RAD_TO_DEG << " deg\n";
+                std::cout << "  Node_equ=" << node_equ * RAD_TO_DEG << " deg (simplified rotation)\n";
+
+                if (!config.debug_json_path.empty()) {
+                    DebugLogger::getInstance().setFilename(config.debug_json_path);
+                    nlohmann::json j;
+                    j["a"] = pimpl_->keplerian_elements.semi_major_axis;
+                    j["e"] = pimpl_->keplerian_elements.eccentricity;
+                    j["i_equ_deg"] = inc_equ * RAD_TO_DEG;
+                    j["node_equ_deg"] = node_equ * RAD_TO_DEG;
+                    DebugLogger::getInstance().logValue("Phase1", "Elements_EQU", j);
+                }
+            }
         }
 
         // Propagate dense points for this day to fit Chebyshev
@@ -742,73 +744,66 @@ Phase1Results Phase1CandidateScreening::screenCandidates(const Phase1Config& con
                   printed_debug = true;
              }
 
-            // 2. Propagate to t
-            astdyn::propagation::KeplerianElements kep_t;
-            kep_t = pimpl_->propagator->propagate_keplerian(
-                pimpl_->keplerian_elements,
-                t
-            );
+            // 2. Calcola osservazione con wrapper (ICRF Equatorial)
+            auto obs = pimpl_->astdyn_wrapper->calculateObservation(t);
             
-            // Check propagated elements
-            if (t == current_mjd && pimpl_->verbosity >= 2) {
-                 std::cout << " [DEBUG] Propagated Elements (MJD " << t << "): a=" << kep_t.semi_major_axis 
-                           << " i(deg)=" << kep_t.inclination * RAD_TO_DEG 
-                           << " M(deg)=" << kep_t.mean_anomaly * RAD_TO_DEG << "\n";
-            }
+            // ====================================================================
+            // DEBUG PRINTS (Bypass verbosity)
+            // ====================================================================
+            if (t == config.start_mjd_tdb) {
+                if (config.debug_asteroid_equ) {
+                    std::cout << "[DEBUG] Asteroid_Phase1_EQU (Equatorial J2000): RA=" << obs.ra_deg << " deg, Dec=" << obs.dec_deg << " deg\n";
+                }
+                if (config.debug_asteroid_ecl) {
+                    // Manual rotation for debug (rotate RA/Dec to Ecliptic)
+                    const double eps = 23.4392911 * DEG_TO_RAD;
+                    double ra = obs.ra_deg * DEG_TO_RAD;
+                    double dec = obs.dec_deg * DEG_TO_RAD;
+                    double x_vec = std::cos(dec) * std::cos(ra);
+                    double y_vec = std::cos(dec) * std::sin(ra);
+                    double z_vec = std::sin(dec);
+                    double y_ecl = y_vec * std::cos(eps) + z_vec * std::sin(eps);
+                    double lon_deg = std::atan2(y_ecl, x_vec) * RAD_TO_DEG;
+                    if (lon_deg < 0) lon_deg += 360.0;
+                    std::cout << "[DEBUG] Asteroid_Phase1_ECL (Ecliptic J2000): Lon=" << lon_deg << " deg\n";
+                }
+                if (config.debug_asteroid_vec) {
+                    double ra_rad = obs.ra_deg * DEG_TO_RAD;
+                    double dec_rad = obs.dec_deg * DEG_TO_RAD;
+                    double x_vec = obs.dist_au * std::cos(dec_rad) * std::cos(ra_rad);
+                    double y_vec = obs.dist_au * std::cos(dec_rad) * std::sin(ra_rad);
+                    double z_vec = obs.dist_au * std::sin(dec_rad);
+                    std::cout << "[DEBUG] Asteroid_Phase1_VEC (Vector AU J2000): X=" << x_vec << " Y=" << y_vec << " Z=" << z_vec << " Dist=" << obs.dist_au << " AU\n";
+                }
 
-            // 3. Convert to Cartesian (Heliocentric)
-            astdyn::propagation::CartesianElements rv = 
-                astdyn::propagation::keplerian_to_cartesian(kep_t);
-                
-            if (t == current_mjd && pimpl_->verbosity >= 2) {
-                 std::cout << " [DEBUG] Cartesian (Raw Heliorcentric): x=" << rv.position[0] << " y=" << rv.position[1] << " z=" << rv.position[2] << "\n";
-                 double r = rv.position.norm();
-                 double lat_deg = std::asin(rv.position[2]/r) * RAD_TO_DEG;
-                 std::cout << " [DEBUG] Raw Latitude (should be < i): " << lat_deg << " deg\n";
-            }
-            
-            double earth_jd = t + MJD_TO_JD;
-            
-            // Get Earth Barycentric Equatorial Position (Standard DE4xx is Equatorial)
-            auto earth_pos_eq = astdyn::ephemeris::PlanetaryEphemeris::getPosition(
-                    astdyn::ephemeris::CelestialBody::EARTH, earth_jd);
-
-            // Asteroid Heliocentric Ecliptic (rv.position) -> Rotate to Equatorial
-            // We must perform rotation BEFORE subtraction to match frames.
-            double eps = EPSILON_J2000;
-            double ce = std::cos(eps);
-            double se = std::sin(eps);
-            
-            Eigen::Vector3d ast_pos_ecl = rv.position;
-            Eigen::Vector3d ast_pos_eq;
-            ast_pos_eq[0] = ast_pos_ecl[0];
-            ast_pos_eq[1] = ast_pos_ecl[1] * ce - ast_pos_ecl[2] * se;
-            ast_pos_eq[2] = ast_pos_ecl[1] * se + ast_pos_ecl[2] * ce;
-
-            // Vector from Earth to Asteroid (Geocentric Equatorial)
-            Eigen::Vector3d rel_pos_eq = ast_pos_eq - earth_pos_eq;
-
-            // No further rotation needed.
-            
-            double ra, dec;
-            cartesianToRaDec(rel_pos_eq, ra, dec);
-            
-            if (t == current_mjd && pimpl_->verbosity >= 2) {
-                std::cout << " [DEBUG] Earth Helio Eq: " << earth_pos_eq.transpose() << "\n";
-                std::cout << " [DEBUG] Rel Pos Eq: " << rel_pos_eq.transpose() << "\n";
+                if (!config.debug_json_path.empty()) {
+                    DebugLogger::getInstance().setFilename(config.debug_json_path);
+                    nlohmann::json j;
+                    j["mjd"] = t;
+                    j["ra_deg"] = obs.ra_deg;
+                    j["dec_deg"] = obs.dec_deg;
+                    j["dist_au"] = obs.dist_au;
+                    DebugLogger::getInstance().log("Phase1", "Asteroid_Position", j);
+                }
             }
             
             epochs.push_back(t);
-            ra_values.push_back(ra * RAD_TO_DEG);
-            dec_values.push_back(dec * RAD_TO_DEG);
+            ra_values.push_back(obs.ra_deg);
+            dec_values.push_back(obs.dec_deg);
             
             // Add to total path for visualization/results
             PathPoint pt;
             pt.mjd_tdb = t;
-            pt.ra_deg = ra * RAD_TO_DEG;
-            pt.dec_deg = dec * RAD_TO_DEG;
-            pt.pos_geo_au = rel_pos_eq;
-            pt.distance_earth_au = rel_pos_eq.norm();
+            pt.ra_deg = obs.ra_deg;
+            pt.dec_deg = obs.dec_deg;
+            double ra_rad_debug = obs.ra_deg * DEG_TO_RAD;
+            double dec_rad_debug = obs.dec_deg * DEG_TO_RAD;
+            pt.pos_geo_au = Eigen::Vector3d(
+                obs.dist_au * std::cos(dec_rad_debug) * std::cos(ra_rad_debug),
+                obs.dist_au * std::cos(dec_rad_debug) * std::sin(ra_rad_debug),
+                obs.dist_au * std::sin(dec_rad_debug)
+            );
+            pt.distance_earth_au = obs.dist_au;
             results.path.push_back(pt);
             if (results.path.size() <= 3 && pimpl_->verbosity >= 2) {
                  std::cout << " [DEBUG] Point " << results.path.size() << ": RA=" << pt.ra_deg << " Dec=" << pt.dec_deg << " (MJD=" << t << ")" << std::endl;
@@ -868,8 +863,21 @@ Phase1Results Phase1CandidateScreening::screenCandidates(const Phase1Config& con
                  std::cout << " [DEBUG] FOUND TARGET STAR CANDIDATE! ID: " << s.source_id 
                            << " RA: " << cs.ra_deg << " Dec: " << cs.dec_deg 
                            << " Mag: " << cs.phot_g_mean_mag << "\n";
-             }
-             
+              }
+
+               if (config.debug_star_position) {
+                   std::cout << "[DEBUG] StarPosition (Equatorial J2000): ID=" << s.source_id << " RA=" << cs.ra_deg << " deg, Dec=" << cs.dec_deg << " deg\n";
+                   
+                   if (!config.debug_json_path.empty()) {
+                       DebugLogger::getInstance().setFilename(config.debug_json_path);
+                       nlohmann::json j;
+                       j["star_id"] = s.source_id;
+                       j["ra_deg"] = cs.ra_deg;
+                       j["dec_deg"] = cs.dec_deg;
+                       DebugLogger::getInstance().log("Phase1", "Star_Position", j);
+                   }
+               }
+              
              cs.source_id = s.source_id;
              // cs.ra_deg = s.ra; // REMOVED
              // cs.dec_deg = s.dec; // REMOVED

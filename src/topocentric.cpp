@@ -297,6 +297,64 @@ Vector3D TopocentricConverter::calculateTopocentricCorrection(const ObserverLoca
     return applyRotation(rotation_matrix, itrf_pos);
 }
 
+Vector3D TopocentricConverter::intersectWithWGS84(const Vector3D& origin, const Vector3D& direction) const {
+    // Risoluzione dell'equazione di intersezione Linea-Elissoide
+    // (x/a)^2 + (y/a)^2 + (z/b)^2 = 1
+    // P(k) = origin + k * direction
+    double a = ellipsoid_.equatorial_radius_m;
+    double b = ellipsoid_.polarRadius();
+    
+    double oa = origin.x / a;
+    double ob = origin.y / a;
+    double oc = origin.z / b;
+    double da = direction.x / a;
+    double db = direction.y / a;
+    double dc = direction.z / b;
+    
+    double A = da * da + db * db + dc * dc;
+    double B = 2.0 * (oa * da + ob * db + oc * dc);
+    double C = oa * oa + ob * ob + oc * oc - 1.0;
+    
+    double discriminant = B * B - 4.0 * A * C;
+    if (discriminant < 0) return Vector3D(0, 0, 0); // Nessuna intersezione
+    
+    // Vogliamo l'intersezione più vicina all'origine (solitamente l'asteroide)
+    // ma che sia "davanti" se l'origine è nello spazio.
+    double k = (-B - std::sqrt(discriminant)) / (2.0 * A);
+    if (k < 0) k = (-B + std::sqrt(discriminant)) / (2.0 * A);
+    
+    if (k < 0) return Vector3D(0, 0, 0);
+    
+    return origin + direction * k;
+}
+
+ObserverLocation TopocentricConverter::getGeodeticPosition(const Vector3D& itrf_pos) const {
+    // Algoritmo di Bowring per conversione ITRF -> Geodetico
+    double a = ellipsoid_.equatorial_radius_m;
+    double b = ellipsoid_.polarRadius();
+    double e2 = ellipsoid_.eccentricity_squared;
+    double e_prime2 = (a * a - b * b) / (b * b);
+    
+    double p = std::sqrt(itrf_pos.x * itrf_pos.x + itrf_pos.y * itrf_pos.y);
+    double theta = std::atan2(itrf_pos.z * a, p * b);
+    
+    double lat = std::atan2(itrf_pos.z + e_prime2 * b * std::pow(std::sin(theta), 3),
+                           p - e2 * a * std::pow(std::cos(theta), 3));
+    double lon = std::atan2(itrf_pos.y, itrf_pos.x);
+    
+    double sin_lat = std::sin(lat);
+    double N = a / std::sqrt(1.0 - e2 * sin_lat * sin_lat);
+    double alt = p / std::cos(lat) - N;
+    
+    ObserverLocation loc;
+    loc.latitude_deg = lat * LOCAL_RAD_TO_DEG;
+    loc.longitude_deg = lon * LOCAL_RAD_TO_DEG;
+    loc.elevation_m = alt;
+    loc.is_geodetic = true;
+    
+    return loc;
+}
+
 Vector3D TopocentricConverter::calculateParallax(double geocentric_distance,
                                                 const ObserverLocation& observer,
                                                 double jd_tt) const {

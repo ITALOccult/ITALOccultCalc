@@ -28,7 +28,7 @@ void example1_basicPropagation() {
     printHeader("Example 1: Basic N-body Propagation");
     
     // (1) Crea elementi orbitali di un asteroide (esempio: 472 Roma)
-    EquinoctialElements elements;
+    AstDynEquinoctialElements elements;
     elements.a = 2.572;           // AU - semiasse maggiore
     elements.h = 0.0821;          // e*sin(ω+Ω)
     elements.k = 0.1234;          // e*cos(ω+Ω)  
@@ -145,7 +145,7 @@ void example3_configurationComparison() {
     printHeader("Example 3: Force Model Configuration Comparison");
     
     // Stato iniziale
-    EquinoctialElements elements;
+    AstDynEquinoctialElements elements;
     elements.a = 2.572;
     elements.h = 0.0821;
     elements.k = 0.1234;
@@ -207,7 +207,7 @@ void example4_outputTrajectory() {
     printHeader("Example 4: Generate Trajectory with Output Points");
     
     // Stato iniziale
-    EquinoctialElements elements;
+    AstDynEquinoctialElements elements;
     elements.a = 2.572;
     elements.h = 0.0821;
     elements.k = 0.1234;

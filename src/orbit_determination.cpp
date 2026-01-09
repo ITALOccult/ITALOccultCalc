@@ -39,7 +39,7 @@ void OrbitFitResult::getErrorEllipse(const JulianDate& time,
 
 class OrbitDetermination::Impl {
 public:
-    EquinoctialElements initialElements;
+    AstDynEquinoctialElements initialElements;
     ObservationSet observations;
     FitOptions options;
     Ephemeris ephemeris;
@@ -54,7 +54,7 @@ OrbitDetermination::OrbitDetermination() : pImpl(new Impl()) {}
 
 OrbitDetermination::~OrbitDetermination() = default;
 
-void OrbitDetermination::setInitialElements(const EquinoctialElements& elements) {
+void OrbitDetermination::setInitialElements(const AstDynEquinoctialElements& elements) {
     pImpl->initialElements = elements;
     pImpl->ephemeris.setElements(elements);
 }
@@ -96,7 +96,7 @@ OrbitFitResult OrbitDetermination::differentialCorrection(
         throw std::runtime_error("Need at least 3 observations for orbit determination");
     }
     
-    EquinoctialElements currentElements = pImpl->initialElements;
+    AstDynEquinoctialElements currentElements = pImpl->initialElements;
     double previousRMS = 1e10;
     
     for (int iter = 0; iter < maxIterations; ++iter) {
@@ -195,7 +195,7 @@ OrbitFitResult OrbitDetermination::differentialCorrection(
     return result;
 }
 
-void OrbitDetermination::computeResiduals(const EquinoctialElements& elements,
+void OrbitDetermination::computeResiduals(const AstDynEquinoctialElements& elements,
                                          ObservationSet& observations) {
     Ephemeris eph(elements);
     
@@ -217,7 +217,7 @@ void OrbitDetermination::computeResiduals(const EquinoctialElements& elements,
 }
 
 EquatorialCoordinates OrbitDetermination::computeEphemeris(
-    const EquinoctialElements& elements,
+    const AstDynEquinoctialElements& elements,
     const AstrometricObservation& obs) {
     
     // Calcola effemeridi geocentriche
@@ -257,7 +257,7 @@ EquatorialCoordinates OrbitDetermination::computeEphemeris(
 }
 
 std::vector<std::vector<double>> OrbitDetermination::computeJacobian(
-    const EquinoctialElements& elements,
+    const AstDynEquinoctialElements& elements,
     const ObservationSet& observations) {
     
     // Jacobiana: derivate parziali di (RA, Dec) rispetto agli elementi orbitali
@@ -273,7 +273,7 @@ std::vector<std::vector<double>> OrbitDetermination::computeJacobian(
     
     // Per ogni elemento orbitale
     for (int j = 0; j < 6; ++j) {
-        EquinoctialElements elemPlus = elements;
+        AstDynEquinoctialElements elemPlus = elements;
         
         // Perturba elemento j
         switch(j) {
@@ -310,7 +310,7 @@ std::vector<std::vector<double>> OrbitDetermination::computeJacobian(
 }
 
 std::vector<double> OrbitDetermination::computeResidualVector(
-    const EquinoctialElements& elements,
+    const AstDynEquinoctialElements& elements,
     const ObservationSet& observations) {
     
     std::vector<double> residuals;
@@ -397,7 +397,7 @@ std::vector<double> OrbitDetermination::solveLeastSquares(
 
 // Metodi statici per orbit determination iniziale
 
-EquinoctialElements OrbitDetermination::gaussMethod(
+AstDynEquinoctialElements OrbitDetermination::gaussMethod(
     const AstrometricObservation& obs1,
     const AstrometricObservation& obs2,
     const AstrometricObservation& obs3) {
@@ -408,14 +408,14 @@ EquinoctialElements OrbitDetermination::gaussMethod(
     // TODO: Implementare metodo di Gauss completo
     // Per ora, restituisce elementi dummy
     
-    EquinoctialElements elem;
+    AstDynEquinoctialElements elem;
     elem.a = 2.5; // AU (guess asteroide main belt)
     elem.epoch = obs2.epoch;
     
     return elem;
 }
 
-EquinoctialElements OrbitDetermination::laplaceMethod(
+AstDynEquinoctialElements OrbitDetermination::laplaceMethod(
     const AstrometricObservation& obs1,
     const AstrometricObservation& obs2) {
     
@@ -423,7 +423,7 @@ EquinoctialElements OrbitDetermination::laplaceMethod(
     
     // TODO: Implementare metodo di Laplace completo
     
-    EquinoctialElements elem;
+    AstDynEquinoctialElements elem;
     elem.a = 2.5;
     elem.epoch = obs1.epoch;
     

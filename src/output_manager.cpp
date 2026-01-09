@@ -5,6 +5,7 @@
 
 #include "ioccultcalc/output_manager.h"
 #include "ioccultcalc/time_utils.h"
+#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <iomanip>
@@ -13,6 +14,11 @@
 #include <cstdlib>
 #include <set>
 #include <map>
+#include "starmap/StarMap.h"
+#include "starmap/map/ChartGenerator.h"
+#include "OccultationRenderer.h"
+#include "starmap/occultation/OccultationChartBuilder.h"
+#include "starmap/config/LibraryConfig.h"
 
 namespace ioccultcalc {
 
@@ -76,6 +82,7 @@ void OutputManager::configure(const ConfigManager& config) {
         else if (formatStr == "JSON") options_.format = OutputFormat::JSON;
         else if (formatStr == "IOTA_CARD") options_.format = OutputFormat::IOTA_CARD;
         else if (formatStr == "ASTNUM_LIST") options_.format = OutputFormat::ASTNUM_LIST;
+        else if (formatStr == "A4_VERTICAL_CARD") options_.format = OutputFormat::A4_VERTICAL_CARD;
         
         // File output
         options_.output_file = outputSection->getParameter("file")->asString();
@@ -106,12 +113,12 @@ void OutputManager::setOptions(const OutputOptions& options) {
 // WRITE EVENTS
 // ============================================================================
 
-bool OutputManager::writeEvent(const OccultationEvent& event,
+bool OutputManager::writeEvent(const OutputEvent& event,
                                const std::string& output_file) {
     return writeEvents({event}, output_file);
 }
 
-bool OutputManager::writeEvents(const std::vector<OccultationEvent>& events,
+bool OutputManager::writeEvents(const std::vector<OutputEvent>& events,
                                const std::string& output_file) {
     if (events.empty()) return false;
     
@@ -165,13 +172,31 @@ bool OutputManager::writeEvents(const std::vector<OccultationEvent>& events,
         
         case OutputFormat::ASTNUM_LIST:
             return writeAstNumList(events, filename);
+            
+        case OutputFormat::A4_VERTICAL_CARD:
+            if (events.size() == 1) {
+                return writeEventCardA4(events[0], filename);
+            } else {
+                bool success = true;
+                for (size_t i = 0; i < events.size(); i++) {
+                    std::string base = filename;
+                    size_t dot = base.rfind('.');
+                    if (dot != std::string::npos) {
+                        base = base.substr(0, dot) + "_" + std::to_string(i+1) + base.substr(dot);
+                    } else {
+                        base += "_" + std::to_string(i+1) + ".pdf";
+                    }
+                    success = success && writeEventCardA4(events[i], base);
+                }
+                return success;
+            }
         
         default:
             return false;
     }
 }
 
-bool OutputManager::writeSummary(const std::vector<OccultationEvent>& events,
+bool OutputManager::writeSummary(const std::vector<OutputEvent>& events,
                                 const std::string& summary_file) {
     // Sempre in formato TEXT per summary
     OutputFormat orig_format = options_.format;
@@ -187,7 +212,7 @@ bool OutputManager::writeSummary(const std::vector<OccultationEvent>& events,
 // TEXT FORMAT
 // ============================================================================
 
-bool OutputManager::writeTextFormat(const std::vector<OccultationEvent>& events,
+bool OutputManager::writeTextFormat(const std::vector<OutputEvent>& events,
                                    const std::string& filename) {
     std::ofstream file(filename);
     if (!file.is_open()) return false;
@@ -295,7 +320,7 @@ bool OutputManager::writeTextFormat(const std::vector<OccultationEvent>& events,
 // LATEX FORMAT
 // ============================================================================
 
-bool OutputManager::writeLatexFormat(const std::vector<OccultationEvent>& events,
+bool OutputManager::writeLatexFormat(const std::vector<OutputEvent>& events,
                                     const std::string& filename) {
     std::ofstream file(filename);
     if (!file.is_open()) return false;
@@ -427,19 +452,32 @@ bool OutputManager::compilePDF(const std::string& tex_file) {
     }
     test.close();
     
-    // Compila (2 passaggi per references)
-    std::string cmd = pdflatex + " -interaction=nonstopmode " + tex_file + " > /dev/null 2>&1";
-    int result1 = std::system(cmd.c_str());
-    int result2 = std::system(cmd.c_str());
+    // Separa directory e file per l'esecuzione corretta (percorso immagini relativo)
+    size_t last_slash = tex_file.find_last_of('/');
+    std::string dir = (last_slash == std::string::npos) ? "." : tex_file.substr(0, last_slash);
+    std::string filename = (last_slash == std::string::npos) ? tex_file : tex_file.substr(last_slash + 1);
     
-    return (result1 == 0 && result2 == 0);
+    // Compila (2 passaggi per references e TikZ)
+    // Usiamo cd per assicurarci che pdflatex veda le immagini nella propria cartella
+    std::string cmd = "cd " + dir + " && " + pdflatex + " -interaction=nonstopmode " + filename + " > /dev/null 2>&1";
+    
+    std::system(cmd.c_str()); 
+    std::system(cmd.c_str()); // Secondo passaggio per TikZ/links
+    
+    // Verifica se il file PDF è stato prodotto
+    std::string pdf_file = tex_file.substr(0, tex_file.size() - 4) + ".pdf";
+    std::ifstream check(pdf_file);
+    bool exists = check.good();
+    check.close();
+    
+    return exists;
 }
 
 // ============================================================================
 // XML OCCULT4 FORMAT
 // ============================================================================
 
-bool OutputManager::writeXmlOccult4(const std::vector<OccultationEvent>& events,
+bool OutputManager::writeXmlOccult4(const std::vector<OutputEvent>& events,
                                    const std::string& filename) {
     std::ofstream file(filename);
     if (!file.is_open()) return false;
@@ -537,7 +575,7 @@ bool OutputManager::writeXmlOccult4(const std::vector<OccultationEvent>& events,
 // JSON FORMAT
 // ============================================================================
 
-bool OutputManager::writeJsonFormat(const std::vector<OccultationEvent>& events,
+bool OutputManager::writeJsonFormat(const std::vector<OutputEvent>& events,
                                    const std::string& filename) {
     std::ofstream file(filename);
     if (!file.is_open()) return false;
@@ -630,7 +668,7 @@ bool OutputManager::writeJsonFormat(const std::vector<OccultationEvent>& events,
 // IOTA CARD
 // ============================================================================
 
-bool OutputManager::writeIotaCard(const OccultationEvent& event,
+bool OutputManager::writeIotaCard(const OutputEvent& event,
                                  const std::string& filename) {
     // Genera script LaTeX per carta IOTA
     std::string tex_file = filename;
@@ -655,21 +693,83 @@ bool OutputManager::writeIotaCard(const OccultationEvent& event,
     file << "  \\node[anchor=north west] at (current page.north west) {\n";
     file << "    \\begin{minipage}{10in}\n";
     
+    // --- NOVITÀ: Generazione Carte Stellari (IAU Approach + Betelgeuse Detail) ---
+    std::string approach_map = "";
+    std::string detail_map = "";
+    
+    if (options_.iota_include_finder_chart) {
+        // Inizializzazione StarMap con i percorsi dei cataloghi
+        starmap::config::LibraryConfig::CatalogPaths paths;
+        paths.gaiaSaoDatabase = "/Users/michelebigi/.catalog/crossreference/gaia_sao_xmatch.db";
+        paths.iauCatalog = "/Users/michelebigi/Documents/Develop/ASTDYN/IOccultCalc/external/IOC_GaiaLib/data/IAU-CSN.json";
+        paths.starNamesDatabase = "/Users/michelebigi/Documents/Develop/ASTDYN/IOccultCalc/external/IOC_GaiaLib/data/common_star_names.csv";
+        starmap::initialize(paths);
+
+        std::cout << "[OutputManager] Generazione StarMaps per stella: " << event.star_id << std::endl;
+        starmap::occultation::OccultationChartBuilder builder;
+        starmap::occultation::OccultationEvent sEv;
+        
+        // Mappa dati ioccultcalc -> starmap
+        sEv.targetStar.coordinates = starmap::core::EquatorialCoordinates(event.star_ra_deg, event.star_dec_deg);
+        sEv.targetStar.magnitude = event.star_mag;
+        sEv.targetStar.catalogId = event.star_catalog + " " + event.star_id;
+        
+        sEv.asteroid.name = event.asteroid_name;
+        sEv.asteroid.designation = event.asteroid_designation;
+        sEv.asteroid.position = starmap::core::EquatorialCoordinates(event.star_ra_deg, event.star_dec_deg); // Close enough
+        sEv.asteroid.magnitude = event.absolute_magnitude; // H
+        
+        sEv.circumstances.eventTime = event.utc_string;
+        sEv.circumstances.duration = event.duration_seconds;
+        sEv.circumstances.magnitudeDrop = event.mag_drop;
+        
+        builder.setEvent(sEv);
+        
+        // 1. Approach Chart (IAU Style)
+        approach_map = filename.substr(0, filename.find_last_of('.')) + "_approach.png";
+        starmap::occultation::OccultationChartConfig appCfg = starmap::occultation::OccultationChartConfig::getDefaultForType(starmap::occultation::ChartType::APPROACH);
+        appCfg.fieldOfViewWidth = 20.0;
+        appCfg.fieldOfViewHeight = 20.0;
+        appCfg.limitingMagnitude = 8.0;
+        appCfg.showConstellationLines = true;
+        appCfg.gridInterval = 5.0;
+        bool appOk = builder.generateAndSaveApproachChart(approach_map, &appCfg);
+        
+        // 2. Detail Chart (Betelgeuse Style)
+        detail_map = filename.substr(0, filename.find_last_of('.')) + "_detail.png";
+        starmap::occultation::OccultationChartConfig detCfg = starmap::occultation::OccultationChartConfig::getDefaultForType(starmap::occultation::ChartType::DETAIL);
+        detCfg.fieldOfViewWidth = 3.0;
+        detCfg.fieldOfViewHeight = 1.6; // ~16:9
+        detCfg.imageWidth = 2162;
+        detCfg.imageHeight = 1184;
+        detCfg.limitingMagnitude = 16.0;
+        detCfg.gridInterval = 0.25;
+        detCfg.asteroidPathColor = 0xFF0000FF; // ROSSO / RED
+        bool detOk = builder.generateAndSaveDetailChart(detail_map, &detCfg);
+        
+        std::cout << "[OutputManager] Approach Chart: " << (appOk ? "OK" : "FAILED") << " -> " << approach_map << std::endl;
+        std::cout << "[OutputManager] Detail Chart: " << (detOk ? "OK" : "FAILED") << " -> " << detail_map << std::endl;
+    }
+    
     // Header IOTA-style
     file << "      \\begin{center}\n";
-    file << "        {\\Huge\\bfseries ASTEROID OCCULTATION}\\\\\n";
-    file << "        \\vspace{0.2cm}\n";
-    file << "        {\\LARGE (" << event.asteroid_number << ") " << event.asteroid_name 
-         << " occults " << event.star_catalog << " " << event.star_id << "}\\\\\n";
-    file << "        \\vspace{0.1cm}\n";
+    file << "        {\\Huge\\bfseries ASTEROID OCCULTATION}\\\\[0.2cm]\n";
+        std::string displayName = event.asteroid_name;
+        std::string numStr = "(" + std::to_string(event.asteroid_number) + ")";
+        if (displayName.find(numStr) != std::string::npos) {
+            size_t pos = displayName.find(numStr);
+            displayName.erase(pos, numStr.length());
+            displayName.erase(0, displayName.find_first_not_of(" "));
+        }
+        file << "        {\\LARGE (" << event.asteroid_number << ") " << displayName 
+             << " occults " << event.star_catalog << " " << event.star_id << "}\\\\[0.1cm]\n";
     file << "        {\\Large " << event.utc_string << " UT}\n";
     file << "      \\end{center}\n";
-    file << "      \\vspace{0.3cm}\n";
+    file << "      \\vspace{0.2cm}\n";
     
-    // Due colonne
+    // Layout a tre righe: 1. Info, 2. Mappe Stellari, 3. Mappa al suolo
     file << "      \\begin{minipage}[t]{0.48\\linewidth}\n";
     file << "        {\\large\\bfseries Event Details}\\\\\n";
-    file << "        \\vspace{0.2cm}\n";
     file << "        \\begin{tabular}{ll}\n";
     file << "          Magnitude drop: & {\\Large\\bfseries " << std::fixed 
          << std::setprecision(1) << event.mag_drop << " mag} \\\\\n";
@@ -677,25 +777,50 @@ bool OutputManager::writeIotaCard(const OccultationEvent& event,
          << event.duration_seconds << " sec} \\\\\n";
     file << "          Shadow width: & " << std::setprecision(0) 
          << event.shadow_width_km << " km \\\\\n";
-    file << "          Shadow speed: & " << std::setprecision(1) 
-         << event.shadow_velocity_kms << " km/s \\\\\n";
-    file << "          Path uncertainty: & $\\pm$" << std::setprecision(0) 
+    file << "          Uncertainty: & $\\pm$" << std::setprecision(0) 
          << event.path_uncertainty_km << " km \\\\\n";
     file << "        \\end{tabular}\n";
     file << "      \\end{minipage}\n";
     file << "      \\hfill\n";
     file << "      \\begin{minipage}[t]{0.48\\linewidth}\n";
     file << "        {\\large\\bfseries Star Data}\\\\\n";
-    file << "        \\vspace{0.2cm}\n";
     file << "        \\begin{tabular}{ll}\n";
     file << "          Star mag: & {\\Large\\bfseries " << std::setprecision(1) 
          << event.star_mag << "} \\\\\n";
-    file << "          RA (J2000): & " << formatCoordinate(event.star_ra_deg, false) << " \\\\\n";
-    file << "          Dec (J2000): & " << formatCoordinate(event.star_dec_deg, true) << " \\\\\n";
-    file << "          Priority: & {\\Large " << priorityToStars(event.priority_score) 
-         << "} (" << event.priority_score << "/11) \\\\\n";
+    file << "          RA/Dec (J2000): & " << formatCoordinate(event.star_ra_deg, false) << " / " << formatCoordinate(event.star_dec_deg, true) << " \\\\\n";
+    file << "          Priority: & " << priorityToStars(event.priority_score) 
+         << " (" << event.priority_score << "/11) \\\\\n";
     file << "        \\end{tabular}\n";
-    file << "      \\end{minipage}\n";
+    file << "      \\end{minipage}\\\\\n";
+    file << "      \\vspace{0.3cm}\n";
+    
+    // Riga 2: Mappe Stellari
+    if (!approach_map.empty() || !detail_map.empty()) {
+        file << "      \\begin{minipage}{0.48\\linewidth}\n";
+        if (!approach_map.empty()) {
+            std::string appBasename = approach_map.substr(approach_map.find_last_of('/') + 1);
+            file << "        \\centering \\textbf{Approach Chart (IAU Style)}\\\\[0.1cm]\n";
+            file << "        \\includegraphics[width=\\linewidth]{" << appBasename << "}\n";
+        }
+        file << "      \\end{minipage}\n";
+        file << "      \\hfill\n";
+        file << "      \\begin{minipage}{0.48\\linewidth}\n";
+        if (!detail_map.empty()) {
+            std::string detBasename = detail_map.substr(detail_map.find_last_of('/') + 1);
+            file << "        \\centering \\textbf{Detail Chart (Betelgeuse Style)}\\\\[0.1cm]\n";
+            file << "        \\includegraphics[width=\\linewidth]{" << detBasename << "}\n";
+        }
+        file << "      \\end{minipage}\\\\\n";
+        file << "      \\vspace{0.3cm}\n";
+    }
+    
+    // Riga 3: Ground Track Map
+    if (options_.iota_include_map && !event.central_path.empty()) {
+        file << "      \\begin{minipage}{\\linewidth}\n";
+        file << "        \\centering \\textbf{Ground Track Map}\\\\[0.1cm]\n";
+        file << "        " << generateTikzMap(event) << "\n";
+        file << "      \\end{minipage}\n";
+    }
     
     file << "    \\end{minipage}\n";
     file << "  };\n";
@@ -716,11 +841,12 @@ bool OutputManager::writeIotaCard(const OccultationEvent& event,
     return (result == 0);
 }
 
+
 // ============================================================================
 // ASTNUM_LIST FORMAT
 // ============================================================================
 
-bool OutputManager::writeAstNumList(const std::vector<OccultationEvent>& events,
+bool OutputManager::writeAstNumList(const std::vector<OutputEvent>& events,
                                    const std::string& filename) {
     if (events.empty()) return false;
     
@@ -779,10 +905,199 @@ bool OutputManager::writeAstNumList(const std::vector<OccultationEvent>& events,
 }
 
 // ============================================================================
-// UTILITY
+// A4 VERTICAL EVENT CARD
 // ============================================================================
 
-std::string OutputManager::generateAsciiMap(const OccultationEvent& event,
+bool OutputManager::writeEventCardA4(const OutputEvent& event,
+                                    const std::string& filename) {
+    // 1. Setup paths
+    std::string tex_file = filename;
+    if (tex_file.size() > 4 && tex_file.substr(tex_file.size()-4) == ".pdf") {
+        tex_file = tex_file.substr(0, tex_file.size()-4) + ".tex";
+    } else {
+        tex_file += ".tex";
+    }
+    
+    // 2. Generate Maps
+    // Initialize StarMap
+    starmap::config::LibraryConfig::CatalogPaths paths;
+    paths.gaiaSaoDatabase = std::string(getenv("HOME")) + "/.catalog/crossreference/gaia_sao_xmatch.db";
+    paths.iauCatalog = "/Users/michelebigi/Documents/Develop/ASTDYN/IOccultCalc/external/IOC_GaiaLib/data/IAU-CSN.json";
+    paths.starNamesDatabase = "/Users/michelebigi/Documents/Develop/ASTDYN/IOccultCalc/external/IOC_GaiaLib/data/common_star_names.csv";
+    starmap::initialize(paths);
+
+    starmap::occultation::OccultationChartBuilder builder;
+    starmap::occultation::OccultationEvent sEv;
+    
+    sEv.targetStar.coordinates = starmap::core::EquatorialCoordinates(event.star_ra_deg, event.star_dec_deg);
+    sEv.targetStar.magnitude = event.star_mag;
+    sEv.targetStar.catalogId = event.star_catalog + " " + event.star_id;
+    sEv.asteroid.name = event.asteroid_name;
+    sEv.asteroid.designation = event.asteroid_designation;
+    sEv.asteroid.position = starmap::core::EquatorialCoordinates(event.star_ra_deg, event.star_dec_deg);
+    sEv.asteroid.magnitude = event.absolute_magnitude;
+    sEv.circumstances.eventTime = event.utc_string;
+    sEv.circumstances.duration = event.duration_seconds;
+    sEv.circumstances.magnitudeDrop = event.mag_drop;
+    
+    builder.setEvent(sEv);
+    
+    // A. Approach Chart (Middle-Left)
+    std::string approach_map = filename.substr(0, filename.find_last_of('.')) + "_approach.png";
+    starmap::occultation::OccultationChartConfig appCfg = starmap::occultation::OccultationChartConfig::getDefaultForType(starmap::occultation::ChartType::APPROACH);
+    appCfg.fieldOfViewWidth = 15.0; // Slightly narrower for panel
+    appCfg.fieldOfViewHeight = 15.0;
+    appCfg.limitingMagnitude = 9.0;
+    builder.generateAndSaveApproachChart(approach_map, &appCfg);
+    
+    // B. Ground Map (Middle-Right)
+    std::string ground_map = filename.substr(0, filename.find_last_of('.')) + "_ground.png";
+    generateGroundMapImage(event, 800, 800, ground_map);
+    
+    // C. Work Map (Finder/Detail) (Bottom - Full Width)
+    std::string work_map = filename.substr(0, filename.find_last_of('.')) + "_work.png";
+    starmap::occultation::OccultationChartConfig detCfg = starmap::occultation::OccultationChartConfig::getDefaultForType(starmap::occultation::ChartType::DETAIL);
+    detCfg.fieldOfViewWidth = 2.0;
+    detCfg.fieldOfViewHeight = 1.0; 
+    detCfg.limitingMagnitude = 16.0;
+    builder.generateAndSaveDetailChart(work_map, &detCfg);
+    
+    // 3. Generate LaTeX
+    std::ofstream file(tex_file);
+    if (!file.is_open()) return false;
+    
+    file << "\\documentclass[a4paper]{article}\n";
+    file << "\\usepackage[margin=1cm]{geometry}\n";
+    file << "\\usepackage{tikz,graphicx,booktabs,tabularx}\n";
+    file << "\\usepackage{helvet}\n";
+    file << "\\renewcommand{\\familydefault}{\\sfdefault}\n";
+    file << "\\pagestyle{empty}\n";
+    file << "\\begin{document}\n\n";
+    
+    // --- TOP SECTION (18%) ---
+    file << "\\begin{minipage}[t][0.18\\textheight]{\\textwidth}\n";
+    file << "  \\begin{center}\n";
+    file << "    {\\Huge\\bfseries ASTEROID OCCULTATION}\\\\[0.4cm]\n";
+    file << "    {\\huge (" << event.asteroid_number << ") " << event.asteroid_name 
+         << " occults " << event.star_catalog << " " << event.star_id << "}\\\\[0.4cm]\n";
+    file << "    {\\large " << event.utc_string << " UT}\n";
+    file << "  \\end{center}\n";
+    
+    file << "  \\vspace{0.4cm}\n";
+    file << "  \\begin{tabular}{p{0.3\\textwidth} p{0.3\\textwidth} p{0.3\\textwidth}}\n";
+    file << "    \\textbf{Asteroide} & \\textbf{Stella} & \\textbf{Evento} \\\\\n";
+    file << "    \\midrule\n";
+    file << "    Diametro: " << std::fixed << std::setprecision(1) << event.diameter_km << " km & "
+         << "Mag: " << std::setprecision(2) << event.star_mag << " & "
+         << "Calo mag: " << std::setprecision(1) << event.mag_drop << " \\\\\n";
+    file << "    Mag (H): " << std::setprecision(2) << event.absolute_magnitude << " & "
+         << "RA: " << formatCoordinate(event.star_ra_deg, false) << " & "
+         << "Durata max: " << std::setprecision(1) << event.duration_seconds << " s \\\\\n";
+    file << "    Albedo: " << std::setprecision(3) << event.albedo << " & "
+         << "Dec: " << formatCoordinate(event.star_dec_deg, true) << " & "
+         << "Incertezza: $\\pm$" << std::setprecision(0) << event.path_uncertainty_km << " km \\\\\n";
+    file << "  \\end{tabular}\n";
+    file << "\\end{minipage}\n";
+    file << "\\vfill\n";
+    
+    // --- MIDDLE SECTION (38%) ---
+    file << "\\begin{minipage}[t][0.38\\textheight]{\\textwidth}\n";
+    
+    // Left: Approach
+    file << "  \\begin{minipage}[t]{0.48\\textwidth}\n";
+    file << "    \\centering\n";
+    if (!approach_map.empty()) {
+        std::string base = approach_map.substr(approach_map.find_last_of('/')+1);
+        file << "    \\includegraphics[width=\\textwidth]{" << base << "}\n";
+    }
+    file << "  \\end{minipage}\n";
+    file << "  \\hfill\n";
+    
+    // Right: Ground
+    file << "  \\begin{minipage}[t]{0.48\\textwidth}\n";
+    file << "    \\centering\n";
+    if (!ground_map.empty()) {
+        std::string base = ground_map.substr(ground_map.find_last_of('/')+1);
+        file << "    \\includegraphics[width=\\textwidth]{" << base << "}\n";
+    }
+    file << "  \\end{minipage}\n";
+    
+    file << "\\end{minipage}\n";
+    file << "\\vfill\n";
+    
+    // --- BOTTOM SECTION (38%) ---
+    file << "\\begin{minipage}[t][0.38\\textheight]{\\textwidth}\n";
+    file << "    \\centering\n";
+    if (!work_map.empty()) {
+        std::string base = work_map.substr(work_map.find_last_of('/')+1);
+        file << "    \\includegraphics[width=\\textwidth,height=0.34\\textheight,keepaspectratio]{" << base << "}\n";
+    }
+    file << "\\end{minipage}\n";
+    
+    file << "\\end{document}\n";
+    file.close();
+    
+    return compilePDF(tex_file);
+}
+
+std::string OutputManager::generateGroundMapImage(const OutputEvent& event, int width, int height, const std::string& output_path) {
+    // 1. Prepare Data
+    ioc_earth::OccultationData data;
+    data.event_id = "EVT_" + std::to_string(event.asteroid_number);
+    data.asteroid_name = event.asteroid_name;
+    data.star_name = event.star_id;
+    data.date_time_utc = event.utc_string;
+    data.duration_seconds = event.duration_seconds;
+    data.magnitude_drop = event.mag_drop;
+
+    // Convert Trajectory
+    for (const auto& pt : event.central_path) {
+        data.central_line.emplace_back(pt.longitude, pt.latitude);
+    }
+    
+    // Convert Sigma Limits if available
+    for (const auto& pt : event.north_limit) {
+        data.northern_limit.emplace_back(pt.longitude, pt.latitude);
+    }
+    for (const auto& pt : event.south_limit) {
+        data.southern_limit.emplace_back(pt.longitude, pt.latitude);
+    }
+
+    if (data.central_line.empty()) {
+        return ""; // No data
+    }
+
+    // 2. Configure Renderer
+    ioc_earth::OccultationRenderer renderer(width, height);
+    renderer.setOccultationData(data);
+    
+    // Style
+    ioc_earth::OccultationRenderer::RenderStyle style;
+    style.central_line_width = 2.0;
+    style.central_line_color = "#000000"; // Black
+    style.sigma_lines_style = "dashed";
+    // style.fill_opacity = 0.5; // Custom field assuming support or use simple style
+    
+    renderer.setRenderStyle(style);
+    
+    std::string data_dir = std::string(getenv("HOME")) + "/.ioccultcalc/data/map_data";
+    renderer.setDataDirectory(data_dir);
+    
+    // Auto-calculate bounds based on central line
+    renderer.autoCalculateExtent(15.0); // 15% margin
+    
+    // 3. Render
+    try {
+        if (renderer.renderOccultationMap(output_path)) {
+            return output_path;
+        }
+    } catch (const std::exception& e) {
+        std::cerr << "Error rendering ground map: " << e.what() << std::endl;
+    }
+    return "";
+}
+
+std::string OutputManager::generateAsciiMap(const OutputEvent& event,
                                            int width, int height) {
     std::stringstream map;
     
@@ -842,13 +1157,13 @@ std::string OutputManager::generateAsciiMap(const OccultationEvent& event,
     return map.str();
 }
 
-std::string OutputManager::generateTikzMap(const OccultationEvent& event) {
+std::string OutputManager::generateTikzMap(const OutputEvent& event) {
     std::stringstream tikz;
     
     if (event.central_path.empty()) return "";
     
-    tikz << "\\begin{figure}[h]\n";
-    tikz << "\\centering\n";
+    // tikz << "\\begin{figure}[h]\n";
+    // tikz << "\\centering\n";
     tikz << "\\begin{tikzpicture}[scale=0.8]\n";
     
     // Trova bounds
@@ -929,8 +1244,8 @@ std::string OutputManager::generateTikzMap(const OccultationEvent& event) {
     }
     
     tikz << "\\end{tikzpicture}\n";
-    tikz << "\\caption{Ground track with 1-$\\sigma$ uncertainty limits (dotted lines)}\n";
-    tikz << "\\end{figure}\n";
+    // tikz << "\\caption{Ground track with 1-$\\sigma$ uncertainty limits (dotted lines)}\n";
+    // tikz << "\\end{figure}\n";
     
     return tikz.str();
 }
@@ -967,10 +1282,10 @@ std::string OutputManager::formatCoordinate(double coord, bool is_latitude) {
 }
 
 std::string OutputManager::priorityToStars(int score) {
-    if (score >= 8) return "★★★";
-    if (score >= 5) return "★★";
-    if (score >= 3) return "★";
-    return "☆";
+    if (score >= 8) return "***";
+    if (score >= 5) return "**";
+    if (score >= 3) return "*";
+    return "-";
 }
 
 // ============================================================================

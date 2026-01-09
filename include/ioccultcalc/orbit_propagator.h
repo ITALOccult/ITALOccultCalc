@@ -107,7 +107,7 @@ public:
      * @param targetEpoch Epoca target
      * @return Stato orbitale (r, v) all'epoca target
      */
-    OrbitState propagate(const EquinoctialElements& initialElements,
+    OrbitState propagate(const AstDynEquinoctialElements& initialElements,
                         const JulianDate& targetEpoch);
     
     /**
@@ -165,14 +165,14 @@ public:
      * @param elements Elementi equinoziali
      * @return Stato (posizione, velocità)
      */
-    OrbitState elementsToState(const EquinoctialElements& elements);
+    OrbitState elementsToState(const AstDynEquinoctialElements& elements);
     
     /**
      * @brief Conversione stato cartesiano → elementi orbitali
      * @param state Stato (posizione, velocità)
      * @return Elementi equinoziali
      */
-    EquinoctialElements stateToElements(const OrbitState& state);
+    AstDynEquinoctialElements stateToElements(const OrbitState& state);
     
 private:
     class Impl;
@@ -213,7 +213,7 @@ public:  // ← TEMPORANEO per test validazione
  * @param duration Durata propagazione (giorni)
  * @return Errore RMS in posizione (km)
  */
-double testPropagatorAccuracy(const EquinoctialElements& elements,
+double testPropagatorAccuracy(const AstDynEquinoctialElements& elements,
                              double duration = 365.25);
 
 } // namespace ioccultcalc

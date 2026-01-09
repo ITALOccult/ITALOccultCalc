@@ -291,7 +291,7 @@ public:
     /**
      * @brief Configura calcolo
      */
-    void setAsteroidElements(const EquinoctialElements& elements);
+    void setAsteroidElements(const AstDynEquinoctialElements& elements);
     void setAsteroidShape(const AsteroidShape& shape);
     void setStarPosition(const EquatorialCoordinates& star);
     void setEpoch(const JulianDate& centralEpoch);

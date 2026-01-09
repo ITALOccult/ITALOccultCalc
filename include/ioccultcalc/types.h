@@ -106,6 +106,7 @@ struct JulianDate {
     static JulianDate fromMJD(double mjd) { return JulianDate(mjd + 2400000.5); }
 };
 
+
 } // namespace ioccultcalc
 
 #endif // IOCCULTCALC_TYPES_H

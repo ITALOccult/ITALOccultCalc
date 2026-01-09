@@ -71,7 +71,7 @@ int main() {
                   << (obsSet.arcLength / 365.25) << " anni\n";
         std::cout << "  Osservatori distinti: " << obsSet.numberOfObservatories << "\n\n";
         
-        // FASE 5: Converti EquinoctialElements → OrbitalElements
+        // FASE 5: Converti AstDynEquinoctialElements → OrbitalElements
         std::cout << "FASE 5: Conversione Elementi\n";
         std::cout << "----------------------------------------\n";
         OrbitalElements kepElements = elements.toKeplerian();

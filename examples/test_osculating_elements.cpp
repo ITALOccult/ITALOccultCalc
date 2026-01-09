@@ -47,7 +47,7 @@ int main() {
         OrbitPropagator prop(opts);
         
         // Converti Keplerian → Equinoctial per usare elementsToState
-        EquinoctialElements eq;
+        AstDynEquinoctialElements eq;
         eq.a = osculating.a;
         eq.h = osculating.e * sin(osculating.omega + osculating.Omega);
         eq.k = osculating.e * cos(osculating.omega + osculating.Omega);

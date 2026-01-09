@@ -13,6 +13,7 @@
  */
 
 #include "ioccultcalc/output_manager.h"
+#include "ioccultcalc/occultation_predictor.h"
 #include <iostream>
 
 using namespace ioccultcalc;

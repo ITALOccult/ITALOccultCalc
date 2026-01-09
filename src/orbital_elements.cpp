@@ -3,7 +3,7 @@
 
 namespace ioccultcalc {
 
-void EquinoctialElements::toKeplerian(double& ecc, double& inc, double& omega,
+void AstDynEquinoctialElements::toKeplerian(double& ecc, double& inc, double& omega,
                                      double& Omega, double& M) const {
     // Converti elementi equinoziali in Kepleriani
     
@@ -30,10 +30,10 @@ void EquinoctialElements::toKeplerian(double& ecc, double& inc, double& omega,
     while (M >= 2.0 * M_PI) M -= 2.0 * M_PI;
 }
 
-EquinoctialElements EquinoctialElements::fromKeplerian(double a, double ecc, double inc,
+AstDynEquinoctialElements AstDynEquinoctialElements::fromKeplerian(double a, double ecc, double inc,
                                                       double omega, double Omega, double M,
                                                       const JulianDate& epoch) {
-    EquinoctialElements elem;
+    AstDynEquinoctialElements elem;
     elem.a = a;
     elem.epoch = epoch;
     
@@ -54,7 +54,7 @@ EquinoctialElements EquinoctialElements::fromKeplerian(double a, double ecc, dou
 }
 
 // Nuovo metodo che ritorna OrbitalElements
-OrbitalElements EquinoctialElements::toKeplerian() const {
+OrbitalElements AstDynEquinoctialElements::toKeplerian() const {
     OrbitalElements orb;
     orb.a = a;
     orb.epoch = epoch;
@@ -71,8 +71,8 @@ OrbitalElements EquinoctialElements::toKeplerian() const {
     return orb;
 }
 
-EquinoctialElements EquinoctialElements::fromKeplerian(const OrbitalElements& orb) {
-    EquinoctialElements eq = fromKeplerian(orb.a, orb.e, orb.i, orb.omega, orb.Omega, orb.M, orb.epoch);
+AstDynEquinoctialElements AstDynEquinoctialElements::fromKeplerian(const OrbitalElements& orb) {
+    AstDynEquinoctialElements eq = fromKeplerian(orb.a, orb.e, orb.i, orb.omega, orb.Omega, orb.M, orb.epoch);
     eq.name = orb.name;
     eq.designation = orb.designation;
     eq.aliases = orb.aliases;
@@ -82,11 +82,11 @@ EquinoctialElements EquinoctialElements::fromKeplerian(const OrbitalElements& or
     return eq;
 }
 
-EquinoctialElements OrbitalElements::toEquinoctial() const {
-    return EquinoctialElements::fromKeplerian(*this);
+AstDynEquinoctialElements OrbitalElements::toEquinoctial() const {
+    return AstDynEquinoctialElements::fromKeplerian(*this);
 }
 
-OrbitalElements OrbitalElements::fromEquinoctial(const EquinoctialElements& eq) {
+OrbitalElements OrbitalElements::fromEquinoctial(const AstDynEquinoctialElements& eq) {
     return eq.toKeplerian();
 }
 

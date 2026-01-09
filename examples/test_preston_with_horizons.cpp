@@ -29,7 +29,7 @@ struct SearchResult {
 };
 
 SearchResult searchClosestApproach(
-    const EquinoctialElements& elements,
+    const AstDynEquinoctialElements& elements,
     double starRA, double starDec,
     const JulianDate& startDate,
     const JulianDate& endDate,
@@ -127,7 +127,7 @@ int main() {
         opts.stepSize = 0.1;
         
         OrbitPropagator propagator(opts);
-        EquinoctialElements elements = propagator.stateToElements(state);
+        AstDynEquinoctialElements elements = propagator.stateToElements(state);
         elements.designation = "(704) Interamnia";
         
         std::cout << "  ✓ Elementi calcolati:\n";

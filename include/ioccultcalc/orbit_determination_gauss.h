@@ -36,7 +36,7 @@ namespace ioccultcalc {
  */
 struct GaussOrbitResult {
     bool success;
-    EquinoctialElements elements;
+    AstDynEquinoctialElements elements;
     
     // Statistiche fit
     double rmsResidual;         // arcsec
@@ -118,7 +118,7 @@ public:
     bool gaussMethod(const AstrometricObservation& obs1,
                     const AstrometricObservation& obs2,
                     const AstrometricObservation& obs3,
-                    EquinoctialElements& elements);
+                    AstDynEquinoctialElements& elements);
     
     /**
      * @brief Differential correction con modello completo
@@ -131,7 +131,7 @@ public:
      * @param threshold Soglia convergenza (arcsec)
      * @return Elementi migliorati e statistiche
      */
-    GaussOrbitResult differentialCorrection(const EquinoctialElements& initialElements,
+    GaussOrbitResult differentialCorrection(const AstDynEquinoctialElements& initialElements,
                                            const ObservationSet& observations,
                                            int maxIterations,
                                            double threshold);
@@ -176,7 +176,7 @@ private:
     
     bool vectorsToElements(const Vector3D& r, const Vector3D& v,
                           const JulianDate& epoch,
-                          EquinoctialElements& elements);
+                          AstDynEquinoctialElements& elements);
 };
 
 } // namespace ioccultcalc

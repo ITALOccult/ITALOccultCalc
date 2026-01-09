@@ -34,13 +34,14 @@ enum class OutputFormat {
     XML_OCCULT4,    ///< XML compatibile Occult4 (.xml)
     JSON,           ///< JSON strutturato (.json)
     IOTA_CARD,      ///< Scheda grafica IOTA (.jpg)
-    ASTNUM_LIST     ///< Lista numeri asteroidi con occultazioni (.txt)
+    ASTNUM_LIST,    ///< Lista numeri asteroidi con occultazioni (.txt)
+    A4_VERTICAL_CARD ///< Scheda verticale A4 grande (.pdf)
 };
 
 /**
  * @brief Struttura dati occultazione per output
  */
-struct OccultationEvent {
+struct OutputEvent {
     // Identificazione
     int asteroid_number;
     std::string asteroid_name;
@@ -182,7 +183,7 @@ public:
      * @param output_file File di output (override opzioni)
      * @return true se successo
      */
-    bool writeEvent(const OccultationEvent& event, 
+    bool writeEvent(const OutputEvent& event, 
                    const std::string& output_file = "");
     
     /**
@@ -191,7 +192,7 @@ public:
      * @param output_file File di output (override opzioni)
      * @return true se successo
      */
-    bool writeEvents(const std::vector<OccultationEvent>& events,
+    bool writeEvents(const std::vector<OutputEvent>& events,
                     const std::string& output_file = "");
     
     /**
@@ -200,38 +201,57 @@ public:
      * @param summary_file File riepilogo
      * @return true se successo
      */
-    bool writeSummary(const std::vector<OccultationEvent>& events,
+    bool writeSummary(const std::vector<OutputEvent>& events,
                      const std::string& summary_file);
+    
+    /**
+     * @brief Genera scheda A4 verticale (20/40/40)
+     * @param event Dati evento
+     * @param filename Nome file output (.pdf o .tex)
+     * @return true se successo
+     */
+    bool writeEventCardA4(const OutputEvent& event,
+                         const std::string& filename);
 
 private:
     OutputOptions options_;
     
     // Implementazioni formato-specifiche
-    bool writeTextFormat(const std::vector<OccultationEvent>& events,
+    bool writeTextFormat(const std::vector<OutputEvent>& events,
                         const std::string& filename);
     
-    bool writeLatexFormat(const std::vector<OccultationEvent>& events,
+    bool writeLatexFormat(const std::vector<OutputEvent>& events,
                          const std::string& filename);
     
     bool compilePDF(const std::string& tex_file);
     
-    bool writeXmlOccult4(const std::vector<OccultationEvent>& events,
+    bool writeXmlOccult4(const std::vector<OutputEvent>& events,
                         const std::string& filename);
     
-    bool writeJsonFormat(const std::vector<OccultationEvent>& events,
+    bool writeJsonFormat(const std::vector<OutputEvent>& events,
                         const std::string& filename);
     
-    bool writeIotaCard(const OccultationEvent& event,
+    bool writeIotaCard(const OutputEvent& event,
                       const std::string& filename);
-    
-    bool writeAstNumList(const std::vector<OccultationEvent>& events,
+               /**
+     * @brief Genera una lista di asteroidi con eventi in formato testo
+     */
+    bool writeAstNumList(const std::vector<OutputEvent>& events,
                         const std::string& filename);
-    
+                         
+    /**
+     * @brief Genera l'immagine della mappa dell'occultazione (Ground Map)
+     * Usa IOC_Earth se disponibile.
+     */
+    std::string generateGroundMapImage(const OutputEvent& event, 
+                                     int width, int height, 
+                                     const std::string& output_path);
+
     // Utility rendering
-    std::string generateAsciiMap(const OccultationEvent& event,
+    std::string generateAsciiMap(const OutputEvent& event,
                                 int width, int height);
     
-    std::string generateTikzMap(const OccultationEvent& event);
+    std::string generateTikzMap(const OutputEvent& event);
     
     std::string formatDateTime(double jd);
     std::string formatCoordinate(double coord, bool is_latitude);

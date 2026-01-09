@@ -38,10 +38,10 @@ struct OrbitalState {
     OrbitalState();
     
     // Converte da elementi orbitali
-    static OrbitalState fromElements(const EquinoctialElements& elements);
+    static OrbitalState fromElements(const AstDynEquinoctialElements& elements);
     
     // Converte a elementi orbitali
-    EquinoctialElements toElements() const;
+    AstDynEquinoctialElements toElements() const;
     
     // Energia orbitale
     double energy() const;

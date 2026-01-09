@@ -55,7 +55,7 @@
 using namespace ioccultcalc;
 
 // Enumerazioni per opzioni
-enum class OutputFormat {
+enum class ToolOutputFormat {
     IOTA,
     PRESTON,
     XML,
@@ -73,7 +73,7 @@ enum class CalculationMethod {
 struct Options {
     int asteroidNumber = 0;
     std::string dateStr;
-    OutputFormat format = OutputFormat::IOTA;
+    ToolOutputFormat format = ToolOutputFormat::IOTA;
     CalculationMethod method = CalculationMethod::STANDARD;
     std::string outputFile;
     bool allFormats = false;
@@ -147,14 +147,14 @@ bool parseOptions(int argc, char* argv[], Options& opts) {
         }
         else if (arg == "--all-formats") {
             opts.allFormats = true;
-            opts.format = OutputFormat::ALL;
+            opts.format = ToolOutputFormat::ALL;
         }
         else if (arg.find("--format=") == 0) {
             std::string format = arg.substr(9);
-            if (format == "iota") opts.format = OutputFormat::IOTA;
-            else if (format == "preston") opts.format = OutputFormat::PRESTON;
-            else if (format == "xml") opts.format = OutputFormat::XML;
-            else if (format == "json") opts.format = OutputFormat::JSON;
+            if (format == "iota") opts.format = ToolOutputFormat::IOTA;
+            else if (format == "preston") opts.format = ToolOutputFormat::PRESTON;
+            else if (format == "xml") opts.format = ToolOutputFormat::XML;
+            else if (format == "json") opts.format = ToolOutputFormat::JSON;
             else {
                 std::cerr << "Errore: Formato non riconosciuto: " << format << "\n";
                 return false;
@@ -441,7 +441,7 @@ int main(int argc, char* argv[]) {
             std::cout << "   Tentativo: epoch/numbered/" << dirNum << "/" << opts.asteroidNumber << ".eq0\n";
         }
         
-        EquinoctialElements elements;
+        AstDynEquinoctialElements elements;
         try {
             elements = astdys.getElements(std::to_string(opts.asteroidNumber));
             if (opts.verbose) {
@@ -699,16 +699,16 @@ int main(int argc, char* argv[]) {
             }
             
             switch (opts.format) {
-                case OutputFormat::IOTA:
+                case ToolOutputFormat::IOTA:
                     generateIOTAFormat(event, *out);
                     break;
-                case OutputFormat::PRESTON:
+                case ToolOutputFormat::PRESTON:
                     generatePrestonFormat(event, *out);
                     break;
-                case OutputFormat::XML:
+                case ToolOutputFormat::XML:
                     generateXMLFormat(event, *out);
                     break;
-                case OutputFormat::JSON:
+                case ToolOutputFormat::JSON:
                     generateJSONFormat(event, *out);
                     break;
                 default:

@@ -93,24 +93,24 @@ void AstDysClient::setTimeout(int seconds) {
 AstDySElements AstDysClient::downloadElements(int asteroid_number) {
     AstDysClient client;
     std::string designation = std::to_string(asteroid_number);
-    EquinoctialElements eq = client.getElements(designation);
+    AstDynEquinoctialElements eq = client.getElements(designation);
     
-    // Converti EquinoctialElements -> AstDySElements
+    // Converti AstDynEquinoctialElements -> AstDySElements
     // return AstDynPropagationHelper::convertFromEquinoctial(eq);
     throw std::runtime_error("AstDyn helper not available");
 }
 
 AstDySElements AstDysClient::downloadElements(const std::string& designation) {
     AstDysClient client;
-    EquinoctialElements eq = client.getElements(designation);
+    AstDynEquinoctialElements eq = client.getElements(designation);
     
-    // Converti EquinoctialElements -> AstDySElements
+    // Converti AstDynEquinoctialElements -> AstDySElements
     // return AstDynPropagationHelper::convertFromEquinoctial(eq);
     throw std::runtime_error("AstDyn helper not available");
 }
 */
 
-EquinoctialElements AstDysClient::getElements(const std::string& designation) {
+AstDynEquinoctialElements AstDysClient::getElements(const std::string& designation) {
     // Costruisci URL per scaricare file .eq
     // Struttura: https://newton.spacedys.com/~astdys2/epoch/numbered/<num/1000>/<num>.eq0
     // Esempio: 433 -> epoch/numbered/0/433.eq0
@@ -135,10 +135,10 @@ EquinoctialElements AstDysClient::getElements(const std::string& designation) {
     return parseEquinoctialFile(content, designation);
 }
 
-std::vector<EquinoctialElements> AstDysClient::getElementsBatch(
+std::vector<AstDynEquinoctialElements> AstDysClient::getElementsBatch(
     const std::vector<std::string>& designations) {
     
-    std::vector<EquinoctialElements> results;
+    std::vector<AstDynEquinoctialElements> results;
     results.reserve(designations.size());
     
     for (const auto& desig : designations) {
@@ -174,9 +174,9 @@ std::vector<std::string> AstDysClient::searchByName(const std::string& name) {
     return results;
 }
 
-EquinoctialElements AstDysClient::parseEquinoctialFile(const std::string& content,
+AstDynEquinoctialElements AstDysClient::parseEquinoctialFile(const std::string& content,
                                                        const std::string& designation) {
-    EquinoctialElements elem;
+    AstDynEquinoctialElements elem;
     elem.designation = designation;
     
     // Parsing del formato .eq di AstDyS
@@ -218,7 +218,7 @@ EquinoctialElements AstDysClient::parseEquinoctialFile(const std::string& conten
         //   - a: semiasse maggiore in AU (nessuna conversione)
         //   - h, k, p, q: elementi equinoziali adimensionali (nessuna conversione)
         //   - lambda: longitudine media in GRADI nel file AstDyS
-        //             ma EquinoctialElements.lambda deve essere in RADIANTI
+        //             ma AstDynEquinoctialElements.lambda deve essere in RADIANTI
         //   CONVERSIONE: lambda_rad = lambda_deg * (π / 180.0)
         if (line.find("EQU") == 0) {
             std::istringstream iss_line(line.substr(3)); // Salta "EQU"

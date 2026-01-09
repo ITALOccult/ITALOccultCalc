@@ -88,9 +88,27 @@ void TimeUtils::jdToCalendar(const JulianDate& jd, int& year, int& month, int& d
     // Calcola ore, minuti, secondi dalla frazione
     double dayFraction = F * 24.0;
     hour = static_cast<int>(dayFraction);
-    dayFraction = (dayFraction - hour) * 60.0;
-    minute = static_cast<int>(dayFraction);
-    second = (dayFraction - minute) * 60.0;
+    
+    double minuteFraction = (dayFraction - hour) * 60.0;
+    minute = static_cast<int>(minuteFraction);
+    
+    second = (minuteFraction - minute) * 60.0;
+    
+    // Gestione overflow secondi (es. 59.999 -> 60)
+    if (second >= 59.99) {
+        second = 0;
+        minute++;
+        if (minute >= 60) {
+            minute = 0;
+            hour++;
+            if (hour >= 24) {
+                hour = 0;
+                day++;
+                // Nota: Assumiamo che non ci sia overflow oltre il giorno per brevi periodi 
+                // o che sia gestito dalla chiamata successiva se necessario.
+            }
+        }
+    }
 }
 
 JulianDate TimeUtils::now() {
@@ -131,6 +149,21 @@ double TimeUtils::lst(const JulianDate& jd, double longitude) {
     if (lstRad < 0) lstRad += 2.0 * M_PI;
     
     return lstRad;
+}
+
+double TimeUtils::getObliquity(const JulianDate& jd) {
+    // Obliquità dell'eclittica (Laskar 1986)
+    // Formula per la media obliquità, valida per +/- 10.000 anni
+    // T = secoli giuliani (TDB) da J2000.0
+    double T = (jd.jd - 2451545.0) / 36525.0;
+    
+    // Coefficienti in arcosecondi
+    double eps_arcsec = 84381.448 
+                      - 46.8150 * T 
+                      - 0.00059 * T * T 
+                      + 0.001813 * T * T * T;
+    
+    return (eps_arcsec / 3600.0) * DEG_TO_RAD;
 }
 
 // ============================================================================
@@ -223,6 +256,12 @@ JulianDate TimeUtils::utcToTDB(const JulianDate& jd_utc) {
     // UTC → TT → TDB
     JulianDate jd_tt = utcToTT(jd_utc);
     return ttToTDB(jd_tt);
+}
+
+std::string TimeUtils::mjdToUtcString(double mjd) {
+    JulianDate jd;
+    jd.jd = mjd + 2400000.5;
+    return jdToISO(jd);
 }
 
 } // namespace ioccultcalc

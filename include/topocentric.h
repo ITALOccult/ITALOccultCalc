@@ -182,6 +182,21 @@ public:
     Vector3D calculateTopocentricCorrection(const ObserverLocation& observer,
                                            double jd_tt,
                                            const std::string& celestial_frame = "ECLIPJ2000") const;
+
+    /**
+     * @brief Interseca una linea con l'elissoide WGS84
+     * @param origin Origine della linea (es. posizione asteroide) in metri (ITRF)
+     * @param direction Direzione della linea (vettore unitario, ITRF)
+     * @return Punto di intersezione in metri (ITRF), o Vector3D(0,0,0) se nessuna intersezione
+     */
+    Vector3D intersectWithWGS84(const Vector3D& origin, const Vector3D& direction) const;
+
+    /**
+     * @brief Converte coordinate cartesiane ITRF in geodetiche (Lon, Lat, Alt)
+     * @param itrf_pos Posizione in metri
+     * @return ObserverLocation con longitude_deg, latitude_deg, elevation_m
+     */
+    ObserverLocation getGeodeticPosition(const Vector3D& itrf_pos) const;
     
     /**
      * @brief Calculate parallax correction

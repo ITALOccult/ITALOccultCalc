@@ -115,7 +115,7 @@ Vector3D GaussOrbitDeterminer::computeSunPosition(const JulianDate& jd) {
 bool GaussOrbitDeterminer::gaussMethod(const AstrometricObservation& obs1,
                                       const AstrometricObservation& obs2,
                                       const AstrometricObservation& obs3,
-                                      EquinoctialElements& elements) {
+                                      AstDynEquinoctialElements& elements) {
     
     // Posizioni Terra alle 3 epoche
     Vector3D R1 = computeEarthPosition(obs1.epoch);
@@ -238,7 +238,7 @@ bool GaussOrbitDeterminer::gaussMethod(const AstrometricObservation& obs1,
 
 bool GaussOrbitDeterminer::vectorsToElements(const Vector3D& r, const Vector3D& v,
                                             const JulianDate& epoch,
-                                            EquinoctialElements& elements) {
+                                            AstDynEquinoctialElements& elements) {
     double r_mag = r.magnitude();
     double v_mag = v.magnitude();
     
@@ -304,7 +304,7 @@ bool GaussOrbitDeterminer::vectorsToElements(const Vector3D& r, const Vector3D& 
     while (M >= 2.0 * M_PI) M -= 2.0 * M_PI;
     
     // Converti in elementi equinoziali
-    elements = EquinoctialElements::fromKeplerian(a, e, i, omega, Omega, M, epoch);
+    elements = AstDynEquinoctialElements::fromKeplerian(a, e, i, omega, Omega, M, epoch);
     
     return true;
 }
@@ -339,7 +339,7 @@ GaussOrbitResult GaussOrbitDeterminer::determineOrbit(const ObservationSet& obse
     
     // 2. Metodo di Gauss per orbita preliminare
     std::cout << "→ Applicazione metodo di Gauss...\n";
-    EquinoctialElements prelimElements;
+    AstDynEquinoctialElements prelimElements;
     if (!gaussMethod(observations.observations[idx1],
                     observations.observations[idx2],
                     observations.observations[idx3],
@@ -392,7 +392,7 @@ bool GaussOrbitDeterminer::validateOrbit(GaussOrbitResult& result) {
 }
 
 GaussOrbitResult GaussOrbitDeterminer::differentialCorrection(
-    const EquinoctialElements& initialElements,
+    const AstDynEquinoctialElements& initialElements,
     const ObservationSet& observations,
     int maxIterations,
     double threshold) {

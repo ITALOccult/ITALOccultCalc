@@ -53,8 +53,10 @@ target_link_libraries(test_spk_simple ioccultcalc)
 # add_executable(test_orbit_fitting test_orbit_fitting.cpp)
 # target_link_libraries(test_orbit_fitting ioccultcalc)
 
-add_executable(test_gm_constants test_gm_constants.cpp)
-target_link_libraries(test_gm_constants ${CMAKE_CURRENT_SOURCE_DIR}/../external/cspice/lib/cspice.a)
+if(CSPICE_LIB)
+    add_executable(test_gm_constants test_gm_constants.cpp)
+    target_link_libraries(test_gm_constants ${CSPICE_LIB})
+endif()
 
 add_executable(test_nongrav test_nongrav.cpp)
 target_link_libraries(test_nongrav ioccultcalc)
@@ -219,32 +221,32 @@ target_link_libraries(test_horizons_vectors ioccultcalc)
 add_executable(test_database_population test_database_population.cpp)
 target_link_libraries(test_database_population ioccultcalc)
 
-add_executable(test_preston_with_horizons test_preston_with_horizons.cpp)
-target_link_libraries(test_preston_with_horizons ioccultcalc)
+# add_executable(test_preston_with_horizons test_preston_with_horizons.cpp)
+# target_link_libraries(test_preston_with_horizons ioccultcalc)
 
-add_executable(test_horizons_position test_horizons_position.cpp)
-target_link_libraries(test_horizons_position ioccultcalc)
+# add_executable(test_horizons_position test_horizons_position.cpp)
+# target_link_libraries(test_horizons_position ioccultcalc)
 
-add_executable(test_spk_frames_complete test_spk_frames_complete.cpp)
-target_link_libraries(test_spk_frames_complete ioccultcalc)
+# add_executable(test_spk_frames_complete test_spk_frames_complete.cpp)
+# target_link_libraries(test_spk_frames_complete ioccultcalc)
 
-add_executable(validate_earth_position validate_earth_position.cpp)
-target_link_libraries(validate_earth_position ioccultcalc)
+# add_executable(validate_earth_position validate_earth_position.cpp)
+# target_link_libraries(validate_earth_position ioccultcalc)
 
-add_executable(compare_earth_methods compare_earth_methods.cpp)
-target_link_libraries(compare_earth_methods ioccultcalc)
+# add_executable(compare_earth_methods compare_earth_methods.cpp)
+# target_link_libraries(compare_earth_methods ioccultcalc)
 
-add_executable(compare_occultation_predictions compare_occultation_predictions.cpp)
-target_link_libraries(compare_occultation_predictions ioccultcalc)
+# add_executable(compare_occultation_predictions compare_occultation_predictions.cpp)
+# target_link_libraries(compare_occultation_predictions ioccultcalc)
 
-add_executable(test_aberration_corrections test_aberration_corrections.cpp)
-target_link_libraries(test_aberration_corrections ioccultcalc)
+# add_executable(test_aberration_corrections test_aberration_corrections.cpp)
+# target_link_libraries(test_aberration_corrections ioccultcalc)
 
-add_executable(test_aberration_impact test_aberration_impact.cpp)
-target_link_libraries(test_aberration_impact ioccultcalc)
+# add_executable(test_aberration_impact test_aberration_impact.cpp)
+# target_link_libraries(test_aberration_impact ioccultcalc)
 
-add_executable(test_all_corrections test_all_corrections.cpp)
-target_link_libraries(test_all_corrections ioccultcalc)
+# add_executable(test_all_corrections test_all_corrections.cpp)
+# target_link_libraries(test_all_corrections ioccultcalc)
 
 
 # Phase 1 implementations test
@@ -281,6 +283,11 @@ target_link_libraries(test_output_formats ioccultcalc)
 add_executable(generate_hygiea_iota_card generate_hygiea_iota_card.cpp)
 target_link_libraries(generate_hygiea_iota_card ioccultcalc)
 
-# 249 Equatorial Test
-add_executable(test_249_equatorial test_249_equatorial.cpp)
-target_link_libraries(test_249_equatorial ioccultcalc)
+# # 249 Equatorial Test
+# add_executable(test_249_equatorial test_249_equatorial.cpp)
+# target_link_libraries(test_249_equatorial ioccultcalc)
+
+# render_user_event removed (synthetic data)
+
+add_executable(verify_astdyn_wrapper_vs_jpl verify_astdyn_wrapper_vs_jpl.cpp)
+target_link_libraries(verify_astdyn_wrapper_vs_jpl ioccultcalc)

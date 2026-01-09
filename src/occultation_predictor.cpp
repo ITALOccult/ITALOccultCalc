@@ -2,40 +2,50 @@
 #include "ioccultcalc/astdys_client.h"
 #include "ioccultcalc/coordinates.h"
 #include "ioccultcalc/time_utils.h"
+#include "ioccultcalc/orbit_propagator.h"
+#include "ioccultcalc/force_model.h"
+#include "topocentric.h"
 #include <cmath>
 #include <algorithm>
 #include <stdexcept>
+#include <iostream>
 
 namespace ioccultcalc {
 
 class OccultationPredictor::Impl {
 public:
-    EquinoctialElements asteroid;
-    Ephemeris ephemeris;
+    std::shared_ptr<ISPReader> reader;
+    AstDynEquinoctialElements asteroid;
+    OrbitPropagator propagator;
     GaiaClient gaiaClient;
     AstDysClient astdysClient;
     
     double asteroidDiameter;    // km
-    double orbitalUncertainty;  // km (1-sigma)
     
-    Impl() : asteroidDiameter(0), orbitalUncertainty(100.0) {}
+    explicit Impl(std::shared_ptr<ISPReader> r) : reader(r), asteroidDiameter(0) {
+        PropagatorOptions opts;
+        opts.integrator = IntegratorType::RA15;
+        opts.usePlanetaryPerturbations = true;
+        opts.useRelativisticCorrections = true;
+        opts.tolerance = 1e-12;
+        propagator = OrbitPropagator(opts);
+    }
 };
 
-OccultationPredictor::OccultationPredictor() : pImpl(new Impl()) {}
+OccultationPredictor::OccultationPredictor(std::shared_ptr<ISPReader> reader) 
+    : pImpl(new Impl(reader)) {}
 
 OccultationPredictor::~OccultationPredictor() = default;
 
-void OccultationPredictor::setAsteroid(const EquinoctialElements& elements) {
+void OccultationPredictor::setAsteroid(const AstDynEquinoctialElements& elements) {
     pImpl->asteroid = elements;
-    pImpl->ephemeris.setElements(elements);
-    
     if (elements.diameter > 0) {
         pImpl->asteroidDiameter = elements.diameter;
     }
 }
 
 void OccultationPredictor::loadAsteroidFromAstDyS(const std::string& designation) {
-    EquinoctialElements elem = pImpl->astdysClient.getElements(designation);
+    AstDynEquinoctialElements elem = pImpl->astdysClient.getElements(designation);
     setAsteroid(elem);
 }
 
@@ -43,8 +53,79 @@ void OccultationPredictor::setAsteroidDiameter(double diameter) {
     pImpl->asteroidDiameter = diameter;
 }
 
-void OccultationPredictor::setOrbitalUncertainty(double sigmaKm) {
-    pImpl->orbitalUncertainty = sigmaKm;
+// Algoritmo: PrepareStarForDate (PM + Stellar Parallax)
+Vector3D OccultationPredictor::prepareStarForDate(const GaiaStar& star, const JulianDate& jd, const Vector3D& earthHelioPos) {
+    double ra = star.pos.ra;
+    double dec = star.pos.dec;
+    
+    // 1. Moto Proprio (Gaia J2016.0 -> Date)
+    double dt_years = (jd.jd - 2457388.5) / 365.25; // Gaia Epoch J2016.0
+    
+    // pmra in Gaia include gia' cos(dec)
+    ra += (star.pmra / 1000.0) * (M_PI / (180.0 * 3600.0)) * dt_years / std::cos(dec);
+    dec += (star.pmdec / 1000.0) * (M_PI / (180.0 * 3600.0)) * dt_years;
+    
+    // 2. Vettore Unitario (ICRF)
+    Vector3D v_star(std::cos(ra) * std::cos(dec), std::sin(ra) * std::cos(dec), std::sin(dec));
+    
+    // 3. Parallasse Stellare
+    if (star.parallax > 0) {
+        double d_star = 1.0 / std::sin((star.parallax / 1000.0) * (M_PI / (180.0 * 3600.0)));
+        Vector3D starPos = v_star * d_star;
+        Vector3D starApparent = starPos - earthHelioPos;
+        return starApparent.normalize();
+    }
+    
+    return v_star;
+}
+
+// Algoritmo: Precision Search Loop (RA15 + Light-Time)
+JulianDate OccultationPredictor::findPrecisionCA(const GaiaStar& star, const JulianDate& startJD, const JulianDate& endJD) {
+    auto calcSeparation = [&](const JulianDate& jd) -> double {
+        // Posizione Terra
+        Vector3D earthPos = Ephemeris::getEarthPosition(jd);
+        
+        // Stella alla data con parallasse
+        Vector3D v_star = prepareStarForDate(star, jd, earthPos);
+        
+        // Asteroide con Light-Time Correction (3 step)
+        double lightTime = 0;
+        Vector3D asteroidPosEmit;
+        for(int i=0; i<3; i++) {
+            OrbitState state = pImpl->propagator.propagate(pImpl->asteroid, JulianDate(jd.jd - lightTime));
+            asteroidPosEmit = state.position;
+            double dist = (asteroidPosEmit - earthPos).magnitude();
+            lightTime = dist / 173.1446; // c in AU/day
+        }
+        
+        Vector3D v_asteroid = (asteroidPosEmit - earthPos).normalize();
+        return std::acos(std::clamp(v_asteroid.dot(v_star), -1.0, 1.0));
+    };
+
+    // Golden Section Search
+    const double phi = (1.0 + std::sqrt(5.0)) / 2.0;
+    const double resphi = 2.0 - phi;
+    double a = startJD.jd;
+    double b = endJD.jd;
+    double tol = 1.0 / 86400.0 / 100.0; // 0.01 secondi
+    
+    double x1 = a + resphi * (b - a);
+    double x2 = b - resphi * (b - a);
+    double f1 = calcSeparation(JulianDate(x1));
+    double f2 = calcSeparation(JulianDate(x2));
+    
+    while (std::abs(b - a) > tol) {
+        if (f1 < f2) {
+            b = x2; x2 = x1; f2 = f1;
+            x1 = a + resphi * (b - a);
+            f1 = calcSeparation(JulianDate(x1));
+        } else {
+            a = x1; x1 = x2; f1 = f2;
+            x2 = b - resphi * (b - a);
+            f2 = calcSeparation(JulianDate(x2));
+        }
+    }
+    return JulianDate((a + b) / 2.0);
 }
 
 std::vector<OccultationEvent> OccultationPredictor::findOccultations(
@@ -55,306 +136,225 @@ std::vector<OccultationEvent> OccultationPredictor::findOccultations(
     double minProbability) {
     
     std::vector<OccultationEvent> events;
-    
-    // Step temporale per la ricerca (1 giorno)
     double stepDays = 1.0;
     
-    // Calcola effemeridi per l'intervallo
-    auto ephemerides = pImpl->ephemeris.computeRange(startJD, endJD, stepDays);
+    Ephemeris ephEngine(pImpl->reader);
+    ephEngine.setElements(pImpl->asteroid.toEquinoctial());
     
-    // Per ogni epoca, cerca stelle vicine
-    for (const auto& eph : ephemerides) {
-        // Converti posizione in gradi
-        double raDeg = eph.geocentricPos.ra * RAD_TO_DEG;
-        double decDeg = eph.geocentricPos.dec * RAD_TO_DEG;
+    for (double jd = startJD.jd; jd <= endJD.jd; jd += stepDays) {
+        EphemerisData eph = ephEngine.compute(JulianDate(jd));
         
-        // Query stelle nella regione
-        auto stars = pImpl->gaiaClient.queryCone(raDeg, decDeg, searchRadius, maxMagnitude);
+        auto stars = pImpl->gaiaClient.queryCone(eph.geocentricPos.ra * RAD_TO_DEG, 
+                                               eph.geocentricPos.dec * RAD_TO_DEG, 
+                                               searchRadius, maxMagnitude);
         
-        // Per ogni stella, verifica se c'è un'occultazione
         for (const auto& star : stars) {
-            // Propaga stella all'epoca
-            auto starPos = star.propagateToEpoch(eph.jd);
+            // Verifica preliminare (veloce)
+            Vector3D earthPos = Ephemeris::getEarthPosition(JulianDate(jd));
+            Vector3D v_star = prepareStarForDate(star, JulianDate(jd), earthPos);
             
-            // Calcola separazione angolare
-            double separation = Coordinates::angularSeparation(eph.geocentricPos, starPos);
-            double separationArcsec = separation * RAD_TO_DEG * 3600.0;
+            OrbitState astState = pImpl->propagator.propagate(pImpl->asteroid, JulianDate(jd));
+            Vector3D v_ast = (astState.position - earthPos).normalize();
             
-            // Stima dimensione angolare dell'asteroide
-            double asteroidAngularSize = 0;
-            if (pImpl->asteroidDiameter > 0 && eph.distance > 0) {
-                // Dimensione angolare in arcsec
-                asteroidAngularSize = (pImpl->asteroidDiameter / (eph.distance * AU)) * RAD_TO_DEG * 3600.0;
-            }
+            double sep = std::acos(std::clamp(v_ast.dot(v_star), -1.0, 1.0));
             
-            // Controllo preliminare: stella deve essere vicina
-            double threshold = asteroidAngularSize + 3.0 * pImpl->orbitalUncertainty / (eph.distance * AU) * RAD_TO_DEG * 3600.0;
-            if (threshold == 0) threshold = 10.0; // Default 10 arcsec
-            
-            if (separationArcsec < threshold) {
-                // Trova momento di closest approach
-                JulianDate caTime = findClosestApproach(star, 
-                    JulianDate(eph.jd.jd - 0.5), 
-                    JulianDate(eph.jd.jd + 0.5));
-                
-                // Predici occultazione dettagliata
-                OccultationEvent event = predictOccultation(star, caTime);
-                
-                if (event.probability >= minProbability) {
-                    events.push_back(event);
-                }
+            if (sep * RAD_TO_DEG < searchRadius) {
+                // Raffinamento precisione
+                JulianDate caTime = findPrecisionCA(star, JulianDate(jd - 0.5), JulianDate(jd + 0.5));
+                events.push_back(predictOccultation(star, caTime));
             }
         }
     }
     
-    // Ordina per tempo
-    std::sort(events.begin(), events.end(),
-             [](const OccultationEvent& a, const OccultationEvent& b) {
-                 return a.timeCA.jd < b.timeCA.jd;
-             });
+    std::sort(events.begin(), events.end(), [](const OccultationEvent& a, const OccultationEvent& b) {
+        return a.timeCA.jd < b.timeCA.jd;
+    });
     
     return events;
 }
 
-OccultationEvent OccultationPredictor::predictOccultation(
-    const GaiaStar& star,
-    const JulianDate& approximateTime) {
-    
+OccultationEvent OccultationPredictor::predictOccultation(const GaiaStar& star, const JulianDate& approximateTime) {
     OccultationEvent event;
     event.asteroid = pImpl->asteroid;
     event.star = star;
     
-    // Trova closest approach preciso
-    event.timeCA = findClosestApproach(star,
-        JulianDate(approximateTime.jd - 0.1),
-        JulianDate(approximateTime.jd + 0.1));
+    // 1. Closest Approach preciso
+    event.timeCA = findPrecisionCA(star, JulianDate(approximateTime.jd - 0.01), JulianDate(approximateTime.jd + 0.01));
     
-    // Calcola effemeridi al momento CA
-    EphemerisData ephCA = pImpl->ephemeris.compute(event.timeCA);
+    // 2. Geometria finale
+    Vector3D earthPos = Ephemeris::getEarthPosition(event.timeCA);
+    Vector3D v_star = prepareStarForDate(star, event.timeCA, earthPos);
     
-    // Propaga posizione stella
-    auto starPosCA = star.propagateToEpoch(event.timeCA);
-    
-    // Calcola geometria
-    double separation, posAngle;
-    calculateGeometry(ephCA, star, event.timeCA, separation, posAngle);
-    
-    event.closeApproachDistance = separation * RAD_TO_DEG * 3600.0; // arcsec
-    event.positionAngle = posAngle * RAD_TO_DEG;
-    
-    // Dimensione angolare asteroide
-    double asteroidAngularSize = 0;
-    if (pImpl->asteroidDiameter > 0) {
-        asteroidAngularSize = (pImpl->asteroidDiameter / (ephCA.distance * AU)) * RAD_TO_DEG * 3600.0;
+    double lightTime = 0;
+    Vector3D asteroidPosEmit, asteroidVel;
+    for(int i=0; i<3; i++) {
+        OrbitState state = pImpl->propagator.propagate(pImpl->asteroid, JulianDate(event.timeCA.jd - lightTime));
+        asteroidPosEmit = state.position;
+        asteroidVel = state.velocity;
+        double dist = (asteroidPosEmit - earthPos).magnitude();
+        lightTime = dist / 173.1446;
     }
     
-    // Calcola probabilità
-    double uncertaintyArcsec = (pImpl->orbitalUncertainty / (ephCA.distance * AU)) * RAD_TO_DEG * 3600.0;
-    event.probability = calculateProbability(event.closeApproachDistance, 
-                                            asteroidAngularSize,
-                                            uncertaintyArcsec);
+    Vector3D rho_vec = asteroidPosEmit - earthPos;
+    double rho = rho_vec.magnitude();
+    Vector3D v_ast = rho_vec.normalize();
     
-    // Durata massima
-    if (pImpl->asteroidDiameter > 0) {
-        // Velocità relativa asteroide-stella in km/s
-        Vector3D relVel = ephCA.heliocentricVel - Ephemeris::getEarthVelocity(event.timeCA);
-        double relVelKmS = relVel.magnitude() * AU / 86400.0;
+    event.closeApproachDistance = std::acos(std::clamp(v_ast.dot(v_star), -1.0, 1.0)) * RAD_TO_DEG * 3600.0;
+    event.asteroidDistanceAu = rho;
+    
+    // 3. Magnitudine
+    double phase = std::acos(std::clamp(asteroidPosEmit.normalize().dot(v_ast * -1.0), -1.0, 1.0));
+    event.magnitudeDrop = Ephemeris::calculateMagnitudeHG(pImpl->asteroid.H, pImpl->asteroid.G, 
+                                                         asteroidPosEmit.magnitude(), rho, phase);
+
+    // Initialize Shadow Dimensions
+    event.pathWidth = pImpl->asteroidDiameter;
+    event.shadowPath = {}; // Will be populated if needed
+
+    // 4. Incertezza (se esiste matrice di covarianza)
+    if (pImpl->asteroid.hasCovariance) {
+        event.probability = calculateProbabilitySVD(event, pImpl->asteroid.covariance);
+        auto profile = predictEventUncertainty(event, pImpl->asteroid.covariance);
+        event.uncertaintyNorth = profile.pathUncertainty;
+        event.uncertaintySouth = profile.pathUncertainty;
         
-        event.maxDuration = pImpl->asteroidDiameter / relVelKmS;
+        // Popola shadow path con incertezza
+        event.shadowPath = generateShadowPath(event, pImpl->asteroid.covariance, 15.0); // 15 minuti window
+    } else {
+        event.probability = (event.closeApproachDistance < (pImpl->asteroidDiameter / (rho * AU)) * RAD_TO_DEG * 3600.0) ? 1.0 : 0.001;
+        // Senza covarianza, shadow path nominale (no incertezza)
+        // Ma generateShadowPath richiede covarianza... 
+        // Passiamo covarianza nulla
+        std::vector<std::vector<double>> zeroCov(6, std::vector<double>(6, 0.0));
+        event.shadowPath = generateShadowPath(event, zeroCov, 10.0);
     }
-    
-    // Calcola shadow path
-    event.shadowPath = calculateShadowPath(ephCA, star, event.timeCA, 120.0);
-    
-    // Incertezze (1-sigma)
-    event.uncertaintyNorth = pImpl->orbitalUncertainty;
-    event.uncertaintySouth = pImpl->orbitalUncertainty;
-    
-    // Genera ID evento
-    event.eventId = pImpl->asteroid.designation + "_" + star.sourceId + "_" +
-                   TimeUtils::jdToISO(event.timeCA);
     
     return event;
 }
 
-std::vector<ShadowPathPoint> OccultationPredictor::calculateShadowPath(
-    const EphemerisData& asteroidPos,
-    const GaiaStar& star,
-    const JulianDate& centralTime,
-    double timeSpanMinutes) {
+double OccultationPredictor::calculateProbabilitySVD(const OccultationEvent& event, const std::vector<std::vector<double>>& covariance) {
+    if (covariance.size() != 6 || covariance[0].size() != 6) return 0.001;
     
+    // Converti std::vector in Eigen::MatrixXd
+    Eigen::MatrixXd cov6x6(6, 6);
+    for (int r = 0; r < 6; r++) {
+        for (int c = 0; c < 6; c++) {
+            cov6x6(r, c) = covariance[r][c];
+        }
+    }
+    
+    // 1. Definiamo il sistema di riferimento del piano B (Fundamental Plane)
+    // k = direzione della stella (line-of-sight)
+    Vector3D earthPos = Ephemeris::getEarthPosition(event.timeCA);
+    Vector3D k = prepareStarForDate(event.star, event.timeCA, earthPos);
+    
+    // i, j definiscono il piano perpendicolare a k
+    Vector3D i_vec = Vector3D(-k.y, k.x, 0).normalize();
+    if (std::abs(k.z) > 0.99) i_vec = Vector3D(1, 0, 0); // Protezione polo
+    Vector3D j_vec = k.cross(i_vec).normalize();
+    
+    // 2. Proiezione dell'incertezza orbitale sul piano B
+    // Per ora utilizziamo un'approssimazione: l'incertezza in posizione (km)
+    // Assumiamo che la diagonale principale della covarianza contenga sigma^2 in km^2
+    double sigma_pos = std::sqrt(std::abs(cov6x6(0,0)) + std::abs(cov6x6(1,1)) + std::abs(cov6x6(2,2))) / std::sqrt(3.0);
+    
+    double dist_km = event.closeApproachDistance / (RAD_TO_DEG * 3600.0) * (event.asteroidDistanceAu * AU);
+    double r_ast = pImpl->asteroidDiameter / 2.0;
+    
+    // 3. Integrazione Gaussiana 2D (Semplificata: Circular Gaussian)
+    double prob = std::exp(- (dist_km * dist_km) / (2.0 * sigma_pos * sigma_pos)) * (r_ast / sigma_pos);
+    
+    return std::clamp(prob, 0.0, 1.0);
+}
+
+OccultationPredictor::UncertaintyProfile OccultationPredictor::predictEventUncertainty(const OccultationEvent& event, const std::vector<std::vector<double>>& covariance) {
+    UncertaintyProfile profile = { 0.0, 0.0 };
+    if (covariance.size() != 6) return profile;
+
+    // 1. Converti covarianza in Eigen
+    Eigen::MatrixXd cov6x6(6, 6);
+    for (int r = 0; r < 6; r++) for (int c = 0; c < 6; c++) cov6x6(r, c) = covariance[r][c];
+
+    // 2. Proietta sul piano fondamentale (B-Plane)
+    // k = direzione stella
+    Vector3D earthPos = Ephemeris::getEarthPosition(event.timeCA);
+    Vector3D k = prepareStarForDate(event.star, event.timeCA, earthPos);
+    Vector3D i_vec = Vector3D(-k.y, k.x, 0).normalize();
+    if (std::abs(k.z) > 0.99) i_vec = Vector3D(1, 0, 0);
+    Vector3D j_vec = k.cross(i_vec).normalize();
+
+    // Approssimazione Jacobiano: Proiezione 3D -> 2D (Piano fondamentale)
+    double sigma_x = std::sqrt(std::abs(cov6x6(0,0)));
+    double sigma_y = std::sqrt(std::abs(cov6x6(1,1)));
+    double sigma_z = std::sqrt(std::abs(cov6x6(2,2)));
+    
+    // Cross-track uncertainty (mas proiettata)
+    profile.pathUncertainty = (sigma_x + sigma_y + sigma_z) / 3.0; // km
+
+    // Along-track uncertainty (time)
+    Vector3D v_rel = (pImpl->propagator.propagate(pImpl->asteroid, event.timeCA).velocity - Ephemeris::getEarthVelocity(event.timeCA)) * (AU / 86400.0);
+    double v_mag = v_rel.magnitude();
+    if (v_mag > 0) {
+        profile.timeUncertainty = profile.pathUncertainty / v_mag;
+    }
+
+    return profile;
+}
+
+std::vector<ShadowPathPoint> OccultationPredictor::generateShadowPath(const OccultationEvent& event, const std::vector<std::vector<double>>& covariance, double windowMinutes) {
     std::vector<ShadowPathPoint> path;
+    const double stepSeconds = 5.0; // Risoluzione 5 secondi
+    double halfWindowDays = (windowMinutes / 60.0) / 24.0;
     
-    double halfSpan = timeSpanMinutes / 2.0 / 1440.0; // Converti in giorni
-    double stepMinutes = 1.0; // Step di 1 minuto
-    double stepDays = stepMinutes / 1440.0;
+    TopocentricConverter converter;
     
-    JulianDate startTime(centralTime.jd - halfSpan);
-    JulianDate endTime(centralTime.jd + halfSpan);
-    
-    for (double jd = startTime.jd; jd <= endTime.jd; jd += stepDays) {
-        JulianDate time(jd);
+    for (double t = event.timeCA.jd - halfWindowDays; t <= event.timeCA.jd + halfWindowDays; t += stepSeconds / 86400.0) {
+        JulianDate jd(t);
         
-        // Effemeridi asteroide
-        EphemerisData eph = pImpl->ephemeris.compute(time);
+        // A. Posizione asteroide (N-Body) e Terra
+        OrbitState astState = pImpl->propagator.propagate(pImpl->asteroid, jd);
+        Vector3D earthPos = Ephemeris::getEarthPosition(jd);
+        Vector3D astGeocPos = (astState.position - earthPos) * AU * 1000.0; // metri (AU defined in types.h)
         
-        // Posizione stella
-        auto starPos = star.propagateToEpoch(time);
+        // B. Asse d'ombra (Shadow Axis) in ICRF
+        Vector3D starDir = prepareStarForDate(event.star, jd, earthPos);
+        Vector3D shadowDir(starDir.x * -1.0, starDir.y * -1.0, starDir.z * -1.0);
         
-        // Vettore dalla Terra all'asteroide
-        Vector3D asteroidVec = Coordinates::equatorialToCartesian(eph.geocentricPos);
-        asteroidVec = asteroidVec * (eph.distance * AU); // Converti in km
+        // C. Rotazione in ITRF per intersezione con Terra
+        double rotation[3][3];
+        TopocentricConverter::rotationMatrixITRFtoCelestial(jd.jd, "ECLIPJ2000", rotation);
+        double invRot[3][3];
+        for(int i=0; i<3; i++) for(int j=0; j<3; j++) invRot[i][j] = rotation[j][i];
         
-        // Vettore dalla Terra alla stella (assumendo stella all'infinito)
-        Vector3D starDir = Coordinates::equatorialToCartesian(starPos);
-        starDir = starDir.normalize();
+        Vector3D astItrf = TopocentricConverter::applyRotation(invRot, astGeocPos);
+        Vector3D shadowItrf = TopocentricConverter::applyRotation(invRot, shadowDir);
         
-        // Piano fondamentale: perpendicolare alla linea di vista della stella
-        // Trova il punto sulla Terra dove l'ombra interseca
+        // D. Intersezione con WGS84
+        Vector3D hitItrf = converter.intersectWithWGS84(astItrf, shadowItrf);
         
-        // Risolvi per il punto sulla superficie terrestre
-        // La posizione del punto è dove la linea Terra-asteroide proiettata
-        // lungo la direzione della stella interseca la superficie terrestre
-        
-        // Approssimazione: assumiamo che l'ombra viaggi lungo starDir
-        // Punto ombra = posizione asteroide - t * starDir, dove t è tale che
-        // il punto risultante è sulla superficie terrestre
-        
-        // Semplificazione: proiettiamo il vettore asteroide sul piano geocentrico
-        double t = asteroidVec.dot(starDir);
-        Vector3D shadowVec = asteroidVec - starDir * t;
-        
-        // Normalizza alla superficie terrestre
-        double shadowDist = shadowVec.magnitude();
-        if (shadowDist > EARTH_RADIUS * 0.1) { // Solo se non troppo vicino al centro
-            Vector3D earthSurfacePoint = shadowVec.normalize() * EARTH_RADIUS;
+        if (hitItrf.magnitude() > 0) {
+            ObserverLocation loc = converter.getGeodeticPosition(hitItrf);
             
-            // Converti in coordinate geografiche
-            GeographicCoordinates geoCoord = Coordinates::ecefToGeographic(earthSurfacePoint);
+            ShadowPathPoint pt;
+            pt.time = jd;
+            pt.location.latitude = loc.latitude_deg;
+            pt.location.longitude = loc.longitude_deg;
             
-            ShadowPathPoint point;
-            point.time = time;
-            point.location = geoCoord;
+            // Incertezza (Cross-track) proiettata
+            auto profile = predictEventUncertainty(event, covariance);
+            pt.centerlineDistance = profile.pathUncertainty;
             
-            // Durata (già calcolata nell'evento)
-            if (pImpl->asteroidDiameter > 0) {
-                Vector3D relVel = eph.heliocentricVel - Ephemeris::getEarthVelocity(time);
-                double relVelKmS = relVel.magnitude() * AU / 86400.0;
-                point.duration = pImpl->asteroidDiameter / relVelKmS;
+            // Durata (2*R / v_rel)
+            Vector3D v_ast = astState.velocity * (AU / 86400.0);
+            double v_rel_mag = (v_ast - Ephemeris::getEarthVelocity(jd)*(AU/86400.0)).magnitude();
+            if (v_rel_mag > 0) {
+                pt.duration = pImpl->asteroidDiameter / v_rel_mag;
             }
             
-            // Distanza dalla centerline (sempre 0 per questa semplificazione)
-            point.centerlineDistance = 0;
-            
-            path.push_back(point);
+            path.push_back(pt);
         }
     }
-    
     return path;
-}
-
-JulianDate OccultationPredictor::findClosestApproach(const GaiaStar& star,
-                                                      const JulianDate& startJD,
-                                                      const JulianDate& endJD) {
-    // Ricerca binaria per trovare il momento di minima separazione
-    
-    auto calcSeparation = [&](const JulianDate& jd) -> double {
-        EphemerisData eph = pImpl->ephemeris.compute(jd);
-        auto starPos = star.propagateToEpoch(jd);
-        return Coordinates::angularSeparation(eph.geocentricPos, starPos);
-    };
-    
-    // Golden section search
-    const double phi = (1.0 + sqrt(5.0)) / 2.0;
-    const double resphi = 2.0 - phi;
-    
-    double a = startJD.jd;
-    double b = endJD.jd;
-    double tol = 1.0 / 86400.0; // 1 secondo
-    
-    double x1 = a + resphi * (b - a);
-    double x2 = b - resphi * (b - a);
-    double f1 = calcSeparation(JulianDate(x1));
-    double f2 = calcSeparation(JulianDate(x2));
-    
-    while (fabs(b - a) > tol) {
-        if (f1 < f2) {
-            b = x2;
-            x2 = x1;
-            f2 = f1;
-            x1 = a + resphi * (b - a);
-            f1 = calcSeparation(JulianDate(x1));
-        } else {
-            a = x1;
-            x1 = x2;
-            f1 = f2;
-            x2 = b - resphi * (b - a);
-            f2 = calcSeparation(JulianDate(x2));
-        }
-    }
-    
-    return JulianDate((a + b) / 2.0);
-}
-
-void OccultationPredictor::calculateGeometry(const EphemerisData& asteroidPos,
-                                             const GaiaStar& star,
-                                             const JulianDate& time,
-                                             double& separation,
-                                             double& posAngle) {
-    auto starPos = star.propagateToEpoch(time);
-    
-    separation = Coordinates::angularSeparation(asteroidPos.geocentricPos, starPos);
-    posAngle = Coordinates::positionAngle(asteroidPos.geocentricPos, starPos);
-}
-
-double OccultationPredictor::calculateProbability(double separationArcsec,
-                                                  double asteroidAngularSize,
-                                                  double uncertaintyArcsec) {
-    if (uncertaintyArcsec <= 0) {
-        // Senza incertezza, probabilità binaria
-        return (separationArcsec <= asteroidAngularSize / 2.0) ? 1.0 : 0.0;
-    }
-    
-    // Distribuzione gaussiana
-    // Probabilità che la vera posizione cada entro il raggio dell'asteroide
-    
-    double r_asteroid = asteroidAngularSize / 2.0;
-    double sigma = uncertaintyArcsec;
-    
-    // Approssimazione: probabilità che la separazione reale sia < r_asteroid
-    // Usando CDF della normale
-    
-    double z = (r_asteroid - separationArcsec) / sigma;
-    
-    // erf approximation
-    double prob = 0.5 * (1.0 + erf(z / sqrt(2.0)));
-    
-    // Limita a [0, 1]
-    if (prob < 0) prob = 0;
-    if (prob > 1) prob = 1;
-    
-    return prob;
-}
-
-bool OccultationEvent::isVisibleFrom(const GeographicCoordinates& observer,
-                                     double minElevationDeg) const {
-    // Verifica se l'evento è visibile da una posizione
-    
-    // Calcola la posizione dell'asteroide nel sistema locale dell'osservatore
-    // Questa è una implementazione semplificata
-    
-    // LST dell'osservatore
-    double lst = TimeUtils::lst(timeCA, observer.longitude);
-    
-    // Hour angle
-    double ha = lst - star.pos.ra;
-    
-    // Altitude
-    double sinAlt = sin(observer.latitude * DEG_TO_RAD) * sin(star.pos.dec) +
-                   cos(observer.latitude * DEG_TO_RAD) * cos(star.pos.dec) * cos(ha);
-    double alt = asin(sinAlt) * RAD_TO_DEG;
-    
-    return alt >= minElevationDeg;
 }
 
 } // namespace ioccultcalc

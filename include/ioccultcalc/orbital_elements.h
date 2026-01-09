@@ -7,8 +7,26 @@
 
 namespace ioccultcalc {
 
+/**
+ * @brief Tipi di frame di riferimento
+ */
+enum class FrameType {
+    ECLIPTIC_J2000,     ///< Eclittico J2000 (standard AstDyS/MPC)
+    EQUATORIAL_ICRF,    ///< Equatoriale ICRF/J2000
+    UNKNOWN
+};
+
+/**
+ * @brief Tipi di elementi orbitali
+ */
+enum class ElementType {
+    MEAN_ASTDYS,        ///< Elementi medi (AstDyS theory)
+    OSCULATING,         ///< Elementi osculanti classici
+    UNKNOWN
+};
+
 // Forward declaration
-struct EquinoctialElements;
+struct AstDynEquinoctialElements;
 
 // Elementi orbitali Kepleriani classici
 struct OrbitalElements {
@@ -33,6 +51,10 @@ struct OrbitalElements {
     std::string designation;
     std::string name;
     std::vector<std::string> aliases;
+
+    // Metadata di frame e tipo
+    FrameType frame = FrameType::ECLIPTIC_J2000;
+    ElementType type = ElementType::OSCULATING;
     
     OrbitalElements()
         : a(0), e(0), i(0), Omega(0), omega(0), M(0),
@@ -40,14 +62,14 @@ struct OrbitalElements {
           A1(0), A2(0), A3(0) {}
     
     // Converte in equinoziali
-    EquinoctialElements toEquinoctial() const;
+    AstDynEquinoctialElements toEquinoctial() const;
     
     // Crea da equinoziali
-    static OrbitalElements fromEquinoctial(const EquinoctialElements& eq);
+    static OrbitalElements fromEquinoctial(const AstDynEquinoctialElements& eq);
 };
 
 // Elementi orbitali equinoziali
-struct EquinoctialElements {
+struct AstDynEquinoctialElements {
     double a;     // Semi-major axis (AU)
     double h;     // h = e * sin(omega + Omega)
     double k;     // k = e * cos(omega + Omega)
@@ -69,11 +91,22 @@ struct EquinoctialElements {
     std::string designation; // Designazione dell'asteroide
     std::string name;        // Nome dell'asteroide
     std::vector<std::string> aliases; // Alias (es. designazioni provvisorie)
+
+    // Metadata di frame e tipo
+    FrameType frame = FrameType::ECLIPTIC_J2000;
+    ElementType type = ElementType::MEAN_ASTDYS;
     
-    EquinoctialElements() 
+    AstDynEquinoctialElements() 
         : a(0), h(0), k(0), p(0), q(0), lambda(0), 
           H(0), G(0.15), diameter(0),
-          A1(0), A2(0), A3(0) {}
+          A1(0), A2(0), A3(0), hasCovariance(false) {}
+    
+    // Matrice di covarianza (6x6)
+    bool hasCovariance;
+    std::vector<std::vector<double>> covariance;
+
+    // Per compatibilità con template che si aspettano toEquinoctial()
+    AstDynEquinoctialElements toEquinoctial() const { return *this; }
     
     // Converte in elementi Kepleriani classici (vecchio metodo)
     void toKeplerian(double& ecc, double& inc, double& omega, 
@@ -83,12 +116,12 @@ struct EquinoctialElements {
     OrbitalElements toKeplerian() const;
     
     // Crea da elementi Kepleriani
-    static EquinoctialElements fromKeplerian(double a, double ecc, double inc,
+    static AstDynEquinoctialElements fromKeplerian(double a, double ecc, double inc,
                                             double omega, double Omega, double M,
                                             const JulianDate& epoch);
     
     // Crea da OrbitalElements
-    static EquinoctialElements fromKeplerian(const OrbitalElements& orb);
+    static AstDynEquinoctialElements fromKeplerian(const OrbitalElements& orb);
 };
 
 // ===== FUNZIONI PER ORBIT DETERMINATION =====

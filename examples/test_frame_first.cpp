@@ -16,7 +16,7 @@ struct EquinoctialEquatorial {
     double a, h, k, p, q, lambda;
 };
 
-EquinoctialEquatorial eclipticToEquatorialElements(const EquinoctialElements& ecl) {
+EquinoctialEquatorial eclipticToEquatorialElements(const AstDynEquinoctialElements& ecl) {
     // Obliquity of ecliptic (J2000)
     constexpr double eps = 23.4392911 * M_PI / 180.0;
     const double cos_eps = std::cos(eps);
@@ -132,7 +132,7 @@ void equinoctialToCartesian(const EquinoctialEquatorial& eq, double epoch_mjd,
 int main() {
     try {
         // (704) Interamnia from AstDyS .eq1 file
-        EquinoctialElements ecl_elements;
+        AstDynEquinoctialElements ecl_elements;
         ecl_elements.a = 3.0562188547464153;
         ecl_elements.h = 0.038274930727971;
         ecl_elements.k = 0.150456045083743;

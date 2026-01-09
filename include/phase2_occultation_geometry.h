@@ -33,10 +33,13 @@
 #ifndef PHASE2_OCCULTATION_GEOMETRY_H
 #define PHASE2_OCCULTATION_GEOMETRY_H
 
-#include "phase1_candidate_screening.h"
 #include <vector>
 #include <string>
 #include <memory>
+#include <nlohmann/json.hpp>
+#include "ioccultcalc/astdyn_wrapper.h"
+#include "phase1_candidate_screening.h"
+#include "ioccultcalc/spice_spk_reader.h"
 
 // Forward declarations
 namespace astdyn {
@@ -55,14 +58,16 @@ namespace gaia {
 }
 }
 
+namespace ioccultcalc {
+
 // ═══════════════════════════════════════════════════════════════
 // STRUTTURE DATI
 // ═══════════════════════════════════════════════════════════════
 
 /**
- * @brief Punto sul percorso dell'ombra sulla Terra
+ * @brief Punto sul percorso dell'ombra sulla Terra (Fase 2)
  */
-struct ShadowPathPoint {
+struct Phase2ShadowPathPoint {
     double time_mjd_utc;        ///< Istante (MJD UTC)
     double latitude_deg;         ///< Latitudine (WGS84)
     double longitude_deg;        ///< Longitudine (WGS84)
@@ -95,40 +100,50 @@ struct ObserverGeometry {
  * @brief Ellisse di incertezza 1-sigma
  */
 struct UncertaintyEllipse {
-    double semi_major_axis_mas;   ///< Semi-asse maggiore (mas)
-    double semi_minor_axis_mas;   ///< Semi-asse minore (mas)
-    double position_angle_deg;    ///< Angolo di posizione (deg)
-    double time_uncertainty_sec;  ///< Incertezza temporale (sec)
+    double semi_major_axis_mas = 0.0;   ///< Semi-asse maggiore (mas)
+    double semi_minor_axis_mas = 0.0;   ///< Semi-asse minore (mas)
+    double position_angle_deg = 0.0;    ///< Angolo di posizione (deg)
+    double time_uncertainty_sec = 0.0;  ///< Incertezza temporale (sec)
+    
+    UncertaintyEllipse() = default;
 };
 
 /**
- * @brief Evento di occultazione completo
+ * @brief Risultati precisi dell'occultazione (Fase 2)
  */
-struct OccultationEvent {
+struct Phase2OccultationEvent {
     // Identificazione
-    uint64_t star_source_id;         ///< Gaia source_id
+    uint64_t star_source_id = 0;         ///< Gaia source_id
     std::string asteroid_name;        ///< Nome asteroide
-    int asteroid_number;              ///< Numero asteroide
+    int asteroid_number = 0;              ///< Numero asteroide
+    
+    // Parametri fisici
+    double diameter_km = 0.0;
+    double h_mag = 0.0;
+    double albedo = 0.0;
     
     // Dati stella
-    double star_ra_deg;               ///< RA stella J2000
-    double star_dec_deg;              ///< Dec stella J2000
-    double star_magnitude;            ///< Magnitudine G
-    double star_pm_ra_mas_yr;        ///< Proper motion RA
-    double star_pm_dec_mas_yr;       ///< Proper motion Dec
+    double star_ra_deg = 0.0;               ///< RA stella J2000
+    double star_dec_deg = 0.0;              ///< Dec stella J2000
+    double star_magnitude = 0.0;            ///< Magnitudine G
+    double star_pm_ra_mas_yr = 0.0;        ///< Proper motion RA
+    double star_pm_dec_mas_yr = 0.0;       ///< Proper motion Dec
     
     // Geometria globale
-    double time_ca_mjd_utc;          ///< Istante CA geocentrico (UTC)
-    double closest_approach_mas;      ///< Minima distanza geocentrica (mas)
-    double max_duration_sec;          ///< Durata massima teorica
-    double chord_length_km;           ///< Lunghezza chord
-    double shadow_width_km;           ///< Larghezza ombra (diametro asteroide proiettato)
-    double position_angle_deg;        ///< PA del moto relativo
+    double time_ca_mjd_utc = 0.0;          ///< Istante CA geocentrico (UTC)
+    double closest_approach_mas = 0.0;      ///< Minima distanza geocentrica (mas)
+    double max_duration_sec = 0.0;          ///< Durata massima teorica
+    double chord_length_km = 0.0;           ///< Lunghezza chord
+    double shadow_width_km = 0.0;           ///< Larghezza ombra (diametro asteroide proiettato)
+    double shadow_velocity_kms = 0.0;       ///< Velocità dell'ombra sul piano fondamentale (km/s)
+    double position_angle_deg = 0.0;        ///< PA del moto relativo
+    double mag_drop = 0.0;                 ///< Calo di magnitudine
+    std::string utc_string;                ///< Stringa oraria UTC
     
     // Path dell'ombra sulla Terra
-    std::vector<ShadowPathPoint> shadow_path;  ///< Traccia sulla superficie
-    double path_length_km;            ///< Lunghezza totale percorso
-    double path_duration_sec;         ///< Durata totale attraversamento Terra
+    std::vector<Phase2ShadowPathPoint> shadow_path;  ///< Traccia sulla superficie
+    double path_length_km = 0.0;            ///< Lunghezza totale percorso
+    double path_duration_sec = 0.0;         ///< Durata totale attraversamento Terra
     
     // Geometria per osservatori specifici
     std::vector<ObserverGeometry> observer_predictions;
@@ -137,14 +152,16 @@ struct OccultationEvent {
     UncertaintyEllipse uncertainty;
     
     // Dati propagazione
-    double asteroid_distance_au;      ///< Distanza asteroide dalla Terra
-    double star_distance_au;          ///< Distanza stella (se nota)
-    double sun_target_elongation_deg; ///< Elongazione dal Sole
+    double asteroid_distance_au = 0.0;      ///< Distanza asteroide dalla Terra
+    double star_distance_au = 0.0;          ///< Distanza stella (se nota)
+    double sun_target_elongation_deg = 0.0; ///< Elongazione dal Sole
     
     // Quality flags
-    bool high_confidence;             ///< True se geometria affidabile
-    double snr;                       ///< Signal-to-noise ratio stima
+    bool high_confidence = false;             ///< True se geometria affidabile
+    double snr = 0.0;                       ///< Signal-to-noise ratio stima
     std::string notes;                ///< Note aggiuntive
+
+    Phase2OccultationEvent() = default;
 };
 
 // ═══════════════════════════════════════════════════════════════
@@ -161,6 +178,10 @@ struct Phase2Config {
     int observation_arc_days = 365;               ///< Arco osservativo per fit (giorni)
     bool use_all_available_observations = false;  ///< Usa tutte osservazioni disponibili
     int max_observations_for_fit = 20;            ///< Numero massimo osservazioni da usare (le più recenti)
+    
+    // AstDyS integration (nuovo)
+    bool auto_download_astdys = false;             ///< Scarica automaticamente .eq1/.rwo
+    bool use_astdys_covariance_no_fit = false;    ///< Usa covarianza da .eq1 senza fit
     
     // Parametri fitting
     bool fit_planetary_perturbations = true;      ///< Include perturbazioni nel fit
@@ -195,6 +216,15 @@ struct Phase2Config {
     
     // Debug/Output
     bool verbose = true;                           ///< Stampa output dettagliato
+
+    // === DEBUG FLAGS (User requested keywords) ===
+    bool debug_asteroid_equ = false;           ///< Asteroid_Phase2_EQU
+    bool debug_asteroid_ecl = false;           ///< Asteroid_Phase2_ECL
+    bool debug_asteroid_vec = false;           ///< Asteroid_Phase2_VEC
+    bool debug_elements_equ = false;           ///< Asteroid_Phase2_ELMENTS_EQU
+    bool debug_elements_ecl = false;           ///< Asteroid_Phase2_ELMENTS_Ecl
+    bool debug_star_position = false;          ///< StarPosition
+    std::string debug_json_path = "";
 };
 
 /**
@@ -216,7 +246,7 @@ struct OrbitalFitResults {
  * @brief Risultati Phase 2
  */
 struct Phase2Results {
-    std::vector<OccultationEvent> events;  ///< Eventi calcolati
+    std::vector<Phase2OccultationEvent> events;  ///< Eventi calcolati
     int successful_calculations = 0;
     int failed_calculations = 0;
     double total_computation_time_ms = 0.0;
@@ -242,6 +272,7 @@ struct Phase2Results {
 class Phase2OccultationGeometry {
 public:
     Phase2OccultationGeometry();
+    explicit Phase2OccultationGeometry(std::shared_ptr<ISPReader> reader);
     ~Phase2OccultationGeometry();
     
     // Non copiabile
@@ -266,7 +297,10 @@ public:
     /**
      * @brief Imposta elementi orbitali direttamente
      */
-    void setOrbitalElements(const astdyn::propagation::KeplerianElements& elements);
+    void setOrbitalElements(const astdyn::propagation::KeplerianElements& elements,
+                            const std::string& name = "",
+                            FrameType frame = FrameType::ECLIPTIC_J2000,
+                            ElementType type = ElementType::OSCULATING);
     
     /**
      * @brief Imposta parametri fisici dell'asteroide
@@ -293,9 +327,9 @@ public:
         const Phase2Config& config);
     
     /**
-     * @brief Calcola geometria per singolo candidato
+     * @brief Calcola i dettagli di un singolo evento
      */
-    OccultationEvent calculateSingleEvent(
+    Phase2OccultationEvent calculateSingleEvent(
         const ioccultcalc::CandidateStar& candidate,
         const Phase2Config& config);
     
@@ -314,5 +348,7 @@ private:
     class Impl;
     std::unique_ptr<Impl> pimpl_;
 };
+
+} // namespace ioccultcalc
 
 #endif // PHASE2_OCCULTATION_GEOMETRY_H

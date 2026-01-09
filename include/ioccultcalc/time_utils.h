@@ -32,6 +32,9 @@ public:
     // Calcola il Local Sidereal Time per una data longitudine
     static double lst(const JulianDate& jd, double longitude);
     
+    // Calcola l'obliquità dell'eclittica (Laskar 1986)
+    static double getObliquity(const JulianDate& jd);
+    
     // ========================================================================
     // Time Scale Conversions (TDB, TT, UTC)
     // ========================================================================
@@ -79,6 +82,9 @@ public:
      * Qui usiamo approssimazione basata su storico leap seconds.
      */
     static int getLeapSeconds(const JulianDate& jd);
+
+    // Converte MJD in stringa UTC leggibile
+    static std::string mjdToUtcString(double mjd);
 };
 
 } // namespace ioccultcalc

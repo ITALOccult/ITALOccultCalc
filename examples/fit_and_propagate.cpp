@@ -88,7 +88,7 @@ int main(int argc, char** argv) {
         std::cout << std::string(75, '-') << "\n";
         
         AstDysClient astdysClient;
-        EquinoctialElements nominalElementsEq = astdysClient.getElements(asteroid);
+        AstDynEquinoctialElements nominalElementsEq = astdysClient.getElements(asteroid);
         OrbitalElements nominalElements = nominalElementsEq.toKeplerian();
         
         std::cout << "✓ Elementi nominali caricati (epoca JD " 
@@ -200,11 +200,11 @@ int main(int argc, char** argv) {
             JulianDate targetEpoch(epoch0.jd + dt);
             
             // Propaga con elementi nominali
-            auto elemNomEq = EquinoctialElements::fromKeplerian(nominalAtEpoch0);
+            auto elemNomEq = AstDynEquinoctialElements::fromKeplerian(nominalAtEpoch0);
             OrbitState stateNom = propagator.propagate(elemNomEq, targetEpoch);
             
             // Propaga con elementi fittati
-            auto elemFitEq = EquinoctialElements::fromKeplerian(fittedAtEpoch0);
+            auto elemFitEq = AstDynEquinoctialElements::fromKeplerian(fittedAtEpoch0);
             OrbitState stateFit = propagator.propagate(elemFitEq, targetEpoch);
             
             // Stato JPL Horizons per riferimento
