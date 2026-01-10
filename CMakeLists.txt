@@ -49,19 +49,12 @@ find_path(IOC_CONFIG_INCLUDE_DIR ioc_config/oop_parser.h PATHS ${LOCAL_INSTALL_D
 find_library(GAIALIB_LIB NAMES libioc_gaialib.a PATHS ${LOCAL_INSTALL_DIR}/lib REQUIRED NO_DEFAULT_PATH)
 find_path(GAIALIB_INCLUDE_DIR ioc_gaialib/unified_gaia_catalog.h PATHS ${LOCAL_INSTALL_DIR}/include REQUIRED NO_DEFAULT_PATH)
 
-# 5. IOC_StarMap
-set(BUILD_SHARED_LIBS OFF)
-set(BUILD_EXAMPLES_SAVE ${BUILD_EXAMPLES})
-set(BUILD_TESTS_SAVE ${BUILD_TESTS})
-set(BUILD_EXAMPLES OFF)
-set(BUILD_TESTS OFF)
-if(NOT TARGET starmap)
-    add_subdirectory(external/IOC_StarMap EXCLUDE_FROM_ALL)
-endif()
-set(BUILD_EXAMPLES ${BUILD_EXAMPLES_SAVE})
-set(BUILD_TESTS ${BUILD_TESTS_SAVE})
-set(STARMAP_LIB starmap)
-set(STARMAP_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external/IOC_StarMap/include")
+# 5. StarMap (use precompiled library from ~/.local/lib)
+find_library(STARMAP_LIB NAMES libstarmap.a PATHS ${LOCAL_INSTALL_DIR}/lib REQUIRED NO_DEFAULT_PATH)
+find_path(STARMAP_INCLUDE_DIR starmap/StarMap.h PATHS ${LOCAL_INSTALL_DIR}/include REQUIRED NO_DEFAULT_PATH)
+
+# Comment out submodule - use precompiled library instead
+# add_subdirectory(external/IOC_StarMap EXCLUDE_FROM_ALL)
 
 # 6. IOC_Earth
 # Se non esiste la versione statica, usiamo quella dinamica per ora
@@ -97,22 +90,23 @@ set(SOURCES
     #src/chebyshev_occultation_manager.cpp
     src/phase1_candidate_screening.cpp
     src/phase2_occultation_geometry.cpp
-    src/eq1_parser.cpp
-    src/astdyn_wrapper.cpp
-    src/orbital_conversions.cpp
+    external/ITALOccultLibrary/italoccultlibrary/src/eq1_parser.cpp
+    external/ITALOccultLibrary/italoccultlibrary/src/astdyn_wrapper.cpp
+    external/ITALOccultLibrary/italoccultlibrary/src/orbital_conversions.cpp
     external/ITALOccultLibrary/italoccultlibrary/src/chebyshev_approximation.cpp
     external/ITALOccultLibrary/italoccultlibrary/src/chebyshev_rkf78_propagation.cpp
     src/kml_exporter.cpp
     src/occult4_xml.cpp
+    external/IOC_GaiaLib/src/types.cpp
     src/prediction_report.cpp
     src/preston_parser.cpp
     src/coordinates.cpp
     src/time_utils.cpp
     src/observation.cpp
     src/mpc_client.cpp
-    src/orbit_determination.cpp
-    src/orbit_fitter.cpp
-    src/orbit_determination_gauss.cpp
+#     src/orbit_determination.cpp
+#     src/orbit_fitter.cpp
+#     src/orbit_determination_gauss.cpp
     src/force_model.cpp
     # src/orbfit_force_model.cpp
     src/rkf78_integrator.cpp
@@ -140,10 +134,10 @@ set(SOURCES
     src/output_manager.cpp
     src/asteroid_list_reader.cpp
     src/allnum_database.cpp
-    src/occultation_map_utility.cpp
-    src/config_resolver.cpp
-    src/simulation_engine.cpp
-    src/math_utils.cpp
+    # src/occultation_map_utility.cpp  # MISSING
+    # src/config_resolver.cpp  # MISSING
+    # src/simulation_engine.cpp  # MISSING
+    # src/math_utils.cpp  # MISSING
 )
 
 # Fortran wrapper for OrbFit
@@ -200,11 +194,11 @@ set(HEADERS
     include/parallel_algorithms.h
     include/phase1_candidate_screening.h
     include/phase2_occultation_geometry.h
-    include/ioccultcalc/occultation_map_utility.h
-    include/ioccultcalc/config_resolver.h
-    include/ioccultcalc/simulation_engine.h
-    include/ioccultcalc/simulation_types.h
-    include/ioccultcalc/math_utils.h
+    # include/ioccultcalc/occultation_map_utility.h  # MISSING
+    # include/ioccultcalc/config_resolver.h  # MISSING
+    # include/ioccultcalc/simulation_engine.h  # MISSING
+    # include/ioccultcalc/simulation_types.h  # MISSING
+    # include/ioccultcalc/math_utils.h  # MISSING
 )
 
 # RIMUOVI questa riga - è codice C++, non CMake
@@ -282,15 +276,18 @@ endif()
 add_library(ioccultcalc STATIC ${SOURCES} ${HEADERS})
 target_include_directories(ioccultcalc BEFORE PUBLIC 
     ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/ITALOccultLibrary/italoccultlibrary/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/external/IOC_GaiaLib/include
     ${STARMAP_INCLUDE_DIR}
     ${IOC_EARTH_INCLUDE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/external/ITALOccultLibrary/italoccultlibrary/include
-)
-
-target_include_directories(ioccultcalc PUBLIC
     ${ASTDYN_INCLUDE_DIR}
     ${IOC_CONFIG_INCLUDE_DIR}
     ${GAIALIB_INCLUDE_DIR}
+)
+
+# Prioritize local AstDyn headers for Phase 1 screening to use the new high-precision API
+set_source_files_properties(src/phase1_candidate_screening.cpp PROPERTIES 
+    INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/include"
 )
 target_link_libraries(ioccultcalc
     CURL::libcurl
