@@ -228,11 +228,13 @@ void TopocentricConverter::rotationMatrixITRFtoCelestial(double jd_ut1,
     
     // Rotation around Z-axis (Earth rotation)
     // ITRF -> J2000 (neglecting precession/nutation)
+    // R_z(-ERA) would be Celestial -> ITRF
+    // R_z(+ERA) is ITRF -> Celestial
     matrix[0][0] = cos_era;
-    matrix[0][1] = sin_era;
+    matrix[0][1] = -sin_era; // Correct for ITRF -> Celestial
     matrix[0][2] = 0.0;
     
-    matrix[1][0] = -sin_era;
+    matrix[1][0] = sin_era;  // Correct for ITRF -> Celestial
     matrix[1][1] = cos_era;
     matrix[1][2] = 0.0;
     
