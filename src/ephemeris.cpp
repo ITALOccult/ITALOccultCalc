@@ -13,6 +13,8 @@
 
 namespace ioccultcalc {
 
+namespace AstEphemeris = astdyn::ephemeris;
+
 // Bridge provider
 class SpiceEphemerisProvider : public astdyn::ephemeris::EphemerisProvider {
 public:
@@ -62,12 +64,12 @@ Ephemeris::Ephemeris(std::shared_ptr<ISPReader> reader, const AstDynEquinoctialE
 void Ephemeris::setElements(const AstDynEquinoctialElements& elements) { elements_ = elements; }
 
 Vector3D Ephemeris::getEarthPosition(const JulianDate& jd) {
-    auto posEigen = astdyn::ephemeris::PlanetaryEphemeris::getPosition(astdyn::ephemeris::CelestialBody::EARTH, jd.jd);
+    auto posEigen = AstEphemeris::PlanetaryEphemeris::getPosition(AstEphemeris::CelestialBody::EARTH, jd.jd);
     return Vector3D(posEigen.x(), posEigen.y(), posEigen.z());
 }
 
 Vector3D Ephemeris::getEarthVelocity(const JulianDate& jd) {
-    auto velEigen = astdyn::ephemeris::PlanetaryEphemeris::getVelocity(astdyn::ephemeris::CelestialBody::EARTH, jd.jd);
+    auto velEigen = AstEphemeris::PlanetaryEphemeris::getVelocity(AstEphemeris::CelestialBody::EARTH, jd.jd);
     return Vector3D(velEigen.x(), velEigen.y(), velEigen.z());
 }
 

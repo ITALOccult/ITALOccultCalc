@@ -1,0 +1,270 @@
+DEBUG: [italoccultcalc] BINARY VERSION Dec 29 2025 14:12:18 - ACTIVE
+DEBUG: Main started.
+
+╔═══════════════════════════════════════════════════════════════╗
+║                     ITALOccultCalc v1.0                        ║
+║         Ricerca Automatica Occultazioni Asteroidali           ║
+║              Ottimizzato per Osservatori Italiani              ║
+╚═══════════════════════════════════════════════════════════════╝
+[DEBUG] main: Prima di startTime
+[DEBUG] main: WORKFLOW COMPLETO - INIZIO
+[DEBUG] main: Step 1: Caricamento configurazione...
+[DEBUG] loadConfiguration: INIZIO
+
+================================================================
+CARICAMENTO CONFIGURAZIONE
+================================================================
+
+File configurazione: test_34713_jan2026.oop
+[DEBUG] loadConfiguration: ConfigManager creato
+[DEBUG] loadConfiguration: Verifico formato file...
+[DEBUG] loadConfiguration: Carico OOP...
+✓ Configurazione OrbFit caricata
+  Auto-converting to JSON: test_34713_jan2026.json ... OK
+[DEBUG] loadConfiguration: File caricato, valido configurazione...
+✓ Configurazione validata
+
+[DEBUG] loadConfiguration: Configurazione validata, leggo sezioni...
+[DEBUG] loadConfiguration: Chiamo getSection(PROPAGATION)...
+[DEBUG] loadConfiguration: getSection(PROPAGATION) completato
+[DEBUG] loadConfiguration: Chiamo getSection(SEARCH)...
+[DEBUG] loadConfiguration: getSection(SEARCH) completato
+[DEBUG] loadConfiguration: Sezioni lette, stampo parametri...
+[DEBUG] loadConfiguration: propagSection trovata
+Propagatore: ASTDYN
+Step size: 0.1 giorni
+[DEBUG] loadConfiguration: searchSection trovata
+[DEBUG] loadConfiguration: FINE
+[DEBUG] main: Step 1: Completato
+[DEBUG] Step 2: Selezione asteroidi...
+[DEBUG] selectAsteroids: INIZIO
+
+================================================================
+SELEZIONE ASTEROIDI CANDIDATI
+================================================================
+
+[DEBUG] selectAsteroids: Dopo printHeader
+[DEBUG] selectAsteroids: Inizializzo variabili...
+[DEBUG] selectAsteroids: Leggo configurazione objectSection...
+[DEBUG] selectAsteroids: objectSection letto
+Criteri selezione:
+  ★ LISTA ESPLICITA: 1 asteroidi [34713]
+  (filtri diametro/magnitudine ignorati)
+
+
+[SQLite] Database allnum.db trovato. Uso lettura diretta per lista esplicita.
+Data aggiornamento DB: 
+  ✓ Caricato (SQLite): (34713)
+    H=13.86  Diam~5.8km
+    Epoch (MJD): 61000.0
+    a=2.8 e=0.2 i=8.0°
+Trovati 1 asteroidi nel DB.
+[DEBUG] Step 2: Completato, trovati 1 asteroidi
+[DEBUG] Step 3: Propagazione orbite...
+
+================================================================
+PROPAGAZIONE ORBITE
+================================================================
+
+SPKReader: Successfully loaded DE441 covering JD -3.02722e+06 to 7.93019e+06
+OrbitPropagator: Using JPL DE441 (high precision planets)
+OrbitPropagator: WARNING - Asteroid perturbations disabled (codes_300ast_20100725.bsp not found)
+[▓░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0% | Propagazione   : (34713) (34713) Yesiltas                          [████████████████████▓░░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 40 % | Propagazione   : Completata                                        
+[DEBUG] Step 3: Completato
+[DEBUG] Step 4: Query catalogo stelle...
+
+=== [DEBUG] Inizio queryCatalog ===
+[DEBUG queryCatalog] gaiaSection trovata: NO
+
+================================================================
+QUERY CATALOGO STELLE GAIA DR3
+================================================================
+
+
+╔══════════════════════════════════════════════════════════╗
+║      ★ CATALOGO MAG18 LOCALE ATTIVO ★                   ║
+║  303M stelle (G≤18) - Query locale veloce               ║
+║  Nessuna query online - tutto da catalogo 9GB           ║
+╚══════════════════════════════════════════════════════════╝
+
+Could not open IAU catalog: data/IAU-CSN.json
+Could not open star names database: data/common_star_names.csv
+Loaded 23 stars from embedded database
+Loaded star names from embedded database
+✓ Catalogo Gaia caricato: /Users/michelebigi/.catalog/gaia_mag18_v2_multifile
+  Catalogo: Multi-File Gaia DR3 V2 | Stelle: 0
+[DEBUG] Step 4: Completato, trovate 0 stelle
+[DEBUG] Step 5: Rilevamento occultazioni...
+
+================================================================
+RILEVAMENTO OCCULTAZIONI
+================================================================
+
+Parametri ricerca:
+  Periodo: JD 2461050.5 - 2461051.5
+  Mag limite: 16.0
+  Raggio ricerca: 1.0 gradi
+  Probabilità minima: 1.0%
+
+Asteroidi da analizzare: 1
+
+Calcolo sequenziale (SPICE thread-safety)...
+
+
+[1   /1] (34713 ) (34713) Yesiltas     - D=   5km  - Phase 1 Screening...Optimized Corridor: 97 points -> 1 query cones.
+
+╔════════════════════════════════════════════════════════════╗
+║  PHASE 2: Geometria Precisa con Orbital Refinement        ║
+╚════════════════════════════════════════════════════════════╝
+
+Candidati da processare: 4
+Orbital refinement: ATTIVO
+Finestra temporale: ±10.0 min
+Risoluzione: 1.0 sec
+
+══════════════════════════════════════════════════════════
+STEP 1: ORBITAL REFINEMENT
+══════════════════════════════════════════════════════════
+
+  [RWO Download] Scaricamento osservazioni per 34713...
+  URL: https://newton.spacedys.com/~astdys2/mpcobs/numbered/34/34713.rwo
+  Downloading...
+  ✓ File scaricato: /tmp/34713.rwo
+  Parsing RWO...
+  ✓ Parsate 2600 osservazioni RWO
+  [Observations] Scaricate 2600 osservazioni
+  [Observations] Selezionate 20 osservazioni più recenti per il fit
+  [Observations] Epoca più recente: MJD 60951.45
+  [Observations] Epoca più vecchia: MJD 60919.60
+  [Orbital Fit] Fitting con 20 osservazioni...
+  [Pre-Check] RMS Residui Nominali: 66415.26 arcsec
+  ⚠ Residui troppo alti (>100"). Skipping fit per sicurezza.
+
+  ⚠ Fit fallito - uso elementi nominali
+
+══════════════════════════════════════════════════════════
+STEP 2: CALCOLO GEOMETRIA OCCULTAZIONI
+══════════════════════════════════════════════════════════
+
+Candidato 1/4 - Stella 2642109850088494208...
+DEBUG: Entering calculateSingleEvent for Star 2642109850088494208 Guess MJD: 61050.658379
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.65838
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 55840142.8 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 29.53 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 30784211.88 mas @ MJD 61050.665312
+  Duration: 0.196429 sec
+  Shadow path width: 5.800686 km
+
+Candidato 2/4 - Stella 2449948649578989824...
+DEBUG: Entering calculateSingleEvent for Star 2449948649578989824 Guess MJD: 61050.133065
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.13307
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 55424422.7 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 29.37 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 30631760.81 mas @ MJD 61050.139998
+  Duration: 0.197495 sec
+  Shadow path width: 5.800686 km
+
+Candidato 3/4 - Stella 2642108853656324736...
+DEBUG: Entering calculateSingleEvent for Star 2642108853656324736 Guess MJD: 61050.403414
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.40341
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 55607907.3 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 29.45 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 30693353.82 mas @ MJD 61050.410347
+  Duration: 0.196948 sec
+  Shadow path width: 5.800686 km
+
+Candidato 4/4 - Stella 2738188955694714624...
+DEBUG: Entering calculateSingleEvent for Star 2738188955694714624 Guess MJD: 61051.000000
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61051.00000
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 56066969.4 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 29.63 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 30858898.49 mas @ MJD 61051.006933
+  Duration: 0.195768 sec
+  Shadow path width: 5.800686 km
+
+══════════════════════════════════════════════════════════
+PHASE 2 COMPLETATA
+══════════════════════════════════════════════════════════
+  Orbital refinement: ✗ Non eseguito
+  Eventi calcolati: 4
+  Falliti: 0
+  Tempo totale: 869.633167 ms
+
+Debug: Checking 4 candidates for target ID 877859914797936896
+ → Phase1: 4 candidati → Phase2: 4 eventi → Trovati 3 eventi! ✓
+[██████████████████████████████████████████████████] 100% | Completato     : 1 asteroidi processati                            
+[DEBUG] Step 5: Completato, trovati 0 eventi
+
+================================================================
+CALCOLO PRIORITÀ EVENTI
+================================================================
+
+Criteri di priorità:
+  • Mag drop > 2.0 mag: +3 punti
+  • Durata > 5 secondi: +2 punti
+  • Path attraversa Italia: +3 punti
+  • Incertezza < 15 km: +2 punti
+  • Stella luminosa (< 10 mag): +1 punto
+
+
+================================================================
+GENERAZIONE REPORT
+================================================================
+
+Applicazione filtri richiesti: Mag <= 15.0, Durata > 0.3s
+
+Formati output:
+  • IOTA formato classico
+  • Preston formato compatto
+  • JSON per API
+  • KML per Google Earth
+  • CSV per Excel
+
+╔════════════════════════════════════════════════════════════╗
+║          ITALOccultCalc - REPORT OCCULTAZIONI              ║
+╚════════════════════════════════════════════════════════════╝
+
+Totale eventi trovati: 0
+Eventi dopo filtri: 0
+
+⚠️  Nessun evento soddisfa i criteri di filtro.
+   Prova ad aumentare max_distance_km o ridurre min_mag_drop.
+
+
+================================================================
+RIEPILOGO TEMPI DI ESECUZIONE
+================================================================
+
+┌───────────────────────────────┬──────────────┐
+│ FASE                          │ TEMPO (s)    │
+├───────────────────────────────┼──────────────┤
+│ 1. Caricamento Config         │     0.000 s  │
+│ 2. Selezione Asteroidi        │     0.486 s  │
+│ 3. Propagazione Orbite        │     0.000 s  │
+│ 4. Query Catalogo Stelle      │     0.001 s  │
+│ 5. Rilevamento Occultazioni   │     1.797 s  │
+│ 6. Reporting & Export         │     0.000 s  │
+├───────────────────────────────┼──────────────┤
+│ TOTALE                        │     2.286 s  │
+└───────────────────────────────┴──────────────┘
+
+✓ Workflow completato con successo!
+Eventi trovati: 0
+Report salvati in: output/
+

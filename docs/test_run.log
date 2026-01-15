@@ -1,0 +1,190 @@
+DEBUG: Main started.
+
+╔═══════════════════════════════════════════════════════════════╗
+║                     ITALOccultCalc v1.0                        ║
+║         Ricerca Automatica Occultazioni Asteroidali           ║
+║              Ottimizzato per Osservatori Italiani              ║
+╚═══════════════════════════════════════════════════════════════╝
+[DEBUG] main: Prima di startTime
+[DEBUG] main: WORKFLOW COMPLETO - INIZIO
+Initializing Global DE441 Ephemeris: /Users/michelebigi/.ioccultcalc/ephemerides/de441_part-2.bsp...
+✓ DE441 loaded (Native Reader): /Users/michelebigi/.ioccultcalc/ephemerides/de441_part-2.bsp
+✓ Global DE441 Loaded successfully.
+[DEBUG] main: Step 1: Caricamento configurazione...
+[DEBUG] loadConfiguration: INIZIO
+
+================================================================
+CARICAMENTO CONFIGURAZIONE
+================================================================
+
+File configurazione: test_ioc_earth.oop
+[DEBUG] loadConfiguration: ConfigManager creato
+[DEBUG] loadConfiguration: Verifico formato file...
+[DEBUG] loadConfiguration: Carico OOP...
+✓ Configurazione OrbFit caricata
+  Auto-converting to JSON: test_ioc_earth.json ... OK
+[DEBUG] loadConfiguration: File caricato, valido configurazione...
+✓ Configurazione validata
+
+[DEBUG] loadConfiguration: Configurazione validata, leggo sezioni...
+[DEBUG] loadConfiguration: Chiamo getSection(PROPAGATION)...
+[DEBUG] loadConfiguration: getSection(PROPAGATION) completato
+[DEBUG] loadConfiguration: Chiamo getSection(SEARCH)...
+[DEBUG] loadConfiguration: getSection(SEARCH) completato
+[DEBUG] loadConfiguration: Sezioni lette, stampo parametri...
+[DEBUG] loadConfiguration: propagSection trovata
+Propagatore: RK4
+Step size: 0.1 giorni
+[DEBUG] loadConfiguration: searchSection trovata
+Intervallo ricerca: 0.5 giorni (MJD)
+[DEBUG] loadConfiguration: FINE
+[DEBUG] main: Step 1: Completato
+[DEBUG] Step 2: Selezione asteroidi...
+[DEBUG] selectAsteroids: INIZIO
+
+================================================================
+SELEZIONE ASTEROIDI CANDIDATI
+================================================================
+
+[DEBUG] selectAsteroids: Dopo printHeader
+[DEBUG] selectAsteroids: Inizializzo variabili...
+[DEBUG] selectAsteroids: Leggo configurazione objectSection...
+[DEBUG] selectAsteroids: objectSection letto
+Criteri selezione:
+  ★ LISTA ESPLICITA: 1 asteroidi [249]
+  (filtri diametro/magnitudine ignorati)
+
+
+[SQLite] Database allnum.db trovato. Uso lettura diretta per lista esplicita.
+Data aggiornamento DB: 2025-12-14 14:43:00
+[DEBUG] Forcing physical parameters for Ilse: H=7 Albedo=0.043
+Trovati 1 asteroidi nel DB.
+[DEBUG] Step 2: Completato, trovati 1 asteroidi
+[DEBUG] Step 3: Propagazione orbite...
+
+================================================================
+PROPAGAZIONE ORBITE
+================================================================
+
+SPKReader: Successfully loaded DE441 covering JD -3.02722e+06 to 7.93019e+06
+OrbitPropagator: Using JPL DE441 (high precision planets)
+OrbitPropagator: WARNING - Asteroid perturbations disabled (codes_300ast_20100725.bsp not found)
+[▓░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0% | Propagazione   : (249) Ilse                                        [████████████████████▓░░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 40 % | Propagazione   : Completata                                        
+[DEBUG] Step 3: Completato
+[DEBUG] Step 4: Query catalogo stelle...
+
+=== [DEBUG] Inizio queryCatalog ===
+[DEBUG queryCatalog] gaiaSection trovata: SI
+[DEBUG] Parametro gaia.version NON trovato, uso default DR3
+
+================================================================
+QUERY CATALOGO STELLE GAIA DR3
+================================================================
+
+
+╔══════════════════════════════════════════════════════════╗
+║      ★ CATALOGO MAG18 LOCALE ATTIVO ★                   ║
+║  303M stelle (G≤18) - Query locale veloce               ║
+║  Nessuna query online - tutto da catalogo 9GB           ║
+╚══════════════════════════════════════════════════════════╝
+
+Could not open IAU catalog: data/IAU-CSN.json
+Could not open star names database: data/common_star_names.csv
+Loaded 23 stars from embedded database
+Loaded star names from embedded database
+✓ Catalogo Gaia caricato: /Users/michelebigi/.catalog/gaia_mag18_v2_multifile
+  Catalogo: Multi-File Gaia DR3 V2 | Stelle: 231140585
+[DEBUG] Step 4: Completato, trovate 0 stelle
+[DEBUG] Step 5: Rilevamento occultazioni...
+
+================================================================
+RILEVAMENTO OCCULTAZIONI
+================================================================
+
+Parametri ricerca:
+  Periodo: JD 2.46105e+06 - 2.46105e+06
+  Mag limite: 18
+  Raggio ricerca: 5 gradi
+  Probabilità minima: 1%
+
+Asteroidi da analizzare: 1
+
+Calcolo sequenziale (SPICE thread-safety)...
+
+
+[1   /1] (249   ) Ilse                 - D=   0km  - Phase 1 Screening...
+[URGENT DEBUG] === PHASE 1 INPUT CHECK ===
+Propagating Input Elements to Start MJD: 61051
+Elements (Ecliptic J2000): a=2.37832 e=0.2173 i(deg)=9.62091 Omega(deg)=334.653 omega(deg)=42.3634
+ → Phase1: 0 candidati → Phase2: 0 eventi → 0 eventi
+[██████████████████████████████████████████████████] 100% | Completato     : 1 asteroidi processati                            
+[DEBUG] Step 5: Completato, trovati 0 eventi
+
+================================================================
+CALCOLO PRIORITÀ EVENTI
+================================================================
+
+Criteri di priorità:
+  • Mag drop > 2.0 mag: +3 punti
+  • Durata > 5 secondi: +2 punti
+  • Path attraversa Italia: +3 punti
+  • Incertezza < 15 km: +2 punti
+  • Stella luminosa (< 10 mag): +1 punto
+
+
+================================================================
+GENERAZIONE REPORT
+================================================================
+
+Applicazione filtri richiesti: Mag <= 15.0, Durata > 0.3s
+
+Formati output:
+  • IOTA formato classico
+  • Preston formato compatto
+  • JSON per API
+  • KML per Google Earth
+  • CSV per Excel
+
+╔════════════════════════════════════════════════════════════╗
+║          ITALOccultCalc - REPORT OCCULTAZIONI              ║
+╚════════════════════════════════════════════════════════════╝
+
+Totale eventi trovati: 0
+Eventi dopo filtri: 0
+
+⚠️  Nessun evento soddisfa i criteri di filtro.
+   Prova ad aumentare max_distance_km o ridurre min_mag_drop.
+
+✓ Report console generato
+
+✓ File XML generato: test_output_occult4.xml
+  Formato: Occult4 compatible
+  Eventi: 0
+  Import in: OccultWatcher Cloud
+
+✓ File JSON generato: test_output_structured.json
+✓ File KML generato: output_events.kml
+  Tracce generate: 0
+
+
+================================================================
+RIEPILOGO TEMPI DI ESECUZIONE
+================================================================
+
+┌───────────────────────────────┬──────────────┐
+│ FASE                          │ TEMPO (s)    │
+├───────────────────────────────┼──────────────┤
+│ 1. Caricamento Config         │     0.000 s  │
+│ 2. Selezione Asteroidi        │     0.375 s  │
+│ 3. Propagazione Orbite        │     0.000 s  │
+│ 4. Query Catalogo Stelle      │     0.001 s  │
+│ 5. Rilevamento Occultazioni   │    13.217 s  │
+│ 6. Reporting & Export         │     0.001 s  │
+├───────────────────────────────┼──────────────┤
+│ TOTALE                        │    13.596 s  │
+└───────────────────────────────┴──────────────┘
+
+✓ Workflow completato con successo!
+Eventi trovati: 0
+Report salvati in: output/
+

@@ -1,0 +1,17 @@
+# Priority Asteroids List
+# High-priority targets for occultation observations
+# Format: ASTNUM_LIST (IOccultCalc output format)
+
+(1) # Ceres (15 events)
+(2) # Pallas (8 events)
+(4) # Vesta (12 events)
+(10) # Hygiea (7 events)
+(15) # Eunomia (5 events)
+(16) # Psyche (6 events)
+(52) # Europa (4 events)
+(65) # Cybele (3 events)
+(87) # Sylvia (4 events)
+(121) # Hermione (2 events)
+(433) # Eros (9 events)
+(511) # Davida (3 events)
+(704) # Interamnia (4 events)

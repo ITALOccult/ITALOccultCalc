@@ -1,0 +1,32 @@
+Could not open IAU catalog: data/IAU-CSN.json
+Could not open star names database: data/common_star_names.csv
+Loaded 23 stars from embedded database
+Loaded star names from embedded database
+ITALOccultCalc v1.0 [Native API Workflow]
+SPICESPKReader: Loaded /Users/michelebigi/.ioccultcalc/ephemerides/de440.bsp
+Successfully loaded de440.bsp
+Loading asteroid 34713 elements from EQ1...
+Phase 1: Screening stars in 0.5 deg corridor...
+[PHASE1] Starting native screening for 34713 (MJD 61063 to 61064)...
+[DEBUG_SPK] Requesting Body=399 Center=10 JD=2461063.00000 ET=822355200.00
+DEBUG SPK frame=J2000 body=399 center=10:
+  pos=[-0.523165, 0.76491, 0.331577] AU
+[DEBUG_SPK] Requesting Body=399 Center=10 JD=2461063.16667 ET=822369600.00
+[DEBUG_SPK] Requesting Body=399 Center=10 JD=2461063.33333 ET=822384000.00
+[DEBUG_SPK] Requesting Body=399 Center=10 JD=2461063.50000 ET=822398400.00
+[DEBUG_SPK] Requesting Body=399 Center=10 JD=2461063.66667 ET=822412800.00
+[DEBUG_ASTDYN] MJD=61063.00
+  Ast Helio (Equat ICRF): [-0.34  2.54  1.19] AU
+  Earth Helio (ICRF):     [-0.53  0.76  0.33] AU
+  Relative (ICRF):        [0.19 1.78 0.87] AU
+  Result RA/Dec:          83.88 / 25.78
+[DEBUG_ASTDYN] MJD=61063.04
+  Ast Helio (Equat ICRF): [-0.34  2.54  1.19] AU
+  Earth Helio (ICRF):     [-0.53  0.76  0.33] AU
+  Relative (ICRF):        [0.19 1.78 0.87] AU
+  Result RA/Dec:          83.88 / 25.78
+[PHASE1] Path start: RA=83.88 Dec=25.78
+[PHASE1] Path end:   RA=83.77 Dec=25.73
+[PHASE1] Querying Gaia catalog with 25 ICRF points...
+Optimized Corridor: 25 points -> 1 query cones.
+[PHASE1] Screening complete. Found 7480 candidates (7480 stars in corridor).

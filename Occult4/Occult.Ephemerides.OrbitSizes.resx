@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+<resheader name="resmimetype"><value>text/microsoft-resx</value></resheader><resheader name="version"><value>1.3</value></resheader><resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader><resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader><data name="label18.Text"><value>              For binary asteroids
+Using the diameters of the components :
+*  estimates the size of the orbit given a period
+*  or the period of the orbit given its size
+for a range of assumed densities.</value></data>
+  <data name="label6.Text"><value>     C - type (carbonaceous):  Includes more than 75 % 
+of known asteroids. Very dark with an albedo of 
+0.03-0.09. Composition is thought to be similar to the 
+Sun, depleted in hydrogen, helium, and other volatiles.
+ C-type asteroids inhabit the main belt's outer regions</value></data>
+  <data name="label7.Text"><value>     S - type (silicaceous):  Accounts for about 17 % of 
+known asteroids. Relatively bright with an albedo of 
+0.10-0.22. Composition is metallic iron mixed with 
+iron- and magnesium-  silicates. S-type asteroids 
+dominate the inner asteroid belt.</value></data>
+  <data name="label8.Text"><value>     M - type (metallic):  Includes many of the rest of the 
+known asteroids. Relatively bright with an albedo of
+ 0.10-0.18. Composition is apparently dominated by 
+metallic iron. M-type asteroids inhabit the main belt's 
+middle region.</value></data>
+  </root>

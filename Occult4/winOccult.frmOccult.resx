@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+<resheader name="resmimetype"><value>text/microsoft-resx</value></resheader><resheader name="version"><value>1.3</value></resheader><resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader><resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader><data name="$this.Icon" mimetype="application/x-microsoft.net.object.binary.base64"><value>AAEAAAD/////AQAAAAAAAAAMAgAAAFFTeXN0ZW0uRHJhd2luZywgVmVyc2lvbj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWIwM2Y1ZjdmMTFkNTBhM2EFAQAAABNTeXN0ZW0uRHJhd2luZy5JY29uAgAAAAhJY29uRGF0YQhJY29uU2l6ZQcEAhNTeXN0ZW0uRHJhd2luZy5TaXplAgAAAAIAAAAJAwAAAAX8////E1N5c3RlbS5EcmF3aW5nLlNpemUCAAAABXdpZHRoBmhlaWdodAAACAgCAAAAAAAAAAAAAAAPAwAAAP4CAAACAAABAAEAICAQAAAAAADoAgAAFgAAACgAAAAgAAAAQAAAAAEABAAAAAAAgAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAACAAAAAgIAAgAAAAIAAgACAgAAAwMDAAICAgAAAAP8AAP8AAAD//wD/AAAA/wD/AP//AAD///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC7u7u7AAAAAAAAAAAAAAC7u7u7uIgAAAAAAAAAAAALu7u7uIiIgAAAAAAAAAAAu7u7u4iIiIgAAAAAAAAAC7u7u7iIiIiIgAAAAAAAALu7u7u4iIiIiIgAAAAAAAC7u7u7iIiIiIiIAAAAAAALu7u7u4iIiIiIiIAAAAAAC7u7u7iIiIiIiIiAAAAAAAu7u7u4iIiIiIiIgAAAAAALu7u7uIiIiIiIiIAAAAAAC7u7u7iIiIiIiIiAAAAAAAu7u7u4iIiIiIiIgAAAAAALu7u7uIiIiIiIiIAAAAAAC7u7u7uIiIiIiIiAAAAAAAC7u7u7iIiIiIiI/wAAAAAAu7u7u7iIiIiIiP/wAAAAAAu7u7u4iIiIiI//8AAAAAAAu7u7u4iIiIgP//AAAAAAAAu7u7u4iIiAAP8AAAAAAAAAu7u7u7iIAAAAAAAAAAAAAAC7u7u7AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAs=</value></data><data name="cmdFindOccultedStars_Asteroidal.ToolTip"><value>Tool to:
+* List all observers listed in the dataset
+* List the number of events observed in each 
+of the four major observing regions
+* List the asteroids that have been observed
+* List stars that have been occulted more than once
+* Provide statistics based on star magnitude
+* Find past occultations of a specified star
+</value></data>
+  <data name="cmdNewDAMIT.ToolTip"><value>A demonstration of the 
+new shape model capabilities. Both 
+DAMIT and ISAM models are catered for.
+
+It also provides an option to have a 
+shape model rotate a full 360° at 1°
+steps.
+
+Users should read the Help topic under
+Asteroid shape models'</value></data>
+  <data name="cmdForReview.ToolTip"><value>Maintenance tool - to list events which
+are marked for review
+
+Such events have been marked for review
+because of particular characteristics
+which might be resolved with information
+available at a future date. This tool allows 
+them to be identified for review.</value></data>
+  <data name="cmdDistances.ToolTip"><value>Calculates:
+1. The distance between two points in the sky
+2. The distance between two points on the oblate Earth
+3. The location of a point at an offset (km and azimuth)
+   from a starting position on the oblate Earth</value></data>
+  </root>

@@ -1,0 +1,327 @@
+DEBUG: Main started.
+
+╔═══════════════════════════════════════════════════════════════╗
+║                     ITALOccultCalc v1.0                        ║
+║         Ricerca Automatica Occultazioni Asteroidali           ║
+║              Ottimizzato per Osservatori Italiani              ║
+╚═══════════════════════════════════════════════════════════════╝
+[DEBUG] Verbosity Level 2 (Full Debug)
+Initializing Global DE441 Ephemeris: /Users/michelebigi/.ioccultcalc/ephemerides/de441_part-2.bsp...
+✓ DE441 loaded (Native Reader): /Users/michelebigi/.ioccultcalc/ephemerides/de441_part-2.bsp
+✓ Global DE441 Loaded successfully.
+
+================================================================
+CARICAMENTO CONFIGURAZIONE
+================================================================
+
+File configurazione: preset_249_jan11.oop
+✓ Configurazione OrbFit caricata
+  Auto-converting to JSON: preset_249_jan11.json ... OK
+✓ Configurazione validata
+
+Propagatore: RK4
+Step size: 0.1 giorni
+Intervallo ricerca: 1 giorni (MJD)
+[DEBUG] Step 2: Selezione asteroidi...
+
+================================================================
+SELEZIONE ASTEROIDI CANDIDATI
+================================================================
+
+Criteri selezione:
+  ★ LISTA ESPLICITA: 1 asteroidi [249]
+  (filtri diametro/magnitudine ignorati)
+
+
+[SQLite] Database allnum.db trovato. Uso lettura diretta per lista esplicita.
+Data aggiornamento DB: 2025-12-14 14:43:00
+[DEBUG] Forcing physical parameters for Ilse: H=7 Albedo=0.043
+Trovati 1 asteroidi nel DB.
+[DEBUG] Step 2: Completato, trovati 1 asteroidi
+[DEBUG] Step 3: Propagazione orbite...
+
+================================================================
+PROPAGAZIONE ORBITE
+================================================================
+
+[▓░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0% | Propagazione   : (249) 249                                         [████████████████████▓░░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 40 % | Propagazione   : Completata                                        
+[DEBUG] Step 3: Completato
+[DEBUG] Step 4: Query catalogo stelle...
+
+=== [DEBUG] Inizio queryCatalog ===
+[DEBUG queryCatalog] gaiaSection trovata: SI
+[DEBUG] Parametro gaia.version NON trovato, uso default DR3
+
+================================================================
+QUERY CATALOGO STELLE GAIA DR3
+================================================================
+
+
+╔══════════════════════════════════════════════════════════╗
+║      ★ CATALOGO MAG18 LOCALE ATTIVO ★                   ║
+║  303M stelle (G≤18) - Query locale veloce               ║
+║  Nessuna query online - tutto da catalogo 9GB           ║
+╚══════════════════════════════════════════════════════════╝
+
+Loaded 23 stars from embedded database
+Loaded star names from embedded database
+✓ Catalogo Gaia caricato: /Users/michelebigi/.catalog/gaia_mag18_v2_multifile
+  Catalogo: Multi-File Gaia DR3 V2 | Stelle: 231140585
+[DEBUG] Step 4: Completato, trovate 0 stelle
+[DEBUG] Step 5: Rilevamento occultazioni...
+
+================================================================
+RILEVAMENTO OCCULTAZIONI
+================================================================
+
+Parametri ricerca:
+  Periodo: JD 2.46105e+06 - 2.46105e+06
+  Mag limite: 18
+  Raggio ricerca: 5 gradi
+  Probabilità minima: 1%
+
+Asteroidi da analizzare: 1
+
+Calcolo sequenziale (SPICE thread-safety)...
+
+
+[1   /1] (249   ) 249                  - D=   0km  - Phase 1 Screening...
+[URGENT DEBUG] === PHASE 1 INPUT CHECK ===
+Propagating Input Elements to Start MJD: 61051
+Elements (Ecliptic J2000): a=2.37832 e=0.2173 i(deg)=9.62091 Omega(deg)=334.653 omega(deg)=42.3634
+  [Phase1] Processing MJD 61051.0 (JD 2461051.5)... [DEBUG] Phase 1 Input Elements: a=2.4 e=0.2 i(deg)=9.6 M(deg)=58.1
+ [DEBUG] Asteroid Helio Eq : -0.4  2.1  0.3
+ [DEBUG] Rel Pos Eq (Geo)  : -0.0  1.3 -0.1
+ [DEBUG] RA=90.6 Dec=-2.8
+ [DEBUG] Point 1: RA=90.6 Dec=-2.8 (MJD=61051.0)
+ [DEBUG] Point 2: RA=90.6 Dec=-2.8 (MJD=61051.0)
+ [DEBUG] Point 3: RA=90.6 Dec=-2.8 (MJD=61051.0)
+ [DEBUG] Querying Corridor with 97 points.
+ [DEBUG] queryOrbit returned 345271 stars. (Width: 5.0, Mag: 18.0)
+[DEBUG Phase2 Phys] Passing to Phase 2: D=0.0 H=7.0 G=0.1 p=0.0
+
+╔════════════════════════════════════════════════════════════╗
+║  PHASE 2: Geometria Precisa con Orbital Refinement        ║
+╚════════════════════════════════════════════════════════════╝
+
+Candidati da processare: 4
+Orbital refinement: ATTIVO
+Finestra temporale: ±30.0 min
+Risoluzione: 1.0 sec
+
+══════════════════════════════════════════════════════════
+STEP 1: ORBITAL REFINEMENT
+══════════════════════════════════════════════════════════
+
+  [RWO Download] Scaricamento osservazioni per 249...
+  URL: https://newton.spacedys.com/~astdys2/mpcobs/numbered/0/249.rwo
+  Downloading...
+  ✓ File scaricato: /tmp/249.rwo
+  [Debug] RWO File Size: 2039175 bytes
+  Parsing RWO...
+  ✓ Parsate 4588 osservazioni RWO
+  [Observations] Scaricate 4588 osservazioni
+  [Observations] Selezionate 200 osservazioni più recenti per il fit
+  [Observations] Epoca più recente: MJD 60953.64
+  [Observations] Epoca più vecchia: MJD 60609.06
+  [Orbital Fit] Fitting con 200 osservazioni (AstDynEngine)...
+Loading DE441 Ephemeris: /Users/michelebigi/.ioccultcalc/ephemerides/de441_part-2.bsp...
+✓ DE441 loaded (Native Reader): /Users/michelebigi/.ioccultcalc/ephemerides/de441_part-2.bsp
+DE441 Loaded successfully.
+  [Orbital Fit] Initial Elements (Equatorial J2000) at MJD 61051.00:
+    a=2.38 e=0.22 i=32.38 deg
+    Node=352.32 Peri=23.82 M=58.09 deg
+
+Initial orbit set:
+  Epoch: 61051.000000 MJD TDB
+  a = 2.378320 AU
+  e = 0.217300
+  i = 32.381846 deg
+  [Orbital Fit] First Obs: MJD 60953.636008 RA=116.387242 deg Dec=30.747900 deg
+
+=== Differential Correction ===
+Observations: 200
+Max iterations: 20
+Convergence threshold: 0.000001
+
+========================================
+Differential Corrections
+========================================
+Observations: 200
+Max iterations: 20
+Convergence: 0.000001 AU
+
+Iter  1: RMS = 35991.634 arcsec, ||Δx|| = 4.38e-01 AU, Outliers = 0
+Iter  2: RMS = 0.000 arcsec, ||Δx|| = 1.62e-01 AU, Outliers = 200
+Iter  3: RMS = 0.000 arcsec, ||Δx|| = 8.58e-02 AU, Outliers = 200
+Iter  4: RMS = 0.000 arcsec, ||Δx|| = 1.05e-02 AU, Outliers = 200
+Iter  5: RMS = 5.172 arcsec, ||Δx|| = 1.11e-03 AU, Outliers = 164
+Iter  6: RMS = 3.756 arcsec, ||Δx|| = 1.29e-04 AU, Outliers = 10
+Iter  7: RMS = 0.998 arcsec, ||Δx|| = 1.52e-05 AU, Outliers = 0
+Iter  8: RMS = 0.844 arcsec, ||Δx|| = 1.83e-06 AU, Outliers = 0
+Iter  9: RMS = 0.839 arcsec, ||Δx|| = 2.27e-07 AU, Outliers = 0
+
+✓ CONVERGED after 9 iterations
+========================================
+
+
+=== Final Orbit (AstDyn) ===
+  a=2.38e+00 AU, e=2.17e-01
+  GM=2.96e-04 AU^3/day^2
+Epoch:    61051.000000 MJD TDB
+a:        2.378447912 AU
+e:        0.217397520
+i:        32.383543 deg
+Ω:        352.318832 deg
+ω:        23.805972 deg
+M:        71.806429 deg
+Period:   1339.797 days
+q:        1.861379 AU
+Q:        2.895517 AU
+
+=== Residuals Summary ===
+Observations:  200
+Rejected:      0
+RMS (RA):      0.382 arcsec
+RMS (Dec):     1.123 arcsec
+Chi²:          250.35
+Iterations:    9
+Converged:     Yes
+  ✓ Fit completato in 1.40 sec
+    RMS Finale: 1.19 arcsec
+    N. Obs: 200 (0 outlier rimossi)
+
+  ✓✓✓ ORBITA RAFFINATA CON SUCCESSO ✓✓✓
+  Elementi propagati al CA per massima precisione
+
+══════════════════════════════════════════════════════════
+STEP 2: CALCOLO GEOMETRIA OCCULTAZIONI
+══════════════════════════════════════════════════════════
+
+Candidato 1/4 - Stella 3025034015914559104...
+  [Phase2 Geometry] Using refined (Equatorial J2000) elements.
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 222916422.7 km
+    Earth Radius Limit: 6505.7 km
+    Shadow Velocity: 9.10 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 275814138.32 mas @ MJD 61051.782722
+  Duration: 0.000000 sec
+  Shadow path width: 255.147169 km
+
+Candidato 2/4 - Stella 3025034011619473280...
+  [Phase2 Geometry] Using refined (Equatorial J2000) elements.
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 222915964.8 km
+    Earth Radius Limit: 6505.7 km
+    Shadow Velocity: 9.10 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 275812357.81 mas @ MJD 61051.782722
+  Duration: 0.000000 sec
+  Shadow path width: 255.147169 km
+
+Candidato 3/4 - Stella 3025033805460938624...
+  [Phase2 Geometry] Using refined (Equatorial J2000) elements.
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 222922041.2 km
+    Earth Radius Limit: 6505.7 km
+    Shadow Velocity: 9.10 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 275825313.06 mas @ MJD 61051.749528
+  Duration: 0.000000 sec
+  Shadow path width: 255.147169 km
+
+Candidato 4/4 - Stella 3025034011619368192...
+  [Phase2 Geometry] Using refined (Equatorial J2000) elements.
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 222900649.2 km
+    Earth Radius Limit: 6505.7 km
+    Shadow Velocity: 9.09 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 275763740.55 mas @ MJD 61051.817056
+  Duration: 0.000000 sec
+  Shadow path width: 255.147169 km
+
+══════════════════════════════════════════════════════════
+PHASE 2 COMPLETATA
+══════════════════════════════════════════════════════════
+  Orbital refinement: ✓ Successo
+    RMS residui: 1.186426 arcsec
+    Osservazioni: 200
+  Eventi calcolati: 4
+  Falliti: 0
+  Tempo totale: 16624.225542 ms
+
+Debug: Checking 4 candidates for target ID 877859914797936896
+ → Phase1: 4 candidati → Phase2: 4 eventi → Trovati 4 eventi! ✓
+[██████████████████████████████████████████████████] 100% | Completato     : 1 asteroidi processati                            
+[DEBUG] Step 5: Completato, trovati 0 eventi
+
+================================================================
+CALCOLO PRIORITÀ EVENTI
+================================================================
+
+Criteri di priorità:
+  • Mag drop > 2.0 mag: +3 punti
+  • Durata > 5 secondi: +2 punti
+  • Path attraversa Italia: +3 punti
+  • Incertezza < 15 km: +2 punti
+  • Stella luminosa (< 10 mag): +1 punto
+
+
+================================================================
+GENERAZIONE REPORT
+================================================================
+
+Applicazione filtri richiesti: Mag <= 15.0, Durata > 0.3s
+
+Formati output:
+  • IOTA formato classico
+  • Preston formato compatto
+  • JSON per API
+  • KML per Google Earth
+  • CSV per Excel
+
+╔════════════════════════════════════════════════════════════╗
+║          ITALOccultCalc - REPORT OCCULTAZIONI              ║
+╚════════════════════════════════════════════════════════════╝
+
+Totale eventi trovati: 0
+Eventi dopo filtri: 0
+
+⚠️  Nessun evento soddisfa i criteri di filtro.
+   Prova ad aumentare max_distance_km o ridurre min_mag_drop.
+
+✓ Report console generato
+
+✓ File XML generato: output_249_jan2026.xml
+  Formato: Occult4 compatible
+  Eventi: 0
+  Import in: OccultWatcher Cloud
+
+✓ File JSON generato: output_249_jan2026.json
+✓ File KML generato: output_249_jan2026.kml
+  Tracce generate: 0
+
+
+================================================================
+RIEPILOGO TEMPI DI ESECUZIONE
+================================================================
+
+┌───────────────────────────────┬──────────────┐
+│ FASE                          │ TEMPO (s)    │
+├───────────────────────────────┼──────────────┤
+│ 1. Caricamento Config         │     0.000 s  │
+│ 2. Selezione Asteroidi        │     0.388 s  │
+│ 3. Propagazione Orbite        │     0.000 s  │
+│ 4. Query Catalogo Stelle      │     0.001 s  │
+│ 5. Rilevamento Occultazioni   │    41.122 s  │
+│ 6. Reporting & Export         │     0.001 s  │
+├───────────────────────────────┼──────────────┤
+│ TOTALE                        │    41.514 s  │
+└───────────────────────────────┴──────────────┘
+
+✓ Workflow completato con successo!
+Eventi trovati: 0
+Report salvati in: output/
+

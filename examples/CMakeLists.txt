@@ -1,11 +1,14 @@
 add_executable(example_basic basic_usage.cpp)
 target_link_libraries(example_basic ioccultcalc)
 
+add_executable(test_mpc_34713 test_mpc_34713.cpp)
+target_link_libraries(test_mpc_34713 ioccultcalc)
+
 add_executable(example_search search_occultations.cpp)
 target_link_libraries(example_search ioccultcalc)
 
-add_executable(example_orbit_improvement orbit_improvement.cpp)
-target_link_libraries(example_orbit_improvement ioccultcalc)
+# add_executable(example_orbit_improvement orbit_improvement.cpp)
+# target_link_libraries(example_orbit_improvement ioccultcalc)
 
 add_executable(example_occult4_xml occult4_xml_example.cpp)
 target_link_libraries(example_occult4_xml ioccultcalc)
@@ -271,6 +274,27 @@ target_link_libraries(test_realworld_occultation ioccultcalc)
 add_executable(italoccultcalc italoccultcalc.cpp)
 target_link_libraries(italoccultcalc ioccultcalc)
 
+add_executable(verify_horizons verify_horizons.cpp)
+target_link_libraries(verify_horizons ioccultcalc)
+
+add_executable(final_verify_13477 final_verify_13477.cpp)
+target_link_libraries(final_verify_13477 ioccultcalc)
+
+add_executable(verify_jpl_icrf verify_jpl_icrf.cpp)
+target_link_libraries(verify_jpl_icrf ioccultcalc)
+
+add_executable(calc_occultation_13477 calc_occultation_13477.cpp)
+target_link_libraries(calc_occultation_13477 ioccultcalc)
+
+add_executable(diagnose_catalog ../diagnose_catalog.cpp)
+target_link_libraries(diagnose_catalog ioccultcalc)
+
+add_executable(check_asteroid_pos ../check_asteroid_pos.cpp)
+target_link_libraries(check_asteroid_pos ioccultcalc)
+
+add_executable(jpl_comparison ../jpl_comparison.cpp)
+target_link_libraries(jpl_comparison ioccultcalc)
+
 # Test massivo 1000 asteroidi - Gennaio 2026
 add_executable(test_massive_jan2026 test_massive_jan2026.cpp)
 target_link_libraries(test_massive_jan2026 ioccultcalc)
@@ -289,5 +313,6 @@ target_link_libraries(generate_hygiea_iota_card ioccultcalc)
 
 # render_user_event removed (synthetic data)
 
-add_executable(verify_astdyn_wrapper_vs_jpl verify_astdyn_wrapper_vs_jpl.cpp)
-target_link_libraries(verify_astdyn_wrapper_vs_jpl ioccultcalc)
+# verify_astdyn_wrapper_vs_jpl - COMMENTED OUT (missing source file)
+# add_executable(verify_astdyn_wrapper_vs_jpl verify_astdyn_wrapper_vs_jpl.cpp)
+# target_link_libraries(verify_astdyn_wrapper_vs_jpl ioccultcalc)

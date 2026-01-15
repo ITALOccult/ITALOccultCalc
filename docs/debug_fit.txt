@@ -1,0 +1,608 @@
+DEBUG: Main started.
+
+╔═══════════════════════════════════════════════════════════════╗
+║                     ITALOccultCalc v1.0                        ║
+║         Ricerca Automatica Occultazioni Asteroidali           ║
+║              Ottimizzato per Osservatori Italiani              ║
+╚═══════════════════════════════════════════════════════════════╝
+[DEBUG] Verbosity Level 2 (Full Debug)
+[DEBUG] main: Prima di startTime
+[DEBUG] main: WORKFLOW COMPLETO - INIZIO
+Initializing Global DE441 Ephemeris: /Users/michelebigi/.ioccultcalc/ephemerides/de441_part-2.bsp...
+✓ DE441 loaded (Native Reader): /Users/michelebigi/.ioccultcalc/ephemerides/de441_part-2.bsp
+✓ Global DE441 Loaded successfully.
+[DEBUG] main: Step 1: Caricamento configurazione...
+[DEBUG] loadConfiguration: INIZIO
+
+================================================================
+CARICAMENTO CONFIGURAZIONE
+================================================================
+
+File configurazione: examples/preset_249_jan11_fixed.json
+[DEBUG] loadConfiguration: ConfigManager creato
+[DEBUG] loadConfiguration: Verifico formato file...
+[DEBUG] loadConfiguration: Carico JSON...
+✓ Configurazione JSON caricata
+[DEBUG] loadConfiguration: File caricato, valido configurazione...
+✓ Configurazione validata
+
+[DEBUG] loadConfiguration: Configurazione validata, leggo sezioni...
+[DEBUG] loadConfiguration: Chiamo getSection(PROPAGATION)...
+[DEBUG] loadConfiguration: getSection(PROPAGATION) completato
+[DEBUG] loadConfiguration: Chiamo getSection(SEARCH)...
+[DEBUG] loadConfiguration: getSection(SEARCH) completato
+[DEBUG] loadConfiguration: Sezioni lette, stampo parametri...
+[DEBUG] loadConfiguration: propagSection trovata
+Propagatore: RK4
+Step size: 0.1 giorni
+[DEBUG] loadConfiguration: searchSection trovata
+[DEBUG] loadConfiguration: FINE
+[DEBUG] main: Step 1: Completato
+[DEBUG] Step 2: Selezione asteroidi...
+[DEBUG] selectAsteroids: INIZIO
+
+================================================================
+SELEZIONE ASTEROIDI CANDIDATI
+================================================================
+
+[DEBUG] selectAsteroids: Dopo printHeader
+[DEBUG] selectAsteroids: Inizializzo variabili...
+[DEBUG] selectAsteroids: Leggo configurazione objectSection...
+[DEBUG] selectAsteroids: objectSection letto
+Criteri selezione:
+  ★ LISTA ESPLICITA: 1 asteroidi [249]
+  (filtri diametro/magnitudine ignorati)
+
+
+[SQLite] Database allnum.db trovato. Uso lettura diretta per lista esplicita.
+Data aggiornamento DB: 2025-12-14 14:43:00
+
+  ★★★ TEST: INJECTING PRECISE JPL ELEMENTS (2026-Jan-11) ★★★
+  ✓ Caricato (SQLite): (249)
+    H=11.47  Diam~17.4km
+    Epoch (MJD): 61000.0
+    a=2.4 e=0.2 i=9.6°
+Trovati 1 asteroidi nel DB.
+[DEBUG] Step 2: Completato, trovati 1 asteroidi
+[DEBUG] Step 3: Propagazione orbite...
+
+================================================================
+PROPAGAZIONE ORBITE
+================================================================
+
+SPKReader: Successfully loaded DE441 covering JD -3.02722e+06 to 7.93019e+06
+OrbitPropagator: Using JPL DE441 (high precision planets)
+OrbitPropagator: WARNING - Asteroid perturbations disabled (codes_300ast_20100725.bsp not found)
+[▓░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0% | Propagazione   : (249) Unknown                                     [████████████████████▓░░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 40 % | Propagazione   : Completata                                        
+[DEBUG] Step 3: Completato
+[DEBUG] Step 4: Query catalogo stelle...
+
+=== [DEBUG] Inizio queryCatalog ===
+[DEBUG queryCatalog] gaiaSection trovata: NO
+
+================================================================
+QUERY CATALOGO STELLE GAIA DR3
+================================================================
+
+
+╔══════════════════════════════════════════════════════════╗
+║      ★ CATALOGO MAG18 LOCALE ATTIVO ★                   ║
+║  303M stelle (G≤18) - Query locale veloce               ║
+║  Nessuna query online - tutto da catalogo 9GB           ║
+╚══════════════════════════════════════════════════════════╝
+
+Could not open IAU catalog: data/IAU-CSN.json
+Could not open star names database: data/common_star_names.csv
+Loaded 23 stars from embedded database
+Loaded star names from embedded database
+✓ Catalogo Gaia caricato: /Users/michelebigi/.catalog/gaia_mag18_v2_multifile
+  Catalogo: Multi-File Gaia DR3 V2 | Stelle: 0
+[DEBUG] Step 4: Completato, trovate 0 stelle
+[DEBUG] Step 5: Rilevamento occultazioni...
+
+================================================================
+RILEVAMENTO OCCULTAZIONI
+================================================================
+
+Parametri ricerca:
+  Periodo: JD 2461051.5 - 2461052.5
+  Mag limite: 14.5
+  Raggio ricerca: 0.1 gradi
+  Probabilità minima: 1.0%
+
+Asteroidi da analizzare: 1
+
+Calcolo sequenziale (SPICE thread-safety)...
+
+
+[1   /1] (249   ) Unknown              - D=  17km  - Phase 1 Screening...[DEBUG Rotation] Before: i=9.6 deg
+[DEBUG Rotation] After: i=32.4 deg
+  [Phase1] Processing MJD 61051.0 (JD 2461051.5)... [DEBUG] Phase 1 Input Elements: a=2.4 e=0.2 i(deg)=32.4 M(deg)=71.8
+ [DEBUG] Cartesian (Raw Heliorcentric): x=-0.9 y=1.8 z=1.1
+ [DEBUG] Raw Latitude (should be < i): 27.4 deg
+ [DEBUG] Earth Helio Eq: -0.3  0.8  0.4
+ [DEBUG] Rel Pos Eq: -0.6  1.0  0.7
+ [DEBUG] Point 1: RA=121.3 Dec=31.3 (MJD=61051.0)
+ [DEBUG] Point 2: RA=121.3 Dec=31.3 (MJD=61051.0)
+ [DEBUG] Point 3: RA=121.3 Dec=31.3 (MJD=61051.0)
+ [DEBUG] Querying Corridor with 97 points.
+ [DEBUG] queryOrbit returned 140 stars. (Width: 0.1, Mag: 18.0)
+Debug: Target star 877859914797936896 missing. Fetching manually...
+Debug: Target star added manually to candidates (T0=61051.5).
+
+╔════════════════════════════════════════════════════════════╗
+║  PHASE 2: Geometria Precisa con Orbital Refinement        ║
+╚════════════════════════════════════════════════════════════╝
+
+Candidati da processare: 13
+Orbital refinement: ATTIVO
+Finestra temporale: ±10.0 min
+Risoluzione: 1.0 sec
+
+══════════════════════════════════════════════════════════
+STEP 1: ORBITAL REFINEMENT
+══════════════════════════════════════════════════════════
+
+  [RWO Download] Scaricamento osservazioni per 249...
+  URL: https://newton.spacedys.com/~astdys2/mpcobs/numbered/0/249.rwo
+  Downloading...
+  ✓ File scaricato: /tmp/249.rwo
+  [Debug] RWO File Size: 2039175 bytes
+  Parsing RWO...
+  ✓ Parsate 4588 osservazioni RWO
+  [Observations] Scaricate 4588 osservazioni
+  [Observations] Selezionate 20 osservazioni più recenti per il fit
+  [Observations] Epoca più recente: MJD 60953.64
+  [Observations] Epoca più vecchia: MJD 60949.58
+  [Orbital Fit] Fitting con 20 osservazioni (AstDynEngine)...
+Loading DE441 Ephemeris: /Users/michelebigi/.ioccultcalc/ephemerides/de441_part-2.bsp...
+✓ DE441 loaded (Native Reader): /Users/michelebigi/.ioccultcalc/ephemerides/de441_part-2.bsp
+DE441 Loaded successfully.
+  [Orbital Fit] Initial Elements at MJD 61051.00:
+    a=2.38 e=0.22 i=32.38 deg
+    Node=352.32 Peri=23.83 M=71.79 deg
+
+Initial orbit set:
+  Epoch: 61051.000000 MJD TDB
+  a = 2.378432 AU
+  e = 0.217392
+  i = 32.382415 deg
+  [Orbital Fit] First Obs: MJD 60953.636008 RA=116.387242 deg Dec=30.747900 deg
+
+=== Differential Correction ===
+Observations: 20
+Max iterations: 20
+Convergence threshold: 0.000001
+
+========================================
+Differential Corrections
+========================================
+Observations: 20
+Max iterations: 20
+Convergence: 0.000001 AU
+
+Iter  1: RMS = 5.147 arcsec, ||Δx|| = 6.72e-01 AU, Outliers = 0
+Iter  2: RMS = 0.000 arcsec, ||Δx|| = 2.22e-01 AU, Outliers = 20
+Iter  3: RMS = 0.000 arcsec, ||Δx|| = 1.09e-01 AU, Outliers = 20
+Iter  4: RMS = 0.000 arcsec, ||Δx|| = 5.83e-02 AU, Outliers = 20
+Iter  5: RMS = 0.000 arcsec, ||Δx|| = 1.09e-02 AU, Outliers = 20
+Iter  6: RMS = 0.000 arcsec, ||Δx|| = 3.43e-03 AU, Outliers = 20
+Iter  7: RMS = 2.202 arcsec, ||Δx|| = 5.52e-04 AU, Outliers = 0
+Iter  8: RMS = 0.409 arcsec, ||Δx|| = 8.78e-05 AU, Outliers = 0
+Iter  9: RMS = 0.273 arcsec, ||Δx|| = 1.29e-05 AU, Outliers = 0
+Iter 10: RMS = 0.270 arcsec, ||Δx|| = 1.87e-06 AU, Outliers = 0
+Iter 11: RMS = 0.271 arcsec, ||Δx|| = 2.69e-07 AU, Outliers = 0
+
+✓ CONVERGED after 11 iterations
+========================================
+
+
+=== Final Orbit (AstDyn) ===
+  a=1.25e+00 AU, e=4.15e-01
+  GM=2.96e-04 AU^3/day^2
+Epoch:    61051.000000 MJD TDB
+a:        1.249797919 AU
+e:        0.415475457
+i:        31.482344 deg
+Ω:        346.361402 deg
+ω:        285.020625 deg
+M:        214.580712 deg
+Period:   510.338 days
+q:        0.730538 AU
+Q:        1.769058 AU
+
+=== Residuals Summary ===
+Observations:  20
+Rejected:      0
+RMS (RA):      0.247 arcsec
+RMS (Dec):     0.293 arcsec
+Chi²:          1.90
+Iterations:    11
+Converged:     Yes
+  ✓ Fit completato in 0.24 sec
+    RMS Finale: 0.38 arcsec
+    N. Obs: 20 (0 outlier rimossi)
+
+  ✓✓✓ ORBITA RAFFINATA CON SUCCESSO ✓✓✓
+  Elementi propagati al CA per massima precisione
+
+══════════════════════════════════════════════════════════
+STEP 2: CALCOLO GEOMETRIA OCCULTAZIONI
+══════════════════════════════════════════════════════════
+
+Candidato 1/13 - Stella 877870085280428288...
+  Usando: elementi raffinati da fit RWO
+  Ricerca CA: Scansione rigida in ±10.00 min attorno a MJD 61051.18888
+[DEBUG] CA Logic: Asteroid RA=110.644721 Dec=32.786518
+[DEBUG] CA Logic: Star     RA=121.215648 Dec=31.340287
+[DEBUG] CA Logic: Inclination=31.482344 deg
+  CA preciso (Rigorous): 32653378.21 mas @ MJD 61051.18193373
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 17587432.8 km
+    Earth Radius Limit: 6386.9 km
+    Shadow Velocity: 12.66 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 32653378.21 mas @ MJD 61051.181934
+  Duration: 1.377768 sec
+  Shadow path width: 17.437304 km
+
+Candidato 2/13 - Stella 877869462509057920...
+  Usando: elementi raffinati da fit RWO
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61051.43911
+[DEBUG] CA Logic: Asteroid RA=110.470190 Dec=32.778296
+[DEBUG] CA Logic: Star     RA=121.134178 Dec=31.341010
+[DEBUG] CA Logic: Inclination=31.482344 deg
+  CA preciso (Rigorous): 32929604.69 mas @ MJD 61051.43216432
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 17726035.5 km
+    Earth Radius Limit: 6386.9 km
+    Shadow Velocity: 12.68 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 32929604.69 mas @ MJD 61051.432164
+  Duration: 1.375682 sec
+  Shadow path width: 17.437304 km
+
+Candidato 3/13 - Stella 877869531228533760...
+  Usando: elementi raffinati da fit RWO
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61051.48537
+[DEBUG] CA Logic: Asteroid RA=110.437912 Dec=32.776724
+[DEBUG] CA Logic: Star     RA=121.119108 Dec=31.341534
+[DEBUG] CA Logic: Inclination=31.482344 deg
+  CA preciso (Rigorous): 32980393.13 mas @ MJD 61051.47842533
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 17751536.8 km
+    Earth Radius Limit: 6386.9 km
+    Shadow Velocity: 12.68 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 32980393.13 mas @ MJD 61051.478425
+  Duration: 1.375330 sec
+  Shadow path width: 17.437304 km
+
+Candidato 4/13 - Stella 877870085280428032...
+  Usando: elementi raffinati da fit RWO
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61051.18130
+[DEBUG] CA Logic: Asteroid RA=110.650007 Dec=32.786760
+[DEBUG] CA Logic: Star     RA=121.218126 Dec=31.341495
+[DEBUG] CA Logic: Inclination=31.482344 deg
+  CA preciso (Rigorous): 32644125.80 mas @ MJD 61051.17435324
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 17582765.2 km
+    Earth Radius Limit: 6386.9 km
+    Shadow Velocity: 12.66 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 32644125.80 mas @ MJD 61051.174353
+  Duration: 1.377699 sec
+  Shadow path width: 17.437304 km
+
+Candidato 5/13 - Stella 877872383086819456...
+  Usando: elementi raffinati da fit RWO
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61051.80310
+[DEBUG] CA Logic: Asteroid RA=110.216139 Dec=32.765486
+[DEBUG] CA Logic: Star     RA=121.015496 Dec=31.342326
+[DEBUG] CA Logic: Inclination=31.482344 deg
+  CA preciso (Rigorous): 33331245.54 mas @ MJD 61051.79615853
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 17927993.1 km
+    Earth Radius Limit: 6386.9 km
+    Shadow Velocity: 12.70 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 33331245.54 mas @ MJD 61051.796159
+  Duration: 1.373114 sec
+  Shadow path width: 17.437304 km
+
+Candidato 6/13 - Stella 877869535524618112...
+  Usando: elementi raffinati da fit RWO
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61051.44391
+[DEBUG] CA Logic: Asteroid RA=110.466842 Dec=32.778134
+[DEBUG] CA Logic: Star     RA=121.132623 Dec=31.342510
+[DEBUG] CA Logic: Inclination=31.482344 deg
+  CA preciso (Rigorous): 32933830.48 mas @ MJD 61051.43696315
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 17728124.0 km
+    Earth Radius Limit: 6386.9 km
+    Shadow Velocity: 12.68 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 32933830.48 mas @ MJD 61051.436963
+  Duration: 1.375645 sec
+  Shadow path width: 17.437304 km
+
+Candidato 7/13 - Stella 877869462509052032...
+  Usando: elementi raffinati da fit RWO
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61051.44626
+[DEBUG] CA Logic: Asteroid RA=110.465201 Dec=32.778054
+[DEBUG] CA Logic: Star     RA=121.131821 Dec=31.336238
+[DEBUG] CA Logic: Inclination=31.482344 deg
+  CA preciso (Rigorous): 32940961.72 mas @ MJD 61051.43931494
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 17731848.2 km
+    Earth Radius Limit: 6386.9 km
+    Shadow Velocity: 12.67 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 32940961.72 mas @ MJD 61051.439315
+  Duration: 1.375758 sec
+  Shadow path width: 17.437304 km
+
+Candidato 8/13 - Stella 877872249943952768...
+  Usando: elementi raffinati da fit RWO
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61051.65622
+[DEBUG] CA Logic: Asteroid RA=110.318677 Dec=32.770777
+[DEBUG] CA Logic: Star     RA=121.063427 Dec=31.346250
+[DEBUG] CA Logic: Inclination=31.482344 deg
+  CA preciso (Rigorous): 33165956.59 mas @ MJD 61051.64927626
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 17844719.3 km
+    Earth Radius Limit: 6386.9 km
+    Shadow Velocity: 12.69 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 33165956.59 mas @ MJD 61051.649276
+  Duration: 1.374180 sec
+  Shadow path width: 17.437304 km
+
+Candidato 9/13 - Stella 877869604244098048...
+  Usando: elementi raffinati da fit RWO
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61051.60043
+[DEBUG] CA Logic: Asteroid RA=110.357617 Dec=32.772743
+[DEBUG] CA Logic: Star     RA=121.081573 Dec=31.334003
+[DEBUG] CA Logic: Inclination=31.482344 deg
+  CA preciso (Rigorous): 33113110.41 mas @ MJD 61051.59348596
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 17818412.0 km
+    Earth Radius Limit: 6386.9 km
+    Shadow Velocity: 12.69 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 33113110.41 mas @ MJD 61051.593486
+  Duration: 1.374596 sec
+  Shadow path width: 17.437304 km
+
+Candidato 10/13 - Stella 877868745250634240...
+  Usando: elementi raffinati da fit RWO
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61051.33659
+[DEBUG] CA Logic: Asteroid RA=110.541710 Dec=32.781722
+[DEBUG] CA Logic: Star     RA=121.167518 Dec=31.333310
+[DEBUG] CA Logic: Inclination=31.482344 deg
+  CA preciso (Rigorous): 32821776.63 mas @ MJD 61051.32964236
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 17672073.6 km
+    Earth Radius Limit: 6386.9 km
+    Shadow Velocity: 12.67 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 32821776.63 mas @ MJD 61051.329642
+  Duration: 1.376605 sec
+  Shadow path width: 17.437304 km
+
+Candidato 11/13 - Stella 877858677847287680...
+  Usando: elementi raffinati da fit RWO
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61051.08308
+[DEBUG] CA Logic: Asteroid RA=110.718478 Dec=32.789851
+[DEBUG] CA Logic: Star     RA=121.250134 Dec=31.347142
+[DEBUG] CA Logic: Inclination=31.482344 deg
+  CA preciso (Rigorous): 32531465.70 mas @ MJD 61051.07613637
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 17526163.6 km
+    Earth Radius Limit: 6386.9 km
+    Shadow Velocity: 12.65 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 32531465.70 mas @ MJD 61051.076136
+  Duration: 1.378489 sec
+  Shadow path width: 17.437304 km
+
+Candidato 12/13 - Stella 877869531228537600...
+  Usando: elementi raffinati da fit RWO
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61051.45834
+[DEBUG] CA Logic: Asteroid RA=110.456770 Dec=32.777645
+[DEBUG] CA Logic: Star     RA=121.127949 Dec=31.347917
+[DEBUG] CA Logic: Inclination=31.482344 deg
+  CA preciso (Rigorous): 32945900.48 mas @ MJD 61051.45139871
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 17734064.5 km
+    Earth Radius Limit: 6386.9 km
+    Shadow Velocity: 12.68 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 32945900.48 mas @ MJD 61051.451399
+  Duration: 1.375663 sec
+  Shadow path width: 17.437304 km
+
+Candidato 13/13 - Stella 877859914797936896...
+  Usando: elementi raffinati da fit RWO
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61051.50000
+[DEBUG] CA Logic: Asteroid RA=110.427703 Dec=32.776224
+[DEBUG] CA Logic: Star     RA=121.495504 Dec=31.327149
+[DEBUG] CA Logic: Inclination=31.482344 deg
+  CA preciso (Rigorous): 34154591.46 mas @ MJD 61051.49305556
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 18377334.8 km
+    Earth Radius Limit: 6386.9 km
+    Shadow Velocity: 12.65 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 34154591.46 mas @ MJD 61051.493056
+  Duration: 1.378184 sec
+  Shadow path width: 17.437304 km
+
+══════════════════════════════════════════════════════════
+PHASE 2 COMPLETATA
+══════════════════════════════════════════════════════════
+  Orbital refinement: ✓ Successo
+    RMS residui: 0.382709 arcsec
+    Osservazioni: 20
+  Eventi calcolati: 13
+  Falliti: 0
+  Tempo totale: 1804.416125 ms
+
+Debug: Checking 13 candidates for target ID 877859914797936896
+
+======================================================
+ SPECIAL CHECK FOR STAR: 877859914797936896
+======================================================
+  Usando: elementi raffinati da fit RWO
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61051.50000
+[DEBUG] CA Logic: Asteroid RA=110.427703 Dec=32.776224
+[DEBUG] CA Logic: Star     RA=121.495504 Dec=31.327149
+[DEBUG] CA Logic: Inclination=31.482344 deg
+  CA preciso (Rigorous): 34154591.46 mas @ MJD 61051.49305556
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 18377334.8 km
+    Earth Radius Limit: 6386.9 km
+    Shadow Velocity: 12.65 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  > Calculated MJD: 61051.493056
+  > Closest Approach: 34154591.457 mas
+  > Shadow Width: 17.437 km
+  > Shadow Path Points: 0
+  > RESULT: MISS (No shadow path on Earth)
+======================================================
+
+
+ >>> TARGET STAR FOUND: 877859914797936896 <<<
+     MJD: 61051.493
+     Closest Approach: 34154591.457 mas
+     Duration: 1.378 s
+     Shadow Velocity: 12.652 km/s
+     Besselian X, Y: 0.000, 2894.508
+ ---------------------------------------------------
+ → Phase1: 12 candidati → Phase2: 13 eventi → Trovati 13 eventi! ✓
+[██████████████████████████████████████████████████] 100% | Completato     : 1 asteroidi processati                            
+[DEBUG] Step 5: Completato, trovati 4 eventi
+
+================================================================
+CALCOLO PRIORITÀ EVENTI
+================================================================
+
+Criteri di priorità:
+  • Mag drop > 2.0 mag: +3 punti
+  • Durata > 5 secondi: +2 punti
+  • Path attraversa Italia: +3 punti
+  • Incertezza < 15 km: +2 punti
+  • Stella luminosa (< 10 mag): +1 punto
+
+(249) Unknown vs 
+  Score: 5.000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(249) Unknown vs 
+  Score: 5.000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(249) Unknown vs 
+  Score: 5.000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(249) Unknown vs 
+  Score: 5.000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+
+================================================================
+GENERAZIONE REPORT
+================================================================
+
+Applicazione filtri richiesti: Mag <= 15.0, Durata > 0.3s
+
+Formati output:
+  • IOTA formato classico
+  • Preston formato compatto
+  • JSON per API
+  • KML per Google Earth
+  • CSV per Excel
+
+╔════════════════════════════════════════════════════════════╗
+║          ITALOccultCalc - REPORT OCCULTAZIONI              ║
+╚════════════════════════════════════════════════════════════╝
+
+Totale eventi trovati: 4
+Eventi dopo filtri: 2
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+(249) Unknown occulta 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Data/Ora: 2026-10-11 40:21:59 UT
+JD: 2461051.681934
+
+Geometria:
+  Separazione: 32653.378208 arcsec
+  Mag drop: 0.019759 mag
+  Durata: 1.377768 secondi
+  Larghezza path: 17 km
+  Incertezza: ±0 km (1σ)
+
+Visibile da: Roma
+
+PRIORITÀ: ★★ (5.000000/11)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+(249) Unknown occulta 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Data/Ora: 2026-10-11 10:49:38 UT
+JD: 2461051.576136
+
+Geometria:
+  Separazione: 32531.465700 arcsec
+  Mag drop: 0.099928 mag
+  Durata: 1.378489 secondi
+  Larghezza path: 17 km
+  Incertezza: ±0 km (1σ)
+
+Visibile da: Roma
+
+PRIORITÀ: ★★ (5.000000/11)
+
+✓ Report console generato
+
+DEBUG XML: designation='249' name='Unknown' diameter=17.437304
+DEBUG XML: designation='249' name='Unknown' diameter=17.437304
+✓ File XML generato: test_output_occult4.xml
+  Formato: Occult4 compatible
+  Eventi: 2
+  Import in: OccultWatcher Cloud
+
+✓ File JSON generato: test_output_structured.json
+✓ File KML generato: output_events.kml
+  Tracce generate: 2
+
+
+================================================================
+RIEPILOGO TEMPI DI ESECUZIONE
+================================================================
+
+┌───────────────────────────────┬──────────────┐
+│ FASE                          │ TEMPO (s)    │
+├───────────────────────────────┼──────────────┤
+│ 1. Caricamento Config         │     0.000 s  │
+│ 2. Selezione Asteroidi        │     0.381 s  │
+│ 3. Propagazione Orbite        │     0.001 s  │
+│ 4. Query Catalogo Stelle      │     0.001 s  │
+│ 5. Rilevamento Occultazioni   │    15.959 s  │
+│ 6. Reporting & Export         │    32.702 s  │
+├───────────────────────────────┼──────────────┤
+│ TOTALE                        │    49.047 s  │
+└───────────────────────────────┴──────────────┘
+
+✓ Workflow completato con successo!
+Eventi trovati: 4
+Report salvati in: output/
+

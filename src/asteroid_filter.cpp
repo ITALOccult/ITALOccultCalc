@@ -69,6 +69,14 @@ bool FilterCondition::evaluate(const AsteroidProperties& props) const {
         fieldValue = props.e;
     } else if (field_ == "i") {
         fieldValue = props.i;
+    } else if (field_ == "om") {
+        fieldValue = props.om;
+    } else if (field_ == "w") {
+        fieldValue = props.w;
+    } else if (field_ == "ma") {
+        fieldValue = props.ma;
+    } else if (field_ == "epoch") {
+        fieldValue = props.epoch;
     } else if (field_ == "rotation_period") {
         fieldValue = props.rotation_period;
     } else if (field_ == "orbit_class") {

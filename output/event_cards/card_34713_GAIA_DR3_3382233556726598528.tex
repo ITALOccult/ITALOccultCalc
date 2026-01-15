@@ -1,0 +1,51 @@
+\documentclass[landscape]{article}
+\usepackage[paperwidth=10in,paperheight=7.5in,margin=0.5in]{geometry}
+\usepackage{tikz,graphicx,amsmath}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\pagestyle{empty}
+\begin{document}
+
+\begin{tikzpicture}[remember picture,overlay]
+  \node[anchor=north west] at (current page.north west) {
+    \begin{minipage}{10in}
+      \begin{center}
+        {\Huge\bfseries ASTEROID OCCULTATION}\\[0.2cm]
+        {\LARGE (34713) Yesiltas occults GAIA 3382233556726598528}\\[0.1cm]
+        {\Large 2026-04-27 20:36:21 UT}
+      \end{center}
+      \vspace{0.2cm}
+      \begin{minipage}[t]{0.48\linewidth}
+        {\large\bfseries Event Details}\\
+        \begin{tabular}{ll}
+          Magnitude drop: & {\Large\bfseries 1.8 mag} \\
+          Duration: & {\Large\bfseries 0.2 sec} \\
+          Shadow width: & 6 km \\
+          Uncertainty: & $\pm$75271 km \\
+        \end{tabular}
+      \end{minipage}
+      \hfill
+      \begin{minipage}[t]{0.48\linewidth}
+        {\large\bfseries Star Data}\\
+        \begin{tabular}{ll}
+          Star mag: & {\Large\bfseries 17.5} \\
+          RA/Dec (J2000): & +98°31'45.21" / +22°30'45.54" \\
+          Priority: & * (3/11) \\
+        \end{tabular}
+      \end{minipage}\\
+      \vspace{0.3cm}
+      \begin{minipage}{0.48\linewidth}
+        \centering \textbf{Approach Chart (IAU Style)}\\[0.1cm]
+        \includegraphics[width=\linewidth]{card_34713_GAIA_DR3_3382233556726598528_approach.png}
+      \end{minipage}
+      \hfill
+      \begin{minipage}{0.48\linewidth}
+        \centering \textbf{Detail Chart (Betelgeuse Style)}\\[0.1cm]
+        \includegraphics[width=\linewidth]{card_34713_GAIA_DR3_3382233556726598528_detail.png}
+      \end{minipage}\\
+      \vspace{0.3cm}
+    \end{minipage}
+  };
+\end{tikzpicture}
+
+\end{document}

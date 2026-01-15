@@ -20,6 +20,7 @@
 #include <memory>
 #include <nlohmann/json.hpp>
 #include "asteroid_filter.h"
+#include "asteroid_sqlite_db.h"
 
 namespace ioccultcalc {
 
@@ -228,6 +229,7 @@ public:
 private:
     std::string dbPath_;
     std::map<int, AsteroidProperties> asteroids_;
+    std::unique_ptr<AsteroidSqliteDatabase> sqliteDb_;
     DatabaseStats stats_;
     std::string lastUpdateDate_;
     

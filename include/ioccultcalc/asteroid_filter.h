@@ -58,6 +58,10 @@ struct AsteroidProperties {
     double a;                        // Semiasse maggiore (AU)
     double e;                        // Eccentricità
     double i;                        // Inclinazione (gradi)
+    double om;                       // Longitudine nodo ascendente (gradi)
+    double w;                        // Argomento del perielio (gradi)
+    double ma;                       // Anomalia media (gradi)
+    double epoch;                    // Epoca (MJD)
     double rotation_period;          // Periodo di rotazione (ore)
     std::string orbit_class;         // Classe orbitale (MBA, NEA, TNO, etc.)
     std::string spectral_type;       // Tipo spettrale (C, S, M, etc.)
@@ -66,7 +70,8 @@ struct AsteroidProperties {
     
     // Costruttore default
     AsteroidProperties() : number(0), diameter(0), H(99), albedo(0.15),
-                          a(0), e(0), i(0), rotation_period(0), 
+                          a(0), e(0), i(0), om(0), w(0), ma(0), epoch(0),
+                          rotation_period(0), 
                           has_diameter(false), has_albedo(false) {}
 };
 

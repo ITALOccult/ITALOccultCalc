@@ -85,8 +85,8 @@ struct RWOObservation {
     double chi_squared;            // Chi² normalizzato
     bool is_outlier;               // Flag outlier (> 3σ)
     
-    // Conversione a Observation di IOccultCalc
-    Observation toObservation() const;
+    // Conversione a AstrometricObservation di IOccultCalc
+    AstrometricObservation toObservation() const;
     
     // Carica da file .rwo
     static std::vector<RWOObservation> fromFile(const std::string& filename);
@@ -308,8 +308,8 @@ namespace astdyn_utils {
     OrbitalElements fromAstDySElements(const AstDySElements& elem);
     
     // Converti osservazioni IOccultCalc ↔ RWO
-    RWOObservation toRWOObservation(const Observation& obs);
-    Observation fromRWOObservation(const RWOObservation& rwo);
+    RWOObservation toRWOObservation(const AstrometricObservation& obs);
+    AstrometricObservation fromRWOObservation(const RWOObservation& rwo);
     
     // Formato → stringa
     std::string formatResidual(double arcsec);

@@ -41,6 +41,9 @@ struct Phase2Config {
     double search_window_sec = 600.0; // +/- 10 minuti intorno al CA di Fase 1
     double precision_goal_mas = 0.1;
     bool compute_shadow = true;
+    bool refine_orbit = false;   // Se vero, esegue il fit con le ultime N osservazioni
+    int last_n_obs = 50;         // Numero di osservazioni da usare per il fit
+    bool use_horizons = false;   // Se vero, scarica elementi osculanti da JPL Horizons all'epoca CA
 };
 
 class Phase2OccultationGeometry {
@@ -60,7 +63,9 @@ public:
      * @brief Carica elementi orbitali dal database JSON locale
      */
     bool loadAsteroidFromJSON(int asteroid_number, const std::string& json_path = "");
+    bool loadAsteroidFromDB(int asteroid_number);
     bool loadAsteroidFromEQ1(int asteroid_number, const std::string& eq1_path);
+    bool setAsteroidElements(const class AstDynEquinoctialElements& elements);
 
     void setAstDynWrapper(std::shared_ptr<AstDynWrapper> wrapper);
     void setSPKReader(std::shared_ptr<class ISPReader> reader);

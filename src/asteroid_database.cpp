@@ -33,6 +33,20 @@ std::string AsteroidDatabase::getDefaultPath() {
 }
 
 bool AsteroidDatabase::loadFromFile() {
+    // Check if it's a SQLite database first
+    if (dbPath_.size() > 3 && dbPath_.substr(dbPath_.size() - 3) == ".db") {
+        try {
+            sqliteDb_ = std::make_unique<AsteroidSqliteDatabase>(dbPath_);
+            if (sqliteDb_->isAvailable()) {
+                stats_.total_asteroids = sqliteDb_->getAsteroidCount();
+                stats_.source = "asteroids.db";
+                return true;
+            }
+        } catch (...) {
+            sqliteDb_.reset();
+        }
+    }
+
     std::ifstream file(dbPath_);
     if (!file.is_open()) {
         return false;
@@ -73,21 +87,24 @@ bool AsteroidDatabase::loadFromFile() {
 }
 
 bool AsteroidDatabase::loadFromFile(const std::string& path) {
-    std::string oldPath = dbPath_;
     dbPath_ = path;
-    bool result = loadFromFile();
-    if (!result) {
-        dbPath_ = oldPath;  // Restore on failure
-    }
-    return result;
+    return loadFromFile();
 }
 
 void AsteroidDatabase::addAsteroid(const AsteroidProperties& props) {
+    if (sqliteDb_) {
+        std::cerr << "Warning: Cannot add asteroid to read-only SQLite database." << std::endl;
+        return;
+    }
     asteroids_[props.number] = props;
     updateStats();
 }
 
 bool AsteroidDatabase::saveToFile() {
+    if (sqliteDb_) {
+        std::cerr << "Warning: Saving to SQLite database not implemented via AsteroidDatabase." << std::endl;
+        return false;
+    }
     try {
         nlohmann::json j;
         
@@ -173,6 +190,9 @@ AsteroidProperties AsteroidDatabase::parseMPCExtendedJson(const nlohmann::json& 
 }
 
 std::vector<AsteroidProperties> AsteroidDatabase::query(const AsteroidRange& range) const {
+    if (sqliteDb_) {
+        return sqliteDb_->query(range);
+    }
     std::vector<AsteroidProperties> results;
     
     // Get list of candidate numbers
@@ -191,6 +211,12 @@ std::vector<AsteroidProperties> AsteroidDatabase::query(const AsteroidRange& ran
 }
 
 std::vector<int> AsteroidDatabase::queryNumbers(const AsteroidRange& range) const {
+    if (sqliteDb_) {
+        auto props = sqliteDb_->query(range);
+        std::vector<int> numbers;
+        for (const auto& p : props) numbers.push_back(p.number);
+        return numbers;
+    }
     std::vector<int> results;
     
     std::vector<int> numbers = range.getAsteroidList();
@@ -208,6 +234,10 @@ std::vector<int> AsteroidDatabase::queryNumbers(const AsteroidRange& range) cons
 }
 
 AsteroidProperties AsteroidDatabase::getProperties(int number) const {
+    if (sqliteDb_) {
+        auto props = sqliteDb_->getProperties(number);
+        if (props) return *props;
+    }
     auto it = asteroids_.find(number);
     if (it != asteroids_.end()) {
         return it->second;
@@ -220,6 +250,7 @@ AsteroidProperties AsteroidDatabase::getProperties(int number) const {
 }
 
 bool AsteroidDatabase::hasAsteroid(int number) const {
+    if (sqliteDb_) return sqliteDb_->hasAsteroid(number);
     return asteroids_.find(number) != asteroids_.end();
 }
 

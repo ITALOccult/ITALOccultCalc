@@ -65,7 +65,9 @@ public:
      * @param centerId Centro riferimento
      * @return (posizione AU, velocità AU/day)
      */
-    std::pair<Vector3D, Vector3D> getState(int bodyId, double jd, int centerId = 10);
+    std::pair<Vector3D, Vector3D> getState(int bodyId, double jd, int centerId) override;
+    
+    SPKState getEarthState(double jd) override;
     
     /**
      * @brief Verifica se file è caricato

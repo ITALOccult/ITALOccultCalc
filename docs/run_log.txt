@@ -1,0 +1,2091 @@
+DEBUG: [italoccultcalc] BINARY VERSION Dec 29 2025 07:36:49 - ACTIVE
+DEBUG: Main started.
+
+╔═══════════════════════════════════════════════════════════════╗
+║                     ITALOccultCalc v1.0                        ║
+║         Ricerca Automatica Occultazioni Asteroidali           ║
+║              Ottimizzato per Osservatori Italiani              ║
+╚═══════════════════════════════════════════════════════════════╝
+
+╔════════════════════════════════════════════════════════════════╗
+║  Modalità Verbose - Monitoraggio Progresso                    ║
+╠════════════════════════════════════════════════════════════════╣
+║  Saranno mostrati aggiornamenti su asteroidi e giorni.         ║
+╚════════════════════════════════════════════════════════════════╝
+
+[DEBUG] main: Prima di startTime
+[DEBUG] main: WORKFLOW COMPLETO - INIZIO
+[DEBUG] main: Step 1: Caricamento configurazione...
+[DEBUG] loadConfiguration: INIZIO
+
+================================================================
+CARICAMENTO CONFIGURAZIONE
+================================================================
+
+File configurazione: examples/preset_34713_jan2026.json
+[DEBUG] loadConfiguration: ConfigManager creato
+[DEBUG] loadConfiguration: Verifico formato file...
+[DEBUG] loadConfiguration: Carico JSON...
+✓ Configurazione JSON caricata
+[DEBUG] loadConfiguration: File caricato, valido configurazione...
+✓ Configurazione validata
+
+[DEBUG] loadConfiguration: Configurazione validata, leggo sezioni...
+[DEBUG] loadConfiguration: Chiamo getSection(PROPAGATION)...
+[DEBUG] loadConfiguration: getSection(PROPAGATION) completato
+[DEBUG] loadConfiguration: Chiamo getSection(SEARCH)...
+[DEBUG] loadConfiguration: getSection(SEARCH) completato
+[DEBUG] loadConfiguration: Sezioni lette, stampo parametri...
+[DEBUG] loadConfiguration: propagSection trovata
+Propagatore: RK4
+Step size: 0.1 giorni
+[DEBUG] loadConfiguration: searchSection trovata
+[DEBUG] loadConfiguration: FINE
+[DEBUG] main: Step 1: Completato
+[DEBUG] Step 2: Selezione asteroidi...
+[DEBUG] selectAsteroids: INIZIO
+
+================================================================
+SELEZIONE ASTEROIDI CANDIDATI
+================================================================
+
+[DEBUG] selectAsteroids: Dopo printHeader
+[DEBUG] selectAsteroids: Inizializzo variabili...
+[DEBUG] selectAsteroids: Leggo configurazione objectSection...
+[DEBUG] selectAsteroids: objectSection letto
+Criteri selezione:
+  ★ LISTA ESPLICITA: 1 asteroidi [34713]
+  (filtri diametro/magnitudine ignorati)
+
+
+[SQLite] Database allnum.db trovato. Uso lettura diretta per lista esplicita.
+Data aggiornamento DB: 
+  ✓ Caricato (SQLite): (34713)
+    H=13.86  Diam~5.8km
+    Epoch (MJD): 61000.0
+    a=2.8 e=0.2 i=8.0°
+Trovati 1 asteroidi nel DB.
+[DEBUG] Step 2: Completato, trovati 1 asteroidi
+[DEBUG] Step 3: Propagazione orbite...
+
+================================================================
+PROPAGAZIONE ORBITE
+================================================================
+
+SPKReader: Successfully loaded DE441 covering JD -3.02722e+06 to 7.93019e+06
+OrbitPropagator: Using JPL DE441 (high precision planets)
+OrbitPropagator: WARNING - Asteroid perturbations disabled (codes_300ast_20100725.bsp not found)
+[▓░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0% | Propagazione   : (34713) Unknown                                   [████████████████████▓░░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 40 % | Propagazione   : Completata                                        
+[DEBUG] Step 3: Completato
+[DEBUG] Step 4: Query catalogo stelle...
+
+=== [DEBUG] Inizio queryCatalog ===
+[DEBUG queryCatalog] gaiaSection trovata: NO
+
+================================================================
+QUERY CATALOGO STELLE GAIA DR3
+================================================================
+
+
+╔══════════════════════════════════════════════════════════╗
+║      ★ CATALOGO MAG18 LOCALE ATTIVO ★                   ║
+║  303M stelle (G≤18) - Query locale veloce               ║
+║  Nessuna query online - tutto da catalogo 9GB           ║
+╚══════════════════════════════════════════════════════════╝
+
+Could not open IAU catalog: data/IAU-CSN.json
+Could not open star names database: data/common_star_names.csv
+Loaded 23 stars from embedded database
+Loaded star names from embedded database
+✓ Catalogo Gaia caricato: /Users/michelebigi/.catalog/gaia_mag18_v2_multifile
+  Catalogo: Multi-File Gaia DR3 V2 | Stelle: 0
+[DEBUG] Step 4: Completato, trovate 0 stelle
+[DEBUG] Step 5: Rilevamento occultazioni...
+
+================================================================
+RILEVAMENTO OCCULTAZIONI
+================================================================
+
+Parametri ricerca:
+  Periodo: JD 2461049.5 - 2461051.5
+  Mag limite: 16.0
+  Raggio ricerca: 0.1 gradi
+  Probabilità minima: 1.0%
+
+Asteroidi da analizzare: 1
+
+Calcolo sequenziale (SPICE thread-safety)...
+
+
+[1   /1] (34713 ) Unknown              - D=   5km  - Phase 1 Screening...  [Phase1] Processing MJD 61049.0 (JD 2461049.5)...Optimized Corridor: 97 points -> 1 query cones.
+  [Phase1] Processing MJD 61050.0 (JD 2461050.5)...Optimized Corridor: 97 points -> 1 query cones.
+
+╔════════════════════════════════════════════════════════════╗
+║  PHASE 2: Geometria Precisa con Orbital Refinement        ║
+╚════════════════════════════════════════════════════════════╝
+
+Candidati da processare: 77
+Orbital refinement: ATTIVO
+Finestra temporale: ±10.0 min
+Risoluzione: 1.0 sec
+
+══════════════════════════════════════════════════════════
+STEP 1: ORBITAL REFINEMENT
+══════════════════════════════════════════════════════════
+
+  [RWO Download] Scaricamento osservazioni per 34713...
+  URL: https://newton.spacedys.com/~astdys2/mpcobs/numbered/34/34713.rwo
+  Downloading...
+  ✓ File scaricato: /tmp/34713.rwo
+  Parsing RWO...
+  ✓ Parsate 2600 osservazioni RWO
+  [Observations] Scaricate 2600 osservazioni
+  [Observations] Selezionate 20 osservazioni più recenti per il fit
+  [Observations] Epoca più recente: MJD 60951.45
+  [Observations] Epoca più vecchia: MJD 60919.60
+  [Orbital Fit] Fitting con 20 osservazioni...
+  [Pre-Check] RMS Residui Nominali: 263624.12 arcsec
+  ⚠ Residui troppo alti (>100"). Skipping fit per sicurezza.
+
+  ⚠ Fit fallito - uso elementi nominali
+
+══════════════════════════════════════════════════════════
+STEP 2: CALCOLO GEOMETRIA OCCULTAZIONI
+══════════════════════════════════════════════════════════
+
+Candidato 1/77 - Stella 449165622534209664...
+DEBUG: Entering calculateSingleEvent for Star 449165622534209664 Guess MJD: 61050.635324
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.63532
+[PHASE2] Asteroid MJD=61050.634630 RA=68.40733 DEC=26.95439
+[PHASE2] Star ID=449165622534209664 RA=54.83399 DEC=57.90674
+[PHASE2] Asteroid MJD=61050.635324 RA=68.40727 DEC=26.95434
+[PHASE2] Star ID=449165622534209664 RA=54.83399 DEC=57.90674
+[PHASE2] Asteroid MJD=61050.636019 RA=68.40721 DEC=26.95428
+[PHASE2] Star ID=449165622534209664 RA=54.83399 DEC=57.90674
+  CA preciso (Rigorous): 116623217.11 mas @ MJD 61050.62837964
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151250725.4 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.14 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116623217.11 mas @ MJD 61050.628380
+  Duration: 0.571901 sec
+  Shadow path width: 5.800686 km
+
+Candidato 2/77 - Stella 449184447370835712...
+DEBUG: Entering calculateSingleEvent for Star 449184447370835712 Guess MJD: 61049.303235
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.30324
+[PHASE2] Asteroid MJD=61049.302541 RA=68.53718 DEC=27.05743
+[PHASE2] Star ID=449184447370835712 RA=54.87168 DEC=58.16738
+[PHASE2] Asteroid MJD=61049.303235 RA=68.53711 DEC=27.05738
+[PHASE2] Star ID=449184447370835712 RA=54.87168 DEC=58.16738
+[PHASE2] Asteroid MJD=61049.303930 RA=68.53704 DEC=27.05732
+[PHASE2] Star ID=449184447370835712 RA=54.87168 DEC=58.16738
+  CA preciso (Rigorous): 117194724.48 mas @ MJD 61049.29629085
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150815206.4 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.38 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 117194724.48 mas @ MJD 61049.296291
+  Duration: 0.558639 sec
+  Shadow path width: 5.800686 km
+
+Candidato 3/77 - Stella 449171802986818432...
+DEBUG: Entering calculateSingleEvent for Star 449171802986818432 Guess MJD: 61049.728649
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.72865
+[PHASE2] Asteroid MJD=61049.727955 RA=68.49428 DEC=27.02433
+[PHASE2] Star ID=449171802986818432 RA=54.85649 DEC=58.08424
+[PHASE2] Asteroid MJD=61049.728649 RA=68.49421 DEC=27.02428
+[PHASE2] Star ID=449171802986818432 RA=54.85649 DEC=58.08424
+[PHASE2] Asteroid MJD=61049.729343 RA=68.49414 DEC=27.02423
+[PHASE2] Star ID=449171802986818432 RA=54.85649 DEC=58.08424
+  CA preciso (Rigorous): 117014557.79 mas @ MJD 61049.72170454
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150954932.4 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.31 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 117014557.79 mas @ MJD 61049.721705
+  Duration: 0.562809 sec
+  Shadow path width: 5.800686 km
+
+Candidato 4/77 - Stella 449171425029518976...
+DEBUG: Entering calculateSingleEvent for Star 449171425029518976 Guess MJD: 61049.931862
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.93186
+[PHASE2] Asteroid MJD=61049.931168 RA=68.47426 DEC=27.00859
+[PHASE2] Star ID=449171425029518976 RA=54.85033 DEC=58.04448
+[PHASE2] Asteroid MJD=61049.931862 RA=68.47419 DEC=27.00853
+[PHASE2] Star ID=449171425029518976 RA=54.85033 DEC=58.04448
+[PHASE2] Asteroid MJD=61049.932557 RA=68.47413 DEC=27.00848
+[PHASE2] Star ID=449171425029518976 RA=54.85033 DEC=58.04448
+  CA preciso (Rigorous): 116927651.82 mas @ MJD 61049.92491796
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151021402.6 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.27 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116927651.82 mas @ MJD 61049.924918
+  Duration: 0.564823 sec
+  Shadow path width: 5.800686 km
+
+Candidato 5/77 - Stella 449165622534209280...
+DEBUG: Entering calculateSingleEvent for Star 449165622534209280 Guess MJD: 61050.632071
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.63207
+[PHASE2] Asteroid MJD=61050.631376 RA=68.40764 DEC=26.95464
+[PHASE2] Star ID=449165622534209280 RA=54.83479 DEC=57.90736
+[PHASE2] Asteroid MJD=61050.632071 RA=68.40757 DEC=26.95458
+[PHASE2] Star ID=449165622534209280 RA=54.83479 DEC=57.90736
+[PHASE2] Asteroid MJD=61050.632765 RA=68.40751 DEC=26.95453
+[PHASE2] Star ID=449165622534209280 RA=54.83479 DEC=57.90736
+  CA preciso (Rigorous): 116624012.71 mas @ MJD 61050.62512616
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151248945.3 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.14 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116624012.71 mas @ MJD 61050.625126
+  Duration: 0.571867 sec
+  Shadow path width: 5.800686 km
+
+Candidato 6/77 - Stella 449171802986767744...
+DEBUG: Entering calculateSingleEvent for Star 449171802986767744 Guess MJD: 61049.786315
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.78631
+[PHASE2] Asteroid MJD=61049.785621 RA=68.48857 DEC=27.01986
+[PHASE2] Star ID=449171802986767744 RA=54.85674 DEC=58.07287
+[PHASE2] Asteroid MJD=61049.786315 RA=68.48850 DEC=27.01981
+[PHASE2] Star ID=449171802986767744 RA=54.85674 DEC=58.07287
+[PHASE2] Asteroid MJD=61049.787009 RA=68.48843 DEC=27.01975
+[PHASE2] Star ID=449171802986767744 RA=54.85674 DEC=58.07287
+  CA preciso (Rigorous): 116988108.19 mas @ MJD 61049.77937052
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150971694.9 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.30 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116988108.19 mas @ MJD 61049.779371
+  Duration: 0.563377 sec
+  Shadow path width: 5.800686 km
+
+Candidato 7/77 - Stella 449169092867749120...
+DEBUG: Entering calculateSingleEvent for Star 449169092867749120 Guess MJD: 61050.222587
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.22259
+[PHASE2] Asteroid MJD=61050.221893 RA=68.44616 DEC=26.98613
+[PHASE2] Star ID=449169092867749120 RA=54.84168 DEC=57.98761
+[PHASE2] Asteroid MJD=61050.222587 RA=68.44609 DEC=26.98607
+[PHASE2] Star ID=449169092867749120 RA=54.84168 DEC=57.98761
+[PHASE2] Asteroid MJD=61050.223282 RA=68.44602 DEC=26.98602
+[PHASE2] Star ID=449169092867749120 RA=54.84168 DEC=57.98761
+  CA preciso (Rigorous): 116803343.39 mas @ MJD 61050.21564281
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151117288.5 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.22 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116803343.39 mas @ MJD 61050.215643
+  Duration: 0.567729 sec
+  Shadow path width: 5.800686 km
+
+Candidato 8/77 - Stella 449169092867741696...
+DEBUG: Entering calculateSingleEvent for Star 449169092867741696 Guess MJD: 61050.148573
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.14857
+[PHASE2] Asteroid MJD=61050.147879 RA=68.45325 DEC=26.99184
+[PHASE2] Star ID=449169092867741696 RA=54.84324 DEC=58.00212
+[PHASE2] Asteroid MJD=61050.148573 RA=68.45318 DEC=26.99178
+[PHASE2] Star ID=449169092867741696 RA=54.84324 DEC=58.00212
+[PHASE2] Asteroid MJD=61050.149268 RA=68.45312 DEC=26.99173
+[PHASE2] Star ID=449169092867741696 RA=54.84324 DEC=58.00212
+  CA preciso (Rigorous): 116835535.46 mas @ MJD 61050.14162904
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151093420.6 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.23 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116835535.46 mas @ MJD 61050.141629
+  Duration: 0.566987 sec
+  Shadow path width: 5.800686 km
+
+Candidato 9/77 - Stella 449168783630114560...
+DEBUG: Entering calculateSingleEvent for Star 449168783630114560 Guess MJD: 61050.352919
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.35292
+[PHASE2] Asteroid MJD=61050.352224 RA=68.43376 DEC=26.97609
+[PHASE2] Star ID=449168783630114560 RA=54.84208 DEC=57.96198
+[PHASE2] Asteroid MJD=61050.352919 RA=68.43369 DEC=26.97603
+[PHASE2] Star ID=449168783630114560 RA=54.84208 DEC=57.96198
+[PHASE2] Asteroid MJD=61050.353613 RA=68.43363 DEC=26.97598
+[PHASE2] Star ID=449168783630114560 RA=54.84208 DEC=57.96198
+  CA preciso (Rigorous): 116743993.11 mas @ MJD 61050.34597448
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151156384.8 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.19 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116743993.11 mas @ MJD 61050.345974
+  Duration: 0.569038 sec
+  Shadow path width: 5.800686 km
+
+Candidato 10/77 - Stella 449184138133148928...
+DEBUG: Entering calculateSingleEvent for Star 449184138133148928 Guess MJD: 61049.381778
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.38178
+[PHASE2] Asteroid MJD=61049.381083 RA=68.52916 DEC=27.05131
+[PHASE2] Star ID=449184138133148928 RA=54.86662 DEC=58.15214
+[PHASE2] Asteroid MJD=61049.381778 RA=68.52909 DEC=27.05125
+[PHASE2] Star ID=449184138133148928 RA=54.86662 DEC=58.15214
+[PHASE2] Asteroid MJD=61049.382472 RA=68.52902 DEC=27.05120
+[PHASE2] Star ID=449184138133148928 RA=54.86662 DEC=58.15214
+  CA preciso (Rigorous): 117163484.90 mas @ MJD 61049.37483344
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150843173.3 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.37 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 117163484.90 mas @ MJD 61049.374833
+  Duration: 0.559406 sec
+  Shadow path width: 5.800686 km
+
+Candidato 11/77 - Stella 449164179425213184...
+DEBUG: Entering calculateSingleEvent for Star 449164179425213184 Guess MJD: 61050.968974
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.96897
+[PHASE2] Asteroid MJD=61050.968280 RA=68.37688 DEC=26.92886
+[PHASE2] Star ID=449164179425213184 RA=54.83025 DEC=57.84133
+[PHASE2] Asteroid MJD=61050.968974 RA=68.37682 DEC=26.92880
+[PHASE2] Star ID=449164179425213184 RA=54.83025 DEC=57.84133
+[PHASE2] Asteroid MJD=61050.969669 RA=68.37675 DEC=26.92875
+[PHASE2] Star ID=449164179425213184 RA=54.83025 DEC=57.84133
+  CA preciso (Rigorous): 116475840.72 mas @ MJD 61050.96202970
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151357817.5 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.08 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116475840.72 mas @ MJD 61050.962030
+  Duration: 0.575313 sec
+  Shadow path width: 5.800686 km
+
+Candidato 12/77 - Stella 449171394970193536...
+DEBUG: Entering calculateSingleEvent for Star 449171394970193536 Guess MJD: 61049.994678
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.99468
+[PHASE2] Asteroid MJD=61049.993984 RA=68.46814 DEC=27.00373
+[PHASE2] Star ID=449171394970193536 RA=54.84687 DEC=58.03226
+[PHASE2] Asteroid MJD=61049.994678 RA=68.46807 DEC=27.00367
+[PHASE2] Star ID=449171394970193536 RA=54.84687 DEC=58.03226
+[PHASE2] Asteroid MJD=61049.995373 RA=68.46800 DEC=27.00362
+[PHASE2] Star ID=449171394970193536 RA=54.84687 DEC=58.03226
+  CA preciso (Rigorous): 116902180.29 mas @ MJD 61049.98773402
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151043640.8 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.26 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116902180.29 mas @ MJD 61049.987734
+  Duration: 0.565450 sec
+  Shadow path width: 5.800686 km
+
+Candidato 13/77 - Stella 449185310664103424...
+DEBUG: Entering calculateSingleEvent for Star 449185310664103424 Guess MJD: 61049.094589
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.09459
+[PHASE2] Asteroid MJD=61049.093895 RA=68.55871 DEC=27.07373
+[PHASE2] Star ID=449185310664103424 RA=54.87683 DEC=58.20829
+[PHASE2] Asteroid MJD=61049.094589 RA=68.55864 DEC=27.07367
+[PHASE2] Star ID=449185310664103424 RA=54.87683 DEC=58.20829
+[PHASE2] Asteroid MJD=61049.095284 RA=68.55857 DEC=27.07362
+[PHASE2] Star ID=449185310664103424 RA=54.87683 DEC=58.20829
+  CA preciso (Rigorous): 117285389.46 mas @ MJD 61049.08764465
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150750038.5 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.42 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 117285389.46 mas @ MJD 61049.087645
+  Duration: 0.556620 sec
+  Shadow path width: 5.800686 km
+
+Candidato 14/77 - Stella 449170639055959168...
+DEBUG: Entering calculateSingleEvent for Star 449170639055959168 Guess MJD: 61050.073688
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.07369
+[PHASE2] Asteroid MJD=61050.072993 RA=68.46047 DEC=26.99762
+[PHASE2] Star ID=449170639055959168 RA=54.84437 DEC=58.01681
+[PHASE2] Asteroid MJD=61050.073688 RA=68.46040 DEC=26.99757
+[PHASE2] Star ID=449170639055959168 RA=54.84437 DEC=58.01681
+[PHASE2] Asteroid MJD=61050.074382 RA=68.46034 DEC=26.99751
+[PHASE2] Star ID=449170639055959168 RA=54.84437 DEC=58.01681
+  CA preciso (Rigorous): 116868508.24 mas @ MJD 61050.06674340
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151069792.0 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.24 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116868508.24 mas @ MJD 61050.066743
+  Duration: 0.566239 sec
+  Shadow path width: 5.800686 km
+
+Candidato 15/77 - Stella 449164179426205312...
+DEBUG: Entering calculateSingleEvent for Star 449164179426205312 Guess MJD: 61050.915474
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.91547
+[PHASE2] Asteroid MJD=61050.914780 RA=68.38171 DEC=26.93294
+[PHASE2] Star ID=449164179426205312 RA=54.83170 DEC=57.85180
+[PHASE2] Asteroid MJD=61050.915474 RA=68.38164 DEC=26.93289
+[PHASE2] Star ID=449164179426205312 RA=54.83170 DEC=57.85180
+[PHASE2] Asteroid MJD=61050.916169 RA=68.38158 DEC=26.93284
+[PHASE2] Star ID=449164179426205312 RA=54.83170 DEC=57.85180
+  CA preciso (Rigorous): 116498753.92 mas @ MJD 61050.90852988
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151339739.2 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.09 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116498753.92 mas @ MJD 61050.908530
+  Duration: 0.574763 sec
+  Shadow path width: 5.800686 km
+
+Candidato 16/77 - Stella 449184554751005824...
+DEBUG: Entering calculateSingleEvent for Star 449184554751005824 Guess MJD: 61049.166475
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.16647
+[PHASE2] Asteroid MJD=61049.165780 RA=68.55126 DEC=27.06811
+[PHASE2] Star ID=449184554751005824 RA=54.87968 DEC=58.19394
+[PHASE2] Asteroid MJD=61049.166475 RA=68.55119 DEC=27.06805
+[PHASE2] Star ID=449184554751005824 RA=54.87968 DEC=58.19394
+[PHASE2] Asteroid MJD=61049.167169 RA=68.55111 DEC=27.06800
+[PHASE2] Star ID=449184554751005824 RA=54.87968 DEC=58.19394
+  CA preciso (Rigorous): 117249866.41 mas @ MJD 61049.15953014
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150767532.8 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.41 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 117249866.41 mas @ MJD 61049.159530
+  Duration: 0.557310 sec
+  Shadow path width: 5.800686 km
+
+Candidato 17/77 - Stella 449169092867746176...
+DEBUG: Entering calculateSingleEvent for Star 449169092867746176 Guess MJD: 61050.195214
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.19521
+[PHASE2] Asteroid MJD=61050.194519 RA=68.44877 DEC=26.98824
+[PHASE2] Star ID=449169092867746176 RA=54.84725 DEC=57.99280
+[PHASE2] Asteroid MJD=61050.195214 RA=68.44871 DEC=26.98819
+[PHASE2] Star ID=449169092867746176 RA=54.84725 DEC=57.99280
+[PHASE2] Asteroid MJD=61050.195908 RA=68.44864 DEC=26.98813
+[PHASE2] Star ID=449169092867746176 RA=54.84725 DEC=57.99280
+  CA preciso (Rigorous): 116810923.00 mas @ MJD 61050.18826943
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151103469.6 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.22 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116810923.00 mas @ MJD 61050.188269
+  Duration: 0.567450 sec
+  Shadow path width: 5.800686 km
+
+Candidato 18/77 - Stella 449169092867742208...
+DEBUG: Entering calculateSingleEvent for Star 449169092867742208 Guess MJD: 61050.157854
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.15785
+[PHASE2] Asteroid MJD=61050.157159 RA=68.45236 DEC=26.99112
+[PHASE2] Star ID=449169092867742208 RA=54.84833 DEC=58.00010
+[PHASE2] Asteroid MJD=61050.157854 RA=68.45229 DEC=26.99107
+[PHASE2] Star ID=449169092867742208 RA=54.84833 DEC=58.00010
+[PHASE2] Asteroid MJD=61050.158548 RA=68.45223 DEC=26.99101
+[PHASE2] Star ID=449169092867742208 RA=54.84833 DEC=58.00010
+  CA preciso (Rigorous): 116826903.65 mas @ MJD 61050.15090941
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151091116.7 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.23 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116826903.65 mas @ MJD 61050.150909
+  Duration: 0.567075 sec
+  Shadow path width: 5.800686 km
+
+Candidato 19/77 - Stella 449184344291597568...
+DEBUG: Entering calculateSingleEvent for Star 449184344291597568 Guess MJD: 61049.345265
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.34527
+[PHASE2] Asteroid MJD=61049.344571 RA=68.53288 DEC=27.05415
+[PHASE2] Star ID=449184344291597568 RA=54.87379 DEC=58.15897
+[PHASE2] Asteroid MJD=61049.345265 RA=68.53281 DEC=27.05410
+[PHASE2] Star ID=449184344291597568 RA=54.87379 DEC=58.15897
+[PHASE2] Asteroid MJD=61049.345960 RA=68.53274 DEC=27.05405
+[PHASE2] Star ID=449184344291597568 RA=54.87379 DEC=58.15897
+  CA preciso (Rigorous): 117173613.47 mas @ MJD 61049.33832098
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150825129.6 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.38 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 117173613.47 mas @ MJD 61049.338321
+  Duration: 0.559045 sec
+  Shadow path width: 5.800686 km
+
+Candidato 20/77 - Stella 449165622534210688...
+DEBUG: Entering calculateSingleEvent for Star 449165622534210688 Guess MJD: 61050.662002
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.66200
+[PHASE2] Asteroid MJD=61050.661308 RA=68.40487 DEC=26.95234
+[PHASE2] Star ID=449165622534210688 RA=54.82942 DEC=57.90163
+[PHASE2] Asteroid MJD=61050.662002 RA=68.40480 DEC=26.95229
+[PHASE2] Star ID=449165622534210688 RA=54.82942 DEC=57.90163
+[PHASE2] Asteroid MJD=61050.662697 RA=68.40474 DEC=26.95224
+[PHASE2] Star ID=449165622534210688 RA=54.82942 DEC=57.90163
+  CA preciso (Rigorous): 116615010.48 mas @ MJD 61050.65505764
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151263382.1 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.14 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116615010.48 mas @ MJD 61050.655058
+  Duration: 0.572177 sec
+  Shadow path width: 5.800686 km
+
+Candidato 21/77 - Stella 449165038418660480...
+DEBUG: Entering calculateSingleEvent for Star 449165038418660480 Guess MJD: 61050.686176
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.68618
+[PHASE2] Asteroid MJD=61050.685481 RA=68.40264 DEC=26.95049
+[PHASE2] Star ID=449165038418660480 RA=54.82887 DEC=57.89690
+[PHASE2] Asteroid MJD=61050.686176 RA=68.40257 DEC=26.95044
+[PHASE2] Star ID=449165038418660480 RA=54.82887 DEC=57.89690
+[PHASE2] Asteroid MJD=61050.686870 RA=68.40251 DEC=26.95038
+[PHASE2] Star ID=449165038418660480 RA=54.82887 DEC=57.89690
+  CA preciso (Rigorous): 116604557.41 mas @ MJD 61050.67923112
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151271370.4 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.13 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116604557.41 mas @ MJD 61050.679231
+  Duration: 0.572423 sec
+  Shadow path width: 5.800686 km
+
+Candidato 22/77 - Stella 449184138133550336...
+DEBUG: Entering calculateSingleEvent for Star 449184138133550336 Guess MJD: 61049.380758
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.38076
+[PHASE2] Asteroid MJD=61049.380064 RA=68.52926 DEC=27.05139
+[PHASE2] Star ID=449184138133550336 RA=54.86436 DEC=58.15245
+[PHASE2] Asteroid MJD=61049.380758 RA=68.52919 DEC=27.05133
+[PHASE2] Star ID=449184138133550336 RA=54.86436 DEC=58.15245
+[PHASE2] Asteroid MJD=61049.381453 RA=68.52912 DEC=27.05128
+[PHASE2] Star ID=449184138133550336 RA=54.86436 DEC=58.15245
+  CA preciso (Rigorous): 117166009.21 mas @ MJD 61049.37381386
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150845237.7 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.37 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 117166009.21 mas @ MJD 61049.373814
+  Duration: 0.559398 sec
+  Shadow path width: 5.800686 km
+
+Candidato 23/77 - Stella 449164007626522112...
+DEBUG: Entering calculateSingleEvent for Star 449164007626522112 Guess MJD: 61051.000000
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61051.00000
+[PHASE2] Asteroid MJD=61050.999306 RA=68.37409 DEC=26.92649
+[PHASE2] Star ID=449164007626522112 RA=54.83199 DEC=57.83502
+[PHASE2] Asteroid MJD=61051.000000 RA=68.37403 DEC=26.92644
+[PHASE2] Star ID=449164007626522112 RA=54.83199 DEC=57.83502
+[PHASE2] Asteroid MJD=61051.000694 RA=68.37397 DEC=26.92638
+[PHASE2] Star ID=449164007626522112 RA=54.83199 DEC=57.83502
+  CA preciso (Rigorous): 116459816.06 mas @ MJD 61050.99305556
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151365144.1 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.08 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116459816.06 mas @ MJD 61050.993056
+  Duration: 0.575633 sec
+  Shadow path width: 5.800686 km
+
+Candidato 24/77 - Stella 449165725613410560...
+DEBUG: Entering calculateSingleEvent for Star 449165725613410560 Guess MJD: 61050.465998
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.46600
+[PHASE2] Asteroid MJD=61050.465303 RA=68.42311 DEC=26.96739
+[PHASE2] Star ID=449165725613410560 RA=54.84212 DEC=57.93976
+[PHASE2] Asteroid MJD=61050.465998 RA=68.42304 DEC=26.96734
+[PHASE2] Star ID=449165725613410560 RA=54.84212 DEC=57.93976
+[PHASE2] Asteroid MJD=61050.466692 RA=68.42298 DEC=26.96728
+[PHASE2] Star ID=449165725613410560 RA=54.84212 DEC=57.93976
+  CA preciso (Rigorous): 116692827.95 mas @ MJD 61050.45905311
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151190822.6 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.17 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116692827.95 mas @ MJD 61050.459053
+  Duration: 0.570178 sec
+  Shadow path width: 5.800686 km
+
+Candidato 25/77 - Stella 449169092867747456...
+DEBUG: Entering calculateSingleEvent for Star 449169092867747456 Guess MJD: 61050.211613
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.21161
+[PHASE2] Asteroid MJD=61050.210919 RA=68.44720 DEC=26.98697
+[PHASE2] Star ID=449169092867747456 RA=54.84830 DEC=57.98953
+[PHASE2] Asteroid MJD=61050.211613 RA=68.44714 DEC=26.98692
+[PHASE2] Star ID=449169092867747456 RA=54.84830 DEC=57.98953
+[PHASE2] Asteroid MJD=61050.212308 RA=68.44707 DEC=26.98687
+[PHASE2] Star ID=449169092867747456 RA=54.84830 DEC=57.98953
+  CA preciso (Rigorous): 116802580.82 mas @ MJD 61050.20466881
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151107367.0 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.22 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116802580.82 mas @ MJD 61050.204669
+  Duration: 0.567613 sec
+  Shadow path width: 5.800686 km
+
+Candidato 26/77 - Stella 449183657096697984...
+DEBUG: Entering calculateSingleEvent for Star 449183657096697984 Guess MJD: 61049.570998
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.57100
+[PHASE2] Asteroid MJD=61049.570303 RA=68.51002 DEC=27.03658
+[PHASE2] Star ID=449183657096697984 RA=54.85736 DEC=58.11527
+[PHASE2] Asteroid MJD=61049.570998 RA=68.50995 DEC=27.03653
+[PHASE2] Star ID=449183657096697984 RA=54.85736 DEC=58.11527
+[PHASE2] Asteroid MJD=61049.571692 RA=68.50988 DEC=27.03647
+[PHASE2] Star ID=449183657096697984 RA=54.85736 DEC=58.11527
+  CA preciso (Rigorous): 117085562.71 mas @ MJD 61049.56405329
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150907784.1 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.34 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 117085562.71 mas @ MJD 61049.564053
+  Duration: 0.561260 sec
+  Shadow path width: 5.800686 km
+
+Candidato 27/77 - Stella 449184451670671360...
+DEBUG: Entering calculateSingleEvent for Star 449184451670671360 Guess MJD: 61049.278947
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.27895
+[PHASE2] Asteroid MJD=61049.278253 RA=68.53967 DEC=27.05933
+[PHASE2] Star ID=449184451670671360 RA=54.86752 DEC=58.17239
+[PHASE2] Asteroid MJD=61049.278947 RA=68.53960 DEC=27.05927
+[PHASE2] Star ID=449184451670671360 RA=54.86752 DEC=58.17239
+[PHASE2] Asteroid MJD=61049.279642 RA=68.53953 DEC=27.05922
+[PHASE2] Star ID=449184451670671360 RA=54.86752 DEC=58.17239
+  CA preciso (Rigorous): 117209633.45 mas @ MJD 61049.27200272
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150812582.7 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.39 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 117209633.45 mas @ MJD 61049.272003
+  Duration: 0.558407 sec
+  Shadow path width: 5.800686 km
+
+Candidato 28/77 - Stella 449168852349586304...
+DEBUG: Entering calculateSingleEvent for Star 449168852349586304 Guess MJD: 61050.296665
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.29667
+[PHASE2] Asteroid MJD=61050.295971 RA=68.43909 DEC=26.98042
+[PHASE2] Star ID=449168852349586304 RA=54.84655 DEC=57.97288
+[PHASE2] Asteroid MJD=61050.296665 RA=68.43903 DEC=26.98037
+[PHASE2] Star ID=449168852349586304 RA=54.84655 DEC=57.97288
+[PHASE2] Asteroid MJD=61050.297360 RA=68.43896 DEC=26.98031
+[PHASE2] Star ID=449168852349586304 RA=54.84655 DEC=57.97288
+  CA preciso (Rigorous): 116765600.85 mas @ MJD 61050.28972072
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151134866.6 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.20 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116765600.85 mas @ MJD 61050.289721
+  Duration: 0.568468 sec
+  Shadow path width: 5.800686 km
+
+Candidato 29/77 - Stella 449169092867743232...
+DEBUG: Entering calculateSingleEvent for Star 449169092867743232 Guess MJD: 61050.156254
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.15625
+[PHASE2] Asteroid MJD=61050.155560 RA=68.45251 DEC=26.99124
+[PHASE2] Star ID=449169092867743232 RA=54.83962 DEC=58.00074
+[PHASE2] Asteroid MJD=61050.156254 RA=68.45245 DEC=26.99119
+[PHASE2] Star ID=449169092867743232 RA=54.83962 DEC=58.00074
+[PHASE2] Asteroid MJD=61050.156949 RA=68.45238 DEC=26.99114
+[PHASE2] Star ID=449169092867743232 RA=54.83962 DEC=58.00074
+  CA preciso (Rigorous): 116835194.74 mas @ MJD 61050.14930996
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151099350.7 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.23 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116835194.74 mas @ MJD 61050.149310
+  Duration: 0.567067 sec
+  Shadow path width: 5.800686 km
+
+Candidato 30/77 - Stella 449184108073316992...
+DEBUG: Entering calculateSingleEvent for Star 449184108073316992 Guess MJD: 61049.467335
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.46734
+[PHASE2] Asteroid MJD=61049.466641 RA=68.52047 DEC=27.04464
+[PHASE2] Star ID=449184108073316992 RA=54.86033 DEC=58.13557
+[PHASE2] Asteroid MJD=61049.467335 RA=68.52040 DEC=27.04459
+[PHASE2] Star ID=449184108073316992 RA=54.86033 DEC=58.13557
+[PHASE2] Asteroid MJD=61049.468029 RA=68.52033 DEC=27.04454
+[PHASE2] Star ID=449184108073316992 RA=54.86033 DEC=58.13557
+  CA preciso (Rigorous): 117130158.32 mas @ MJD 61049.46039056
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150874524.0 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.35 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 117130158.32 mas @ MJD 61049.460391
+  Duration: 0.560244 sec
+  Shadow path width: 5.800686 km
+
+Candidato 31/77 - Stella 449191186179350528...
+DEBUG: Entering calculateSingleEvent for Star 449191186179350528 Guess MJD: 61049.010034
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.01003
+[PHASE2] Asteroid MJD=61049.009339 RA=68.56753 DEC=27.08034
+[PHASE2] Star ID=449191186179350528 RA=54.88837 DEC=58.22434
+[PHASE2] Asteroid MJD=61049.010034 RA=68.56746 DEC=27.08029
+[PHASE2] Star ID=449191186179350528 RA=54.88837 DEC=58.22434
+[PHASE2] Asteroid MJD=61049.010728 RA=68.56738 DEC=27.08024
+[PHASE2] Star ID=449191186179350528 RA=54.88837 DEC=58.22434
+  CA preciso (Rigorous): 117313381.91 mas @ MJD 61049.00308943
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150713762.7 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.44 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 117313381.91 mas @ MJD 61049.003089
+  Duration: 0.555799 sec
+  Shadow path width: 5.800686 km
+
+Candidato 32/77 - Stella 449191181876851968...
+DEBUG: Entering calculateSingleEvent for Star 449191181876851968 Guess MJD: 61049.029970
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.02997
+[PHASE2] Asteroid MJD=61049.029275 RA=68.56545 DEC=27.07878
+[PHASE2] Star ID=449191181876851968 RA=54.88817 DEC=58.22042
+[PHASE2] Asteroid MJD=61049.029970 RA=68.56537 DEC=27.07873
+[PHASE2] Star ID=449191181876851968 RA=54.88817 DEC=58.22042
+[PHASE2] Asteroid MJD=61049.030664 RA=68.56530 DEC=27.07867
+[PHASE2] Star ID=449191181876851968 RA=54.88817 DEC=58.22042
+  CA preciso (Rigorous): 117304442.49 mas @ MJD 61049.02302506
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150719632.6 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.43 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 117304442.49 mas @ MJD 61049.023025
+  Duration: 0.555990 sec
+  Shadow path width: 5.800686 km
+
+Candidato 33/77 - Stella 449184039354008320...
+DEBUG: Entering calculateSingleEvent for Star 449184039354008320 Guess MJD: 61049.534671
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.53467
+[PHASE2] Asteroid MJD=61049.533976 RA=68.51368 DEC=27.03940
+[PHASE2] Star ID=449184039354008320 RA=54.85673 DEC=58.12246
+[PHASE2] Asteroid MJD=61049.534671 RA=68.51361 DEC=27.03935
+[PHASE2] Star ID=449184039354008320 RA=54.85673 DEC=58.12246
+[PHASE2] Asteroid MJD=61049.535365 RA=68.51354 DEC=27.03930
+[PHASE2] Star ID=449184039354008320 RA=54.85673 DEC=58.12246
+  CA preciso (Rigorous): 117102689.08 mas @ MJD 61049.52772606
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150897834.1 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.34 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 117102689.08 mas @ MJD 61049.527726
+  Duration: 0.560905 sec
+  Shadow path width: 5.800686 km
+
+Candidato 34/77 - Stella 449191254898822528...
+DEBUG: Entering calculateSingleEvent for Star 449191254898822528 Guess MJD: 61049.000000
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.00000
+[PHASE2] Asteroid MJD=61048.999306 RA=68.56858 DEC=27.08113
+[PHASE2] Star ID=449191254898822528 RA=54.88515 DEC=58.23007
+[PHASE2] Asteroid MJD=61049.000000 RA=68.56851 DEC=27.08108
+[PHASE2] Star ID=449191254898822528 RA=54.88515 DEC=58.23007
+[PHASE2] Asteroid MJD=61049.000694 RA=68.56843 DEC=27.08102
+[PHASE2] Star ID=449191254898822528 RA=54.88515 DEC=58.23007
+  CA preciso (Rigorous): 117332782.20 mas @ MJD 61048.99305556
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150727841.7 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.44 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 117332782.20 mas @ MJD 61048.993056
+  Duration: 0.555658 sec
+  Shadow path width: 5.800686 km
+
+Candidato 35/77 - Stella 449170634755410560...
+DEBUG: Entering calculateSingleEvent for Star 449170634755410560 Guess MJD: 61050.083803
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.08380
+[PHASE2] Asteroid MJD=61050.083109 RA=68.45949 DEC=26.99684
+[PHASE2] Star ID=449170634755410560 RA=54.85364 DEC=58.01446
+[PHASE2] Asteroid MJD=61050.083803 RA=68.45943 DEC=26.99679
+[PHASE2] Star ID=449170634755410560 RA=54.85364 DEC=58.01446
+[PHASE2] Asteroid MJD=61050.084497 RA=68.45936 DEC=26.99673
+[PHASE2] Star ID=449170634755410560 RA=54.85364 DEC=58.01446
+  CA preciso (Rigorous): 116855837.62 mas @ MJD 61050.07685853
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151063519.7 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.24 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116855837.62 mas @ MJD 61050.076859
+  Duration: 0.566331 sec
+  Shadow path width: 5.800686 km
+
+Candidato 36/77 - Stella 449164965398074496...
+DEBUG: Entering calculateSingleEvent for Star 449164965398074496 Guess MJD: 61050.769188
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.76919
+[PHASE2] Asteroid MJD=61050.768494 RA=68.39502 DEC=26.94413
+[PHASE2] Star ID=449164965398074496 RA=54.83834 DEC=57.88034
+[PHASE2] Asteroid MJD=61050.769188 RA=68.39495 DEC=26.94408
+[PHASE2] Star ID=449164965398074496 RA=54.83834 DEC=57.88034
+[PHASE2] Asteroid MJD=61050.769883 RA=68.39489 DEC=26.94403
+[PHASE2] Star ID=449164965398074496 RA=54.83834 DEC=57.88034
+  CA preciso (Rigorous): 116559170.50 mas @ MJD 61050.76224371
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151287869.7 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.12 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116559170.50 mas @ MJD 61050.762244
+  Duration: 0.573260 sec
+  Shadow path width: 5.800686 km
+
+Candidato 37/77 - Stella 449171429329925120...
+DEBUG: Entering calculateSingleEvent for Star 449171429329925120 Guess MJD: 61049.949786
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.94979
+[PHASE2] Asteroid MJD=61049.949092 RA=68.47251 DEC=27.00720
+[PHASE2] Star ID=449171429329925120 RA=54.85761 DEC=58.04066
+[PHASE2] Asteroid MJD=61049.949786 RA=68.47244 DEC=27.00715
+[PHASE2] Star ID=449171429329925120 RA=54.85761 DEC=58.04066
+[PHASE2] Asteroid MJD=61049.950481 RA=68.47237 DEC=27.00709
+[PHASE2] Star ID=449171429329925120 RA=54.85761 DEC=58.04066
+  CA preciso (Rigorous): 116913112.54 mas @ MJD 61049.94284201
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151019379.4 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.27 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116913112.54 mas @ MJD 61049.942842
+  Duration: 0.564994 sec
+  Shadow path width: 5.800686 km
+
+Candidato 38/77 - Stella 449165656893940352...
+DEBUG: Entering calculateSingleEvent for Star 449165656893940352 Guess MJD: 61050.552881
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.55288
+[PHASE2] Asteroid MJD=61050.552187 RA=68.41499 DEC=26.96071
+[PHASE2] Star ID=449165656893940352 RA=54.84284 DEC=57.92267
+[PHASE2] Asteroid MJD=61050.552881 RA=68.41492 DEC=26.96066
+[PHASE2] Star ID=449165656893940352 RA=54.84284 DEC=57.92267
+[PHASE2] Asteroid MJD=61050.553575 RA=68.41486 DEC=26.96061
+[PHASE2] Star ID=449165656893940352 RA=54.84284 DEC=57.92267
+  CA preciso (Rigorous): 116652971.42 mas @ MJD 61050.54593655
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151216741.4 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.16 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116652971.42 mas @ MJD 61050.545937
+  Duration: 0.571056 sec
+  Shadow path width: 5.800686 km
+
+Candidato 39/77 - Stella 449183661396739328...
+DEBUG: Entering calculateSingleEvent for Star 449183661396739328 Guess MJD: 61049.608389
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.60839
+[PHASE2] Asteroid MJD=61049.607694 RA=68.50627 DEC=27.03367
+[PHASE2] Star ID=449183661396739328 RA=54.85366 DEC=58.10807
+[PHASE2] Asteroid MJD=61049.608389 RA=68.50620 DEC=27.03362
+[PHASE2] Star ID=449183661396739328 RA=54.85366 DEC=58.10807
+[PHASE2] Asteroid MJD=61049.609083 RA=68.50613 DEC=27.03357
+[PHASE2] Star ID=449183661396739328 RA=54.85366 DEC=58.10807
+  CA preciso (Rigorous): 117071850.35 mas @ MJD 61049.60144419
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150922533.0 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.33 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 117071850.35 mas @ MJD 61049.601444
+  Duration: 0.561630 sec
+  Shadow path width: 5.800686 km
+
+Candidato 40/77 - Stella 449184108073317888...
+DEBUG: Entering calculateSingleEvent for Star 449184108073317888 Guess MJD: 61049.471810
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.47181
+[PHASE2] Asteroid MJD=61049.471115 RA=68.52002 DEC=27.04430
+[PHASE2] Star ID=449184108073317888 RA=54.85801 DEC=58.13480
+[PHASE2] Asteroid MJD=61049.471810 RA=68.51995 DEC=27.04424
+[PHASE2] Star ID=449184108073317888 RA=54.85801 DEC=58.13480
+[PHASE2] Asteroid MJD=61049.472504 RA=68.51988 DEC=27.04419
+[PHASE2] Star ID=449184108073317888 RA=54.85801 DEC=58.13480
+  CA preciso (Rigorous): 117130213.94 mas @ MJD 61049.46486544
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150878228.4 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.35 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 117130213.94 mas @ MJD 61049.464865
+  Duration: 0.560290 sec
+  Shadow path width: 5.800686 km
+
+Candidato 41/77 - Stella 449168886710347392...
+DEBUG: Entering calculateSingleEvent for Star 449168886710347392 Guess MJD: 61050.257682
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.25768
+[PHASE2] Asteroid MJD=61050.256987 RA=68.44281 DEC=26.98342
+[PHASE2] Star ID=449168886710347392 RA=54.85015 DEC=57.98041
+[PHASE2] Asteroid MJD=61050.257682 RA=68.44274 DEC=26.98337
+[PHASE2] Star ID=449168886710347392 RA=54.85015 DEC=57.98041
+[PHASE2] Asteroid MJD=61050.258376 RA=68.44267 DEC=26.98332
+[PHASE2] Star ID=449168886710347392 RA=54.85015 DEC=57.98041
+  CA preciso (Rigorous): 116780134.72 mas @ MJD 61050.25073706
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151119467.8 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.21 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116780134.72 mas @ MJD 61050.250737
+  Duration: 0.568074 sec
+  Shadow path width: 5.800686 km
+
+Candidato 42/77 - Stella 449165416375781632...
+DEBUG: Entering calculateSingleEvent for Star 449165416375781632 Guess MJD: 61050.686957
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.68696
+[PHASE2] Asteroid MJD=61050.686262 RA=68.40257 DEC=26.95043
+[PHASE2] Star ID=449165416375781632 RA=54.84079 DEC=57.89641
+[PHASE2] Asteroid MJD=61050.686957 RA=68.40250 DEC=26.95038
+[PHASE2] Star ID=449165416375781632 RA=54.84079 DEC=57.89641
+[PHASE2] Asteroid MJD=61050.687651 RA=68.40244 DEC=26.95032
+[PHASE2] Star ID=449165416375781632 RA=54.84079 DEC=57.89641
+  CA preciso (Rigorous): 116594201.61 mas @ MJD 61050.68001208
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151260046.8 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.13 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116594201.61 mas @ MJD 61050.680012
+  Duration: 0.572420 sec
+  Shadow path width: 5.800686 km
+
+Candidato 43/77 - Stella 449171876006494336...
+DEBUG: Entering calculateSingleEvent for Star 449171876006494336 Guess MJD: 61049.706007
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.70601
+[PHASE2] Asteroid MJD=61049.705313 RA=68.49653 DEC=27.02609
+[PHASE2] Star ID=449171876006494336 RA=54.84936 DEC=58.08902
+[PHASE2] Asteroid MJD=61049.706007 RA=68.49646 DEC=27.02604
+[PHASE2] Star ID=449171876006494336 RA=54.84936 DEC=58.08902
+[PHASE2] Asteroid MJD=61049.706702 RA=68.49639 DEC=27.02598
+[PHASE2] Star ID=449171876006494336 RA=54.84936 DEC=58.08902
+  CA preciso (Rigorous): 117031231.69 mas @ MJD 61049.69906280
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150955582.4 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.31 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 117031231.69 mas @ MJD 61049.699063
+  Duration: 0.562592 sec
+  Shadow path width: 5.800686 km
+
+Candidato 44/77 - Stella 449185310664099456...
+DEBUG: Entering calculateSingleEvent for Star 449185310664099456 Guess MJD: 61049.065182
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.06518
+[PHASE2] Asteroid MJD=61049.064488 RA=68.56177 DEC=27.07603
+[PHASE2] Star ID=449185310664099456 RA=54.87144 DEC=58.21441
+[PHASE2] Asteroid MJD=61049.065182 RA=68.56170 DEC=27.07597
+[PHASE2] Star ID=449185310664099456 RA=54.87144 DEC=58.21441
+[PHASE2] Asteroid MJD=61049.065876 RA=68.56163 DEC=27.07592
+[PHASE2] Star ID=449185310664099456 RA=54.87144 DEC=58.21441
+  CA preciso (Rigorous): 117303858.27 mas @ MJD 61049.05823760
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150747398.7 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.43 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 117303858.27 mas @ MJD 61049.058238
+  Duration: 0.556342 sec
+  Shadow path width: 5.800686 km
+
+Candidato 45/77 - Stella 449165725613413632...
+DEBUG: Entering calculateSingleEvent for Star 449165725613413632 Guess MJD: 61050.492695
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.49270
+[PHASE2] Asteroid MJD=61050.492001 RA=68.42061 DEC=26.96534
+[PHASE2] Star ID=449165725613413632 RA=54.82771 DEC=57.93496
+[PHASE2] Asteroid MJD=61050.492695 RA=68.42054 DEC=26.96528
+[PHASE2] Star ID=449165725613413632 RA=54.82771 DEC=57.93496
+[PHASE2] Asteroid MJD=61050.493390 RA=68.42048 DEC=26.96523
+[PHASE2] Star ID=449165725613413632 RA=54.82771 DEC=57.93496
+  CA preciso (Rigorous): 116693008.32 mas @ MJD 61050.48575096
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151213127.4 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.17 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116693008.32 mas @ MJD 61050.485751
+  Duration: 0.570461 sec
+  Shadow path width: 5.800686 km
+
+Candidato 46/77 - Stella 449184516087584512...
+DEBUG: Entering calculateSingleEvent for Star 449184516087584512 Guess MJD: 61049.184592
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.18459
+[PHASE2] Asteroid MJD=61049.183897 RA=68.54938 DEC=27.06669
+[PHASE2] Star ID=449184516087584512 RA=54.86676 DEC=58.19107
+[PHASE2] Asteroid MJD=61049.184592 RA=68.54931 DEC=27.06664
+[PHASE2] Star ID=449184516087584512 RA=54.86676 DEC=58.19107
+[PHASE2] Asteroid MJD=61049.185286 RA=68.54924 DEC=27.06659
+[PHASE2] Star ID=449184516087584512 RA=54.86676 DEC=58.19107
+  CA preciso (Rigorous): 117253500.14 mas @ MJD 61049.17764715
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150786354.1 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.40 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 117253500.14 mas @ MJD 61049.177647
+  Duration: 0.557495 sec
+  Shadow path width: 5.800686 km
+
+Candidato 47/77 - Stella 449165725613411072...
+DEBUG: Entering calculateSingleEvent for Star 449165725613411072 Guess MJD: 61050.478101
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.47810
+[PHASE2] Asteroid MJD=61050.477406 RA=68.42197 DEC=26.96646
+[PHASE2] Star ID=449165725613411072 RA=54.84689 DEC=57.93723
+[PHASE2] Asteroid MJD=61050.478101 RA=68.42191 DEC=26.96641
+[PHASE2] Star ID=449165725613411072 RA=54.84689 DEC=57.93723
+[PHASE2] Asteroid MJD=61050.478795 RA=68.42184 DEC=26.96635
+[PHASE2] Star ID=449165725613411072 RA=54.84689 DEC=57.93723
+  CA preciso (Rigorous): 116683300.51 mas @ MJD 61050.47115630
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151189839.5 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.17 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116683300.51 mas @ MJD 61050.471156
+  Duration: 0.570296 sec
+  Shadow path width: 5.800686 km
+
+Candidato 48/77 - Stella 449165686952358656...
+DEBUG: Entering calculateSingleEvent for Star 449165686952358656 Guess MJD: 61050.533523
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.53352
+[PHASE2] Asteroid MJD=61050.532829 RA=68.41679 DEC=26.96220
+[PHASE2] Star ID=449165686952358656 RA=54.82622 DEC=57.92698
+[PHASE2] Asteroid MJD=61050.533523 RA=68.41673 DEC=26.96215
+[PHASE2] Star ID=449165686952358656 RA=54.82622 DEC=57.92698
+[PHASE2] Asteroid MJD=61050.534218 RA=68.41666 DEC=26.96209
+[PHASE2] Star ID=449165686952358656 RA=54.82622 DEC=57.92698
+  CA preciso (Rigorous): 116675795.71 mas @ MJD 61050.52657878
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151227064.0 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.16 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116675795.71 mas @ MJD 61050.526579
+  Duration: 0.570876 sec
+  Shadow path width: 5.800686 km
+
+Candidato 49/77 - Stella 449184520390143744...
+DEBUG: Entering calculateSingleEvent for Star 449184520390143744 Guess MJD: 61049.242045
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.24204
+[PHASE2] Asteroid MJD=61049.241351 RA=68.54346 DEC=27.06221
+[PHASE2] Star ID=449184520390143744 RA=54.86366 DEC=58.17988
+[PHASE2] Asteroid MJD=61049.242045 RA=68.54339 DEC=27.06215
+[PHASE2] Star ID=449184520390143744 RA=54.86366 DEC=58.17988
+[PHASE2] Asteroid MJD=61049.242739 RA=68.54332 DEC=27.06210
+[PHASE2] Star ID=449184520390143744 RA=54.86366 DEC=58.17988
+  CA preciso (Rigorous): 117230050.54 mas @ MJD 61049.23510054
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150806046.9 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.39 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 117230050.54 mas @ MJD 61049.235101
+  Duration: 0.558053 sec
+  Shadow path width: 5.800686 km
+
+Candidato 50/77 - Stella 449184348591460096...
+DEBUG: Entering calculateSingleEvent for Star 449184348591460096 Guess MJD: 61049.290051
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.29005
+[PHASE2] Asteroid MJD=61049.289356 RA=68.53853 DEC=27.05846
+[PHASE2] Star ID=449184348591460096 RA=54.86179 DEC=58.17050
+[PHASE2] Asteroid MJD=61049.290051 RA=68.53846 DEC=27.05841
+[PHASE2] Star ID=449184348591460096 RA=54.86179 DEC=58.17050
+[PHASE2] Asteroid MJD=61049.290745 RA=68.53839 DEC=27.05835
+[PHASE2] Star ID=449184348591460096 RA=54.86179 DEC=58.17050
+  CA preciso (Rigorous): 117209811.12 mas @ MJD 61049.28310626
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150821790.5 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.39 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 117209811.12 mas @ MJD 61049.283106
+  Duration: 0.558519 sec
+  Shadow path width: 5.800686 km
+
+Candidato 51/77 - Stella 449184344291627136...
+DEBUG: Entering calculateSingleEvent for Star 449184344291627136 Guess MJD: 61049.298652
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.29865
+[PHASE2] Asteroid MJD=61049.297957 RA=68.53765 DEC=27.05779
+[PHASE2] Star ID=449184344291627136 RA=54.86131 DEC=58.16882
+[PHASE2] Asteroid MJD=61049.298652 RA=68.53758 DEC=27.05774
+[PHASE2] Star ID=449184344291627136 RA=54.86131 DEC=58.16882
+[PHASE2] Asteroid MJD=61049.299346 RA=68.53751 DEC=27.05768
+[PHASE2] Star ID=449184344291627136 RA=54.86131 DEC=58.16882
+  CA preciso (Rigorous): 117206314.84 mas @ MJD 61049.29170725
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150824762.7 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.38 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 117206314.84 mas @ MJD 61049.291707
+  Duration: 0.558603 sec
+  Shadow path width: 5.800686 km
+
+Candidato 52/77 - Stella 449164931038269184...
+DEBUG: Entering calculateSingleEvent for Star 449164931038269184 Guess MJD: 61050.880884
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.88088
+[PHASE2] Asteroid MJD=61050.880189 RA=68.38484 DEC=26.93559
+[PHASE2] Star ID=449164931038269184 RA=54.81878 DEC=57.85890
+[PHASE2] Asteroid MJD=61050.880884 RA=68.38478 DEC=26.93553
+[PHASE2] Star ID=449164931038269184 RA=54.81878 DEC=57.85890
+[PHASE2] Asteroid MJD=61050.881578 RA=68.38471 DEC=26.93548
+[PHASE2] Star ID=449164931038269184 RA=54.81878 DEC=57.85890
+  CA preciso (Rigorous): 116525043.63 mas @ MJD 61050.87393926
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151341349.7 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.10 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116525043.63 mas @ MJD 61050.873939
+  Duration: 0.574421 sec
+  Shadow path width: 5.800686 km
+
+Candidato 53/77 - Stella 449168882408653056...
+DEBUG: Entering calculateSingleEvent for Star 449168882408653056 Guess MJD: 61050.203839
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.20384
+[PHASE2] Asteroid MJD=61050.203144 RA=68.44795 DEC=26.98757
+[PHASE2] Star ID=449168882408653056 RA=54.85437 DEC=57.99084
+[PHASE2] Asteroid MJD=61050.203839 RA=68.44788 DEC=26.98752
+[PHASE2] Star ID=449168882408653056 RA=54.85437 DEC=57.99084
+[PHASE2] Asteroid MJD=61050.204533 RA=68.44782 DEC=26.98747
+[PHASE2] Star ID=449168882408653056 RA=54.85437 DEC=57.99084
+  CA preciso (Rigorous): 116800850.68 mas @ MJD 61050.19689432
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151098968.2 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.22 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116800850.68 mas @ MJD 61050.196894
+  Duration: 0.567530 sec
+  Shadow path width: 5.800686 km
+
+Candidato 54/77 - Stella 449172288323334784...
+DEBUG: Entering calculateSingleEvent for Star 449172288323334784 Guess MJD: 61049.600147
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.60015
+[PHASE2] Asteroid MJD=61049.599453 RA=68.50710 DEC=27.03431
+[PHASE2] Star ID=449172288323334784 RA=54.87225 DEC=58.10882
+[PHASE2] Asteroid MJD=61049.600147 RA=68.50703 DEC=27.03426
+[PHASE2] Star ID=449172288323334784 RA=54.87225 DEC=58.10882
+[PHASE2] Asteroid MJD=61049.600842 RA=68.50696 DEC=27.03421
+[PHASE2] Star ID=449172288323334784 RA=54.87225 DEC=58.10882
+  CA preciso (Rigorous): 117058892.00 mas @ MJD 61049.59320269
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150900941.0 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.33 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 117058892.00 mas @ MJD 61049.593203
+  Duration: 0.561533 sec
+  Shadow path width: 5.800686 km
+
+Candidato 55/77 - Stella 449171841646757632...
+DEBUG: Entering calculateSingleEvent for Star 449171841646757632 Guess MJD: 61049.752419
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.75242
+[PHASE2] Asteroid MJD=61049.751725 RA=68.49192 DEC=27.02249
+[PHASE2] Star ID=449171841646757632 RA=54.86739 DEC=58.07907
+[PHASE2] Asteroid MJD=61049.752419 RA=68.49185 DEC=27.02244
+[PHASE2] Star ID=449171841646757632 RA=54.86739 DEC=58.07907
+[PHASE2] Asteroid MJD=61049.753113 RA=68.49179 DEC=27.02238
+[PHASE2] Star ID=449171841646757632 RA=54.86739 DEC=58.07907
+  CA preciso (Rigorous): 116994038.94 mas @ MJD 61049.74547457
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150950790.6 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.30 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116994038.94 mas @ MJD 61049.745475
+  Duration: 0.563034 sec
+  Shadow path width: 5.800686 km
+
+Candidato 56/77 - Stella 449170570336486272...
+DEBUG: Entering calculateSingleEvent for Star 449170570336486272 Guess MJD: 61050.113738
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.11374
+[PHASE2] Asteroid MJD=61050.113044 RA=68.45660 DEC=26.99453
+[PHASE2] Star ID=449170570336486272 RA=54.85709 DEC=58.00844
+[PHASE2] Asteroid MJD=61050.113738 RA=68.45654 DEC=26.99447
+[PHASE2] Star ID=449170570336486272 RA=54.85709 DEC=58.00844
+[PHASE2] Asteroid MJD=61050.114433 RA=68.45647 DEC=26.99442
+[PHASE2] Star ID=449170570336486272 RA=54.85709 DEC=58.00844
+  CA preciso (Rigorous): 116839266.02 mas @ MJD 61050.10679390
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151069054.5 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.24 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116839266.02 mas @ MJD 61050.106794
+  Duration: 0.566627 sec
+  Shadow path width: 5.800686 km
+
+Candidato 57/77 - Stella 449170673415687040...
+DEBUG: Entering calculateSingleEvent for Star 449170673415687040 Guess MJD: 61050.005173
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.00517
+[PHASE2] Asteroid MJD=61050.004479 RA=68.46711 DEC=27.00292
+[PHASE2] Star ID=449170673415687040 RA=54.86030 DEC=58.02966
+[PHASE2] Asteroid MJD=61050.005173 RA=68.46705 DEC=27.00286
+[PHASE2] Star ID=449170673415687040 RA=54.86030 DEC=58.02966
+[PHASE2] Asteroid MJD=61050.005868 RA=68.46698 DEC=27.00281
+[PHASE2] Star ID=449170673415687040 RA=54.86030 DEC=58.02966
+  CA preciso (Rigorous): 116885638.40 mas @ MJD 61049.99822892
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151033222.0 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.26 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116885638.40 mas @ MJD 61049.998229
+  Duration: 0.565542 sec
+  Shadow path width: 5.800686 km
+
+Candidato 58/77 - Stella 449165416375778048...
+DEBUG: Entering calculateSingleEvent for Star 449165416375778048 Guess MJD: 61050.631014
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.63101
+[PHASE2] Asteroid MJD=61050.630320 RA=68.40773 DEC=26.95472
+[PHASE2] Star ID=449165416375778048 RA=54.84535 DEC=57.90726
+[PHASE2] Asteroid MJD=61050.631014 RA=68.40767 DEC=26.95467
+[PHASE2] Star ID=449165416375778048 RA=54.84535 DEC=57.90726
+[PHASE2] Asteroid MJD=61050.631709 RA=68.40760 DEC=26.95461
+[PHASE2] Star ID=449165416375778048 RA=54.84535 DEC=57.90726
+  CA preciso (Rigorous): 116615602.25 mas @ MJD 61050.62406982
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151238349.1 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.14 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116615602.25 mas @ MJD 61050.624070
+  Duration: 0.571847 sec
+  Shadow path width: 5.800686 km
+
+Candidato 59/77 - Stella 449183661396887040...
+DEBUG: Entering calculateSingleEvent for Star 449183661396887040 Guess MJD: 61049.594439
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.59444
+[PHASE2] Asteroid MJD=61049.593744 RA=68.50767 DEC=27.03476
+[PHASE2] Star ID=449183661396887040 RA=54.84989 DEC=58.11100
+[PHASE2] Asteroid MJD=61049.594439 RA=68.50760 DEC=27.03470
+[PHASE2] Star ID=449183661396887040 RA=54.84989 DEC=58.11100
+[PHASE2] Asteroid MJD=61049.595133 RA=68.50753 DEC=27.03465
+[PHASE2] Star ID=449183661396887040 RA=54.84989 DEC=58.11100
+  CA preciso (Rigorous): 117081600.51 mas @ MJD 61049.58749408
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150922346.4 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.33 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 117081600.51 mas @ MJD 61049.587494
+  Duration: 0.561496 sec
+  Shadow path width: 5.800686 km
+
+Candidato 60/77 - Stella 449165622534209408...
+DEBUG: Entering calculateSingleEvent for Star 449165622534209408 Guess MJD: 61050.618560
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.61856
+[PHASE2] Asteroid MJD=61050.617866 RA=68.40889 DEC=26.95567
+[PHASE2] Star ID=449165622534209408 RA=54.82270 DEC=57.91036
+[PHASE2] Asteroid MJD=61050.618560 RA=68.40882 DEC=26.95562
+[PHASE2] Star ID=449165622534209408 RA=54.82270 DEC=57.91036
+[PHASE2] Asteroid MJD=61050.619255 RA=68.40876 DEC=26.95557
+[PHASE2] Star ID=449165622534209408 RA=54.82270 DEC=57.91036
+  CA preciso (Rigorous): 116640309.52 mas @ MJD 61050.61161600
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151256568.7 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.15 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116640309.52 mas @ MJD 61050.611616
+  Duration: 0.571742 sec
+  Shadow path width: 5.800686 km
+
+Candidato 61/77 - Stella 449184103773397376...
+DEBUG: Entering calculateSingleEvent for Star 449184103773397376 Guess MJD: 61049.409500
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.40950
+[PHASE2] Asteroid MJD=61049.408806 RA=68.52634 DEC=27.04915
+[PHASE2] Star ID=449184103773397376 RA=54.85588 DEC=58.14721
+[PHASE2] Asteroid MJD=61049.409500 RA=68.52627 DEC=27.04909
+[PHASE2] Star ID=449184103773397376 RA=54.85588 DEC=58.14721
+[PHASE2] Asteroid MJD=61049.410195 RA=68.52620 DEC=27.04904
+[PHASE2] Star ID=449184103773397376 RA=54.85588 DEC=58.14721
+  CA preciso (Rigorous): 117160601.48 mas @ MJD 61049.40255561
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150862393.9 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.36 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 117160601.48 mas @ MJD 61049.402556
+  Duration: 0.559685 sec
+  Shadow path width: 5.800686 km
+
+Candidato 62/77 - Stella 449165004058928896...
+DEBUG: Entering calculateSingleEvent for Star 449165004058928896 Guess MJD: 61050.797323
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.79732
+[PHASE2] Asteroid MJD=61050.796628 RA=68.39244 DEC=26.94198
+[PHASE2] Star ID=449165004058928896 RA=54.81874 DEC=57.87533
+[PHASE2] Asteroid MJD=61050.797323 RA=68.39238 DEC=26.94192
+[PHASE2] Star ID=449165004058928896 RA=54.81874 DEC=57.87533
+[PHASE2] Asteroid MJD=61050.798017 RA=68.39232 DEC=26.94187
+[PHASE2] Star ID=449165004058928896 RA=54.81874 DEC=57.87533
+  CA preciso (Rigorous): 116562821.71 mas @ MJD 61050.79037808
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151315495.6 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.11 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116562821.71 mas @ MJD 61050.790378
+  Duration: 0.573566 sec
+  Shadow path width: 5.800686 km
+
+Candidato 63/77 - Stella 449170639055953664...
+DEBUG: Entering calculateSingleEvent for Star 449170639055953664 Guess MJD: 61050.057400
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.05740
+[PHASE2] Asteroid MJD=61050.056706 RA=68.46205 DEC=26.99888
+[PHASE2] Star ID=449170639055953664 RA=54.85979 DEC=58.01941
+[PHASE2] Asteroid MJD=61050.057400 RA=68.46198 DEC=26.99882
+[PHASE2] Star ID=449170639055953664 RA=54.85979 DEC=58.01941
+[PHASE2] Asteroid MJD=61050.058095 RA=68.46191 DEC=26.99877
+[PHASE2] Star ID=449170639055953664 RA=54.85979 DEC=58.01941
+  CA preciso (Rigorous): 116862424.41 mas @ MJD 61050.05045582
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151049401.4 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.25 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116862424.41 mas @ MJD 61050.050456
+  Duration: 0.566063 sec
+  Shadow path width: 5.800686 km
+
+Candidato 64/77 - Stella 449171493749053440...
+DEBUG: Entering calculateSingleEvent for Star 449171493749053440 Guess MJD: 61049.869561
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.86956
+[PHASE2] Asteroid MJD=61049.868867 RA=68.48037 DEC=27.01341
+[PHASE2] Star ID=449171493749053440 RA=54.84001 DEC=58.05719
+[PHASE2] Asteroid MJD=61049.869561 RA=68.48030 DEC=27.01336
+[PHASE2] Star ID=449171493749053440 RA=54.84001 DEC=58.05719
+[PHASE2] Asteroid MJD=61049.870255 RA=68.48023 DEC=27.01330
+[PHASE2] Star ID=449171493749053440 RA=54.84001 DEC=58.05719
+  CA preciso (Rigorous): 116965087.48 mas @ MJD 61049.86261657
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151013384.2 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.28 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116965087.48 mas @ MJD 61049.862617
+  Duration: 0.564215 sec
+  Shadow path width: 5.800686 km
+
+Candidato 65/77 - Stella 449183657096716544...
+DEBUG: Entering calculateSingleEvent for Star 449183657096716544 Guess MJD: 61049.542053
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.54205
+[PHASE2] Asteroid MJD=61049.541359 RA=68.51293 DEC=27.03883
+[PHASE2] Star ID=449183657096716544 RA=54.85026 DEC=58.12132
+[PHASE2] Asteroid MJD=61049.542053 RA=68.51286 DEC=27.03878
+[PHASE2] Star ID=449183657096716544 RA=54.85026 DEC=58.12132
+[PHASE2] Asteroid MJD=61049.542748 RA=68.51279 DEC=27.03872
+[PHASE2] Star ID=449183657096716544 RA=54.85026 DEC=58.12132
+  CA preciso (Rigorous): 117105164.00 mas @ MJD 61049.53510886
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150906686.9 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.34 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 117105164.00 mas @ MJD 61049.535109
+  Duration: 0.560983 sec
+  Shadow path width: 5.800686 km
+
+Candidato 66/77 - Stella 449171841646747136...
+DEBUG: Entering calculateSingleEvent for Star 449171841646747136 Guess MJD: 61049.681022
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.68102
+[PHASE2] Asteroid MJD=61049.680327 RA=68.49902 DEC=27.02803
+[PHASE2] Star ID=449171841646747136 RA=54.87195 DEC=58.09292
+[PHASE2] Asteroid MJD=61049.681022 RA=68.49895 DEC=27.02798
+[PHASE2] Star ID=449171841646747136 RA=54.87195 DEC=58.09292
+[PHASE2] Asteroid MJD=61049.681716 RA=68.49888 DEC=27.02792
+[PHASE2] Star ID=449171841646747136 RA=54.87195 DEC=58.09292
+  CA preciso (Rigorous): 117022396.13 mas @ MJD 61049.67407736
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150925030.7 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.32 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 117022396.13 mas @ MJD 61049.674077
+  Duration: 0.562327 sec
+  Shadow path width: 5.800686 km
+
+Candidato 67/77 - Stella 449165691253683712...
+DEBUG: Entering calculateSingleEvent for Star 449165691253683712 Guess MJD: 61050.584646
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.58465
+[PHASE2] Asteroid MJD=61050.583952 RA=68.41203 DEC=26.95828
+[PHASE2] Star ID=449165691253683712 RA=54.82158 DEC=57.91706
+[PHASE2] Asteroid MJD=61050.584646 RA=68.41197 DEC=26.95822
+[PHASE2] Star ID=449165691253683712 RA=54.82158 DEC=57.91706
+[PHASE2] Asteroid MJD=61050.585341 RA=68.41190 DEC=26.95817
+[PHASE2] Star ID=449165691253683712 RA=54.82158 DEC=57.91706
+  CA preciso (Rigorous): 116656591.65 mas @ MJD 61050.57770166
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151247252.8 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.15 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116656591.65 mas @ MJD 61050.577702
+  Duration: 0.571399 sec
+  Shadow path width: 5.800686 km
+
+Candidato 68/77 - Stella 449184039353844608...
+DEBUG: Entering calculateSingleEvent for Star 449184039353844608 Guess MJD: 61049.518429
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.51843
+[PHASE2] Asteroid MJD=61049.517734 RA=68.51531 DEC=27.04067
+[PHASE2] Star ID=449184039353844608 RA=54.87742 DEC=58.12467
+[PHASE2] Asteroid MJD=61049.518429 RA=68.51524 DEC=27.04061
+[PHASE2] Star ID=449184039353844608 RA=54.87742 DEC=58.12467
+[PHASE2] Asteroid MJD=61049.519123 RA=68.51517 DEC=27.04056
+[PHASE2] Star ID=449184039353844608 RA=54.87742 DEC=58.12467
+  CA preciso (Rigorous): 117091402.63 mas @ MJD 61049.51148423
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150871661.8 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.34 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 117091402.63 mas @ MJD 61049.511484
+  Duration: 0.560729 sec
+  Shadow path width: 5.800686 km
+
+Candidato 69/77 - Stella 449183661396733312...
+DEBUG: Entering calculateSingleEvent for Star 449183661396733312 Guess MJD: 61049.565900
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.56590
+[PHASE2] Asteroid MJD=61049.565206 RA=68.51053 DEC=27.03698
+[PHASE2] Star ID=449183661396733312 RA=54.84867 DEC=58.11669
+[PHASE2] Asteroid MJD=61049.565900 RA=68.51046 DEC=27.03692
+[PHASE2] Star ID=449183661396733312 RA=54.84867 DEC=58.11669
+[PHASE2] Asteroid MJD=61049.566595 RA=68.51039 DEC=27.03687
+[PHASE2] Star ID=449183661396733312 RA=54.84867 DEC=58.11669
+  CA preciso (Rigorous): 117095715.06 mas @ MJD 61049.55895566
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150915277.6 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.34 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 117095715.06 mas @ MJD 61049.558956
+  Duration: 0.561218 sec
+  Shadow path width: 5.800686 km
+
+Candidato 70/77 - Stella 449191254898818944...
+DEBUG: Entering calculateSingleEvent for Star 449191254898818944 Guess MJD: 61049.000000
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.00000
+[PHASE2] Asteroid MJD=61048.999306 RA=68.56858 DEC=27.08113
+[PHASE2] Star ID=449191254898818944 RA=54.89457 DEC=58.23097
+[PHASE2] Asteroid MJD=61049.000000 RA=68.56851 DEC=27.08108
+[PHASE2] Star ID=449191254898818944 RA=54.89457 DEC=58.23097
+[PHASE2] Asteroid MJD=61049.000694 RA=68.56843 DEC=27.08102
+[PHASE2] Star ID=449191254898818944 RA=54.89457 DEC=58.23097
+  CA preciso (Rigorous): 117328752.49 mas @ MJD 61048.99305556
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150723235.9 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.44 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 117328752.49 mas @ MJD 61048.993056
+  Duration: 0.555631 sec
+  Shadow path width: 5.800686 km
+
+Candidato 71/77 - Stella 449164072044756096...
+DEBUG: Entering calculateSingleEvent for Star 449164072044756096 Guess MJD: 61050.975865
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.97587
+[PHASE2] Asteroid MJD=61050.975171 RA=68.37626 DEC=26.92833
+[PHASE2] Star ID=449164072044756096 RA=54.81393 DEC=57.84035
+[PHASE2] Asteroid MJD=61050.975865 RA=68.37620 DEC=26.92828
+[PHASE2] Star ID=449164072044756096 RA=54.81393 DEC=57.84035
+[PHASE2] Asteroid MJD=61050.976559 RA=68.37613 DEC=26.92823
+[PHASE2] Star ID=449164072044756096 RA=54.81393 DEC=57.84035
+  CA preciso (Rigorous): 116486177.26 mas @ MJD 61050.96892061
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151375540.2 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.08 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116486177.26 mas @ MJD 61050.968921
+  Duration: 0.575400 sec
+  Shadow path width: 5.800686 km
+
+Candidato 72/77 - Stella 449165416375804544...
+DEBUG: Entering calculateSingleEvent for Star 449165416375804544 Guess MJD: 61050.693987
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.69399
+[PHASE2] Asteroid MJD=61050.693292 RA=68.40192 DEC=26.94989
+[PHASE2] Star ID=449165416375804544 RA=54.84680 DEC=57.89487
+[PHASE2] Asteroid MJD=61050.693987 RA=68.40186 DEC=26.94984
+[PHASE2] Star ID=449165416375804544 RA=54.84680 DEC=57.89487
+[PHASE2] Asteroid MJD=61050.694681 RA=68.40179 DEC=26.94978
+[PHASE2] Star ID=449165416375804544 RA=54.84680 DEC=57.89487
+  CA preciso (Rigorous): 116585995.28 mas @ MJD 61050.68704216
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151256397.3 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.13 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116585995.28 mas @ MJD 61050.687042
+  Duration: 0.572486 sec
+  Shadow path width: 5.800686 km
+
+Candidato 73/77 - Stella 449165656893940992...
+DEBUG: Entering calculateSingleEvent for Star 449165656893940992 Guess MJD: 61050.573222
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.57322
+[PHASE2] Asteroid MJD=61050.572527 RA=68.41309 DEC=26.95915
+[PHASE2] Star ID=449165656893940992 RA=54.84933 DEC=57.91849
+[PHASE2] Asteroid MJD=61050.573222 RA=68.41303 DEC=26.95910
+[PHASE2] Star ID=449165656893940992 RA=54.84933 DEC=57.91849
+[PHASE2] Asteroid MJD=61050.573916 RA=68.41297 DEC=26.95905
+[PHASE2] Star ID=449165656893940992 RA=54.84933 DEC=57.91849
+  CA preciso (Rigorous): 116638314.29 mas @ MJD 61050.56627741
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151216667.4 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.15 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116638314.29 mas @ MJD 61050.566277
+  Duration: 0.571256 sec
+  Shadow path width: 5.800686 km
+
+Candidato 74/77 - Stella 449165416375778688...
+DEBUG: Entering calculateSingleEvent for Star 449165416375778688 Guess MJD: 61050.645749
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.64575
+[PHASE2] Asteroid MJD=61050.645055 RA=68.40637 DEC=26.95359
+[PHASE2] Star ID=449165416375778688 RA=54.84839 DEC=57.90428
+[PHASE2] Asteroid MJD=61050.645749 RA=68.40631 DEC=26.95354
+[PHASE2] Star ID=449165416375778688 RA=54.84839 DEC=57.90428
+[PHASE2] Asteroid MJD=61050.646444 RA=68.40624 DEC=26.95348
+[PHASE2] Star ID=449165416375778688 RA=54.84839 DEC=57.90428
+  CA preciso (Rigorous): 116606394.22 mas @ MJD 61050.63880505
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151239933.5 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.14 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116606394.22 mas @ MJD 61050.638805
+  Duration: 0.571993 sec
+  Shadow path width: 5.800686 km
+
+Candidato 75/77 - Stella 449165691253683072...
+DEBUG: Entering calculateSingleEvent for Star 449165691253683072 Guess MJD: 61050.574309
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.57431
+[PHASE2] Asteroid MJD=61050.573614 RA=68.41299 DEC=26.95907
+[PHASE2] Star ID=449165691253683072 RA=54.82051 DEC=57.91913
+[PHASE2] Asteroid MJD=61050.574309 RA=68.41293 DEC=26.95902
+[PHASE2] Star ID=449165691253683072 RA=54.82051 DEC=57.91913
+[PHASE2] Asteroid MJD=61050.575003 RA=68.41286 DEC=26.95896
+[PHASE2] Star ID=449165691253683072 RA=54.82051 DEC=57.91913
+  CA preciso (Rigorous): 116662171.55 mas @ MJD 61050.56736437
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151245128.2 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.15 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116662171.55 mas @ MJD 61050.567364
+  Duration: 0.571295 sec
+  Shadow path width: 5.800686 km
+
+Candidato 76/77 - Stella 449165244577093888...
+DEBUG: Entering calculateSingleEvent for Star 449165244577093888 Guess MJD: 61050.714671
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.71467
+[PHASE2] Asteroid MJD=61050.713977 RA=68.40002 DEC=26.94831
+[PHASE2] Star ID=449165244577093888 RA=54.81736 DEC=57.89161
+[PHASE2] Asteroid MJD=61050.714671 RA=68.39995 DEC=26.94825
+[PHASE2] Star ID=449165244577093888 RA=54.81736 DEC=57.89161
+[PHASE2] Asteroid MJD=61050.715366 RA=68.39989 DEC=26.94820
+[PHASE2] Star ID=449165244577093888 RA=54.81736 DEC=57.89161
+  CA preciso (Rigorous): 116601333.95 mas @ MJD 61050.70772681
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 151291315.2 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.13 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 116601333.95 mas @ MJD 61050.707727
+  Duration: 0.572724 sec
+  Shadow path width: 5.800686 km
+
+Candidato 77/77 - Stella 449184245512243456...
+DEBUG: Entering calculateSingleEvent for Star 449184245512243456 Guess MJD: 61049.310205
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.31020
+[PHASE2] Asteroid MJD=61049.309511 RA=68.53647 DEC=27.05689
+[PHASE2] Star ID=449184245512243456 RA=54.88665 DEC=58.16522
+[PHASE2] Asteroid MJD=61049.310205 RA=68.53640 DEC=27.05683
+[PHASE2] Star ID=449184245512243456 RA=54.88665 DEC=58.16522
+[PHASE2] Asteroid MJD=61049.310899 RA=68.53633 DEC=27.05678
+[PHASE2] Star ID=449184245512243456 RA=54.88665 DEC=58.16522
+  CA preciso (Rigorous): 117177842.20 mas @ MJD 61049.30326051
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 150801523.5 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.38 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 117177842.20 mas @ MJD 61049.303261
+  Duration: 0.558694 sec
+  Shadow path width: 5.800686 km
+
+══════════════════════════════════════════════════════════
+PHASE 2 COMPLETATA
+══════════════════════════════════════════════════════════
+  Orbital refinement: ✗ Non eseguito
+  Eventi calcolati: 77
+  Falliti: 0
+  Tempo totale: 795.721500 ms
+
+Debug: Checking 77 candidates for target ID 877859914797936896
+ → Phase1: 77 candidati → Phase2: 77 eventi → Trovati 75 eventi! ✓
+[██████████████████████████████████████████████████] 100% | Completato     : 1 asteroidi processati                            
+[DEBUG] Step 5: Completato, trovati 36 eventi
+
+================================================================
+CALCOLO PRIORITÀ EVENTI
+================================================================
+
+Criteri di priorità:
+  • Mag drop > 2.0 mag: +3 punti
+  • Durata > 5 secondi: +2 punti
+  • Path attraversa Italia: +3 punti
+  • Incertezza < 15 km: +2 punti
+  • Stella luminosa (< 10 mag): +1 punto
+
+(34713) Unknown vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 8.000000/11 ★★★
+    • Mag drop eccellente
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 8.000000/11 ★★★
+    • Mag drop eccellente
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 8.000000/11 ★★★
+    • Mag drop eccellente
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 8.000000/11 ★★★
+    • Mag drop eccellente
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 8.000000/11 ★★★
+    • Mag drop eccellente
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) Unknown vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+
+================================================================
+GENERAZIONE REPORT
+================================================================
+
+Applicazione filtri richiesti: Mag <= 15.0, Durata > 0.3s
+
+Formati output:
+  • IOTA formato classico
+  • Preston formato compatto
+  • JSON per API
+  • KML per Google Earth
+  • CSV per Excel
+
+╔════════════════════════════════════════════════════════════╗
+║          ITALOccultCalc - REPORT OCCULTAZIONI              ║
+╚════════════════════════════════════════════════════════════╝
+
+Totale eventi trovati: 36
+Eventi dopo filtri: 7
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+(34713) Unknown occulta 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Data/Ora: 2026-10-90 20:60:12 UT
+JD: 2461049.587645
+
+Geometria:
+  Separazione: 117285.389457 arcsec
+  Mag drop: 2.048917 mag
+  Durata: 0.556620 secondi
+  Larghezza path: 5 km
+  Incertezza: ±0 km (1σ)
+
+Visibile da: Roma
+
+PRIORITÀ: ★★★ (8.000000/11)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+(34713) Unknown occulta 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Data/Ora: 2026-10-10 10:36:60 UT
+JD: 2461050.566743
+
+Geometria:
+  Separazione: 116868.508245 arcsec
+  Mag drop: 2.376172 mag
+  Durata: 0.566239 secondi
+  Larghezza path: 5 km
+  Incertezza: ±0 km (1σ)
+
+Visibile da: Roma
+
+PRIORITÀ: ★★★ (8.000000/11)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+(34713) Unknown occulta 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Data/Ora: 2026-10-90 60:31:41 UT
+JD: 2461049.772003
+
+Geometria:
+  Separazione: 117209.633455 arcsec
+  Mag drop: 2.114338 mag
+  Durata: 0.558407 secondi
+  Larghezza path: 5 km
+  Incertezza: ±0 km (1σ)
+
+Visibile da: Roma
+
+PRIORITÀ: ★★★ (8.000000/11)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+(34713) Unknown occulta 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Data/Ora: 2026-10-10 60:10:30 UT
+JD: 2461050.750737
+
+Geometria:
+  Separazione: 116780.134715 arcsec
+  Mag drop: 2.109902 mag
+  Durata: 0.568074 secondi
+  Larghezza path: 5 km
+  Incertezza: ±0 km (1σ)
+
+Visibile da: Roma
+
+PRIORITÀ: ★★★ (8.000000/11)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+(34713) Unknown occulta 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Data/Ora: 2026-10-90 10:23:51 UT
+JD: 2461049.558238
+
+Geometria:
+  Separazione: 117303.858268 arcsec
+  Mag drop: 1.953574 mag
+  Durata: 0.556342 secondi
+  Larghezza path: 5 km
+  Incertezza: ±0 km (1σ)
+
+Visibile da: Roma
+
+PRIORITÀ: ★★ (5.000000/11)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+(34713) Unknown occulta 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Data/Ora: 2026-10-10 20:33:46 UT
+JD: 2461050.606794
+
+Geometria:
+  Separazione: 116839.266019 arcsec
+  Mag drop: 1.979591 mag
+  Durata: 0.566627 secondi
+  Larghezza path: 5 km
+  Incertezza: ±0 km (1σ)
+
+Visibile da: Roma
+
+PRIORITÀ: ★★ (5.000000/11)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+(34713) Unknown occulta 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Data/Ora: 2026-10-10 18:58:80 UT
+JD: 2461051.290378
+
+Geometria:
+  Separazione: 116562.821706 arcsec
+  Mag drop: 5.367167 mag
+  Durata: 0.573566 secondi
+  Larghezza path: 5 km
+  Incertezza: ±0 km (1σ)
+
+Visibile da: Roma
+
+PRIORITÀ: ★★★ (8.000000/11)
+
+✓ Report console generato
+
+DEBUG XML: designation='34713' name='Unknown' diameter=5.800686
+DEBUG XML: designation='34713' name='Unknown' diameter=5.800686
+DEBUG XML: designation='34713' name='Unknown' diameter=5.800686
+DEBUG XML: designation='34713' name='Unknown' diameter=5.800686
+DEBUG XML: designation='34713' name='Unknown' diameter=5.800686
+DEBUG XML: designation='34713' name='Unknown' diameter=5.800686
+DEBUG XML: designation='34713' name='Unknown' diameter=5.800686
+✓ File XML generato: test_output_occult4.xml
+  Formato: Occult4 compatible
+  Eventi: 7
+  Import in: OccultWatcher Cloud
+
+✓ File JSON generato: test_output_structured.json
+✓ File KML generato: output_events.kml
+  Tracce generate: 7
+
+
+================================================================
+RIEPILOGO TEMPI DI ESECUZIONE
+================================================================
+
+┌───────────────────────────────┬──────────────┐
+│ FASE                          │ TEMPO (s)    │
+├───────────────────────────────┼──────────────┤
+│ 1. Caricamento Config00000000 │ 00000.000 s  │
+│ 2. Selezione Asteroidi0000000 │ 00000.321 s  │
+│ 3. Propagazione Orbite0000000 │ 00000.000 s  │
+│ 4. Query Catalogo Stelle00000 │ 00000.000 s  │
+│ 5. Rilevamento Occultazioni00 │ 00001.015 s  │
+│ 6. Reporting & Export00000000 │ 00000.001 s  │
+├───────────────────────────────┼──────────────┤
+│ TOTALE00000000000000000000000 │ 00001.337 s  │
+└───────────────────────────────┴──────────────┘
+
+✓ Workflow completato con successo!
+Eventi trovati: 36
+Report salvati in: output/
+

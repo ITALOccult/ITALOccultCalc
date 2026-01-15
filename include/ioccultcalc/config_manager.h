@@ -199,6 +199,7 @@ public:
     ConfigBuilder& enableDownloadFromAstDyS(bool enable = true);
     ConfigBuilder& enablePropagation(bool enable = true);
     ConfigBuilder& enableOccultationSearch(bool enable = true);
+    ConfigBuilder& enableRefinement(bool enable = true, int lastN = 50);
     
     // Build final configuration
     ConfigManager build() const;

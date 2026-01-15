@@ -1,0 +1,14 @@
+{
+    "object": {
+        "id": "13477"
+    },
+    "search": {
+        "start_mjd": 61059.0,
+        "end_mjd": 61061.0,
+        "mag_limit": 14.0,
+        "corridor_width": 5.0
+    },
+    "propagation": {
+        "use_horizons": false
+    }
+}

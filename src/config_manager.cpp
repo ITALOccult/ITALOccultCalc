@@ -840,6 +840,18 @@ ConfigBuilder& ConfigBuilder::enableOccultationSearch(bool enable) {
     return *this;
 }
 
+ConfigBuilder& ConfigBuilder::enableRefinement(bool enable, int lastN) {
+    auto section = config_.getSection(ConfigSection::ORBIT_FITTING);
+    if (!section) {
+        section = ConfigSectionData(ConfigSection::ORBIT_FITTING);
+    }
+    ConfigSectionData updatedSection = *section;
+    updatedSection.setParameter("refine_orbit", enable, "Enable orbital refinement with recent observations");
+    updatedSection.setParameter("last_n_obs", lastN, "Number of recent observations to use for fitting");
+    config_.addSection(updatedSection);
+    return *this;
+}
+
 ConfigManager ConfigBuilder::build() const {
     return config_;
 }

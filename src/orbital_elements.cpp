@@ -1,4 +1,5 @@
 #include "ioccultcalc/orbital_elements.h"
+#include "orbital_conversions.h"
 #include <cmath>
 
 namespace ioccultcalc {
@@ -69,6 +70,40 @@ OrbitalElements AstDynEquinoctialElements::toKeplerian() const {
     toKeplerian(orb.e, orb.i, orb.omega, orb.Omega, orb.M);
     
     return orb;
+}
+
+OrbitalElements AstDynEquinoctialElements::toOsculatingKeplerian() const {
+    // 1. Ottieni elementi kepleriani via conversione geometrica
+    OrbitalElements kep = toKeplerian();
+    
+    // 2. Se sono elementi medi, applica la correzione fisica
+    if (type == ElementType::MEAN_ASTDYS) {
+        // Prepariamo gli elementi per la utility in ITALOccultLibrary
+        KeplerianElements it_kep;
+        it_kep.a = kep.a;
+        it_kep.e = kep.e;
+        it_kep.i = kep.i;
+        it_kep.Omega = kep.Omega;
+        it_kep.omega = kep.omega;
+        it_kep.M = kep.M;
+        it_kep.epoch_jd = kep.epoch.jd;
+        it_kep.name = kep.name;
+        
+        // Applichiamo la trasformazione (per ora J2 e placeholder per pianeti)
+        // Nota: per asteroidi heliocentrici j2 = 0.0 di default.
+        auto it_osc = OrbitalConversions::meanToOsculating(it_kep);
+        
+        // Aggiorniamo OrbitalElements con i valori osculanti
+        kep.a = it_osc.a;
+        kep.e = it_osc.e;
+        kep.i = it_osc.i;
+        kep.Omega = it_osc.Omega;
+        kep.omega = it_osc.omega;
+        kep.M = it_osc.M;
+        kep.type = ElementType::OSCULATING;
+    }
+    
+    return kep;
 }
 
 AstDynEquinoctialElements AstDynEquinoctialElements::fromKeplerian(const OrbitalElements& orb) {

@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iomanip>
 #include <regex>
+#include "astdyn/io/parsers/AstDysRWOParser.hpp"
 
 namespace ioccultcalc {
 
@@ -78,80 +79,62 @@ ObservationSet MPCClient::getObservations(const std::string& designation) {
     ObservationSet obsSet;
     obsSet.objectDesignation = designation;
     
-    // Se è un numero, prova AstDyS
+    // Se è un numero, prova AstDyS (RWO è molto più affidabile per il fit)
     if (std::all_of(designation.begin(), designation.end(), ::isdigit)) {
         try {
             int asteroidNumber = std::stoi(designation);
             int dirNumber = asteroidNumber / 1000;
             
             std::string astdysURL = "https://newton.spacedys.com/~astdys2/mpcobs/numbered/" 
-                                  + std::to_string(dirNumber) + "/" + designation + ".rwo";
+                                   + std::to_string(dirNumber) + "/" + designation + ".rwo";
             
+            std::cout << "[MPCClient] Downloading observations from AstDyS: " << astdysURL << std::endl;
             std::string content = pImpl->httpGet(astdysURL);
             
-            // Parse formato .rwo (formato Fortran AstDyS)
-            std::istringstream iss(content);
-            std::string line;
-            bool headerPassed = false;
-            int tested = 0;
-            
-            while (std::getline(iss, line)) {
-                // Salta header fino alla riga con "! Design"
-                if (!headerPassed) {
-                    if (line.find("! Design") != std::string::npos) {
-                        headerPassed = true;
-                    }
-                    continue;
-                }
-                
-                // Ignora commenti e righe vuote
-                if (line.empty() || line[0] == '#' || line[0] == '!') {
-                    continue;
-                }
-                
-                // Formato .rwo: colonne fisse Fortran, lunghezza minima 115
-                if (line.length() >= 115) {
-                    try {
-                        auto obs = parseRWOLine(line);
-                        obsSet.observations.push_back(obs);
-                    } catch (const std::exception&) {
-                        // Silently skip unparseable lines
-                    }
-                }
+            if (content.empty() || content.find("404 Not Found") != std::string::npos) {
+                throw std::runtime_error("RWO file not found on AstDyS");
             }
-            std::cerr << "Tested " << tested << " lines, got " << obsSet.observations.size() << " obs\n";
+
+            // Salva su file temporaneo per usare il parser di AstDyn
+            std::string tempFile = "/tmp/ioc_temp_" + designation + ".rwo";
+            {
+                std::ofstream ofs(tempFile);
+                ofs << content;
+            }
             
-            if (!obsSet.observations.empty()) {
-                obsSet.computeStatistics();
-                return obsSet;
+            std::cout << "[MPCClient] Parsing RWO with native library parser..." << std::endl;
+            ObservationSet obsSetFromRWO = loadFromRWOFile(tempFile);
+            std::remove(tempFile.c_str());
+            
+            if (!obsSetFromRWO.observations.empty()) {
+                std::cout << "[MPCClient] Successfully loaded " << obsSetFromRWO.observations.size() 
+                          << " observations from RWO." << std::endl;
+                return obsSetFromRWO;
             }
         } catch (const std::exception& e) {
-            // AstDyS fallito, prova con MPC
+            std::cerr << "MPCClient: AstDyS RWO download/parse failed: " << e.what() << std::endl;
         }
     }
     
-    // Fallback: prova con MPC
-    // URL per scaricare osservazioni dal MPC
-    // Formato: https://www.minorplanetcenter.net/db_search/show_object?object_id=433
+    // Fallback: Se RWO fallisce o non è numerato, prova MPC ma LOGGA ATTENZIONE
+    std::cout << "[MPCClient] WARNING: Falling back to MPC HTML scraper (EXPERIMENTAL)" << std::endl;
     
     std::string url = pImpl->baseURL + "db_search/show_object?object_id=" + designation 
                      + "&obs_display=obs";
     
     std::string content = pImpl->httpGet(url);
     
-    // Parse HTML e estrai osservazioni in formato MPC
     std::istringstream iss(content);
     std::string line;
     
     while (std::getline(iss, line)) {
-        // Cerca linee che sembrano osservazioni MPC (80 colonne)
-        if (line.length() >= 80 && line[14] == ' ') {
+        // Cerca linee che sembrano osservazioni MPC (80 colonne standard)
+        // NOTA: Il parser MPC80 qui è fragile se il contenuto HTML è sporco.
+        if (line.length() >= 80 && (line[14] == ' ' || line[14] == '*')) {
             try {
                 auto obs = parseMPC80Line(line);
                 obsSet.observations.push_back(obs);
-            } catch (...) {
-                // Ignora linee non parsabili
-            }
+            } catch (...) { }
         }
     }
     
@@ -172,6 +155,27 @@ ObservationSet MPCClient::getObservations(const std::string& designation,
         if (obs.epoch.jd >= startDate.jd && obs.epoch.jd <= endDate.jd) {
             filtered.observations.push_back(obs);
         }
+    }
+    
+    filtered.computeStatistics();
+    return filtered;
+}
+
+ObservationSet MPCClient::getRecentObservations(const std::string& designation, int n) {
+    ObservationSet allObs = getObservations(designation);
+    
+    if (allObs.observations.size() <= (size_t)n) {
+        return allObs;
+    }
+    
+    // allObs.computeStatistics() ordina per tempo (solitamente) - verifichiamo observation.cpp
+    // Assumiamo che siano ordinate per tempo crescente. Prendiamo le ultime n.
+    ObservationSet filtered;
+    filtered.objectDesignation = designation;
+    
+    size_t start = allObs.observations.size() - n;
+    for (size_t i = start; i < allObs.observations.size(); ++i) {
+        filtered.observations.push_back(allObs.observations[i]);
     }
     
     filtered.computeStatistics();
@@ -236,103 +240,39 @@ ObservationSet MPCClient::loadFromFile(const std::string& filename) {
 }
 
 ObservationSet MPCClient::loadFromRWOFile(const std::string& filename) {
-    std::ifstream file(filename);
-    if (!file.is_open()) {
-        throw std::runtime_error("Cannot open RWO file: " + filename);
-    }
-    
-    ObservationSet obsSet;
-    std::string line;
-    bool pastHeader = false;
-    int successCount = 0;
-    int failCount = 0;
-    int totalLines = 0;
-    int skippedShort = 0;
-    int skippedComment = 0;
-    int headerLines = 0;
-    
-    while (std::getline(file, line)) {
-        totalLines++;
+    try {
+        astdyn::io::parsers::AstDysRWOParser parser;
+        auto astdynObs = parser.parse(filename);
         
-        // Skip fino a END_OF_HEADER (se presente)
-        if (!pastHeader) {
-            if (line.find("END_OF_HEADER") != std::string::npos) {
-                pastHeader = true;
-                headerLines = totalLines;
-                std::cerr << "✓ Header trovato alla linea " << totalLines << "\n";
-            }
-            // Se non c'è header e la linea sembra un'osservazione, considera il file senza header
-            else if (totalLines > 10 && line.length() >= 150 && line[0] != '!' && line[0] != '#') {
-                pastHeader = true;
-                headerLines = totalLines - 1;
-                std::cerr << "⚠️  Header END_OF_HEADER non trovato, assumo file senza header\n";
-                // Non fare continue, processa questa linea!
-            } else {
-                continue;
-            }
-        }
+        ObservationSet obsSet;
+        if (astdynObs.empty()) return obsSet;
         
-        // Se abbiamo appena impostato pastHeader=true senza fare continue, processa la linea corrente
-        if (!pastHeader) {
-            continue;
-        }
+        obsSet.objectDesignation = astdynObs[0].object_name;
         
-        // Skip commenti e linee vuote
-        if (line.empty() || line[0] == '!' || line[0] == '#') {
-            skippedComment++;
-            continue;
-        }
-        
-        // Skip linee troppo corte (header lines, blank lines)
-        if (line.length() < 150) {
-            skippedShort++;
-            if (skippedShort == 1) {
-                std::cerr << "⚠️  Prima linea corta (" << line.length() 
-                          << " chars): " << line.substr(0, 50) << "...\n";
-            }
-            continue;
-        }
-        
-        // Prova a parsare la linea .rwo
-        try {
-            auto obs = parseRWOLine(line);
+        for (const auto& ao : astdynObs) {
+            AstrometricObservation obs;
+            obs.epoch = JulianDate::fromMJD(ao.mjd_utc);
+            obs.obs.ra = ao.ra;
+            obs.obs.dec = ao.dec;
+            obs.magnitude = ao.mag;
+            obs.observatoryCode = ao.obs_code;
+            obs.raError = ao.sigma_ra;
+            obs.decError = ao.sigma_dec;
             
-            // Estrai designation dalla prima osservazione valida
-            if (obsSet.objectDesignation.empty() && line.length() >= 10) {
-                obsSet.objectDesignation = line.substr(0, 10);
-                // Trim spaces
-                size_t end = obsSet.objectDesignation.find_last_not_of(" \t\n\r");
-                if (end != std::string::npos) {
-                    obsSet.objectDesignation = obsSet.objectDesignation.substr(0, end + 1);
-                }
-            }
+            // Carica info osservatorio
+            Observatory observatory = Observatory::fromMPCCode(obs.observatoryCode);
+            obs.observerLocation = observatory.location;
             
             obsSet.observations.push_back(obs);
-            successCount++;
-        } catch (const std::exception& e) {
-            // Stampa il primo errore per debug
-            if (failCount == 0) {
-                std::cerr << "❌ Primo errore di parsing:\n";
-                std::cerr << "   Messaggio: " << e.what() << "\n";
-                std::cerr << "   Linea (" << line.length() << " chars): " 
-                          << line.substr(0, std::min(size_t(120), line.length())) << "...\n";
-            }
-            failCount++;
-            continue;
         }
+        
+        obsSet.computeStatistics();
+        return obsSet;
+        
+    } catch (const std::exception& e) {
+        std::cerr << "MPCClient: Errore caricamento file RWO (" << filename << "): " << e.what() << std::endl;
+        throw;
     }
-    
-    // Debug info
-    std::cerr << "📊 RWO parser statistics:\n";
-    std::cerr << "   Linee totali: " << totalLines << "\n";
-    std::cerr << "   Linee header: " << headerLines << "\n";
-    std::cerr << "   Commenti/vuote: " << skippedComment << "\n";
-    std::cerr << "   Troppo corte: " << skippedShort << "\n";
-    std::cerr << "   Parse OK: " << successCount << "\n";
-    std::cerr << "   Parse falliti: " << failCount << "\n";
-    
-    obsSet.computeStatistics();
-    return obsSet;
 }
 
 bool MPCClient::saveToFile(const ObservationSet& observations, const std::string& filename) {
@@ -481,28 +421,34 @@ AstrometricObservation MPCClient::parseRWOLine(const std::string& line) {
         double raHours = raH + raM / 60.0 + raS / 3600.0;
         obs.obs.ra = raHours * 15.0 * DEG_TO_RAD;
         
-        // Parsing Dec: inizia a posizione 104 (1-based) = substr(103, 12) (0-based)
-        // Esempio: "+53 39 04.20"
-        std::string decStr = line.substr(103, 12);
-        
-        // Primo carattere è il segno
-        char sign = decStr[0];
-        if (sign != '+' && sign != '-') {
-            throw std::runtime_error("Invalid Dec sign in RWO");
+        // Parsing Dec: robustly handle signs and leading spaces
+        std::string decStrFull = line.substr(100, 20); // Get a slice that definitely contains Dec
+        size_t first_non_space = decStrFull.find_first_not_of(" \t");
+        if (first_non_space == std::string::npos) {
+            throw std::runtime_error("Empty Dec field in RWO");
         }
         
-        std::istringstream decStream(decStr.substr(1));
-        int decD, decM;
-        double decS;
-        decStream >> decD >> decM >> decS;
+        char sign = decStrFull[first_non_space];
+        std::string numeric_dec = decStrFull.substr(first_non_space + 1);
+        std::istringstream decStream(numeric_dec);
+        int decD = 0, decM = 0;
+        double decS = 0.0;
         
-        if (decD < 0 || decD > 90 || decM < 0 || decM >= 60) {
-            throw std::runtime_error("Invalid Dec in RWO");
+        if (!(decStream >> decD >> decM >> decS)) {
+            // Fallback: try reading the sign as part of the number
+            std::istringstream decStream2(decStrFull.substr(first_non_space));
+            if (!(decStream2 >> decD >> decM >> decS)) {
+                throw std::runtime_error("Invalid Dec numeric format in RWO");
+            }
+            // If decStream2 worked, decD already has the sign.
+            double decDeg = std::abs(decD) + decM / 60.0 + decS / 3600.0;
+            if (decD < 0 || sign == '-') decDeg = -decDeg;
+            obs.obs.dec = decDeg * M_PI / 180.0;
+        } else {
+            double decDeg = decD + decM / 60.0 + decS / 3600.0;
+            if (sign == '-') decDeg = -decDeg;
+            obs.obs.dec = decDeg * M_PI / 180.0;
         }
-        
-        double decDeg = decD + decM / 60.0 + decS / 3600.0;
-        if (sign == '-') decDeg = -decDeg;
-        obs.obs.dec = decDeg * DEG_TO_RAD;
         
         // Codice osservatorio: posizione 180-182 (1-based) = substr(179, 3) (0-based)
         // Esempio: "802" per Heidelberg
@@ -571,13 +517,16 @@ AstrometricObservation MPCClient::parseMPC80Line(const std::string& line) {
     obs.obs.ra = raHours * 15.0 * DEG_TO_RAD;
     
     // Dec (sDD MM SS.ss)
+    // MPC format is strict: sign is at column 44 (0-indexed)
     char sign = line[44];
     int decD = std::stoi(line.substr(45, 2));
     int decM = std::stoi(line.substr(48, 2));
     double decS = std::stod(line.substr(51, 4));
+    
+    // Correctly handle negative declination including -00
     double decDeg = decD + decM / 60.0 + decS / 3600.0;
     if (sign == '-') decDeg = -decDeg;
-    obs.obs.dec = decDeg * DEG_TO_RAD;
+    obs.obs.dec = decDeg * M_PI / 180.0;
     
     // Magnitudine (se presente)
     std::string magStr = line.substr(65, 5);

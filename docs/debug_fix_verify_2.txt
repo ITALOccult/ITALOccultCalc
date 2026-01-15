@@ -1,0 +1,18 @@
+
+╔═══════════════════════════════════════════════════════════════╗
+║                     ITALOccultCalc v1.0                        ║
+║         Ricerca Automatica Occultazioni Asteroidali           ║
+║              Ottimizzato per Osservatori Italiani              ║
+╚═══════════════════════════════════════════════════════════════╝
+
+[Modalità verbosa attivata]
+
+================================================================
+CARICAMENTO CONFIGURAZIONE
+================================================================
+
+File configurazione: 2
+✗ Errore caricamento configurazione: Formato configurazione non supportato
+
+✗ ERRORE CRITICO: Formato configurazione non supportato
+

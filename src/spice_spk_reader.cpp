@@ -4,7 +4,12 @@
  */
 
 #include "ioccultcalc/spice_spk_reader.h"
+#include <string>
+#include <vector>
+#include <memory>
+#include <iomanip>
 #include <iostream>
+#include "ioccultcalc/coordinates.h"
 #include <cstring>
 #include <cstdlib>
 
@@ -111,8 +116,16 @@ public:
         char observerStr[64];
         snprintf(targetStr, sizeof(targetStr), "%d", bodyId);
         snprintf(observerStr, sizeof(observerStr), "%d", centerId);
+
+        static int spk_log_count = 0;
+        if (spk_log_count < 5) {
+             std::cout << "[DEBUG_SPK] Requesting Body=" << bodyId << " Center=" << centerId 
+                       << " JD=" << std::fixed << std::setprecision(5) << jd 
+                       << " ET=" << std::setprecision(2) << et << std::endl;
+             spk_log_count++;
+        }
         
-        const char* frame = "ECLIPJ2000";
+        const char* frame = "J2000";
         spkezr_c(targetStr, et, frame, "NONE", observerStr, state, &lt);
         
         // DEBUG temporaneo
@@ -284,5 +297,17 @@ std::vector<int> SPICESPKReader::getAvailableBodies() const {
 void SPICESPKReader::close() {
     pImpl->close();
 }
+
+    SPKState SPICESPKReader::getEarthState(double jd) {
+        try {
+            auto s = getState(399, jd, 10);
+            return { s.first, s.second, jd };
+        } catch (const std::exception& e) {
+            std::cerr << "[SPK_WARN] Failed to load Earth (399). Trying EMB (3). Error: " << e.what() << std::endl;
+            auto s = getState(3, jd, 10);
+            std::cerr << "[SPK_WARN] FALLBACK TO EMB (3) SUCCESSFUL! Kernel is missing 399 center." << std::endl;
+            return { s.first, s.second, jd };
+        }
+    }
 
 } // namespace ioccultcalc

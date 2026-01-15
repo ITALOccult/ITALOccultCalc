@@ -18,6 +18,8 @@
 #include <nlohmann/json.hpp>
 #include <fstream>
 #include <iomanip>
+#include "ioccultcalc/orbital_elements.h"
+#include "ioccultcalc/asteroid_sqlite_db.h"
 
 namespace ioccultcalc {
 
@@ -29,12 +31,16 @@ public:
     int verbose_level = 0;
     
     Impl() : catalog(nullptr) {
+        std::cout << "[Phase1CandidateScreening] Constructor started." << std::endl;
         // Initialize High Precision Propagator with DE441
         astdyn::propagation::HighPrecisionPropagator::Config config;
         config.de441_path = std::string(getenv("HOME")) + "/.ioccultcalc/ephemerides/de441_part-2.bsp";
         config.perturbations_planets = true;
+        config.perturbations_asteroids = false; // Not needed for coarse corridor
         config.relativity = true;
+        config.tolerance = 1e-9; // Sufficient for screening
         propagator = std::make_unique<astdyn::propagation::HighPrecisionPropagator>(config);
+        std::cout << "[Phase1CandidateScreening] Constructor finished." << std::endl;
     }
 
     /**
@@ -115,6 +121,28 @@ bool Phase1CandidateScreening::loadAsteroidFromJSON(int number, const std::strin
     }
 }
 
+bool Phase1CandidateScreening::loadAsteroidFromDB(int number) {
+    try {
+        AsteroidSqliteDatabase db;
+        auto orbital = db.getOrbitalElements(number);
+        if (orbital) {
+            // Convert OrbitalElements to Keplerian for the propagator
+            pimpl_->initial_kep_ecl.semi_major_axis = orbital->a;
+            pimpl_->initial_kep_ecl.eccentricity = orbital->e;
+            pimpl_->initial_kep_ecl.inclination = orbital->i;
+            pimpl_->initial_kep_ecl.longitude_ascending_node = orbital->Omega;
+            pimpl_->initial_kep_ecl.argument_perihelion = orbital->omega;
+            pimpl_->initial_kep_ecl.mean_anomaly = orbital->M;
+            pimpl_->initial_kep_ecl.epoch_mjd_tdb = orbital->epoch.jd - 2400000.5;
+            pimpl_->initial_kep_ecl.gravitational_parameter = 2.959122082855911e-04;
+            return true;
+        }
+    } catch (...) {
+        return false;
+    }
+    return false;
+}
+
 bool Phase1CandidateScreening::loadAsteroidFromEQ1(int number, const std::string& eq1_path) {
     try {
         // Usa OrbitFitAPI per il parsing
@@ -125,6 +153,23 @@ bool Phase1CandidateScreening::loadAsteroidFromEQ1(int number, const std::string
         std::cerr << "Phase1: Failed to load asteroid from EQ1: " << eq1_path << " - " << e.what() << "\n";
         return false;
     }
+}
+
+bool Phase1CandidateScreening::setAsteroidElements(const AstDynEquinoctialElements& elements) {
+    // Ottieni elementi osculanti (applica correzione se type == MEAN_ASTDYS)
+    auto kep = elements.toOsculatingKeplerian();
+    
+    // Popola elementi per HighPrecisionPropagator
+    pimpl_->initial_kep_ecl.semi_major_axis = kep.a;
+    pimpl_->initial_kep_ecl.eccentricity = kep.e;
+    pimpl_->initial_kep_ecl.inclination = kep.i;
+    pimpl_->initial_kep_ecl.longitude_ascending_node = kep.Omega;
+    pimpl_->initial_kep_ecl.argument_perihelion = kep.omega;
+    pimpl_->initial_kep_ecl.mean_anomaly = kep.M;
+    pimpl_->initial_kep_ecl.epoch_mjd_tdb = kep.epoch.jd - 2400000.5;
+    pimpl_->initial_kep_ecl.gravitational_parameter = 2.959122082855911e-04; // GMS in AU^3/day^2
+    
+    return true;
 }
 
 Phase1Results Phase1CandidateScreening::screenCandidates(const Phase1Config& config) {

@@ -1,0 +1,46 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage[margin=1.5cm,top=1.5cm,bottom=1.5cm]{geometry}
+\usepackage{tikz,graphicx,amsmath,amssymb,booktabs,xcolor}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\pagestyle{empty}
+\begin{document}
+
+\begin{minipage}[t][0.2\textheight]{\textwidth}
+  \centering
+  {\huge\bfseries (34713) Unknown occults GAIA DR3 2546064313946854400}\\[0.4cm]
+  {\large 2026-01-09 22:16:27 UT}\\[0.4cm]
+  \begin{tabular}{p{0.3\textwidth} p{0.3\textwidth} p{0.3\textwidth}}
+    \textbf{Asteroide} & \textbf{Stella} & \textbf{Evento} \\
+    \midrule
+    Diametro: 5.8 km & Mag: 17.1 & Calo mag: 1.5 \\
+    Mag (H): 13.9 & RA: 00:02:05.1 & Durata max: 0.2 s \\
+    Albedo: 0.150 & Dec: +00°09'45.3" & Incertezza: $\pm$232 km \\
+  \end{tabular}
+\end{minipage}
+\vfill
+
+\begin{minipage}[t][0.4\textheight]{\textwidth}
+  \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \textbf{Finder Chart (Field: 5$^{\circ}$)}\\[0.2cm]
+    \includegraphics[width=\textwidth]{chart_34713_2546064313946854400_finder.png}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \textbf{Mappa Terrestre (Path)}\\[0.2cm]
+    \includegraphics[width=\textwidth]{event_card_2_map.png}
+  \end{minipage}
+\end{minipage}
+\vfill
+
+\begin{minipage}[t][0.4\textheight]{\textwidth}
+  \centering
+  \textbf{Campo Dettagliato (Field: 30', Lim: mag 16)}\\[0.2cm]
+  \includegraphics[width=0.8\textwidth]{chart_34713_2546064313946854400_detail.png}
+\end{minipage}
+
+\end{document}

@@ -1,0 +1,63 @@
+\documentclass[landscape]{article}
+\usepackage[paperwidth=10in,paperheight=7.5in,margin=0.5in]{geometry}
+\usepackage{tikz,graphicx,amsmath}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\pagestyle{empty}
+\begin{document}
+
+\begin{tikzpicture}[remember picture,overlay]
+  \node[anchor=north west] at (current page.north west) {
+    \begin{minipage}{10in}
+      \begin{center}
+        {\Huge\bfseries ASTEROID OCCULTATION}\\[0.2cm]
+        {\LARGE (34713) Yesiltas occults GAIA 3367029716095038976}\\[0.1cm]
+        {\Large 2026-05-25 20:22:57 UT}
+      \end{center}
+      \vspace{0.2cm}
+      \begin{minipage}[t]{0.48\linewidth}
+        {\large\bfseries Event Details}\\
+        \begin{tabular}{ll}
+          Magnitude drop: & {\Large\bfseries 2.3 mag} \\
+          Duration: & {\Large\bfseries 0.2 sec} \\
+          Shadow width: & 6 km \\
+          Uncertainty: & $\pm$83082 km \\
+        \end{tabular}
+      \end{minipage}
+      \hfill
+      \begin{minipage}[t]{0.48\linewidth}
+        {\large\bfseries Star Data}\\
+        \begin{tabular}{ll}
+          Star mag: & {\Large\bfseries 17.4} \\
+          RA/Dec (J2000): & +108°06'58.05" / +21°10'44.35" \\
+          Priority: & ** (6/11) \\
+        \end{tabular}
+      \end{minipage}\\
+      \vspace{0.3cm}
+      \begin{minipage}{0.48\linewidth}
+        \centering \textbf{Approach Chart (IAU Style)}\\[0.1cm]
+        \includegraphics[width=\linewidth]{card_34713_GAIA_DR3_3367029716095038976_approach.png}
+      \end{minipage}
+      \hfill
+      \begin{minipage}{0.48\linewidth}
+        \centering \textbf{Detail Chart (Betelgeuse Style)}\\[0.1cm]
+        \includegraphics[width=\linewidth]{card_34713_GAIA_DR3_3367029716095038976_detail.png}
+      \end{minipage}\\
+      \vspace{0.3cm}
+      \begin{minipage}{\linewidth}
+        \centering \textbf{Ground Track Map}\\[0.1cm]
+        \begin{tikzpicture}[scale=0.8]
+  % Griglia
+  \draw[gray,very thin] (0,0) rectangle (12,2.14713);
+  % Central path
+  \draw[red,very thick] (1.38,1.34) -- (2.10,1.56) -- (2.61,1.68) -- (3.03,1.76) -- (3.42,1.82) -- (3.77,1.86) -- (4.10,1.88) -- (4.41,1.90) -- (4.71,1.90) -- (5.01,1.89) -- (5.29,1.88) -- (5.57,1.86) -- (5.84,1.83) -- (6.10,1.79) -- (6.37,1.75) -- (6.63,1.70) -- (6.89,1.64) -- (7.15,1.57) -- (7.41,1.50) -- (7.67,1.42) -- (7.94,1.34) -- (8.22,1.24) -- (8.51,1.13) -- (8.81,1.02) -- (9.15,0.88) -- (9.52,0.72) -- (9.97,0.53) -- (10.62,0.25);
+  \filldraw[blue] (1.38,1.34) circle (2pt) node[above] {Start};
+  \filldraw[blue] (10.62,0.25) circle (2pt) node[above] {End};
+\end{tikzpicture}
+
+      \end{minipage}
+    \end{minipage}
+  };
+\end{tikzpicture}
+
+\end{document}

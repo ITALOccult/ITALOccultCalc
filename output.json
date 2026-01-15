@@ -1,0 +1,68 @@
+{
+  "metadata": {
+    "generator": "",
+    "software": "",
+    "date_generated": "",
+    "event_count": 2
+  },
+  "events": [
+    {
+      "asteroid": {
+        "number": 0,
+        "name": "Yesiltas",
+        "diameter_km": 5.80,
+        "absolute_magnitude": 0.00
+      },
+      "star": {
+        "catalog": "Gaia DR3",
+        "id": "3440994206894699392",
+        "ra_deg": 84.72989864,
+        "dec_deg": 26.12534714,
+        "magnitude": 0.00
+      },
+      "occultation": {
+        "time_utc": "",
+        "jd": 2461057.358127,
+        "mag_drop": 0.00,
+        "duration_sec": 0.00,
+        "shadow_width_km": 0.0,
+        "shadow_velocity_kms": 0.00,
+        "path_uncertainty_km": 0.0,
+        "time_uncertainty_sec": 0.00
+      },
+      "priority": {
+        "score": 0,
+        "class": ""
+      }
+    },
+    {
+      "asteroid": {
+        "number": 0,
+        "name": "Yesiltas",
+        "diameter_km": 5.80,
+        "absolute_magnitude": 0.00
+      },
+      "star": {
+        "catalog": "Gaia DR3",
+        "id": "3440994211189996544",
+        "ra_deg": 84.71980637,
+        "dec_deg": 26.12045882,
+        "magnitude": 0.00
+      },
+      "occultation": {
+        "time_utc": "",
+        "jd": 2461057.424941,
+        "mag_drop": 0.00,
+        "duration_sec": 0.00,
+        "shadow_width_km": 0.0,
+        "shadow_velocity_kms": 0.00,
+        "path_uncertainty_km": 0.0,
+        "time_uncertainty_sec": 0.00
+      },
+      "priority": {
+        "score": 0,
+        "class": ""
+      }
+    }
+  ]
+}

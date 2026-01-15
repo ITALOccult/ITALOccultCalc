@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+<resheader name="resmimetype"><value>text/microsoft-resx</value></resheader><resheader name="version"><value>1.3</value></resheader><resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader><resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader><data name="$this.Icon" mimetype="application/x-microsoft.net.object.binary.base64"><value>AAEAAAD/////AQAAAAAAAAAMAgAAAFFTeXN0ZW0uRHJhd2luZywgVmVyc2lvbj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWIwM2Y1ZjdmMTFkNTBhM2EFAQAAABNTeXN0ZW0uRHJhd2luZy5JY29uAgAAAAhJY29uRGF0YQhJY29uU2l6ZQcEAhNTeXN0ZW0uRHJhd2luZy5TaXplAgAAAAIAAAAJAwAAAAX8////E1N5c3RlbS5EcmF3aW5nLlNpemUCAAAABXdpZHRoBmhlaWdodAAACAgCAAAAAAAAAAAAAAAPAwAAADYEAAACAAABAAIAICAQAAAAAADoAgAAJgAAABAQEAAAAAAAKAEAAA4DAAAoAAAAIAAAAEAAAAABAAQAAAAAAIACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAgAAAAICAAIAAAACAAIAAgIAAAICAgADAwMAAAAD/AAD/AAAA//8A/wAAAP8A/wD//wAA////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACIAAAAAAAAAAAAAAAAAAAPiHAAAAAAAAAAAAAAAAAAD4hwAAAAAAAAAAAAAAAAAA+IcAAAAAAAAAAAAAAAAAAPiHAAAAAAAAAAAAAAAAAA/3u7AAAAAAAAAAAAAAAAAP97uwAAAAAAAAAAAAAAAAD/e7sAAAAAAAAAAAAAAAAA/3u7AAAAAAAAAAAAAAAAD/97u7AAAAAAAAAAAAAAAA//d7uwAAAAAAAAAAAAAAD/97t7uwAAAAAAAAAAAAAA//e7e7sAAAAAAAAAAAAAD/97u7e7sAAAAAAAAAAAAA//e7u3u7AAAAAAAAAAAAAP+7u7u7uwAAAAAAAAAAAAD/u7u7u7sAAAAAAAAAAAAA//u7u7u7AAAAAAAAAAAAAP/7u7u7uwAAAAAAAAAAAAAP/7u7u7AAAAAAAAAAAAAAD//7u7uwAAAAAAAAAAAAAAAP+7uwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/////////////n////gf///4H///8A//+/AP//3wD+/+8A/f/3APv//gB3//4Af//+AH///AA///wAP//4AB//+AAf//AAD/4wAAx/8AAP//AAD//wAA//8AAP//gAH//4AB///gB//+4Ad//fgfv/v//9////////////////8oAAAAEAAAACAAAAABAAQAAAAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAgAAAAICAAIAAAACAAIAAgIAAAICAgADAwMAAAAD/AAD/AAAA//8A/wAAAP8A/wD//wAA////AAAAAAAAAAAAAAAAAAAAAAAAAAAIcAAAAAAAAAhwAAAAAAAACHAAAAAAAAAHsAAAAAAAAAewAAAAAAAA97sAAAAAAAD3ewAAAAAAD3u3sAAAAAAP+7uwAAAAAAD/uwAAAAAAAA+wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//8AAP5/AAD8PwAA/D8AANw7AADsNwAA+B8AAPgfAADwDwAAkAkAAPAPAADwDwAA+B8AAOw3AADf+wAA//8AAAs=</value></data><data name="label85.Text"><value>The default region for maps of multiple occultation paths, and lunar grazing occultations, is usually determined from the parameters used to select events to 
+plot. Here you can specify commonly used 'fixed' regions to plot. You can also set the first region as the initial plot region for grazing occultation maps.</value></data>
+  <data name="label97.Text"><value>A number of functions in Occult are not intended for general use.  They include the routines for reporting observations to the Minor Planet Center, 
+editing the files of XZ double and variable stars, and manipulating the NOMAD catalogue.  They also include the routines for collecting lunar
+occultation observations.
+You should NOT enable these functions unless you have  a specific need. Please note that if you enable these functions and 'play around' with them 
+to see what they do, you may corrupt important files and lose functionality.</value></data>
+  <data name="label74.Text"><value>NOTE: Several data files used by Occult can be updated using 'Anonymous' ftp download. Anonymous FTP requires a password, which is usually your 
+email address.  Note that the default password used in browsers such as Netscape and Mozilla will NOT work on the Minor Planet Center site.  
+Enter your email address above for use with Anonymous FTP downloads.
+</value></data>
+  <data name="label182.Text"><value>Maximum number of events allowed to be computed or loaded
+[The recommended value is 20,000. The performance of the 
+program will slow down as the number of events increases.
+If this value is too large, the program may run out of memory]</value></data>
+  <data name="label184.Text"><value>The UCAC4 catalogue  has files in two duirectories - u4b and u4i. The files in u4b contain the catalogue data, 
+while those in u4i provide indexes and cross-references. Apart from use with the UCAC4 catalogue, the files in u4i
+are used when accessing the Occult Gaia catalogue using UCAC4 numbers. For this reason, these files are 
+essential to Occult.</value></data>
+  </root>

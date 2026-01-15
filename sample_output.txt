@@ -1,0 +1,32 @@
+Analysis of sampling italoccultcalc (pid 67177) every 1 millisecond
+Process:         italoccultcalc [67177]
+Path:            /Users/USER/Documents/*/italoccultcalc
+Load Address:    0x104e2c000
+Identifier:      italoccultcalc
+Version:         ???
+Code Type:       ARM64
+Parent Process:  zsh [2097]
+Target Type:     live task
+
+Date/Time:       2026-01-13 16:56:02.778 +0100
+Launch Time:     2026-01-13 16:55:20.077 +0100
+OS Version:      macOS 26.2 (25C56)
+Report Version:  7
+Analysis Tool:   /usr/bin/sample
+
+Physical footprint:         112K
+Physical footprint (peak):  112K
+Idle exit:                  untracked
+----
+
+Call graph:
+    1776 Thread_1930615: Main Thread   DispatchQueue_<multiple>
+      1776 _dyld_start  (in dyld) + 0  [0x10aea49c0]
+
+Total number in stack (recursive counted multiple, when >=5):
+
+Sort by top of stack, same collapsed (when >= 5):
+        _dyld_start  (in dyld)        1776
+
+Binary images description not available
+

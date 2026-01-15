@@ -20,6 +20,9 @@ public:
                                    const JulianDate& startDate,
                                    const JulianDate& endDate);
     
+    // Scarica le ultime N osservazioni
+    ObservationSet getRecentObservations(const std::string& designation, int n);
+    
     // Scarica dal servizio MPC WebService
     ObservationSet getObservationsFromWebService(const std::string& designation);
     

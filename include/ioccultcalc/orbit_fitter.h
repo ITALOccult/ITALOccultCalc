@@ -69,7 +69,7 @@ struct OrbitFitOptions {
 // Classe per il fit orbitale differenziale
 class OrbitFitter {
 public:
-    explicit OrbitFitter(std::shared_ptr<ISPReader> reader = nullptr);
+    explicit OrbitFitter(std::shared_ptr<SPKReader> reader = nullptr);
     ~OrbitFitter();
     
     // Fit degli elementi orbitali usando le osservazioni

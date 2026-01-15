@@ -50,7 +50,9 @@ public:
 
     // Caricamento elementi (Interfaccia pulita)
     bool loadAsteroidFromJSON(int number, const std::string& path = "");
+    bool loadAsteroidFromDB(int number);
     bool loadAsteroidFromEQ1(int number, const std::string& eq1_path);
+    bool setAsteroidElements(const class AstDynEquinoctialElements& elements);
     
     /**
      * @brief Esegue lo screening completo usando AstDyn e GaiaLib Native

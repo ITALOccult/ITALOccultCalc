@@ -16,6 +16,7 @@
 #include <map>
 #include "starmap/StarMap.h"
 #include "starmap/map/ChartGenerator.h"
+class MapPathRenderer;
 #include "OccultationRenderer.h"
 #include "starmap/occultation/OccultationChartBuilder.h"
 #include "starmap/config/LibraryConfig.h"
@@ -731,8 +732,8 @@ bool OutputManager::writeIotaCard(const OutputEvent& event,
         appCfg.fieldOfViewWidth = 20.0;
         appCfg.fieldOfViewHeight = 20.0;
         appCfg.limitingMagnitude = 8.0;
-        appCfg.showConstellationLines = true;
-        appCfg.gridInterval = 5.0;
+        // appCfg.showConstellationLines = true;
+        // appCfg.gridInterval = 5.0;
         bool appOk = builder.generateAndSaveApproachChart(approach_map, &appCfg);
         
         // 2. Detail Chart (Betelgeuse Style)
@@ -743,7 +744,7 @@ bool OutputManager::writeIotaCard(const OutputEvent& event,
         detCfg.imageWidth = 2162;
         detCfg.imageHeight = 1184;
         detCfg.limitingMagnitude = 16.0;
-        detCfg.gridInterval = 0.25;
+        // detCfg.gridInterval = 0.25;
         detCfg.asteroidPathColor = 0xFF0000FF; // ROSSO / RED
         bool detOk = builder.generateAndSaveDetailChart(detail_map, &detCfg);
         

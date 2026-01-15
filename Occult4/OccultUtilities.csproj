@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <AssemblyName>OccultUtilities</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <UseWindowsForms>True</UseWindowsForms>
+    <TargetFramework>net48</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>8.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace />
+  </PropertyGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="DotNetZip">
+      <HintPath>../../Downloads/OccultInstaller/DotNetZip.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml">
+      <HintPath>../../../../Applications/ILSpy.app/Contents/MacOS/System.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Data">
+      <HintPath>../../../../Applications/ILSpy.app/Contents/MacOS/System.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Occult.SDK">
+      <HintPath>../../Downloads/OccultInstaller/Occult.SDK.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core">
+      <HintPath>../../../../Applications/ILSpy.app/Contents/MacOS/System.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="System.IO.Compression.FileSystem">
+      <HintPath>../../../../Applications/ILSpy.app/Contents/MacOS/System.IO.Compression.FileSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web">
+      <HintPath>../../../../Applications/ILSpy.app/Contents/MacOS/System.Web.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

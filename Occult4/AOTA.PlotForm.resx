@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+<resheader name="resmimetype"><value>text/microsoft-resx</value></resheader><resheader name="version"><value>1.3</value></resheader><resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader><resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader><data name="$this.Icon" mimetype="application/x-microsoft.net.object.binary.base64"><value>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</value></data><data name="label72.ToolTip"><value>&gt;2   [Green]  Probable occultation
+1.25 to 2 [Blue] Possible occultation
+&lt;1.25 of companion stars. [Orange]  
+           Unlikely to be an occultation
+&lt;1.25 [Red] Cannot determine it was an occultation</value></data>
+  </root>

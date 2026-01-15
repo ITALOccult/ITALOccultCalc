@@ -1,0 +1,63 @@
+\documentclass[landscape]{article}
+\usepackage[paperwidth=10in,paperheight=7.5in,margin=0.5in]{geometry}
+\usepackage{tikz,graphicx,amsmath}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\pagestyle{empty}
+\begin{document}
+
+\begin{tikzpicture}[remember picture,overlay]
+  \node[anchor=north west] at (current page.north west) {
+    \begin{minipage}{10in}
+      \begin{center}
+        {\Huge\bfseries ASTEROID OCCULTATION}\\[0.2cm]
+        {\LARGE (34713) Yesiltas occults GAIA 3417031656636501632}\\[0.1cm]
+        {\Large 2026-01-30 01:27:16 UT}
+      \end{center}
+      \vspace{0.2cm}
+      \begin{minipage}[t]{0.48\linewidth}
+        {\large\bfseries Event Details}\\
+        \begin{tabular}{ll}
+          Magnitude drop: & {\Large\bfseries 0.5 mag} \\
+          Duration: & {\Large\bfseries 0.9 sec} \\
+          Shadow width: & 6 km \\
+          Uncertainty: & $\pm$46452 km \\
+        \end{tabular}
+      \end{minipage}
+      \hfill
+      \begin{minipage}[t]{0.48\linewidth}
+        {\large\bfseries Star Data}\\
+        \begin{tabular}{ll}
+          Star mag: & {\Large\bfseries 17.5} \\
+          RA/Dec (J2000): & +83°14'25.02" / +25°24'33.12" \\
+          Priority: & * (3/11) \\
+        \end{tabular}
+      \end{minipage}\\
+      \vspace{0.3cm}
+      \begin{minipage}{0.48\linewidth}
+        \centering \textbf{Approach Chart (IAU Style)}\\[0.1cm]
+        \includegraphics[width=\linewidth]{card_34713_GAIA_DR3_3417031656636501632_approach.png}
+      \end{minipage}
+      \hfill
+      \begin{minipage}{0.48\linewidth}
+        \centering \textbf{Detail Chart (Betelgeuse Style)}\\[0.1cm]
+        \includegraphics[width=\linewidth]{card_34713_GAIA_DR3_3417031656636501632_detail.png}
+      \end{minipage}\\
+      \vspace{0.3cm}
+      \begin{minipage}{\linewidth}
+        \centering \textbf{Ground Track Map}\\[0.1cm]
+        \begin{tikzpicture}[scale=0.8]
+  % Griglia
+  \draw[gray,very thin] (0,0) rectangle (12,7.90249);
+  % Central path
+  \draw[red,very thick] (10.62,6.99) -- (10.48,6.94) -- (10.35,6.90) -- (10.22,6.85) -- (10.09,6.80) -- (9.96,6.75) -- (9.83,6.71) -- (9.71,6.66) -- (9.58,6.61) -- (9.46,6.56) -- (9.34,6.51) -- (9.22,6.46) -- (9.10,6.40) -- (8.99,6.35) -- (8.87,6.30) -- (8.76,6.25) -- (8.65,6.20) -- (8.53,6.14) -- (8.42,6.09) -- (8.31,6.04) -- (8.20,5.98) -- (8.10,5.93) -- (7.99,5.87) -- (7.88,5.82) -- (7.78,5.76) -- (7.68,5.71) -- (7.57,5.65) -- (7.47,5.60) -- (7.37,5.54) -- (7.27,5.48) -- (7.17,5.43) -- (7.07,5.37) -- (6.98,5.31) -- (6.88,5.26) -- (6.78,5.20) -- (6.69,5.14) -- (6.59,5.08) -- (6.50,5.02) -- (6.41,4.97) -- (6.31,4.91) -- (6.22,4.85) -- (6.13,4.79) -- (6.04,4.73) -- (5.95,4.67) -- (5.86,4.61) -- (5.77,4.55) -- (5.68,4.49) -- (5.60,4.43) -- (5.51,4.37) -- (5.42,4.30) -- (5.33,4.24) -- (5.25,4.18) -- (5.16,4.12) -- (5.08,4.06) -- (4.99,4.00) -- (4.91,3.93) -- (4.83,3.87) -- (4.74,3.81) -- (4.66,3.74) -- (4.58,3.68) -- (4.49,3.62) -- (4.41,3.55) -- (4.33,3.49) -- (4.25,3.42) -- (4.17,3.36) -- (4.08,3.29) -- (4.00,3.23) -- (3.92,3.16) -- (3.84,3.10) -- (3.76,3.03) -- (3.68,2.97) -- (3.60,2.90) -- (3.52,2.83) -- (3.44,2.77) -- (3.36,2.70) -- (3.28,2.63) -- (3.21,2.56) -- (3.13,2.49) -- (3.05,2.43) -- (2.97,2.36) -- (2.89,2.29) -- (2.81,2.22) -- (2.73,2.15) -- (2.65,2.08) -- (2.58,2.01) -- (2.50,1.94) -- (2.42,1.87) -- (2.34,1.80) -- (2.26,1.73) -- (2.18,1.65) -- (2.10,1.58) -- (2.02,1.51) -- (1.94,1.43) -- (1.86,1.36) -- (1.79,1.29) -- (1.71,1.21) -- (1.63,1.14) -- (1.55,1.06) -- (1.47,0.99) -- (1.38,0.91);
+  \filldraw[blue] (10.62,6.99) circle (2pt) node[above] {Start};
+  \filldraw[blue] (1.38,0.91) circle (2pt) node[above] {End};
+\end{tikzpicture}
+
+      \end{minipage}
+    \end{minipage}
+  };
+\end{tikzpicture}
+
+\end{document}

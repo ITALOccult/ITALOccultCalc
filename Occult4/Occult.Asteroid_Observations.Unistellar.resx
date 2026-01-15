@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+<resheader name="resmimetype"><value>text/microsoft-resx</value></resheader><resheader name="version"><value>1.3</value></resheader><resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader><resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader><data name="textBox1.Text"><value>This form is used to sort eVscope observations provided by Unistellar into convenient categories for processing.
+
+The following explanation assumes the eVscope observations having been placed in a folder
+     Occult 4\Asteroid\Observations\yyyy\eVscope
+where yyyy is the year. However the user can locate the files at any location of their choosing.
+
+1. Events which already exist in Occult. For these events, the observations in the Unistellar report will need to be added to the existing report. The file will be moved into the folder ...\yyyy\eVscope\ObservationsToAdd
+
+2. Events which contain +'ve events, and there is no entry in Occult for that event, and the event occurred more than 90 days earlier (to ensure all other observations have been reported). The file will be moved into the folder   ...\yyyy\eVscope\EventsToAdd
+
+3. Events which only contain Miss observations. If the event occurred more than 90 days earlier than 'now' (to ensure all other observations have been reported), the file will be moved into the folder ...\yyyy\eVscope\EventsToIgnore, and will require no further action.
+
+4. Events that fail the time criteria in (2) and (3) will not be moved. They need to be reprocessed in a month or two.
+
+The data from the files of (1) will need to be processed using the Paste function in the Observations editor, using [ Process the files for 'existing Events' ] below. When processed, the file name will be changed to end with '..._done.xml'
+
+The data from the files from (2) will need to be processed as normal event files, by loading the events into the Observations Editor. Then manually move the files to the folder ...\yyyy\eVscope\EventsToAdd\Added, to retain them separate from those to be added.</value></data>
+  </root>

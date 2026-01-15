@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+<resheader name="resmimetype"><value>text/microsoft-resx</value></resheader><resheader name="version"><value>1.3</value></resheader><resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader><resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader><data name="label2.Text"><value>1.  Upon opening this form, all positions set by this form will have been set to zero
+2.  Using the Plot form, set the observed chord for the main star to match the
+        asteroid profile at the  northern limb, then click 'Set the North chord' below.
+3.  Using the Plot form, set the observed chord for the main star to match the  asteroid
+        profile at the southern limb, then click 'Set the South chord' below.
+4.  When you are satisfied with the fit of the North and South chords, click 'Set the Offsets 
+        and CLOSE' below. The values will be set on the Double Star Solution form.
+NOTE:  References to North and South are indicative only. The important issue is for the
+       chords to be on opposite sides of the asteroid, which might be East/West.</value></data>
+  <data name="label1.Text"><value>This form is used to set the two possible locations of the asteroid relative to the chord of 
+the 'Main' star. This serves two functions:
+  i. it provides the average position of the asteroid relative to the Main component, for use
+     in deriving astrometry from the event
+  ii. it sets the basis for determining the 4 possible solutions for the star's separation and
+      position angle.</value></data>
+  <data name="label5.Text"><value>This form requires you to locate the chord on opposite sides of the asteroid, and set the
+'North' and 'South' chord locations. If the chord is similar to, or greater than, the asteroid 
+diameter, you will not be able to do this. In this situation, close this form, and analyse
+the event as a two-solution event, with this chord aligned with the center of the asteroid.</value></data>
+  </root>

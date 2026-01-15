@@ -1,0 +1,13 @@
+# Research Targets List
+# Simple number format (MPC_NUMBERED)
+# One asteroid number per line
+
+243
+253
+433
+951
+2867
+4179
+25143
+101955
+162173

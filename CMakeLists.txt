@@ -9,7 +9,7 @@ set(CMAKE_CXX_EXTENSIONS ON)
 set(CMAKE_Fortran_MODULE_DIRECTORY ${CMAKE_BINARY_DIR}/fortran_modules)
 
 # Options
-option(BUILD_TESTS "Build tests" OFF)
+option(BUILD_TESTS "Build tests" ON)
 option(BUILD_EXAMPLES "Build examples" ON)
 
 # Find required packages
@@ -38,16 +38,25 @@ find_library(CSPICE_LIB NAMES libcspice.a PATHS ${LOCAL_INSTALL_DIR}/lib REQUIRE
 find_path(CSPICE_INCLUDE_DIR cspice/SpiceUsr.h PATHS ${LOCAL_INSTALL_DIR}/include REQUIRED NO_DEFAULT_PATH)
 
 # 2. AstDyn
-find_library(ASTDYN_LIB NAMES libastdyn.a PATHS ${LOCAL_INSTALL_DIR}/lib REQUIRED NO_DEFAULT_PATH)
-find_path(ASTDYN_INCLUDE_DIR astdyn/AstDynEngine.hpp PATHS ${LOCAL_INSTALL_DIR}/include REQUIRED NO_DEFAULT_PATH)
+# find_library(ASTDYN_LIB NAMES libastdyn.a PATHS ${LOCAL_INSTALL_DIR}/lib REQUIRED NO_DEFAULT_PATH)
+# find_path(ASTDYN_INCLUDE_DIR astdyn/AstDynEngine.hpp PATHS ${LOCAL_INSTALL_DIR}/include REQUIRED NO_DEFAULT_PATH)
+
+# Use internal AstDyn from submodule
+find_package(Boost REQUIRED COMPONENTS filesystem program_options date_time)
+set(ASTDYN_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(ASTDYN_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+add_subdirectory(external/ITALOccultLibrary/astdyn EXCLUDE_FROM_ALL)
+set(ASTDYN_LIB astdyn)
+set(ASTDYN_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/include)
 
 # 3. IOC_Config
 find_library(IOC_CONFIG_LIB NAMES libioc_config.a PATHS ${LOCAL_INSTALL_DIR}/lib REQUIRED NO_DEFAULT_PATH)
 find_path(IOC_CONFIG_INCLUDE_DIR ioc_config/oop_parser.h PATHS ${LOCAL_INSTALL_DIR}/include REQUIRED NO_DEFAULT_PATH)
 
 # 4. IOC_GaiaLib
-find_library(GAIALIB_LIB NAMES libioc_gaialib.a PATHS ${LOCAL_INSTALL_DIR}/lib REQUIRED NO_DEFAULT_PATH)
-find_path(GAIALIB_INCLUDE_DIR ioc_gaialib/unified_gaia_catalog.h PATHS ${LOCAL_INSTALL_DIR}/include REQUIRED NO_DEFAULT_PATH)
+add_subdirectory(external/IOC_GaiaLib EXCLUDE_FROM_ALL)
+set(GAIALIB_LIB ioc_gaialib)
+set(GAIALIB_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external/IOC_GaiaLib/include)
 
 # 5. StarMap (use precompiled library from ~/.local/lib)
 find_library(STARMAP_LIB NAMES libstarmap.a PATHS ${LOCAL_INSTALL_DIR}/lib REQUIRED NO_DEFAULT_PATH)
@@ -90,6 +99,7 @@ set(SOURCES
     #src/chebyshev_occultation_manager.cpp
     src/phase1_candidate_screening.cpp
     src/phase2_occultation_geometry.cpp
+    src/occultation_engine.cpp
     external/ITALOccultLibrary/italoccultlibrary/src/eq1_parser.cpp
     external/ITALOccultLibrary/italoccultlibrary/src/astdyn_wrapper.cpp
     external/ITALOccultLibrary/italoccultlibrary/src/orbital_conversions.cpp
@@ -104,9 +114,7 @@ set(SOURCES
     src/time_utils.cpp
     src/observation.cpp
     src/mpc_client.cpp
-#     src/orbit_determination.cpp
-#     src/orbit_fitter.cpp
-#     src/orbit_determination_gauss.cpp
+    src/astdyn_interface.cpp
     src/force_model.cpp
     # src/orbfit_force_model.cpp
     src/rkf78_integrator.cpp
@@ -134,6 +142,7 @@ set(SOURCES
     src/output_manager.cpp
     src/asteroid_list_reader.cpp
     src/allnum_database.cpp
+    src/asteroid_sqlite_db.cpp
     # src/occultation_map_utility.cpp  # MISSING
     # src/config_resolver.cpp  # MISSING
     # src/simulation_engine.cpp  # MISSING
@@ -153,6 +162,7 @@ set(HEADERS
     include/ioccultcalc/orbital_elements.h
     include/ioccultcalc/ephemeris.h
     include/ioccultcalc/occultation_predictor.h
+    include/ioccultcalc/occultation_engine.h
     include/ioccultcalc/kml_exporter.h
     include/ioccultcalc/occult4_xml.h
     include/ioccultcalc/prediction_report.h
@@ -186,6 +196,7 @@ set(HEADERS
     include/ioccultcalc/data_manager.h
     include/ioccultcalc/asteroid_database.h
     include/ioccultcalc/allnum_database.h
+    include/ioccultcalc/asteroid_sqlite_db.h
     include/refraction.h
     include/topocentric.h
     include/nutation.h
@@ -285,8 +296,12 @@ target_include_directories(ioccultcalc BEFORE PUBLIC
     ${GAIALIB_INCLUDE_DIR}
 )
 
-# Prioritize local AstDyn headers for Phase 1 screening to use the new high-precision API
-set_source_files_properties(src/phase1_candidate_screening.cpp PROPERTIES 
+# Prioritize local AstDyn headers for Phase 1/2 and Interface to use the new high-precision API
+set_source_files_properties(
+    src/phase1_candidate_screening.cpp 
+    src/phase2_occultation_geometry.cpp 
+    src/astdyn_interface.cpp 
+    PROPERTIES 
     INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/include"
 )
 target_link_libraries(ioccultcalc
@@ -585,7 +600,7 @@ install(DIRECTORY include/ioccultcalc
 
 # test_a4_vertical removed (synthetic data)
 
-# User Test Position 249
+# Test Position 249
 # add_executable(test_position_249 tools/test_position_249.cpp)
 # target_link_libraries(test_position_249 PRIVATE 
 #     ioccultcalc 
@@ -601,3 +616,10 @@ install(DIRECTORY include/ioccultcalc
 #     ${CMAKE_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/include
 #     ${CMAKE_SOURCE_DIR}/external/IOC_GaiaLib/include
 # )
+
+add_executable(verify_earth_cspice examples/verify_earth_cspice.cpp)
+target_link_libraries(verify_earth_cspice PRIVATE
+    ioccultcalc
+    ${CSPICE_LIB}
+    ${ASTDYN_LIB}
+)

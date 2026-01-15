@@ -1,0 +1,1193 @@
+DEBUG: Main started.
+
+╔═══════════════════════════════════════════════════════════════╗
+║                     ITALOccultCalc v1.0                        ║
+║         Ricerca Automatica Occultazioni Asteroidali           ║
+║              Ottimizzato per Osservatori Italiani              ║
+╚═══════════════════════════════════════════════════════════════╝
+[DEBUG] main: Prima di startTime
+[DEBUG] main: WORKFLOW COMPLETO - INIZIO
+[DEBUG] main: Step 1: Caricamento configurazione...
+[DEBUG] loadConfiguration: INIZIO
+
+================================================================
+CARICAMENTO CONFIGURAZIONE
+================================================================
+
+File configurazione: examples/debug_star_3441366322859801216.json
+[DEBUG] loadConfiguration: ConfigManager creato
+[DEBUG] loadConfiguration: Verifico formato file...
+[DEBUG] loadConfiguration: Carico JSON...
+✓ Configurazione JSON caricata
+[DEBUG] loadConfiguration: File caricato, valido configurazione...
+✓ Configurazione validata
+
+[DEBUG] loadConfiguration: Configurazione validata, leggo sezioni...
+[DEBUG] loadConfiguration: Chiamo getSection(PROPAGATION)...
+[DEBUG] loadConfiguration: getSection(PROPAGATION) completato
+[DEBUG] loadConfiguration: Chiamo getSection(SEARCH)...
+[DEBUG] loadConfiguration: getSection(SEARCH) completato
+[DEBUG] loadConfiguration: Sezioni lette, stampo parametri...
+[DEBUG] loadConfiguration: propagSection trovata
+Propagatore: ASTDYN
+[DEBUG] loadConfiguration: searchSection trovata
+Intervallo ricerca: 14 giorni (MJD)
+[DEBUG] loadConfiguration: FINE
+[DEBUG] main: Step 1: Completato
+[DEBUG] Step 2: Selezione asteroidi...
+[DEBUG] selectAsteroids: INIZIO
+
+================================================================
+SELEZIONE ASTEROIDI CANDIDATI
+================================================================
+
+[DEBUG] selectAsteroids: Dopo printHeader
+[DEBUG] selectAsteroids: Inizializzo variabili...
+[DEBUG] selectAsteroids: Leggo configurazione objectSection...
+[DEBUG] selectAsteroids: objectSection letto
+Criteri selezione:
+  ★ LISTA ESPLICITA: 1 asteroidi [34713]
+  (filtri diametro/magnitudine ignorati)
+
+
+[SQLite] Database allnum.db trovato. Uso lettura diretta per lista esplicita.
+Data aggiornamento DB: 2025-12-24 07:39:31
+  ⚠ Asteroide 34713 non trovato nel database SQLite
+Trovati 0 asteroidi nel DB.
+Nessun asteroide caricato da SQLite. Provo fallback su JSON...
+Caricamento catalogo completo: /Users/michelebigi/.ioccultcalc/data/all_numbered_asteroids.json
+[DEBUG] selectAsteroids: Apro file catalogo...
+[DEBUG] selectAsteroids: File aperto, leggo JSON...
+[DEBUG] selectAsteroids: Dimensione file: 291 MB
+[DEBUG] selectAsteroids: Lista esplicita piccola (1 asteroidi), provo estrazione ottimizzata con jq...
+[DEBUG] selectAsteroids: Estrazione ottimizzata completata con jq!
+[DEBUG] selectAsteroids: Inizio parsing JSON...
+[DEBUG] selectAsteroids: Parsing JSON completato!
+[DEBUG] selectAsteroids: JSON letto, verifico formato...
+✓ Formato unificato rilevato (AstDyS + MPC)
+✓ Catalogo caricato: 1 asteroidi numerati
+Filtraggio con criteri...
+[DEBUG] selectAsteroids: Catalogo caricato, formato: unified
+
+✓ Trovati 1 asteroidi candidati REALI
+  (Processati: 1 / 1)
+
+Top 5 asteroidi per priorità:
+  1. (34713) Unknown - Score: 0.666678 ☆
+     Dimensione: 5 km, H=13.8
+
+[DEBUG] Step 2: Completato, trovati 1 asteroidi
+[DEBUG] Step 3: Propagazione orbite...
+
+================================================================
+PROPAGAZIONE ORBITE
+================================================================
+
+SPKReader: Successfully loaded DE441 covering JD -3.02722e+06 to 7.93019e+06
+OrbitPropagator: Using JPL DE441 (high precision planets)
+OrbitPropagator: WARNING - Asteroid perturbations disabled (codes_300ast_20100725.bsp not found)
+[▓░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0% | Propagazione   : (34713) Unknown                                   [████████████████████▓░░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 40 % | Propagazione   : Completata                                        
+[DEBUG] Step 3: Completato
+[DEBUG] Step 4: Query catalogo stelle...
+
+=== [DEBUG] Inizio queryCatalog ===
+[DEBUG queryCatalog] gaiaSection trovata: NO
+
+================================================================
+QUERY CATALOGO STELLE GAIA DR3
+================================================================
+
+
+╔══════════════════════════════════════════════════════════╗
+║      ★ CATALOGO MAG18 LOCALE ATTIVO ★                   ║
+║  303M stelle (G≤18) - Query locale veloce               ║
+║  Nessuna query online - tutto da catalogo 9GB           ║
+╚══════════════════════════════════════════════════════════╝
+
+Could not open IAU catalog: data/IAU-CSN.json
+Could not open star names database: data/common_star_names.csv
+Loaded 23 stars from embedded database
+Loaded star names from embedded database
+✓ Catalogo Gaia caricato: /Users/michelebigi/.catalog/gaia_mag18_v2_multifile
+  Catalogo: Multi-File Gaia DR3 V2 | Stelle: 0
+[DEBUG] Step 4: Completato, trovate 0 stelle
+[DEBUG] Step 5: Rilevamento occultazioni...
+
+================================================================
+RILEVAMENTO OCCULTAZIONI
+================================================================
+
+Parametri ricerca:
+  Periodo: JD 2.46104e+06 - 2.46106e+06
+  Mag limite: 16
+  Raggio ricerca: 0.1 gradi
+  Probabilità minima: 1%
+
+Asteroidi da analizzare: 1
+
+Calcolo sequenziale (SPICE thread-safety)...
+
+
+[1   /1] (34713 ) Unknown              - D=   5km  - Phase 1 Screening...Optimized Corridor: 97 points -> 1 query cones.
+Optimized Corridor: 97 points -> 1 query cones.
+Optimized Corridor: 97 points -> 1 query cones.
+Optimized Corridor: 97 points -> 1 query cones.
+Optimized Corridor: 97 points -> 1 query cones.
+Optimized Corridor: 97 points -> 1 query cones.
+Optimized Corridor: 97 points -> 1 query cones.
+Optimized Corridor: 97 points -> 1 query cones.
+Optimized Corridor: 97 points -> 1 query cones.
+Optimized Corridor: 97 points -> 1 query cones.
+Optimized Corridor: 97 points -> 1 query cones.
+Optimized Corridor: 97 points -> 1 query cones.
+Optimized Corridor: 97 points -> 1 query cones.
+Optimized Corridor: 97 points -> 1 query cones.
+Debug: Target star 3441366322859801216 missing. Fetching manually...
+Debug: Target star added manually to candidates (T0=61048).
+
+╔════════════════════════════════════════════════════════════╗
+║  PHASE 2: Geometria Precisa con Orbital Refinement        ║
+╚════════════════════════════════════════════════════════════╝
+
+Candidati da processare: 70
+Orbital refinement: ATTIVO
+Finestra temporale: ±10 min
+Risoluzione: 1 sec
+
+══════════════════════════════════════════════════════════
+STEP 1: ORBITAL REFINEMENT
+══════════════════════════════════════════════════════════
+
+  [RWO Download] Scaricamento osservazioni per 34713...
+  URL: https://newton.spacedys.com/~astdys2/mpcobs/numbered/34/34713.rwo
+  Downloading...
+  ✓ File scaricato: /tmp/34713.rwo
+  Parsing RWO...
+  ✓ Parsate 2600 osservazioni RWO
+  [Observations] Scaricate 2600 osservazioni
+  [Observations] Selezionate 20 osservazioni più recenti per il fit
+  [Observations] Epoca più recente: MJD 60951.45
+  [Observations] Epoca più vecchia: MJD 60919.60
+  [Orbital Fit] Fitting con 20 osservazioni...
+  [Pre-Check] RMS Residui Nominali: 54841.96 arcsec
+  ⚠ Residui troppo alti (>100"). Skipping fit per sicurezza.
+
+  ⚠ Fit fallito - uso elementi nominali
+
+══════════════════════════════════════════════════════════
+STEP 2: CALCOLO GEOMETRIA OCCULTAZIONI
+══════════════════════════════════════════════════════════
+
+Candidato 1/70 - Stella 2810503010819345280...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.00 min attorno a MJD 61046.37055
+  CA preciso (Rigorous): 1086.71 mas @ MJD 61046.37055058
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 2287.5 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 26.45 km/s
+    Esito geometrico: HIT (Ombra interseca Terra)
+  ✓ CA: 1086.71 mas @ MJD 61046.370551
+  Duration: 0.219347 sec
+  Shadow path width: 5.800686 km
+
+Candidato 2/70 - Stella 2810994939193714432...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61052.43010
+  CA preciso (Rigorous): 1514.01 mas @ MJD 61052.43009593
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 3280.8 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 28.41 km/s
+    Esito geometrico: HIT (Ombra interseca Terra)
+  ✓ CA: 1514.01 mas @ MJD 61052.430096
+  Duration: 0.204155 sec
+  Shadow path width: 5.800686 km
+
+Candidato 3/70 - Stella 2810496654267733376...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61045.93058
+  CA preciso (Rigorous): 1733.20 mas @ MJD 61045.93057917
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 3640.4 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 26.30 km/s
+    Esito geometrico: HIT (Ombra interseca Terra)
+  ✓ CA: 1733.20 mas @ MJD 61045.930579
+  Duration: 0.220560 sec
+  Shadow path width: 5.800686 km
+
+Candidato 4/70 - Stella 2764469169088465664...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61054.35688
+  CA preciso (Rigorous): 2150.92 mas @ MJD 61054.35687931
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 4702.5 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 29.02 km/s
+    Esito geometrico: HIT (Ombra interseca Terra)
+  ✓ CA: 2150.92 mas @ MJD 61054.356879
+  Duration: 0.199854 sec
+  Shadow path width: 5.800686 km
+
+Candidato 5/70 - Stella 2810958174273587584...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.68794
+  CA preciso (Rigorous): 2241.05 mas @ MJD 61050.68793699
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 4816.7 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 27.85 km/s
+    Esito geometrico: HIT (Ombra interseca Terra)
+  ✓ CA: 2241.05 mas @ MJD 61050.687937
+  Duration: 0.208252 sec
+  Shadow path width: 5.800686 km
+
+Candidato 6/70 - Stella 2810871858314904320...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.30449
+  CA preciso (Rigorous): 2910.36 mas @ MJD 61049.30448551
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 6214.2 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 27.41 km/s
+    Esito geometrico: HIT (Ombra interseca Terra)
+  ✓ CA: 2910.36 mas @ MJD 61049.304486
+  Duration: 0.211655 sec
+  Shadow path width: 5.800686 km
+
+Candidato 7/70 - Stella 2810842961775443328...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61048.37736
+  CA preciso (Rigorous): 3018.12 mas @ MJD 61048.37735675
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 6415.6 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 27.10 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 3018.12 mas @ MJD 61048.377357
+  Duration: 0.214014 sec
+  Shadow path width: 5.800686 km
+
+Candidato 8/70 - Stella 2810504385208904192...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61046.78940
+  CA preciso (Rigorous): 3160.11 mas @ MJD 61046.78940312
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 6665.6 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 26.58 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 3160.11 mas @ MJD 61046.789403
+  Duration: 0.218207 sec
+  Shadow path width: 5.800686 km
+
+Candidato 9/70 - Stella 2810873752396480512...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.94168
+  CA preciso (Rigorous): 4172.70 mas @ MJD 61049.94168183
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 8936.7 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 27.61 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 4172.70 mas @ MJD 61049.941682
+  Duration: 0.210071 sec
+  Shadow path width: 5.800686 km
+
+Candidato 10/70 - Stella 2810988440907982848...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61052.11470
+  CA preciso (Rigorous): 4594.07 mas @ MJD 61052.11470073
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 9940.5 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 28.31 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 4594.07 mas @ MJD 61052.114701
+  Duration: 0.204881 sec
+  Shadow path width: 5.800686 km
+
+Candidato 11/70 - Stella 2810843206588982016...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61048.11789
+  CA preciso (Rigorous): 4823.14 mas @ MJD 61048.11788944
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 10239.6 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 27.02 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 4823.14 mas @ MJD 61048.117889
+  Duration: 0.214686 sec
+  Shadow path width: 5.800686 km
+
+Candidato 12/70 - Stella 2810880177667438208...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61047.23312
+  CA preciso (Rigorous): 5530.88 mas @ MJD 61047.23311726
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 11691.7 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 26.73 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 5530.88 mas @ MJD 61047.233117
+  Duration: 0.217015 sec
+  Shadow path width: 5.800686 km
+
+Candidato 13/70 - Stella 2810965870855023104...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61051.47347
+  CA preciso (Rigorous): 6349.63 mas @ MJD 61051.47347416
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 13698.0 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 28.11 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 6349.63 mas @ MJD 61051.473474
+  Duration: 0.206380 sec
+  Shadow path width: 5.800686 km
+
+Candidato 14/70 - Stella 2810988617001855104...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61052.05548
+  CA preciso (Rigorous): 7065.49 mas @ MJD 61052.05547818
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 15283.9 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 28.29 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 7065.49 mas @ MJD 61052.055478
+  Duration: 0.205019 sec
+  Shadow path width: 5.800686 km
+
+Candidato 15/70 - Stella 2810841557321540480...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61047.92296
+  CA preciso (Rigorous): 7299.32 mas @ MJD 61047.92296281
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 15481.9 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 26.96 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 7299.32 mas @ MJD 61047.922963
+  Duration: 0.215193 sec
+  Shadow path width: 5.800686 km
+
+Candidato 16/70 - Stella 2810989441635543424...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61051.63903
+  CA preciso (Rigorous): 7825.28 mas @ MJD 61051.63902795
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 16894.5 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 28.16 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 7825.28 mas @ MJD 61051.639028
+  Duration: 0.205991 sec
+  Shadow path width: 5.800686 km
+
+Candidato 17/70 - Stella 2810988548282378240...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61052.15282
+  CA preciso (Rigorous): 8428.54 mas @ MJD 61052.15282179
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 18240.7 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 28.32 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 8428.54 mas @ MJD 61052.152822
+  Duration: 0.204794 sec
+  Shadow path width: 5.800686 km
+
+Candidato 18/70 - Stella 2810350831538023936...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61041.71440
+  CA preciso (Rigorous): 8505.39 mas @ MJD 61041.71440246
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 17488.9 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 24.89 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 8505.39 mas @ MJD 61041.714402
+  Duration: 0.233046 sec
+  Shadow path width: 5.800686 km
+
+Candidato 19/70 - Stella 2810879726695428864...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61047.11593
+  CA preciso (Rigorous): 8606.53 mas @ MJD 61047.11592690
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 18182.8 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 26.69 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 8606.53 mas @ MJD 61047.115927
+  Duration: 0.217328 sec
+  Shadow path width: 5.800686 km
+
+Candidato 20/70 - Stella 2810866846089020800...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61048.75081
+  CA preciso (Rigorous): 9367.18 mas @ MJD 61048.75081172
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 19947.6 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 27.23 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 9367.18 mas @ MJD 61048.750812
+  Duration: 0.213055 sec
+  Shadow path width: 5.800686 km
+
+Candidato 21/70 - Stella 2764461506866874112...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61053.65283
+  CA preciso (Rigorous): 9782.94 mas @ MJD 61053.65282639
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 21319.5 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 28.80 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 9782.94 mas @ MJD 61053.652826
+  Duration: 0.201400 sec
+  Shadow path width: 5.800686 km
+
+Candidato 22/70 - Stella 2810834784157656320...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61047.37852
+  CA preciso (Rigorous): 10277.32 mas @ MJD 61047.37852023
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 21740.5 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 26.78 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 10277.32 mas @ MJD 61047.378520
+  Duration: 0.216627 sec
+  Shadow path width: 5.800686 km
+
+Candidato 23/70 - Stella 2810964084148600192...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61051.16549
+  CA preciso (Rigorous): 10883.15 mas @ MJD 61051.16549240
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 23444.1 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 28.01 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 10883.15 mas @ MJD 61051.165492
+  Duration: 0.207110 sec
+  Shadow path width: 5.800686 km
+
+Candidato 24/70 - Stella 2764466836921587072...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61054.62189
+  CA preciso (Rigorous): 13124.76 mas @ MJD 61054.62188932
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 28729.3 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 29.11 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 13124.76 mas @ MJD 61054.621889
+  Duration: 0.199282 sec
+  Shadow path width: 5.800686 km
+
+Candidato 25/70 - Stella 2810987100878184704...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61051.96318
+  CA preciso (Rigorous): 13320.22 mas @ MJD 61051.96317801
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 28801.6 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 28.26 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 13320.22 mas @ MJD 61051.963178
+  Duration: 0.205234 sec
+  Shadow path width: 5.800686 km
+
+Candidato 26/70 - Stella 2764466871281325568...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61054.66616
+  CA preciso (Rigorous): 13395.59 mas @ MJD 61054.66616006
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 29328.0 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 29.12 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 13395.59 mas @ MJD 61054.666160
+  Duration: 0.199183 sec
+  Shadow path width: 5.800686 km
+
+Candidato 27/70 - Stella 2810349354069274240...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61041.45796
+  CA preciso (Rigorous): 13419.81 mas @ MJD 61041.45796144
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 27557.7 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 24.80 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 13419.81 mas @ MJD 61041.457961
+  Duration: 0.233860 sec
+  Shadow path width: 5.800686 km
+
+Candidato 28/70 - Stella 2764459587016767872...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61053.24067
+  CA preciso (Rigorous): 13541.16 mas @ MJD 61053.24066557
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 29453.6 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 28.67 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 13541.16 mas @ MJD 61053.240666
+  Duration: 0.202315 sec
+  Shadow path width: 5.800686 km
+
+Candidato 29/70 - Stella 2810502632862222976...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61046.15355
+  CA preciso (Rigorous): 13853.28 mas @ MJD 61046.15355180
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 29129.4 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 26.37 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 13853.28 mas @ MJD 61046.153552
+  Duration: 0.219945 sec
+  Shadow path width: 5.800686 km
+
+Candidato 30/70 - Stella 2810994698675550464...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61052.67717
+  CA preciso (Rigorous): 14284.48 mas @ MJD 61052.67716903
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 30989.4 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 28.49 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 14284.48 mas @ MJD 61052.677169
+  Duration: 0.203588 sec
+  Shadow path width: 5.800686 km
+
+Candidato 31/70 - Stella 2810865987095594112...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.28193
+  CA preciso (Rigorous): 14314.50 mas @ MJD 61049.28192514
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 30561.0 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 27.40 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 14314.50 mas @ MJD 61049.281925
+  Duration: 0.211714 sec
+  Shadow path width: 5.800686 km
+
+Candidato 32/70 - Stella 2810865540418977280...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61048.94616
+  CA preciso (Rigorous): 14705.69 mas @ MJD 61048.94616144
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 31345.5 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 27.29 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 14705.69 mas @ MJD 61048.946161
+  Duration: 0.212557 sec
+  Shadow path width: 5.800686 km
+
+Candidato 33/70 - Stella 2810866846089271168...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61048.73683
+  CA preciso (Rigorous): 15080.35 mas @ MJD 61048.73683287
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 32111.7 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 27.22 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 15080.35 mas @ MJD 61048.736833
+  Duration: 0.213090 sec
+  Shadow path width: 5.800686 km
+
+Candidato 34/70 - Stella 2810987139533109632...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61052.00532
+  CA preciso (Rigorous): 15402.79 mas @ MJD 61052.00531939
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 33311.1 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 28.28 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 15402.79 mas @ MJD 61052.005319
+  Duration: 0.205137 sec
+  Shadow path width: 5.800686 km
+
+Candidato 35/70 - Stella 2810965866559303168...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61051.45364
+  CA preciso (Rigorous): 15900.44 mas @ MJD 61051.45363876
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 34298.6 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 28.10 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 15900.44 mas @ MJD 61051.453639
+  Duration: 0.206424 sec
+  Shadow path width: 5.800686 km
+
+Candidato 36/70 - Stella 2810835372568915968...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61047.65150
+  CA preciso (Rigorous): 16151.35 mas @ MJD 61047.65150006
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 34211.9 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 26.87 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 16151.35 mas @ MJD 61047.651500
+  Duration: 0.215904 sec
+  Shadow path width: 5.800686 km
+
+Candidato 37/70 - Stella 2810996244863780992...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61052.89945
+  CA preciso (Rigorous): 16340.92 mas @ MJD 61052.89945248
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 35487.3 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 28.56 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 16340.92 mas @ MJD 61052.899452
+  Duration: 0.203088 sec
+  Shadow path width: 5.800686 km
+
+Candidato 38/70 - Stella 2810835436992701056...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61047.61252
+  CA preciso (Rigorous): 17451.96 mas @ MJD 61047.61251700
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 36959.9 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 26.85 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 17451.96 mas @ MJD 61047.612517
+  Duration: 0.216011 sec
+  Shadow path width: 5.800686 km
+
+Candidato 39/70 - Stella 2764490643924375808...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61054.97776
+  CA preciso (Rigorous): 17507.31 mas @ MJD 61054.97775661
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 38384.4 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 29.22 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 17507.31 mas @ MJD 61054.977757
+  Duration: 0.198515 sec
+  Shadow path width: 5.800686 km
+
+Candidato 40/70 - Stella 2810496654267732992...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61045.94388
+  CA preciso (Rigorous): 18285.21 mas @ MJD 61045.94387840
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 38408.6 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 26.30 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 18285.21 mas @ MJD 61045.943878
+  Duration: 0.220525 sec
+  Shadow path width: 5.800686 km
+
+Candidato 41/70 - Stella 2810994664315807616...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61052.61802
+  CA preciso (Rigorous): 18977.60 mas @ MJD 61052.61801729
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 41159.6 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 28.47 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 18977.60 mas @ MJD 61052.618017
+  Duration: 0.203722 sec
+  Shadow path width: 5.800686 km
+
+Candidato 42/70 - Stella 2810965900919045760...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61051.50233
+  CA preciso (Rigorous): 19001.58 mas @ MJD 61051.50233457
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 40997.4 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 28.12 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 19001.58 mas @ MJD 61051.502335
+  Duration: 0.206313 sec
+  Shadow path width: 5.800686 km
+
+Candidato 43/70 - Stella 2810989579074496768...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61051.77639
+  CA preciso (Rigorous): 19191.10 mas @ MJD 61051.77638918
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 41459.6 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 28.20 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 19191.10 mas @ MJD 61051.776389
+  Duration: 0.205671 sec
+  Shadow path width: 5.800686 km
+
+Candidato 44/70 - Stella 2810957860740227328...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.54221
+  CA preciso (Rigorous): 19847.68 mas @ MJD 61050.54220968
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 42629.4 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 27.81 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 19847.68 mas @ MJD 61050.542210
+  Duration: 0.208601 sec
+  Shadow path width: 5.800686 km
+
+Candidato 45/70 - Stella 2810866841793634176...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61048.72560
+  CA preciso (Rigorous): 19885.96 mas @ MJD 61048.72560248
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 42342.4 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 27.22 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 19885.96 mas @ MJD 61048.725602
+  Duration: 0.213118 sec
+  Shadow path width: 5.800686 km
+
+Candidato 46/70 - Stella 2810994660020730368...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61052.62193
+  CA preciso (Rigorous): 20056.47 mas @ MJD 61052.62192858
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 43500.3 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 28.47 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 20056.47 mas @ MJD 61052.621929
+  Duration: 0.203713 sec
+  Shadow path width: 5.800686 km
+
+Candidato 47/70 - Stella 2810502628566909440...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61046.16965
+  CA preciso (Rigorous): 21014.83 mas @ MJD 61046.16965056
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 44191.6 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 26.38 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 21014.83 mas @ MJD 61046.169651
+  Duration: 0.219896 sec
+  Shadow path width: 5.800686 km
+
+Candidato 48/70 - Stella 2810994660020633600...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61052.63660
+  CA preciso (Rigorous): 21062.45 mas @ MJD 61052.63660423
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 45685.3 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 28.48 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 21062.45 mas @ MJD 61052.636604
+  Duration: 0.203680 sec
+  Shadow path width: 5.800686 km
+
+Candidato 49/70 - Stella 2810348903096948096...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61041.29579
+  CA preciso (Rigorous): 21104.48 mas @ MJD 61041.29579055
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 43302.0 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 24.75 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 21104.48 mas @ MJD 61041.295791
+  Duration: 0.234374 sec
+  Shadow path width: 5.800686 km
+
+Candidato 50/70 - Stella 2810863925511259904...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61048.80366
+  CA preciso (Rigorous): 21404.38 mas @ MJD 61048.80366386
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 45592.7 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 27.24 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 21404.38 mas @ MJD 61048.803664
+  Duration: 0.212919 sec
+  Shadow path width: 5.800686 km
+
+Candidato 51/70 - Stella 2810880212027176320...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61047.30517
+  CA preciso (Rigorous): 21466.07 mas @ MJD 61047.30517031
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 45392.9 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 26.75 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 21466.07 mas @ MJD 61047.305170
+  Duration: 0.216826 sec
+  Shadow path width: 5.800686 km
+
+Candidato 52/70 - Stella 2810866571211113600...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61048.51190
+  CA preciso (Rigorous): 22376.86 mas @ MJD 61048.51190271
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 47597.1 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 27.15 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 22376.86 mas @ MJD 61048.511903
+  Duration: 0.213671 sec
+  Shadow path width: 5.800686 km
+
+Candidato 53/70 - Stella 2764459964973892096...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61053.51693
+  CA preciso (Rigorous): 23050.60 mas @ MJD 61053.51692664
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 50201.6 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 28.76 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 23050.60 mas @ MJD 61053.516927
+  Duration: 0.201697 sec
+  Shadow path width: 5.800686 km
+
+Candidato 54/70 - Stella 2810968138597682560...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.37189
+  CA preciso (Rigorous): 23326.16 mas @ MJD 61050.37188563
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 50060.2 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 27.75 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 23326.16 mas @ MJD 61050.371886
+  Duration: 0.209020 sec
+  Shadow path width: 5.800686 km
+
+Candidato 55/70 - Stella 2810880207732515968...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61047.30681
+  CA preciso (Rigorous): 23443.08 mas @ MJD 61047.30681369
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 49573.9 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 26.75 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 23443.08 mas @ MJD 61047.306814
+  Duration: 0.216822 sec
+  Shadow path width: 5.800686 km
+
+Candidato 56/70 - Stella 2810503006524039040...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61046.38643
+  CA preciso (Rigorous): 23458.77 mas @ MJD 61046.38642717
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 49383.6 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 26.45 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 23458.77 mas @ MJD 61046.386427
+  Duration: 0.219307 sec
+  Shadow path width: 5.800686 km
+
+Candidato 57/70 - Stella 2810866021455332352...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.13646
+  CA preciso (Rigorous): 24342.75 mas @ MJD 61049.13645701
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 51934.6 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 27.35 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 24342.75 mas @ MJD 61049.136457
+  Duration: 0.212081 sec
+  Shadow path width: 5.800686 km
+
+Candidato 58/70 - Stella 2764467214878687488...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61054.01146
+  CA preciso (Rigorous): 24393.79 mas @ MJD 61054.01145534
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 53247.7 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 28.92 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 24393.79 mas @ MJD 61054.011455
+  Duration: 0.200605 sec
+  Shadow path width: 5.800686 km
+
+Candidato 59/70 - Stella 2810841557321540608...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61047.93951
+  CA preciso (Rigorous): 24976.51 mas @ MJD 61047.93950685
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 52979.6 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 26.96 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 24976.51 mas @ MJD 61047.939507
+  Duration: 0.215147 sec
+  Shadow path width: 5.800686 km
+
+Candidato 60/70 - Stella 2810502564142746624...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61046.24228
+  CA preciso (Rigorous): 25414.79 mas @ MJD 61046.24227830
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 53463.3 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 26.40 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 25414.79 mas @ MJD 61046.242278
+  Duration: 0.219696 sec
+  Shadow path width: 5.800686 km
+
+Candidato 61/70 - Stella 2764490820019001856...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61054.92460
+  CA preciso (Rigorous): 27079.50 mas @ MJD 61054.92459575
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 59357.0 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 29.20 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 27079.50 mas @ MJD 61054.924596
+  Duration: 0.198634 sec
+  Shadow path width: 5.800686 km
+
+Candidato 62/70 - Stella 2810963564456810368...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61051.01975
+  CA preciso (Rigorous): 27242.72 mas @ MJD 61051.01975342
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 58645.0 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 27.96 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 27242.72 mas @ MJD 61051.019753
+  Duration: 0.207452 sec
+  Shadow path width: 5.800686 km
+
+Candidato 63/70 - Stella 2810843099214406272...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61048.45661
+  CA preciso (Rigorous): 27407.58 mas @ MJD 61048.45660735
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 58282.2 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 27.13 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 27407.58 mas @ MJD 61048.456607
+  Duration: 0.213813 sec
+  Shadow path width: 5.800686 km
+
+Candidato 64/70 - Stella 2810963946709633536...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61051.07419
+  CA preciso (Rigorous): 27493.83 mas @ MJD 61051.07419256
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 59200.8 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 27.98 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 27493.83 mas @ MJD 61051.074193
+  Duration: 0.207322 sec
+  Shadow path width: 5.800686 km
+
+Candidato 65/70 - Stella 2810996652885466496...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61052.97798
+  CA preciso (Rigorous): 27836.67 mas @ MJD 61052.97797673
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 60474.5 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 28.59 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 27836.67 mas @ MJD 61052.977977
+  Duration: 0.202912 sec
+  Shadow path width: 5.800686 km
+
+Candidato 66/70 - Stella 2810350827242410752...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61041.73628
+  CA preciso (Rigorous): 28596.86 mas @ MJD 61041.73628444
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 58807.9 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 24.90 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 28596.86 mas @ MJD 61041.736284
+  Duration: 0.232979 sec
+  Shadow path width: 5.800686 km
+
+Candidato 67/70 - Stella 2810841419882586752...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61047.82148
+  CA preciso (Rigorous): 29111.93 mas @ MJD 61047.82148238
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 61716.2 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 26.92 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 29111.93 mas @ MJD 61047.821482
+  Duration: 0.215463 sec
+  Shadow path width: 5.800686 km
+
+Candidato 68/70 - Stella 2810872064475403264...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61049.31503
+  CA preciso (Rigorous): 29312.81 mas @ MJD 61049.31503211
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 62591.7 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 27.41 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 29312.81 mas @ MJD 61049.315032
+  Duration: 0.211632 sec
+  Shadow path width: 5.800686 km
+
+Candidato 69/70 - Stella 2764459582721521792...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61053.26390
+  CA preciso (Rigorous): 29820.91 mas @ MJD 61053.26390403
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 64870.9 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 28.68 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 29820.91 mas @ MJD 61053.263904
+  Duration: 0.202269 sec
+  Shadow path width: 5.800686 km
+
+Candidato 70/70 - Stella 3441366322859801216...
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61048.00000
+  CA preciso (Rigorous): 324483809.96 mas @ MJD 61048.00693287
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 437666271.4 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 25.81 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 324483809.96 mas @ MJD 61048.006933
+  Duration: 0.224707 sec
+  Shadow path width: 5.800686 km
+
+══════════════════════════════════════════════════════════
+PHASE 2 COMPLETATA
+══════════════════════════════════════════════════════════
+  Orbital refinement: ✗ Non eseguito
+  Eventi calcolati: 70
+  Falliti: 0
+  Tempo totale: 1407.849083 ms
+
+Debug: Checking 70 candidates for target ID 3441366322859801216
+
+======================================================
+ SPECIAL CHECK FOR STAR: 3441366322859801216
+======================================================
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61048.00000
+  CA preciso (Rigorous): 324483809.96 mas @ MJD 61048.00693287
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 437666271.4 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 25.81 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  > Calculated MJD: 61048.006933
+  > Closest Approach: 324483809.956 mas
+  > Shadow Width: 5.801 km
+  > Shadow Path Points: 0
+  > RESULT: MISS (No shadow path on Earth)
+======================================================
+
+
+ >>> TARGET STAR FOUND: 3441366322859801216 <<<
+     MJD: 61048.007
+     Closest Approach: 324483809.956 mas
+     Duration: 0.225 s
+     Shadow Velocity: 25.814 km/s
+     Besselian X, Y: 0.000, 107948.826
+ ---------------------------------------------------
+ → Phase1: 69 candidati → Phase2: 70 eventi → Trovati 70 eventi! ✓
+[██████████████████████████████████████████████████] 100% | Completato     : 1 asteroidi processati                            
+[DEBUG] Step 5: Completato, trovati 1 eventi
+
+================================================================
+CALCOLO PRIORITÀ EVENTI
+================================================================
+
+Criteri di priorità:
+  • Mag drop > 2.0 mag: +3 punti
+  • Durata > 5 secondi: +2 punti
+  • Path attraversa Italia: +3 punti
+  • Incertezza < 15 km: +2 punti
+  • Stella luminosa (< 10 mag): +1 punto
+
+(34713) Unknown vs 
+  Score: 8.000/11 ★★★
+    • Mag drop eccellente
+    • Visibile dall'Italia
+    • Path ben determinato
+
+
+================================================================
+GENERAZIONE REPORT
+================================================================
+
+Applicazione filtri richiesti: Mag <= 15.0, Durata > 0.3s
+
+Formati output:
+  • IOTA formato classico
+  • Preston formato compatto
+  • JSON per API
+  • KML per Google Earth
+  • CSV per Excel
+
+╔════════════════════════════════════════════════════════════╗
+║          ITALOccultCalc - REPORT OCCULTAZIONI              ║
+╚════════════════════════════════════════════════════════════╝
+
+Totale eventi trovati: 1
+Eventi dopo filtri: 0
+
+⚠️  Nessun evento soddisfa i criteri di filtro.
+   Prova ad aumentare max_distance_km o ridurre min_mag_drop.
+
+
+================================================================
+RIEPILOGO TEMPI DI ESECUZIONE
+================================================================
+
+┌───────────────────────────────┬──────────────┐
+│ FASE                          │ TEMPO (s)    │
+├───────────────────────────────┼──────────────┤
+│ 1. Caricamento Config         │     0.000 s  │
+│ 2. Selezione Asteroidi        │     4.424 s  │
+│ 3. Propagazione Orbite        │     0.000 s  │
+│ 4. Query Catalogo Stelle      │     0.001 s  │
+│ 5. Rilevamento Occultazioni   │    11.157 s  │
+│ 6. Reporting & Export         │     0.000 s  │
+├───────────────────────────────┼──────────────┤
+│ TOTALE                        │    15.584 s  │
+└───────────────────────────────┴──────────────┘
+
+✓ Workflow completato con successo!
+Eventi trovati: 1
+Report salvati in: output/
+

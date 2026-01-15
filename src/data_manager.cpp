@@ -81,7 +81,7 @@ std::string DataManager::getDatabaseDir() const {
 }
 
 std::string DataManager::getAsteroidDatabasePath() const {
-    return rootDir_ + "/database/asteroid_db.json";
+    return rootDir_ + "/database/asteroids.db";
 }
 
 std::string DataManager::getEphemeridesDir() const {

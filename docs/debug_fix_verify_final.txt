@@ -1,0 +1,293 @@
+
+╔═══════════════════════════════════════════════════════════════╗
+║                     ITALOccultCalc v1.0                        ║
+║         Ricerca Automatica Occultazioni Asteroidali           ║
+║              Ottimizzato per Osservatori Italiani              ║
+╚═══════════════════════════════════════════════════════════════╝
+
+================================================================
+CARICAMENTO CONFIGURAZIONE
+================================================================
+
+File configurazione: preset_249_jan11.json
+✓ Configurazione JSON caricata
+✓ Configurazione validata
+
+Propagatore: RK4
+Step size: 0.1 giorni
+Intervallo ricerca: 0 giorni
+Mag limite: 14
+
+================================================================
+SELEZIONE ASTEROIDI CANDIDATI
+================================================================
+
+Criteri selezione:
+  Magnitudine max: 14
+  Diametro: 50 - 1000 km
+  Distanza perielio/afelio: 1.5 - 4.5 AU
+
+Caricamento da database...
+✓ Trovati 5 asteroidi candidati
+
+Top 5 asteroidi per priorità:
+  1. (10) Hygiea - Score: 9.2 ★★★
+     Asteroide gigante, durata lunga
+  2. (324) Bamberga - Score: 8.5 ★★★
+     Grande dimensione, magnitudine buona
+  3. (704) Interamnia - Score: 8 ★★★
+     Grande, orbita stabile
+  4. (511) Davida - Score: 7.8 ★★
+     Dimensione notevole
+  5. (65) Cybele - Score: 7.5 ★★
+     Fascia esterna
+
+
+================================================================
+PROPAGAZIONE ORBITE
+================================================================
+
+Periodo: JD 2.46104e+06 - 2.46140e+06
+Step: 0.01 giorni
+Asteroidi da propagare: 5
+
+SPKReader: Successfully loaded DE441 covering JD -3.02722e+06 to 7.93019e+06
+OrbitPropagator: Using JPL DE441 (high precision planets)
+SPICESPKReader: Loaded /Users/michelebigi/.ioccultcalc/ephemerides/codes_300ast_20100725.bsp
+OrbitPropagator: Asteroid perturbations enabled (AST17: 17 massive asteroids matching OrbFit)
+Correzioni abilitate:
+  ✓ Perturbazioni gravitazionali (8 pianeti)
+  ✓ Aberrazione planetaria (light-time)
+  ✓ Effetti relativistici
+
+[1/5] Propagazione...[2/5] Propagazione...[3/5] Propagazione...[4/5] Propagazione...[5/5] Propagazione...
+✓ Propagazione completata in 2510 ms
+
+
+================================================================
+QUERY CATALOGO STELLE GAIA DR3
+================================================================
+
+Parametri query:
+  Catalogo: Gaia DR3
+  Modalità: Query online
+  Magnitudine limite: 14
+  Epoca target: JD 2460676.5
+
+Calcolo regione cielo da interrogare...
+⚠️  Regione troppo ampia (182.1° x 23.8°), limito a 20° x 20°
+  Centro: RA=160.60° Dec=-11.45°
+  Raggio: 10.00°
+  Limite mag: 14.00
+
+Download stelle da Gaia DR3 (online)...
+[GaiaClient::executeADQL] DEBUG: Query ADQL:
+SELECT TOP 10000 source_id, ra, dec, parallax, pmra, pmdec, phot_g_mean_mag, phot_bp_mean_mag, phot_rp_mean_mag FROM gaiadr3.gaia_source WHERE CONTAINS(POINT('ICRS', ra, dec), CIRCLE('ICRS', 160.60000000, -11.45000000, 10.00000000)) = 1 AND phot_g_mean_mag < 14.00000000 ORDER BY phot_g_mean_mag ASC
+
+[GaiaClient::executeADQL] DEBUG: URL: https://gea.esac.esa.int/tap-server/tap/sync
+[GaiaClient::executeADQL] DEBUG: POST data length: 456
+[GaiaClient::executeADQL] ERROR: HTTP request failed: Timeout was reached
+⚠ Errore query Gaia (uso dati test): HTTP request failed: Timeout was reached
+
+✓ Usando 1 stella di test
+
+
+================================================================
+RILEVAMENTO OCCULTAZIONI
+================================================================
+
+Parametri ricerca:
+  Raggio ricerca: 0.50 gradi
+  Probabilità minima: 1.00%
+
+Asteroidi da analizzare: 5
+
+Combinazioni da testare: 5 asteroidi × 1 stelle = 5
+(Per demo, creo 1 evento per asteroide)
+
+[1/5] Analisi...[2/5] Analisi...[3/5] Analisi...[4/5] Analisi...[5/5] Analisi...
+✓ Trovati 5 eventi di occultazione
+
+
+================================================================
+CALCOLO PRIORITÀ EVENTI
+================================================================
+
+Criteri di priorità:
+  • Mag drop > 2.0 mag: +3 punti
+  • Durata > 5 secondi: +2 punti
+  • Path attraversa Italia: +3 punti
+  • Incertezza < 15 km: +2 punti
+  • Stella luminosa (< 10 mag): +1 punto
+
+(10) Hygiea vs TYC 5865-00764-1
+  Score: 11.00/11 ★★★
+    • Mag drop eccellente
+    • Durata significativa
+    • Visibile dall'Italia
+    • Path ben determinato
+    • Stella luminosa
+
+(324) Bamberga vs TYC 5865-00764-1
+  Score: 11.00/11 ★★★
+    • Mag drop eccellente
+    • Durata significativa
+    • Visibile dall'Italia
+    • Path ben determinato
+    • Stella luminosa
+
+(704) Interamnia vs TYC 5865-00764-1
+  Score: 11.00/11 ★★★
+    • Mag drop eccellente
+    • Durata significativa
+    • Visibile dall'Italia
+    • Path ben determinato
+    • Stella luminosa
+
+(511) Davida vs TYC 5865-00764-1
+  Score: 11.00/11 ★★★
+    • Mag drop eccellente
+    • Durata significativa
+    • Visibile dall'Italia
+    • Path ben determinato
+    • Stella luminosa
+
+(65) Cybele vs TYC 5865-00764-1
+  Score: 11.00/11 ★★★
+    • Mag drop eccellente
+    • Durata significativa
+    • Visibile dall'Italia
+    • Path ben determinato
+    • Stella luminosa
+
+
+================================================================
+GENERAZIONE REPORT
+================================================================
+
+Filtri applicati:
+  Posizione osservatore: 41.9028°N, 12.4964°E
+  Distanza massima traccia: 1000.0000 km
+  Variazione magnitudine minima: 0.5000 mag
+
+Formati output:
+  • IOTA formato classico
+  • Preston formato compatto
+  • JSON per API
+  • KML per Google Earth
+  • CSV per Excel
+
+╔════════════════════════════════════════════════════════════╗
+║          ITALOccultCalc - REPORT OCCULTAZIONI              ║
+╚════════════════════════════════════════════════════════════╝
+
+Totale eventi trovati: 5
+Eventi dopo filtri: 5
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+(10) Hygiea occulta TYC 5865-00764-1
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Data/Ora: 2025-12-08 22:44:13 UT
+JD: 2461018.447373
+
+Geometria:
+  Separazione: 0.050000 arcsec
+  Mag drop: 3.070000 mag
+  Durata: 20.350000 secondi
+  Larghezza path: 407 km
+  Incertezza: ±12 km (1σ)
+
+Visibile da: Roma, Napoli, Firenze
+
+PRIORITÀ: ★★★ (11.000000/11)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+(324) Bamberga occulta TYC 5865-00764-1
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Data/Ora: 2025-12-09 22:44:13 UT
+JD: 2461019.447373
+
+Geometria:
+  Separazione: 0.050000 arcsec
+  Mag drop: 3.070000 mag
+  Durata: 11.400000 secondi
+  Larghezza path: 228 km
+  Incertezza: ±12 km (1σ)
+
+Visibile da: Roma, Napoli, Firenze
+
+PRIORITÀ: ★★★ (11.000000/11)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+(704) Interamnia occulta TYC 5865-00764-1
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Data/Ora: 2025-12-10 22:44:13 UT
+JD: 2461020.447373
+
+Geometria:
+  Separazione: 0.050000 arcsec
+  Mag drop: 3.070000 mag
+  Durata: 15.300000 secondi
+  Larghezza path: 306 km
+  Incertezza: ±12 km (1σ)
+
+Visibile da: Roma, Napoli, Firenze
+
+PRIORITÀ: ★★★ (11.000000/11)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+(511) Davida occulta TYC 5865-00764-1
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Data/Ora: 2025-12-11 22:44:13 UT
+JD: 2461021.447373
+
+Geometria:
+  Separazione: 0.050000 arcsec
+  Mag drop: 3.070000 mag
+  Durata: 14.450000 secondi
+  Larghezza path: 289 km
+  Incertezza: ±12 km (1σ)
+
+Visibile da: Roma, Napoli, Firenze
+
+PRIORITÀ: ★★★ (11.000000/11)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+(65) Cybele occulta TYC 5865-00764-1
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Data/Ora: 2025-12-12 22:44:13 UT
+JD: 2461022.447373
+
+Geometria:
+  Separazione: 0.050000 arcsec
+  Mag drop: 3.070000 mag
+  Durata: 11.850000 secondi
+  Larghezza path: 237 km
+  Incertezza: ±12 km (1σ)
+
+Visibile da: Roma, Napoli, Firenze
+
+PRIORITÀ: ★★★ (11.000000/11)
+
+✓ Report console generato
+
+✓ File XML generato: test_output_occult4.xml
+  Formato: Occult4 compatible
+  Eventi: 5
+  Import in: OccultWatcher Cloud
+
+
+================================================================
+COMPLETAMENTO
+================================================================
+
+✓ Workflow completato con successo!
+Tempo totale: 66 secondi
+Eventi trovati: 5
+Report salvati in: output/
+

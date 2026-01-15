@@ -1,0 +1,670 @@
+DEBUG: [italoccultcalc] BINARY VERSION Dec 29 2025 13:57:12 - ACTIVE
+DEBUG: Main started.
+
+╔═══════════════════════════════════════════════════════════════╗
+║                     ITALOccultCalc v1.0                        ║
+║         Ricerca Automatica Occultazioni Asteroidali           ║
+║              Ottimizzato per Osservatori Italiani              ║
+╚═══════════════════════════════════════════════════════════════╝
+[DEBUG] main: Prima di startTime
+[DEBUG] main: WORKFLOW COMPLETO - INIZIO
+[DEBUG] main: Step 1: Caricamento configurazione...
+[DEBUG] loadConfiguration: INIZIO
+
+================================================================
+CARICAMENTO CONFIGURAZIONE
+================================================================
+
+File configurazione: test_34713_jan2026.oop
+[DEBUG] loadConfiguration: ConfigManager creato
+[DEBUG] loadConfiguration: Verifico formato file...
+[DEBUG] loadConfiguration: Carico OOP...
+✓ Configurazione OrbFit caricata
+  Auto-converting to JSON: test_34713_jan2026.json ... OK
+[DEBUG] loadConfiguration: File caricato, valido configurazione...
+✓ Configurazione validata
+
+[DEBUG] loadConfiguration: Configurazione validata, leggo sezioni...
+[DEBUG] loadConfiguration: Chiamo getSection(PROPAGATION)...
+[DEBUG] loadConfiguration: getSection(PROPAGATION) completato
+[DEBUG] loadConfiguration: Chiamo getSection(SEARCH)...
+[DEBUG] loadConfiguration: getSection(SEARCH) completato
+[DEBUG] loadConfiguration: Sezioni lette, stampo parametri...
+[DEBUG] loadConfiguration: propagSection trovata
+Propagatore: ASTDYN
+Step size: 0.1 giorni
+[DEBUG] loadConfiguration: searchSection trovata
+[DEBUG] loadConfiguration: FINE
+[DEBUG] main: Step 1: Completato
+[DEBUG] Step 2: Selezione asteroidi...
+[DEBUG] selectAsteroids: INIZIO
+
+================================================================
+SELEZIONE ASTEROIDI CANDIDATI
+================================================================
+
+[DEBUG] selectAsteroids: Dopo printHeader
+[DEBUG] selectAsteroids: Inizializzo variabili...
+[DEBUG] selectAsteroids: Leggo configurazione objectSection...
+[DEBUG] selectAsteroids: objectSection letto
+Criteri selezione:
+  ★ LISTA ESPLICITA: 1 asteroidi [34713]
+  (filtri diametro/magnitudine ignorati)
+
+
+[SQLite] Database allnum.db trovato. Uso lettura diretta per lista esplicita.
+Data aggiornamento DB: 
+  ✓ Caricato (SQLite): (34713)
+    H=13.86  Diam~5.8km
+    Epoch (MJD): 61000.0
+    a=2.8 e=0.2 i=8.0°
+Trovati 1 asteroidi nel DB.
+[DEBUG] Step 2: Completato, trovati 1 asteroidi
+[DEBUG] Step 3: Propagazione orbite...
+
+================================================================
+PROPAGAZIONE ORBITE
+================================================================
+
+SPKReader: Successfully loaded DE441 covering JD -3.02722e+06 to 7.93019e+06
+OrbitPropagator: Using JPL DE441 (high precision planets)
+OrbitPropagator: WARNING - Asteroid perturbations disabled (codes_300ast_20100725.bsp not found)
+[▓░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0% | Propagazione   : (34713) (34713) Yesiltas                          [████████████████████▓░░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 40 % | Propagazione   : Completata                                        
+[DEBUG] Step 3: Completato
+[DEBUG] Step 4: Query catalogo stelle...
+
+=== [DEBUG] Inizio queryCatalog ===
+[DEBUG queryCatalog] gaiaSection trovata: NO
+
+================================================================
+QUERY CATALOGO STELLE GAIA DR3
+================================================================
+
+
+╔══════════════════════════════════════════════════════════╗
+║      ★ CATALOGO MAG18 LOCALE ATTIVO ★                   ║
+║  303M stelle (G≤18) - Query locale veloce               ║
+║  Nessuna query online - tutto da catalogo 9GB           ║
+╚══════════════════════════════════════════════════════════╝
+
+Could not open IAU catalog: data/IAU-CSN.json
+Could not open star names database: data/common_star_names.csv
+Loaded 23 stars from embedded database
+Loaded star names from embedded database
+✓ Catalogo Gaia caricato: /Users/michelebigi/.catalog/gaia_mag18_v2_multifile
+  Catalogo: Multi-File Gaia DR3 V2 | Stelle: 0
+[DEBUG] Step 4: Completato, trovate 0 stelle
+[DEBUG] Step 5: Rilevamento occultazioni...
+
+================================================================
+RILEVAMENTO OCCULTAZIONI
+================================================================
+
+Parametri ricerca:
+  Periodo: JD 2461050.5 - 2461051.5
+  Mag limite: 16.0
+  Raggio ricerca: 1.0 gradi
+  Probabilità minima: 1.0%
+
+Asteroidi da analizzare: 1
+
+Calcolo sequenziale (SPICE thread-safety)...
+
+
+[1   /1] (34713 ) (34713) Yesiltas     - D=   5km  - Phase 1 Screening...Optimized Corridor: 97 points -> 1 query cones.
+
+╔════════════════════════════════════════════════════════════╗
+║  PHASE 2: Geometria Precisa con Orbital Refinement        ║
+╚════════════════════════════════════════════════════════════╝
+
+Candidati da processare: 28
+Orbital refinement: ATTIVO
+Finestra temporale: ±10.0 min
+Risoluzione: 1.0 sec
+
+══════════════════════════════════════════════════════════
+STEP 1: ORBITAL REFINEMENT
+══════════════════════════════════════════════════════════
+
+  [RWO Download] Scaricamento osservazioni per 34713...
+  URL: https://newton.spacedys.com/~astdys2/mpcobs/numbered/34/34713.rwo
+  Downloading...
+  ✓ File scaricato: /tmp/34713.rwo
+  Parsing RWO...
+  ✓ Parsate 2600 osservazioni RWO
+  [Observations] Scaricate 2600 osservazioni
+  [Observations] Selezionate 20 osservazioni più recenti per il fit
+  [Observations] Epoca più recente: MJD 60951.45
+  [Observations] Epoca più vecchia: MJD 60919.60
+  [Orbital Fit] Fitting con 20 osservazioni...
+  [Pre-Check] RMS Residui Nominali: 303422.07 arcsec
+  ⚠ Residui troppo alti (>100"). Skipping fit per sicurezza.
+
+  ⚠ Fit fallito - uso elementi nominali
+
+══════════════════════════════════════════════════════════
+STEP 2: CALCOLO GEOMETRIA OCCULTAZIONI
+══════════════════════════════════════════════════════════
+
+Candidato 1/28 - Stella 214312442801225728...
+DEBUG: Entering calculateSingleEvent for Star 214312442801225728 Guess MJD: 61050.744878
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.74488
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 111672778.0 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.72 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 123226052.56 mas @ MJD 61050.751811
+  Duration: 0.541125 sec
+  Shadow path width: 5.800686 km
+
+Candidato 2/28 - Stella 214289009459629696...
+DEBUG: Entering calculateSingleEvent for Star 214289009459629696 Guess MJD: 61050.909300
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.90930
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 111742412.7 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.68 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 123158833.83 mas @ MJD 61050.916233
+  Duration: 0.543072 sec
+  Shadow path width: 5.800686 km
+
+Candidato 3/28 - Stella 214310007555468416...
+DEBUG: Entering calculateSingleEvent for Star 214310007555468416 Guess MJD: 61050.508560
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.50856
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 111576407.4 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.77 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 123324391.05 mas @ MJD 61050.515493
+  Duration: 0.538374 sec
+  Shadow path width: 5.800686 km
+
+Candidato 4/28 - Stella 214311377648920576...
+DEBUG: Entering calculateSingleEvent for Star 214311377648920576 Guess MJD: 61050.066870
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.06687
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 111398790.7 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.88 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 123506256.09 mas @ MJD 61050.073803
+  Duration: 0.533377 sec
+  Shadow path width: 5.800686 km
+
+Candidato 5/28 - Stella 214311416304718464...
+DEBUG: Entering calculateSingleEvent for Star 214311416304718464 Guess MJD: 61050.043581
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.04358
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 111390019.8 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.88 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 123516178.73 mas @ MJD 61050.050513
+  Duration: 0.533118 sec
+  Shadow path width: 5.800686 km
+
+Candidato 6/28 - Stella 214289009459617024...
+DEBUG: Entering calculateSingleEvent for Star 214289009459617024 Guess MJD: 61050.952169
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.95217
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 111749960.2 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.67 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 123132728.40 mas @ MJD 61050.959102
+  Duration: 0.543585 sec
+  Shadow path width: 5.800686 km
+
+Candidato 7/28 - Stella 214311377649465728...
+DEBUG: Entering calculateSingleEvent for Star 214311377649465728 Guess MJD: 61050.082488
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.08249
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 111409902.5 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.87 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 123503782.03 mas @ MJD 61050.089421
+  Duration: 0.533550 sec
+  Shadow path width: 5.800686 km
+
+Candidato 8/28 - Stella 214310007555468160...
+DEBUG: Entering calculateSingleEvent for Star 214310007555468160 Guess MJD: 61050.499243
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.49924
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 111558178.4 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.78 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 123316703.97 mas @ MJD 61050.506176
+  Duration: 0.538268 sec
+  Shadow path width: 5.800686 km
+
+Candidato 9/28 - Stella 214310110634666880...
+DEBUG: Entering calculateSingleEvent for Star 214310110634666880 Guess MJD: 61050.193841
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.19384
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 111455885.8 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.85 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 123459335.05 mas @ MJD 61050.200774
+  Duration: 0.534793 sec
+  Shadow path width: 5.800686 km
+
+Candidato 10/28 - Stella 214312408441467776...
+DEBUG: Entering calculateSingleEvent for Star 214312408441467776 Guess MJD: 61050.823976
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.82398
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 111691020.0 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.70 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 123181624.67 mas @ MJD 61050.830909
+  Duration: 0.542060 sec
+  Shadow path width: 5.800686 km
+
+Candidato 11/28 - Stella 214312442801208448...
+DEBUG: Entering calculateSingleEvent for Star 214312442801208448 Guess MJD: 61050.785660
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.78566
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 111673644.5 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.71 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 123196347.59 mas @ MJD 61050.792593
+  Duration: 0.541607 sec
+  Shadow path width: 5.800686 km
+
+Candidato 12/28 - Stella 214310106339115648...
+DEBUG: Entering calculateSingleEvent for Star 214310106339115648 Guess MJD: 61050.176401
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.17640
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 111452171.7 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.85 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 123469109.35 mas @ MJD 61050.183334
+  Duration: 0.534598 sec
+  Shadow path width: 5.800686 km
+
+Candidato 13/28 - Stella 214310071979360000...
+DEBUG: Entering calculateSingleEvent for Star 214310071979360000 Guess MJD: 61050.291876
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.29188
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 111501094.8 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.82 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 123423711.73 mas @ MJD 61050.298809
+  Duration: 0.535898 sec
+  Shadow path width: 5.800686 km
+
+Candidato 14/28 - Stella 214312511520707072...
+DEBUG: Entering calculateSingleEvent for Star 214312511520707072 Guess MJD: 61050.751067
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.75107
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 111692811.5 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.72 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 123237440.35 mas @ MJD 61050.758000
+  Duration: 0.541196 sec
+  Shadow path width: 5.800686 km
+
+Candidato 15/28 - Stella 214309590942947328...
+DEBUG: Entering calculateSingleEvent for Star 214309590942947328 Guess MJD: 61050.624798
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.62480
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 111600842.9 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.75 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 123257855.35 mas @ MJD 61050.631731
+  Duration: 0.539722 sec
+  Shadow path width: 5.800686 km
+
+Candidato 16/28 - Stella 214289219913777280...
+DEBUG: Entering calculateSingleEvent for Star 214289219913777280 Guess MJD: 61050.961296
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.96130
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 111782625.8 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.67 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 123151945.85 mas @ MJD 61050.968229
+  Duration: 0.543691 sec
+  Shadow path width: 5.800686 km
+
+Candidato 17/28 - Stella 214312447097181056...
+DEBUG: Entering calculateSingleEvent for Star 214312447097181056 Guess MJD: 61050.752964
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.75296
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 111651301.0 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.72 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 123202878.98 mas @ MJD 61050.759897
+  Duration: 0.541223 sec
+  Shadow path width: 5.800686 km
+
+Candidato 18/28 - Stella 214311377649420032...
+DEBUG: Entering calculateSingleEvent for Star 214311377649420032 Guess MJD: 61050.146833
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.14683
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 111402324.8 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.86 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 123450804.42 mas @ MJD 61050.153766
+  Duration: 0.534270 sec
+  Shadow path width: 5.800686 km
+
+Candidato 19/28 - Stella 214289013755346944...
+DEBUG: Entering calculateSingleEvent for Star 214289013755346944 Guess MJD: 61050.935898
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.93590
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 111726688.8 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.67 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 123126359.05 mas @ MJD 61050.942830
+  Duration: 0.543392 sec
+  Shadow path width: 5.800686 km
+
+Candidato 20/28 - Stella 214312408441454464...
+DEBUG: Entering calculateSingleEvent for Star 214312408441454464 Guess MJD: 61050.834519
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.83452
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 111681249.6 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.70 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 123165950.66 mas @ MJD 61050.841452
+  Duration: 0.542186 sec
+  Shadow path width: 5.800686 km
+
+Candidato 21/28 - Stella 214312580240225664...
+DEBUG: Entering calculateSingleEvent for Star 214312580240225664 Guess MJD: 61050.541705
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.54170
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 111614457.4 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.77 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 123330294.59 mas @ MJD 61050.548638
+  Duration: 0.538754 sec
+  Shadow path width: 5.800686 km
+
+Candidato 22/28 - Stella 214311412009204224...
+DEBUG: Entering calculateSingleEvent for Star 214311412009204224 Guess MJD: 61050.044563
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.04456
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 111411765.0 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.88 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 123532877.26 mas @ MJD 61050.051496
+  Duration: 0.533127 sec
+  Shadow path width: 5.800686 km
+
+Candidato 23/28 - Stella 214312958197357824...
+DEBUG: Entering calculateSingleEvent for Star 214312958197357824 Guess MJD: 61050.489213
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.48921
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 111594575.8 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.78 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 123353207.98 mas @ MJD 61050.496146
+  Duration: 0.538149 sec
+  Shadow path width: 5.800686 km
+
+Candidato 24/28 - Stella 214311377649465984...
+DEBUG: Entering calculateSingleEvent for Star 214311377649465984 Guess MJD: 61050.052352
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.05235
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 111418611.4 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.88 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 123532692.93 mas @ MJD 61050.059285
+  Duration: 0.533213 sec
+  Shadow path width: 5.800686 km
+
+Candidato 25/28 - Stella 214311343289733888...
+DEBUG: Entering calculateSingleEvent for Star 214311343289733888 Guess MJD: 61050.000000
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.00000
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 111390960.9 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.89 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 123548634.72 mas @ MJD 61050.006933
+  Duration: 0.532571 sec
+  Shadow path width: 5.800686 km
+
+Candidato 26/28 - Stella 214288940740133632...
+DEBUG: Entering calculateSingleEvent for Star 214288940740133632 Guess MJD: 61050.922689
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.92269
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 111711010.7 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.68 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 123123746.30 mas @ MJD 61050.929622
+  Duration: 0.543235 sec
+  Shadow path width: 5.800686 km
+
+Candidato 27/28 - Stella 214288979395614336...
+DEBUG: Entering calculateSingleEvent for Star 214288979395614336 Guess MJD: 61051.000000
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61051.00000
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 111748281.7 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.66 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 123095462.85 mas @ MJD 61051.006933
+  Duration: 0.544224 sec
+  Shadow path width: 5.800686 km
+
+Candidato 28/28 - Stella 214310110634665856...
+DEBUG: Entering calculateSingleEvent for Star 214310110634665856 Guess MJD: 61050.174755
+  Usando: elementi nominali
+  Ricerca CA: Scansione rigida in ±10.000000 min attorno a MJD 61050.17476
+  Geometria (Piano Fondamentale):
+    Impact Parameter: 111470266.0 km
+    Earth Radius Limit: 6381.0 km
+    Shadow Velocity: 10.85 km/s
+    Esito geometrico: MISS (Ombra manca Terra)
+  ✓ CA: 123484794.17 mas @ MJD 61050.181688
+  Duration: 0.534577 sec
+  Shadow path width: 5.800686 km
+
+══════════════════════════════════════════════════════════
+PHASE 2 COMPLETATA
+══════════════════════════════════════════════════════════
+  Orbital refinement: ✗ Non eseguito
+  Eventi calcolati: 28
+  Falliti: 0
+  Tempo totale: 1399.520459 ms
+
+Debug: Checking 28 candidates for target ID 877859914797936896
+ → Phase1: 28 candidati → Phase2: 28 eventi → Trovati 27 eventi! ✓
+[██████████████████████████████████████████████████] 100% | Completato     : 1 asteroidi processati                            
+[DEBUG] Step 5: Completato, trovati 12 eventi
+
+================================================================
+CALCOLO PRIORITÀ EVENTI
+================================================================
+
+Criteri di priorità:
+  • Mag drop > 2.0 mag: +3 punti
+  • Durata > 5 secondi: +2 punti
+  • Path attraversa Italia: +3 punti
+  • Incertezza < 15 km: +2 punti
+  • Stella luminosa (< 10 mag): +1 punto
+
+(34713) (34713) Yesiltas vs 
+  Score: 8.000000/11 ★★★
+    • Mag drop eccellente
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) (34713) Yesiltas vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) (34713) Yesiltas vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) (34713) Yesiltas vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) (34713) Yesiltas vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) (34713) Yesiltas vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) (34713) Yesiltas vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) (34713) Yesiltas vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) (34713) Yesiltas vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) (34713) Yesiltas vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) (34713) Yesiltas vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+(34713) (34713) Yesiltas vs 
+  Score: 5.000000/11 ★★
+    • Visibile dall'Italia
+    • Path ben determinato
+
+
+================================================================
+GENERAZIONE REPORT
+================================================================
+
+Applicazione filtri richiesti: Mag <= 15.0, Durata > 0.3s
+
+Formati output:
+  • IOTA formato classico
+  • Preston formato compatto
+  • JSON per API
+  • KML per Google Earth
+  • CSV per Excel
+
+╔════════════════════════════════════════════════════════════╗
+║          ITALOccultCalc - REPORT OCCULTAZIONI              ║
+╚════════════════════════════════════════════════════════════╝
+
+Totale eventi trovati: 12
+Eventi dopo filtri: 1
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+(34713) (34713) Yesiltas occulta 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Data/Ora: 2026-10-10 10:46:16 UT
+JD: 2461050.573803
+
+Geometria:
+  Separazione: 123506.256088 arcsec
+  Mag drop: 4.924181 mag
+  Durata: 0.533377 secondi
+  Larghezza path: 5 km
+  Incertezza: ±0 km (1σ)
+
+Visibile da: Roma
+
+PRIORITÀ: ★★★ (8.000000/11)
+
+✓ Report console generato
+
+DEBUG XML: designation='34713' name='(34713) Yesiltas' diameter=5.800686
+✓ File XML generato: test_output_occult4.xml
+  Formato: Occult4 compatible
+  Eventi: 1
+  Import in: OccultWatcher Cloud
+
+✓ File JSON generato: test_output_structured.json
+✓ File KML generato: output_events.kml
+  Tracce generate: 1
+
+
+================================================================
+RIEPILOGO TEMPI DI ESECUZIONE
+================================================================
+
+┌───────────────────────────────┬──────────────┐
+│ FASE                          │ TEMPO (s)    │
+├───────────────────────────────┼──────────────┤
+│ 1. Caricamento Config00000000 │ 00001.427 s  │
+│ 2. Selezione Asteroidi0000000 │ 00000.539 s  │
+│ 3. Propagazione Orbite0000000 │ 00000.000 s  │
+│ 4. Query Catalogo Stelle00000 │ 00000.001 s  │
+│ 5. Rilevamento Occultazioni00 │ 00003.064 s  │
+│ 6. Reporting & Export00000000 │ 00001.320 s  │
+├───────────────────────────────┼──────────────┤
+│ TOTALE00000000000000000000000 │ 00006.352 s  │
+└───────────────────────────────┴──────────────┘
+
+✓ Workflow completato con successo!
+Eventi trovati: 12
+Report salvati in: output/
+

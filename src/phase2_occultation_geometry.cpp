@@ -13,6 +13,10 @@
 #include <fstream>
 #include "topocentric.h"
 #include "ioccultcalc/types.h"
+#include "ioccultcalc/mpc_client.h"
+#include "ioccultcalc/astdyn_interface.h"
+#include "ioccultcalc/orbital_elements.h"
+#include "ioccultcalc/asteroid_sqlite_db.h"
 
 namespace ioccultcalc {
 
@@ -34,11 +38,173 @@ class Phase2OccultationGeometry::Impl {
 public:
     std::shared_ptr<AstDynWrapper> astdyn;
 
-    Impl() : astdyn(std::make_shared<AstDynWrapper>(PropagationSettings::highAccuracy())) {}
+    Impl() {
+        std::cout << "[Phase2OccultationGeometry] Constructor started." << std::endl;
+        astdyn = std::make_shared<AstDynWrapper>(PropagationSettings::highAccuracy());
+        std::cout << "[Phase2OccultationGeometry] Constructor finished." << std::endl;
+    }
+
+    void refineOrbit(const Phase2Config& config) {
+        if (!config.refine_orbit) return;
+
+        std::string designation = astdyn->getObjectName();
+        if (designation.empty()) return;
+
+        std::cout << "[PHASE2] Refining orbit for asteroid " << designation 
+                  << " using last " << config.last_n_obs << " observations..." << std::endl;
+
+        try {
+            MPCClient mpc;
+            ObservationSet obsSet = mpc.getRecentObservations(designation, config.last_n_obs);
+            
+            if (obsSet.observations.empty()) {
+                std::cerr << "[PHASE2] No observations found for refinement." << std::endl;
+                return;
+            }
+
+            std::cout << "[PHASE2] Retrieved " << obsSet.observations.size() << " observations. "
+                      << "Time range: MJD " << (obsSet.observations.front().epoch.jd - 2400000.5)
+                      << " to " << (obsSet.observations.back().epoch.jd - 2400000.5) << std::endl;
+
+            // Convert ObservationSet to RWOObservation for AstDynOrbitFitter
+            std::vector<RWOObservation> rwoList;
+            for (const auto& obs : obsSet.observations) {
+                RWOObservation rwo;
+                rwo.designation = designation;
+                rwo.mjd_utc = obs.epoch.jd - 2400000.5;
+                rwo.ra_deg = obs.obs.ra * 180.0 / M_PI;
+                rwo.dec_deg = obs.obs.dec * 180.0 / M_PI;
+                rwo.ra_sigma_arcsec = 0.5; // Default if not available
+                rwo.dec_sigma_arcsec = 0.5;
+                rwo.obs_code = obs.observatoryCode;
+                rwoList.push_back(rwo);
+            }
+
+            // Get current elements from AstDynWrapper
+            // We need to bridge AstDynWrapper elements to AstDySElements
+            // This is a bit tricky as AstDynWrapper doesn't expose raw elements easily
+            // For now, assume loadAsteroidFromEQ1 was called and we have them.
+            // Actually, we can use astdyn_utils::toAstDySElements if we had KeplerianElements
+            
+            // For now, let's assume we use the initial elements loaded
+            // In a real implementation we'd need a way to get 'em back.
+            // Let's use a simplified approach: we trust the EQ1 file was loaded.
+            
+            // Perform bridge
+            auto aelem = astdyn->getKeplerianElements();
+            AstDySElements initial;
+            initial.name = aelem.object_name;
+            initial.a = aelem.semi_major_axis;
+            initial.e = aelem.eccentricity;
+            initial.i = aelem.inclination * 180.0 / M_PI;
+            initial.Omega = aelem.longitude_asc_node * 180.0 / M_PI;
+            initial.omega = aelem.argument_perihelion * 180.0 / M_PI;
+            initial.M = aelem.mean_anomaly * 180.0 / M_PI;
+            initial.epoch_mjd = aelem.epoch_mjd_tdb;
+            initial.H = aelem.magnitude;
+            initial.G = aelem.mag_slope;
+
+            AstDynOrbitFitter fitter;
+            fitter.setConvergenceTolerance(1e-10); // Better balance for 50 observations
+            fitter.setVerbose(true); // Enable detailed convergence logging
+            std::cout << "[PHASE2] Starting refined orbital fit (verbose mode)..." << std::endl;
+            
+            // VERIFICATION: Check Phase 1 Orbit at JPL Epoch
+            double jpl_epoch_mjd = 61049.0; // 9 Jan 2026 0:00 UTC
+            auto phase1_state = astdyn->getApparentStateGeocentric(jpl_epoch_mjd);
+            std::cout << "\n[VERIFICATION] Phase 1 (Initial) @ MJD " << std::fixed << std::setprecision(5) << jpl_epoch_mjd << " (9 Jan 2026 0:00):\n";
+            std::cout << "  RA: " << phase1_state.ra_deg << " deg (" << phase1_state.ra_deg/15.0 << " h)\n";
+            std::cout << "  Dec: " << phase1_state.dec_deg << " deg\n";
+            std::cout << "  Dist: " << phase1_state.distance_au << " AU\n";
+            double ra_h = phase1_state.ra_deg / 15.0;
+            int h = (int)ra_h;
+            int m = (int)((ra_h - h) * 60.0);
+            double s = ((ra_h - h) * 60.0 - m) * 60.0;
+            std::cout << "  RA (hms): " << h << "h " << m << "m " << std::fixed << std::setprecision(3) << s << "s\n";
+            double dec_d = std::abs(phase1_state.dec_deg);
+            int d = (int)dec_d;
+            int dm = (int)((dec_d - d) * 60.0);
+            double ds = ((dec_d - d) * 60.0 - dm) * 60.0;
+            std::cout << "  Dec (dms): " << (phase1_state.dec_deg >= 0 ? "+" : "-") << d << "d " << dm << "' " << std::fixed << std::setprecision(2) << ds << "\"\n\n";
+
+            auto fitRes = fitter.fit(initial, rwoList);
+            
+            std::cout << "[PHASE2] Orbit fit completed. RMS=" << fitRes.rms_total_arcsec 
+                      << " arcsec (" << fitRes.n_used << " obs used)" << std::endl;
+            
+            if (fitRes.n_used > 0) {
+                // Update wrapper
+                astdyn->setKeplerianElements(
+                    fitRes.fitted_elements.a, fitRes.fitted_elements.e, 
+                    fitRes.fitted_elements.i * M_PI / 180.0,
+                    fitRes.fitted_elements.Omega * M_PI / 180.0, 
+                    fitRes.fitted_elements.omega * M_PI / 180.0,
+                    fitRes.fitted_elements.M * M_PI / 180.0,
+                    fitRes.fitted_elements.epoch_mjd,
+                    designation
+                );
+                
+                // VERIFICATION: Check Phase 2 Orbit at JPL Epoch
+                auto phase2_state = astdyn->getApparentStateGeocentric(jpl_epoch_mjd);
+                std::cout << "\n[VERIFICATION] Phase 2 (Refined) @ MJD " << std::fixed << std::setprecision(5) << jpl_epoch_mjd << " (9 Jan 2026 0:00):\n";
+                std::cout << "  RA: " << phase2_state.ra_deg << " deg (" << phase2_state.ra_deg/15.0 << " h)\n";
+                std::cout << "  Dec: " << phase2_state.dec_deg << " deg\n";
+                std::cout << "  Dist: " << phase2_state.distance_au << " AU\n";
+                ra_h = phase2_state.ra_deg / 15.0;
+                h = (int)ra_h;
+                m = (int)((ra_h - h) * 60.0);
+                s = ((ra_h - h) * 60.0 - m) * 60.0;
+                std::cout << "  RA (hms): " << h << "h " << m << "m " << std::fixed << std::setprecision(3) << s << "s\n";
+                dec_d = std::abs(phase2_state.dec_deg);
+                d = (int)dec_d;
+                dm = (int)((dec_d - d) * 60.0);
+                ds = ((dec_d - d) * 60.0 - dm) * 60.0;
+                std::cout << "  Dec (dms): " << (phase2_state.dec_deg >= 0 ? "+" : "-") << d << "d " << dm << "' " << std::fixed << std::setprecision(2) << ds << "\"\n";
+                
+                // Diff with JPL (Approx)
+                // JPL: 05 44 40.091  +26 34 21.49
+                // RA JPL: 5.744469722 hours -> 86.1670458 deg
+                // Dec JPL: 26.5726361 deg
+                double jpl_ra = 86.1670458;
+                double jpl_dec = 26.5726361;
+                
+                double d_ra_mas = (phase2_state.ra_deg - jpl_ra) * std::cos(jpl_dec * M_PI / 180.0) * 3600000.0;
+                double d_dec_mas = (phase2_state.dec_deg - jpl_dec) * 3600000.0;
+                std::cout << "  Diff vs JPL: RA=" << d_ra_mas << " mas, Dec=" << d_dec_mas << " mas\n\n";
+
+            } else {
+                std::cerr << "[PHASE2] WARNING: Orbit fit did not use any observations. Keeping initial orbit." << std::endl;
+            }
+
+        } catch (const std::exception& e) {
+            std::cerr << "[PHASE2] Error during orbit refinement: " << e.what() << std::endl;
+        }
+    }
+
+    void fetchHorizons(const std::vector<CandidateStar>& candidates, const Phase2Config& config) {
+        if (!config.use_horizons || candidates.empty()) return;
+
+        std::string designation = astdyn->getObjectName();
+        if (designation.empty()) return;
+
+        // Usa l'epoca del primo candidato come riferimento per gli elementi osculanti
+        double target_mjd = candidates[0].closest_approach_mjd;
+        std::cout << "[PHASE2] Fetching osculating elements from JPL Horizons for " << designation 
+                  << " at MJD " << std::fixed << std::setprecision(5) << target_mjd << "..." << std::endl;
+
+        if (astdyn->loadFromHorizons(designation, target_mjd)) {
+            std::cout << "[PHASE2] Successfully initialized orbit from JPL Horizons." << std::endl;
+        } else {
+            std::cerr << "[PHASE2] WARNING: Failed to fetch JPL Horizons elements. Using existing orbit." << std::endl;
+        }
+    }
 
     Phase2OccultationEvent processSingleCandidate(const CandidateStar& star, const Phase2Config& config) {
         Phase2OccultationEvent event;
         event.star_id = star.source_id;
+
+        // 0. REFINEMENT
+        // Note: Refinement is now called once per session in calculatePreciseGeometry
 
         // 1. OTTIMIZZAZIONE GSS (Golden Section Search)
         // Cerchiamo il minimo della distanza angolare ICRF
@@ -63,6 +229,13 @@ public:
         // Algoritmo GSS per trovare il tempo esatto del CA
         double t_ca = findMinimumGSS(computeDist, t_start, t_end, 1e-9); // Precisione 
         double min_dist_deg = computeDist(t_ca);
+        double min_dist_mas = min_dist_deg * 3600000.0;
+
+        if (min_dist_mas < 10000.0) { // Log any CA within 10 arcsec
+            std::cout << "[PHASE2] Candidate Star: " << star.source_id 
+                      << " CA MJD: " << std::fixed << std::setprecision(5) << t_ca
+                      << " Min Dist: " << std::fixed << std::setprecision(2) << min_dist_mas << " mas" << std::endl;
+        }
 
         // Fill results
         event.t_ca_mjd = t_ca;
@@ -101,23 +274,33 @@ public:
     void calculateShadowDetails(const CandidateStar& star, Phase2OccultationEvent& event, const Phase2Config& config) {
         if (!config.compute_shadow) return;
 
-        // 1. Durata stimata (Diametro from Occult4 reference)
-        double diameter_km = 18.02; 
-        double distance_au = astdyn->getApparentStateGeocentric(event.t_ca_mjd).distance_au;
-        double parallax_arcsec = 8.794 / distance_au; // Semplificata
+        // 1. Calcolo Diametro Fisico (Metodo Shevchenko/Bowell)
+        double H = astdyn->getKeplerianElements().magnitude;
+        double G = astdyn->getKeplerianElements().mag_slope;
         
-        // Velocità relativa apparente (arcsec/sec)
-        double dt = 1.0 / 86400.0;
-        auto s1 = astdyn->getApparentStateGeocentric(event.t_ca_mjd - dt);
-        auto s2 = astdyn->getApparentStateGeocentric(event.t_ca_mjd + dt);
-        double dra_deg = (s2.ra_deg - s1.ra_deg);
-        double ddec_deg = (s2.dec_deg - s1.dec_deg);
-        double dist_deg = std::sqrt(dra_deg * dra_deg * std::cos(s1.dec_deg*M_PI/180.0) * std::cos(s1.dec_deg*M_PI/180.0) + ddec_deg * ddec_deg);
-        double v_arcsec_sec = (dist_deg * 3600.0) / 2.0;
+        // Albedo estimate: 0.15 if G is standard, otherwise empirical formula
+        double albedo = (std::abs(G - 0.15) < 0.001) ? 0.15 : std::pow(10.0, -(1.139 * G + 0.52));
+        double diameter_km = (1329.0 / std::sqrt(albedo)) * std::pow(10.0, -0.2 * H);
         
-        // Diametro angolare asteroide (mas)
-        double diameter_mas = (diameter_km / (distance_au * 149597870.7)) * 180.0/M_PI * 3600.0 * 1000.0;
-        event.duration_sec = diameter_mas / (v_arcsec_sec * 1000.0);
+        auto state_ca = astdyn->getApparentStateGeocentric(event.t_ca_mjd);
+        double distance_au = state_ca.distance_au;
+        
+        // 2. Velocità dell'ombra (km/s) sul piano di Bessel
+        // Calcolata tramite differenza finita su un piccolo dt
+        double dt_sec = 0.5;
+        double dt_day = dt_sec / 86400.0;
+        auto s1 = astdyn->getApparentStateGeocentric(event.t_ca_mjd - dt_day);
+        auto s2 = astdyn->getApparentStateGeocentric(event.t_ca_mjd + dt_day);
+        
+        // Velocità relativa in AU/giorno -> km/s
+        Vector3D pos1(s1.position.x(), s1.position.y(), s1.position.z());
+        Vector3D pos2(s2.position.x(), s2.position.y(), s2.position.z());
+        Vector3D vel_rel_vec = (pos2 - pos1) / (2.0 * dt_day); 
+        
+        // AU -> km conversion (1 AU = 149,597,870.7 km)
+        double v_km_s = (vel_rel_vec.magnitude() * 149597870.7) / 86400.0;
+        
+        event.duration_sec = diameter_km / v_km_s;
 
         // 2. Percorso ombra (Campionamento +/- 5 min)
         TopocentricConverter converter;
@@ -133,10 +316,16 @@ public:
             double mjd = event.t_ca_mjd + (i * 30.0 / 86400.0); // Ogni 30 secondi
             auto state = astdyn->getApparentStateGeocentric(mjd);
             
-            // Trasformazione in ECEF
+            // Trasformazione in ECEF corporea
             double rotation_matrix[3][3];
             double jd_tdb = mjd + 2400000.5;
-            converter.rotationMatrixITRFtoCelestial(jd_tdb, "J2000", rotation_matrix);
+            
+            // CORREZIONE CRITICA: La rotazione terrestre vuole UT1, non TDB.
+            // Approssimazione: UT1 = TDB - (ΔAT + 32.184) s. 
+            // Nel 2026, ΔAT = 37s (TAI-UTC) + 32.184s (TT-TAI) = 69.184s totali.
+            double jd_ut1 = jd_tdb - (69.184 / 86400.0);
+            
+            converter.rotationMatrixITRFtoCelestial(jd_ut1, "J2000", rotation_matrix);
             
             // Inverti matrice per Celestial -> ITRF
             double inv_matrix[3][3];
@@ -205,11 +394,15 @@ Phase2OccultationGeometry::Phase2OccultationGeometry() : pimpl_(std::make_unique
 Phase2OccultationGeometry::~Phase2OccultationGeometry() = default;
 
 void Phase2OccultationGeometry::setAstDynWrapper(std::shared_ptr<AstDynWrapper> wrapper) {
+    std::cout << "[Phase2OccultationGeometry] setAstDynWrapper called with wrapper=" << wrapper.get() << std::endl;
     pimpl_->astdyn = wrapper;
 }
 
 void Phase2OccultationGeometry::setSPKReader(std::shared_ptr<ISPReader> reader) {
-    pimpl_->astdyn->setSPKReader(reader);
+    std::cout << "[Phase2OccultationGeometry] setSPKReader called. Forwarding to wrapper=" << pimpl_->astdyn.get() << std::endl;
+    if (pimpl_->astdyn) {
+        pimpl_->astdyn->setSPKReader(reader);
+    }
 }
 
 bool Phase2OccultationGeometry::loadAsteroidFromJSON(int number, const std::string& path) {
@@ -249,6 +442,26 @@ bool Phase2OccultationGeometry::loadAsteroidFromJSON(int number, const std::stri
     }
 }
 
+bool Phase2OccultationGeometry::loadAsteroidFromDB(int number) {
+    try {
+        AsteroidSqliteDatabase db;
+        auto orbital = db.getOrbitalElements(number);
+        if (orbital) {
+            pimpl_->astdyn->setKeplerianElements(
+                orbital->a, orbital->e, orbital->i,
+                orbital->Omega, orbital->omega, orbital->M,
+                orbital->epoch.jd - 2400000.5,
+                std::to_string(number)
+            );
+            return true;
+        }
+    } catch (const std::exception& e) {
+        std::cerr << "Error loading asteroid from DB: " << e.what() << "\n";
+        return false;
+    }
+    return false;
+}
+
 bool Phase2OccultationGeometry::loadAsteroidFromEQ1(int asteroid_number, const std::string& eq1_path) {
     if (!pimpl_->astdyn->loadFromEQ1File(eq1_path)) {
         std::cerr << "Phase2: Failed to load asteroid from EQ1: " << eq1_path << "\n";
@@ -257,11 +470,23 @@ bool Phase2OccultationGeometry::loadAsteroidFromEQ1(int asteroid_number, const s
     return true;
 }
 
+bool Phase2OccultationGeometry::setAsteroidElements(const AstDynEquinoctialElements& elements) {
+    pimpl_->astdyn->setAsteroidElements(elements);
+    return true;
+}
+
 std::vector<Phase2OccultationEvent> Phase2OccultationGeometry::calculatePreciseGeometry(
     const std::vector<CandidateStar>& candidates,
     const Phase2Config& config) {
     
     std::vector<Phase2OccultationEvent> events;
+    std::cout << "[PHASE2] calculatePreciseGeometry using AstDynWrapper:" << pimpl_->astdyn.get() << std::endl;
+    if (config.refine_orbit) {
+        pimpl_->refineOrbit(config);
+    }
+    // if (config.use_horizons) {
+    //    pimpl_->fetchHorizons(candidates, config);
+    // }
     for (const auto& star : candidates) {
         events.push_back(pimpl_->processSingleCandidate(star, config));
     }

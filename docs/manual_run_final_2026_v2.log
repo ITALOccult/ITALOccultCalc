@@ -1,0 +1,248 @@
+DEBUG: Main started.
+
+╔═══════════════════════════════════════════════════════════════╗
+║                     ITALOccultCalc v1.0                        ║
+║         Ricerca Automatica Occultazioni Asteroidali           ║
+║              Ottimizzato per Osservatori Italiani              ║
+╚═══════════════════════════════════════════════════════════════╝
+[DEBUG] main: Prima di startTime
+[DEBUG] main: WORKFLOW COMPLETO - INIZIO
+Initializing Global DE441 Ephemeris: /Users/michelebigi/.ioccultcalc/ephemerides/de441_part-2.bsp...
+✓ DE441 loaded (Native Reader): /Users/michelebigi/.ioccultcalc/ephemerides/de441_part-2.bsp
+✓ Global DE441 Loaded successfully.
+[DEBUG] main: Step 1: Caricamento configurazione...
+[DEBUG] loadConfiguration: INIZIO
+
+================================================================
+CARICAMENTO CONFIGURAZIONE
+================================================================
+
+File configurazione: manual_elements_preset.json
+[DEBUG] loadConfiguration: ConfigManager creato
+[DEBUG] loadConfiguration: Verifico formato file...
+[DEBUG] loadConfiguration: Carico JSON...
+✓ Configurazione JSON caricata
+[DEBUG] loadConfiguration: File caricato, valido configurazione...
+✓ Configurazione validata
+
+[DEBUG] loadConfiguration: Configurazione validata, leggo sezioni...
+[DEBUG] loadConfiguration: Chiamo getSection(PROPAGATION)...
+[DEBUG] loadConfiguration: getSection(PROPAGATION) completato
+[DEBUG] loadConfiguration: Chiamo getSection(SEARCH)...
+[DEBUG] loadConfiguration: getSection(SEARCH) completato
+[DEBUG] loadConfiguration: Sezioni lette, stampo parametri...
+[DEBUG] loadConfiguration: propagSection trovata
+Propagatore: RA15
+Step size: 0.02 giorni
+[DEBUG] loadConfiguration: searchSection trovata
+[DEBUG] loadConfiguration: FINE
+[DEBUG] main: Step 1: Completato
+[DEBUG] Step 2: Selezione asteroidi...
+[DEBUG] selectAsteroids: INIZIO
+
+================================================================
+SELEZIONE ASTEROIDI CANDIDATI
+================================================================
+
+[DEBUG] selectAsteroids: Dopo printHeader
+[DEBUG] selectAsteroids: Inizializzo variabili...
+[DEBUG] selectAsteroids: Leggo configurazione objectSection...
+[DEBUG] selectAsteroids: objectSection letto
+Criteri selezione:
+  ★ LISTA ESPLICITA: 1 asteroidi [34713]
+  (filtri diametro/magnitudine ignorati)
+
+
+[SQLite] Database allnum.db trovato. Uso lettura diretta per lista esplicita.
+Data aggiornamento DB: 2025-12-24 07:39:31
+[AllnumDatabaseReader] Prepare error: no such column: is_osculating
+Caricamento da SQLite non riuscito o incompleto. Provo fallback su JSON...
+Caricamento catalogo completo: /Users/michelebigi/.ioccultcalc/data/all_numbered_asteroids.json
+[DEBUG] selectAsteroids: Apro file catalogo...
+[DEBUG] selectAsteroids: File aperto, leggo JSON...
+[DEBUG] selectAsteroids: Dimensione file: 291 MB
+[DEBUG] selectAsteroids: Lista esplicita piccola (1 asteroidi), provo estrazione ottimizzata con jq...
+[DEBUG] selectAsteroids: Estrazione ottimizzata completata con jq!
+[DEBUG] selectAsteroids: Inizio parsing JSON...
+[DEBUG] selectAsteroids: Parsing JSON completato!
+[DEBUG] selectAsteroids: JSON letto, verifico formato...
+✓ Formato unificato rilevato (AstDyS + MPC)
+✓ Catalogo caricato: 1 asteroidi numerati
+Filtraggio con criteri...
+[DEBUG] selectAsteroids: Catalogo caricato, formato: unified
+
+[MANUAL] FORCE EQUATORIAL OVERRIDE:
+          Epoch: 2461051.50000 JD (61051.00000 MJD)
+          a:     2.80330
+          e:     0.17481
+          i_eq:  27.09591 deg
+          Om_eq: 343.32581 deg
+          M:     81.33586 deg
+[DEBUG] selectAsteroids: Checking for MANUAL_ELEMENTS. Sections available:
+  - Section type: 0 Name: Target
+  - Section type: 1 Name: 
+  - Section type: 2 Name: 
+  - Section type: 3 Name: 
+  - Section type: 6 Name: 
+  - Section type: 7 Name: 
+  - Section type: 17 Name: 
+  - Section type: 21 Name: 
+  - Section type: 22 Name: 
+ [MANUAL] Overriding orbital elements from configuration...
+ [MANUAL] Injected: a=2.8033 e=0.174814 i(deg)=7.96789
+
+✓ Trovati 1 asteroidi candidati REALI
+  (Processati: 1 / 1)
+
+Top 5 asteroidi per priorità:
+  1. (34713) Unknown - Score: 0.666678 ☆
+     Dimensione: 5 km, H=13.8
+
+
+ [MANUAL] Applying configuration override to all 1 candidates...
+[DEBUG] Step 2: Completato, trovati 1 asteroidi
+[DEBUG] Step 3: Propagazione orbite...
+
+================================================================
+PROPAGAZIONE ORBITE
+================================================================
+
+SPKReader: Successfully loaded DE441 covering JD -3.02722e+06 to 7.93019e+06
+OrbitPropagator: Using JPL DE441 (high precision planets)
+OrbitPropagator: WARNING - Asteroid perturbations disabled (codes_300ast_20100725.bsp not found)
+[▓░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0% | Propagazione   : (34713) Unknown                                   [████████████████████▓░░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 40 % | Propagazione   : Completata                                        
+[DEBUG] Step 3: Completato
+[DEBUG] Step 4: Query catalogo stelle...
+
+=== [DEBUG] Inizio queryCatalog ===
+[DEBUG queryCatalog] gaiaSection trovata: NO
+
+================================================================
+QUERY CATALOGO STELLE GAIA DR3
+================================================================
+
+
+╔══════════════════════════════════════════════════════════╗
+║      ★ CATALOGO MAG18 LOCALE ATTIVO ★                   ║
+║  303M stelle (G≤18) - Query locale veloce               ║
+║  Nessuna query online - tutto da catalogo 9GB           ║
+╚══════════════════════════════════════════════════════════╝
+
+Could not open IAU catalog: data/IAU-CSN.json
+Could not open star names database: data/common_star_names.csv
+Loaded 23 stars from embedded database
+Loaded star names from embedded database
+✓ Catalogo Gaia caricato: /Users/michelebigi/.catalog/gaia_mag18_v2_multifile
+  Catalogo: Multi-File Gaia DR3 V2 | Stelle: 231140585
+[DEBUG] Step 4: Completato, trovate 0 stelle
+[DEBUG] Step 5: Rilevamento occultazioni...
+
+================================================================
+RILEVAMENTO OCCULTAZIONI
+================================================================
+
+Parametri ricerca:
+  Periodo: JD 2.46104e+06 - 2.46140e+06
+  Mag limite: 18
+  Raggio ricerca: 0.1 gradi
+  Probabilità minima: 1%
+
+Asteroidi da analizzare: 1
+
+Calcolo sequenziale (SPICE thread-safety)...
+
+
+[1   /1] (34713 ) Unknown              - D=   5km  - Phase 1 Screening...[DEBUG] forceTargetStar loaded: TRUE
+
+======================================================
+ PRECISE ASTROMETRIC CHECK (61051.50000 MJD TDB)
+======================================================
+DEBUG: Loaded Elements for ObjectID: 34713
+  a  = 2.80330 AU
+  e  = 0.17481
+  i  = 27.09591 deg
+  Om = 343.32581 deg
+  om = 8.39053 deg
+  M  = 81.33586 deg
+  t0 = 61051.00000 MJD
+DEBUG: Elements (Ecliptic J2000):
+  a=2.80330 e=0.17481 i=27.09591
+Debug: Starting Light-Time Iteration (Equatorial Frame)...
+  Epoch (TDB): 61051.50000  (JD 2461052.00000)
+  Light Time : 15.77163 min
+  Distance   : 1.89637 AU
+  RA (J2000) : 86.18998 deg
+  Dec (J2000): 26.38399 deg
+  RA         : 05h 44m 45.596s
+  Dec        : +26d 23' 2.37"
+======================================================
+[DEBUG] Step 5: Completato, trovati 0 eventi
+
+================================================================
+CALCOLO PRIORITÀ EVENTI
+================================================================
+
+Criteri di priorità:
+  • Mag drop > 2.0 mag: +3 punti
+  • Durata > 5 secondi: +2 punti
+  • Path attraversa Italia: +3 punti
+  • Incertezza < 15 km: +2 punti
+  • Stella luminosa (< 10 mag): +1 punto
+
+
+================================================================
+GENERAZIONE REPORT
+================================================================
+
+Applicazione filtri richiesti: Mag <= 21.0, Durata > 0.0s
+
+Formati output:
+  • IOTA formato classico
+  • Preston formato compatto
+  • JSON per API
+  • KML per Google Earth
+  • CSV per Excel
+
+╔════════════════════════════════════════════════════════════╗
+║          ITALOccultCalc - REPORT OCCULTAZIONI              ║
+╚════════════════════════════════════════════════════════════╝
+
+Totale eventi trovati: 0
+Eventi dopo filtri: 0
+
+⚠️  Nessun evento soddisfa i criteri di filtro.
+   Prova ad aumentare max_distance_km o ridurre min_mag_drop.
+
+✓ Report console generato
+
+✓ File XML generato: test_output_occult4.xml
+  Formato: Occult4 compatible
+  Eventi: 0
+  Import in: OccultWatcher Cloud
+
+✓ File JSON generato: test_output_structured.json
+✓ File KML generato: output_events.kml
+  Tracce generate: 0
+
+
+================================================================
+RIEPILOGO TEMPI DI ESECUZIONE
+================================================================
+
+┌───────────────────────────────┬──────────────┐
+│ FASE                          │ TEMPO (s)    │
+├───────────────────────────────┼──────────────┤
+│ 1. Caricamento Config         │     0.000 s  │
+│ 2. Selezione Asteroidi        │     8.068 s  │
+│ 3. Propagazione Orbite        │     0.000 s  │
+│ 4. Query Catalogo Stelle      │     0.002 s  │
+│ 5. Rilevamento Occultazioni   │     0.009 s  │
+│ 6. Reporting & Export         │     0.000 s  │
+├───────────────────────────────┼──────────────┤
+│ TOTALE                        │     8.081 s  │
+└───────────────────────────────┴──────────────┘
+
+✓ Workflow completato con successo!
+Eventi trovati: 0
+Report salvati in: output/
+

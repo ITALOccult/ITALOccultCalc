@@ -48,6 +48,7 @@ struct OrbitalElements {
     double A2;     // Transverse non-grav parameter (AU/day²)
     double A3;     // Normal non-grav parameter (AU/day²)
     
+    int number;
     std::string designation;
     std::string name;
     std::vector<std::string> aliases;
@@ -59,7 +60,7 @@ struct OrbitalElements {
     OrbitalElements()
         : a(0), e(0), i(0), Omega(0), omega(0), M(0),
           H(0), G(0.15), diameter(0),
-          A1(0), A2(0), A3(0) {}
+          A1(0), A2(0), A3(0), number(0) {}
     
     // Converte in equinoziali
     AstDynEquinoctialElements toEquinoctial() const;
@@ -88,6 +89,7 @@ struct AstDynEquinoctialElements {
     double A2;     // Transverse non-grav parameter (AU/day²)
     double A3;     // Normal non-grav parameter (AU/day²)
     
+    int number;
     std::string designation; // Designazione dell'asteroide
     std::string name;        // Nome dell'asteroide
     std::vector<std::string> aliases; // Alias (es. designazioni provvisorie)
@@ -99,7 +101,7 @@ struct AstDynEquinoctialElements {
     AstDynEquinoctialElements() 
         : a(0), h(0), k(0), p(0), q(0), lambda(0), 
           H(0), G(0.15), diameter(0),
-          A1(0), A2(0), A3(0), hasCovariance(false) {}
+          A1(0), A2(0), A3(0), hasCovariance(false), number(0) {}
     
     // Matrice di covarianza (6x6)
     bool hasCovariance;
@@ -112,8 +114,11 @@ struct AstDynEquinoctialElements {
     void toKeplerian(double& ecc, double& inc, double& omega, 
                     double& Omega, double& M) const;
     
-    // Converte in OrbitalElements Kepleriani (nuovo metodo)
+    // Converte in OrbitalElements Kepleriani (nuovo metodo geometrico)
     OrbitalElements toKeplerian() const;
+    
+    // Converte in OrbitalElements Kepleriani osculanti (applica correzioni se necessario)
+    OrbitalElements toOsculatingKeplerian() const;
     
     // Crea da elementi Kepleriani
     static AstDynEquinoctialElements fromKeplerian(double a, double ecc, double inc,
