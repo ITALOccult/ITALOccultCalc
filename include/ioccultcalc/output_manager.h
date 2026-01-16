@@ -76,6 +76,8 @@ struct OutputEvent {
         double latitude;
         double longitude;
         std::string location_name;
+        PathPoint(double lat = 0, double lon = 0, const std::string& loc = "")
+            : latitude(lat), longitude(lon), location_name(loc) {}
     };
     std::vector<PathPoint> central_path;
     
@@ -109,6 +111,13 @@ struct OutputEvent {
     std::string computed_by;
     std::string computation_date;
     std::string software_version;
+
+    struct ComparativePath {
+        std::string name;
+        std::string color;
+        std::vector<PathPoint> points;
+    };
+    std::vector<ComparativePath> comparative_paths;
 };
 
 /**

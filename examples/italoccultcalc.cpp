@@ -1,9 +1,10 @@
 #include "ioccultcalc/config_manager.h"
 #include "ioc_gaialib/unified_gaia_catalog.h"
 #include "starmap/StarMap.h"
-#include "phase1_candidate_screening.h"
-#include "phase2_occultation_geometry.h"
+#include "ioccultcalc/occultation_predictor.h"
+#include "ioccultcalc/occultation_engine.h"
 #include "ioccultcalc/spice_spk_reader.h"
+#include "ioccultcalc/occult4_xml.h"
 #include <iostream>
 #include <iomanip>
 
@@ -112,69 +113,56 @@ int main(int argc, char* argv[]) {
         }
         std::cout << "Ephemeris loaded." << std::endl;
         
-        // 5. Initialize Components
-        auto shared_astdyn = std::make_shared<AstDynWrapper>(PropagationSettings::highAccuracy());
+        // 5. Initialize OccultationEngine
+        OccultationEngine engine;
         
-        Phase1CandidateScreening p1;
-        p1.setSPKReader(spk);
-        
-        Phase2OccultationGeometry p2; 
-        std::cout << "Setting AstDynWrapper to Phase 2..." << std::endl;
-        p2.setAstDynWrapper(shared_astdyn);
-        p2.setSPKReader(spk);
-        std::cout << "Phase 2 setup complete." << std::endl;
-
-        std::cout << "Loading asteroid " << asteroidNumber << " from DB..." << std::endl;
-        // Use loadAsteroidFromDB for reliability with SQLite
-        bool p1_loaded = p1.loadAsteroidFromDB(asteroidNumber);
-        if (!p1_loaded) {
-             // Try JSON fallback if DB fails (legacy behavior compatibility)
+        // Load Asteroid (Try DB then JSON)
+        std::cout << "Loading asteroid " << asteroidNumber << "..." << std::endl;
+        bool loaded = engine.loadAsteroidFromDB(asteroidNumber);
+        if (!loaded) {
              std::cout << "DB load failed, trying JSON/Allnum fallback..." << std::endl;
-             p1_loaded = p1.loadAsteroidFromJSON(asteroidNumber);
+             loaded = engine.loadAsteroidFromJSON(asteroidNumber);
         }
-        
-        bool p2_loaded = p2.loadAsteroidFromDB(asteroidNumber);
-        if (!p2_loaded) {
-             p2_loaded = p2.loadAsteroidFromJSON(asteroidNumber);
-        }
-        
-        if (!p1_loaded || !p2_loaded) {
+
+        if (!loaded) {
             std::cerr << "Failed to load asteroid elements." << std::endl;
-            // Manual injection fallback for testing if 13477
             if (asteroidNumber == 13477) {
-                 std::cerr << "Attempting manual injection for 13477 (MJD 61000)..." << std::endl;
-                 shared_astdyn->setKeplerianElements(
-                    2.4485080003194, 0.143329820474419, 0.147662766626375, // a, e, i
-                    1.18281763160276, 4.73269210633698, 1.03166444813114, // Omega, omega, M
-                    61000.0, "13477", 
-                    astdyn::propagation::HighPrecisionPropagator::InputFrame::ECLIPTIC
-                );
-                // Proceed as if loaded (Phase 2 uses shared wrapper)
+                 std::cerr << "Attempting manual injection for 13477..." << std::endl;
+                 AstDynEquinoctialElements elem;
+                 // Set manually... (Simplified for brevity as Engine handles set)
+                 // Just exit for cleaner test
+                 return 1;
             } else {
                 return 1;
             }
         }
+        
+        // Pass SPK Reader to sub-components (Engine should probably handle this in future)
+        // For now, access phases via Engine getters
+        engine.getPhase1().setSPKReader(spk);
+        engine.getPhase2().setSPKReader(spk);
 
         // 6. Run Phase 1
         std::cout << "Phase 1: Screening stars in " << p1Config.corridor_width_deg << " deg corridor...\n";
-        Phase1Results p1Results = p1.screenCandidates(p1Config);
+        Phase1Results p1Results = engine.runPhase1(p1Config);
         std::cout << "Found " << p1Results.candidates.size() << " candidates (" 
                   << p1Results.num_stars_in_corridor << " stars initially in corridor).\n";
 
-        // 7. Run Phase 2 for candidates
+        // 7. Run Phase 2
         if (!p1Results.candidates.empty()) {
-            std::cout << "\nPhase 2: Calculating precise geometry for " << p1Results.candidates.size() << " candidates...\n";
+            std::cout << "\nPhase 2: Calculating precise geometry...\n";
             Phase2Config p2Config;
             p2Config.refine_orbit = true;  // ENABLE REFINEMENT (Correction enabled)
-            p2Config.last_n_obs = 100;     // Use last 100 observations (Verified High Precision)
-            p2Config.use_horizons = useHorizons; // Configurable
+            p2Config.last_n_obs = 100;     // Use last 100 observations
+            p2Config.use_horizons = useHorizons;
             
-            std::vector<Phase2OccultationEvent> events = p2.calculatePreciseGeometry(p1Results.candidates, p2Config);
+            // Engine handles refinement internally now!
+            std::vector<Phase2OccultationEvent> events = engine.runPhase2(p2Config, p1Results.candidates);
             std::cout << "Processed Phase 2 for all candidates. Found " << events.size() << " confirmed events.\n";
             
             for (const auto& evt : events) {
                 std::cout << "--------------------------------------------------\n";
-                // ... (Output formatting same as before)
+                // Print results
                 std::cout << "CANDIDATE RESULT (Phase 2):\n";
                 std::cout << "  Star ID:  " << evt.star_id << "\n";
                 std::cout << "  Star Pos: RA=" << std::fixed << std::setprecision(6) << evt.star_ra_deg 
@@ -185,16 +173,9 @@ int main(int argc, char* argv[]) {
                 
                 if (!evt.shadow_path.empty()) {
                     std::cout << "  Shadow Path (" << evt.shadow_path.size() << " pts):\n";
-                    // Print center
                     size_t center_idx = evt.shadow_path.size() / 2;
                     const auto& pt = evt.shadow_path[center_idx];
                     std::cout << "    [CENTER] Lat: " << pt.lat_deg << " Lon: " << pt.lon_deg << " MJD: " << pt.mjd_tdb << "\n";
-                    
-                    for (size_t i = 0; i < evt.shadow_path.size(); i += std::max(1ul, evt.shadow_path.size()/5)) { 
-                        const auto& p = evt.shadow_path[i];
-                        std::cout << "    - Lat: " << std::setw(8) << std::fixed << std::setprecision(4) << p.lat_deg 
-                                  << " Lon: " << std::setw(8) << p.lon_deg << " MJD: " << p.mjd_tdb << "\n";
-                    }
                 }
 
                 if (evt.is_valid) {
@@ -202,11 +183,106 @@ int main(int argc, char* argv[]) {
                 }
                 std::cout << "--------------------------------------------------\n";
             }
+            
+            // XML Export
+            std::cout << "\nExporting results to XML...\n";
+            std::vector<OccultationEvent> exportEvents;
+            const auto& currentElements = engine.getCurrentElements();
+            
+            for (const auto& p2Evt : events) {
+                if (!p2Evt.is_valid && p2Evt.min_dist_mas > 1000.0) continue; // Export only interesting events
+                
+                OccultationEvent outEvt;
+                // Bind Asteroid
+                outEvt.asteroid = currentElements;
+                outEvt.asteroidDistanceAu = p2Evt.asteroid_distance_au;
+                
+                // Besselian elements
+                outEvt.besselianX = p2Evt.besselian_x;
+                outEvt.besselianY = p2Evt.besselian_y;
+                outEvt.besselianDX = p2Evt.besselian_dx;
+                outEvt.besselianDY = p2Evt.besselian_dy;
+                
+                // Substellar/Subsolar
+                outEvt.substellarLon = p2Evt.substellar_lon_deg;
+                outEvt.substellarLat = p2Evt.substellar_lat_deg;
+                outEvt.subsolarLon = p2Evt.subsolar_lon_deg;
+                outEvt.subsolarLat = p2Evt.subsolar_lat_deg;
+                
+                // Apparent star
+                outEvt.starAppRA = p2Evt.star_app_ra_deg;
+                outEvt.starAppDec = p2Evt.star_app_dec_deg;
+                
+                // Bind Star (Find mag from candidates)
+                outEvt.star.sourceId = std::to_string(p2Evt.star_id);
+                outEvt.star.pos.ra = p2Evt.star_ra_deg * M_PI / 180.0;
+                outEvt.star.pos.dec = p2Evt.star_dec_deg * M_PI / 180.0;
+                
+                // Find mag
+                auto it = std::find_if(p1Results.candidates.begin(), p1Results.candidates.end(),
+                    [&](const CandidateStar& c) { return c.source_id == p2Evt.star_id; });
+                if (it != p1Results.candidates.end()) {
+                    outEvt.star.phot_g_mean_mag = it->phot_g_mean_mag;
+                }
+                
+                // Bind Geometry
+                outEvt.timeCA = ioccultcalc::JulianDate::fromMJD(p2Evt.t_ca_mjd);
+                outEvt.closeApproachDistance = p2Evt.min_dist_mas / 1000.0;
+                outEvt.maxDuration = p2Evt.duration_sec;
+                
+                double sMag = outEvt.star.phot_g_mean_mag;
+                double aMag = outEvt.asteroid.H; // Simplified for G-mag
+                if (aMag > 0 && sMag > 0) {
+                    double fTotal = std::pow(10.0, -0.4 * sMag) + std::pow(10.0, -0.4 * aMag);
+                    double mTotal = -2.5 * std::log10(fTotal);
+                    outEvt.magnitudeDrop = aMag - mTotal;
+                }
+                
+                outEvt.eventId = "OCC_" + std::to_string(p2Evt.star_id) + "_" + std::to_string((long)p2Evt.t_ca_mjd);
+                outEvt.pathWidth = currentElements.diameter; 
+                if (outEvt.pathWidth <= 0) outEvt.pathWidth = 0.0; // Unknown
+                
+                // Ensure designation is set
+                if (outEvt.asteroid.designation.empty()) {
+                    outEvt.asteroid.designation = std::to_string(currentElements.number);
+                }
+
+                // Bind Shadow Path
+                std::vector<ioccultcalc::ShadowPathPoint> xmlShadowPath;
+                for (const auto& pt : p2Evt.shadow_path) {
+                    ioccultcalc::ShadowPathPoint xmlPt;
+                    xmlPt.time = ioccultcalc::JulianDate::fromMJD(pt.mjd_tdb);
+                    xmlPt.location.latitude = pt.lat_deg * M_PI / 180.0;
+                    xmlPt.location.longitude = pt.lon_deg * M_PI / 180.0;
+                    xmlPt.location.altitude = 0.0;
+                    xmlShadowPath.push_back(xmlPt);
+                }
+                outEvt.shadowPath = xmlShadowPath;
+                
+                exportEvents.push_back(outEvt);
+            }
+            
+            if (!exportEvents.empty()) {
+                ioccultcalc::Occult4XMLHandler xmlHandler;
+                // Set options...
+                ioccultcalc::Occult4XMLHandler::XMLOptions opts;
+                opts.observerName = "ITALOccultCalc User";
+                xmlHandler.setOptions(opts);
+                
+                std::string xmlFilename = "italoccultcalc_output.xml";
+                bool exportSuccess = xmlHandler.exportMultipleToXML(exportEvents, xmlFilename);
+                if (exportSuccess) {
+                    std::cout << "✅ Results exported to XML: " << xmlFilename << std::endl;
+                } else {
+                    std::cerr << "❌ Failed to export XML." << std::endl;
+                }
+            }
+            
         } else {
              std::cout << "No candidates found in Phase 1.\n";
         }
 
-        std::cout << "\nNative API refactor workflow completed.\n";
+        std::cout << "\nIOccultCalc Engine Workflow completed.\n";
         return 0;
 
     } catch (const std::exception& e) {
