@@ -27,10 +27,14 @@ void AsteroidSqliteDatabase::initializeDatabase(const std::string& path) {
     
     int rc = sqlite3_open_v2(path.c_str(), &db_, SQLITE_OPEN_READONLY, nullptr);
     if (rc != SQLITE_OK) {
+        std::cerr << "[AsteroidSqliteDatabase] Error opening " << path << ": " 
+                  << (db_ ? sqlite3_errmsg(db_) : "unknown error") << std::endl;
         if (db_) {
             sqlite3_close(db_);
             db_ = nullptr;
         }
+    } else {
+        std::cout << "[AsteroidSqliteDatabase] Successfully opened " << path << std::endl;
     }
 }
 

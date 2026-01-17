@@ -85,6 +85,7 @@ ObservationSet MPCClient::getObservations(const std::string& designation) {
             int asteroidNumber = std::stoi(designation);
             int dirNumber = asteroidNumber / 1000;
             
+            // AstDyS format: .../numbered/13/13477.rwo (no zero padding for directory)
             std::string astdysURL = "https://newton.spacedys.com/~astdys2/mpcobs/numbered/" 
                                    + std::to_string(dirNumber) + "/" + designation + ".rwo";
             
@@ -247,9 +248,15 @@ ObservationSet MPCClient::loadFromRWOFile(const std::string& filename) {
         ObservationSet obsSet;
         if (astdynObs.empty()) return obsSet;
         
-        obsSet.objectDesignation = astdynObs[0].object_name;
-        
+        int skipped_count = 0;
         for (const auto& ao : astdynObs) {
+            // Filtro temporale per SPK range (min 1990 per sicurezza DE441 part 2)
+            // MJD 47892 = 1990-01-01
+            if (ao.mjd_utc < 47892.0) {
+                skipped_count++;
+                continue; 
+            }
+            
             AstrometricObservation obs;
             obs.epoch = JulianDate::fromMJD(ao.mjd_utc);
             obs.obs.ra = ao.ra;

@@ -30,6 +30,8 @@ int main(int argc, char* argv[]) {
     std::cout << "ITALOccultCalc v1.0 [Native API Workflow]" << std::endl;
 
     try {
+        std::cout << "\n=== ITALOccultCalc DEBUG BUILD ===\n" << std::endl;
+        
     // 3. Setup Configuration
         Phase1Config p1Config;
         int asteroidNumber = 0;
@@ -46,10 +48,24 @@ int main(int argc, char* argv[]) {
             configFile = argv[1];
         }
         
+        // Output filenames
+        std::string a4CardFile;
+        std::string ioccultCardFile;
+        
         if (!configFile.empty()) {
             std::cout << "📄 Loading configuration from: " << configFile << std::endl;
             ConfigManager config;
             config.loadFromJson(configFile);
+            
+            // OUTPUT Params
+            auto outParams = config.getSection(ConfigSection::OUTPUT);
+            if (outParams) {
+                if (outParams->hasParameter("event_card_file")) 
+                    a4CardFile = outParams->getParameter("event_card_file")->asString();
+                if (outParams->hasParameter("ioccult_card_file"))
+                    ioccultCardFile = outParams->getParameter("ioccult_card_file")->asString();
+            }
+            std::cout << "DEBUG: output config read - A4='" << a4CardFile << "', IOccult='" << ioccultCardFile << "'" << std::endl;
             
             // OBJECT Section
             auto objParams = config.getSection(ConfigSection::OBJECT);
@@ -190,7 +206,7 @@ int main(int argc, char* argv[]) {
             const auto& currentElements = engine.getCurrentElements();
             
             for (const auto& p2Evt : events) {
-                if (!p2Evt.is_valid && p2Evt.min_dist_mas > 1000.0) continue; // Export only interesting events
+                if (!p2Evt.is_valid && p2Evt.min_dist_mas > 300000.0) continue; // Export only interesting events (< 300")
                 
                 OccultationEvent outEvt;
                 // Bind Asteroid
@@ -277,10 +293,70 @@ int main(int argc, char* argv[]) {
                     std::cerr << "❌ Failed to export XML." << std::endl;
                 }
             }
+
+            // --- Card Generation ---
+            if (!exportEvents.empty() && (!a4CardFile.empty() || !ioccultCardFile.empty())) {
+                std::cout << "\nGenerating Event Cards..." << std::endl;
+                
+                // Initialize OutputManager
+                ConfigManager cfg;
+                if (!configFile.empty()) cfg.loadFromJson(configFile);
+                OutputManager outMgr(cfg);
+                
+                // Convert OccultationEvent to OutputManager::OutputEvent
+                std::vector<OutputEvent> outEvents;
+                for (const auto& ev : exportEvents) {
+                    OutputEvent outEv;
+                    outEv.asteroid_number = ev.asteroid.number;
+                    outEv.asteroid_name = ev.asteroid.name;
+                    outEv.star_id = ev.star.sourceId;
+                    outEv.star_ra_deg = ev.star.pos.ra * 180.0/M_PI;
+                    outEv.star_dec_deg = ev.star.pos.dec * 180.0/M_PI;
+                    outEv.star_mag = ev.star.phot_g_mean_mag;
+                    outEv.jd_event = ev.timeCA.jd;
+                    
+                    // Format time string (placeholder)
+                    outEv.utc_string = "2026-01-XX"; 
+
+                    outEv.duration_seconds = ev.maxDuration;
+                    outEv.mag_drop = ev.star.phot_g_mean_mag - ev.asteroid.H; // Simplified
+                    
+                    // Path and Limits
+                    for (const auto& p : ev.shadowPath) {
+                        outEv.central_path.push_back({p.location.latitude, p.location.longitude});
+                        outEv.north_limit.push_back({p.north_limit.latitude, p.north_limit.longitude});
+                        outEv.south_limit.push_back({p.south_limit.latitude, p.south_limit.longitude});
+                        outEv.north_margin.push_back({p.north_margin.latitude, p.north_margin.longitude});
+                        outEv.south_margin.push_back({p.south_margin.latitude, p.south_margin.longitude});
+                    }
+                    
+                    outEv.star_apparent_ra_deg = ev.starAppRA * 180.0/M_PI;
+                    outEv.star_apparent_dec_deg = ev.starAppDec * 180.0/M_PI;
+                    
+                    outEvents.push_back(outEv);
+                }
+
+                if (!outEvents.empty()) {
+                   if (!a4CardFile.empty()) {
+                       auto opts = outMgr.getOptions();
+                       opts.format = OutputFormat::A4_VERTICAL_CARD;
+                       outMgr.setOptions(opts);
+                       outMgr.writeEvents(outEvents, a4CardFile);
+                   }
+                   if (!ioccultCardFile.empty()) {
+                       auto opts = outMgr.getOptions();
+                       opts.format = OutputFormat::IOCCULT_CARD;
+                       outMgr.setOptions(opts);
+                       outMgr.writeEvents(outEvents, ioccultCardFile);
+                   }
+                }
+            }
             
         } else {
              std::cout << "No candidates found in Phase 1.\n";
         }
+        
+
 
         std::cout << "\nIOccultCalc Engine Workflow completed.\n";
         return 0;

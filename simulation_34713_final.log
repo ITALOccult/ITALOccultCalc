@@ -1,0 +1,1085 @@
+Could not open IAU catalog: data/IAU-CSN.json
+Could not open star names database: data/common_star_names.csv
+Loaded 23 stars from embedded database
+Loaded star names from embedded database
+Loaded Gaia SQLite DR3 catalog: /Users/michelebigi/.catalog/crossreference/gaia_dr3_occult_pro.db
+ITALOccultCalc v1.0 [Native API Workflow]
+📄 Loading configuration from: ./examples/preset_34713_jan2026.json
+Target: 34713 (34713)
+Window: 61050 -> 61055
+SPICESPKReader: Loaded /Users/michelebigi/.ioccultcalc/ephemerides/de440.bsp
+Ephemeris loaded.
+[Phase1CandidateScreening] Constructor started.
+✓ DE441 loaded (Native Reader): /Users/michelebigi/.ioccultcalc/ephemerides/de441_part-2.bsp
+[Phase1CandidateScreening] Constructor finished.
+[Phase2OccultationGeometry] Constructor started.
+[AstDynWrapper] Constructor started.
+  - Creating PlanetaryEphemeris...
+  - Initializing propagator...
+  - Creating RKF78Integrator...
+  - Creating Propagator object...
+    [Propagator] Constructor entry (include_asteroids=1).
+    [Propagator] Creating AsteroidPerturbations...
+    [Propagator] Constructor exit.
+  - Propagator object created.
+[AstDynWrapper] Constructor finished.
+[Phase2OccultationGeometry] Constructor finished.
+Loading asteroid 34713...
+[AsteroidSqliteDatabase] Successfully opened /Users/michelebigi/.ioccultcalc/database/asteroids.db
+[DEBUG-PERT] lapco entry (alpha=0.538984)
+[DEBUG-PERT] lapco entry (alpha=0.538984)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.293473)
+[DEBUG-PERT] lapco entry (alpha=0.293473)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.145908)
+[DEBUG-PERT] lapco entry (alpha=0.145908)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.0931277)
+[DEBUG-PERT] lapco entry (alpha=0.0931277)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.538984)
+[DEBUG-PERT] lapco entry (alpha=0.538984)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.293473)
+[DEBUG-PERT] lapco entry (alpha=0.293473)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.145908)
+[DEBUG-PERT] lapco entry (alpha=0.145908)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.0931277)
+[DEBUG-PERT] lapco entry (alpha=0.0931277)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[AstDynWrapper:0x10a2250c8] setKeplerianElements: asteroid=Yesiltas state set to INITIALIZED.
+  - Creating RKF78Integrator...
+  - Creating Propagator object...
+    [Propagator] Constructor entry (include_asteroids=1).
+    [Propagator] Creating AsteroidPerturbations...
+    [Propagator] Constructor exit.
+  - Propagator object created.
+[Phase2OccultationGeometry] setSPKReader called. Forwarding to wrapper=0x10a2250c8
+Phase 1: Screening stars in 5 deg corridor...
+[PHASE1] Starting native screening for 34713 (MJD 61050 to 61055)...
+    [Propagator] Constructor entry (include_asteroids=0).
+    [Propagator] Constructor exit.
+[PHASE1] Path start: RA=85.9634 Dec=26.5163
+[PHASE1] Path end:   RA=85.0317 Dec=26.2324
+[PHASE1] Querying Gaia catalog with 121 ICRF points...
+Optimized Corridor: 121 points -> 1 query cones.
+[PHASE1] Screening complete. Found 122 candidates (52823 stars in corridor).
+Found 122 candidates (52823 stars initially in corridor).
+
+Phase 2: Calculating precise geometry...
+
+[OccultationEngine] 🔄 Refining orbit for 34713 with last 100 observations...
+[MPCClient] Downloading observations from AstDyS: https://newton.spacedys.com/~astdys2/mpcobs/numbered/34/34713.rwo
+[MPCClient] Parsing RWO with native library parser...
+[MPCClient] Successfully loaded 2653 observations from RWO.
+Debug Rotation:
+ Orig: i=7.97802 O=289.34 w=64.6155
+ Eq:   i=22.0455 O=200.421 w=155.091
+ Back: i=7.97802 O=289.34 w=64.6155
+[AstDynOrbitFitter] Feeding 100 obs to OrbitFitAPI.
+   Time Range: MJD 60608.8 to 60951.5
+   Initial Element Epoch: 61000
+[OrbitFitAPI] Loading OrbFit elements from /tmp/ioc_fit_init.eq1...
+[AstDynOrbitFitter] run_fit returned: success=0 msg='Could not parse equinoctial elements from file: /tmp/ioc_fit_init.eq1' n_obs=1 n_out=4098
+[OccultationEngine] Fit completed. Observations used: 0/0. RMS=2.122e-314 arcsec.
+[OccultationEngine] ❌ Fit rejected (poor RMS or few obs). Keeping original orbit.
+[PHASE2] calculatePreciseGeometry using AstDynWrapper:0x10a2250c8
+✓ DE441 loaded (Native Reader): /Users/michelebigi/.ioccultcalc/ephemerides/de441_part-2.bsp
+    [Propagator] Constructor entry (include_asteroids=1).
+    [Propagator] Creating AsteroidPerturbations...
+    [Propagator] Constructor exit.
+[PHASE2] Candidate Star: 3441011867800612224 CA MJD: 61053.78858 Min Dist: 1413.96 mas
+[PHASE2] Candidate Star: 3441345127198182400 CA MJD: 61051.42361 Min Dist: 4526.42 mas
+[PHASE2] Candidate Star: 3441345058479705600 CA MJD: 61051.59028 Min Dist: 2401.71 mas
+[PHASE2] Candidate Star: 3441345092838445696 CA MJD: 61051.46528 Min Dist: 6291.31 mas
+[PHASE2] Candidate Star: 3441343615369638144 CA MJD: 61050.54479 Min Dist: 5446.54 mas
+Processed Phase 2 for all candidates. Found 122 confirmed events.
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441004171219208704
+  Star Pos: RA=85.017786 Dec=26.169781
+  Date:     61055.00694
+  CA Dist:  227.632"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441016334566589952
+  Star Pos: RA=85.013914 Dec=26.221337
+  Date:     61055.00694
+  CA Dist:  65.942"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441016819897967744
+  Star Pos: RA=85.023446 Dec=26.261874
+  Date:     61054.99306
+  CA Dist:  109.190"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441017090480844800
+  Star Pos: RA=85.004911 Dec=26.283284
+  Date:     61055.00694
+  CA Dist:  202.426"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441018018193779328
+  Star Pos: RA=85.021850 Dec=26.314410
+  Date:     61054.87728
+  CA Dist:  288.086"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441003930701039744
+  Star Pos: RA=85.099382 Dec=26.199736
+  Date:     61054.71528
+  CA Dist:  185.835"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441004725270064768
+  Star Pos: RA=85.070169 Dec=26.212431
+  Date:     61054.84028
+  CA Dist:  110.371"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441010703864525056
+  Star Pos: RA=85.114713 Dec=26.244545
+  Date:     61054.54861
+  CA Dist:  51.316"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441016884322416000
+  Star Pos: RA=85.056891 Dec=26.261010
+  Date:     61054.79861
+  CA Dist:  68.950"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441006988717753728
+  Star Pos: RA=85.272447 Dec=26.228842
+  Date:     61053.78715
+  CA Dist:  276.938"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441006782559323776
+  Star Pos: RA=85.195350 Dec=26.220909
+  Date:     61054.20139
+  CA Dist:  220.123"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441016540725019904
+  Star Pos: RA=84.951222 Dec=26.233391
+  Date:     61055.00694
+  CA Dist:  256.195"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441016545017725440
+  Star Pos: RA=84.951145 Dec=26.233599
+  Date:     61055.00694
+  CA Dist:  256.460"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441016506365281408
+  Star Pos: RA=84.983465 Dec=26.238927
+  Date:     61055.00694
+  CA Dist:  154.072"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441016575084758016
+  Star Pos: RA=84.962075 Dec=26.244477
+  Date:     61055.00694
+  CA Dist:  225.627"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441007091796981632
+  Star Pos: RA=85.275655 Dec=26.251479
+  Date:     61053.71528
+  CA Dist:  203.711"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441007847711225472
+  Star Pos: RA=85.349028 Dec=26.255959
+  Date:     61053.34028
+  CA Dist:  267.176"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441007852006185600
+  Star Pos: RA=85.356648 Dec=26.258402
+  Date:     61053.29861
+  CA Dist:  266.980"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441007847711225344
+  Star Pos: RA=85.350731 Dec=26.259668
+  Date:     61053.33839
+  CA Dist:  256.254"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441008534905992320
+  Star Pos: RA=85.306395 Dec=26.263111
+  Date:     61053.54861
+  CA Dist:  197.171"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441007370969865984
+  Star Pos: RA=85.262876 Dec=26.264855
+  Date:     61053.75694
+  CA Dist:  144.482"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441007920725662592
+  Star Pos: RA=85.344639 Dec=26.268269
+  Date:     61053.34028
+  CA Dist:  220.649"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441008603629123328
+  Star Pos: RA=85.293013 Dec=26.271091
+  Date:     61053.59028
+  CA Dist:  155.868"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441008603625991936
+  Star Pos: RA=85.293581 Dec=26.272624
+  Date:     61053.59028
+  CA Dist:  151.155"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441008706704683264
+  Star Pos: RA=85.299945 Dec=26.274744
+  Date:     61053.54861
+  CA Dist:  150.919"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441017404013534336
+  Star Pos: RA=84.946668 Dec=26.257002
+  Date:     61055.00694
+  CA Dist:  285.426"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441010493411078784
+  Star Pos: RA=85.175403 Dec=26.270494
+  Date:     61054.20139
+  CA Dist:  30.972"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441010252892909696
+  Star Pos: RA=85.210162 Dec=26.276706
+  Date:     61054.00350
+  CA Dist:  47.117"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441012937247471360
+  Star Pos: RA=85.228990 Dec=26.336480
+  Date:     61053.79122
+  CA Dist:  135.158"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441013207830406144
+  Star Pos: RA=85.194764 Dec=26.361354
+  Date:     61053.91200
+  CA Dist:  256.560"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441013310910057856
+  Star Pos: RA=85.210070 Dec=26.368504
+  Date:     61053.82639
+  CA Dist:  264.245"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441016953041891200
+  Star Pos: RA=85.044763 Dec=26.283970
+  Date:     61054.82639
+  CA Dist:  159.683"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441011833440873984
+  Star Pos: RA=85.272569 Dec=26.298323
+  Date:     61053.65972
+  CA Dist:  41.727"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441011867800612224
+  Star Pos: RA=85.243338 Dec=26.301623
+  Date:     61053.78858
+  CA Dist:  1.414"
+  Duration: 0.60 s
+  Shadow Path (21 pts):
+    [CENTER] Lat: 9.45 Lon: 54.64 MJD: 61053.79
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441009020237289728
+  Star Pos: RA=85.298097 Dec=26.310125
+  Date:     61053.50074
+  CA Dist:  28.624"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441012108318779776
+  Star Pos: RA=85.244577 Dec=26.315493
+  Date:     61053.75514
+  CA Dist:  47.132"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441012215692962560
+  Star Pos: RA=85.250741 Dec=26.333246
+  Date:     61053.70139
+  CA Dist:  100.976"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441013040326683904
+  Star Pos: RA=85.230574 Dec=26.348414
+  Date:     61053.75694
+  CA Dist:  173.943"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441013139110929024
+  Star Pos: RA=85.234967 Dec=26.374705
+  Date:     61053.67361
+  CA Dist:  258.528"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441336498606061440
+  Star Pos: RA=85.441410 Dec=26.282626
+  Date:     61052.84028
+  CA Dist:  274.131"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441383468368409728
+  Star Pos: RA=85.445535 Dec=26.298701
+  Date:     61052.79861
+  CA Dist:  223.657"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441337946012894720
+  Star Pos: RA=85.668736 Dec=26.345304
+  Date:     61051.65972
+  CA Dist:  294.692"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441336846501306240
+  Star Pos: RA=85.534962 Dec=26.308644
+  Date:     61052.34028
+  CA Dist:  282.930"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441385736112641280
+  Star Pos: RA=85.518223 Dec=26.399426
+  Date:     61052.25694
+  CA Dist:  44.402"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441386049646626176
+  Star Pos: RA=85.517683 Dec=26.413434
+  Date:     61052.24324
+  CA Dist:  92.375"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441387419739819264
+  Star Pos: RA=85.542622 Dec=26.477314
+  Date:     61052.00694
+  CA Dist:  284.752"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441338770646632192
+  Star Pos: RA=85.566258 Dec=26.371960
+  Date:     61052.08598
+  CA Dist:  99.086"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441386182787737472
+  Star Pos: RA=85.563622 Dec=26.405263
+  Date:     61052.03924
+  CA Dist:  17.291"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441392509277406080
+  Star Pos: RA=85.580076 Dec=26.468269
+  Date:     61051.84028
+  CA Dist:  215.708"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441341416346429440
+  Star Pos: RA=85.769364 Dec=26.403773
+  Date:     61051.07639
+  CA Dist:  195.584"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441341450706172032
+  Star Pos: RA=85.743806 Dec=26.403886
+  Date:     61051.20139
+  CA Dist:  169.779"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441341553785371648
+  Star Pos: RA=85.797343 Dec=26.421041
+  Date:     61050.91579
+  CA Dist:  164.233"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441344440003405184
+  Star Pos: RA=85.752658 Dec=26.420905
+  Date:     61051.12353
+  CA Dist:  120.276"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441346123630569088
+  Star Pos: RA=85.765405 Dec=26.467729
+  Date:     61050.99306
+  CA Dist:  27.815"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441346364148732032
+  Star Pos: RA=85.770713 Dec=26.483783
+  Date:     61050.92361
+  CA Dist:  77.411"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441346398508474880
+  Star Pos: RA=85.748537 Dec=26.486683
+  Date:     61051.03472
+  CA Dist:  109.058"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441008264323526144
+  Star Pos: RA=85.379023 Dec=26.271106
+  Date:     61053.17361
+  CA Dist:  247.451"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441008161244876288
+  Star Pos: RA=85.389393 Dec=26.275463
+  Date:     61053.11806
+  CA Dist:  243.608"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441383811967293696
+  Star Pos: RA=85.407546 Dec=26.326082
+  Date:     61052.92361
+  CA Dist:  90.786"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441385018854509824
+  Star Pos: RA=85.377686 Dec=26.384459
+  Date:     61052.96528
+  CA Dist:  139.562"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441385426874996096
+  Star Pos: RA=85.398655 Dec=26.394640
+  Date:     61052.84028
+  CA Dist:  152.234"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441385499890834048
+  Star Pos: RA=85.420630 Dec=26.412410
+  Date:     61052.71018
+  CA Dist:  189.616"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441384018124222080
+  Star Pos: RA=85.484123 Dec=26.343486
+  Date:     61052.53472
+  CA Dist:  111.404"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441384224284153984
+  Star Pos: RA=85.501367 Dec=26.372593
+  Date:     61052.38194
+  CA Dist:  31.174"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441385701752903552
+  Star Pos: RA=85.509093 Dec=26.378318
+  Date:     61052.34028
+  CA Dist:  19.099"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441385220716566016
+  Star Pos: RA=85.444875 Dec=26.390954
+  Date:     61052.63194
+  CA Dist:  91.225"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441385980927161600
+  Star Pos: RA=85.480344 Dec=26.401070
+  Date:     61052.45139
+  CA Dist:  88.937"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441387355316675072
+  Star Pos: RA=85.509067 Dec=26.457279
+  Date:     61052.20566
+  CA Dist:  250.818"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441341897382734208
+  Star Pos: RA=85.887853 Dec=26.415862
+  Date:     61050.50666
+  CA Dist:  271.154"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441342275339851008
+  Star Pos: RA=85.901531 Dec=26.418152
+  Date:     61050.45139
+  CA Dist:  276.786"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441342103541163520
+  Star Pos: RA=85.883637 Dec=26.421495
+  Date:     61050.50694
+  CA Dist:  247.792"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441343954669283712
+  Star Pos: RA=85.696968 Dec=26.391473
+  Date:     61051.42361
+  CA Dist:  165.347"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441344096406032256
+  Star Pos: RA=85.715382 Dec=26.404160
+  Date:     61051.32639
+  CA Dist:  140.307"
+  Duration: 0.60 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441345127198182400
+  Star Pos: RA=85.682890 Dec=26.434402
+  Date:     61051.42361
+  CA Dist:  4.526"
+  Duration: 0.57 s
+  Shadow Path (12 pts):
+    [CENTER] Lat: 79.59 Lon: 81.32 MJD: 61051.43
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441345638296461952
+  Star Pos: RA=85.716474 Dec=26.468324
+  Date:     61051.21160
+  CA Dist:  78.162"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441344126467975936
+  Star Pos: RA=85.671438 Dec=26.383589
+  Date:     61051.57639
+  CA Dist:  166.531"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441339011164788608
+  Star Pos: RA=85.605890 Dec=26.385007
+  Date:     61051.87459
+  CA Dist:  95.067"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441338319672191488
+  Star Pos: RA=85.644989 Dec=26.391499
+  Date:     61051.67361
+  CA Dist:  112.672"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441344989759235328
+  Star Pos: RA=85.666588 Dec=26.423559
+  Date:     61051.53472
+  CA Dist:  26.400"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441345058479705600
+  Star Pos: RA=85.650988 Dec=26.425538
+  Date:     61051.59028
+  CA Dist:  2.402"
+  Duration: 0.57 s
+  Shadow Path (21 pts):
+    [CENTER] Lat: 57.33 Lon: 116.03 MJD: 61051.59
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441345230277409664
+  Star Pos: RA=85.631577 Dec=26.428271
+  Date:     61051.67361
+  CA Dist:  26.756"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441345092838445696
+  Star Pos: RA=85.673212 Dec=26.434116
+  Date:     61051.46528
+  CA Dist:  6.291"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441386358884242944
+  Star Pos: RA=85.598146 Dec=26.439603
+  Date:     61051.82639
+  CA Dist:  99.562"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441342481498282368
+  Star Pos: RA=85.885632 Dec=26.428466
+  Date:     61050.49624
+  CA Dist:  225.749"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441342344059315456
+  Star Pos: RA=85.935579 Dec=26.429210
+  Date:     61050.25694
+  CA Dist:  272.006"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441342309699584128
+  Star Pos: RA=85.905452 Dec=26.431221
+  Date:     61050.40972
+  CA Dist:  235.753"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441342305401863808
+  Star Pos: RA=85.912850 Dec=26.433632
+  Date:     61050.36806
+  CA Dist:  234.649"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441342442840816768
+  Star Pos: RA=85.926805 Dec=26.452149
+  Date:     61050.25694
+  CA Dist:  184.856"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441342618937219584
+  Star Pos: RA=85.919260 Dec=26.452647
+  Date:     61050.29861
+  CA Dist:  175.644"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441342584577486080
+  Star Pos: RA=85.888477 Dec=26.461228
+  Date:     61050.42361
+  CA Dist:  116.223"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441365910542121344
+  Star Pos: RA=85.942670 Dec=26.462238
+  Date:     61050.17361
+  CA Dist:  165.520"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441343340491944704
+  Star Pos: RA=85.882238 Dec=26.462585
+  Date:     61050.45612
+  CA Dist:  105.395"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441366155357979520
+  Star Pos: RA=85.949421 Dec=26.491494
+  Date:     61050.09028
+  CA Dist:  72.066"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441366258438240000
+  Star Pos: RA=85.958268 Dec=26.503911
+  Date:     61050.04306
+  CA Dist:  37.464"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441009157676235904
+  Star Pos: RA=85.339275 Dec=26.301769
+  Date:     61053.32639
+  CA Dist:  101.269"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441009084661804160
+  Star Pos: RA=85.349564 Dec=26.301965
+  Date:     61053.25694
+  CA Dist:  111.318"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441009359539710080
+  Star Pos: RA=85.330452 Dec=26.325833
+  Date:     61053.29861
+  CA Dist:  12.548"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441009565698139648
+  Star Pos: RA=85.340007 Dec=26.344853
+  Date:     61053.21528
+  CA Dist:  45.393"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441012520635638656
+  Star Pos: RA=85.336901 Dec=26.362702
+  Date:     61053.20934
+  CA Dist:  108.662"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441387836353236224
+  Star Pos: RA=85.338194 Dec=26.374741
+  Date:     61053.17361
+  CA Dist:  148.277"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441388106934589056
+  Star Pos: RA=85.321453 Dec=26.391455
+  Date:     61053.24306
+  CA Dist:  222.950"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441013727521441408
+  Star Pos: RA=85.233347 Dec=26.384341
+  Date:     61053.67361
+  CA Dist:  292.847"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441013487003265536
+  Star Pos: RA=85.261565 Dec=26.385656
+  Date:     61053.53472
+  CA Dist:  266.996"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441354159511599872
+  Star Pos: RA=86.008931 Dec=26.456476
+  Date:     61049.99306
+  CA Dist:  259.119"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441365979261597568
+  Star Pos: RA=85.977383 Dec=26.478336
+  Date:     61049.99710
+  CA Dist:  143.762"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441368045143547648
+  Star Pos: RA=86.044978 Dec=26.533545
+  Date:     61049.99306
+  CA Dist:  265.220"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441368143925110912
+  Star Pos: RA=86.045943 Dec=26.551512
+  Date:     61049.99306
+  CA Dist:  289.811"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441343168693056512
+  Star Pos: RA=85.825662 Dec=26.461428
+  Date:     61050.71528
+  CA Dist:  53.854"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441343615369638144
+  Star Pos: RA=85.854221 Dec=26.486904
+  Date:     61050.54479
+  CA Dist:  5.447"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441346501587671552
+  Star Pos: RA=85.796323 Dec=26.503362
+  Date:     61050.78472
+  CA Dist:  118.830"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441343787168326400
+  Star Pos: RA=85.848127 Dec=26.505014
+  Date:     61050.54309
+  CA Dist:  73.528"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441346737808109568
+  Star Pos: RA=85.850098 Dec=26.515152
+  Date:     61050.50694
+  CA Dist:  106.596"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441346879544787712
+  Star Pos: RA=85.801159 Dec=26.517441
+  Date:     61050.74306
+  CA Dist:  162.342"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441347704178509184
+  Star Pos: RA=85.784382 Dec=26.530428
+  Date:     61050.79370
+  CA Dist:  223.368"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441347772897981312
+  Star Pos: RA=85.775738 Dec=26.550009
+  Date:     61050.79861
+  CA Dist:  299.004"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441370519044760704
+  Star Pos: RA=85.837823 Dec=26.557550
+  Date:     61050.50448
+  CA Dist:  263.789"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441345844456393728
+  Star Pos: RA=85.660484 Dec=26.488523
+  Date:     61051.45139
+  CA Dist:  203.613"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441392474917648128
+  Star Pos: RA=85.629538 Dec=26.500627
+  Date:     61051.54861
+  CA Dist:  276.140"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441367357948819200
+  Star Pos: RA=85.912346 Dec=26.533720
+  Date:     61050.20378
+  CA Dist:  109.360"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441367525449820544
+  Star Pos: RA=85.970208 Dec=26.548270
+  Date:     61049.99306
+  CA Dist:  115.091"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441370450325266432
+  Star Pos: RA=85.881289 Dec=26.576111
+  Date:     61050.28472
+  CA Dist:  285.086"
+  Duration: 0.57 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  3441370484684999552
+  Star Pos: RA=85.896466 Dec=26.578501
+  Date:     61050.20401
+  CA Dist:  278.488"
+  Duration: 0.57 s
+--------------------------------------------------
+
+Exporting results to XML...
+
+IOccultCalc Engine Workflow completed.

@@ -92,30 +92,53 @@ bool Phase1CandidateScreening::loadAsteroidFromJSON(int number, const std::strin
         nlohmann::json j;
         f >> j;
 
-        std::string s_num = std::to_string(number);
-        if (!j.contains(s_num)) return false;
+        nlohmann::json data;
+        bool found = false;
+        nlohmann::json asteroidList;
 
-        auto data = j[s_num];
-        
-        // Epoch guard clause
-        double epoch = data["epoch"];
-        if (epoch > 2400000.5) {
-            epoch -= 2400000.5; // JD to MJD
+        if (j.is_array()) {
+            asteroidList = j;
+        } else if (j.is_object() && j.contains("asteroids")) {
+            asteroidList = j["asteroids"];
         }
 
-        double deg2rad = M_PI / 180.0;
-        
-        // Populate initial elements for the propagator
-        pimpl_->initial_kep_ecl.semi_major_axis = data["a"];
-        pimpl_->initial_kep_ecl.eccentricity = data["e"];
-        pimpl_->initial_kep_ecl.inclination = (double)data["i"] * deg2rad;
-        pimpl_->initial_kep_ecl.longitude_ascending_node = (double)data["om"] * deg2rad;
-        pimpl_->initial_kep_ecl.argument_perihelion = (double)data["w"] * deg2rad;
-        pimpl_->initial_kep_ecl.mean_anomaly = (double)data["ma"] * deg2rad;
-        pimpl_->initial_kep_ecl.epoch_mjd_tdb = epoch;
-        pimpl_->initial_kep_ecl.gravitational_parameter = 2.959122082855911e-04; // GMS in AU^3/day^2
-        
-        return true;
+        if (asteroidList.is_array()) {
+            for (const auto& item : asteroidList) {
+                if (item.value("number", 0) == number) {
+                    data = item;
+                    found = true;
+                    break;
+                }
+            }
+        } else if (j.is_object()) {
+            std::string s_num = std::to_string(number);
+            if (j.contains(s_num)) {
+                data = j[s_num];
+                found = true;
+            }
+        }
+
+        if (found) {
+            // Epoch guard clause
+            double epoch = data["epoch"];
+            if (epoch > 2400000.5) {
+                epoch -= 2400000.5; // JD to MJD
+            }
+
+            double deg2rad = M_PI / 180.0;
+            
+            // Populate initial elements for the propagator
+            pimpl_->initial_kep_ecl.semi_major_axis = data["a"];
+            pimpl_->initial_kep_ecl.eccentricity = data["e"];
+            pimpl_->initial_kep_ecl.inclination = (double)data["i"] * deg2rad;
+            pimpl_->initial_kep_ecl.longitude_ascending_node = (double)data["om"] * deg2rad;
+            pimpl_->initial_kep_ecl.argument_perihelion = (double)data["w"] * deg2rad;
+            pimpl_->initial_kep_ecl.mean_anomaly = (double)data["ma"] * deg2rad;
+            pimpl_->initial_kep_ecl.epoch_mjd_tdb = epoch;
+            pimpl_->initial_kep_ecl.gravitational_parameter = 2.959122082855911e-04; // GMS in AU^3/day^2
+            
+            return true;
+        }
     } catch (...) {
         return false;
     }

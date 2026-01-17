@@ -274,6 +274,9 @@ target_link_libraries(test_realworld_occultation ioccultcalc)
 add_executable(italoccultcalc italoccultcalc.cpp)
 target_link_libraries(italoccultcalc ioccultcalc)
 
+add_executable(verify_utkin verify_utkin.cpp)
+target_link_libraries(verify_utkin ioccultcalc)
+
 add_executable(verify_horizons verify_horizons.cpp)
 target_link_libraries(verify_horizons ioccultcalc)
 

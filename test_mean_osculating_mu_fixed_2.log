@@ -1,0 +1,66 @@
+[DEBUG-PERT] lapco entry (alpha=0.470677)
+[DEBUG-PERT] lapco entry (alpha=0.470677)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.256281)
+[DEBUG-PERT] lapco entry (alpha=0.256281)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.127416)
+[DEBUG-PERT] lapco entry (alpha=0.127416)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.0813254)
+[DEBUG-PERT] lapco entry (alpha=0.0813254)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+TEST 1 (mu=0):
+  Mean a: 2.4487440050
+  Osc  a: 2.4487485603
+  Delta a: 0.0000045553
+[DEBUG-PERT] lapco entry (alpha=0.4706770899)
+[DEBUG-PERT] lapco entry (alpha=0.4706770899)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.2562805674)
+[DEBUG-PERT] lapco entry (alpha=0.2562805674)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.1274164153)
+[DEBUG-PERT] lapco entry (alpha=0.1274164153)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.0813253956)
+[DEBUG-PERT] lapco entry (alpha=0.0813253956)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+
+TEST 2 (mu=1.0):
+  Mean a: 2.4487440050
+  Osc  a: 2.4487440064
+  Delta a: 0.0000000014
+[DEBUG-PERT] lapco entry (alpha=0.4706770899)
+[DEBUG-PERT] lapco entry (alpha=0.4706770899)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.2562805674)
+[DEBUG-PERT] lapco entry (alpha=0.2562805674)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.1274164153)
+[DEBUG-PERT] lapco entry (alpha=0.1274164153)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.0813253956)
+[DEBUG-PERT] lapco entry (alpha=0.0813253956)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+
+TEST 3 (mu=GMS):
+  Osc  a: 2.4487485603
+  Delta a: 0.0000045553
+[DEBUG-PERT] lapco entry (alpha=0.4706770899)
+[DEBUG-PERT] lapco entry (alpha=0.4706770899)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.2562805674)
+[DEBUG-PERT] lapco entry (alpha=0.2562805674)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.1274164153)
+[DEBUG-PERT] lapco entry (alpha=0.1274164153)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.0813253956)
+[DEBUG-PERT] lapco entry (alpha=0.0813253956)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+
+TEST 4 (Default MU):
+  Default MU: 0.0002959122
+  Osc  a: 2.4487485603
+  Delta a: 0.0000045553

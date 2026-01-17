@@ -140,7 +140,7 @@ public:
     static constexpr double GM_SUN = 0.0002959122082855911;
     
     /// Obliquità eclittica J2000 [rad] (23° 26' 21".406)
-    static constexpr double OBLIQUITY_J2000 = 0.4090926227129525;
+    static constexpr double OBLIQUITY_J2000 = 0.40909262271295251;
     
     // ========================================================================
     // Conversioni principali

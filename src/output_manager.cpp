@@ -84,6 +84,7 @@ void OutputManager::configure(const ConfigManager& config) {
         else if (formatStr == "IOTA_CARD") options_.format = OutputFormat::IOTA_CARD;
         else if (formatStr == "ASTNUM_LIST") options_.format = OutputFormat::ASTNUM_LIST;
         else if (formatStr == "A4_VERTICAL_CARD") options_.format = OutputFormat::A4_VERTICAL_CARD;
+        else if (formatStr == "IOCCULT_CARD") options_.format = OutputFormat::IOCCULT_CARD;
         
         // File output
         options_.output_file = outputSection->getParameter("file")->asString();
@@ -99,6 +100,10 @@ void OutputManager::configure(const ConfigManager& config) {
         
         if (outputSection->hasParameter("include_map")) {
             options_.latex_include_tikz_map = outputSection->getParameter("include_map")->asBool();
+        }
+        
+        if (outputSection->hasParameter("ioccult_card_dir")) {
+            options_.ioccult_card_output_dir = outputSection->getParameter("ioccult_card_dir")->asString();
         }
         
     } catch (const std::exception& e) {
@@ -187,11 +192,31 @@ bool OutputManager::writeEvents(const std::vector<OutputEvent>& events,
                     } else {
                         base += "_" + std::to_string(i+1) + ".pdf";
                     }
-                    success = success && writeEventCardA4(events[i], base);
+                    bool ok = writeEventCardA4(events[i], base);
+                    success = success && ok;
                 }
                 return success;
             }
         
+        case OutputFormat::IOCCULT_CARD:
+            if (events.size() == 1) {
+                return writeIOccultCard(events[0], filename);
+            } else {
+                bool success = true;
+                for (size_t i = 0; i < events.size(); i++) {
+                    std::string base = filename;
+                    size_t dot = base.rfind('.');
+                    if (dot != std::string::npos) {
+                        base = base.substr(0, dot) + "_" + std::to_string(i+1) + base.substr(dot);
+                    } else {
+                        base += "_" + std::to_string(i+1) + ".png";
+                    }
+                    bool ok = writeIOccultCard(events[i], base);
+                    success = success && ok;
+                }
+                return success;
+            }
+            
         default:
             return false;
     }
@@ -1041,6 +1066,31 @@ bool OutputManager::writeEventCardA4(const OutputEvent& event,
     return compilePDF(tex_file);
 }
 
+bool OutputManager::writeIOccultCard(const OutputEvent& event, const std::string& filename) {
+    std::cout << "Generating IOccult Card: " << filename << std::endl;
+    
+    // Determine output path using configured directory if available
+    std::string final_path = filename;
+    if (!options_.ioccult_card_output_dir.empty()) {
+        std::string dir = options_.ioccult_card_output_dir;
+        // Ensure directory exists (basic check, ideally use filesystem)
+        if (dir.back() != '/') dir += "/";
+        
+        // Extract basename if filename contains path
+        size_t last_slash = filename.find_last_of('/');
+        std::string basename = (last_slash != std::string::npos) ? filename.substr(last_slash + 1) : filename;
+        final_path = dir + basename;
+        
+        // Create directory command (simple system call for now)
+        std::string cmd = "mkdir -p \"" + dir + "\"";
+        system(cmd.c_str());
+    }
+    
+    // Use standard 800x600 for gif/png
+    std::string result = generateGroundMapImage(event, 800, 600, final_path);
+    return !result.empty();
+}
+
 std::string OutputManager::generateGroundMapImage(const OutputEvent& event, int width, int height, const std::string& output_path) {
     // 1. Prepare Data
     ioc_earth::OccultationData data;
@@ -1063,6 +1113,14 @@ std::string OutputManager::generateGroundMapImage(const OutputEvent& event, int 
     for (const auto& pt : event.south_limit) {
         data.southern_limit.emplace_back(pt.longitude, pt.latitude);
     }
+    
+    // Geometric Limits
+    for (const auto& pt : event.north_margin) {
+        data.geometric_northern_limit.emplace_back(pt.longitude, pt.latitude);
+    }
+    for (const auto& pt : event.south_margin) {
+        data.geometric_southern_limit.emplace_back(pt.longitude, pt.latitude);
+    }
 
     if (data.central_line.empty()) {
         return ""; // No data
@@ -1074,26 +1132,43 @@ std::string OutputManager::generateGroundMapImage(const OutputEvent& event, int 
     
     // Style
     ioc_earth::OccultationRenderer::RenderStyle style;
+    style.background_color = "#FFFFFF";
+    style.grid_color = "#CCCCCC";
+    style.central_line_color = "#000000";
     style.central_line_width = 2.0;
-    style.central_line_color = "#000000"; // Black
+    style.sigma_lines_color = "#333333";
+    style.sigma_lines_width = 1.0;
     style.sigma_lines_style = "dashed";
-    // style.fill_opacity = 0.5; // Custom field assuming support or use simple style
+    style.comparative_line_color = "#FF0000";
+    style.margin_lines_color = "#0000FF";
+    style.time_markers_color = "#000000";
+    style.station_positive_color = "#00FF00";
+    style.station_negative_color = "#FF0000";
+    style.station_clouded_color = "#888888";
+    
+    // Geographic elements
+    style.land_color = "#f5f5f0";
+    style.sea_color = "#b0cce4";
+    style.coastline_color = "#506070";
+    style.border_color = "#8090a0";
+    style.state_border_color = "#a0b0c0";
+    style.city_color = "#333333";
+    style.label_font = "DejaVu Sans Book"; // More likely to be present or just "DejaVu Sans"
     
     renderer.setRenderStyle(style);
     
-    std::string data_dir = std::string(getenv("HOME")) + "/.ioccultcalc/data/map_data";
+    // Use data from external submodule
+    std::string data_dir = "external/IOC_Earth/data";
     renderer.setDataDirectory(data_dir);
-    
-    // Auto-calculate bounds based on central line
     renderer.autoCalculateExtent(15.0); // 15% margin
-    
+
     // 3. Render
     try {
         if (renderer.renderOccultationMap(output_path)) {
             return output_path;
         }
     } catch (const std::exception& e) {
-        std::cerr << "Error rendering ground map: " << e.what() << std::endl;
+        std::cerr << "Render EXCEPTION: " << e.what() << std::endl;
     }
     return "";
 }

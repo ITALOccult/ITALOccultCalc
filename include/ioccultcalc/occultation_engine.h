@@ -59,6 +59,12 @@ public:
     Phase2OccultationGeometry& getPhase2() { return phase2_; }
     const AstDynEquinoctialElements& getCurrentElements() const { return current_elements_; }
 
+    /**
+     * @brief Raffina l'orbita scaricando le ultime N osservazioni.
+     * Aggiorna gli elementi correnti e sincronizza i componenti.
+     */
+    bool refineOrbit(int n_observations);
+
 private:
     Phase1CandidateScreening phase1_;
     Phase2OccultationGeometry phase2_;

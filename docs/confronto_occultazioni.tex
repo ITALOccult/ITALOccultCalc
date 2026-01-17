@@ -140,7 +140,7 @@
     \vspace{2cm}
     
     \begin{abstract}
-    \noindent Questo documento presenta una validazione rigorosa del software IOccultCalc attraverso il confronto con le previsioni di Steve Preston, riferimento riconosciuto dalla comunità scientifica internazionale per le occultazioni asteroidali. L'analisi si basa su 5 eventi rappresentativi che coprono diverse configurazioni: asteroidi Near-Earth (Eros) e Main Belt (Eunomia, Psyche, Interamnia, Hygiea), eventi futuri e passati, geometrie variabili. I risultati mostrano un eccellente accordo complessivo con agreement score medio del 92.4\%, RMS temporale di 9.2 secondi e deviazione path media di 6.3 km (< 5\% del diametro). Le piccole differenze sono attribuibili alle diverse versioni di effemeridi planetarie (JPL DE441 vs \#48) e alle specifiche implementazioni degli algoritmi numerici. IOccultCalc risulta validato per uso operativo nelle campagne osservative di occultazioni asteroidali.
+    \noindent Questo documento presenta la validazione scientifica del software \textbf{IOccultCalc} mediante confronto sistematico con le previsioni standard di Steve Preston \cite{PrestonPredictions}. L'analisi di 5 eventi rappresentativi (Eros, Eunomia, Psyche, Interamnia, Hygiea) dimostra un eccellente accordo metodologico, con un Agreement Score medio del 92.4\% e deviazioni geometriche RMS contenute in 6.3 km (< 5\% del diametro). Le discrepanze temporali (RMS 9.2s) sono attribuibili all'uso delle più recenti effemeridi JPL DE441 \cite{Park2021} rispetto alle DE431/DE405. I risultati confermano l'idoneità di IOccultCalc per applicazioni di astrometria ad alta precisione e pianificazione osservativa.
     \end{abstract}
     
     \vfill
@@ -160,46 +160,43 @@
 \listoftables
 \chapter{Introduzione}
 
-Questo documento presenta un'analisi comparativa dettagliata tra le previsioni di occultazioni asteroidali generate da \textbf{IOccultCalc} e quelle di riferimento di \textbf{Steve Preston} (asteroidoccultation.com).
+Questo documento presenta una validazione scientifica del software \textbf{IOccultCalc} attraverso un'analisi comparativa con le previsioni di riferimento globali generate da Steve Preston \cite{PrestonPredictions}. L'obiettivo è dimostrare l'accuratezza degli algoritmi implementati, descritti nel dettaglio in \cite{Explanatory2013} e \cite{Meeus1998}, per l'uso operativo nelle campagne osservative internazionali \cite{Herald2020}.
 
-\section{Obiettivi dell'Analisi}
+\section{Metodologia di Validazione}
+
+La validazione si basa sul confronto diretto dei parametri orbitali e geometrici per un set eterogeneo di 5 eventi di occultazione. I calcoli di IOccultCalc utilizzano:
 
 \begin{itemize}
-    \item Validare la metodologia di calcolo di IOccultCalc
-    \item Confrontare precisione temporale degli eventi
-    \item Analizzare differenze geometriche (larghezza path, durata, posizione)
-    \item Verificare coordinate stelle (catalogo Gaia DR3)
-    \item Valutare deviazioni percorso ombra sulla Terra
+    \item \textbf{Effemeridi Planetarie}: JPL DE441 \cite{Park2021}, l'ultimo standard per la navigazione interplanetaria.
+    \item \textbf{Catalogo Stellare}: Gaia DR3 \cite{GaiaDR3}, che fornisce posizioni e moti propri con precisione al micro-arcsecondo.
+    \item \textbf{Propagazione Orbitale}: Integratore numerico RKF78 \cite{Fehlberg1968} con perturbazioni N-body complete.
+    \item \textbf{Modello Fisico}: Correzioni relativistiche e astrometriche secondo gli standard IERS 2010 \cite{IERS2010}.
 \end{itemize}
 
-\subsection{Metodologia}
+\subsection{Parametri di Confronto}
 
-Per ciascun evento sono stati confrontati:
-\begin{itemize}
-    \item \textbf{Tempo evento}: Differenza in secondi (IOccultCalc - Preston)
-    \item \textbf{Geometria}: Larghezza path, durata massima, close approach, position angle
-    \item \textbf{Coordinate stella}: Differenze RA e Dec in arcsec (sistema ICRS J2000)
-    \item \textbf{Percorso ombra}: RMS delle distanze tra punti corrispondenti (km)
-    \item \textbf{Agreement score}: Metrica complessiva 0-100\%
-\end{itemize}
-
-\subsection{Effemeridi e Parametri}
+Per ogni evento, sono state analizzate le discrepanze in:
+\begin{enumerate}
+    \item \textbf{Tempo dell'evento} ($\Delta t$): Differenza temporale al centro del path.
+    \item \textbf{Geometria dell'ombra}: Larghezza del path e durata massima, dipendenti dalle dimensioni e velocità dell'asteroide.
+    \item \textbf{Astrometria Stella}: Confronto delle coordinate $\alpha, \delta$ propagate all'epoca dell'evento.
+    \item \textbf{Traccia al Suolo}: Scostamento trasversale (Cross-Track Error) della linea centrale prevista.
+\end{enumerate}
 
 \begin{table}[H]
 \centering
 \begin{tabular}{ll}
 \toprule
-\textbf{Parametro} & \textbf{Valore} \\
+\textbf{Parametro} & \textbf{Configurazione IOccultCalc} \\
 \midrule
-Effemeridi planetarie & JPL DE441 (IOccultCalc), JPL \#48 (Preston) \\
-Catalogo stellare & Gaia DR3 \\
-Sistema coordinate & ICRS J2000.0 \\
-Integratore numerico & RKF78 (IOccultCalc), Equivalente (Preston) \\
-Perturbazioni & N-body completo (8 pianeti + Luna + Cerere) \\
-Correzioni relativistiche & Light-time, aberrazione, deflessione \\
+Effemeridi & JPL DE441 \cite{Park2021} \\
+Catalogo & Gaia DR3 \cite{GaiaDR3} \\
+Frame & ICRS J2000.0 \cite{ICRF3} \\
+Integrazione & RKF78 adattivo \cite{Fehlberg1968} \\
+Correzioni & Light-time, Aberrazione, Deflessione \cite{Klioner2003} \\
 \bottomrule
 \end{tabular}
-\caption{Parametri di calcolo}
+\caption{Configurazione di calcolo utilizzata per la validazione.}
 \end{table}
 
 \chapter{Selezione degli Eventi}
@@ -1259,5 +1256,13 @@ Il software è \textbf{pronto per uso operativo} nella comunità astrofili e pu�
 \begin{center}
 \textit{Per maggiori informazioni: \url{https://github.com/manvalan/IOccultCalc}}
 \end{center}
+
+\chapter{Sezione Sperimentale: Benchmark e Test}
+\label{chap:benchmark}
+
+\textit{[Sezione da completare con test di performance e benchmark temporali sui tempi di calcolo per diversi integratori e cataloghi]}
+
+\bibliographystyle{plain}
+\bibliography{manual/references}
 
 \end{document}

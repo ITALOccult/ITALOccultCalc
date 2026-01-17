@@ -1,0 +1,253 @@
+Could not open IAU catalog: data/IAU-CSN.json
+Could not open star names database: data/common_star_names.csv
+Loaded 23 stars from embedded database
+Loaded star names from embedded database
+Loaded Gaia SQLite DR3 catalog: /Users/michelebigi/.catalog/crossreference/gaia_dr3_occult_pro.db
+ITALOccultCalc v1.0 [Native API Workflow]
+
+=== ITALOccultCalc DEBUG BUILD ===
+
+📄 Loading configuration from: verify_1272.json
+DEBUG: output config read - A4='', IOccult='ioccult_card_1272.png'
+Target: 1272 (1272)
+Window: 61052 -> 61054
+SPICESPKReader: Loaded /Users/michelebigi/.ioccultcalc/ephemerides/de440.bsp
+Ephemeris loaded.
+[Phase1CandidateScreening] Constructor started.
+✓ DE441 loaded (Native Reader): /Users/michelebigi/.ioccultcalc/ephemerides/de441_part-2.bsp
+[Phase1CandidateScreening] Constructor finished.
+[Phase2OccultationGeometry] Constructor started.
+[AstDynWrapper] Constructor started.
+  - Creating PlanetaryEphemeris...
+  - Initializing propagator...
+  - Creating RKF78Integrator...
+  - Creating Propagator object...
+    [Propagator] Constructor entry (include_asteroids=1).
+    [Propagator] Creating AsteroidPerturbations...
+    [Propagator] Constructor exit.
+  - Propagator object created.
+[AstDynWrapper] Constructor finished.
+[Phase2OccultationGeometry] Constructor finished.
+Loading asteroid 1272...
+[AsteroidSqliteDatabase] Successfully opened /Users/michelebigi/.ioccultcalc/database/asteroids.db
+[DEBUG-PERT] lapco entry (alpha=0.535911)
+[DEBUG-PERT] lapco entry (alpha=0.535911)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.2918)
+[DEBUG-PERT] lapco entry (alpha=0.2918)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.145076)
+[DEBUG-PERT] lapco entry (alpha=0.145076)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.0925967)
+[DEBUG-PERT] lapco entry (alpha=0.0925967)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.535911)
+[DEBUG-PERT] lapco entry (alpha=0.535911)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.2918)
+[DEBUG-PERT] lapco entry (alpha=0.2918)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.145076)
+[DEBUG-PERT] lapco entry (alpha=0.145076)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.0925967)
+[DEBUG-PERT] lapco entry (alpha=0.0925967)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[AstDynWrapper:0x10df409b8] setKeplerianElements: asteroid=Gefion state set to INITIALIZED.
+[AstDynWrapper]   Processing Frame: ECLIPTIC
+  - Creating RKF78Integrator...
+  - Creating Propagator object...
+    [Propagator] Constructor entry (include_asteroids=1).
+    [Propagator] Creating AsteroidPerturbations...
+    [Propagator] Constructor exit.
+  - Propagator object created.
+[Phase2OccultationGeometry] setSPKReader called. Forwarding to wrapper=0x10df409b8
+Phase 1: Screening stars in 2 deg corridor...
+[PHASE1] Starting native screening for 1272 (MJD 61052 to 61054)...
+    [Propagator] Constructor entry (include_asteroids=0).
+    [Propagator] Constructor exit.
+[PHASE1] Path start: RA=123.086 Dec=25.1161
+[PHASE1] Path end:   RA=122.591 Dec=25.1574
+[PHASE1] Querying Gaia catalog with 49 ICRF points...
+Optimized Corridor: 49 points -> 1 query cones.
+[PHASE1] Screening complete. Found 18 candidates (1620 stars in corridor).
+Found 18 candidates (1620 stars initially in corridor).
+
+Phase 2: Calculating precise geometry...
+
+[OccultationEngine] 🔄 Refining orbit for 1272 with last 100 observations...
+[MPCClient] Downloading observations from AstDyS: https://newton.spacedys.com/~astdys2/mpcobs/numbered/1/1272.rwo
+[MPCClient] Parsing RWO with native library parser...
+[MPCClient] Successfully loaded 3725 observations from RWO.
+Debug Rotation:
+ Orig: i=8.42335 O=321.276 w=4.9865
+ Eq:   i=17.6277 O=197.614 w=129.731
+ Back: i=8.42335 O=321.276 w=4.9865
+[AstDynOrbitFitter] Feeding 100 obs to OrbitFitAPI.
+   Time Range: MJD 60712.2 to 60953.6
+   Initial Element Epoch: 61000
+[OrbitFitAPI] Loading OrbFit elements from /tmp/ioc_fit_init.eq1...
+[AstDynOrbitFitter] run_fit returned: success=0 msg='Could not parse equinoctial elements from file: /tmp/ioc_fit_init.eq1' n_obs=1 n_out=4098
+[OccultationEngine] Fit completed. Observations used: 0/0. RMS=0 arcsec.
+[OccultationEngine] ❌ Fit rejected (poor RMS or few obs). Keeping original orbit.
+[PHASE2] calculatePreciseGeometry using AstDynWrapper:0x10df409b8
+✓ DE441 loaded (Native Reader): /Users/michelebigi/.ioccultcalc/ephemerides/de441_part-2.bsp
+    [Propagator] Constructor entry (include_asteroids=1).
+    [Propagator] Creating AsteroidPerturbations...
+    [Propagator] Constructor exit.
+[PHASE2] Candidate Star: 681067090275723392 CA MJD: 61053.00694 Min Dist: 2801.01 mas
+[DEBUG] CA Asteroid ICRF: -158782064488.52, 246023672651.79, 137396272872.95 [m]
+[DEBUG] CA Asteroid ITRF: 289622919021.79, 43104017047.24, 137396272872.95 [m]
+[DEBUG] Star Dir ITRF:    0.90, 0.13, 0.42
+Processed Phase 2 for all candidates. Found 18 confirmed events.
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  681067227714680448
+  Star Pos: RA=122.747180 Dec=25.102937
+  Date:     61053.36806
+  CA Dist:  150.485"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  681069461097680768
+  Star Pos: RA=122.557989 Dec=25.095824
+  Date:     61054.00694
+  CA Dist:  245.009"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  681081864963159680
+  Star Pos: RA=122.503594 Dec=25.172351
+  Date:     61054.00694
+  CA Dist:  285.557"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  681070904206685696
+  Star Pos: RA=122.699354 Dec=25.165502
+  Date:     61053.57639
+  CA Dist:  60.226"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  681071591401453568
+  Star Pos: RA=122.652527 Dec=25.177582
+  Date:     61053.75694
+  CA Dist:  90.093"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  681071144724852352
+  Star Pos: RA=122.741241 Dec=25.194512
+  Date:     61053.41679
+  CA Dist:  176.393"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  681071213444327168
+  Star Pos: RA=122.777431 Dec=25.200114
+  Date:     61053.28472
+  CA Dist:  207.292"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  681071930702340864
+  Star Pos: RA=122.611018 Dec=25.202160
+  Date:     61053.95139
+  CA Dist:  166.418"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  680881474673230336
+  Star Pos: RA=123.129366 Dec=25.065754
+  Date:     61051.99306
+  CA Dist:  225.592"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  681066639302640640
+  Star Pos: RA=122.830852 Dec=25.092284
+  Date:     61053.00694
+  CA Dist:  163.787"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  681066781038079488
+  Star Pos: RA=122.848377 Dec=25.098845
+  Date:     61052.95139
+  CA Dist:  134.832"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  681067090275723392
+  Star Pos: RA=122.837075 Dec=25.137283
+  Date:     61053.00694
+  CA Dist:  2.801"
+  Duration: 0.61 s
+  Shadow Path (15 pts):
+    [CENTER] Lat: 25.23 Lon: 40.19 MJD: 61053.01
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  680885116805495808
+  Star Pos: RA=122.926517 Dec=25.140373
+  Date:     61052.65972
+  CA Dist:  38.005"
+  Duration: 0.61 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  680885533418116096
+  Star Pos: RA=122.947531 Dec=25.150957
+  Date:     61052.57639
+  CA Dist:  81.988"
+  Duration: 0.61 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  680885567777855104
+  Star Pos: RA=122.918621 Dec=25.157530
+  Date:     61052.70139
+  CA Dist:  97.024"
+  Duration: 0.61 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  681073614329520000
+  Star Pos: RA=122.892571 Dec=25.215626
+  Date:     61052.82639
+  CA Dist:  297.121"
+  Duration: 0.61 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  680886907807646848
+  Star Pos: RA=123.017932 Dec=25.180096
+  Date:     61052.29861
+  CA Dist:  207.992"
+  Duration: 0.61 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  680887281469011712
+  Star Pos: RA=123.006000 Dec=25.206692
+  Date:     61052.36806
+  CA Dist:  299.653"
+  Duration: 0.61 s
+--------------------------------------------------
+
+Exporting results to XML...
+
+IOccultCalc Engine Workflow completed.

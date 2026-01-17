@@ -35,6 +35,23 @@ struct Phase2OccultationEvent {
     double asteroid_ra_deg;
     double asteroid_dec_deg;
     double closest_approach_arcsec;
+    double asteroid_distance_au;
+    
+    // Besselian elements at CA
+    double besselian_x;
+    double besselian_y;
+    double besselian_dx;
+    double besselian_dy;
+    
+    // Substellar/Subsolar points
+    double substellar_lon_deg;
+    double substellar_lat_deg;
+    double subsolar_lon_deg;
+    double subsolar_lat_deg;
+    
+    // Apparent positions
+    double star_app_ra_deg;
+    double star_app_dec_deg;
 };
 
 struct Phase2Config {

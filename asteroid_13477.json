@@ -1,0 +1,19 @@
+{
+    "OBJECT": {
+        "id": "13477",
+        "name": "Utkin"
+    },
+    "SEARCH": {
+        "start_mjd": 61059.0,
+        "end_mjd": 61061.0,
+        "mag_limit": 14.5,
+        "corridor_width": 2.0
+    },
+    "PROPAGATION": {
+        "use_horizons": true,
+        "high_precision": true
+    },
+    "OUTPUT": {
+        "xml_file": "italoccultcalc_output.xml"
+    }
+}

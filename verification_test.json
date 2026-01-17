@@ -1,0 +1,26 @@
+{
+    "object": {
+        "id": "1272",
+        "min_diameter": 5.0
+    },
+    "propag": {
+        "type": "RKF78",
+        "step_size": 0.5,
+        "use_perturbations": true
+    },
+    "search": {
+        "start_mjd": 61052.0,
+        "end_mjd": 61054.0,
+        "step_days": 0.04,
+        "mag_limit": 13.0,
+        "corridor_width": 2.0
+    },
+    "output": {
+        "output_dir": "results_1272_verify",
+        "verbosity": 1,
+        "output_file": "verification_1272.txt",
+        "xml_file": "verification_1272.xml",
+        "voloshina_file": "voloshina_card_1272.png",
+        "voloshina_output_dir": "results_1272_verify/voloshina"
+    }
+}

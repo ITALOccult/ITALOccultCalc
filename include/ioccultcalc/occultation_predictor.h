@@ -22,7 +22,13 @@ struct ShadowPathPoint {
     JulianDate time;
     GeographicCoordinates location;
     double duration;        // secondi
-    double centerlineDistance; // km
+    double centerlineDistance; // km (sigma 1-sigma uncertainty)
+    
+    // Coordinate dei limiti
+    GeographicCoordinates north_limit;   // 1-sigma nord
+    GeographicCoordinates south_limit;   // 1-sigma sud
+    GeographicCoordinates north_margin;  // Bordo geometrico nord
+    GeographicCoordinates south_margin;  // Bordo geometrico sud
     
     ShadowPathPoint() : duration(0), centerlineDistance(0) {}
 };
@@ -65,12 +71,24 @@ struct OccultationEvent : public OutputEvent {
     double observerLatitude;
     double observerAltitude;
     
+    // Substellar/Subsolar points
+    double substellarLon;
+    double substellarLat;
+    double subsolarLon;
+    double subsolarLat;
+    
+    // Apparent positions
+    double starAppRA;
+    double starAppDec;
+    
     OccultationEvent() 
         : closeApproachDistance(0), positionAngle(0), 
           probability(0), maxDuration(0), pathWidth(0), magnitudeDrop(0),
           uncertaintyNorth(0), uncertaintySouth(0), asteroidDistanceAu(0),
           besselianX(0), besselianY(0), besselianDX(0), besselianDY(0),
-          observerLongitude(0), observerLatitude(0), observerAltitude(0) {}
+          observerLongitude(0), observerLatitude(0), observerAltitude(0),
+          substellarLon(0), substellarLat(0), subsolarLon(0), subsolarLat(0),
+          starAppRA(0), starAppDec(0) {}
 };
 
 /**

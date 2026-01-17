@@ -35,7 +35,8 @@ enum class OutputFormat {
     JSON,           ///< JSON strutturato (.json)
     IOTA_CARD,      ///< Scheda grafica IOTA (.jpg)
     ASTNUM_LIST,    ///< Lista numeri asteroidi con occultazioni (.txt)
-    A4_VERTICAL_CARD ///< Scheda verticale A4 grande (.pdf)
+    A4_VERTICAL_CARD, ///< Scheda verticale A4 grande (.pdf)
+    IOCCULT_CARD    ///< Scheda stile IOccult (.png)
 };
 
 /**
@@ -85,6 +86,10 @@ struct OutputEvent {
     std::vector<PathPoint> north_limit;
     std::vector<PathPoint> south_limit;
     
+    // Margini fisici (geometrici)
+    std::vector<PathPoint> north_margin;
+    std::vector<PathPoint> south_margin;
+    
     // Incertezze
     double path_uncertainty_km;
     double time_uncertainty_sec;
@@ -118,6 +123,18 @@ struct OutputEvent {
         std::vector<PathPoint> points;
     };
     std::vector<ComparativePath> comparative_paths;
+
+    // Traiettoria apparente stella/asteroide
+    struct SkyPoint {
+        double ra_deg;
+        double dec_deg;
+        std::string time_utc;
+        SkyPoint(double r = 0, double d = 0, const std::string& t = "")
+            : ra_deg(r), dec_deg(d), time_utc(t) {}
+    };
+    std::vector<SkyPoint> star_trajectory;
+    double star_apparent_ra_deg;
+    double star_apparent_dec_deg;
 };
 
 /**
@@ -155,6 +172,9 @@ struct OutputOptions {
     bool iota_include_map;
     bool iota_include_finder_chart;
     std::string iota_map_projection;   // "mercator", "orthographic"
+    
+    // IOccult Card
+    std::string ioccult_card_output_dir;  // Directory specifica per output IOccult Card
     
     // Path rendering
     double path_resolution_km;         // Distanza tra punti path
@@ -221,6 +241,15 @@ public:
      */
     bool writeEventCardA4(const OutputEvent& event,
                          const std::string& filename);
+
+    /**
+     * @brief Genera scheda stile IOccult (PNG)
+     * @param event Dati evento
+     * @param filename Nome file output
+     * @return true se successo
+     */
+    bool writeIOccultCard(const OutputEvent& event,
+                           const std::string& filename);
 
 private:
     OutputOptions options_;

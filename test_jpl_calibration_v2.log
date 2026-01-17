@@ -1,0 +1,25 @@
+[AstDynWrapper] Constructor started.
+  - Creating PlanetaryEphemeris...
+  - Initializing propagator...
+  - Creating RKF78Integrator...
+  - Creating Propagator object...
+    [Propagator] Constructor entry (include_asteroids=1).
+    [Propagator] Creating AsteroidPerturbations...
+    [Propagator] Constructor exit.
+  - Propagator object created.
+[AstDynWrapper] Constructor finished.
+--- JPL High Precision Calibration Test (13477) ---
+[AstDynWrapper:0x105eff778] setCartesianElements: asteroid=13477 epoch=58413 frame=1 state set to INITIALIZED.
+✓ DE441 loaded (Native Reader): /Users/michelebigi/.ioccultcalc/ephemerides/de441_part-2.bsp
+    [Propagator] Constructor entry (include_asteroids=1).
+    [Propagator] Creating AsteroidPerturbations...
+    [Propagator] Constructor exit.
+Target Time (UT): MJD 61060.139502
+RA Calculated:  44.27706990 deg
+Dec Calculated: 17.25139805 deg
+Dist Calculated: 1.92233848 AU
+--- Comparison with Horizons TRUTH ---
+dRA:  1.386 arcsec
+dDec: 0.533 arcsec
+Total Offset: 1.485 arcsec
+Dist Error:   -0.00001621 AU

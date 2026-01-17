@@ -7,8 +7,21 @@
 #include <iomanip>
 #include <cmath>
 #include <ctime>
+#include <algorithm>
+#include <cctype>
 
 namespace ioccultcalc {
+
+// Helper: split string by comma
+static std::vector<std::string> splitCsv(const std::string& s) {
+    std::vector<std::string> tokens;
+    std::string token;
+    std::istringstream tokenStream(s);
+    while (std::getline(tokenStream, token, ',')) {
+        tokens.push_back(token);
+    }
+    return tokens;
+}
 
 // ============================================================================
 // Constructor/Destructor
@@ -156,6 +169,38 @@ Occult4XMLHandler::parseEventNode(void* nodePtr) {
             event.eventId = extractTextContent(child);
         }
         
+        // Compact CSV-style tags (Standard Occult4 / IOTA)
+        else if (name == "Star") {
+            auto tokens = splitCsv(extractTextContent(child));
+            if (tokens.size() >= 5) {
+                event.starId = tokens[0];
+                event.starRA = std::atof(tokens[1].c_str()) * 15.0; // Hours to Deg
+                event.starDec = std::atof(tokens[2].c_str());
+                event.starMag = std::atof(tokens[4].c_str()); // Mv
+            }
+            if (tokens.size() >= 13) {
+                event.dropMag = std::atof(tokens[12].c_str());
+            }
+        } else if (name == "Object") {
+            auto tokens = splitCsv(extractTextContent(child));
+            if (tokens.size() >= 2) {
+                event.asteroidNumber = tokens[0];
+                event.asteroidName = tokens[1];
+            }
+            if (tokens.size() >= 4) {
+                // Diameter is field 3
+            }
+        } else if (name == "Orbit") {
+            auto tokens = splitCsv(extractTextContent(child));
+            // Currently not mapped to Occult4Event but could be
+        } else if (name == "ID") {
+            auto tokens = splitCsv(extractTextContent(child));
+            if (tokens.size() >= 2) {
+                event.eventId = tokens[0];
+                // JD is field 1, but usually we prefer JulianDate tag
+            }
+        }
+        
         // Path points
         else if (name == "CenterLine" || name == "CentralPath") {
             event.centerLine = parsePathPoints(child);
@@ -287,15 +332,13 @@ bool Occult4XMLHandler::exportMultipleToXML(
 }
 
 std::string Occult4XMLHandler::generateXML(const OccultationEvent& event) {
-    std::ostringstream xml;
-    xml << "<Occultations>\n";
-    xml << generateOccult4EventXML(event);
-    xml << "</Occultations>\n";
-    return xml.str();
+    std::vector<OccultationEvent> events = {event};
+    return generateXML(events);
 }
 
 std::string Occult4XMLHandler::generateXML(const std::vector<OccultationEvent>& events) {
     std::ostringstream xml;
+    // No XML declaration as per test_output_occult4.xml
     xml << "<Occultations>\n";
     for (const auto& event : events) {
         xml << generateOccult4EventXML(event);
@@ -304,120 +347,167 @@ std::string Occult4XMLHandler::generateXML(const std::vector<OccultationEvent>& 
     return xml.str();
 }
 
-// Genera evento nel formato Occult4 CSV
 std::string Occult4XMLHandler::generateOccult4EventXML(const OccultationEvent& event) {
     std::ostringstream xml;
     xml << std::fixed << std::setprecision(8);
+    const double rad2deg = 180.0 / M_PI;
     
-    // Estrai data e ora dall'evento
-    JulianDate jd = event.timeCA;
+    // Time conversion (TDB -> UTC)
+    // Delta T for 2026 is approx 69.184 seconds. 
+    // TDB is ahead of UTC. UTC = TDB - DeltaT
+    double deltaT_days = 69.184 / 86400.0;
+    
+    JulianDate jd_tdb = event.timeCA;
+    JulianDate jd_utc(jd_tdb.jd - deltaT_days);
+    
     int year, month, day;
-    double ut;
-    jdToCalendar(jd.jd, year, month, day, ut);
+    double ut_hours;
+    jdToCalendar(jd_utc.jd, year, month, day, ut_hours);
+    
+    // For ID and Epoch we use the UTC date
+    int epoch_year, epoch_month, epoch_day;
+    double epoch_ut;
+    jdToCalendar(jd_utc.jd, epoch_year, epoch_month, epoch_day, epoch_ut);
     
     xml << "  <Event>\n";
     
-    // <Elements> - Besselian elements
-    // Format: source:date, duration, year, month, day, UT, x, y, dX, dY, d2X, d2Y, d3X, d3Y
+    // 1. <Elements> - 14 fields
     xml << "    <Elements>";
-    xml << "ITALOCC:2026-Jan-06"; // Simula data di predizione
+    const char* months[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+    char sourceDate[64];
+    snprintf(sourceDate, sizeof(sourceDate), "ITALOCC:%d-%s-%02d", year, months[month-1], day);
+    xml << sourceDate; 
     xml << "," << std::setprecision(2) << event.maxDuration;
     xml << "," << year << "," << month << "," << day;
-    xml << "," << std::setprecision(6) << ut;
-    // X, Y coordinates (Earth radii)
+    xml << "," << std::setprecision(6) << ut_hours;
     xml << "," << std::setprecision(8) << event.besselianX;
     xml << "," << event.besselianY;
     xml << "," << event.besselianDX;
     xml << "," << event.besselianDY;
-    xml << ",0.0,0.0";  // d2X, d2Y
-    xml << ",0.0,0.0";  // d3X, d3Y
+    xml << ",0.0,0.0,0.0,0.0"; // d2X, d2Y, d3X, d3Y
     xml << "</Elements>\n";
     
-    // <Earth>
+    // 2. <Earth> - 5 fields (Substellar/Subsolar)
     xml << "    <Earth>";
-    xml << std::setprecision(6) << event.observerLongitude;
-    xml << "," << event.observerLatitude;
-    xml << ",0.0,0.0";  // Subsolar
-    xml << ",False";  // JWST
+    xml << std::setprecision(6) << event.substellarLon << "," << event.substellarLat;
+    xml << "," << event.subsolarLon << "," << event.subsolarLat;
+    xml << ",False"; // JWST
     xml << "</Earth>\n";
     
-    // <Star>
+    // 3. <Star> - 16 fields
     xml << "    <Star>";
     std::string sId = event.star.sourceId;
-    if (sId.empty()) sId = "Unknown";
-    xml << escapeXML(sId);
+    if (sId.find("GAIA") == std::string::npos && sId.length() > 10) {
+        xml << "GAIA DR3 " << sId;
+    } else {
+        xml << (sId.empty() ? "Unknown" : escapeXML(sId));
+    }
     
-    double rad2deg = 57.29577951308232;
-    xml << "," << std::setprecision(8) << (event.star.pos.ra * rad2deg / 15.0); 
-    xml << "," << (event.star.pos.dec * rad2deg);
-    xml << "," << std::setprecision(2) << event.star.phot_g_mean_mag;
-    xml << "," << event.star.phot_g_mean_mag;
-    xml << "," << event.star.phot_g_mean_mag;
-    xml << ",0.0,0,,"; 
-    xml << std::setprecision(8) << (event.star.pos.ra * rad2deg / 15.0);
-    xml << "," << (event.star.pos.dec * rad2deg);
+    double raHours = event.star.pos.ra * (180.0 / M_PI) / 15.0;
+    double decDeg = event.star.pos.dec * (180.0 / M_PI);
     
-    double magDrop = event.magnitudeDrop;
-    if (magDrop <= 0) magDrop = 0.01; 
-    xml << "," << std::setprecision(2) << magDrop;
-    xml << "," << magDrop;
-    xml << ",0,0,0";
+    double appRaHours = event.starAppRA / 15.0;
+    double appDecDeg = event.starAppDec;
+    
+    xml << "," << std::setprecision(8) << raHours << "," << decDeg;
+    xml << "," << std::setprecision(2) << event.star.phot_g_mean_mag; // Mb
+    xml << "," << event.star.phot_g_mean_mag; // Mv
+    xml << "," << event.star.phot_g_mean_mag; // Mr
+    xml << ",0.0,0,," << std::setprecision(8) << appRaHours << "," << appDecDeg; // dia, double, K2, AppRA, AppDec
+    xml << "," << std::setprecision(2) << (event.magnitudeDrop > 0 ? event.magnitudeDrop : 0.01); // MdropV
+    xml << "," << std::setprecision(2) << (event.magnitudeDrop > 0 ? event.magnitudeDrop : 0.01); // MdropR
+    xml << ",0,0,0"; // Adjusted, NearbyCounts
     xml << "</Star>\n";
     
-    // <Object>
+    // 4. <Object> - 15 fields (trailing comma)
     xml << "    <Object>";
-    xml << escapeXML(event.asteroid.designation);
+    if (event.asteroid.number > 0) xml << event.asteroid.number;
+    else xml << escapeXML(event.asteroid.designation);
+    
     xml << "," << escapeXML(event.asteroid.name);
     xml << "," << std::setprecision(2) << event.asteroid.H;
     xml << "," << std::setprecision(1) << event.asteroid.diameter;
-    xml << "," << std::setprecision(6) << event.asteroidDistanceAu; // CORRETTO: Distanza reale
-    xml << ",0,0,0.0,0.0,,0.6,0";
-    xml << "," << std::setprecision(2) << event.asteroid.H << "," << event.asteroid.H << ",";
+    xml << "," << std::setprecision(6) << (event.asteroidDistanceAu > 0 ? event.asteroidDistanceAu : 1.0);
+    xml << ",0,0,0.0,0.0,,0.0,0"; // #rings, #moons, dRA, dDec, Tax, DiamUnc, ShadowFlag
+    xml << "," << std::setprecision(2) << event.asteroid.H << "," << event.asteroid.H << ","; // MagV, MagR, trailing comma
     xml << "</Object>\n";
     
-    // <Orbit>
-    ioccultcalc::OrbitalElements kep = event.asteroid.toKeplerian();
+    // 5. <Orbit> - 14 fields
     xml << "    <Orbit>";
-    xml << "0"; // MPC format
-    xml << "," << std::setprecision(4) << kep.M * rad2deg;
-    xml << "," << year << "," << month << "," << day;
-    xml << "," << (kep.omega * rad2deg);
+    xml << "2000.0"; // Equinox
+    ioccultcalc::OrbitalElements kep = event.asteroid.toKeplerian();
+    xml << "," << std::setprecision(4) << (kep.M * rad2deg);
+    xml << "," << year << "," << month << "," << day; // Epoch
+    xml << "," << std::setprecision(4) << (kep.omega * rad2deg);
     xml << "," << (kep.Omega * rad2deg);
     xml << "," << (kep.i * rad2deg);
     xml << "," << std::setprecision(6) << kep.e;
     xml << "," << kep.a;
-    xml << "," << (kep.a * (1.0 - kep.e));
+    xml << "," << (kep.a * (1.0 - kep.e)); // q
     xml << "," << std::setprecision(2) << event.asteroid.H;
-    xml << "," << event.asteroid.G;
-    xml << ",0.15";
+    xml << ",0.0," << event.asteroid.G; // Coeff, G
     xml << "</Orbit>\n";
     
-    // <Errors>
+    // 6. <Errors> - 10 fields
     xml << "    <Errors>";
+    double pathWidthKm = event.pathWidth > 0 ? event.pathWidth : 10.0;
     double uncertKm = (event.uncertaintyNorth + event.uncertaintySouth) / 2.0;
-    double pathWidthKm = event.pathWidth;
-    if (pathWidthKm <= 0) pathWidthKm = event.asteroid.diameter;
-    if (pathWidthKm <= 0) pathWidthKm = 10.0;
-    xml << std::setprecision(3) << (uncertKm / std::max(1.0, pathWidthKm));
-    xml << "," << std::setprecision(4) << uncertKm / 6371.0 * 206265.0; 
-    xml << "," << uncertKm / 6371.0 * 206265.0;
-    xml << ",0.0";
-    xml << "," << std::setprecision(4) << uncertKm / 6371.0 * 206265.0;
-    xml << ",Star+Assumed,1.0,0,0,0";
+    xml << std::setprecision(3) << (uncertKm / pathWidthKm); // in PathWidths
+    xml << ",0.0,0.0,0.0,0.0"; // Major, Minor, PA, 1SigmaPos
+    xml << ",Known errors,-1,0,0,0"; // Basis, Reliability, Duplicate, Non-Gaia, GaiaPM
     xml << "</Errors>\n";
     
-    // <ID>
+    // 7. <ID> - 2 fields
     xml << "    <ID>";
     char dateID[32];
     snprintf(dateID, sizeof(dateID), "%04d%02d%02d", year, month, day);
-    xml << dateID << "_" << event.star.sourceId.substr(std::max(0, (int)event.star.sourceId.length() - 8));
-    xml << "," << std::setprecision(4) << (jd.jd - 2400000.5);
+    std::string cleanId = event.star.sourceId;
+    // Remove any non-digit characters if it's a Gaia ID
+    cleanId.erase(std::remove_if(cleanId.begin(), cleanId.end(), [](char c) { return !std::isdigit(c); }), cleanId.end());
+    xml << dateID << "_" << cleanId.substr(std::max(0, (int)cleanId.length() - 8));
+    xml << "," << std::setprecision(4) << (jd_utc.jd - 2400000.5);
     xml << "</ID>\n";
     
-    xml << "  </Event>\n";
+    // 8. Path points (CenterLine, NorthLimit, SouthLimit)
+    if (!event.shadowPath.empty()) {
+        xml << "    <CenterLine>\n";
+        for (const auto& pt : event.shadowPath) {
+            xml << "      <Point>\n";
+            xml << "        <Latitude>" << std::setprecision(6) << (pt.location.latitude * rad2deg) << "</Latitude>\n";
+            xml << "        <Longitude>" << (pt.location.longitude * rad2deg) << "</Longitude>\n";
+            xml << "        <JD>" << std::setprecision(8) << pt.time.jd << "</JD>\n";
+            xml << "        <DateTime>" << TimeUtils::jdToISO(pt.time) << "</DateTime>\n";
+            xml << "      </Point>\n";
+        }
+        xml << "    </CenterLine>\n";
+    }
+
+    if (!event.north_limit.empty()) {
+        xml << "    <NorthLimit>\n";
+        for (const auto& pt : event.north_limit) {
+            xml << "      <Point>\n";
+            xml << "        <Latitude>" << std::setprecision(6) << (pt.latitude * rad2deg) << "</Latitude>\n";
+            xml << "        <Longitude>" << (pt.longitude * rad2deg) << "</Longitude>\n";
+            xml << "      </Point>\n";
+        }
+        xml << "    </NorthLimit>\n";
+    }
+
+    if (!event.south_limit.empty()) {
+        xml << "    <SouthLimit>\n";
+        for (const auto& pt : event.south_limit) {
+            xml << "      <Point>\n";
+            xml << "        <Latitude>" << std::setprecision(6) << (pt.latitude * rad2deg) << "</Latitude>\n";
+            xml << "        <Longitude>" << (pt.longitude * rad2deg) << "</Longitude>\n";
+            xml << "      </Point>\n";
+        }
+        xml << "    </SouthLimit>\n";
+    }
     
+    xml << "  </Event>\n";
     return xml.str();
 }
+
 
 std::string Occult4XMLHandler::generateEventXML(const Occult4Event& event) {
     std::ostringstream xml;

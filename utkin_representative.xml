@@ -1,0 +1,67 @@
+<Occultations>
+  <!-- Event 1: ITALOccultCalc (Primary) -->
+  <Event>
+    <ID>20260120_ITALOCCULT</ID>
+    <AsteroidName>Utkin</AsteroidName>
+    <AsteroidNumber>13477</AsteroidNumber>
+    <StarID>GAIA DR3 35169528681869696</StarID>
+    <PathWidth>56.0</PathWidth>
+    <MaxDuration>5.8</MaxDuration>
+    <MagDrop>5.01</MagDrop>
+    <CenterLine>
+      <Point><Latitude>44.0</Latitude><Longitude>8.0</Longitude></Point>
+      <Point><Latitude>44.5</Latitude><Longitude>10.0</Longitude></Point>
+      <Point><Latitude>45.0</Latitude><Longitude>12.0</Longitude></Point>
+      <Point><Latitude>45.5</Latitude><Longitude>14.0</Longitude></Point>
+      <Point><Latitude>46.0</Latitude><Longitude>16.0</Longitude></Point>
+      <Point><Latitude>46.5</Latitude><Longitude>18.0</Longitude></Point>
+      <Point><Latitude>47.0</Latitude><Longitude>20.0</Longitude></Point>
+      <Point><Latitude>47.5</Latitude><Longitude>22.0</Longitude></Point>
+      <Point><Latitude>48.0</Latitude><Longitude>24.0</Longitude></Point>
+      <Point><Latitude>48.5</Latitude><Longitude>26.0</Longitude></Point>
+    </CenterLine>
+    <NorthLimit>
+      <Point><Latitude>44.2</Latitude><Longitude>8.0</Longitude></Point>
+      <Point><Latitude>44.7</Latitude><Longitude>10.0</Longitude></Point>
+      <Point><Latitude>45.2</Latitude><Longitude>12.0</Longitude></Point>
+      <Point><Latitude>45.7</Latitude><Longitude>14.0</Longitude></Point>
+      <Point><Latitude>46.2</Latitude><Longitude>16.0</Longitude></Point>
+      <Point><Latitude>46.7</Latitude><Longitude>18.0</Longitude></Point>
+      <Point><Latitude>47.2</Latitude><Longitude>20.0</Longitude></Point>
+      <Point><Latitude>47.7</Latitude><Longitude>22.0</Longitude></Point>
+      <Point><Latitude>48.2</Latitude><Longitude>24.0</Longitude></Point>
+      <Point><Latitude>48.7</Latitude><Longitude>26.0</Longitude></Point>
+    </NorthLimit>
+    <SouthLimit>
+      <Point><Latitude>43.8</Latitude><Longitude>8.0</Longitude></Point>
+      <Point><Latitude>44.3</Latitude><Longitude>10.0</Longitude></Point>
+      <Point><Latitude>44.8</Latitude><Longitude>12.0</Longitude></Point>
+      <Point><Latitude>45.3</Latitude><Longitude>14.0</Longitude></Point>
+      <Point><Latitude>45.8</Latitude><Longitude>16.0</Longitude></Point>
+      <Point><Latitude>46.3</Latitude><Longitude>18.0</Longitude></Point>
+      <Point><Latitude>46.8</Latitude><Longitude>20.0</Longitude></Point>
+      <Point><Latitude>47.3</Latitude><Longitude>22.0</Longitude></Point>
+      <Point><Latitude>47.8</Latitude><Longitude>24.0</Longitude></Point>
+      <Point><Latitude>48.3</Latitude><Longitude>26.0</Longitude></Point>
+    </SouthLimit>
+  </Event>
+
+  <!-- Event 2: Occult4 (Comparative) -->
+  <Event>
+    <ID>OCCULT4_COMPARISON</ID>
+    <AsteroidName>Occult4 Track</AsteroidName>
+    <CenterLine>
+      <!-- Offset by ~56km north-west approx -->
+      <Point><Latitude>44.3</Latitude><Longitude>7.8</Longitude></Point>
+      <Point><Latitude>44.8</Latitude><Longitude>9.8</Longitude></Point>
+      <Point><Latitude>45.3</Latitude><Longitude>11.8</Longitude></Point>
+      <Point><Latitude>45.8</Latitude><Longitude>13.8</Longitude></Point>
+      <Point><Latitude>46.3</Latitude><Longitude>15.8</Longitude></Point>
+      <Point><Latitude>46.8</Latitude><Longitude>17.8</Longitude></Point>
+      <Point><Latitude>47.3</Latitude><Longitude>19.8</Longitude></Point>
+      <Point><Latitude>47.8</Latitude><Longitude>21.8</Longitude></Point>
+      <Point><Latitude>48.3</Latitude><Longitude>23.8</Longitude></Point>
+      <Point><Latitude>48.8</Latitude><Longitude>25.8</Longitude></Point>
+    </CenterLine>
+  </Event>
+</Occultations>

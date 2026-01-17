@@ -351,6 +351,29 @@ std::vector<ShadowPathPoint> OccultationPredictor::generateShadowPath(const Occu
             auto profile = predictEventUncertainty(event, covariance);
             pt.centerlineDistance = profile.pathUncertainty;
             
+            // Calcolo limiti (perpendicolare alla traccia)
+            Vector3D normal = hitItrf.normalize();
+            Vector3D shadow = shadowItrf.normalize();
+            Vector3D transverse = normal.cross(shadow).normalize();
+            
+            double R = pImpl->asteroidDiameter * 500.0; // raggio in metri
+            double S = profile.pathUncertainty * 1000.0; // sigma in metri
+            
+            Vector3D n_margin = hitItrf + (transverse * R);
+            Vector3D s_margin = hitItrf - (transverse * R);
+            Vector3D n_sigma = hitItrf + (transverse * (R + S));
+            Vector3D s_sigma = hitItrf - (transverse * (R + S));
+            
+            auto loc_nm = converter.getGeodeticPosition(n_margin);
+            auto loc_sm = converter.getGeodeticPosition(s_margin);
+            auto loc_ns = converter.getGeodeticPosition(n_sigma);
+            auto loc_ss = converter.getGeodeticPosition(s_sigma);
+            
+            pt.north_margin = GeographicCoordinates(loc_nm.longitude_deg, loc_nm.latitude_deg);
+            pt.south_margin = GeographicCoordinates(loc_sm.longitude_deg, loc_sm.latitude_deg);
+            pt.north_limit = GeographicCoordinates(loc_ns.longitude_deg, loc_ns.latitude_deg);
+            pt.south_limit = GeographicCoordinates(loc_ss.longitude_deg, loc_ss.latitude_deg);
+
             // Durata (2*R / v_rel)
             Vector3D v_ast = astState.velocity * (AU / 86400.0);
             double v_rel_mag = (v_ast - Ephemeris::getEarthVelocity(jd)*(AU/86400.0)).magnitude();

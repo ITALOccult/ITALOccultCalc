@@ -1,0 +1,30 @@
+
+# ============================================================================
+# Verification Config for A4 Event Card - Asteroid 13477 (Utkin)
+# Target date: Jan 11 2026 (approximate window)
+# ============================================================================
+
+object:
+  asteroid_list: "13477..13477"
+  min_diameter: 5.0
+
+propag:
+  type: "RKF78"
+  step_size: 0.5
+  use_perturbations: true
+
+search:
+  start_mjd_tdb: 61041.0  # 2026-Jan-01
+  end_mjd_tdb: 61042.0    # 2026-Jan-02
+  step_days: 0.04
+  mag_limit: 12.0
+  max_separation: 2.0
+
+output:
+  output_dir: "results_13477_verify"
+  verbosity: 1
+  output_file: "verification_13477.txt"
+  xml_file: "verification_13477.xml"
+  json_file: "verification_13477.json"
+  kml_file: "verification_13477.kml"
+  event_card_file: "event_card_13477.pdf"

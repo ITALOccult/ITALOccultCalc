@@ -9,6 +9,7 @@
         "corridor_width": 5.0
     },
     "propagation": {
-        "use_horizons": false
+        "use_horizons": false,
+        "refine_orbit": true
     }
 }

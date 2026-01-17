@@ -31,9 +31,9 @@ target_link_libraries(build_allnum_database PRIVATE ioccultcalc)
 add_executable(test_covariance_loading test_covariance_loading.cpp)
 target_link_libraries(test_covariance_loading PRIVATE ioccultcalc)
 
-# Map generator utility - COMMENTED OUT (missing source file)
-# add_executable(map_generator map_generator.cpp)
-# target_link_libraries(map_generator PRIVATE ioccultcalc)
+# Map generator utility
+add_executable(map_generator map_generator.cpp)
+target_link_libraries(map_generator PRIVATE ioccultcalc)
 
 # Installa le utilities
 install(TARGETS occult_calc gaia_cache_downloader build_allnum_database

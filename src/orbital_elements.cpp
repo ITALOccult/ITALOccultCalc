@@ -64,6 +64,7 @@ OrbitalElements AstDynEquinoctialElements::toKeplerian() const {
     orb.diameter = diameter;
     orb.designation = designation;
     orb.name = name;
+    orb.number = number;
     orb.aliases = aliases;
     
     // Converti elementi
@@ -112,6 +113,7 @@ AstDynEquinoctialElements AstDynEquinoctialElements::fromKeplerian(const Orbital
     eq.designation = orb.designation;
     eq.aliases = orb.aliases;
     eq.diameter = orb.diameter;
+    eq.number = orb.number;
     eq.H = orb.H;
     eq.G = orb.G;
     return eq;
