@@ -75,10 +75,9 @@ struct EllipsoidParameters {
      */
     static EllipsoidParameters WGS84() {
         EllipsoidParameters params;
-        params.equatorial_radius_m = 6378137.0;           // a = 6378.137 km
-        params.flattening = 1.0 / 298.257223563;         // f = 1/298.257223563
-        params.eccentricity_squared = 2.0 * params.flattening - 
-                                     params.flattening * params.flattening;
+        params.equatorial_radius_m = EARTH_RADIUS_WGS84_M;   
+        params.flattening = WGS84_FLATTENING;               
+        params.eccentricity_squared = WGS84_ECCENTRICITY_SQ;
         return params;
     }
     

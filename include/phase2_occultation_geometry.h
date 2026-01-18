@@ -17,6 +17,14 @@ struct ShadowPoint {
     double lat_deg;
     double lon_deg;
     double star_alt_deg;
+    
+    // Limiti Nord/Sud 1-sigma (incertezza orbitale)
+    double north_lat_deg, north_lon_deg;
+    double south_lat_deg, south_lon_deg;
+    
+    // Margini geometrici (raggio asteroide)
+    double geonorth_lat_deg, geonorth_lon_deg;
+    double geosouth_lat_deg, geosouth_lon_deg;
 };
 
 struct Phase2OccultationEvent {

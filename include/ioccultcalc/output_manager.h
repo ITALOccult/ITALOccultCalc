@@ -281,9 +281,23 @@ private:
      * @brief Genera l'immagine della mappa dell'occultazione (Ground Map)
      * Usa IOC_Earth se disponibile.
      */
-    std::string generateGroundMapImage(const OutputEvent& event, 
-                                     int width, int height, 
-                                     const std::string& output_path);
+    std::string generateGroundMapImage(const OutputEvent& event,
+                                      int width, int height,
+                                      const std::string& output_path);
+                                      
+    /**
+     * @brief Genera mappa celeste (Sky Map)
+     */
+    std::string generateSkyMapImage(const OutputEvent& event,
+                                    int width, int height,
+                                    const std::string& output_path);
+                                    
+    /**
+     * @brief Genera Finder Chart (Star Chart)
+     */
+    std::string generateFinderChartImage(const OutputEvent& event,
+                                         int width, int height,
+                                         const std::string& output_path);
 
     // Utility rendering
     std::string generateAsciiMap(const OutputEvent& event,

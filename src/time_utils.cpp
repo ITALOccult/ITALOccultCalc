@@ -127,9 +127,9 @@ JulianDate TimeUtils::now() {
 double TimeUtils::gmst(const JulianDate& jd) {
     // Greenwich Mean Sidereal Time
     // Formula da Meeus
-    double T = (jd.jd - 2451545.0) / 36525.0;
+    double T = (jd.jd - JD_J2000) / 36525.0;
     
-    double gmst = 280.46061837 + 360.98564736629 * (jd.jd - 2451545.0) +
+    double gmst = 280.46061837 + 360.98564736629 * (jd.jd - JD_J2000) +
                   T * T * (0.000387933 - T / 38710000.0);
     
     // Normalizza a [0, 360)
@@ -145,8 +145,8 @@ double TimeUtils::lst(const JulianDate& jd, double longitude) {
     double lstRad = gmstRad + longitude * DEG_TO_RAD;
     
     // Normalizza a [0, 2π)
-    lstRad = fmod(lstRad, 2.0 * M_PI);
-    if (lstRad < 0) lstRad += 2.0 * M_PI;
+    lstRad = fmod(lstRad, TWO_PI);
+    if (lstRad < 0) lstRad += TWO_PI;
     
     return lstRad;
 }
@@ -155,7 +155,7 @@ double TimeUtils::getObliquity(const JulianDate& jd) {
     // Obliquità dell'eclittica (Laskar 1986)
     // Formula per la media obliquità, valida per +/- 10.000 anni
     // T = secoli giuliani (TDB) da J2000.0
-    double T = (jd.jd - 2451545.0) / 36525.0;
+    double T = (jd.jd - JD_J2000) / 36525.0;
     
     // Coefficienti in arcosecondi
     double eps_arcsec = 84381.448 
@@ -175,12 +175,12 @@ JulianDate TimeUtils::ttToTDB(const JulianDate& jd_tt) {
     // Oscillazione periodica dovuta all'orbita terrestre
     
     // Secoli giuliani da J2000.0
-    double T = (jd_tt.jd - 2451545.0) / 36525.0;
+    double T = (jd_tt.jd - JD_J2000) / 36525.0;
     
     // Formula approssimata (accurata a ~10 µs)
     // Termine principale: oscillazione annuale
     double g = 357.53 + 35999.050 * T;  // anomalia media Terra (gradi)
-    g *= M_PI / 180.0;  // → radianti
+    g *= DEG_TO_RAD;  // → radianti
     
     // TDB - TT in secondi
     double tdb_tt_sec = 0.001657 * std::sin(g) + 0.000014 * std::sin(2.0 * g);
@@ -195,9 +195,9 @@ JulianDate TimeUtils::ttToTDB(const JulianDate& jd_tt) {
 
 JulianDate TimeUtils::tdbToTT(const JulianDate& jd_tdb) {
     // Inversione approssimata (iterazione non necessaria per accuratezza ms)
-    double T = (jd_tdb.jd - 2451545.0) / 36525.0;
+    double T = (jd_tdb.jd - JD_J2000) / 36525.0;
     double g = 357.53 + 35999.050 * T;
-    g *= M_PI / 180.0;
+    g *= DEG_TO_RAD;
     
     double tdb_tt_sec = 0.001657 * std::sin(g) + 0.000014 * std::sin(2.0 * g);
     double tdb_tt_days = tdb_tt_sec / 86400.0;

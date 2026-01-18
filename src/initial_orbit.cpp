@@ -22,7 +22,7 @@ namespace ioccultcalc {
 
 // Costanti
 constexpr double GAUSS_K = 0.01720209895;  // Costante di Gauss
-constexpr double PI = 3.1415926535897932384626433832795;
+// Use PI from types.h
 constexpr double AU_PER_DAY = 173.14463272;  // AU in un giorno-luce
 
 // Helper: prodotto misto (A × B) · C
@@ -528,8 +528,8 @@ static bool propagateStateRobust(const double* state_in, double t0, double targe
             elem.M += mean_motion * dt;
             
             // Normalizza M in [0, 2π]
-            elem.M = fmod(elem.M, 2.0 * M_PI);
-            if (elem.M < 0) elem.M += 2.0 * M_PI;
+            elem.M = fmod(elem.M, TWO_PI);
+            if (elem.M < 0) elem.M += TWO_PI;
         } else {
             // Orbite paraboliche/iperboliche non supportate
             return false;
@@ -1341,17 +1341,17 @@ int InitialOrbit::findTransferOrbit(
         double i_retro = acos(h_retro.z / h_retro.magnitude());
         
         // Scegli prograde se < 90°, altrimenti la migliore
-        if (i_pro < M_PI / 2.0) {
+        if (i_pro < PI / 2.0) {
             vel1 = vel1_pro;
             vel2 = vel2_pro;
             result = 0;
-        } else if (i_retro < M_PI / 2.0) {
+        } else if (i_retro < PI / 2.0) {
             vel1 = vel1_retro;
             vel2 = vel2_retro;
             result = 0;
         } else {
             // Entrambe > 90°: scegli quella più vicina a 90°
-            if (std::abs(i_pro - M_PI / 2.0) < std::abs(i_retro - M_PI / 2.0)) {
+            if (std::abs(i_pro - PI / 2.0) < std::abs(i_retro - PI / 2.0)) {
                 vel1 = vel1_pro;
                 vel2 = vel2_pro;
             } else {

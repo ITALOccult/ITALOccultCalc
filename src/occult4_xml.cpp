@@ -350,7 +350,7 @@ std::string Occult4XMLHandler::generateXML(const std::vector<OccultationEvent>& 
 std::string Occult4XMLHandler::generateOccult4EventXML(const OccultationEvent& event) {
     std::ostringstream xml;
     xml << std::fixed << std::setprecision(8);
-    const double rad2deg = 180.0 / M_PI;
+    const double rad2deg = RAD_TO_DEG;
     
     // Time conversion (TDB -> UTC)
     // Delta T for 2026 is approx 69.184 seconds. 

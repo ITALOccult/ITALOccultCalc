@@ -205,7 +205,7 @@ void OrbitFitter::computeEphemerides(const OrbitalElements& elements,
         // 3. Direzione apparente (ICRF)
         Vector3D rho_vec = r_ast_helio - R_obs;
         double ra = std::atan2(rho_vec.y, rho_vec.x);
-        if (ra < 0) ra += 2.0 * M_PI;
+        if (ra < 0) ra += TWO_PI;
         double dec = std::asin(rho_vec.z / rho);
         
         computed.emplace_back(ra, dec, rho * AU);
@@ -259,8 +259,8 @@ OrbitalElements OrbitFitter::updateElements(const OrbitalElements& elements,
     updated.M += corrections[5];
     
     auto normalize = [](double& angle) {
-        angle = std::fmod(angle, 2.0 * M_PI);
-        if (angle < 0) angle += 2.0 * M_PI;
+        angle = std::fmod(angle, TWO_PI);
+        if (angle < 0) angle += TWO_PI;
     };
     normalize(updated.Omega);
     normalize(updated.omega);

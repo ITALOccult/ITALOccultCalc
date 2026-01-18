@@ -57,15 +57,21 @@ std::optional<AsteroidProperties> AsteroidSqliteDatabase::getProperties(int mpcN
     )";
 
     sqlite3_stmt* stmt;
-    if (sqlite3_prepare_v2(db_, sql, -1, &stmt, nullptr) != SQLITE_OK) {
+    int rc = sqlite3_prepare_v2(db_, sql, -1, &stmt, nullptr);
+    if (rc != SQLITE_OK) {
+        std::cerr << "[AsteroidSqliteDatabase] Prepare error: " << sqlite3_errmsg(db_) << std::endl;
         return std::nullopt;
     }
 
     sqlite3_bind_int(stmt, 1, mpcNumber);
 
     std::optional<AsteroidProperties> result;
-    if (sqlite3_step(stmt) == SQLITE_ROW) {
+    int step_rc = sqlite3_step(stmt);
+    if (step_rc == SQLITE_ROW) {
         result = mapRowToProperties(stmt);
+    } else {
+        std::cerr << "[AsteroidSqliteDatabase] No row found for number " << mpcNumber 
+                  << " (rc=" << step_rc << ")" << std::endl;
     }
 
     sqlite3_finalize(stmt);
@@ -82,10 +88,10 @@ std::optional<OrbitalElements> AsteroidSqliteDatabase::getOrbitalElements(int mp
     elem.name = props->name;
     elem.a = props->a;
     elem.e = props->e;
-    elem.i = props->i * (M_PI / 180.0);
-    elem.Omega = props->om * (M_PI / 180.0);
-    elem.omega = props->w * (M_PI / 180.0);
-    elem.M = props->ma * (M_PI / 180.0);
+    elem.i = props->i * DEG_TO_RAD;
+    elem.Omega = props->om * DEG_TO_RAD;
+    elem.omega = props->w * DEG_TO_RAD;
+    elem.M = props->ma * DEG_TO_RAD;
     elem.epoch.jd = props->epoch + 2400000.5;
     elem.H = props->H;
     elem.diameter = props->diameter;

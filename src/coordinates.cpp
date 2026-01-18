@@ -19,7 +19,7 @@ EquatorialCoordinates Coordinates::cartesianToEquatorial(const Vector3D& vec) {
     double dec = asin(vec.z / r);
     double ra = atan2(vec.y, vec.x);
     
-    if (ra < 0) ra += 2.0 * M_PI;
+    if (ra < 0) ra += TWO_PI;
     
     return EquatorialCoordinates(ra, dec, r);
 }
@@ -150,7 +150,7 @@ double Coordinates::positionAngle(const EquatorialCoordinates& from,
                      cos(from.dec) * tan(to.dec) - sin(from.dec) * cos(dra));
     
     // Normalizza a [0, 2π)
-    if (pa < 0) pa += 2.0 * M_PI;
+    if (pa < 0) pa += TWO_PI;
     
     return pa;
 }
@@ -179,7 +179,7 @@ void Coordinates::vectorToRaDec(const Vector3D& vec, double& ra_rad, double& dec
     
     // Normalizza RA a [0, 2π)
     if (ra_rad < 0) {
-        ra_rad += 2.0 * M_PI;
+        ra_rad += TWO_PI;
     }
 }
 

@@ -412,9 +412,9 @@ AstrometricObservation MPCClient::parseRWOLine(const std::string& line) {
         double dayFrac = day - dayInt;
         obs.epoch = TimeUtils::calendarToJD(year, month, dayInt, 0, 0, dayFrac * 86400.0);
         
-        // Parsing RA: colonne 51-63 (Fortran 1-based) = substr(50, 13) (C++ 0-based)
+        // RA: colonne 51-62 (Fortran 1-based) = substr(50, 12) (C++ 0-based)
         // Esempio: "06 08 59.320"
-        std::string raStr = line.substr(50, 13);
+        std::string raStr = line.substr(50, 12);
         std::istringstream raStream(raStr);
         
         int raH, raM;
@@ -428,8 +428,8 @@ AstrometricObservation MPCClient::parseRWOLine(const std::string& line) {
         double raHours = raH + raM / 60.0 + raS / 3600.0;
         obs.obs.ra = raHours * 15.0 * DEG_TO_RAD;
         
-        // Parsing Dec: robustly handle signs and leading spaces
-        std::string decStrFull = line.substr(100, 20); // Get a slice that definitely contains Dec
+        // Parsing Dec: robustly handle signs and leading spaces (col 104 -> 103)
+        std::string decStrFull = line.substr(103, 13); // Get a slice that definitely contains Dec
         size_t first_non_space = decStrFull.find_first_not_of(" \t");
         if (first_non_space == std::string::npos) {
             throw std::runtime_error("Empty Dec field in RWO");

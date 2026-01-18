@@ -252,13 +252,7 @@ public:
     Statistics getStatistics() const;
     void resetStatistics();
     
-    // ========================================================================
-    // Constants
-    // ========================================================================
-    
-    static constexpr double SPEED_OF_LIGHT = 299792.458;      ///< km/s
-    static constexpr double LIGHT_TIME_AU = 499.004783836;    ///< seconds for 1 AU
-    static constexpr double AU_TO_KM = 149597870.7;           ///< km per AU
+    // Unified constants are now in ioccultcalc/types.h
     
 private:
     class Impl;

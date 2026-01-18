@@ -298,6 +298,9 @@ target_link_libraries(check_asteroid_pos ioccultcalc)
 add_executable(jpl_comparison ../jpl_comparison.cpp)
 target_link_libraries(jpl_comparison ioccultcalc)
 
+add_executable(example_astdyn_fitting example_astdyn_fitting.cpp)
+target_link_libraries(example_astdyn_fitting ioccultcalc)
+
 # Test massivo 1000 asteroidi - Gennaio 2026
 add_executable(test_massive_jan2026 test_massive_jan2026.cpp)
 target_link_libraries(test_massive_jan2026 ioccultcalc)

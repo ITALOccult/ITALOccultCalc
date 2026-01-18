@@ -312,8 +312,12 @@ OrbitalElements JPLHorizonsClient::parseOrbitalElements(const std::string& respo
     
     lineStream >> jdStr >> dateStr; // Skip JDTDB e data
     // Date è formato "A.D. YYYY-MMM-DD HH:MM:SS.SSSS (TDB)", skip finché non troviamo (TDB)
-    while (dateStr.find("(TDB)") == std::string::npos) {
-        lineStream >> dateStr;
+    while (lineStream >> dateStr && dateStr.find("TDB") == std::string::npos) {
+        // Skip tokens until "TDB" is found
+    }
+    
+    if (lineStream.fail() && dateStr.find("TDB") == std::string::npos) {
+        throw std::runtime_error("Impossibile trovare il marcatore TDB nella data Horizons");
     }
     
     // Ora leggi gli elementi
@@ -324,10 +328,10 @@ OrbitalElements JPLHorizonsClient::parseOrbitalElements(const std::string& respo
     // Converti da formato Horizons a OrbitalElements
     elem.a = a;                              // Semi-major axis (AU)
     elem.e = ec;                             // Eccentricity
-    elem.i = in_deg * M_PI / 180.0;         // Inclination (rad)
-    elem.Omega = om_deg * M_PI / 180.0;     // Long. of ascending node (rad)
-    elem.omega = w_deg * M_PI / 180.0;      // Argument of perihelion (rad)
-    elem.M = ma_deg * M_PI / 180.0;         // Mean anomaly (rad)
+    elem.i = in_deg * DEG_TO_RAD;         // Inclination (rad)
+    elem.Omega = om_deg * DEG_TO_RAD;     // Long. of ascending node (rad)
+    elem.omega = w_deg * DEG_TO_RAD;      // Argument of perihelion (rad)
+    elem.M = ma_deg * DEG_TO_RAD;         // Mean anomaly (rad)
     
     // Epoch dal JDTDB
     double jd;

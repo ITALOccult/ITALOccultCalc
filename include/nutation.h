@@ -25,6 +25,7 @@
 
 #include <cmath>
 #include <array>
+#include "ioccultcalc/types.h"
 
 namespace ioccultcalc {
 
@@ -185,7 +186,7 @@ private:
      * @brief Convert arcseconds to radians
      */
     static constexpr double arcsecToRad(double arcsec) {
-        return arcsec * (M_PI / (180.0 * 3600.0));
+        return arcsec * ARCSEC_TO_RAD;
     }
     
     /**

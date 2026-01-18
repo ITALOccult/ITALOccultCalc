@@ -126,8 +126,8 @@ EquatorialCoordinates GaiaStar::propagateToEpoch(const JulianDate& epoch) const 
     double newDec = pos.dec + pmdec_rad * deltaYears;
     
     // Normalizza RA
-    while (newRA < 0) newRA += 2.0 * M_PI;
-    while (newRA >= 2.0 * M_PI) newRA -= 2.0 * M_PI;
+    while (newRA < 0) newRA += TWO_PI;
+    while (newRA >= TWO_PI) newRA -= TWO_PI;
     
     return EquatorialCoordinates(newRA, newDec, pos.distance);
 }

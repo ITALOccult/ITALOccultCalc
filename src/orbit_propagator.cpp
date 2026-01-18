@@ -22,7 +22,7 @@ static constexpr double AU_TO_KM = 149597870.7;
 static constexpr double DAY_TO_SEC = 86400.0;
 static constexpr double GM_SUN = 1.32712440041279419e11;  // km³/s²
 static constexpr double GM_SUN_AU = GM_SUN / (AU_TO_KM * AU_TO_KM * AU_TO_KM) * (DAY_TO_SEC * DAY_TO_SEC);  // AU³/day²
-static constexpr double C_LIGHT_AU_DAY = 299792.458 * DAY_TO_SEC / AU_TO_KM;  // AU/day
+// Use C_LIGHT_AU_DAY from types.h
 
 // GM pianeti in AU³/day² (valori da JPL DE441)
 // https://ssd.jpl.nasa.gov/astro_par.html
@@ -165,21 +165,21 @@ OrbitState OrbitPropagator::elementsToState(const AstDynEquinoctialElements& ele
     } else {
         pol = atan2(elements.h, elements.k);
         // Normalize to [-pi, pi]
-        while (pol > M_PI) pol -= 2.0 * M_PI;
-        while (pol < -M_PI) pol += 2.0 * M_PI;
+        while (pol > PI) pol -= TWO_PI;
+        while (pol < -PI) pol += TWO_PI;
     }
     
     // Normalize pml to [pol, pol + 2*pi]
-    while (pml > M_PI) pml -= 2.0 * M_PI;
-    while (pml < -M_PI) pml += 2.0 * M_PI;
+    while (pml > PI) pml -= TWO_PI;
+    while (pml < -PI) pml += TWO_PI;
     if (pml < pol) {
-        pml += 2.0 * M_PI;
+        pml += TWO_PI;
     }
     
     // Newton's method to solve Kepler equation in equinoctial form:
     // F - k*sin(F) + h*cos(F) - lambda = 0
     // Starting guess
-    double el = M_PI + pol;
+    double el = PI + pol;
     const int iter_max = 25;
     
     for (int j = 0; j < iter_max; j++) {
@@ -236,7 +236,7 @@ OrbitState OrbitPropagator::elementsToState(const AstDynEquinoctialElements& ele
     
     // Position and velocity are in ECLM J2000 (ecliptic frame)
     // Convert to EQUATORIAL J2000 for the propagator
-    constexpr double obliquity = 23.4392911 * M_PI / 180.0;
+    constexpr double obliquity = OBLIQUITY_J2000;
     double cos_eps = cos(obliquity);
     double sin_eps = sin(obliquity);
     
@@ -277,7 +277,7 @@ AstDynEquinoctialElements OrbitPropagator::stateToElements(const OrbitState& sta
     // I vettori in input sono in frame EQUATORIALE (da Horizons)
     // Ma elementsToState assume elementi in frame ECLITTICO
     // Quindi convertiamo vettori equatoriali → eclittici
-    constexpr double obliquity = 23.4392911 * M_PI / 180.0;
+    constexpr double obliquity = OBLIQUITY_J2000;
     double cos_eps = cos(obliquity);
     double sin_eps = sin(obliquity);
     
@@ -321,7 +321,7 @@ AstDynEquinoctialElements OrbitPropagator::stateToElements(const OrbitState& sta
     double Omega;
     if (n_mag > 1e-10) {
         Omega = acos(n_vec.x / n_mag);
-        if (n_vec.y < 0) Omega = 2.0 * M_PI - Omega;
+        if (n_vec.y < 0) Omega = TWO_PI - Omega;
     } else {
         Omega = 0.0;  // Orbita equatoriale
     }
@@ -334,7 +334,7 @@ AstDynEquinoctialElements OrbitPropagator::stateToElements(const OrbitState& sta
         if (cos_omega > 1.0) cos_omega = 1.0;
         if (cos_omega < -1.0) cos_omega = -1.0;
         omega = acos(cos_omega);
-        if (e_vec.z < 0) omega = 2.0 * M_PI - omega;
+        if (e_vec.z < 0) omega = TWO_PI - omega;
     } else {
         omega = 0.0;
     }
@@ -346,11 +346,11 @@ AstDynEquinoctialElements OrbitPropagator::stateToElements(const OrbitState& sta
         if (cos_nu > 1.0) cos_nu = 1.0;
         if (cos_nu < -1.0) cos_nu = -1.0;
         nu = acos(cos_nu);
-        if (r.dot(v) < 0) nu = 2.0 * M_PI - nu;
+        if (r.dot(v) < 0) nu = TWO_PI - nu;
     } else {
         // Orbita circolare, usa longitudine
         nu = atan2(r.y, r.x) - Omega - omega;
-        if (nu < 0) nu += 2.0 * M_PI;
+        if (nu < 0) nu += TWO_PI;
     }
     
     // Anomalia eccentrica
@@ -358,7 +358,7 @@ AstDynEquinoctialElements OrbitPropagator::stateToElements(const OrbitState& sta
     
     // Anomalia media
     double M = E - e * sin(E);
-    if (M < 0) M += 2.0 * M_PI;
+    if (M < 0) M += TWO_PI;
     
     // Converti in elementi equinoziali
     AstDynEquinoctialElements elem;
@@ -370,8 +370,8 @@ AstDynEquinoctialElements OrbitPropagator::stateToElements(const OrbitState& sta
     elem.lambda = M + omega + Omega;
     
     // Normalizza lambda in [0, 2π]
-    while (elem.lambda < 0) elem.lambda += 2.0 * M_PI;
-    while (elem.lambda >= 2.0 * M_PI) elem.lambda -= 2.0 * M_PI;
+    while (elem.lambda < 0) elem.lambda += TWO_PI;
+    while (elem.lambda >= TWO_PI) elem.lambda -= TWO_PI;
     
     elem.epoch = state.epoch;
     elem.designation = "";  // Da riempire dal chiamante
@@ -583,7 +583,7 @@ Vector3D OrbitPropagator::computeAcceleration(const JulianDate& jd,
         // Costante solare: 1361 W/m² a 1 AU
         constexpr double SOLAR_CONSTANT = 1361.0;  // W/m²
         constexpr double C_LIGHT_MS = 299792458.0;  // m/s
-        constexpr double AU_TO_M = 149597870700.0;  // m
+        constexpr double AU_TO_M = AU * 1000.0;     // m (AU from types.h)
         
         // Pressione = L_sun / (4π c r²)
         double pressure = SOLAR_CONSTANT / (C_LIGHT_MS * r_sun * r_sun);  // N/m² normalizzato per AU²

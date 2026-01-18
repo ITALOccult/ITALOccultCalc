@@ -13,12 +13,7 @@
 
 namespace ioccultcalc {
 
-// Costanti astronomiche (valori JPL DE441) - namespace anonimo per evitare conflitti
-namespace {
-    constexpr double AU_KM = 149597870.7;           // 1 AU in km
-    constexpr double C_LIGHT_KM = 299792.458;       // km/s
-    constexpr double GM_SUN_KM = 1.32712440041279419e11;  // km³/s²
-}
+// Use constants from types.h
 
 // Definizione della struttura SPKFile interna
 class JPLEphemerisReader::SPKFile {
@@ -193,8 +188,8 @@ JPLEphemerisReader::JPLEphemerisReader()
 {
     // Inizializza costanti fisiche (valori JPL DE441)
     constants_.AU = AU_KM;
-    constants_.c = C_LIGHT_KM;
-    constants_.GM_Sun = GM_SUN_KM;
+    constants_.c = C_LIGHT_KM_S;
+    constants_.GM_Sun = GMS_KM3_S2;
     constants_.GM_Earth = 398600.435436;  // km³/s²
     constants_.GM_Moon = 4902.800066;
     constants_.EMRAT = 81.30056;
@@ -336,7 +331,7 @@ Vector3D JPLEphemerisState::velocityAU_day() const {
 }
 
 JPLConstants::JPLConstants() 
-    : AU(AU_KM), c(C_LIGHT_KM), GM_Sun(GM_SUN_KM),
+    : AU(AU_KM), c(C_LIGHT_KM_S), GM_Sun(GMS_KM3_S2),
       GM_Earth(398600.435436), GM_Moon(4902.800066),
       EMRAT(81.30056), J2_Sun(2.0e-7) {
     // Inizializza array GM_planets

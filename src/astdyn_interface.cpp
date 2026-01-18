@@ -22,16 +22,37 @@ OrbitalElements AstDySElements::toOrbitalElements() const {
     elem.epoch.jd = epoch_mjd + 2400000.5;
     elem.a = a;
     elem.e = e;
-    elem.i = i * M_PI / 180.0;
-    elem.Omega = Omega * M_PI / 180.0;
-    elem.omega = omega * M_PI / 180.0;
-    elem.M = M * M_PI / 180.0;
+    elem.i = i * DEG_TO_RAD;
+    elem.Omega = Omega * DEG_TO_RAD;
+    elem.omega = omega * DEG_TO_RAD;
+    elem.M = M * DEG_TO_RAD;
     elem.H = H;
     elem.G = G;
     return elem;
 }
 
-// TODO: Implement fromFile, download, etc.
+AstDySElements AstDySElements::fromFile(const std::string& filename) {
+    try {
+        auto equ = astdyn::api::OrbitFitAPI::parse_eq1(filename);
+        AstDySElements out;
+        out.name = "Unknown"; // parse_eq1 doesn't return name yet
+        out.number = 0;
+        out.a = equ.a;
+        // Convert Equinoctial to Keplerian for AstDySElements storage (Degrees)
+        auto kep = astdyn::propagation::equinoctial_to_keplerian(equ);
+        out.a = kep.semi_major_axis;
+        out.e = kep.eccentricity;
+        out.i = kep.inclination * RAD_TO_DEG;
+        out.omega = kep.argument_perihelion * RAD_TO_DEG;
+        out.Omega = kep.longitude_ascending_node * RAD_TO_DEG;
+        out.M = kep.mean_anomaly * RAD_TO_DEG;
+        out.epoch_mjd = equ.epoch_mjd_tdb;
+        out.has_covariance = false;
+        return out;
+    } catch (const std::exception& e) {
+        throw std::runtime_error("AstDySElements::fromFile failed: " + std::string(e.what()));
+    }
+}
 
 // ============================================================================
 // RWOObservation Implementation
@@ -40,15 +61,31 @@ OrbitalElements AstDySElements::toOrbitalElements() const {
 AstrometricObservation RWOObservation::toObservation() const {
     AstrometricObservation obs;
     obs.epoch.jd = mjd_utc + 2400000.5;
-    obs.obs.ra = ra_deg * M_PI / 180.0;
-    obs.obs.dec = dec_deg * M_PI / 180.0;
+    obs.obs.ra = ra_deg * DEG_TO_RAD;
+    obs.obs.dec = dec_deg * DEG_TO_RAD;
     obs.raError = ra_sigma_arcsec;
     obs.decError = dec_sigma_arcsec;
     obs.observatoryCode = obs_code;
     return obs;
 }
 
-// TODO: Implement fromFile, download, etc.
+std::vector<RWOObservation> RWOObservation::fromFile(const std::string& filename) {
+    auto internal_obs = astdyn::observations::RWOReader::readFile(filename);
+    std::vector<RWOObservation> out;
+    for (const auto& o : internal_obs) {
+        RWOObservation r;
+        r.designation = o.object_designation;
+        r.mjd_utc = o.mjd_utc;
+        r.ra_deg = o.ra * (180.0 / M_PI);
+        r.dec_deg = o.dec * (180.0 / M_PI);
+        r.ra_sigma_arcsec = o.sigma_ra * (180.0 / M_PI) * 3600.0;
+        r.dec_sigma_arcsec = o.sigma_dec * (180.0 / M_PI) * 3600.0;
+        r.obs_code = o.observatory_code;
+        r.magnitude = o.magnitude.value_or(0.0);
+        out.push_back(r);
+    }
+    return out;
+}
 
 // ============================================================================
 // OrbitFitResult Implementation
@@ -118,7 +155,7 @@ AstDynOrbitFitter::~AstDynOrbitFitter() = default;
 void AstDynOrbitFitter::setOutlierThreshold(double sigma) { pimpl_->outlierThreshold = sigma; }
 void AstDynOrbitFitter::setMaxIterations(int max_iter) { pimpl_->maxIterations = max_iter; }
 // Geometric Constants
-const double OBLIQUITY_J2000 = 23.43927944 * M_PI / 180.0;
+// Use OBLIQUITY_J2000 from types.h
 
 // Conversion Helpers
 struct Cartesian { double x, y, z, vx, vy, vz; };
@@ -126,10 +163,10 @@ struct Cartesian { double x, y, z, vx, vy, vz; };
 static Cartesian keplerianToCartesianElem(const AstDySElements& el) {
     double a = el.a;
     double e = el.e;
-    double i = el.i * M_PI / 180.0;
-    double O = el.Omega * M_PI / 180.0;
-    double w = el.omega * M_PI / 180.0;
-    double M = el.M * M_PI / 180.0;
+    double i = el.i * DEG_TO_RAD;
+    double O = el.Omega * DEG_TO_RAD;
+    double w = el.omega * DEG_TO_RAD;
+    double M = el.M * DEG_TO_RAD;
     
     // Solve Kepler
     double E = M;
@@ -256,26 +293,23 @@ static AstDySElements cartesianToKeplerianElem(const Cartesian& c, double epoch,
     el.epoch_mjd = epoch;
     el.a = a;
     el.e = e;
-    el.i = i * 180.0 / M_PI;
-    el.Omega = O * 180.0 / M_PI;
-    el.omega = w * 180.0 / M_PI;
-    el.M = M * 180.0 / M_PI;
+    el.i = i * RAD_TO_DEG;
+    el.Omega = O * RAD_TO_DEG;
+    el.omega = w * RAD_TO_DEG;
+    el.M = M * RAD_TO_DEG;
     return el;
 }
 
 static AstDySElements convertEclipticToEquatorial(const AstDySElements& el) {
     Cartesian c = keplerianToCartesianElem(el);
     
-    // Rotate -Obliquity (Ecl -> Eq)
-    // Rx(-eps):
+    // Rotate +Obliquity (Ecl -> Eq)
+    // Rx(eps):
     // y' = y c - z s
     // z' = y s + z c
-    // wait, eps is positive (~23 deg). R_x(-eps)?
-    // Ecliptic has Z axis tilted by +eps relative to Eq Z.
-    // So to go Ecl -> Eq, we rotate Z axis BACK by -eps. Correct.
     double eps = OBLIQUITY_J2000;
-    double co = std::cos(-eps);
-    double so = std::sin(-eps);
+    double co = std::cos(eps);
+    double so = std::sin(eps);
     
     Cartesian eq;
     eq.x  = c.x;
@@ -294,6 +328,11 @@ void AstDynOrbitFitter::setVerbose(bool verbose) { pimpl_->verbose = verbose; }
 // Helper per scrivere file RWO (Strict OrbFit Format)
 static void writeRWO(const std::string& path, const std::string& name, const std::vector<RWOObservation>& obs) {
     std::ofstream f(path);
+    if (!f.is_open()) {
+        std::cerr << "CRITICAL ERROR: Cannot open RWO file for writing: " << path << std::endl;
+        return;
+    }
+    
     f << " OBJECT: " << name << "\n";
     f << " errmod: iau_2010\n";
     f << " version: 1.0\n";
@@ -344,36 +383,38 @@ static void writeRWO(const std::string& path, const std::string& name, const std
         // Date (col 18 -> 17). Format: "YYYY MM DD.dddddddddd" (21 chars)
         char date_buf[32];
         snprintf(date_buf, sizeof(date_buf), "%04d %02d %013.10f", y, m, d);
-        // Copy to line starting at 17
         for(int i=0; i<21 && date_buf[i]; ++i) line[17+i] = date_buf[i];
-
-        // RA (col 51 -> 50). Format: "HH MM SS.ssssss" (from code seems 12 chars?)
-        // RWOReader: I2,1X,I2,1X,F6.6 (12 chars: 2+1+2+1+6 = 12?) No F6.6 is 6 chars. 2+1+2+1+6 = 12.
+        
+        // RA (col 51 -> 50). Format: "HH MM SS.sss" (12 chars)
         char ra_buf[32];
-        snprintf(ra_buf, sizeof(ra_buf), "%02d %02d %06.3f", rh, rm, rs); // Using %06.3f to fit roughly
-        // Better: "%02d %02d %09.6f" (2+1+2+1+9 = 15 chars). 
-        // Reader expects at 50.
-        // Let's use flexible string put.
-        snprintf(ra_buf, sizeof(ra_buf), "%02d %02d %09.6f", rh, rm, rs);
-        for(int i=0; i<15 && ra_buf[i]; ++i) line[50+i] = ra_buf[i];
+        snprintf(ra_buf, sizeof(ra_buf), "%02d %02d %06.3f", rh, rm, rs);
+        for(int i=0; i<12 && ra_buf[i]; ++i) line[50+i] = ra_buf[i];
 
-        // Dec (Start determined by reader to be around 104)
-        // Reader: dec_start = ra_start (50) + 12 (RA field len?) + ... approx 104.
-        // Let's look at READER: size_t dec_start = ra_start + 12 + 1 + 10 + 1 + 8 + 1 + 1 + 1 + 8 + 9 + 1;
-        // 50 + 12 + ... = 104 approx.
-        // Wait, line substr(dec_start, 13). 
-        // Let's put it at 104.
+        // RA RMS (col 74 -> 73). Format: "xxxx.xxxx" (9 chars)
+        char ra_rms[16];
+        snprintf(ra_rms, sizeof(ra_rms), "%9.4f", o.ra_sigma_arcsec);
+        for(int i=0; i<9 && ra_rms[i]; ++i) line[73+i] = ra_rms[i];
+
+        // Dec (col 104 -> 103). Format: "sDD MM SS.ss" (13 chars)
         char dec_buf[32];
         snprintf(dec_buf, sizeof(dec_buf), "%c%02d %02d %05.2f", sign, dd, dm, ds);
-        for(int i=0; i<13 && dec_buf[i]; ++i) line[104+i] = dec_buf[i];
+        for(int i=0; i<13 && dec_buf[i]; ++i) line[103+i] = dec_buf[i];
+        
+        // Dec RMS (col 127 -> 126). Format: "xxxx.xxxx" (9 chars)
+        char dec_rms[16];
+        snprintf(dec_rms, sizeof(dec_rms), "%9.4f", o.dec_sigma_arcsec);
+        for(int i=0; i<9 && dec_rms[i]; ++i) line[126+i] = dec_rms[i];
 
-        // ObsCode (End of line)
-        // Put it at 150
-        std::string code = o.obs_code;
-        for(size_t i=0; i<code.length(); ++i) line[150+i] = code[i];
+        // ObsCode (col 151 -> 150)
+        std::string o_code = o.obs_code;
+        if (o_code.empty()) o_code = "500";
+        if (o_code.length() > 3) o_code = o_code.substr(0, 3);
+        for(size_t i=0; i<o_code.length(); ++i) line[150+i] = o_code[i];
 
+        line[199] = '\0'; // Ensure termination
         f << line << "\n";
     }
+    f.close();
 }
 
 // Helper per scrivere file EQ1 (Equinoctial with formal headers)
@@ -381,10 +422,10 @@ static void writeEQ1(const std::string& path, const AstDySElements& el) {
     // Converti Keplerian (Degrees) -> Equinoctial
     double a = el.a;
     double e = el.e;
-    double i_rad = el.i * M_PI / 180.0;
-    double Omega_rad = el.Omega * M_PI / 180.0;
-    double omega_rad = el.omega * M_PI / 180.0;
-    double M_rad = el.M * M_PI / 180.0;
+    double i_rad = el.i * DEG_TO_RAD;
+    double Omega_rad = el.Omega * DEG_TO_RAD;
+    double omega_rad = el.omega * DEG_TO_RAD;
+    double M_rad = el.M * DEG_TO_RAD;
     
     double h = e * std::sin(omega_rad + Omega_rad);
     double k = e * std::cos(omega_rad + Omega_rad);
@@ -398,17 +439,22 @@ static void writeEQ1(const std::string& path, const AstDySElements& el) {
     while (lambda_rad >= 2.0*M_PI) lambda_rad -= 2.0*M_PI;
 
     std::ofstream f(path);
-    f << " OBJECT: " << el.name << "\n";
-    f << " FORMAT: OEF2.0\n";
-    f << " TYPE: EQUINOCTIAL\n";
-    f << " FRAME: EQUATORIAL J2000\n"; 
-    f << " EPOCH: " << std::fixed << std::setprecision(8) << el.epoch_mjd + 2400000.5 << "\n";
-    // Write lambda in RADIANS if parser expects it, or DEGREES. 
-    // Trying RADIANS as degrees failed (gave divergent fit).
-    // Actually, let's try DEGREES *but properly headered*. 
-    // If divergent before, maybe it expected radians.
-    // Let's write RADIANS.
-    f << " EQU " << std::setprecision(16) << a << " " << h << " " << k << " " << p << " " << q << " " << lambda_rad << "\n";
+    if (!f.is_open()) {
+        std::cerr << "CRITICAL ERROR: Cannot open EQ1 file for writing: " << path << std::endl;
+        return;
+    }
+
+    // Header standard per evitare errori se il parser è pignolo
+    f << "format  = 'OEF2.0'       ! file format\n";
+    f << "rectype = 'ML'           ! record type (1L/ML)\n";
+    f << "refsys  = 'ECLM J2000'   ! reference system (Mean Ecliptic)\n";
+    f << "END_OF_HEADER\n";
+    
+    // Semplificato: parole chiave all'inizio della riga
+    f << "EQU " << std::fixed << std::setprecision(16) 
+      << a << " " << h << " " << k << " " << p << " " << q << " " << (lambda_rad * RAD_TO_DEG) << "\n";
+    f << "MJD " << std::fixed << std::setprecision(8) << el.epoch_mjd << " TDT\n";
+    f.close();
 }
 
 OrbitFitResult AstDynOrbitFitter::fit(const AstDySElements& initial_elements,
@@ -427,11 +473,11 @@ OrbitFitResult AstDynOrbitFitter::fit(const AstDySElements& initial_elements,
     Cartesian eq_c = keplerianToCartesianElem(init_eq);
     Cartesian ecl_back;
     ecl_back.x = eq_c.x;
-    ecl_back.y = eq_c.y * co - eq_c.z * so;
-    ecl_back.z = eq_c.y * so + eq_c.z * co;
+    ecl_back.y = eq_c.y * co + eq_c.z * so;
+    ecl_back.z = -eq_c.y * so + eq_c.z * co;
     ecl_back.vx = eq_c.vx;
-    ecl_back.vy = eq_c.vy * co - eq_c.vz * so;
-    ecl_back.vz = eq_c.vy * so + eq_c.vz * co;
+    ecl_back.vy = eq_c.vy * co + eq_c.vz * so;
+    ecl_back.vz = -eq_c.vy * so + eq_c.vz * co;
     AstDySElements back = cartesianToKeplerianElem(ecl_back, init_eq.epoch_mjd, init_eq.name);
     
     std::cout << "Debug Rotation:\n"
@@ -439,7 +485,9 @@ OrbitFitResult AstDynOrbitFitter::fit(const AstDySElements& initial_elements,
               << " Eq:   i=" << init_eq.i << " O=" << init_eq.Omega << " w=" << init_eq.omega << "\n"
               << " Back: i=" << back.i << " O=" << back.Omega << " w=" << back.omega << "\n";
               
-    writeEQ1(tmp_eq1, init_eq);
+    // Write ORIGINAL (Ecliptic) elements to EQ1 file.
+    // OrbitFitAPI::run_fit will handle the Ecliptic -> Equatorial transformation.
+    writeEQ1(tmp_eq1, initial_elements);
     writeRWO(tmp_rwo, init_eq.name, observations);
     
     // Debug info
@@ -457,13 +505,16 @@ OrbitFitResult AstDynOrbitFitter::fit(const AstDySElements& initial_elements,
     try {
         auto res = astdyn::api::OrbitFitAPI::run_fit(tmp_eq1, tmp_rwo, "", true);
         
-        std::cout << "[AstDynOrbitFitter] run_fit returned: success=" << res.success 
-                  << " msg='" << res.message << "'"
-                  << " n_obs=" << res.num_observations 
-                  << " n_out=" << res.num_outliers << "\n";
+        std::cout << "[AstDynOrbitFitter] run_fit finished. success=" << res.success 
+                  << " msg='" << res.message << "'\n";
 
         OrbitFitResult out;
-        if (res.success && res.num_observations > 0 && (res.num_observations - res.num_outliers) > 0) {
+        out.n_observations = 0;
+        out.n_used = 0;
+        out.n_outliers = 0;
+        out.rms_total_arcsec = 0;
+        
+        if (res.success && res.num_observations > 0) {
             out.n_observations = res.num_observations;
             out.n_outliers = res.num_outliers;
             out.n_used = out.n_observations - out.n_outliers;
@@ -475,18 +526,32 @@ OrbitFitResult AstDynOrbitFitter::fit(const AstDySElements& initial_elements,
             // Aggiorna elementi con quelli fittati
             out.fitted_elements.a = res.fitted_orbit.semi_major_axis;
             out.fitted_elements.e = res.fitted_orbit.eccentricity;
-            out.fitted_elements.i = res.fitted_orbit.inclination * 180.0 / M_PI;
-            out.fitted_elements.Omega = res.fitted_orbit.longitude_ascending_node * 180.0 / M_PI;
-            out.fitted_elements.omega = res.fitted_orbit.argument_perihelion * 180.0 / M_PI;
-            out.fitted_elements.M = res.fitted_orbit.mean_anomaly * 180.0 / M_PI;
+            out.fitted_elements.i = res.fitted_orbit.inclination * RAD_TO_DEG;
+            out.fitted_elements.Omega = res.fitted_orbit.longitude_ascending_node * RAD_TO_DEG;
+            out.fitted_elements.omega = res.fitted_orbit.argument_perihelion * RAD_TO_DEG;
+            out.fitted_elements.M = res.fitted_orbit.mean_anomaly * RAD_TO_DEG;
             out.fitted_elements.epoch_mjd = res.fitted_orbit.epoch_mjd_tdb;
+
+            // Estrarre covarianza se presente
+            if (res.fitted_orbit.covariance.has_value()) {
+                const auto& cov = *res.fitted_orbit.covariance;
+                out.fitted_elements.has_covariance = true;
+                out.fitted_elements.covariance.clear();
+                out.fitted_elements.covariance.reserve(21); // Triangolo superiore 6x6
+                for (int i = 0; i < 6; ++i) {
+                    for (int j = i; j < 6; ++j) {
+                        out.fitted_elements.covariance.push_back(cov(i, j));
+                    }
+                }
+            } else {
+                out.fitted_elements.has_covariance = false;
+            }
         } else {
             out.n_used = 0;
             out.n_observations = 0;
             out.fitted_elements = initial_elements;
         }
         
-        return out;
         return out;
     } catch (const std::exception& e) {
         std::cerr << "AstDynOrbitFitter::fit EXCEPTION: " << e.what() << std::endl;
@@ -541,14 +606,24 @@ AstDySElements toAstDySElements(const OrbitalElements& elem) {
     out.number = elem.number;
     out.a = elem.a;
     out.e = elem.e;
-    out.i = elem.i * 180.0 / M_PI;
-    out.Omega = elem.Omega * 180.0 / M_PI;
-    out.omega = elem.omega * 180.0 / M_PI;
-    out.M = elem.M * 180.0 / M_PI;
+    out.i = elem.i * RAD_TO_DEG;
+    out.Omega = elem.Omega * RAD_TO_DEG;
+    out.omega = elem.omega * RAD_TO_DEG;
+    out.M = elem.M * RAD_TO_DEG;
     out.epoch_mjd = elem.epoch.jd - 2400000.5;
     out.H = elem.H;
     out.G = elem.G;
-    out.has_covariance = false;
+    out.has_covariance = false; 
+
+    // Se stiamo usando un framework che popola OrbitalElements con covarianza
+    // dovremmo copiarla qui. Per ora assumiamo che provenga da AstDySElements.
+    // Tuttavia, aggiungiamo lo scheletro per il futuro:
+    /*
+    if (elem.has_covariance) {
+        out.has_covariance = true;
+        out.covariance = elem.covariance;
+    }
+    */
     return out;
 }
 
@@ -574,8 +649,8 @@ RWOObservation toRWOObservation(const AstrometricObservation& obs) {
     // Already defined? No, this is the implementation file.
     RWOObservation rwo;
     rwo.mjd_utc = obs.epoch.jd - 2400000.5;
-    rwo.ra_deg = obs.obs.ra * 180.0 / M_PI;
-    rwo.dec_deg = obs.obs.dec * 180.0 / M_PI;
+    rwo.ra_deg = obs.obs.ra * RAD_TO_DEG;
+    rwo.dec_deg = obs.obs.dec * RAD_TO_DEG;
     rwo.ra_sigma_arcsec = obs.raError;
     rwo.dec_sigma_arcsec = obs.decError;
     rwo.obs_code = obs.observatoryCode;
@@ -585,8 +660,8 @@ RWOObservation toRWOObservation(const AstrometricObservation& obs) {
 AstrometricObservation fromRWOObservation(const RWOObservation& rwo) {
     AstrometricObservation obs;
     obs.epoch.jd = rwo.mjd_utc + 2400000.5;
-    obs.obs.ra = rwo.ra_deg * M_PI / 180.0;
-    obs.obs.dec = rwo.dec_deg * M_PI / 180.0;
+    obs.obs.ra = rwo.ra_deg * DEG_TO_RAD;
+    obs.obs.dec = rwo.dec_deg * DEG_TO_RAD;
     obs.raError = rwo.ra_sigma_arcsec;
     obs.decError = rwo.dec_sigma_arcsec;
     obs.observatoryCode = rwo.obs_code;

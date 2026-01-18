@@ -278,21 +278,21 @@ bool GaussOrbitDeterminer::vectorsToElements(const Vector3D& r, const Vector3D& 
     double Omega = 0;
     if (n_mag > 1e-10) {
         Omega = acos(n.x / n_mag);
-        if (n.y < 0) Omega = 2.0 * M_PI - Omega;
+        if (n.y < 0) Omega = TWO_PI - Omega;
     }
     
     // Argomento periapside
     double omega = 0;
     if (n_mag > 1e-10 && e > 1e-10) {
         omega = acos(dot(n, e_vec) / (n_mag * e));
-        if (e_vec.z < 0) omega = 2.0 * M_PI - omega;
+        if (e_vec.z < 0) omega = TWO_PI - omega;
     }
     
     // Anomalia vera
     double nu = 0;
     if (e > 1e-10) {
         nu = acos(dot(e_vec, r) / (e * r_mag));
-        if (dot(r, v) < 0) nu = 2.0 * M_PI - nu;
+        if (dot(r, v) < 0) nu = TWO_PI - nu;
     }
     
     // Anomalia eccentrica
@@ -300,8 +300,8 @@ bool GaussOrbitDeterminer::vectorsToElements(const Vector3D& r, const Vector3D& 
     
     // Anomalia media
     double M = E - e * sin(E);
-    while (M < 0) M += 2.0 * M_PI;
-    while (M >= 2.0 * M_PI) M -= 2.0 * M_PI;
+    while (M < 0) M += TWO_PI;
+    while (M >= TWO_PI) M -= TWO_PI;
     
     // Converti in elementi equinoziali
     elements = AstDynEquinoctialElements::fromKeplerian(a, e, i, omega, Omega, M, epoch);

@@ -11,10 +11,8 @@
 
 namespace ioccultcalc {
 
-// Conversione AU/day
-constexpr double AU_KM = 1.495978707e8;           // 1 AU in km
-constexpr double DAY_SEC = 86400.0;               // 1 giorno in secondi
-constexpr double AU_DAY_TO_KM_S = AU_KM / DAY_SEC; // conversione velocità
+// (Using constants from types.h)
+
 
 // ============================================================================
 // BodyData
@@ -34,7 +32,7 @@ double BodyData::convertGM_to_AU_day(double GM_km_s) {
     // GM in km³/s² -> AU³/day²
     // AU³ = (AU_KM)³ km³
     // day² = (DAY_SEC)² s²
-    return GM_km_s * (DAY_SEC * DAY_SEC) / (AU_KM * AU_KM * AU_KM);
+    return GM_km_s * (DAY_SEC * DAY_SEC) / (AU * AU * AU);
 }
 
 // ============================================================================
@@ -401,7 +399,7 @@ Vector3D ForceModel::getBodyPosition(PerturbingBody body, double jd) const {
         Vector3D heliocentricKm = posKm - sunPosKm;
         
         // Converte da km ad AU
-        constexpr double KM_TO_AU = 1.0 / AU_KM;
+        constexpr double KM_TO_AU = 1.0 / AU;
         pos = heliocentricKm * KM_TO_AU;
     }
     
@@ -449,7 +447,7 @@ Vector3D ForceModel::getBodyVelocity(PerturbingBody body, double jd) const {
         Vector3D heliocentricVelKm = velKm - sunVelKm;
         
         // Converte da km/day ad AU/day
-        constexpr double KM_TO_AU = 1.0 / AU_KM;
+        constexpr double KM_TO_AU = 1.0 / AU;
         vel = heliocentricVelKm * KM_TO_AU;
     }
     
@@ -515,7 +513,7 @@ Vector3D ForceModel::computeRelativisticCorrection(const Vector3D& pos,
     
     // Converte unità: GM in AU³/day², c in AU/day
     double GM_sun_AU = bodyDatabase_.at(PerturbingBody::SUN).GM_AU_day;
-    double c_AU_day = (SPEED_OF_LIGHT * DAY_SEC) / AU_KM; // ~173.14 AU/day
+    double c_AU_day = (SPEED_OF_LIGHT * DAY_SEC) / AU; // ~173.14 AU/day
     double c2 = c_AU_day * c_AU_day;
     
     double r3 = r * r * r;
@@ -678,7 +676,7 @@ double ForceModelAnalyzer::estimateOmissionError(PerturbingBody body,
     // Converte in km
     double t_days = propagationDays;
     double error_AU = 0.5 * accelMag * t_days * t_days;
-    double error_km = error_AU * AU_KM;
+    double error_km = error_AU * AU;
     
     return error_km;
 }

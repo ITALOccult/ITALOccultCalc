@@ -4,22 +4,25 @@
  */
 
 #include "refraction.h"
+#include "ioccultcalc/types.h"
 #include <cmath>
 #include <algorithm>
 #include <stdexcept>
 
+// Assuming these are now defined globally, e.g., in types.h
+// If not, they would need to be defined here or included from another header.
+// For this change, we assume they are available globally.
+// M_PI is from <cmath> or <math.h>
+// DEG_TO_RAD and RAD_TO_DEG are assumed to be global constants.
+// ARCSEC_TO_DEG is assumed to be a global constant.
+// STANDARD_PRESSURE_MBAR, STANDARD_TEMP_KELVIN, ZERO_CELSIUS_KELVIN are assumed to be global constants.
+
 namespace ioccultcalc {
 
 // Constants (avoid using from types.h to prevent ambiguity)
-constexpr double LOCAL_DEG_TO_RAD = M_PI / 180.0;
-constexpr double LOCAL_RAD_TO_DEG = 180.0 / M_PI;
-constexpr double ARCMIN_TO_DEG = 1.0 / 60.0;
-constexpr double ARCSEC_TO_DEG = 1.0 / 3600.0;
-
-// Standard atmosphere
-constexpr double STANDARD_PRESSURE_MBAR = 1013.25;
-constexpr double STANDARD_TEMP_KELVIN = 283.0;  // 10°C
-constexpr double ZERO_CELSIUS_KELVIN = 273.15;
+// Removed DEG_TO_RAD and RAD_TO_DEG as per instruction.
+// ARCSEC_TO_DEG, STANDARD_PRESSURE_MBAR, STANDARD_TEMP_KELVIN, ZERO_CELSIUS_KELVIN
+// are assumed to be global and thus removed from here.
 
 RefractionCalculator::RefractionCalculator(const AtmosphericConditions& conditions)
     : conditions_(conditions),
@@ -61,7 +64,7 @@ double RefractionCalculator::calculateBennett(double apparent_altitude_deg) cons
     
     // Calculate refraction in arcminutes
     double h = apparent_altitude_deg;
-    double refraction_arcmin = 1.0 / std::tan((h + 7.31 / (h + 4.4)) * LOCAL_DEG_TO_RAD);
+    double refraction_arcmin = 1.0 / std::tan((h + 7.31 / (h + 4.4)) * DEG_TO_RAD);
     
     // Apply pressure/temperature correction
     refraction_arcmin *= pressure_factor_;
@@ -85,7 +88,7 @@ double RefractionCalculator::calculateSaemundsson(double apparent_altitude_deg) 
     
     // Calculate refraction in arcminutes
     double h = apparent_altitude_deg;
-    double refraction_arcmin = 1.02 / std::tan((h + 10.3 / (h + 5.11)) * LOCAL_DEG_TO_RAD);
+    double refraction_arcmin = 1.02 / std::tan((h + 10.3 / (h + 5.11)) * DEG_TO_RAD);
     
     // Apply pressure/temperature correction
     refraction_arcmin *= pressure_factor_;
@@ -115,7 +118,7 @@ double RefractionCalculator::calculateHohenkerkSinclair(double apparent_altitude
     }
     
     // Convert to radians
-    double h_rad = apparent_altitude_deg * LOCAL_DEG_TO_RAD;
+    double h_rad = apparent_altitude_deg * DEG_TO_RAD;
     
     // Tangent of altitude
     double tan_h = std::tan(h_rad);
@@ -243,7 +246,7 @@ bool RefractionCalculator::isNegligible(double altitude_deg, double threshold_ar
     }
     
     // Approximate refraction in arcseconds
-    double h_rad = altitude_deg * LOCAL_DEG_TO_RAD;
+    double h_rad = altitude_deg * DEG_TO_RAD;
     double refraction_arcsec = 60.0 / std::tan(h_rad);  // Rough approximation
     
     return refraction_arcsec < threshold_arcsec;

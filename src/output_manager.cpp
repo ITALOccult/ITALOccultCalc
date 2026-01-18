@@ -16,8 +16,11 @@
 #include <map>
 #include "starmap/StarMap.h"
 #include "starmap/map/ChartGenerator.h"
+#include "ioc_gaialib/unified_gaia_catalog.h"
 class MapPathRenderer;
-#include "OccultationRenderer.h"
+#include "ioc_earth/OccultationRenderer.h"
+#include "ioc_earth/SkyMapRenderer.h"
+#include "ioc_earth/FinderChartRenderer.h"
 #include "starmap/occultation/OccultationChartBuilder.h"
 #include "starmap/config/LibraryConfig.h"
 
@@ -1086,9 +1089,38 @@ bool OutputManager::writeIOccultCard(const OutputEvent& event, const std::string
         system(cmd.c_str());
     }
     
-    // Use standard 800x600 for gif/png
-    std::string result = generateGroundMapImage(event, 800, 600, final_path);
-    return !result.empty();
+    // 0. Prepare Output Directory
+    std::string output_dir = "results_" + std::to_string(event.asteroid_number);
+    std::string cmd_mkdir = "mkdir -p " + output_dir;
+    std::system(cmd_mkdir.c_str());
+
+    // 1. Generate Individual Components
+    std::string ground_map = generateGroundMapImage(event, 800, 500, output_dir + "/ground.png");
+    std::string sky_map = generateSkyMapImage(event, 400, 400, output_dir + "/sky.png");
+    std::string finder_chart = generateFinderChartImage(event, 400, 400, output_dir + "/finder.png");
+
+    if (ground_map.empty()) return false;
+
+    // 2. Composite using ImageMagick (magick)
+    // Layout: 
+    // [ GROUND MAP (800x500) ]
+    // [ SKY (400x400) | FINDER (400x400) ]
+    
+    std::string final_output = filename;
+    if (final_output.find("/") == std::string::npos) {
+        final_output = output_dir + "/" + filename;
+    }
+    
+    std::stringstream cmd;
+    cmd << "magick convert "
+        << "(" << ground_map << ") "
+        << "(" << sky_map << " " << finder_chart << " +append) "
+        << "-append " << final_output;
+
+    std::cout << "[OutputManager] Compositing final card: " << cmd.str() << std::endl;
+    int rc = std::system(cmd.str().c_str());
+    
+    return rc == 0;
 }
 
 std::string OutputManager::generateGroundMapImage(const OutputEvent& event, int width, int height, const std::string& output_path) {
@@ -1101,29 +1133,34 @@ std::string OutputManager::generateGroundMapImage(const OutputEvent& event, int 
     data.duration_seconds = event.duration_seconds;
     data.magnitude_drop = event.mag_drop;
 
-    // Convert Trajectory
-    for (const auto& pt : event.central_path) {
-        data.central_line.emplace_back(pt.longitude, pt.latitude);
-    }
+    fprintf(stderr, "[DEBUG] Entering generateGroundMapImage for asteroid %d, name %s\n", event.asteroid_number, event.asteroid_name.c_str());
+    fprintf(stderr, "[DEBUG] Central Path size: %zu\n", event.central_path.size());
     
-    // Convert Sigma Limits if available
-    for (const auto& pt : event.north_limit) {
-        data.northern_limit.emplace_back(pt.longitude, pt.latitude);
-    }
-    for (const auto& pt : event.south_limit) {
-        data.southern_limit.emplace_back(pt.longitude, pt.latitude);
-    }
-    
-    // Geometric Limits
-    for (const auto& pt : event.north_margin) {
-        data.geometric_northern_limit.emplace_back(pt.longitude, pt.latitude);
-    }
-    for (const auto& pt : event.south_margin) {
-        data.geometric_southern_limit.emplace_back(pt.longitude, pt.latitude);
+    if (event.central_path.empty()) {
+        fprintf(stderr, "[DEBUG] WARNING: Central path is empty!\n");
+        return ""; // No data
     }
 
-    if (data.central_line.empty()) {
-        return ""; // No data
+    // Convert Trajectory (Radians -> Degrees)
+    for (const auto& pt : event.central_path) {
+        data.central_line.emplace_back(pt.longitude * RAD_TO_DEG, pt.latitude * RAD_TO_DEG);
+    }
+    for (const auto& pt : event.north_limit) {
+        data.northern_limit.emplace_back(pt.longitude * RAD_TO_DEG, pt.latitude * RAD_TO_DEG);
+    }
+    for (const auto& pt : event.south_limit) {
+        data.southern_limit.emplace_back(pt.longitude * RAD_TO_DEG, pt.latitude * RAD_TO_DEG);
+    }
+    for (const auto& pt : event.north_margin) {
+        data.geometric_northern_limit.emplace_back(pt.longitude * RAD_TO_DEG, pt.latitude * RAD_TO_DEG);
+    }
+    for (const auto& pt : event.south_margin) {
+        data.geometric_southern_limit.emplace_back(pt.longitude * RAD_TO_DEG, pt.latitude * RAD_TO_DEG);
+    }
+
+    if (!data.central_line.empty()) {
+        std::cout << "[OutputManager] Ground Map First Point: Lat=" << data.central_line[0].latitude 
+                  << " Lon=" << data.central_line[0].longitude << std::endl;
     }
 
     // 2. Configure Renderer
@@ -1169,6 +1206,126 @@ std::string OutputManager::generateGroundMapImage(const OutputEvent& event, int 
         }
     } catch (const std::exception& e) {
         std::cerr << "Render EXCEPTION: " << e.what() << std::endl;
+    }
+    return "";
+}
+
+std::string OutputManager::generateSkyMapImage(const OutputEvent& event,
+                                              int width, int height,
+                                              const std::string& output_path) {
+    // 1. Query Stars around Target
+    double ra = event.star_ra_deg;
+    double dec = event.star_dec_deg;
+    double radius = 10.0; // 10 degrees FOV
+    double mag_limit = 8.0;
+
+    ::ioc::gaia::QueryParams params;
+    params.ra_center = ra;
+    params.dec_center = dec;
+    params.radius = radius;
+    params.max_magnitude = mag_limit;
+
+    auto& catalog = ::ioc::gaia::UnifiedGaiaCatalog::getInstance();
+    auto stars = catalog.queryCone(params);
+
+    // 2. Prepare Renderer
+    ioc_earth::SkyMapRenderer renderer(width, height);
+    renderer.setFieldOfView(ra, dec, radius * 2.0); // FOV is diameter
+    renderer.setMagnitudeLimit(mag_limit);
+
+    // 3. Convert Data
+    std::vector<ioc_earth::StarData> star_data;
+    for (const auto& s : stars) {
+        if (s.phot_g_mean_mag > mag_limit) continue;
+        ioc_earth::StarData sd;
+        sd.ra_deg = s.ra;
+        sd.dec_deg = s.dec;
+        sd.magnitude = s.phot_g_mean_mag;
+        sd.spectral_type = ""; // Keep clean
+        star_data.push_back(sd);
+    }
+    renderer.addStars(star_data);
+
+    // 4. Target
+    ioc_earth::TargetData target;
+    target.name = event.asteroid_name;
+    target.ra_deg = ra;
+    target.dec_deg = dec;
+    renderer.setTarget(target);
+
+    // 5. Styles
+    ioc_earth::SkyMapStyle style;
+    style.background_color = "#000022"; // Deep blue
+    style.star_color = "#FFFFFF";
+    style.target_color = "#FF0000";
+    renderer.setStyle(style);
+
+    // 6. Render
+    if (renderer.renderSkyMap(output_path)) {
+        return output_path;
+    }
+    return "";
+}
+
+std::string OutputManager::generateFinderChartImage(const OutputEvent& event,
+                                                   int width, int height,
+                                                   const std::string& output_path) {
+    // 1. Query Stars around Target
+    double ra = event.star_ra_deg;
+    double dec = event.star_dec_deg;
+    double radius = 1.0; // 1 degree FOV
+    double mag_limit = 14.0;
+
+    ::ioc::gaia::QueryParams params;
+    params.ra_center = ra;
+    params.dec_center = dec;
+    params.radius = radius;
+    params.max_magnitude = mag_limit;
+
+    auto& catalog = ::ioc::gaia::UnifiedGaiaCatalog::getInstance();
+    auto stars = catalog.queryCone(params);
+
+    // 2. Prepare Renderer
+    ioc_earth::FinderChartRenderer renderer(width, height);
+    renderer.setFieldOfView(ra, dec, radius * 2.0);
+    renderer.setMagnitudeLimit(mag_limit);
+
+    // 3. Convert Data
+    std::vector<ioc_earth::SAOStar> sao_stars;
+    for (const auto& s : stars) {
+        if (s.phot_g_mean_mag > mag_limit) continue;
+        ioc_earth::SAOStar ss;
+        ss.sao_number = 0; // We use Gaia so no SAO here
+        ss.ra_deg = s.ra;
+        ss.dec_deg = s.dec;
+        ss.magnitude = s.phot_g_mean_mag;
+        sao_stars.push_back(ss);
+    }
+    renderer.addSAOStars(sao_stars);
+
+    // 4. Target and Trajectory
+    ioc_earth::TargetInfo target;
+    target.name = event.asteroid_name;
+    target.ra_deg = ra;
+    target.dec_deg = dec;
+    
+    // Trajectory markers
+    for (const auto& pt : event.star_trajectory) {
+        target.trajectory.emplace_back(pt.ra_deg, pt.dec_deg);
+    }
+    renderer.setTarget(target);
+
+    // 5. Styles
+    ioc_earth::FinderChartRenderer::ChartStyle style;
+    style.background_color = "#FFFFFF"; // B&W for Finder Chart
+    style.star_color = "#000000";
+    style.target_color = "#FF0000";
+    style.show_star_labels = false;
+    renderer.setChartStyle(style);
+
+    // 6. Render
+    if (renderer.renderFinderChart(output_path)) {
+        return output_path;
     }
     return "";
 }

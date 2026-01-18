@@ -4,6 +4,21 @@
 #include "ioccultcalc/mpc_client.h"
 #include "ioccultcalc/astdyn_interface.h"
 #include <iostream>
+#include "ioccultcalc/types.h"
+
+namespace {
+    template<typename T>
+    T safe_get(const nlohmann::json& j, const std::string& key, T defaultValue) {
+        if (j.contains(key) && !j[key].is_null()) {
+            try {
+                return j[key].get<T>();
+            } catch (...) {
+                return defaultValue;
+            }
+        }
+        return defaultValue;
+    }
+}
 
 namespace ioccultcalc {
 
@@ -107,30 +122,39 @@ bool OccultationEngine::loadAsteroidFromJSON(int number, const std::string& path
                 std::cout << "[OccultationEngine] Successfully found asteroid " << number << " in JSON." << std::endl;
                 // Construct AstDynEquinoctialElements
                 current_elements_.number = number;
-                current_elements_.name = data.value("name", "Unknown");
+                current_elements_.name = safe_get<std::string>(data, "name", "Unknown");
                 current_elements_.designation = std::to_string(number);
                 
-                current_elements_.H = data.value("H", 15.0);
-                current_elements_.G = data.value("G", 0.15);
-                current_elements_.diameter = data.value("diameter", 0.0);
+                current_elements_.H = safe_get<double>(data, "H", 15.0);
+                current_elements_.G = safe_get<double>(data, "G", 0.15);
+                current_elements_.diameter = safe_get<double>(data, "diameter", 0.0);
                 
                 // Load Orbital Elements
-                current_elements_.a = data.value("a", 0.0);
-                current_elements_.h = data.value("h", 0.0);
-                current_elements_.k = data.value("k", 0.0);
-                current_elements_.p = data.value("p", 0.0);
-                current_elements_.q = data.value("q", 0.0);
-                current_elements_.lambda = data.value("ma", 0.0); // Simple mapping if needed, better to parse correctly
+                current_elements_.a = safe_get<double>(data, "a", 0.0);
+                current_elements_.h = safe_get<double>(data, "h", 0.0);
+                current_elements_.k = safe_get<double>(data, "k", 0.0);
+                current_elements_.p = safe_get<double>(data, "p", 0.0);
+                current_elements_.q = safe_get<double>(data, "q", 0.0);
+                
+                // CRITICAL: lambda is Mean Longitude, JSON 'ma' is Mean Anomaly.
+                // Do NOT assign ma to lambda directly if we are in Equinoctial mode.
+                // If the JSON has h,k,p,q, it should also have 'lambda'.
+                if (data.contains("lambda")) {
+                    current_elements_.lambda = safe_get<double>(data, "lambda", 0.0) * (data.contains("lambda_deg") ? DEG_TO_RAD : 1.0);
+                } else if (!data.contains("e")) {
+                     // Fallback if no lambda but ma is present - this is risky if h,k,p,q are non-zero
+                     current_elements_.lambda = safe_get<double>(data, "ma", 0.0) * DEG_TO_RAD; 
+                }
                 
                 // Handle Keplerian if needed (if JSON has a,e,i,om,w,ma)
-                if (data.contains("e") && current_elements_.h == 0) {
-                    double ecc = data["e"];
-                    double inc = (double)data["i"] * DEG_TO_RAD;
-                    double om = (double)data["om"] * DEG_TO_RAD;
-                    double w = (double)data["w"] * DEG_TO_RAD;
-                    double ma = (double)data["ma"] * DEG_TO_RAD;
-                    double a = data["a"];
-                    double epoch = data["epoch"];
+                if (data.contains("e") && !data["e"].is_null() && current_elements_.h == 0) {
+                    double ecc = safe_get<double>(data, "e", 0.0);
+                    double inc = safe_get<double>(data, "i", 0.0) * DEG_TO_RAD;
+                    double om = safe_get<double>(data, "om", 0.0) * DEG_TO_RAD;
+                    double w = safe_get<double>(data, "w", 0.0) * DEG_TO_RAD;
+                    double ma = safe_get<double>(data, "ma", 0.0) * DEG_TO_RAD;
+                    double a = safe_get<double>(data, "a", 0.0);
+                    double epoch = safe_get<double>(data, "epoch", 0.0);
                     if (epoch > 2400000.5) epoch -= 2400000.5;
                     
                     auto kep = AstDynEquinoctialElements::fromKeplerian(a, ecc, inc, w, om, ma, JulianDate::fromMJD(epoch));

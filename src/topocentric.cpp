@@ -5,25 +5,13 @@
 
 #include "topocentric.h"
 #include <cmath>
+#include <iostream>
 #include <stdexcept>
 
 namespace ioccultcalc {
 
-// Constants (avoid using from types.h to prevent ambiguity)
-constexpr double LOCAL_DEG_TO_RAD = M_PI / 180.0;
-constexpr double LOCAL_RAD_TO_DEG = 180.0 / M_PI;
-constexpr double TWO_PI = 2.0 * M_PI;
-constexpr double ARCSEC_TO_RAD = M_PI / (180.0 * 3600.0);
-
-// Earth rotation parameters
-constexpr double SECONDS_PER_DAY = 86400.0;
-constexpr double EARTH_ROTATION_RATE = TWO_PI / SECONDS_PER_DAY;  // rad/s
-
-// J2000 epoch
-constexpr double JD_J2000 = 2451545.0;
-
-// Speed of light
-constexpr double SPEED_OF_LIGHT = 299792458.0;  // m/s
+// Use constants from types.h
+constexpr double EARTH_ROTATION_RATE = TWO_PI / DAY_SEC;  // rad/s
 
 TopocentricConverter::TopocentricConverter(const EllipsoidParameters& ellipsoid)
     : ellipsoid_(ellipsoid) {
@@ -31,7 +19,7 @@ TopocentricConverter::TopocentricConverter(const EllipsoidParameters& ellipsoid)
 
 double TopocentricConverter::radiusOfCurvature(double geodetic_lat_deg) const {
     // N(φ) = a / sqrt(1 - e² sin²φ)
-    double lat_rad = geodetic_lat_deg * LOCAL_DEG_TO_RAD;
+    double lat_rad = geodetic_lat_deg * DEG_TO_RAD;
     double sin_lat = std::sin(lat_rad);
     double sin_lat_sq = sin_lat * sin_lat;
     
@@ -43,20 +31,20 @@ double TopocentricConverter::geodeticToGeocentricLatitude(double geodetic_lat_de
     // tan(φ') = (1 - e²) tan(φ)
     // where φ = geodetic, φ' = geocentric
     
-    double lat_rad = geodetic_lat_deg * LOCAL_DEG_TO_RAD;
+    double lat_rad = geodetic_lat_deg * DEG_TO_RAD;
     double tan_geodetic = std::tan(lat_rad);
     
     double tan_geocentric = (1.0 - ellipsoid_.eccentricity_squared) * tan_geodetic;
     
-    return std::atan(tan_geocentric) * LOCAL_RAD_TO_DEG;
+    return std::atan(tan_geocentric) * RAD_TO_DEG;
 }
 
 Vector3D TopocentricConverter::getGeocentricPosition(const ObserverLocation& observer) const {
     // Convert geodetic coordinates (lon, lat, h) to geocentric Cartesian (X, Y, Z)
     // in ITRF (Earth-fixed) frame
     
-    double lon_rad = observer.longitude_deg * LOCAL_DEG_TO_RAD;
-    double lat_rad = observer.latitude_deg * LOCAL_DEG_TO_RAD;
+    double lon_rad = observer.longitude_deg * DEG_TO_RAD;
+    double lat_rad = observer.latitude_deg * DEG_TO_RAD;
     
     // If geocentric latitude given, convert to geodetic first
     double geodetic_lat_rad = lat_rad;
@@ -68,7 +56,7 @@ Vector3D TopocentricConverter::getGeocentricPosition(const ObserverLocation& obs
     }
     
     // Radius of curvature in prime vertical
-    double N = radiusOfCurvature(geodetic_lat_rad * LOCAL_RAD_TO_DEG);
+    double N = radiusOfCurvature(geodetic_lat_rad * RAD_TO_DEG);
     
     // Geocentric Cartesian coordinates
     double cos_lat = std::cos(geodetic_lat_rad);
@@ -93,8 +81,8 @@ void TopocentricConverter::rotationMatrixToTopocentric(const ObserverLocation& o
     // 1. Rotate around Z by (90° + lon) to align X with East
     // 2. Rotate around East by (90° - lat) to align Z with Up
     
-    double lon_rad = observer.longitude_deg * LOCAL_DEG_TO_RAD;
-    double lat_rad = observer.latitude_deg * LOCAL_DEG_TO_RAD;
+    double lon_rad = observer.longitude_deg * DEG_TO_RAD;
+    double lat_rad = observer.latitude_deg * DEG_TO_RAD;
     
     double cos_lon = std::cos(lon_rad);
     double sin_lon = std::sin(lon_rad);
@@ -202,7 +190,7 @@ double TopocentricConverter::greenwichMeanSiderealTime(double jd_ut1) {
 
 double TopocentricConverter::localSiderealTime(double jd_ut1, double longitude_deg) {
     double gmst = greenwichMeanSiderealTime(jd_ut1);
-    double lst = gmst + longitude_deg * LOCAL_DEG_TO_RAD;
+    double lst = gmst + longitude_deg * DEG_TO_RAD;
     
     // Reduce to [0, 2π)
     lst = std::fmod(lst, TWO_PI);
@@ -245,7 +233,7 @@ void TopocentricConverter::rotationMatrixITRFtoCelestial(double jd_ut1,
     // If ECLIPJ2000 requested, apply obliquity rotation
     if (frame == "ECLIPJ2000") {
         // Mean obliquity at J2000.0: ε₀ = 23°26'21.406"
-        const double epsilon_J2000 = 23.439291 * LOCAL_DEG_TO_RAD;
+        const double epsilon_J2000 = 23.439291 * DEG_TO_RAD;
         double cos_eps = std::cos(epsilon_J2000);
         double sin_eps = std::sin(epsilon_J2000);
         
@@ -318,12 +306,21 @@ Vector3D TopocentricConverter::intersectWithWGS84(const Vector3D& origin, const 
     double C = oa * oa + ob * ob + oc * oc - 1.0;
     
     double discriminant = B * B - 4.0 * A * C;
+    
+    // Solo se molto vicino all'intersezione (debug)
+    if (discriminant > -0.01) {
+        std::cout << "[DEBUG] intersect A=" << A << " B=" << B << " C=" << C << " Disc=" << discriminant << std::endl;
+    }
+    
     if (discriminant < 0) return Vector3D(0, 0, 0); // Nessuna intersezione
     
     // Vogliamo l'intersezione più vicina all'origine (solitamente l'asteroide)
     // ma che sia "davanti" se l'origine è nello spazio.
-    double k = (-B - std::sqrt(discriminant)) / (2.0 * A);
-    if (k < 0) k = (-B + std::sqrt(discriminant)) / (2.0 * A);
+    double k_near = (-B - std::sqrt(discriminant)) / (2.0 * A);
+    double k_far = (-B + std::sqrt(discriminant)) / (2.0 * A);
+    
+    // Lo "Shadow Ray" va verso Terra, quindi k deve essere positivo
+    double k = (k_near > 0) ? k_near : ((k_far > 0) ? k_far : -1.0);
     
     if (k < 0) return Vector3D(0, 0, 0);
     
@@ -349,8 +346,8 @@ ObserverLocation TopocentricConverter::getGeodeticPosition(const Vector3D& itrf_
     double alt = p / std::cos(lat) - N;
     
     ObserverLocation loc;
-    loc.latitude_deg = lat * LOCAL_RAD_TO_DEG;
-    loc.longitude_deg = lon * LOCAL_RAD_TO_DEG;
+    loc.latitude_deg = lat * RAD_TO_DEG;
+    loc.longitude_deg = lon * RAD_TO_DEG;
     loc.elevation_m = alt;
     loc.is_geodetic = true;
     
@@ -376,7 +373,7 @@ double TopocentricConverter::horizontalParallax(double distance) {
     // π = arcsin(R_Earth / distance)
     // For large distances, π ≈ R_Earth / distance (small angle)
     
-    double R_Earth = 6378137.0;  // Equatorial radius in meters
+    double R_Earth = EARTH_RADIUS_WGS84_M;  // Equatorial radius in meters
     
     if (distance <= R_Earth) {
         throw std::invalid_argument("Distance must be > Earth radius");
@@ -386,9 +383,9 @@ double TopocentricConverter::horizontalParallax(double distance) {
     
     if (ratio < 0.01) {
         // Small angle approximation (more accurate for small angles)
-        return ratio * LOCAL_RAD_TO_DEG;
+        return ratio * RAD_TO_DEG;
     } else {
-        return std::asin(ratio) * LOCAL_RAD_TO_DEG;
+        return std::asin(ratio) * RAD_TO_DEG;
     }
 }
 

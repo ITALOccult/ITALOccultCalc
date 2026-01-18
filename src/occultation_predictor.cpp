@@ -66,15 +66,15 @@ Vector3D OccultationPredictor::prepareStarForDate(const GaiaStar& star, const Ju
     double dt_years = (jd.jd - 2457388.5) / 365.25; // Gaia Epoch J2016.0
     
     // pmra in Gaia include gia' cos(dec)
-    ra += (star.pmra / 1000.0) * (M_PI / (180.0 * 3600.0)) * dt_years / std::cos(dec);
-    dec += (star.pmdec / 1000.0) * (M_PI / (180.0 * 3600.0)) * dt_years;
+    ra += (star.pmra / 1000.0) * ARCSEC_TO_RAD * dt_years / std::cos(dec);
+    dec += (star.pmdec / 1000.0) * ARCSEC_TO_RAD * dt_years;
     
     // 2. Vettore Unitario (ICRF)
     Vector3D v_star(std::cos(ra) * std::cos(dec), std::sin(ra) * std::cos(dec), std::sin(dec));
     
     // 3. Parallasse Stellare
     if (star.parallax > 0) {
-        double d_star = 1.0 / std::sin((star.parallax / 1000.0) * (M_PI / (180.0 * 3600.0)));
+        double d_star = 1.0 / std::sin((star.parallax / 1000.0) * ARCSEC_TO_RAD);
         Vector3D starPos = v_star * d_star;
         Vector3D starApparent = starPos - earthHelioPos;
         return starApparent.normalize();

@@ -3,10 +3,12 @@
         "id": "1272",
         "min_diameter": 5.0
     },
-    "propag": {
+    "propagation": {
         "type": "RKF78",
         "step_size": 0.5,
-        "use_perturbations": true
+        "use_perturbations": true,
+        "use_horizons": true,
+        "refine_orbit": true
     },
     "search": {
         "start_mjd": 61052.0,

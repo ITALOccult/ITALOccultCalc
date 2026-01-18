@@ -9,13 +9,7 @@
 
 namespace ioccultcalc {
 
-// Constants
-constexpr double PI = M_PI;
-constexpr double TWO_PI = 2.0 * PI;
-constexpr double ARCSEC_TO_RAD = PI / (180.0 * 3600.0);
-constexpr double MAS_TO_RAD = ARCSEC_TO_RAD / 1000.0;  // milliarcseconds
-constexpr double JD_J2000 = 2451545.0;
-constexpr double DAYS_PER_CENTURY = 36525.0;
+// Use constants from types.h
 
 double NutationCalculator::normalizeAngle(double angle) {
     angle = std::fmod(angle, TWO_PI);

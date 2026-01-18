@@ -125,7 +125,8 @@ bool Phase1CandidateScreening::loadAsteroidFromJSON(int number, const std::strin
                 epoch -= 2400000.5; // JD to MJD
             }
 
-            double deg2rad = M_PI / 180.0;
+            // Use constants from types.h
+            double deg2rad = DEG_TO_RAD;
             
             // Populate initial elements for the propagator
             pimpl_->initial_kep_ecl.semi_major_axis = data["a"];

@@ -27,7 +27,9 @@ int main(int argc, char* argv[]) {
     
     ioc::gaia::UnifiedGaiaCatalog::initialize(gaiaConfJson.dump());
     
+    std::cout << "Loaded Gaia SQLite DR3 catalog: " << gaiaConfJson["sqlite_file_path"] << std::endl;
     std::cout << "ITALOccultCalc v1.0 [Native API Workflow]" << std::endl;
+    std::cout << "--- BUILD DATE: " << __DATE__ << " " << __TIME__ << " ---" << std::endl;
 
     try {
         std::cout << "\n=== ITALOccultCalc DEBUG BUILD ===\n" << std::endl;
@@ -168,7 +170,7 @@ int main(int argc, char* argv[]) {
         if (!p1Results.candidates.empty()) {
             std::cout << "\nPhase 2: Calculating precise geometry...\n";
             Phase2Config p2Config;
-            p2Config.refine_orbit = true;  // ENABLE REFINEMENT (Correction enabled)
+            p2Config.refine_orbit = true;  // ENABLE REFINEMENT FOR PRECISION
             p2Config.last_n_obs = 100;     // Use last 100 observations
             p2Config.use_horizons = useHorizons;
             
@@ -271,6 +273,17 @@ int main(int argc, char* argv[]) {
                     xmlPt.location.latitude = pt.lat_deg * M_PI / 180.0;
                     xmlPt.location.longitude = pt.lon_deg * M_PI / 180.0;
                     xmlPt.location.altitude = 0.0;
+                    
+                    xmlPt.north_limit.latitude = pt.north_lat_deg * M_PI / 180.0;
+                    xmlPt.north_limit.longitude = pt.north_lon_deg * M_PI / 180.0;
+                    xmlPt.south_limit.latitude = pt.south_lat_deg * M_PI / 180.0;
+                    xmlPt.south_limit.longitude = pt.south_lon_deg * M_PI / 180.0;
+                    
+                    xmlPt.north_margin.latitude = pt.geonorth_lat_deg * M_PI / 180.0;
+                    xmlPt.north_margin.longitude = pt.geonorth_lon_deg * M_PI / 180.0;
+                    xmlPt.south_margin.latitude = pt.geosouth_lat_deg * M_PI / 180.0;
+                    xmlPt.south_margin.longitude = pt.geosouth_lon_deg * M_PI / 180.0;
+                    
                     xmlShadowPath.push_back(xmlPt);
                 }
                 outEvt.shadowPath = xmlShadowPath;
@@ -337,6 +350,7 @@ int main(int argc, char* argv[]) {
                 }
 
                 if (!outEvents.empty()) {
+                   fprintf(stderr, "[DEBUG] Calling OutputManager for %zu events\n", outEvents.size());
                    if (!a4CardFile.empty()) {
                        auto opts = outMgr.getOptions();
                        opts.format = OutputFormat::A4_VERTICAL_CARD;

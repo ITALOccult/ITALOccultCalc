@@ -22,16 +22,16 @@ namespace ioccultcalc {
 
 // Funzione helper per distanza angolare tra due punti (RA/Dec in gradi)
 double angularDistanceDeg(double ra1, double dec1, double ra2, double dec2) {
-    double r1 = ra1 * M_PI / 180.0;
-    double d1 = dec1 * M_PI / 180.0;
-    double r2 = ra2 * M_PI / 180.0;
-    double d2 = dec2 * M_PI / 180.0;
+    double r1 = ra1 * DEG_TO_RAD;
+    double d1 = dec1 * DEG_TO_RAD;
+    double r2 = ra2 * DEG_TO_RAD;
+    double d2 = dec2 * DEG_TO_RAD;
     
     double cos_dist = std::sin(d1) * std::sin(d2) + 
                       std::cos(d1) * std::cos(d2) * std::cos(r1 - r2);
     if (cos_dist > 1.0) cos_dist = 1.0;
     if (cos_dist < -1.0) cos_dist = -1.0;
-    return std::acos(cos_dist) * 180.0 / M_PI;
+    return std::acos(cos_dist) * RAD_TO_DEG;
 }
 
 class Phase2OccultationGeometry::Impl {
@@ -72,8 +72,8 @@ public:
                 RWOObservation rwo;
                 rwo.designation = designation;
                 rwo.mjd_utc = obs.epoch.jd - 2400000.5;
-                rwo.ra_deg = obs.obs.ra * 180.0 / M_PI;
-                rwo.dec_deg = obs.obs.dec * 180.0 / M_PI;
+                rwo.ra_deg = obs.obs.ra * RAD_TO_DEG;
+                rwo.dec_deg = obs.obs.dec * RAD_TO_DEG;
                 rwo.ra_sigma_arcsec = 0.5; // Default if not available
                 rwo.dec_sigma_arcsec = 0.5;
                 rwo.obs_code = obs.observatoryCode;
@@ -96,10 +96,10 @@ public:
             initial.name = aelem.object_name;
             initial.a = aelem.semi_major_axis;
             initial.e = aelem.eccentricity;
-            initial.i = aelem.inclination * 180.0 / M_PI;
-            initial.Omega = aelem.longitude_asc_node * 180.0 / M_PI;
-            initial.omega = aelem.argument_perihelion * 180.0 / M_PI;
-            initial.M = aelem.mean_anomaly * 180.0 / M_PI;
+            initial.i = aelem.inclination * RAD_TO_DEG;
+            initial.Omega = aelem.longitude_asc_node * RAD_TO_DEG;
+            initial.omega = aelem.argument_perihelion * RAD_TO_DEG;
+            initial.M = aelem.mean_anomaly * RAD_TO_DEG;
             initial.epoch_mjd = aelem.epoch_mjd_tdb;
             initial.H = aelem.magnitude;
             initial.G = aelem.mag_slope;
@@ -109,69 +109,39 @@ public:
             fitter.setVerbose(true); // Enable detailed convergence logging
             std::cout << "[PHASE2] Starting refined orbital fit (verbose mode)..." << std::endl;
             
-            // VERIFICATION: Check Phase 1 Orbit at JPL Epoch
-            double jpl_epoch_mjd = 61049.0; // 9 Jan 2026 0:00 UTC
-            auto phase1_state = astdyn->getApparentStateGeocentric(jpl_epoch_mjd);
-            std::cout << "\n[VERIFICATION] Phase 1 (Initial) @ MJD " << std::fixed << std::setprecision(5) << jpl_epoch_mjd << " (9 Jan 2026 0:00):\n";
-            std::cout << "  RA: " << phase1_state.ra_deg << " deg (" << phase1_state.ra_deg/15.0 << " h)\n";
-            std::cout << "  Dec: " << phase1_state.dec_deg << " deg\n";
-            std::cout << "  Dist: " << phase1_state.distance_au << " AU\n";
-            double ra_h = phase1_state.ra_deg / 15.0;
-            int h = (int)ra_h;
-            int m = (int)((ra_h - h) * 60.0);
-            double s = ((ra_h - h) * 60.0 - m) * 60.0;
-            std::cout << "  RA (hms): " << h << "h " << m << "m " << std::fixed << std::setprecision(3) << s << "s\n";
-            double dec_d = std::abs(phase1_state.dec_deg);
-            int d = (int)dec_d;
-            int dm = (int)((dec_d - d) * 60.0);
-            double ds = ((dec_d - d) * 60.0 - dm) * 60.0;
-            std::cout << "  Dec (dms): " << (phase1_state.dec_deg >= 0 ? "+" : "-") << d << "d " << dm << "' " << std::fixed << std::setprecision(2) << ds << "\"\n\n";
-
             auto fitRes = fitter.fit(initial, rwoList);
             
             std::cout << "[PHASE2] Orbit fit completed. RMS=" << fitRes.rms_total_arcsec 
                       << " arcsec (" << fitRes.n_used << " obs used)" << std::endl;
             
             if (fitRes.n_used > 0) {
+                // Estrare covarianza se presente
+                std::optional<Eigen::Matrix<double, 6, 6>> cov_opt;
+                if (fitRes.fitted_elements.has_covariance && fitRes.fitted_elements.covariance.size() == 21) {
+                    Eigen::Matrix<double, 6, 6> cov = Eigen::Matrix<double, 6, 6>::Zero();
+                    int idx = 0;
+                    for (int i = 0; i < 6; ++i) {
+                        for (int j = i; j < 6; ++j) {
+                            cov(i, j) = fitRes.fitted_elements.covariance[idx++];
+                            cov(j, i) = cov(i, j);
+                        }
+                    }
+                    cov_opt = cov;
+                }
+
                 // Update wrapper
                 astdyn->setKeplerianElements(
                     fitRes.fitted_elements.a, fitRes.fitted_elements.e, 
-                    fitRes.fitted_elements.i * M_PI / 180.0,
-                    fitRes.fitted_elements.Omega * M_PI / 180.0, 
-                    fitRes.fitted_elements.omega * M_PI / 180.0,
-                    fitRes.fitted_elements.M * M_PI / 180.0,
+                    fitRes.fitted_elements.i * DEG_TO_RAD,
+                    fitRes.fitted_elements.Omega * DEG_TO_RAD, 
+                    fitRes.fitted_elements.omega * DEG_TO_RAD,
+                    fitRes.fitted_elements.M * DEG_TO_RAD,
                     fitRes.fitted_elements.epoch_mjd,
-                    designation
+                    designation,
+                    astdyn::propagation::HighPrecisionPropagator::InputFrame::ECLIPTIC,
+                    fitRes.fitted_elements.H, fitRes.fitted_elements.G, 0.0,
+                    cov_opt
                 );
-                
-                // VERIFICATION: Check Phase 2 Orbit at JPL Epoch
-                auto phase2_state = astdyn->getApparentStateGeocentric(jpl_epoch_mjd);
-                std::cout << "\n[VERIFICATION] Phase 2 (Refined) @ MJD " << std::fixed << std::setprecision(5) << jpl_epoch_mjd << " (9 Jan 2026 0:00):\n";
-                std::cout << "  RA: " << phase2_state.ra_deg << " deg (" << phase2_state.ra_deg/15.0 << " h)\n";
-                std::cout << "  Dec: " << phase2_state.dec_deg << " deg\n";
-                std::cout << "  Dist: " << phase2_state.distance_au << " AU\n";
-                ra_h = phase2_state.ra_deg / 15.0;
-                h = (int)ra_h;
-                m = (int)((ra_h - h) * 60.0);
-                s = ((ra_h - h) * 60.0 - m) * 60.0;
-                std::cout << "  RA (hms): " << h << "h " << m << "m " << std::fixed << std::setprecision(3) << s << "s\n";
-                dec_d = std::abs(phase2_state.dec_deg);
-                d = (int)dec_d;
-                dm = (int)((dec_d - d) * 60.0);
-                ds = ((dec_d - d) * 60.0 - dm) * 60.0;
-                std::cout << "  Dec (dms): " << (phase2_state.dec_deg >= 0 ? "+" : "-") << d << "d " << dm << "' " << std::fixed << std::setprecision(2) << ds << "\"\n";
-                
-                // Diff with JPL (Approx)
-                // JPL: 05 44 40.091  +26 34 21.49
-                // RA JPL: 5.744469722 hours -> 86.1670458 deg
-                // Dec JPL: 26.5726361 deg
-                double jpl_ra = 86.1670458;
-                double jpl_dec = 26.5726361;
-                
-                double d_ra_mas = (phase2_state.ra_deg - jpl_ra) * std::cos(jpl_dec * M_PI / 180.0) * 3600000.0;
-                double d_dec_mas = (phase2_state.dec_deg - jpl_dec) * 3600000.0;
-                std::cout << "  Diff vs JPL: RA=" << d_ra_mas << " mas, Dec=" << d_dec_mas << " mas\n\n";
-
             } else {
                 std::cerr << "[PHASE2] WARNING: Orbit fit did not use any observations. Keeping initial orbit." << std::endl;
             }
@@ -255,7 +225,7 @@ public:
         event.utc_string = "MJD " + std::to_string(t_ca);
 
         // 2. VERIFICA E CALCOLO OMBRA
-        if (event.min_dist_mas < 5000.0) { // Allarga la soglia per calcolare l'ombra anche se CA > 1"
+        if (event.min_dist_mas < 300000.0) { // Allarga la soglia per calcolare l'ombra per TUTTI gli eventi cercati (300")
             event.is_valid = (event.min_dist_mas < 1000.0);
             
             // Calcolo parametri ombra
@@ -272,7 +242,11 @@ public:
     }
 
     void calculateShadowDetails(const CandidateStar& star, Phase2OccultationEvent& event, const Phase2Config& config) {
-        if (!config.compute_shadow) return;
+        std::cout << "[PHASE2] Entering calculateShadowDetails for star " << star.source_id << std::endl;
+        if (!config.compute_shadow) {
+            std::cout << "[PHASE2] WARNING: compute_shadow is false!" << std::endl;
+            return;
+        }
 
         // 1. Calcolo Diametro Fisico
         auto kep = astdyn->getKeplerianElements();
@@ -291,18 +265,17 @@ public:
         event.asteroid_distance_au = distance_au;
         
         // Calcolo Elementi di Bessel (x, y, dx, dy)
-        double ra_s = star.ra_deg * M_PI / 180.0;
-        double dec_s = star.dec_deg * M_PI / 180.0;
+        double ra_s = star.ra_deg * DEG_TO_RAD;
+        double dec_s = star.dec_deg * DEG_TO_RAD;
         
         auto computeBessel = [&](double mjd) {
             auto s = astdyn->getApparentStateGeocentric(mjd);
             Vector3D ast_pos_icrf(s.position.x(), s.position.y(), s.position.z());
             Vector3D xi(-std::sin(ra_s), std::cos(ra_s), 0.0);
             Vector3D eta(-std::sin(dec_s)*std::cos(ra_s), -std::sin(dec_s)*std::sin(ra_s), std::cos(dec_s));
-            double au_to_km = 149597870.7;
             double r_earth = 6378.137;
-            return std::make_pair(ast_pos_icrf.dot(xi) * au_to_km / r_earth, 
-                                  ast_pos_icrf.dot(eta) * au_to_km / r_earth);
+            return std::make_pair(ast_pos_icrf.dot(xi) * AU / r_earth, 
+                                  ast_pos_icrf.dot(eta) * AU / r_earth);
         };
 
         auto bessel_ca = computeBessel(event.t_ca_mjd);
@@ -318,7 +291,7 @@ public:
         // 2. Substellar/Subsolar points
         double jd_ca = event.t_ca_mjd + 2400000.5;
         double jd_ut1 = jd_ca - (69.184 / 86400.0); // Delta T correction
-        double gmst_deg = TopocentricConverter::greenwichMeanSiderealTime(jd_ut1) * 180.0 / M_PI;
+        double gmst_deg = TopocentricConverter::greenwichMeanSiderealTime(jd_ut1) * RAD_TO_DEG;
         
         event.substellar_lat_deg = star.dec_deg;
         event.substellar_lon_deg = star.ra_deg - gmst_deg;
@@ -327,8 +300,8 @@ public:
 
         // Subsolar point (requires Sun position)
         auto sun_state = astdyn::ephemeris::PlanetaryEphemeris::getState(astdyn::ephemeris::CelestialBody::SUN, jd_ca);
-        double sun_ra = std::atan2(sun_state.position().y(), sun_state.position().x()) * 180.0 / M_PI;
-        double sun_dec = std::asin(sun_state.position().z() / sun_state.position().norm()) * 180.0 / M_PI;
+        double sun_ra = std::atan2(sun_state.position().y(), sun_state.position().x()) * RAD_TO_DEG;
+        double sun_dec = std::asin(sun_state.position().z() / sun_state.position().norm()) * RAD_TO_DEG;
         
         event.subsolar_lat_deg = sun_dec;
         event.subsolar_lon_deg = sun_ra - gmst_deg;
@@ -351,8 +324,8 @@ public:
 
         // 2. Percorso ombra (Campionamento +/- 5 min)
         TopocentricConverter converter;
-        double star_ra_rad = star.ra_deg * M_PI / 180.0;
-        double star_dec_rad = star.dec_deg * M_PI / 180.0;
+        double star_ra_rad = star.ra_deg * DEG_TO_RAD;
+        double star_dec_rad = star.dec_deg * DEG_TO_RAD;
         Vector3D star_dir_icrf(
             std::cos(star_dec_rad) * std::cos(star_ra_rad),
             std::cos(star_dec_rad) * std::sin(star_ra_rad),
@@ -361,7 +334,8 @@ public:
 
         for (int i = -10; i <= 10; ++i) {
             double mjd = event.t_ca_mjd + (i * 30.0 / 86400.0); // Ogni 30 secondi
-            auto state = astdyn->getApparentStateGeocentric(mjd);
+            // Asteroid in ITRF [meters]
+            auto ast_state = astdyn->propagateToEpoch(mjd);
             
             // Trasformazione in ECEF corporea
             double rotation_matrix[3][3];
@@ -377,12 +351,16 @@ public:
             // Inverti matrice per Celestial -> ITRF
             double inv_matrix[3][3];
             for (int r=0; r<3; ++r) for (int c=0; c<3; ++c) inv_matrix[r][c] = rotation_matrix[c][r];
+
+            Vector3D ast_pos_icrf(ast_state.position.x() * AU_M, 
+                                  ast_state.position.y() * AU_M, 
+                                  ast_state.position.z() * AU_M);
+            Vector3D vel_icrf(ast_state.velocity.x() * (AU_M / 86400.0),
+                              ast_state.velocity.y() * (AU_M / 86400.0),
+                              ast_state.velocity.z() * (AU_M / 86400.0));
             
-            // Asteroide in ITRF [m]
-            Vector3D ast_pos_icrf(state.position.x() * 149597870700.0, 
-                                  state.position.y() * 149597870700.0, 
-                                  state.position.z() * 149597870700.0);
             Vector3D ast_pos_itrf = converter.applyRotation(inv_matrix, ast_pos_icrf);
+            Vector3D vel_itrf = converter.applyRotation(inv_matrix, vel_icrf);
             Vector3D star_dir_itrf = converter.applyRotation(inv_matrix, star_dir_icrf);
             
             if (i == 0) {
@@ -401,8 +379,91 @@ public:
                 pt.mjd_tdb = mjd;
                 pt.lat_deg = geo.latitude_deg;
                 pt.lon_deg = geo.longitude_deg;
-                // Calcolo altezza stella locale? (opzionale per ora)
                 pt.star_alt_deg = 30.0; // Placeholder
+                
+                // --- CALCOLO LIMITI ---
+                // Vettore perpendicolare alla traccia (Cross-track)
+                // Usiamo il prodotto croce tra Direzione Stella e Vettore Posizione (approssimato)
+                Vector3D cross_track = star_dir_itrf.cross(ast_pos_itrf).normalize();
+                
+                // 1. Margine Geometrico (raggio asteroide)
+                double r_ast = diameter_km * 500.0; // raggio in metri
+                Vector3D pos_gn = ast_pos_itrf + cross_track * r_ast;
+                Vector3D pos_gs = ast_pos_itrf - cross_track * r_ast;
+                
+                Vector3D inter_gn = converter.intersectWithWGS84(pos_gn, shadow_ray);
+                Vector3D inter_gs = converter.intersectWithWGS84(pos_gs, shadow_ray);
+                
+                if (inter_gn.magnitude() > 0) {
+                    auto g = converter.getGeodeticPosition(inter_gn);
+                    pt.geonorth_lat_deg = g.latitude_deg;
+                    pt.geonorth_lon_deg = g.longitude_deg;
+                } else {
+                    pt.geonorth_lat_deg = pt.lat_deg; pt.geonorth_lon_deg = pt.lon_deg;
+                }
+                
+                if (inter_gs.magnitude() > 0) {
+                    auto g = converter.getGeodeticPosition(inter_gs);
+                    pt.geosouth_lat_deg = g.latitude_deg;
+                    pt.geosouth_lon_deg = g.longitude_deg;
+                } else {
+                    pt.geosouth_lat_deg = pt.lat_deg; pt.geosouth_lon_deg = pt.lon_deg;
+                }
+                               // 2. Limite 1-sigma (incertezza orbitale)
+                // Se abbiamo covarianza propagata, usiamo quella per calcolare il cross-track error
+                double sigma_km = 50.0; // Default fallback
+                
+                if (ast_state.covariance.has_value()) {
+                    // Proietta covarianza (posizione 3x3 superiore sx) sulla direzione perpendicolare
+                    // al moto apparente proiettato sul piano dell'ombra.
+                    // Semplificazione: usiamo la deviazione standard della posizione in metri
+                    // trasformata in km. 
+                    // TODO: Proiezione rigorosa nel piano dell'ombra (piano di Bessel)
+                    const auto& cov = *ast_state.covariance;
+                    
+                    // Direzione "cross-track" approssimativa: 
+                    // vettore ortogonale a star_dir e alla velocità dell'asteroide
+                    // v_unit and cross_dir are Eigen::Vector3d
+                    Eigen::Vector3d v_unit_eig = {vel_itrf.x, vel_itrf.y, vel_itrf.z};
+                    v_unit_eig.normalize();
+                    
+                    Eigen::Vector3d star_dir_eig = {star_dir_itrf.x, star_dir_itrf.y, star_dir_itrf.z};
+                    Eigen::Vector3d cross_dir = star_dir_eig.cross(v_unit_eig).normalized();
+                    
+                    // Varianza nella direzione cross-track: sigma^2 = n^T * P_pos * n
+                    // cov è in AU^2, convertiamo in metri^2
+                    Eigen::Matrix3d P_pos = cov.template block<3, 3>(0, 0) * (AU_M * AU_M);
+                    double var_cross = cross_dir.transpose() * P_pos * cross_dir;
+                    
+                    if (var_cross > 0) {
+                        sigma_km = std::sqrt(var_cross) / 1000.0;
+                    }
+                }
+                
+                double r_sigma = sigma_km * 1000.0;
+                
+                Vector3D pos_sn = ast_pos_itrf + cross_track * r_sigma;
+                Vector3D pos_ss = ast_pos_itrf - cross_track * r_sigma;
+
+                Vector3D inter_sn = converter.intersectWithWGS84(pos_sn, shadow_ray);
+                Vector3D inter_ss = converter.intersectWithWGS84(pos_ss, shadow_ray);
+                
+                if (inter_sn.magnitude() > 0) {
+                    auto g = converter.getGeodeticPosition(inter_sn);
+                    pt.north_lat_deg = g.latitude_deg;
+                    pt.north_lon_deg = g.longitude_deg;
+                } else {
+                    pt.north_lat_deg = pt.lat_deg; pt.north_lon_deg = pt.lon_deg;
+                }
+                
+                if (inter_ss.magnitude() > 0) {
+                    auto g = converter.getGeodeticPosition(inter_ss);
+                    pt.south_lat_deg = g.latitude_deg;
+                    pt.south_lon_deg = g.longitude_deg;
+                } else {
+                    pt.south_lat_deg = pt.lat_deg; pt.south_lon_deg = pt.lon_deg;
+                }
+                
                 event.shadow_path.push_back(pt);
             }
         }
@@ -482,7 +543,7 @@ bool Phase2OccultationGeometry::loadAsteroidFromJSON(int number, const std::stri
         double epoch = data["epoch"];
         if (epoch > 2400000.5) epoch -= 2400000.5;
 
-        double deg2rad = M_PI / 180.0;
+        double deg2rad = DEG_TO_RAD;
         pimpl_->astdyn->setKeplerianElements(
             data["a"], data["e"], (double)data["i"] * deg2rad, 
             (double)data["om"] * deg2rad, (double)data["w"] * deg2rad, (double)data["ma"] * deg2rad, 

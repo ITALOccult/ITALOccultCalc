@@ -155,7 +155,7 @@ void Ephemeris::propagateOrbit(const JulianDate& targetJD, Vector3D& helioPos, V
     double vx_ecl = m11 * vx_ref + m12 * vy_ref + m13 * vz_ref;
     double vy_ecl = m21 * vx_ref + m22 * vy_ref + m23 * vz_ref;
     double vz_ecl = m31 * vx_ref + m32 * vy_ref + m33 * vz_ref;
-    constexpr double OBL_J2000 = 23.4392911 * M_PI / 180.0;
+    constexpr double OBL_J2000 = OBLIQUITY_J2000;
     double cos_eps = std::cos(OBL_J2000);
     double sin_eps = std::sin(OBL_J2000);
     helioPos = Vector3D(x_ecl, y_ecl * cos_eps - z_ecl * sin_eps, y_ecl * sin_eps + z_ecl * cos_eps);
@@ -163,8 +163,8 @@ void Ephemeris::propagateOrbit(const JulianDate& targetJD, Vector3D& helioPos, V
 }
 
 double Ephemeris::solveKeplerEquation(double M, double e, double tolerance) {
-    M = std::fmod(M, 2.0 * M_PI);
-    double E = (e > 0.8) ? M_PI : M;
+    M = std::fmod(M, TWO_PI);
+    double E = (e > 0.8) ? PI : M;
     for (int i = 0; i < 100; i++) {
         double f = E - e * sin(E) - M;
         double fp = 1.0 - e * cos(E);
@@ -192,17 +192,17 @@ double Ephemeris::calculateMagnitude(double r, double delta, double phaseAngle) 
 
 Vector3D Ephemeris::applyStellarParallax(const Vector3D& starUnitVector, double parallax_mas, const Vector3D& earthHelioPos) {
     if (parallax_mas <= 0) return starUnitVector;
-    double p_rad = (parallax_mas / 1000.0) * (M_PI / (180.0 * 3600.0));
+    double p_rad = (parallax_mas / 1000.0) * ARCSEC_TO_RAD;
     return (starUnitVector * (1.0 / std::sin(p_rad)) - earthHelioPos).normalize();
 }
 
 void Ephemeris::applyProperMotion(double& ra, double& dec, double pm_ra, double pm_dec, double t0, double t1) {
     double dt = (t1 - t0) / 365.25;
-    const double M2R = (M_PI / 180.0) / (3600.0 * 1000.0);
+    const double M2R = ARCSEC_TO_RAD / 1000.0;
     ra += (pm_ra * M2R * dt) / std::cos(dec);
     dec += pm_dec * M2R * dt;
-    ra = std::fmod(ra, 2.0 * M_PI);
-    if (ra < 0) ra += 2.0 * M_PI;
+    ra = std::fmod(ra, TWO_PI);
+    if (ra < 0) ra += TWO_PI;
 }
 
 bool Ephemeris::predictOccultation(const JulianDate& jd, const StarData& star, const GeographicCoordinates& obs, double radius) {

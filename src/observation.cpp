@@ -170,7 +170,7 @@ static bool parseObsCodesHTML(const std::string& html) {
                 obs.rho_sin_phi = rho_sin;
                 
                 // Coordinate geografiche approssimate
-                double lat = atan2(rho_sin, rho_cos) * 180.0 / M_PI;
+                double lat = atan2(rho_sin, rho_cos) * RAD_TO_DEG;
                 double alt = sqrt(rho_cos*rho_cos + rho_sin*rho_sin) * 6378.137 - 6378.137;
                 obs.location = GeographicCoordinates(lon, lat, alt * 1000.0);
                 

@@ -147,10 +147,10 @@ OrbitalElements convertFromOrbFit(const double* elem, const char* eltype, double
         std::cerr << "Warning: Unknown OrbFit element type '" << type << "', assuming KEP" << std::endl;
         result.a = elem[0];
         result.e = elem[1];
-        result.i = elem[2] * 180.0 / M_PI;
-        result.Omega = elem[3] * 180.0 / M_PI;
-        result.omega = elem[4] * 180.0 / M_PI;
-        result.M = elem[5] * 180.0 / M_PI;
+        result.i = elem[2] * RAD_TO_DEG;
+        result.Omega = elem[3] * RAD_TO_DEG;
+        result.omega = elem[4] * RAD_TO_DEG;
+        result.M = elem[5] * RAD_TO_DEG;
     }
     
     return result;
@@ -163,10 +163,10 @@ void convertToOrbFit(const OrbitalElements& elements, double* elem, double& epoc
     // OrbFit KEP format: a, e, i, Omega, omega, M (radianti, eclittica J2000)
     elem[0] = elements.a;
     elem[1] = elements.e;
-    elem[2] = elements.i * M_PI / 180.0;
-    elem[3] = elements.Omega * M_PI / 180.0;
-    elem[4] = elements.omega * M_PI / 180.0;
-    elem[5] = elements.M * M_PI / 180.0;
+    elem[2] = elements.i * DEG_TO_RAD;
+    elem[3] = elements.Omega * DEG_TO_RAD;
+    elem[4] = elements.omega * DEG_TO_RAD;
+    elem[5] = elements.M * DEG_TO_RAD;
     
     epoch_mjd = jd_to_mjd(elements.epoch.jd);
 }

@@ -10,9 +10,8 @@
 
 namespace ioccultcalc {
 
-// Constants
-constexpr double C_AU_PER_DAY = 173.144632674;  // Speed of light in AU/day
-constexpr double ARCSEC_PER_RADIAN = 206264.806247;
+// Use constants from types.h
+constexpr double ARCSEC_PER_RADIAN = 1.0 / ARCSEC_TO_RAD;
 
 // ============================================================================
 // Implementation class
@@ -71,7 +70,7 @@ PlanetaryAberrationCalculator::~PlanetaryAberrationCalculator() {
 
 double PlanetaryAberrationCalculator::calculateLightTime(double distance) {
     // Light-time τ = d/c where d is in AU, c in AU/day
-    return distance / C_AU_PER_DAY;
+    return distance / C_LIGHT_AU_DAY;
 }
 
 double PlanetaryAberrationCalculator::calculateLightTime(const Vector3D& position) {
@@ -85,7 +84,7 @@ double PlanetaryAberrationCalculator::estimateCorrection(
     // Δr ≈ v × τ = v × (d/c)
     double lightTime = calculateLightTime(distance);
     double correctionAU = velocity.magnitude() * lightTime;
-    return correctionAU * AU_TO_KM;
+    return correctionAU * AU_KM;
 }
 
 bool PlanetaryAberrationCalculator::isSignificant(
@@ -94,10 +93,10 @@ bool PlanetaryAberrationCalculator::isSignificant(
     double accuracyThreshold)
 {
     // Convert velocity to AU/day
-    double velocityAUPerDay = velocityKmS * 86400.0 / AU_TO_KM;
+    double velocityAUPerDay = velocityKmS * DAY_SEC / AU_KM;
     
     // Estimate correction
-    double estimatedCorrection = velocityAUPerDay * (distance / C_AU_PER_DAY) * AU_TO_KM;
+    double estimatedCorrection = velocityAUPerDay * (distance / C_LIGHT_AU_DAY) * AU_KM;
     
     return estimatedCorrection > accuracyThreshold;
 }
@@ -190,7 +189,7 @@ AberrationCorrection PlanetaryAberrationCalculator::correctFirstOrder(
     
     // Correction vector
     corr.correction = corr.apparent - corr.geometric;
-    corr.magnitude = corr.correction.magnitude() * AU_TO_KM;
+    corr.magnitude = corr.correction.magnitude() * AU_KM;
     
     // Angular shift (in arcseconds)
     if (distance > 0) {
@@ -237,7 +236,7 @@ AberrationCorrection PlanetaryAberrationCalculator::correctIterative(
     corr.apparent = apparentPos;
     corr.lightTime = prevLightTime;
     corr.correction = corr.apparent - corr.geometric;
-    corr.magnitude = corr.correction.magnitude() * AU_TO_KM;
+    corr.magnitude = corr.correction.magnitude() * AU_KM;
     
     double distance = geoPos.magnitude();
     if (distance > 0) {

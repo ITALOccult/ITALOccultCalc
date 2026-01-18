@@ -350,7 +350,7 @@ OrbitalElements AstDysClient::getRecentElements(const std::string& designation) 
             // CONVERSIONE: Omega_rad = Omega_deg * (π / 180.0)
             std::string Omega_str = line.substr(105, 23);
             double Omega_deg = std::stod(Omega_str);
-            elem.Omega = Omega_deg * M_PI / 180.0;
+            elem.Omega = Omega_deg * DEG_TO_RAD;
             
             // omega (argomento del perielio) - posizioni 130-152 (0-indexed: 130-153 escluso)
             // UNITÀ NEL FILE: GRADI (formato scientifico)
@@ -358,7 +358,7 @@ OrbitalElements AstDysClient::getRecentElements(const std::string& designation) 
             // CONVERSIONE: omega_rad = omega_deg * (π / 180.0)
             std::string omega_str = line.substr(130, 23);
             double omega_deg = std::stod(omega_str);
-            elem.omega = omega_deg * M_PI / 180.0;
+            elem.omega = omega_deg * DEG_TO_RAD;
             
             // M (anomalia media) - posizioni 155-177 (0-indexed: 155-178 escluso)
             // UNITÀ NEL FILE: GRADI (formato scientifico)

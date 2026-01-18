@@ -105,7 +105,7 @@ struct AstDynEquinoctialElements {
     
     // Matrice di covarianza (6x6)
     bool hasCovariance;
-    std::vector<std::vector<double>> covariance;
+    std::vector<double> covariance; // Triangolo superiore 6x6 (21 elementi)
 
     // Per compatibilità con template che si aspettano toEquinoctial()
     AstDynEquinoctialElements toEquinoctial() const { return *this; }

@@ -59,7 +59,7 @@ struct KeplerianElements {
     
     /// Converti angoli da radianti a gradi
     void toDegreesInPlace() {
-        constexpr double RAD_TO_DEG = 180.0 / M_PI;
+        // Use RAD_TO_DEG from types.h
         i *= RAD_TO_DEG;
         Omega *= RAD_TO_DEG;
         omega *= RAD_TO_DEG;

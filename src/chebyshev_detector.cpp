@@ -128,10 +128,10 @@ OccultationCandidate ChebyshevOccultationDetector::findCandidate(int starIndex, 
 }
 
 double ChebyshevOccultationDetector::angularDistance(double ra1, double dec1, double ra2, double dec2) const {
-    double ra1_rad = ra1 * M_PI / 180.0;
-    double dec1_rad = dec1 * M_PI / 180.0;
-    double ra2_rad = ra2 * M_PI / 180.0;
-    double dec2_rad = dec2 * M_PI / 180.0;
+    double ra1_rad = ra1 * DEG_TO_RAD;
+    double dec1_rad = dec1 * DEG_TO_RAD;
+    double ra2_rad = ra2 * DEG_TO_RAD;
+    double dec2_rad = dec2 * DEG_TO_RAD;
     
     double dra = ra2_rad - ra1_rad;
     double ddec = dec2_rad - dec1_rad;

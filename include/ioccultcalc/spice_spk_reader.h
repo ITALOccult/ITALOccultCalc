@@ -55,7 +55,7 @@ public:
      * @param centerId Centro riferimento (0=SSB, 10=Sun)
      * @return Posizione in AU
      */
-    Vector3D getPosition(int bodyId, double jd, int centerId = 10);
+    Vector3D getPosition(int bodyId, double jd, int centerId = 10) override;
     
     /**
      * @brief Ottieni posizione e velocità
@@ -72,7 +72,7 @@ public:
     /**
      * @brief Verifica se file è caricato
      */
-    bool isLoaded() const;
+    bool isLoaded() const override;
     
     /**
      * @brief Lista corpi disponibili nel file
