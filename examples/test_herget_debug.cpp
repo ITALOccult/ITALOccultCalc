@@ -15,8 +15,7 @@
 
 using namespace ioccultcalc;
 
-constexpr double PI = 3.14159265358979323846;
-constexpr double DEG = PI / 180.0;
+constexpr double DEG = ioccultcalc::PI / 180.0;
 
 void printVector(const std::string& label, const Vector3D& v) {
     std::cout << std::setw(30) << std::left << label << ": [" 

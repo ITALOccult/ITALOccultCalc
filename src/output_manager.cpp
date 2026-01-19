@@ -14,15 +14,11 @@
 #include <cstdlib>
 #include <set>
 #include <map>
-#include "starmap/StarMap.h"
-#include "starmap/map/ChartGenerator.h"
 #include "ioc_gaialib/unified_gaia_catalog.h"
 class MapPathRenderer;
 #include "ioc_earth/OccultationRenderer.h"
 #include "ioc_earth/SkyMapRenderer.h"
 #include "ioc_earth/FinderChartRenderer.h"
-#include "starmap/occultation/OccultationChartBuilder.h"
-#include "starmap/config/LibraryConfig.h"
 
 namespace ioccultcalc {
 
@@ -722,63 +718,10 @@ bool OutputManager::writeIotaCard(const OutputEvent& event,
     file << "  \\node[anchor=north west] at (current page.north west) {\n";
     file << "    \\begin{minipage}{10in}\n";
     
-    // --- NOVITÀ: Generazione Carte Stellari (IAU Approach + Betelgeuse Detail) ---
+    // --- StarMaps Generation (IAU Approach + Detail) ---
+    // DISABLED due to StarMap library issues
     std::string approach_map = "";
     std::string detail_map = "";
-    
-    if (options_.iota_include_finder_chart) {
-        // Inizializzazione StarMap con i percorsi dei cataloghi
-        starmap::config::LibraryConfig::CatalogPaths paths;
-        paths.gaiaSaoDatabase = "/Users/michelebigi/.catalog/crossreference/gaia_sao_xmatch.db";
-        paths.iauCatalog = "/Users/michelebigi/Documents/Develop/ASTDYN/IOccultCalc/external/IOC_GaiaLib/data/IAU-CSN.json";
-        paths.starNamesDatabase = "/Users/michelebigi/Documents/Develop/ASTDYN/IOccultCalc/external/IOC_GaiaLib/data/common_star_names.csv";
-        starmap::initialize(paths);
-
-        std::cout << "[OutputManager] Generazione StarMaps per stella: " << event.star_id << std::endl;
-        starmap::occultation::OccultationChartBuilder builder;
-        starmap::occultation::OccultationEvent sEv;
-        
-        // Mappa dati ioccultcalc -> starmap
-        sEv.targetStar.coordinates = starmap::core::EquatorialCoordinates(event.star_ra_deg, event.star_dec_deg);
-        sEv.targetStar.magnitude = event.star_mag;
-        sEv.targetStar.catalogId = event.star_catalog + " " + event.star_id;
-        
-        sEv.asteroid.name = event.asteroid_name;
-        sEv.asteroid.designation = event.asteroid_designation;
-        sEv.asteroid.position = starmap::core::EquatorialCoordinates(event.star_ra_deg, event.star_dec_deg); // Close enough
-        sEv.asteroid.magnitude = event.absolute_magnitude; // H
-        
-        sEv.circumstances.eventTime = event.utc_string;
-        sEv.circumstances.duration = event.duration_seconds;
-        sEv.circumstances.magnitudeDrop = event.mag_drop;
-        
-        builder.setEvent(sEv);
-        
-        // 1. Approach Chart (IAU Style)
-        approach_map = filename.substr(0, filename.find_last_of('.')) + "_approach.png";
-        starmap::occultation::OccultationChartConfig appCfg = starmap::occultation::OccultationChartConfig::getDefaultForType(starmap::occultation::ChartType::APPROACH);
-        appCfg.fieldOfViewWidth = 20.0;
-        appCfg.fieldOfViewHeight = 20.0;
-        appCfg.limitingMagnitude = 8.0;
-        // appCfg.showConstellationLines = true;
-        // appCfg.gridInterval = 5.0;
-        bool appOk = builder.generateAndSaveApproachChart(approach_map, &appCfg);
-        
-        // 2. Detail Chart (Betelgeuse Style)
-        detail_map = filename.substr(0, filename.find_last_of('.')) + "_detail.png";
-        starmap::occultation::OccultationChartConfig detCfg = starmap::occultation::OccultationChartConfig::getDefaultForType(starmap::occultation::ChartType::DETAIL);
-        detCfg.fieldOfViewWidth = 3.0;
-        detCfg.fieldOfViewHeight = 1.6; // ~16:9
-        detCfg.imageWidth = 2162;
-        detCfg.imageHeight = 1184;
-        detCfg.limitingMagnitude = 16.0;
-        // detCfg.gridInterval = 0.25;
-        detCfg.asteroidPathColor = 0xFF0000FF; // ROSSO / RED
-        bool detOk = builder.generateAndSaveDetailChart(detail_map, &detCfg);
-        
-        std::cout << "[OutputManager] Approach Chart: " << (appOk ? "OK" : "FAILED") << " -> " << approach_map << std::endl;
-        std::cout << "[OutputManager] Detail Chart: " << (detOk ? "OK" : "FAILED") << " -> " << detail_map << std::endl;
-    }
     
     // Header IOTA-style
     file << "      \\begin{center}\n";
@@ -947,49 +890,11 @@ bool OutputManager::writeEventCardA4(const OutputEvent& event,
         tex_file += ".tex";
     }
     
-    // 2. Generate Maps
-    // Initialize StarMap
-    starmap::config::LibraryConfig::CatalogPaths paths;
-    paths.gaiaSaoDatabase = std::string(getenv("HOME")) + "/.catalog/crossreference/gaia_sao_xmatch.db";
-    paths.iauCatalog = "/Users/michelebigi/Documents/Develop/ASTDYN/IOccultCalc/external/IOC_GaiaLib/data/IAU-CSN.json";
-    paths.starNamesDatabase = "/Users/michelebigi/Documents/Develop/ASTDYN/IOccultCalc/external/IOC_GaiaLib/data/common_star_names.csv";
-    starmap::initialize(paths);
-
-    starmap::occultation::OccultationChartBuilder builder;
-    starmap::occultation::OccultationEvent sEv;
-    
-    sEv.targetStar.coordinates = starmap::core::EquatorialCoordinates(event.star_ra_deg, event.star_dec_deg);
-    sEv.targetStar.magnitude = event.star_mag;
-    sEv.targetStar.catalogId = event.star_catalog + " " + event.star_id;
-    sEv.asteroid.name = event.asteroid_name;
-    sEv.asteroid.designation = event.asteroid_designation;
-    sEv.asteroid.position = starmap::core::EquatorialCoordinates(event.star_ra_deg, event.star_dec_deg);
-    sEv.asteroid.magnitude = event.absolute_magnitude;
-    sEv.circumstances.eventTime = event.utc_string;
-    sEv.circumstances.duration = event.duration_seconds;
-    sEv.circumstances.magnitudeDrop = event.mag_drop;
-    
-    builder.setEvent(sEv);
-    
-    // A. Approach Chart (Middle-Left)
-    std::string approach_map = filename.substr(0, filename.find_last_of('.')) + "_approach.png";
-    starmap::occultation::OccultationChartConfig appCfg = starmap::occultation::OccultationChartConfig::getDefaultForType(starmap::occultation::ChartType::APPROACH);
-    appCfg.fieldOfViewWidth = 15.0; // Slightly narrower for panel
-    appCfg.fieldOfViewHeight = 15.0;
-    appCfg.limitingMagnitude = 9.0;
-    builder.generateAndSaveApproachChart(approach_map, &appCfg);
-    
-    // B. Ground Map (Middle-Right)
+    // 2. Generate Maps (Starmap DISABLED)
+    std::string approach_map = "";
     std::string ground_map = filename.substr(0, filename.find_last_of('.')) + "_ground.png";
     generateGroundMapImage(event, 800, 800, ground_map);
-    
-    // C. Work Map (Finder/Detail) (Bottom - Full Width)
-    std::string work_map = filename.substr(0, filename.find_last_of('.')) + "_work.png";
-    starmap::occultation::OccultationChartConfig detCfg = starmap::occultation::OccultationChartConfig::getDefaultForType(starmap::occultation::ChartType::DETAIL);
-    detCfg.fieldOfViewWidth = 2.0;
-    detCfg.fieldOfViewHeight = 1.0; 
-    detCfg.limitingMagnitude = 16.0;
-    builder.generateAndSaveDetailChart(work_map, &detCfg);
+    std::string work_map = "";
     
     // 3. Generate LaTeX
     std::ofstream file(tex_file);
@@ -1094,9 +999,10 @@ bool OutputManager::writeIOccultCard(const OutputEvent& event, const std::string
     std::string cmd_mkdir = "mkdir -p " + output_dir;
     std::system(cmd_mkdir.c_str());
 
-    // 1. Generate Individual Components
-    std::string ground_map = generateGroundMapImage(event, 800, 500, output_dir + "/ground.png");
+    // 1. Generate Individual Components (Aligned to 1200px width total)
+    std::string ground_map = generateGroundMapImage(event, 1200, 600, output_dir + "/ground.png");
     std::string sky_map = generateSkyMapImage(event, 400, 400, output_dir + "/sky.png");
+    std::string approach_chart = generateApproachChartImage(event, 400, 400, output_dir + "/approach.png");
     std::string finder_chart = generateFinderChartImage(event, 400, 400, output_dir + "/finder.png");
 
     if (ground_map.empty()) return false;
@@ -1104,18 +1010,31 @@ bool OutputManager::writeIOccultCard(const OutputEvent& event, const std::string
     // 2. Composite using ImageMagick (magick)
     // Layout: 
     // [ GROUND MAP (800x500) ]
-    // [ SKY (400x400) | FINDER (400x400) ]
+    // [ SKY (400x400) | APPROACH (400x400) | FINDER (400x400) ]
     
     std::string final_output = filename;
     if (final_output.find("/") == std::string::npos) {
         final_output = output_dir + "/" + filename;
     }
     
+    std::vector<std::string> charts;
+    if (!sky_map.empty()) charts.push_back("\"" + sky_map + "\"");
+    if (!approach_chart.empty()) charts.push_back("\"" + approach_chart + "\"");
+    if (!finder_chart.empty()) charts.push_back("\"" + finder_chart + "\"");
+
     std::stringstream cmd;
     cmd << "magick convert "
-        << "(" << ground_map << ") "
-        << "(" << sky_map << " " << finder_chart << " +append) "
-        << "-append " << final_output;
+        << "\\( \"" << ground_map << "\" \\) ";
+    
+    if (!charts.empty()) {
+        cmd << "\\( ";
+        for (size_t i = 0; i < charts.size(); ++i) {
+            cmd << charts[i] << (i < charts.size() - 1 ? " " : "");
+        }
+        cmd << " +append \\) ";
+    }
+    
+    cmd << "-append \"" << final_output << "\"";
 
     std::cout << "[OutputManager] Compositing final card: " << cmd.str() << std::endl;
     int rc = std::system(cmd.str().c_str());
@@ -1142,20 +1061,21 @@ std::string OutputManager::generateGroundMapImage(const OutputEvent& event, int 
     }
 
     // Convert Trajectory (Radians -> Degrees)
+    // Use DEGREES directly as OutputEvent::PathPoint is now in degrees from italoccultcalc.cpp
     for (const auto& pt : event.central_path) {
-        data.central_line.emplace_back(pt.longitude * RAD_TO_DEG, pt.latitude * RAD_TO_DEG);
+        data.central_line.emplace_back(pt.longitude, pt.latitude);
     }
     for (const auto& pt : event.north_limit) {
-        data.northern_limit.emplace_back(pt.longitude * RAD_TO_DEG, pt.latitude * RAD_TO_DEG);
+        data.northern_limit.emplace_back(pt.longitude, pt.latitude);
     }
     for (const auto& pt : event.south_limit) {
-        data.southern_limit.emplace_back(pt.longitude * RAD_TO_DEG, pt.latitude * RAD_TO_DEG);
+        data.southern_limit.emplace_back(pt.longitude, pt.latitude);
     }
     for (const auto& pt : event.north_margin) {
-        data.geometric_northern_limit.emplace_back(pt.longitude * RAD_TO_DEG, pt.latitude * RAD_TO_DEG);
+        data.geometric_northern_limit.emplace_back(pt.longitude, pt.latitude);
     }
     for (const auto& pt : event.south_margin) {
-        data.geometric_southern_limit.emplace_back(pt.longitude * RAD_TO_DEG, pt.latitude * RAD_TO_DEG);
+        data.geometric_southern_limit.emplace_back(pt.longitude, pt.latitude);
     }
 
     if (!data.central_line.empty()) {
@@ -1194,8 +1114,13 @@ std::string OutputManager::generateGroundMapImage(const OutputEvent& event, int 
     
     renderer.setRenderStyle(style);
     
-    // Use data from external submodule
+    // Use data from external submodule - check current directory
     std::string data_dir = "external/IOC_Earth/data";
+    // Check if we are in build directory
+    std::ifstream f(data_dir + "/ne_50m_admin_0_countries.shp");
+    if (!f.good()) {
+        data_dir = "../external/IOC_Earth/data";
+    }
     renderer.setDataDirectory(data_dir);
     renderer.autoCalculateExtent(15.0); // 15% margin
 
@@ -1327,6 +1252,13 @@ std::string OutputManager::generateFinderChartImage(const OutputEvent& event,
     if (renderer.renderFinderChart(output_path)) {
         return output_path;
     }
+    return "";
+}
+
+std::string OutputManager::generateApproachChartImage(const OutputEvent& event,
+                                                     int width, int height,
+                                                     const std::string& output_path) {
+    std::cerr << "[OutputManager] StarMap disabled due to linker issues." << std::endl;
     return "";
 }
 

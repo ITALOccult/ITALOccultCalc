@@ -283,8 +283,8 @@ OccultationEvent Occult4XMLHandler::toIOccultCalcEvent(const Occult4Event& o4) {
     event.shadowPath.clear();
     for (const auto& pt : o4.centerLine) {
         ShadowPathPoint ioPoint;
-        ioPoint.location.latitude = pt.latitude * DEG_TO_RAD;
-        ioPoint.location.longitude = pt.longitude * DEG_TO_RAD;
+        ioPoint.location.latitude = pt.latitude;
+        ioPoint.location.longitude = pt.longitude;
         ioPoint.location.altitude = 0.0;
         ioPoint.time.jd = pt.jd;
         ioPoint.duration = 0.0; // non disponibile da XML
@@ -473,8 +473,8 @@ std::string Occult4XMLHandler::generateOccult4EventXML(const OccultationEvent& e
         xml << "    <CenterLine>\n";
         for (const auto& pt : event.shadowPath) {
             xml << "      <Point>\n";
-            xml << "        <Latitude>" << std::setprecision(6) << (pt.location.latitude * rad2deg) << "</Latitude>\n";
-            xml << "        <Longitude>" << (pt.location.longitude * rad2deg) << "</Longitude>\n";
+            xml << "        <Latitude>" << std::setprecision(6) << pt.location.latitude << "</Latitude>\n";
+            xml << "        <Longitude>" << pt.location.longitude << "</Longitude>\n";
             xml << "        <JD>" << std::setprecision(8) << pt.time.jd << "</JD>\n";
             xml << "        <DateTime>" << TimeUtils::jdToISO(pt.time) << "</DateTime>\n";
             xml << "      </Point>\n";
@@ -486,8 +486,8 @@ std::string Occult4XMLHandler::generateOccult4EventXML(const OccultationEvent& e
         xml << "    <NorthLimit>\n";
         for (const auto& pt : event.north_limit) {
             xml << "      <Point>\n";
-            xml << "        <Latitude>" << std::setprecision(6) << (pt.latitude * rad2deg) << "</Latitude>\n";
-            xml << "        <Longitude>" << (pt.longitude * rad2deg) << "</Longitude>\n";
+            xml << "        <Latitude>" << std::setprecision(6) << pt.latitude << "</Latitude>\n";
+            xml << "        <Longitude>" << pt.longitude << "</Longitude>\n";
             xml << "      </Point>\n";
         }
         xml << "    </NorthLimit>\n";
@@ -497,8 +497,8 @@ std::string Occult4XMLHandler::generateOccult4EventXML(const OccultationEvent& e
         xml << "    <SouthLimit>\n";
         for (const auto& pt : event.south_limit) {
             xml << "      <Point>\n";
-            xml << "        <Latitude>" << std::setprecision(6) << (pt.latitude * rad2deg) << "</Latitude>\n";
-            xml << "        <Longitude>" << (pt.longitude * rad2deg) << "</Longitude>\n";
+            xml << "        <Latitude>" << std::setprecision(6) << pt.latitude << "</Latitude>\n";
+            xml << "        <Longitude>" << pt.longitude << "</Longitude>\n";
             xml << "      </Point>\n";
         }
         xml << "    </SouthLimit>\n";
@@ -671,8 +671,8 @@ Occult4XMLHandler::generatePathPoints(const std::vector<ShadowPathPoint>& ioPoin
     
     for (const auto& ioPt : ioPoints) {
         Occult4Event::PathPoint pt;
-        pt.latitude = ioPt.location.latitude * RAD_TO_DEG;
-        pt.longitude = ioPt.location.longitude * RAD_TO_DEG;
+        pt.latitude = ioPt.location.latitude;
+        pt.longitude = ioPt.location.longitude;
         pt.jd = ioPt.time.jd;
         pt.dateTime = TimeUtils::jdToISO(ioPt.time);
         pt.altitude = 0.0; // non disponibile in ShadowPathPoint

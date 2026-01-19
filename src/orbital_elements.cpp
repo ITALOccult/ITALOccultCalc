@@ -70,6 +70,9 @@ OrbitalElements AstDynEquinoctialElements::toKeplerian() const {
     // Converti elementi
     toKeplerian(orb.e, orb.i, orb.omega, orb.Omega, orb.M);
     
+    orb.frame = frame;
+    orb.type = type;
+
     return orb;
 }
 
@@ -116,6 +119,8 @@ AstDynEquinoctialElements AstDynEquinoctialElements::fromKeplerian(const Orbital
     eq.number = orb.number;
     eq.H = orb.H;
     eq.G = orb.G;
+    eq.frame = orb.frame;
+    eq.type = orb.type;
     return eq;
 }
 

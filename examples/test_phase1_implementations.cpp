@@ -18,9 +18,7 @@
 
 using namespace ioccultcalc;
 
-// Constants for validation (use ioccultcalc:: prefix to avoid ambiguity)
-constexpr double ARCMIN_TO_DEG = 1.0 / 60.0;
-constexpr double ARCSEC_TO_DEG = 1.0 / 3600.0;
+// Use constants from ioccultcalc/types.h
 
 void printHeader(const std::string& title) {
     std::cout << "\n" << std::string(70, '=') << "\n";

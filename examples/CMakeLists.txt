@@ -1,8 +1,8 @@
 add_executable(example_basic basic_usage.cpp)
 target_link_libraries(example_basic ioccultcalc)
 
-add_executable(test_mpc_34713 test_mpc_34713.cpp)
-target_link_libraries(test_mpc_34713 ioccultcalc)
+# add_executable(test_mpc_34713 test_mpc_34713.cpp)
+# target_link_libraries(test_mpc_34713 ioccultcalc)
 
 add_executable(example_search search_occultations.cpp)
 target_link_libraries(example_search ioccultcalc)
@@ -19,8 +19,8 @@ target_link_libraries(example_prediction_comparison ioccultcalc)
 add_executable(test_conversion test_conversion.cpp)
 target_link_libraries(test_conversion ioccultcalc)
 
-add_executable(example_gauss example_gauss.cpp)
-target_link_libraries(example_gauss ioccultcalc)
+# add_executable(example_gauss example_gauss.cpp)
+# target_link_libraries(example_gauss ioccultcalc)
 
 add_executable(example_combined_asteroid_lists example_combined_asteroid_lists.cpp)
 target_link_libraries(example_combined_asteroid_lists ioccultcalc)

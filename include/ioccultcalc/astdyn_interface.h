@@ -53,6 +53,10 @@ struct AstDySElements {
     bool has_covariance;
     std::vector<double> covariance; // Triangolo superiore 6x6 (21 elementi)
     
+    // Metadata di frame e tipo
+    FrameType frame = FrameType::ECLIPTIC_J2000;
+    ElementType type = ElementType::MEAN_ASTDYS;
+
     // Conversione a OrbitalElements di IOccultCalc
     OrbitalElements toOrbitalElements() const;
     

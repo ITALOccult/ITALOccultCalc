@@ -28,6 +28,8 @@ OrbitalElements AstDySElements::toOrbitalElements() const {
     elem.M = M * DEG_TO_RAD;
     elem.H = H;
     elem.G = G;
+    elem.frame = frame;
+    elem.type = type;
     return elem;
 }
 
@@ -531,6 +533,10 @@ OrbitFitResult AstDynOrbitFitter::fit(const AstDySElements& initial_elements,
             out.fitted_elements.omega = res.fitted_orbit.argument_perihelion * RAD_TO_DEG;
             out.fitted_elements.M = res.fitted_orbit.mean_anomaly * RAD_TO_DEG;
             out.fitted_elements.epoch_mjd = res.fitted_orbit.epoch_mjd_tdb;
+            
+            // CRITICAL FIX: The fitter always returns Equatorial ICRF elements
+            out.fitted_elements.frame = FrameType::EQUATORIAL_ICRF;
+            out.fitted_elements.type = ElementType::OSCULATING;
 
             // Estrarre covarianza se presente
             if (res.fitted_orbit.covariance.has_value()) {
@@ -613,6 +619,8 @@ AstDySElements toAstDySElements(const OrbitalElements& elem) {
     out.epoch_mjd = elem.epoch.jd - 2400000.5;
     out.H = elem.H;
     out.G = elem.G;
+    out.frame = elem.frame;
+    out.type = elem.type;
     out.has_covariance = false; 
 
     // Se stiamo usando un framework che popola OrbitalElements con covarianza
@@ -641,6 +649,8 @@ OrbitalElements fromAstDySElements(const AstDySElements& elem) {
     out.epoch = JulianDate(elem.epoch_mjd + 2400000.5);
     out.H = elem.H;
     out.G = elem.G;
+    out.frame = elem.frame;
+    out.type = elem.type;
     return out;
 }
 

@@ -1,256 +1,961 @@
 <Occultations>
   <Event>
-    <Elements>ITALOCC:2026-Jan-13,0.00,2026,1,13,8.814116,0.00000000,0.00000000,0.00000000,0.00000000,0.0,0.0,0.0,0.0</Elements>
+    <Elements>ITALOCC:2026-Jan-23,0.00,2026,1,23,21.414116,0.00000000,0.00000000,0.00000000,0.00000000,0.0,0.0,0.0,0.0</Elements>
     <Earth>0.000000,0.000000,0.000000,0.000000,False</Earth>
-    <Star>GAIA DR3 681067227714680448,8.18314533,25.10293720,12.86,12.86,12.86,0.0,0,,0.00000000,0.00000000,0.78,0.78,0,0,0</Star>
-    <Object>1272,Gefion,12.92,8.9,1.000000,0,0,0.0,0.0,,0.0,0,12.92,12.92,</Object>
-    <Orbit>2000.0,130.2575,2026,1,13,4.9865,321.2760,8.4234,0.150823,2.788128,2.367614,12.92,0.0,0.15</Orbit>
+    <Star>GAIA DR3 148670400327275648,4.35041819,22.77212717,13.96,13.96,13.96,0.0,0,,0.00000000,0.00000000,0.09,0.09,0,0,0</Star>
+    <Object>782,Montefiore,11.34,18.5,1.441484,0,0,0.0,0.0,,0.0,0,11.34,11.34,</Object>
+    <Orbit>2000.0,229.4799,2026,1,23,174.7561,12.4608,24.8919,0.063843,2.098162,1.964208,11.34,0.0,0.15</Orbit>
     <Errors>0.000,0.0,0.0,0.0,0.0,Known errors,-1,0,0,0</Errors>
-    <ID>20260113_14680448,61053.3673</ID>
-  </Event>
-  <Event>
-    <Elements>ITALOCC:2026-Jan-14,0.00,2026,1,14,0.147449,0.00000000,0.00000000,0.00000000,0.00000000,0.0,0.0,0.0,0.0</Elements>
-    <Earth>0.000000,0.000000,0.000000,0.000000,False</Earth>
-    <Star>GAIA DR3 681069461097680768,8.17053263,25.09582396,12.52,12.52,12.52,0.0,0,,0.00000000,0.00000000,0.97,0.97,0,0,0</Star>
-    <Object>1272,Gefion,12.92,8.9,1.000000,0,0,0.0,0.0,,0.0,0,12.92,12.92,</Object>
-    <Orbit>2000.0,130.2575,2026,1,14,4.9865,321.2760,8.4234,0.150823,2.788128,2.367614,12.92,0.0,0.15</Orbit>
-    <Errors>0.000,0.0,0.0,0.0,0.0,Known errors,-1,0,0,0</Errors>
-    <ID>20260114_97680768,61054.0061</ID>
-  </Event>
-  <Event>
-    <Elements>ITALOCC:2026-Jan-14,0.00,2026,1,14,0.147449,0.00000000,0.00000000,0.00000000,0.00000000,0.0,0.0,0.0,0.0</Elements>
-    <Earth>0.000000,0.000000,0.000000,0.000000,False</Earth>
-    <Star>GAIA DR3 681081864963159680,8.16690627,25.17235128,12.73,12.73,12.73,0.0,0,,0.00000000,0.00000000,0.85,0.85,0,0,0</Star>
-    <Object>1272,Gefion,12.92,8.9,1.000000,0,0,0.0,0.0,,0.0,0,12.92,12.92,</Object>
-    <Orbit>2000.0,130.2575,2026,1,14,4.9865,321.2760,8.4234,0.150823,2.788128,2.367614,12.92,0.0,0.15</Orbit>
-    <Errors>0.000,0.0,0.0,0.0,0.0,Known errors,-1,0,0,0</Errors>
-    <ID>20260114_63159680,61054.0061</ID>
-  </Event>
-  <Event>
-    <Elements>ITALOCC:2026-Jan-13,0.00,2026,1,13,13.814116,0.00000000,0.00000000,0.00000000,0.00000000,0.0,0.0,0.0,0.0</Elements>
-    <Earth>0.000000,0.000000,0.000000,0.000000,False</Earth>
-    <Star>GAIA DR3 681070904206685696,8.17995692,25.16550162,12.28,12.28,12.28,0.0,0,,0.00000000,0.00000000,1.12,1.12,0,0,0</Star>
-    <Object>1272,Gefion,12.92,8.9,1.000000,0,0,0.0,0.0,,0.0,0,12.92,12.92,</Object>
-    <Orbit>2000.0,130.2575,2026,1,13,4.9865,321.2760,8.4234,0.150823,2.788128,2.367614,12.92,0.0,0.15</Orbit>
-    <Errors>0.000,0.0,0.0,0.0,0.0,Known errors,-1,0,0,0</Errors>
-    <ID>20260113_06685696,61053.5756</ID>
-  </Event>
-  <Event>
-    <Elements>ITALOCC:2026-Jan-13,0.00,2026,1,13,18.147449,0.00000000,0.00000000,0.00000000,0.00000000,0.0,0.0,0.0,0.0</Elements>
-    <Earth>0.000000,0.000000,0.000000,0.000000,False</Earth>
-    <Star>GAIA DR3 681071591401453568,8.17683511,25.17758213,12.71,12.71,12.71,0.0,0,,0.00000000,0.00000000,0.86,0.86,0,0,0</Star>
-    <Object>1272,Gefion,12.92,8.9,1.000000,0,0,0.0,0.0,,0.0,0,12.92,12.92,</Object>
-    <Orbit>2000.0,130.2575,2026,1,13,4.9865,321.2760,8.4234,0.150823,2.788128,2.367614,12.92,0.0,0.15</Orbit>
-    <Errors>0.000,0.0,0.0,0.0,0.0,Known errors,-1,0,0,0</Errors>
-    <ID>20260113_01453568,61053.7561</ID>
-  </Event>
-  <Event>
-    <Elements>ITALOCC:2026-Jan-13,0.00,2026,1,13,9.983786,0.00000000,0.00000000,0.00000000,0.00000000,0.0,0.0,0.0,0.0</Elements>
-    <Earth>0.000000,0.000000,0.000000,0.000000,False</Earth>
-    <Star>GAIA DR3 681071144724852352,8.18274938,25.19451158,12.89,12.89,12.89,0.0,0,,0.00000000,0.00000000,0.77,0.77,0,0,0</Star>
-    <Object>1272,Gefion,12.92,8.9,1.000000,0,0,0.0,0.0,,0.0,0,12.92,12.92,</Object>
-    <Orbit>2000.0,130.2575,2026,1,13,4.9865,321.2760,8.4234,0.150823,2.788128,2.367614,12.92,0.0,0.15</Orbit>
-    <Errors>0.000,0.0,0.0,0.0,0.0,Known errors,-1,0,0,0</Errors>
-    <ID>20260113_24852352,61053.4160</ID>
-  </Event>
-  <Event>
-    <Elements>ITALOCC:2026-Jan-13,0.00,2026,1,13,6.814116,0.00000000,0.00000000,0.00000000,0.00000000,0.0,0.0,0.0,0.0</Elements>
-    <Earth>0.000000,0.000000,0.000000,0.000000,False</Earth>
-    <Star>GAIA DR3 681071213444327168,8.18516205,25.20011404,11.81,11.81,11.81,0.0,0,,0.00000000,0.00000000,1.45,1.45,0,0,0</Star>
-    <Object>1272,Gefion,12.92,8.9,1.000000,0,0,0.0,0.0,,0.0,0,12.92,12.92,</Object>
-    <Orbit>2000.0,130.2575,2026,1,13,4.9865,321.2760,8.4234,0.150823,2.788128,2.367614,12.92,0.0,0.15</Orbit>
-    <Errors>0.000,0.0,0.0,0.0,0.0,Known errors,-1,0,0,0</Errors>
-    <ID>20260113_44327168,61053.2839</ID>
-  </Event>
-  <Event>
-    <Elements>ITALOCC:2026-Jan-13,0.00,2026,1,13,22.814116,0.00000000,0.00000000,0.00000000,0.00000000,0.0,0.0,0.0,0.0</Elements>
-    <Earth>0.000000,0.000000,0.000000,0.000000,False</Earth>
-    <Star>GAIA DR3 681071930702340864,8.17406786,25.20216038,12.61,12.61,12.61,0.0,0,,0.00000000,0.00000000,0.92,0.92,0,0,0</Star>
-    <Object>1272,Gefion,12.92,8.9,1.000000,0,0,0.0,0.0,,0.0,0,12.92,12.92,</Object>
-    <Orbit>2000.0,130.2575,2026,1,13,4.9865,321.2760,8.4234,0.150823,2.788128,2.367614,12.92,0.0,0.15</Orbit>
-    <Errors>0.000,0.0,0.0,0.0,0.0,Known errors,-1,0,0,0</Errors>
-    <ID>20260113_02340864,61053.9506</ID>
-  </Event>
-  <Event>
-    <Elements>ITALOCC:2026-Jan-11,0.00,2026,1,11,23.814116,0.00000000,0.00000000,0.00000000,0.00000000,0.0,0.0,0.0,0.0</Elements>
-    <Earth>0.000000,0.000000,0.000000,0.000000,False</Earth>
-    <Star>GAIA DR3 680881474673230336,8.20862439,25.06575409,12.11,12.11,12.11,0.0,0,,0.00000000,0.00000000,1.23,1.23,0,0,0</Star>
-    <Object>1272,Gefion,12.92,8.9,1.000000,0,0,0.0,0.0,,0.0,0,12.92,12.92,</Object>
-    <Orbit>2000.0,130.2575,2026,1,11,4.9865,321.2760,8.4234,0.150823,2.788128,2.367614,12.92,0.0,0.15</Orbit>
-    <Errors>0.000,0.0,0.0,0.0,0.0,Known errors,-1,0,0,0</Errors>
-    <ID>20260111_73230336,61051.9923</ID>
-  </Event>
-  <Event>
-    <Elements>ITALOCC:2026-Jan-13,0.00,2026,1,13,0.147449,0.00000000,0.00000000,0.00000000,0.00000000,0.0,0.0,0.0,0.0</Elements>
-    <Earth>0.000000,0.000000,0.000000,0.000000,False</Earth>
-    <Star>GAIA DR3 681066639302640640,8.18872345,25.09228444,12.17,12.17,12.17,0.0,0,,0.00000000,0.00000000,1.19,1.19,0,0,0</Star>
-    <Object>1272,Gefion,12.92,8.9,1.000000,0,0,0.0,0.0,,0.0,0,12.92,12.92,</Object>
-    <Orbit>2000.0,130.2575,2026,1,13,4.9865,321.2760,8.4234,0.150823,2.788128,2.367614,12.92,0.0,0.15</Orbit>
-    <Errors>0.000,0.0,0.0,0.0,0.0,Known errors,-1,0,0,0</Errors>
-    <ID>20260113_02640640,61053.0061</ID>
-  </Event>
-  <Event>
-    <Elements>ITALOCC:2026-Jan-12,0.00,2026,1,12,22.814116,0.00000000,0.00000000,0.00000000,0.00000000,0.0,0.0,0.0,0.0</Elements>
-    <Earth>0.000000,0.000000,0.000000,0.000000,False</Earth>
-    <Star>GAIA DR3 681066781038079488,8.18989182,25.09884549,9.44,9.44,9.44,0.0,0,,0.00000000,0.00000000,3.53,3.53,0,0,0</Star>
-    <Object>1272,Gefion,12.92,8.9,1.000000,0,0,0.0,0.0,,0.0,0,12.92,12.92,</Object>
-    <Orbit>2000.0,130.2575,2026,1,12,4.9865,321.2760,8.4234,0.150823,2.788128,2.367614,12.92,0.0,0.15</Orbit>
-    <Errors>0.000,0.0,0.0,0.0,0.0,Known errors,-1,0,0,0</Errors>
-    <ID>20260112_38079488,61052.9506</ID>
-  </Event>
-  <Event>
-    <Elements>ITALOCC:2026-Jan-13,0.61,2026,1,13,0.147449,0.68755028,0.03885319,-8.26268027,0.76082776,0.0,0.0,0.0,0.0</Elements>
-    <Earth>8.124604,25.137283,125.104339,-19.334402,False</Earth>
-    <Star>GAIA DR3 681067090275723392,8.18913831,25.13728287,9.38,9.38,9.38,0.0,0,,8.18913831,25.13728287,3.58,3.58,0,0,0</Star>
-    <Object>1272,Gefion,12.92,8.9,2.162101,0,0,0.0,0.0,,0.0,0,12.92,12.92,</Object>
-    <Orbit>2000.0,130.2575,2026,1,13,4.9865,321.2760,8.4234,0.150823,2.788128,2.367614,12.92,0.0,0.15</Orbit>
-    <Errors>0.000,0.0,0.0,0.0,0.0,Known errors,-1,0,0,0</Errors>
-    <ID>20260113_75723392,61053.0061</ID>
+    <ID>20260123_27275648,61063.8923</ID>
     <CenterLine>
       <Point>
-        <Latitude>7.316627</Latitude>
-        <Longitude>85.091770</Longitude>
-        <JD>2461053.50555556</JD>
-        <DateTime>2026-01-13 00:08:00</DateTime>
+        <Latitude>13.083267</Latitude>
+        <Longitude>115.058776</Longitude>
+        <JD>2461064.28611111</JD>
+        <DateTime>2026-01-23 18:52:00</DateTime>
       </Point>
       <Point>
-        <Latitude>12.077419</Latitude>
-        <Longitude>74.935773</Longitude>
-        <JD>2461053.50590278</JD>
-        <DateTime>2026-01-13 00:08:29</DateTime>
+        <Latitude>13.123863</Latitude>
+        <Longitude>114.826260</Longitude>
+        <JD>2461064.28680556</JD>
+        <DateTime>2026-01-23 18:53:00</DateTime>
       </Point>
       <Point>
-        <Latitude>15.359287</Latitude>
-        <Longitude>67.544090</Longitude>
-        <JD>2461053.50625000</JD>
-        <DateTime>2026-01-13 00:09:00</DateTime>
+        <Latitude>13.164381</Latitude>
+        <Longitude>114.593716</Longitude>
+        <JD>2461064.28750000</JD>
+        <DateTime>2026-01-23 18:54:00</DateTime>
       </Point>
       <Point>
-        <Latitude>17.981373</Latitude>
-        <Longitude>61.244364</Longitude>
-        <JD>2461053.50659722</JD>
-        <DateTime>2026-01-13 00:09:29</DateTime>
+        <Latitude>13.204822</Latitude>
+        <Longitude>114.361145</Longitude>
+        <JD>2461064.28819445</JD>
+        <DateTime>2026-01-23 18:55:00</DateTime>
       </Point>
       <Point>
-        <Latitude>20.189587</Latitude>
-        <Longitude>55.541252</Longitude>
-        <JD>2461053.50694444</JD>
-        <DateTime>2026-01-13 00:10:00</DateTime>
+        <Latitude>13.245186</Latitude>
+        <Longitude>114.128545</Longitude>
+        <JD>2461064.28888889</JD>
+        <DateTime>2026-01-23 18:56:00</DateTime>
       </Point>
       <Point>
-        <Latitude>22.096902</Latitude>
-        <Longitude>50.207434</Longitude>
-        <JD>2461053.50729167</JD>
-        <DateTime>2026-01-13 00:10:29</DateTime>
+        <Latitude>13.285473</Latitude>
+        <Longitude>113.895918</Longitude>
+        <JD>2461064.28958333</JD>
+        <DateTime>2026-01-23 18:57:00</DateTime>
       </Point>
       <Point>
-        <Latitude>23.765563</Latitude>
-        <Longitude>45.116132</Longitude>
-        <JD>2461053.50763889</JD>
-        <DateTime>2026-01-13 00:11:00</DateTime>
+        <Latitude>13.325684</Latitude>
+        <Longitude>113.663262</Longitude>
+        <JD>2461064.29027778</JD>
+        <DateTime>2026-01-23 18:58:00</DateTime>
       </Point>
       <Point>
-        <Latitude>25.233467</Latitude>
-        <Longitude>40.188011</Longitude>
-        <JD>2461053.50798611</JD>
-        <DateTime>2026-01-13 00:11:29</DateTime>
+        <Latitude>13.365818</Latitude>
+        <Longitude>113.430579</Longitude>
+        <JD>2461064.29097222</JD>
+        <DateTime>2026-01-23 18:59:00</DateTime>
       </Point>
       <Point>
-        <Latitude>26.525055</Latitude>
-        <Longitude>35.369425</Longitude>
-        <JD>2461053.50833333</JD>
-        <DateTime>2026-01-13 00:12:00</DateTime>
+        <Latitude>13.405876</Latitude>
+        <Longitude>113.197869</Longitude>
+        <JD>2461064.29166667</JD>
+        <DateTime>2026-01-23 19:00:00</DateTime>
       </Point>
       <Point>
-        <Latitude>27.656580</Latitude>
-        <Longitude>30.622127</Longitude>
-        <JD>2461053.50868056</JD>
-        <DateTime>2026-01-13 00:12:29</DateTime>
+        <Latitude>13.445857</Latitude>
+        <Longitude>112.965130</Longitude>
+        <JD>2461064.29236111</JD>
+        <DateTime>2026-01-23 19:01:00</DateTime>
       </Point>
       <Point>
-        <Latitude>28.638928</Latitude>
-        <Longitude>25.917505</Longitude>
-        <JD>2461053.50902778</JD>
-        <DateTime>2026-01-13 00:13:00</DateTime>
+        <Latitude>13.485763</Latitude>
+        <Longitude>112.732365</Longitude>
+        <JD>2461064.29305556</JD>
+        <DateTime>2026-01-23 19:02:00</DateTime>
       </Point>
       <Point>
-        <Latitude>29.479253</Latitude>
-        <Longitude>21.233503</Longitude>
-        <JD>2461053.50937500</JD>
-        <DateTime>2026-01-13 00:13:29</DateTime>
+        <Latitude>13.525593</Latitude>
+        <Longitude>112.499571</Longitude>
+        <JD>2461064.29375000</JD>
+        <DateTime>2026-01-23 19:03:00</DateTime>
       </Point>
       <Point>
-        <Latitude>30.181946</Latitude>
-        <Longitude>16.552447</Longitude>
-        <JD>2461053.50972222</JD>
-        <DateTime>2026-01-13 00:14:00</DateTime>
+        <Latitude>13.565347</Latitude>
+        <Longitude>112.266750</Longitude>
+        <JD>2461064.29444445</JD>
+        <DateTime>2026-01-23 19:04:00</DateTime>
       </Point>
       <Point>
-        <Latitude>30.749262</Latitude>
-        <Longitude>11.859746</Longitude>
-        <JD>2461053.51006944</JD>
-        <DateTime>2026-01-13 00:14:29</DateTime>
+        <Latitude>13.605026</Latitude>
+        <Longitude>112.033902</Longitude>
+        <JD>2461064.29513889</JD>
+        <DateTime>2026-01-23 19:05:00</DateTime>
       </Point>
       <Point>
-        <Latitude>31.181685</Latitude>
-        <Longitude>7.142815</Longitude>
-        <JD>2461053.51041667</JD>
-        <DateTime>2026-01-13 00:15:00</DateTime>
+        <Latitude>13.644629</Latitude>
+        <Longitude>111.801027</Longitude>
+        <JD>2461064.29583333</JD>
+        <DateTime>2026-01-23 19:06:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>13.684157</Latitude>
+        <Longitude>111.568124</Longitude>
+        <JD>2461064.29652778</JD>
+        <DateTime>2026-01-23 19:07:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>13.723610</Latitude>
+        <Longitude>111.335194</Longitude>
+        <JD>2461064.29722222</JD>
+        <DateTime>2026-01-23 19:08:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>13.762988</Latitude>
+        <Longitude>111.102237</Longitude>
+        <JD>2461064.29791667</JD>
+        <DateTime>2026-01-23 19:09:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>13.802292</Latitude>
+        <Longitude>110.869253</Longitude>
+        <JD>2461064.29861111</JD>
+        <DateTime>2026-01-23 19:10:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>13.841521</Latitude>
+        <Longitude>110.636242</Longitude>
+        <JD>2461064.29930556</JD>
+        <DateTime>2026-01-23 19:11:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>13.880676</Latitude>
+        <Longitude>110.403204</Longitude>
+        <JD>2461064.30000000</JD>
+        <DateTime>2026-01-23 19:12:00</DateTime>
       </Point>
     </CenterLine>
   </Event>
   <Event>
-    <Elements>ITALOCC:2026-Jan-12,0.61,2026,1,12,15.814116,0.68755028,0.03885319,-8.26268027,0.76082776,0.0,0.0,0.0,0.0</Elements>
-    <Earth>8.124604,25.137283,125.104339,-19.334402,False</Earth>
-    <Star>GAIA DR3 680885116805495808,8.19510116,25.14037251,12.69,12.69,12.69,0.0,0,,8.18913831,25.13728287,0.87,0.87,0,0,0</Star>
-    <Object>1272,Gefion,12.92,8.9,2.162101,0,0,0.0,0.0,,0.0,0,12.92,12.92,</Object>
-    <Orbit>2000.0,130.2575,2026,1,12,4.9865,321.2760,8.4234,0.150823,2.788128,2.367614,12.92,0.0,0.15</Orbit>
+    <Elements>ITALOCC:2026-Jan-24,0.00,2026,1,24,2.695212,0.00000000,0.00000000,0.00000000,0.00000000,0.0,0.0,0.0,0.0</Elements>
+    <Earth>0.000000,0.000000,0.000000,0.000000,False</Earth>
+    <Star>GAIA DR3 148764030613184896,4.35390003,22.78254649,10.23,10.23,10.23,0.0,0,,0.00000000,0.00000000,1.44,1.44,0,0,0</Star>
+    <Object>782,Montefiore,11.34,18.5,1.444560,0,0,0.0,0.0,,0.0,0,11.34,11.34,</Object>
+    <Orbit>2000.0,229.4799,2026,1,24,174.7561,12.4608,24.8919,0.063843,2.098162,1.964208,11.34,0.0,0.15</Orbit>
     <Errors>0.000,0.0,0.0,0.0,0.0,Known errors,-1,0,0,0</Errors>
-    <ID>20260112_05495808,61052.6589</ID>
+    <ID>20260124_13184896,61064.1123</ID>
+    <CenterLine>
+      <Point>
+        <Latitude>33.817267</Latitude>
+        <Longitude>157.506026</Longitude>
+        <JD>2461064.60615080</JD>
+        <DateTime>2026-01-24 02:32:51</DateTime>
+      </Point>
+      <Point>
+        <Latitude>33.936861</Latitude>
+        <Longitude>157.178895</Longitude>
+        <JD>2461064.60684524</JD>
+        <DateTime>2026-01-24 02:33:51</DateTime>
+      </Point>
+      <Point>
+        <Latitude>34.056418</Latitude>
+        <Longitude>156.851543</Longitude>
+        <JD>2461064.60753969</JD>
+        <DateTime>2026-01-24 02:34:51</DateTime>
+      </Point>
+      <Point>
+        <Latitude>34.175936</Latitude>
+        <Longitude>156.523968</Longitude>
+        <JD>2461064.60823413</JD>
+        <DateTime>2026-01-24 02:35:51</DateTime>
+      </Point>
+      <Point>
+        <Latitude>34.295414</Latitude>
+        <Longitude>156.196170</Longitude>
+        <JD>2461064.60892858</JD>
+        <DateTime>2026-01-24 02:36:51</DateTime>
+      </Point>
+      <Point>
+        <Latitude>34.414850</Latitude>
+        <Longitude>155.868148</Longitude>
+        <JD>2461064.60962302</JD>
+        <DateTime>2026-01-24 02:37:51</DateTime>
+      </Point>
+      <Point>
+        <Latitude>34.534243</Latitude>
+        <Longitude>155.539901</Longitude>
+        <JD>2461064.61031746</JD>
+        <DateTime>2026-01-24 02:38:51</DateTime>
+      </Point>
+      <Point>
+        <Latitude>34.653590</Latitude>
+        <Longitude>155.211430</Longitude>
+        <JD>2461064.61101191</JD>
+        <DateTime>2026-01-24 02:39:51</DateTime>
+      </Point>
+      <Point>
+        <Latitude>34.772890</Latitude>
+        <Longitude>154.882732</Longitude>
+        <JD>2461064.61170635</JD>
+        <DateTime>2026-01-24 02:40:51</DateTime>
+      </Point>
+      <Point>
+        <Latitude>34.892141</Latitude>
+        <Longitude>154.553808</Longitude>
+        <JD>2461064.61240080</JD>
+        <DateTime>2026-01-24 02:41:51</DateTime>
+      </Point>
+      <Point>
+        <Latitude>35.011341</Latitude>
+        <Longitude>154.224656</Longitude>
+        <JD>2461064.61309524</JD>
+        <DateTime>2026-01-24 02:42:51</DateTime>
+      </Point>
+      <Point>
+        <Latitude>35.130490</Latitude>
+        <Longitude>153.895276</Longitude>
+        <JD>2461064.61378969</JD>
+        <DateTime>2026-01-24 02:43:51</DateTime>
+      </Point>
+      <Point>
+        <Latitude>35.249584</Latitude>
+        <Longitude>153.565668</Longitude>
+        <JD>2461064.61448413</JD>
+        <DateTime>2026-01-24 02:44:51</DateTime>
+      </Point>
+      <Point>
+        <Latitude>35.368623</Latitude>
+        <Longitude>153.235830</Longitude>
+        <JD>2461064.61517858</JD>
+        <DateTime>2026-01-24 02:45:51</DateTime>
+      </Point>
+      <Point>
+        <Latitude>35.487605</Latitude>
+        <Longitude>152.905762</Longitude>
+        <JD>2461064.61587302</JD>
+        <DateTime>2026-01-24 02:46:51</DateTime>
+      </Point>
+      <Point>
+        <Latitude>35.606527</Latitude>
+        <Longitude>152.575463</Longitude>
+        <JD>2461064.61656746</JD>
+        <DateTime>2026-01-24 02:47:51</DateTime>
+      </Point>
+      <Point>
+        <Latitude>35.725389</Latitude>
+        <Longitude>152.244932</Longitude>
+        <JD>2461064.61726191</JD>
+        <DateTime>2026-01-24 02:48:51</DateTime>
+      </Point>
+      <Point>
+        <Latitude>35.844189</Latitude>
+        <Longitude>151.914170</Longitude>
+        <JD>2461064.61795635</JD>
+        <DateTime>2026-01-24 02:49:51</DateTime>
+      </Point>
+      <Point>
+        <Latitude>35.962924</Latitude>
+        <Longitude>151.583174</Longitude>
+        <JD>2461064.61865080</JD>
+        <DateTime>2026-01-24 02:50:51</DateTime>
+      </Point>
+      <Point>
+        <Latitude>36.081594</Latitude>
+        <Longitude>151.251945</Longitude>
+        <JD>2461064.61934524</JD>
+        <DateTime>2026-01-24 02:51:51</DateTime>
+      </Point>
+      <Point>
+        <Latitude>36.200196</Latitude>
+        <Longitude>150.920481</Longitude>
+        <JD>2461064.62003969</JD>
+        <DateTime>2026-01-24 02:52:51</DateTime>
+      </Point>
+    </CenterLine>
   </Event>
   <Event>
-    <Elements>ITALOCC:2026-Jan-12,0.61,2026,1,12,13.814116,0.68755028,0.03885319,-8.26268027,0.76082776,0.0,0.0,0.0,0.0</Elements>
-    <Earth>8.124604,25.137283,125.104339,-19.334402,False</Earth>
-    <Star>GAIA DR3 680885533418116096,8.19650208,25.15095735,12.84,12.84,12.84,0.0,0,,8.18913831,25.13728287,0.79,0.79,0,0,0</Star>
-    <Object>1272,Gefion,12.92,8.9,2.162101,0,0,0.0,0.0,,0.0,0,12.92,12.92,</Object>
-    <Orbit>2000.0,130.2575,2026,1,12,4.9865,321.2760,8.4234,0.150823,2.788128,2.367614,12.92,0.0,0.15</Orbit>
+    <Elements>ITALOCC:2026-Jan-24,0.00,2026,1,24,0.936803,0.00000000,0.00000000,0.00000000,0.00000000,0.0,0.0,0.0,0.0</Elements>
+    <Earth>0.000000,0.000000,0.000000,0.000000,False</Earth>
+    <Star>GAIA DR3 148764301196137216,4.35152028,22.80375673,12.60,12.60,12.60,0.0,0,,0.00000000,0.00000000,0.30,0.30,0,0,0</Star>
+    <Object>782,Montefiore,11.34,18.5,1.443855,0,0,0.0,0.0,,0.0,0,11.34,11.34,</Object>
+    <Orbit>2000.0,229.4799,2026,1,24,174.7561,12.4608,24.8919,0.063843,2.098162,1.964208,11.34,0.0,0.15</Orbit>
     <Errors>0.000,0.0,0.0,0.0,0.0,Known errors,-1,0,0,0</Errors>
-    <ID>20260112_18116096,61052.5756</ID>
+    <ID>20260124_96137216,61064.0390</ID>
+    <CenterLine>
+      <Point>
+        <Latitude>-35.241121</Latitude>
+        <Longitude>2.969845</Longitude>
+        <JD>2461064.53287916</JD>
+        <DateTime>2026-01-24 00:47:20</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-35.169232</Latitude>
+        <Longitude>2.766892</Longitude>
+        <JD>2461064.53357361</JD>
+        <DateTime>2026-01-24 00:48:20</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-35.097322</Latitude>
+        <Longitude>2.563856</Longitude>
+        <JD>2461064.53426805</JD>
+        <DateTime>2026-01-24 00:49:20</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-35.025391</Latitude>
+        <Longitude>2.360737</Longitude>
+        <JD>2461064.53496250</JD>
+        <DateTime>2026-01-24 00:50:20</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-34.953441</Latitude>
+        <Longitude>2.157536</Longitude>
+        <JD>2461064.53565694</JD>
+        <DateTime>2026-01-24 00:51:20</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-34.881471</Latitude>
+        <Longitude>1.954252</Longitude>
+        <JD>2461064.53635139</JD>
+        <DateTime>2026-01-24 00:52:20</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-34.809481</Latitude>
+        <Longitude>1.750885</Longitude>
+        <JD>2461064.53704583</JD>
+        <DateTime>2026-01-24 00:53:20</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-34.737473</Latitude>
+        <Longitude>1.547437</Longitude>
+        <JD>2461064.53774028</JD>
+        <DateTime>2026-01-24 00:54:20</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-34.665446</Latitude>
+        <Longitude>1.343906</Longitude>
+        <JD>2461064.53843472</JD>
+        <DateTime>2026-01-24 00:55:20</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-34.593401</Latitude>
+        <Longitude>1.140293</Longitude>
+        <JD>2461064.53912916</JD>
+        <DateTime>2026-01-24 00:56:20</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-34.521338</Latitude>
+        <Longitude>0.936599</Longitude>
+        <JD>2461064.53982361</JD>
+        <DateTime>2026-01-24 00:57:20</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-34.449258</Latitude>
+        <Longitude>0.732823</Longitude>
+        <JD>2461064.54051805</JD>
+        <DateTime>2026-01-24 00:58:20</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-34.377161</Latitude>
+        <Longitude>0.528965</Longitude>
+        <JD>2461064.54121250</JD>
+        <DateTime>2026-01-24 00:59:20</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-34.305047</Latitude>
+        <Longitude>0.325026</Longitude>
+        <JD>2461064.54190694</JD>
+        <DateTime>2026-01-24 01:00:20</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-34.232917</Latitude>
+        <Longitude>0.121006</Longitude>
+        <JD>2461064.54260139</JD>
+        <DateTime>2026-01-24 01:01:20</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-34.160771</Latitude>
+        <Longitude>-0.083095</Longitude>
+        <JD>2461064.54329583</JD>
+        <DateTime>2026-01-24 01:02:20</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-34.088610</Latitude>
+        <Longitude>-0.287277</Longitude>
+        <JD>2461064.54399028</JD>
+        <DateTime>2026-01-24 01:03:20</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-34.016433</Latitude>
+        <Longitude>-0.491540</Longitude>
+        <JD>2461064.54468472</JD>
+        <DateTime>2026-01-24 01:04:20</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-33.944242</Latitude>
+        <Longitude>-0.695883</Longitude>
+        <JD>2461064.54537916</JD>
+        <DateTime>2026-01-24 01:05:20</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-33.872036</Latitude>
+        <Longitude>-0.900307</Longitude>
+        <JD>2461064.54607361</JD>
+        <DateTime>2026-01-24 01:06:20</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-33.799816</Latitude>
+        <Longitude>-1.104811</Longitude>
+        <JD>2461064.54676805</JD>
+        <DateTime>2026-01-24 01:07:20</DateTime>
+      </Point>
+    </CenterLine>
   </Event>
   <Event>
-    <Elements>ITALOCC:2026-Jan-12,0.61,2026,1,12,16.814116,0.68755028,0.03885319,-8.26268027,0.76082776,0.0,0.0,0.0,0.0</Elements>
-    <Earth>8.124604,25.137283,125.104339,-19.334402,False</Earth>
-    <Star>GAIA DR3 680885567777855104,8.19457471,25.15753011,12.18,12.18,12.18,0.0,0,,8.18913831,25.13728287,1.19,1.19,0,0,0</Star>
-    <Object>1272,Gefion,12.92,8.9,2.162101,0,0,0.0,0.0,,0.0,0,12.92,12.92,</Object>
-    <Orbit>2000.0,130.2575,2026,1,12,4.9865,321.2760,8.4234,0.150823,2.788128,2.367614,12.92,0.0,0.15</Orbit>
+    <Elements>ITALOCC:2026-Jan-24,0.00,2026,1,24,4.947449,0.00000000,0.00000000,0.00000000,0.00000000,0.0,0.0,0.0,0.0</Elements>
+    <Earth>0.000000,0.000000,0.000000,0.000000,False</Earth>
+    <Star>GAIA DR3 148764644794672128,4.35835069,22.82800915,13.14,13.14,13.14,0.0,0,,0.00000000,0.00000000,0.19,0.19,0,0,0</Star>
+    <Object>782,Montefiore,11.34,18.5,1.446429,0,0,0.0,0.0,,0.0,0,11.34,11.34,</Object>
+    <Orbit>2000.0,229.4799,2026,1,24,174.7561,12.4608,24.8919,0.063843,2.098162,1.964208,11.34,0.0,0.15</Orbit>
     <Errors>0.000,0.0,0.0,0.0,0.0,Known errors,-1,0,0,0</Errors>
-    <ID>20260112_77855104,61052.7006</ID>
+    <ID>20260124_94672128,61064.2061</ID>
+    <CenterLine>
+      <Point>
+        <Latitude>-21.361841</Latitude>
+        <Longitude>113.576394</Longitude>
+        <JD>2461064.80000000</JD>
+        <DateTime>2026-01-24 07:12:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-21.350363</Latitude>
+        <Longitude>113.320024</Longitude>
+        <JD>2461064.80069444</JD>
+        <DateTime>2026-01-24 07:13:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-21.338875</Latitude>
+        <Longitude>113.063649</Longitude>
+        <JD>2461064.80138889</JD>
+        <DateTime>2026-01-24 07:14:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-21.327377</Latitude>
+        <Longitude>112.807270</Longitude>
+        <JD>2461064.80208333</JD>
+        <DateTime>2026-01-24 07:15:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-21.315868</Latitude>
+        <Longitude>112.550888</Longitude>
+        <JD>2461064.80277778</JD>
+        <DateTime>2026-01-24 07:16:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-21.304350</Latitude>
+        <Longitude>112.294501</Longitude>
+        <JD>2461064.80347222</JD>
+        <DateTime>2026-01-24 07:17:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-21.292821</Latitude>
+        <Longitude>112.038110</Longitude>
+        <JD>2461064.80416667</JD>
+        <DateTime>2026-01-24 07:18:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-21.281282</Latitude>
+        <Longitude>111.781716</Longitude>
+        <JD>2461064.80486111</JD>
+        <DateTime>2026-01-24 07:19:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-21.269733</Latitude>
+        <Longitude>111.525317</Longitude>
+        <JD>2461064.80555556</JD>
+        <DateTime>2026-01-24 07:20:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-21.258174</Latitude>
+        <Longitude>111.268914</Longitude>
+        <JD>2461064.80625000</JD>
+        <DateTime>2026-01-24 07:21:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-21.246605</Latitude>
+        <Longitude>111.012507</Longitude>
+        <JD>2461064.80694444</JD>
+        <DateTime>2026-01-24 07:22:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-21.235025</Latitude>
+        <Longitude>110.756096</Longitude>
+        <JD>2461064.80763889</JD>
+        <DateTime>2026-01-24 07:23:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-21.223435</Latitude>
+        <Longitude>110.499681</Longitude>
+        <JD>2461064.80833333</JD>
+        <DateTime>2026-01-24 07:24:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-21.211835</Latitude>
+        <Longitude>110.243262</Longitude>
+        <JD>2461064.80902778</JD>
+        <DateTime>2026-01-24 07:25:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-21.200225</Latitude>
+        <Longitude>109.986839</Longitude>
+        <JD>2461064.80972222</JD>
+        <DateTime>2026-01-24 07:26:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-21.188604</Latitude>
+        <Longitude>109.730412</Longitude>
+        <JD>2461064.81041667</JD>
+        <DateTime>2026-01-24 07:27:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-21.176973</Latitude>
+        <Longitude>109.473980</Longitude>
+        <JD>2461064.81111111</JD>
+        <DateTime>2026-01-24 07:28:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-21.165332</Latitude>
+        <Longitude>109.217545</Longitude>
+        <JD>2461064.81180555</JD>
+        <DateTime>2026-01-24 07:29:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-21.153681</Latitude>
+        <Longitude>108.961106</Longitude>
+        <JD>2461064.81250000</JD>
+        <DateTime>2026-01-24 07:30:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-21.142019</Latitude>
+        <Longitude>108.704662</Longitude>
+        <JD>2461064.81319444</JD>
+        <DateTime>2026-01-24 07:31:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-21.130347</Latitude>
+        <Longitude>108.448214</Longitude>
+        <JD>2461064.81388889</JD>
+        <DateTime>2026-01-24 07:32:00</DateTime>
+      </Point>
+    </CenterLine>
   </Event>
   <Event>
-    <Elements>ITALOCC:2026-Jan-12,0.61,2026,1,12,19.814116,0.68755028,0.03885319,-8.26268027,0.76082776,0.0,0.0,0.0,0.0</Elements>
-    <Earth>8.124604,25.137283,125.104339,-19.334402,False</Earth>
-    <Star>GAIA DR3 681073614329520000,8.19283804,25.21562621,11.99,11.99,11.99,0.0,0,,8.18913831,25.13728287,1.31,1.31,0,0,0</Star>
-    <Object>1272,Gefion,12.92,8.9,2.162101,0,0,0.0,0.0,,0.0,0,12.92,12.92,</Object>
-    <Orbit>2000.0,130.2575,2026,1,12,4.9865,321.2760,8.4234,0.150823,2.788128,2.367614,12.92,0.0,0.15</Orbit>
+    <Elements>ITALOCC:2026-Jan-24,0.00,2026,1,24,4.947449,0.00000000,0.00000000,0.00000000,0.00000000,0.0,0.0,0.0,0.0</Elements>
+    <Earth>0.000000,0.000000,0.000000,0.000000,False</Earth>
+    <Star>GAIA DR3 148765886040966784,4.35262196,22.86443080,13.05,13.05,13.05,0.0,0,,0.00000000,0.00000000,0.20,0.20,0,0,0</Star>
+    <Object>782,Montefiore,11.34,18.5,1.446429,0,0,0.0,0.0,,0.0,0,11.34,11.34,</Object>
+    <Orbit>2000.0,229.4799,2026,1,24,174.7561,12.4608,24.8919,0.063843,2.098162,1.964208,11.34,0.0,0.15</Orbit>
     <Errors>0.000,0.0,0.0,0.0,0.0,Known errors,-1,0,0,0</Errors>
-    <ID>20260112_29520000,61052.8256</ID>
+    <ID>20260124_40966784,61064.2061</ID>
+    <CenterLine>
+      <Point>
+        <Latitude>-64.833227</Latitude>
+        <Longitude>-140.653674</Longitude>
+        <JD>2461064.80000000</JD>
+        <DateTime>2026-01-24 07:12:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-64.823858</Latitude>
+        <Longitude>-140.853141</Longitude>
+        <JD>2461064.80069444</JD>
+        <DateTime>2026-01-24 07:13:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-64.814465</Latitude>
+        <Longitude>-141.052609</Longitude>
+        <JD>2461064.80138889</JD>
+        <DateTime>2026-01-24 07:14:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-64.805048</Latitude>
+        <Longitude>-141.252078</Longitude>
+        <JD>2461064.80208333</JD>
+        <DateTime>2026-01-24 07:15:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-64.795607</Latitude>
+        <Longitude>-141.451549</Longitude>
+        <JD>2461064.80277778</JD>
+        <DateTime>2026-01-24 07:16:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-64.786142</Latitude>
+        <Longitude>-141.651021</Longitude>
+        <JD>2461064.80347222</JD>
+        <DateTime>2026-01-24 07:17:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-64.776653</Latitude>
+        <Longitude>-141.850494</Longitude>
+        <JD>2461064.80416667</JD>
+        <DateTime>2026-01-24 07:18:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-64.767139</Latitude>
+        <Longitude>-142.049968</Longitude>
+        <JD>2461064.80486111</JD>
+        <DateTime>2026-01-24 07:19:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-64.757602</Latitude>
+        <Longitude>-142.249445</Longitude>
+        <JD>2461064.80555556</JD>
+        <DateTime>2026-01-24 07:20:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-64.748041</Latitude>
+        <Longitude>-142.448922</Longitude>
+        <JD>2461064.80625000</JD>
+        <DateTime>2026-01-24 07:21:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-64.738455</Latitude>
+        <Longitude>-142.648402</Longitude>
+        <JD>2461064.80694444</JD>
+        <DateTime>2026-01-24 07:22:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-64.728845</Latitude>
+        <Longitude>-142.847883</Longitude>
+        <JD>2461064.80763889</JD>
+        <DateTime>2026-01-24 07:23:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-64.719212</Latitude>
+        <Longitude>-143.047366</Longitude>
+        <JD>2461064.80833333</JD>
+        <DateTime>2026-01-24 07:24:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-64.709554</Latitude>
+        <Longitude>-143.246851</Longitude>
+        <JD>2461064.80902778</JD>
+        <DateTime>2026-01-24 07:25:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-64.699871</Latitude>
+        <Longitude>-143.446338</Longitude>
+        <JD>2461064.80972222</JD>
+        <DateTime>2026-01-24 07:26:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-64.690165</Latitude>
+        <Longitude>-143.645828</Longitude>
+        <JD>2461064.81041667</JD>
+        <DateTime>2026-01-24 07:27:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-64.680434</Latitude>
+        <Longitude>-143.845319</Longitude>
+        <JD>2461064.81111111</JD>
+        <DateTime>2026-01-24 07:28:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-64.670679</Latitude>
+        <Longitude>-144.044813</Longitude>
+        <JD>2461064.81180555</JD>
+        <DateTime>2026-01-24 07:29:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-64.660900</Latitude>
+        <Longitude>-144.244309</Longitude>
+        <JD>2461064.81250000</JD>
+        <DateTime>2026-01-24 07:30:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-64.651097</Latitude>
+        <Longitude>-144.443807</Longitude>
+        <JD>2461064.81319444</JD>
+        <DateTime>2026-01-24 07:31:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-64.641269</Latitude>
+        <Longitude>-144.643308</Longitude>
+        <JD>2461064.81388889</JD>
+        <DateTime>2026-01-24 07:32:00</DateTime>
+      </Point>
+    </CenterLine>
   </Event>
   <Event>
-    <Elements>ITALOCC:2026-Jan-12,0.61,2026,1,12,7.147449,0.68755028,0.03885319,-8.26268027,0.76082776,0.0,0.0,0.0,0.0</Elements>
-    <Earth>8.124604,25.137283,125.104339,-19.334402,False</Earth>
-    <Star>GAIA DR3 680886907807646848,8.20119549,25.18009647,8.73,8.73,8.73,0.0,0,,8.18913831,25.13728287,4.22,4.22,0,0,0</Star>
-    <Object>1272,Gefion,12.92,8.9,2.162101,0,0,0.0,0.0,,0.0,0,12.92,12.92,</Object>
-    <Orbit>2000.0,130.2575,2026,1,12,4.9865,321.2760,8.4234,0.150823,2.788128,2.367614,12.92,0.0,0.15</Orbit>
+    <Elements>ITALOCC:2026-Jan-24,0.00,2026,1,24,4.947449,0.00000000,0.00000000,0.00000000,0.00000000,0.0,0.0,0.0,0.0</Elements>
+    <Earth>0.000000,0.000000,0.000000,0.000000,False</Earth>
+    <Star>GAIA DR3 148765679882534272,4.35358757,22.86818511,12.75,12.75,12.75,0.0,0,,0.00000000,0.00000000,0.26,0.26,0,0,0</Star>
+    <Object>782,Montefiore,11.34,18.5,1.446429,0,0,0.0,0.0,,0.0,0,11.34,11.34,</Object>
+    <Orbit>2000.0,229.4799,2026,1,24,174.7561,12.4608,24.8919,0.063843,2.098162,1.964208,11.34,0.0,0.15</Orbit>
     <Errors>0.000,0.0,0.0,0.0,0.0,Known errors,-1,0,0,0</Errors>
-    <ID>20260112_07646848,61052.2978</ID>
+    <ID>20260124_82534272,61064.2061</ID>
+    <CenterLine>
+      <Point>
+        <Latitude>-66.975633</Latitude>
+        <Longitude>-168.646752</Longitude>
+        <JD>2461064.80000000</JD>
+        <DateTime>2026-01-24 07:12:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-66.976407</Latitude>
+        <Longitude>-168.849997</Longitude>
+        <JD>2461064.80069444</JD>
+        <DateTime>2026-01-24 07:13:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-66.977167</Latitude>
+        <Longitude>-169.053202</Longitude>
+        <JD>2461064.80138889</JD>
+        <DateTime>2026-01-24 07:14:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-66.977913</Latitude>
+        <Longitude>-169.256365</Longitude>
+        <JD>2461064.80208333</JD>
+        <DateTime>2026-01-24 07:15:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-66.978646</Latitude>
+        <Longitude>-169.459488</Longitude>
+        <JD>2461064.80277778</JD>
+        <DateTime>2026-01-24 07:16:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-66.979365</Latitude>
+        <Longitude>-169.662571</Longitude>
+        <JD>2461064.80347222</JD>
+        <DateTime>2026-01-24 07:17:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-66.980070</Latitude>
+        <Longitude>-169.865613</Longitude>
+        <JD>2461064.80416667</JD>
+        <DateTime>2026-01-24 07:18:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-66.980762</Latitude>
+        <Longitude>-170.068613</Longitude>
+        <JD>2461064.80486111</JD>
+        <DateTime>2026-01-24 07:19:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-66.981440</Latitude>
+        <Longitude>-170.271574</Longitude>
+        <JD>2461064.80555556</JD>
+        <DateTime>2026-01-24 07:20:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-66.982104</Latitude>
+        <Longitude>-170.474493</Longitude>
+        <JD>2461064.80625000</JD>
+        <DateTime>2026-01-24 07:21:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-66.982754</Latitude>
+        <Longitude>-170.677372</Longitude>
+        <JD>2461064.80694444</JD>
+        <DateTime>2026-01-24 07:22:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-66.983390</Latitude>
+        <Longitude>-170.880211</Longitude>
+        <JD>2461064.80763889</JD>
+        <DateTime>2026-01-24 07:23:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-66.984013</Latitude>
+        <Longitude>-171.083008</Longitude>
+        <JD>2461064.80833333</JD>
+        <DateTime>2026-01-24 07:24:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-66.984621</Latitude>
+        <Longitude>-171.285766</Longitude>
+        <JD>2461064.80902778</JD>
+        <DateTime>2026-01-24 07:25:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-66.985216</Latitude>
+        <Longitude>-171.488482</Longitude>
+        <JD>2461064.80972222</JD>
+        <DateTime>2026-01-24 07:26:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-66.985797</Latitude>
+        <Longitude>-171.691158</Longitude>
+        <JD>2461064.81041667</JD>
+        <DateTime>2026-01-24 07:27:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-66.986363</Latitude>
+        <Longitude>-171.893793</Longitude>
+        <JD>2461064.81111111</JD>
+        <DateTime>2026-01-24 07:28:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-66.986916</Latitude>
+        <Longitude>-172.096388</Longitude>
+        <JD>2461064.81180555</JD>
+        <DateTime>2026-01-24 07:29:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-66.987454</Latitude>
+        <Longitude>-172.298943</Longitude>
+        <JD>2461064.81250000</JD>
+        <DateTime>2026-01-24 07:30:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-66.987979</Latitude>
+        <Longitude>-172.501456</Longitude>
+        <JD>2461064.81319444</JD>
+        <DateTime>2026-01-24 07:31:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-66.988489</Latitude>
+        <Longitude>-172.703930</Longitude>
+        <JD>2461064.81388889</JD>
+        <DateTime>2026-01-24 07:32:00</DateTime>
+      </Point>
+    </CenterLine>
   </Event>
   <Event>
-    <Elements>ITALOCC:2026-Jan-12,0.61,2026,1,12,8.814116,0.68755028,0.03885319,-8.26268027,0.76082776,0.0,0.0,0.0,0.0</Elements>
-    <Earth>8.124604,25.137283,125.104339,-19.334402,False</Earth>
-    <Star>GAIA DR3 680887281469011712,8.20039999,25.20669201,12.36,12.36,12.36,0.0,0,,8.18913831,25.13728287,1.07,1.07,0,0,0</Star>
-    <Object>1272,Gefion,12.92,8.9,2.162101,0,0,0.0,0.0,,0.0,0,12.92,12.92,</Object>
-    <Orbit>2000.0,130.2575,2026,1,12,4.9865,321.2760,8.4234,0.150823,2.788128,2.367614,12.92,0.0,0.15</Orbit>
+    <Elements>ITALOCC:2026-Jan-24,0.00,2026,1,24,4.947449,0.00000000,0.00000000,0.00000000,0.00000000,0.0,0.0,0.0,0.0</Elements>
+    <Earth>0.000000,0.000000,0.000000,0.000000,False</Earth>
+    <Star>GAIA DR3 148765538146718080,4.35001633,22.86294016,12.46,12.46,12.46,0.0,0,,0.00000000,0.00000000,0.33,0.33,0,0,0</Star>
+    <Object>782,Montefiore,11.34,18.5,1.446429,0,0,0.0,0.0,,0.0,0,11.34,11.34,</Object>
+    <Orbit>2000.0,229.4799,2026,1,24,174.7561,12.4608,24.8919,0.063843,2.098162,1.964208,11.34,0.0,0.15</Orbit>
     <Errors>0.000,0.0,0.0,0.0,0.0,Known errors,-1,0,0,0</Errors>
-    <ID>20260112_69011712,61052.3673</ID>
+    <ID>20260124_46718080,61064.2061</ID>
+    <CenterLine>
+      <Point>
+        <Latitude>-47.301436</Latitude>
+        <Longitude>-103.473737</Longitude>
+        <JD>2461064.80000000</JD>
+        <DateTime>2026-01-24 07:12:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-47.281067</Latitude>
+        <Longitude>-103.703259</Longitude>
+        <JD>2461064.80069444</JD>
+        <DateTime>2026-01-24 07:13:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-47.260689</Latitude>
+        <Longitude>-103.932793</Longitude>
+        <JD>2461064.80138889</JD>
+        <DateTime>2026-01-24 07:14:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-47.240305</Latitude>
+        <Longitude>-104.162339</Longitude>
+        <JD>2461064.80208333</JD>
+        <DateTime>2026-01-24 07:15:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-47.219912</Latitude>
+        <Longitude>-104.391898</Longitude>
+        <JD>2461064.80277778</JD>
+        <DateTime>2026-01-24 07:16:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-47.199511</Latitude>
+        <Longitude>-104.621468</Longitude>
+        <JD>2461064.80347222</JD>
+        <DateTime>2026-01-24 07:17:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-47.179103</Latitude>
+        <Longitude>-104.851051</Longitude>
+        <JD>2461064.80416667</JD>
+        <DateTime>2026-01-24 07:18:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-47.158687</Latitude>
+        <Longitude>-105.080646</Longitude>
+        <JD>2461064.80486111</JD>
+        <DateTime>2026-01-24 07:19:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-47.138263</Latitude>
+        <Longitude>-105.310253</Longitude>
+        <JD>2461064.80555556</JD>
+        <DateTime>2026-01-24 07:20:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-47.117831</Latitude>
+        <Longitude>-105.539873</Longitude>
+        <JD>2461064.80625000</JD>
+        <DateTime>2026-01-24 07:21:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-47.097392</Latitude>
+        <Longitude>-105.769504</Longitude>
+        <JD>2461064.80694444</JD>
+        <DateTime>2026-01-24 07:22:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-47.076945</Latitude>
+        <Longitude>-105.999148</Longitude>
+        <JD>2461064.80763889</JD>
+        <DateTime>2026-01-24 07:23:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-47.056490</Latitude>
+        <Longitude>-106.228804</Longitude>
+        <JD>2461064.80833333</JD>
+        <DateTime>2026-01-24 07:24:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-47.036027</Latitude>
+        <Longitude>-106.458472</Longitude>
+        <JD>2461064.80902778</JD>
+        <DateTime>2026-01-24 07:25:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-47.015557</Latitude>
+        <Longitude>-106.688152</Longitude>
+        <JD>2461064.80972222</JD>
+        <DateTime>2026-01-24 07:26:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-46.995079</Latitude>
+        <Longitude>-106.917844</Longitude>
+        <JD>2461064.81041667</JD>
+        <DateTime>2026-01-24 07:27:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-46.974593</Latitude>
+        <Longitude>-107.147549</Longitude>
+        <JD>2461064.81111111</JD>
+        <DateTime>2026-01-24 07:28:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-46.954100</Latitude>
+        <Longitude>-107.377265</Longitude>
+        <JD>2461064.81180555</JD>
+        <DateTime>2026-01-24 07:29:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-46.933598</Latitude>
+        <Longitude>-107.606994</Longitude>
+        <JD>2461064.81250000</JD>
+        <DateTime>2026-01-24 07:30:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-46.913090</Latitude>
+        <Longitude>-107.836735</Longitude>
+        <JD>2461064.81319444</JD>
+        <DateTime>2026-01-24 07:31:00</DateTime>
+      </Point>
+      <Point>
+        <Latitude>-46.892573</Latitude>
+        <Longitude>-108.066488</Longitude>
+        <JD>2461064.81388889</JD>
+        <DateTime>2026-01-24 07:32:00</DateTime>
+      </Point>
+    </CenterLine>
   </Event>
 </Occultations>

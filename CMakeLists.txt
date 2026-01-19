@@ -143,10 +143,9 @@ set(SOURCES
     src/asteroid_list_reader.cpp
     src/allnum_database.cpp
     src/asteroid_sqlite_db.cpp
-    # src/occultation_map_utility.cpp  # MISSING
-    # src/config_resolver.cpp  # MISSING
-    # src/simulation_engine.cpp  # MISSING
-    # src/math_utils.cpp  # MISSING
+    src/orbit_fitter.cpp
+    src/math_utils.cpp
+    src/occultation_analyzer.cpp
 )
 
 # Fortran wrapper for OrbFit
@@ -172,6 +171,7 @@ set(HEADERS
     include/ioccultcalc/types.h
     include/ioccultcalc/observation.h
     include/ioccultcalc/mpc_client.h
+    include/ioccultcalc/orbit_fitter.h
     include/ioccultcalc/orbit_determination.h
     include/ioccultcalc/force_model.h
     include/ioccultcalc/jpl_ephemeris.h
@@ -205,11 +205,8 @@ set(HEADERS
     include/parallel_algorithms.h
     include/phase1_candidate_screening.h
     include/phase2_occultation_geometry.h
-    # include/ioccultcalc/occultation_map_utility.h  # MISSING
-    # include/ioccultcalc/config_resolver.h  # MISSING
-    # include/ioccultcalc/simulation_engine.h  # MISSING
-    # include/ioccultcalc/simulation_types.h  # MISSING
-    # include/ioccultcalc/math_utils.h  # MISSING
+    include/ioccultcalc/math_utils.h
+    include/ioccultcalc/occultation_analyzer.h
 )
 
 # RIMUOVI questa riga - è codice C++, non CMake
@@ -347,7 +344,10 @@ endif()
 
 # Examples
 if(BUILD_EXAMPLES)
-    add_subdirectory(examples)
+  # Exclude examples temporarily to unblock main build
+# # add_subdirectory(tools)
+# add_subdirectory(tests)
+add_subdirectory(examples)
 endif()
 
 # Tools

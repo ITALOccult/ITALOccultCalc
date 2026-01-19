@@ -265,24 +265,24 @@ int main(int argc, char* argv[]) {
                     outEvt.asteroid.designation = std::to_string(currentElements.number);
                 }
 
-                // Bind Shadow Path
+                // Bind Shadow Path (Use DEGREES as per GeographicCoordinates definition)
                 std::vector<ioccultcalc::ShadowPathPoint> xmlShadowPath;
                 for (const auto& pt : p2Evt.shadow_path) {
                     ioccultcalc::ShadowPathPoint xmlPt;
                     xmlPt.time = ioccultcalc::JulianDate::fromMJD(pt.mjd_tdb);
-                    xmlPt.location.latitude = pt.lat_deg * M_PI / 180.0;
-                    xmlPt.location.longitude = pt.lon_deg * M_PI / 180.0;
+                    xmlPt.location.latitude = pt.lat_deg;
+                    xmlPt.location.longitude = pt.lon_deg;
                     xmlPt.location.altitude = 0.0;
                     
-                    xmlPt.north_limit.latitude = pt.north_lat_deg * M_PI / 180.0;
-                    xmlPt.north_limit.longitude = pt.north_lon_deg * M_PI / 180.0;
-                    xmlPt.south_limit.latitude = pt.south_lat_deg * M_PI / 180.0;
-                    xmlPt.south_limit.longitude = pt.south_lon_deg * M_PI / 180.0;
+                    xmlPt.north_limit.latitude = pt.north_lat_deg;
+                    xmlPt.north_limit.longitude = pt.north_lon_deg;
+                    xmlPt.south_limit.latitude = pt.south_lat_deg;
+                    xmlPt.south_limit.longitude = pt.south_lon_deg;
                     
-                    xmlPt.north_margin.latitude = pt.geonorth_lat_deg * M_PI / 180.0;
-                    xmlPt.north_margin.longitude = pt.geonorth_lon_deg * M_PI / 180.0;
-                    xmlPt.south_margin.latitude = pt.geosouth_lat_deg * M_PI / 180.0;
-                    xmlPt.south_margin.longitude = pt.geosouth_lon_deg * M_PI / 180.0;
+                    xmlPt.north_margin.latitude = pt.geonorth_lat_deg;
+                    xmlPt.north_margin.longitude = pt.geonorth_lon_deg;
+                    xmlPt.south_margin.latitude = pt.geosouth_lat_deg;
+                    xmlPt.south_margin.longitude = pt.geosouth_lon_deg;
                     
                     xmlShadowPath.push_back(xmlPt);
                 }
@@ -334,7 +334,7 @@ int main(int argc, char* argv[]) {
                     outEv.duration_seconds = ev.maxDuration;
                     outEv.mag_drop = ev.star.phot_g_mean_mag - ev.asteroid.H; // Simplified
                     
-                    // Path and Limits
+                    // Bind Shadow Path (Degrees)
                     for (const auto& p : ev.shadowPath) {
                         outEv.central_path.push_back({p.location.latitude, p.location.longitude});
                         outEv.north_limit.push_back({p.north_limit.latitude, p.north_limit.longitude});

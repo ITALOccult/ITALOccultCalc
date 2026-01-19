@@ -1,23 +1,20 @@
-⚠ WARNING: Catalogo Gaia Mag18 non trovato
-  Download: ./download_gaia_cache.sh
 Could not open IAU catalog: data/IAU-CSN.json
 Could not open star names database: data/common_star_names.csv
 Loaded 23 stars from embedded database
 Loaded star names from embedded database
 Loaded Gaia SQLite DR3 catalog: /Users/michelebigi/.catalog/crossreference/gaia_dr3_occult_pro.db
+Loaded Gaia SQLite DR3 catalog: "/Users/michelebigi/.catalog/crossreference/gaia_dr3_occult_pro.db"
 ITALOccultCalc v1.0 [Native API Workflow]
+--- BUILD DATE: Jan 18 2026 07:46:15 ---
+
+=== ITALOccultCalc DEBUG BUILD ===
+
+📄 Loading configuration from: ../verify_26224_real.json
+DEBUG: output config read - A4='', IOccult='ioccult_card_26224_real.png'
+Target: 26224 (26224)
+Window: 61043.8 -> 61044
 SPICESPKReader: Loaded /Users/michelebigi/.ioccultcalc/ephemerides/de440.bsp
-Successfully loaded de440.bsp
-[AstDynWrapper] Constructor started.
-  - Creating PlanetaryEphemeris...
-  - Initializing propagator...
-  - Creating RKF78Integrator...
-  - Creating Propagator object...
-    [Propagator] Constructor entry (include_asteroids=1).
-    [Propagator] Creating AsteroidPerturbations...
-    [Propagator] Constructor exit.
-  - Propagator object created.
-[AstDynWrapper] Constructor finished.
+Ephemeris loaded.
 [Phase1CandidateScreening] Constructor started.
 ✓ DE441 loaded (Native Reader): /Users/michelebigi/.ioccultcalc/ephemerides/de441_part-2.bsp
 [Phase1CandidateScreening] Constructor finished.
@@ -29,4 +26,82 @@ Successfully loaded de440.bsp
   - Creating Propagator object...
     [Propagator] Constructor entry (include_asteroids=1).
     [Propagator] Creating AsteroidPerturbations...
-./italoccultcalc.sh: line 20: 23127 Bus error: 10           "$EXEC" "$@"
+    [Propagator] Constructor exit.
+  - Propagator object created.
+[AstDynWrapper] Constructor finished.
+[Phase2OccultationGeometry] Constructor finished.
+Loading asteroid 26224...
+[AsteroidSqliteDatabase] Successfully opened /Users/michelebigi/.ioccultcalc/database/asteroids.db
+[DEBUG-PERT] lapco entry (alpha=0.590364)
+[DEBUG-PERT] lapco entry (alpha=0.590364)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.32145)
+[DEBUG-PERT] lapco entry (alpha=0.32145)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.159817)
+[DEBUG-PERT] lapco entry (alpha=0.159817)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.102005)
+[DEBUG-PERT] lapco entry (alpha=0.102005)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.590364)
+[DEBUG-PERT] lapco entry (alpha=0.590364)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.32145)
+[DEBUG-PERT] lapco entry (alpha=0.32145)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.159817)
+[DEBUG-PERT] lapco entry (alpha=0.159817)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.102005)
+[DEBUG-PERT] lapco entry (alpha=0.102005)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[AstDynWrapper:0x10d649990] setKeplerianElements: asteroid= state set to INITIALIZED (Covariance: NO).
+[AstDynWrapper]   Processing Frame: ECLIPTIC
+  - Creating RKF78Integrator...
+  - Creating Propagator object...
+    [Propagator] Constructor entry (include_asteroids=1).
+    [Propagator] Creating AsteroidPerturbations...
+    [Propagator] Constructor exit.
+  - Propagator object created.
+[Phase2OccultationGeometry] setSPKReader called. Forwarding to wrapper=0x10d649990
+Phase 1: Screening stars in 0.5 deg corridor...
+[PHASE1] Starting native screening for 26224 (MJD 61043.8 to 61044)...
+    [Propagator] Constructor entry (include_asteroids=0).
+    [Propagator] Constructor exit.
+[PHASE1] Path start: RA=158.646 Dec=-0.22439
+[PHASE1] Path end:   RA=158.639 Dec=-0.233672
+[PHASE1] Querying Gaia catalog with 21 ICRF points...
+Optimized Corridor: 21 points -> 1 query cones.
+[PHASE1] Screening complete. Found 3 candidates (45 stars in corridor).
+Found 3 candidates (45 stars initially in corridor).
+
+Phase 2: Calculating precise geometry...
+
+[OccultationEngine] 🔄 Refining orbit for 26224 with last 100 observations...
+[MPCClient] Downloading observations from AstDyS: https://newton.spacedys.com/~astdys2/mpcobs/numbered/26/26224.rwo
+[MPCClient] Parsing RWO with native library parser...
+[MPCClient] Successfully loaded 2097 observations from RWO.
+Debug Rotation:
+ Orig: i=8.30919 O=269.812 w=30.3923
+ Eq:   i=24.7641 O=339.818 w=318.659
+ Back: i=8.30919 O=269.812 w=30.3923
+[AstDynOrbitFitter] Feeding 100 obs to OrbitFitAPI.
+   Time Range: MJD 60665.4 to 60735.1
+   Initial Element Epoch: 61000
+[OrbitFitAPI] Loading OrbFit elements from /tmp/ioc_fit_init.eq1...
+   Detecting ECLIPTIC frame in .eq1, applying rotation to Equatorial J2000.
+   Initial Context: ECLIPTIC/SUN/MEAN
+   Target Context:  EQUATORIAL/SUN/OSCULATING
+   Initial Orbit (Ecliptic): a=3.07143 e=0.0889354 i=8.30919deg
+   Initial Orbit (Transformed Equatorial): i=24.7641deg
+[OrbitFitAPI] Loading observations from /tmp/ioc_fit_obs.rwo...
+RWOReader Debug: Line too short (9 < 150)
+RWOReader Debug: Line 1 parseLine failed.
+RWOReader Debug: Line too short (17 < 150)
+RWOReader Debug: Line 2 parseLine failed.
+RWOReader Debug: Line too short (13 < 150)
+RWOReader Debug: Line 3 parseLine failed.
+RWOReader Debug: Line too short (14 < 150)
+RWOReader Debug: Line 4 parseLine failed.
+RWOReader Debug: Total lines 104. Total obs 

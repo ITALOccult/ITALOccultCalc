@@ -35,6 +35,10 @@ target_link_libraries(test_covariance_loading PRIVATE ioccultcalc)
 add_executable(map_generator map_generator.cpp)
 target_link_libraries(map_generator PRIVATE ioccultcalc)
 
+# Verification tool for 782 Montefiore with JPL Horizons
+add_executable(verify_782_horizons verify_782_horizons.cpp)
+target_link_libraries(verify_782_horizons PRIVATE ioccultcalc)
+
 # Installa le utilities
 install(TARGETS occult_calc gaia_cache_downloader build_allnum_database
     RUNTIME DESTINATION bin

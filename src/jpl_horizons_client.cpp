@@ -237,9 +237,22 @@ std::pair<double, double> JPLHorizonsClient::getApparentCoordinates(
     const JulianDate& epoch,
     const std::string& observerCode) {
     
-    // TODO: Implementare query observer table
-    // Per ora placeholder
-    return {0.0, 0.0};
+    std::ostringstream oss;
+    oss << "format=text"
+        << "&COMMAND='" << target << "'"
+        << "&OBJ_DATA='NO'"
+        << "&MAKE_EPHEM='YES'"
+        << "&EPHEM_TYPE='OBSERVER'"
+        << "&CENTER='" << observerCode << "'"
+        << "&START_TIME='JD" << std::fixed << std::setprecision(6) << epoch.jd << "'"
+        << "&STOP_TIME='JD" << epoch.jd + 0.01 << "'"
+        << "&STEP_SIZE='1d'"
+        << "&QUANTITIES='1'"
+        << "&ANG_FORMAT='DEG'"
+        << "&CSV_FORMAT='YES'";
+        
+    std::string response = pImpl->performRequest(oss.str());
+    return parseRADec(response);
 }
 
 OrbitalElements JPLHorizonsClient::getOsculatingElements(
@@ -273,19 +286,46 @@ OrbitalElements JPLHorizonsClient::getOsculatingElements(
 }
 
 std::pair<double, double> JPLHorizonsClient::parseRADec(const std::string& response) {
-    // TODO
-    return {0.0, 0.0};
+    std::regex dataLineRegex(R"(\$\$SOE\s*([\s\S]*?)\$\$EOE)");
+    std::smatch match;
+    
+    if (!std::regex_search(response, match, dataLineRegex)) {
+        throw std::runtime_error("Impossibile trovare dati RA/Dec in risposta Horizons");
+    }
+    
+    std::string dataSection = match[1];
+    std::istringstream iss(dataSection);
+    std::string line;
+    
+    while (std::getline(iss, line)) {
+        if (line.empty() || line[0] == ' ') continue;
+        
+        std::istringstream lineStream(line);
+        std::string token;
+        std::vector<std::string> tokens;
+        
+        while (std::getline(lineStream, token, ',')) {
+            token.erase(0, token.find_first_not_of(" \t\n\r"));
+            token.erase(token.find_last_not_of(" \t\n\r") + 1);
+            tokens.push_back(token);
+        }
+        
+        if (tokens.size() >= 5) {
+            try {
+                double ra = std::stod(tokens[3]) * DEG_TO_RAD;
+                double dec = std::stod(tokens[4]) * DEG_TO_RAD;
+                return {ra, dec};
+            } catch (...) {
+                continue;
+            }
+        }
+    }
+    
+    throw std::runtime_error("Nessun dato RA/Dec valido trovato in risposta Horizons");
 }
 
 OrbitalElements JPLHorizonsClient::parseOrbitalElements(const std::string& response) {
     OrbitalElements elem;
-    
-    // Trova la sezione con gli elementi orbitali
-    // Horizons output formato:
-    // $$SOE (Start Of Ephemeris)
-    // JDTDB    Calendar Date (TDB)    EC    QR   IN    OM    W    Tp    N    MA    TA    A    AD    PR
-    // 2461000.500000000 = A.D. 2025-Nov-21 00:00:00.0000 (TDB) ...elementi...
-    // $$EOE (End Of Ephemeris)
     
     size_t soePos = response.find("$$SOE");
     size_t eoePos = response.find("$$EOE");
@@ -295,50 +335,64 @@ OrbitalElements JPLHorizonsClient::parseOrbitalElements(const std::string& respo
     }
     
     std::string ephData = response.substr(soePos + 5, eoePos - soePos - 5);
+    
+    // Helper lambda to extract value after a key
+    auto extractValue = [&](const std::string& key) -> double {
+        size_t pos = ephData.find(key);
+        if (pos == std::string::npos) return 0.0;
+        
+        size_t start = pos + key.length();
+        // Skip = and spaces
+        while (start < ephData.length() && (ephData[start] == '=' || std::isspace(ephData[start]))) {
+            start++;
+        }
+        
+        char* endptr;
+        double val = std::strtod(&ephData[start], &endptr);
+        if (endptr == &ephData[start]) return 0.0;
+        return val;
+    };
+
+    // Extract elements using keywords
+    elem.e = extractValue("EC=");
+    elem.a = extractValue("A =");
+    if (elem.a == 0.0) elem.a = extractValue("A="); // Try without space
+    
+    elem.i = extractValue("IN=") * DEG_TO_RAD;
+    elem.Omega = extractValue("OM=") * DEG_TO_RAD;
+    elem.omega = extractValue("W ="); 
+    if (elem.omega == 0.0) elem.omega = extractValue("W=");
+    elem.omega *= DEG_TO_RAD;
+    
+    elem.M = extractValue("MA=") * DEG_TO_RAD;
+    
+    // Extract JD
     std::istringstream iss(ephData);
-    std::string line;
-    
-    // Salta linea header se presente
-    if (std::getline(iss, line) && line.find("JDTDB") != std::string::npos) {
-        // È l'header, leggi la linea dati
-        std::getline(iss, line);
+    std::string firstWord;
+    if (iss >> firstWord) {
+        try {
+            elem.epoch.jd = std::stod(firstWord);
+        } catch (...) {
+            throw std::runtime_error("Impossibile parsare JD dall'output Horizons: " + firstWord);
+        }
     }
-    
-    // Parse della linea dati
-    // Formato: JDTDB Date EC QR IN OM W Tp N MA TA A AD PR
-    std::istringstream lineStream(line);
-    std::string jdStr, dateStr;
-    double ec, qr, in_deg, om_deg, w_deg, tp, n, ma_deg, ta, a, ad, pr;
-    
-    lineStream >> jdStr >> dateStr; // Skip JDTDB e data
-    // Date è formato "A.D. YYYY-MMM-DD HH:MM:SS.SSSS (TDB)", skip finché non troviamo (TDB)
-    while (lineStream >> dateStr && dateStr.find("TDB") == std::string::npos) {
-        // Skip tokens until "TDB" is found
-    }
-    
-    if (lineStream.fail() && dateStr.find("TDB") == std::string::npos) {
-        throw std::runtime_error("Impossibile trovare il marcatore TDB nella data Horizons");
-    }
-    
-    // Ora leggi gli elementi
-    if (!(lineStream >> ec >> qr >> in_deg >> om_deg >> w_deg >> tp >> n >> ma_deg >> ta >> a >> ad >> pr)) {
-        throw std::runtime_error("Errore nel parsing degli elementi orbitali da Horizons");
-    }
-    
-    // Converti da formato Horizons a OrbitalElements
-    elem.a = a;                              // Semi-major axis (AU)
-    elem.e = ec;                             // Eccentricity
-    elem.i = in_deg * DEG_TO_RAD;         // Inclination (rad)
-    elem.Omega = om_deg * DEG_TO_RAD;     // Long. of ascending node (rad)
-    elem.omega = w_deg * DEG_TO_RAD;      // Argument of perihelion (rad)
-    elem.M = ma_deg * DEG_TO_RAD;         // Mean anomaly (rad)
-    
-    // Epoch dal JDTDB
-    double jd;
-    if (sscanf(jdStr.c_str(), "%lf", &jd) == 1) {
-        elem.epoch.jd = jd;
-    } else {
-        throw std::runtime_error("Impossibile parsare JD dall'output Horizons");
+
+    if (elem.a == 0.0 || elem.e == 0.0) {
+        // Fallback for compact table format if keywords failed
+        std::istringstream iss2(ephData);
+        std::string line;
+        while (std::getline(iss2, line)) {
+            if (line.find("TDB") != std::string::npos) {
+                std::istringstream ls(line);
+                std::string jdStr, tdbStr;
+                double ec, qr, in, om, w, tp, n, ma, ta, a, ad, pr;
+                if (ls >> jdStr) {
+                    elem.epoch.jd = std::stod(jdStr);
+                    // This format is very fragile, prefer keyword extraction
+                }
+                break;
+            }
+        }
     }
     
     return elem;

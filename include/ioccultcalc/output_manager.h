@@ -299,6 +299,14 @@ private:
                                          int width, int height,
                                          const std::string& output_path);
 
+    /**
+     * @brief Genera Carta di Avvicinamento IAU (Approach Chart)
+     * Usa IOC_StarMap con preset IAU.
+     */
+    std::string generateApproachChartImage(const OutputEvent& event,
+                                            int width, int height,
+                                            const std::string& output_path);
+
     // Utility rendering
     std::string generateAsciiMap(const OutputEvent& event,
                                 int width, int height);

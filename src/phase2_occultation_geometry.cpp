@@ -4,19 +4,26 @@
  */
 
 #include "phase2_occultation_geometry.h"
+#include "topocentric.h"
+#include "astdyn_wrapper.h"
+// Forward declare OccultationAnalyzer to avoid ShadowPoint redefinition conflict
+namespace ioccultcalc { class OccultationAnalyzer; }
+#include <cmath>
 #include <iostream>
 #include <iomanip>
-#include <cmath>
 #include <algorithm>
+#include <chrono>
 #include <functional>
 #include <nlohmann/json.hpp>
 #include <fstream>
-#include "topocentric.h"
 #include "ioccultcalc/types.h"
 #include "ioccultcalc/mpc_client.h"
 #include "ioccultcalc/astdyn_interface.h"
 #include "ioccultcalc/orbital_elements.h"
 #include "ioccultcalc/asteroid_sqlite_db.h"
+
+// Include OccultationAnalyzer implementation after Phase2 structures
+#include "ioccultcalc/occultation_analyzer.h"
 
 namespace ioccultcalc {
 
@@ -138,7 +145,7 @@ public:
                     fitRes.fitted_elements.M * DEG_TO_RAD,
                     fitRes.fitted_elements.epoch_mjd,
                     designation,
-                    astdyn::propagation::HighPrecisionPropagator::InputFrame::ECLIPTIC,
+                    astdyn::propagation::HighPrecisionPropagator::InputFrame::EQUATORIAL,
                     fitRes.fitted_elements.H, fitRes.fitted_elements.G, 0.0,
                     cov_opt
                 );
@@ -205,6 +212,13 @@ public:
             std::cout << "[PHASE2] Candidate Star: " << star.source_id 
                       << " CA MJD: " << std::fixed << std::setprecision(5) << t_ca
                       << " Min Dist: " << std::fixed << std::setprecision(2) << min_dist_mas << " mas" << std::endl;
+        } else {
+             // Debug for large distance
+             auto st = astdyn->getApparentStateGeocentric(t_ca);
+             std::cout << "[PHASE2-DEBUG] Star ID: " << star.source_id 
+                       << "\n   Star:     RA=" << star.ra_deg << " Dec=" << star.dec_deg
+                       << "\n   Asteroid: RA=" << st.ra_deg << " Dec=" << st.dec_deg
+                       << "\n   Dist:     " << min_dist_deg << " deg (" << min_dist_deg*3600.0 << " arcsec)" << std::endl;
         }
 
         // Fill results
@@ -248,224 +262,84 @@ public:
             return;
         }
 
-        // 1. Calcolo Diametro Fisico
+        // Use OccultationAnalyzer for Besselian shadow path
+        std::cout << "[PHASE2] Using Besselian elements for shadow path calculation" << std::endl;
+        
+        // 1. Get asteroid parameters
         auto kep = astdyn->getKeplerianElements();
         double H = kep.magnitude;
         double G = kep.mag_slope;
         double diameter_km = kep.diameter;
         
         if (diameter_km <= 0) {
-            // Albedo estimate: 0.15 if G is standard, otherwise empirical formula
             double albedo = (std::abs(G - 0.15) < 0.001) ? 0.15 : std::pow(10.0, -(1.139 * G + 0.52));
             diameter_km = (1329.0 / std::sqrt(albedo)) * std::pow(10.0, -0.2 * H);
         }
         
-        auto state_ca = astdyn->getApparentStateGeocentric(event.t_ca_mjd);
-        double distance_au = state_ca.distance_au;
-        event.asteroid_distance_au = distance_au;
+        // 2. Create OccultationAnalyzer
+        OccultationAnalyzer::Config analyzer_config;
+        analyzer_config.shadow_points = 21;
+        analyzer_config.shadow_time_span_min = 10.0;
+        analyzer_config.compute_geometric_limits = true;
+        analyzer_config.compute_sigma_limits = false;  // TODO: enable when covariance available
+        analyzer_config.verbose = true;
         
-        // Calcolo Elementi di Bessel (x, y, dx, dy)
-        double ra_s = star.ra_deg * DEG_TO_RAD;
-        double dec_s = star.dec_deg * DEG_TO_RAD;
+        OccultationAnalyzer analyzer(analyzer_config);
         
-        auto computeBessel = [&](double mjd) {
-            auto s = astdyn->getApparentStateGeocentric(mjd);
-            Vector3D ast_pos_icrf(s.position.x(), s.position.y(), s.position.z());
-            Vector3D xi(-std::sin(ra_s), std::cos(ra_s), 0.0);
-            Vector3D eta(-std::sin(dec_s)*std::cos(ra_s), -std::sin(dec_s)*std::sin(ra_s), std::cos(dec_s));
-            double r_earth = 6378.137;
-            return std::make_pair(ast_pos_icrf.dot(xi) * AU / r_earth, 
-                                  ast_pos_icrf.dot(eta) * AU / r_earth);
-        };
-
-        auto bessel_ca = computeBessel(event.t_ca_mjd);
-        event.besselian_x = bessel_ca.first;
-        event.besselian_y = bessel_ca.second;
-        
-        double dt_b_day = (1.0 / 86400.0); // 1 sec
-        auto b1 = computeBessel(event.t_ca_mjd - dt_b_day);
-        auto b2 = computeBessel(event.t_ca_mjd + dt_b_day);
-        event.besselian_dx = (b2.first - b1.first) / (2.0 * dt_b_day * 24.0); // rays / hour
-        event.besselian_dy = (b2.second - b1.second) / (2.0 * dt_b_day * 24.0);
-
-        // 2. Substellar/Subsolar points
-        double jd_ca = event.t_ca_mjd + 2400000.5;
-        double jd_ut1 = jd_ca - (69.184 / 86400.0); // Delta T correction
-        double gmst_deg = TopocentricConverter::greenwichMeanSiderealTime(jd_ut1) * RAD_TO_DEG;
-        
-        event.substellar_lat_deg = star.dec_deg;
-        event.substellar_lon_deg = star.ra_deg - gmst_deg;
-        while (event.substellar_lon_deg < -180.0) event.substellar_lon_deg += 360.0;
-        while (event.substellar_lon_deg > 180.0) event.substellar_lon_deg -= 360.0;
-
-        // Subsolar point (requires Sun position)
-        auto sun_state = astdyn::ephemeris::PlanetaryEphemeris::getState(astdyn::ephemeris::CelestialBody::SUN, jd_ca);
-        double sun_ra = std::atan2(sun_state.position().y(), sun_state.position().x()) * RAD_TO_DEG;
-        double sun_dec = std::asin(sun_state.position().z() / sun_state.position().norm()) * RAD_TO_DEG;
-        
-        event.subsolar_lat_deg = sun_dec;
-        event.subsolar_lon_deg = sun_ra - gmst_deg;
-        while (event.subsolar_lon_deg < -180.0) event.subsolar_lon_deg += 360.0;
-        while (event.subsolar_lon_deg > 180.0) event.subsolar_lon_deg -= 360.0;
-
-        // Apparent Star Position (simplified precession/nutation for header chart)
-        // In a real implementation we would apply aberration/precession from J2000 to Date
-        event.star_app_ra_deg = star.ra_deg;
-        event.star_app_dec_deg = star.dec_deg;
-
-        // 3. Velocità dell'ombra (km/s) sul piano di Bessel
-        // Calcolata tramite i derivati besseliani (unità: raggi terrestri / ora)
-        double v_er_h = std::sqrt(event.besselian_dx * event.besselian_dx + event.besselian_dy * event.besselian_dy);
-        
-        // Conversione in km/s (R_earth = 6378.137 km)
-        double v_km_s = v_er_h * 6378.137 / 3600.0;
-        
-        event.duration_sec = (v_km_s > 0) ? (diameter_km / v_km_s) : 0.0;
-
-        // 2. Percorso ombra (Campionamento +/- 5 min)
-        TopocentricConverter converter;
-        double star_ra_rad = star.ra_deg * DEG_TO_RAD;
-        double star_dec_rad = star.dec_deg * DEG_TO_RAD;
-        Vector3D star_dir_icrf(
-            std::cos(star_dec_rad) * std::cos(star_ra_rad),
-            std::cos(star_dec_rad) * std::sin(star_ra_rad),
-            std::sin(star_dec_rad)
+        // 3. Analyze occultation to get parameters
+        double search_window = 0.1;  // ±0.1 days around CA
+        auto params = analyzer.analyzeOccultation(
+            star.ra_deg, star.dec_deg, star.phot_g_mean_mag, star.source_id,
+            astdyn,
+            event.t_ca_mjd - search_window,
+            event.t_ca_mjd + search_window,
+            H, diameter_km
         );
-
-        for (int i = -10; i <= 10; ++i) {
-            double mjd = event.t_ca_mjd + (i * 30.0 / 86400.0); // Ogni 30 secondi
-            // Asteroid in ITRF [meters]
-            auto ast_state = astdyn->propagateToEpoch(mjd);
+        
+        // 4. Calculate shadow path using Besselian elements
+        auto shadow_result = analyzer.calculateShadowPath(params, astdyn);
+        
+        if (shadow_result.shadow_computed && !shadow_result.shadow_path.empty()) {
+            std::cout << "[PHASE2] ✅ Shadow path computed: " << shadow_result.shadow_path.size() 
+                      << " points in " << shadow_result.calculation_time_sec << " sec" << std::endl;
+            std::cout << "[PHASE2]    Propagations: " << shadow_result.num_propagations 
+                      << " (Besselian vs 21 with Kepler)" << std::endl;
             
-            // Trasformazione in ECEF corporea
-            double rotation_matrix[3][3];
-            double jd_tdb = mjd + 2400000.5;
+            // 5. Convert to Phase2 format
+            event.shadow_path.clear();
+            event.shadow_path.reserve(shadow_result.shadow_path.size());
             
-            // CORREZIONE CRITICA: La rotazione terrestre vuole UT1, non TDB.
-            // Approssimazione: UT1 = TDB - (ΔAT + 32.184) s. 
-            // Nel 2026, ΔAT = 37s (TAI-UTC) + 32.184s (TT-TAI) = 69.184s totali.
-            double jd_ut1 = jd_tdb - (69.184 / 86400.0);
-            
-            converter.rotationMatrixITRFtoCelestial(jd_ut1, "J2000", rotation_matrix);
-            
-            // Inverti matrice per Celestial -> ITRF
-            double inv_matrix[3][3];
-            for (int r=0; r<3; ++r) for (int c=0; c<3; ++c) inv_matrix[r][c] = rotation_matrix[c][r];
-
-            Vector3D ast_pos_icrf(ast_state.position.x() * AU_M, 
-                                  ast_state.position.y() * AU_M, 
-                                  ast_state.position.z() * AU_M);
-            Vector3D vel_icrf(ast_state.velocity.x() * (AU_M / 86400.0),
-                              ast_state.velocity.y() * (AU_M / 86400.0),
-                              ast_state.velocity.z() * (AU_M / 86400.0));
-            
-            Vector3D ast_pos_itrf = converter.applyRotation(inv_matrix, ast_pos_icrf);
-            Vector3D vel_itrf = converter.applyRotation(inv_matrix, vel_icrf);
-            Vector3D star_dir_itrf = converter.applyRotation(inv_matrix, star_dir_icrf);
-            
-            if (i == 0) {
-                std::cout << "[DEBUG] CA Asteroid ICRF: " << ast_pos_icrf.x << ", " << ast_pos_icrf.y << ", " << ast_pos_icrf.z << " [m]\n";
-                std::cout << "[DEBUG] CA Asteroid ITRF: " << ast_pos_itrf.x << ", " << ast_pos_itrf.y << ", " << ast_pos_itrf.z << " [m]\n";
-                std::cout << "[DEBUG] Star Dir ITRF:    " << star_dir_itrf.x << ", " << star_dir_itrf.y << ", " << star_dir_itrf.z << "\n";
-            }
-            
-            // Intersezione
-            Vector3D shadow_ray = star_dir_itrf * -1.0; // Dal asteroide verso terra
-            Vector3D inter = converter.intersectWithWGS84(ast_pos_itrf, shadow_ray);
-            
-            if (inter.magnitude() > 0) {
-                auto geo = converter.getGeodeticPosition(inter);
-                ShadowPoint pt;
-                pt.mjd_tdb = mjd;
-                pt.lat_deg = geo.latitude_deg;
-                pt.lon_deg = geo.longitude_deg;
-                pt.star_alt_deg = 30.0; // Placeholder
+            for (const auto& bessel_point : shadow_result.shadow_path) {
+                ShadowPoint pt;  // Use Phase2's ShadowPoint structure
+                pt.mjd_tdb = bessel_point.mjd_tdb;
+                pt.lat_deg = bessel_point.lat_deg;
+                pt.lon_deg = bessel_point.lon_deg;
                 
-                // --- CALCOLO LIMITI ---
-                // Vettore perpendicolare alla traccia (Cross-track)
-                // Usiamo il prodotto croce tra Direzione Stella e Vettore Posizione (approssimato)
-                Vector3D cross_track = star_dir_itrf.cross(ast_pos_itrf).normalize();
+                // Geometric limits
+                pt.geonorth_lat_deg = bessel_point.geonorth_lat_deg;
+                pt.geonorth_lon_deg = bessel_point.geonorth_lon_deg;
+                pt.geosouth_lat_deg = bessel_point.geosouth_lat_deg;
+                pt.geosouth_lon_deg = bessel_point.geosouth_lon_deg;
                 
-                // 1. Margine Geometrico (raggio asteroide)
-                double r_ast = diameter_km * 500.0; // raggio in metri
-                Vector3D pos_gn = ast_pos_itrf + cross_track * r_ast;
-                Vector3D pos_gs = ast_pos_itrf - cross_track * r_ast;
+                // Sigma limits (if available)
+                pt.north_lat_deg = bessel_point.north_lat_deg;
+                pt.north_lon_deg = bessel_point.north_lon_deg;
+                pt.south_lat_deg = bessel_point.south_lat_deg;
+                pt.south_lon_deg = bessel_point.south_lon_deg;
                 
-                Vector3D inter_gn = converter.intersectWithWGS84(pos_gn, shadow_ray);
-                Vector3D inter_gs = converter.intersectWithWGS84(pos_gs, shadow_ray);
-                
-                if (inter_gn.magnitude() > 0) {
-                    auto g = converter.getGeodeticPosition(inter_gn);
-                    pt.geonorth_lat_deg = g.latitude_deg;
-                    pt.geonorth_lon_deg = g.longitude_deg;
-                } else {
-                    pt.geonorth_lat_deg = pt.lat_deg; pt.geonorth_lon_deg = pt.lon_deg;
-                }
-                
-                if (inter_gs.magnitude() > 0) {
-                    auto g = converter.getGeodeticPosition(inter_gs);
-                    pt.geosouth_lat_deg = g.latitude_deg;
-                    pt.geosouth_lon_deg = g.longitude_deg;
-                } else {
-                    pt.geosouth_lat_deg = pt.lat_deg; pt.geosouth_lon_deg = pt.lon_deg;
-                }
-                               // 2. Limite 1-sigma (incertezza orbitale)
-                // Se abbiamo covarianza propagata, usiamo quella per calcolare il cross-track error
-                double sigma_km = 50.0; // Default fallback
-                
-                if (ast_state.covariance.has_value()) {
-                    // Proietta covarianza (posizione 3x3 superiore sx) sulla direzione perpendicolare
-                    // al moto apparente proiettato sul piano dell'ombra.
-                    // Semplificazione: usiamo la deviazione standard della posizione in metri
-                    // trasformata in km. 
-                    // TODO: Proiezione rigorosa nel piano dell'ombra (piano di Bessel)
-                    const auto& cov = *ast_state.covariance;
-                    
-                    // Direzione "cross-track" approssimativa: 
-                    // vettore ortogonale a star_dir e alla velocità dell'asteroide
-                    // v_unit and cross_dir are Eigen::Vector3d
-                    Eigen::Vector3d v_unit_eig = {vel_itrf.x, vel_itrf.y, vel_itrf.z};
-                    v_unit_eig.normalize();
-                    
-                    Eigen::Vector3d star_dir_eig = {star_dir_itrf.x, star_dir_itrf.y, star_dir_itrf.z};
-                    Eigen::Vector3d cross_dir = star_dir_eig.cross(v_unit_eig).normalized();
-                    
-                    // Varianza nella direzione cross-track: sigma^2 = n^T * P_pos * n
-                    // cov è in AU^2, convertiamo in metri^2
-                    Eigen::Matrix3d P_pos = cov.template block<3, 3>(0, 0) * (AU_M * AU_M);
-                    double var_cross = cross_dir.transpose() * P_pos * cross_dir;
-                    
-                    if (var_cross > 0) {
-                        sigma_km = std::sqrt(var_cross) / 1000.0;
-                    }
-                }
-                
-                double r_sigma = sigma_km * 1000.0;
-                
-                Vector3D pos_sn = ast_pos_itrf + cross_track * r_sigma;
-                Vector3D pos_ss = ast_pos_itrf - cross_track * r_sigma;
-
-                Vector3D inter_sn = converter.intersectWithWGS84(pos_sn, shadow_ray);
-                Vector3D inter_ss = converter.intersectWithWGS84(pos_ss, shadow_ray);
-                
-                if (inter_sn.magnitude() > 0) {
-                    auto g = converter.getGeodeticPosition(inter_sn);
-                    pt.north_lat_deg = g.latitude_deg;
-                    pt.north_lon_deg = g.longitude_deg;
-                } else {
-                    pt.north_lat_deg = pt.lat_deg; pt.north_lon_deg = pt.lon_deg;
-                }
-                
-                if (inter_ss.magnitude() > 0) {
-                    auto g = converter.getGeodeticPosition(inter_ss);
-                    pt.south_lat_deg = g.latitude_deg;
-                    pt.south_lon_deg = g.longitude_deg;
-                } else {
-                    pt.south_lat_deg = pt.lat_deg; pt.south_lon_deg = pt.lon_deg;
-                }
+                pt.star_alt_deg = bessel_point.star_alt_deg;
                 
                 event.shadow_path.push_back(pt);
             }
+            
+            // Store Bessel elements info
+            event.asteroid_distance_au = params.asteroid_distance_au;
+            
+            std::cout << "[PHASE2] Shadow path integrated successfully" << std::endl;
+            
+        } else {
+            std::cout << "[PHASE2] ❌ Shadow path calculation failed: " 
+                      << shadow_result.error_message << std::endl;
         }
     }
 

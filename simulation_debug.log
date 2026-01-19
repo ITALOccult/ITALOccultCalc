@@ -1,13 +1,22 @@
-⚠ WARNING: Catalogo Gaia Mag18 non trovato
-  Download: ./download_gaia_cache.sh
 Could not open IAU catalog: data/IAU-CSN.json
 Could not open star names database: data/common_star_names.csv
 Loaded 23 stars from embedded database
 Loaded star names from embedded database
 Loaded Gaia SQLite DR3 catalog: /Users/michelebigi/.catalog/crossreference/gaia_dr3_occult_pro.db
 ITALOccultCalc v1.0 [Native API Workflow]
+
+=== ITALOccultCalc DEBUG BUILD ===
+
+📄 Loading configuration from: verify_1272.json
+DEBUG: output config read - A4='', IOccult='ioccult_card_1272.png'
+Target: 1272 (1272)
+Window: 61052 -> 61054
 SPICESPKReader: Loaded /Users/michelebigi/.ioccultcalc/ephemerides/de440.bsp
-Successfully loaded de440.bsp
+Ephemeris loaded.
+[Phase1CandidateScreening] Constructor started.
+✓ DE441 loaded (Native Reader): /Users/michelebigi/.ioccultcalc/ephemerides/de441_part-2.bsp
+[Phase1CandidateScreening] Constructor finished.
+[Phase2OccultationGeometry] Constructor started.
 [AstDynWrapper] Constructor started.
   - Creating PlanetaryEphemeris...
   - Initializing propagator...
@@ -18,7 +27,1031 @@ Successfully loaded de440.bsp
     [Propagator] Constructor exit.
   - Propagator object created.
 [AstDynWrapper] Constructor finished.
-[Phase1CandidateScreening] Constructor started.
+[Phase2OccultationGeometry] Constructor finished.
+Loading asteroid 1272...
+[AsteroidSqliteDatabase] Successfully opened /Users/michelebigi/.ioccultcalc/database/asteroids.db
+DB load failed, trying JSON/Allnum fallback...
+[OccultationEngine] Opened JSON file: /Users/michelebigi/.ioccultcalc/data/all_numbered_asteroids.json
+[OccultationEngine] Found 'asteroids' array in JSON.
+[OccultationEngine] Searching in asteroid array (size: 875152)...
+[OccultationEngine] Successfully found asteroid 1272 in JSON.
+[DEBUG-PERT] lapco entry (alpha=0.535911)
+[DEBUG-PERT] lapco entry (alpha=0.535911)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.2918)
+[DEBUG-PERT] lapco entry (alpha=0.2918)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.145076)
+[DEBUG-PERT] lapco entry (alpha=0.145076)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.0925967)
+[DEBUG-PERT] lapco entry (alpha=0.0925967)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.535911)
+[DEBUG-PERT] lapco entry (alpha=0.535911)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.2918)
+[DEBUG-PERT] lapco entry (alpha=0.2918)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.145076)
+[DEBUG-PERT] lapco entry (alpha=0.145076)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.0925967)
+[DEBUG-PERT] lapco entry (alpha=0.0925967)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[AstDynWrapper:0x10d9a1208] setKeplerianElements: asteroid=1272 state set to INITIALIZED.
+[AstDynWrapper]   Processing Frame: ECLIPTIC
+  - Creating RKF78Integrator...
+  - Creating Propagator object...
+    [Propagator] Constructor entry (include_asteroids=1).
+    [Propagator] Creating AsteroidPerturbations...
+    [Propagator] Constructor exit.
+  - Propagator object created.
+[Phase2OccultationGeometry] setSPKReader called. Forwarding to wrapper=0x10d9a1208
+Phase 1: Screening stars in 2 deg corridor...
+[PHASE1] Starting native screening for 1272 (MJD 61052 to 61054)...
+    [Propagator] Constructor entry (include_asteroids=0).
+    [Propagator] Constructor exit.
+[PHASE1] Path start: RA=353.218 Dec=-0.821136
+[PHASE1] Path end:   RA=353.958 Dec=-0.441641
+[PHASE1] Querying Gaia catalog with 49 ICRF points...
+Optimized Corridor: 49 points -> 1 query cones.
+[PHASE1] Screening complete. Found 15 candidates (975 stars in corridor).
+Found 15 candidates (975 stars initially in corridor).
+
+Phase 2: Calculating precise geometry...
+
+[OccultationEngine] 🔄 Refining orbit for 1272 with last 100 observations...
+[MPCClient] Downloading observations from AstDyS: https://newton.spacedys.com/~astdys2/mpcobs/numbered/1/1272.rwo
+[MPCClient] Parsing RWO with native library parser...
+[MPCClient] Successfully loaded 3725 observations from RWO.
+Debug Rotation:
+ Orig: i=8.42335 O=0 w=0
+ Eq:   i=15.0159 O=180 w=180
+ Back: i=8.42335 O=1.24103e-14 w=360
+[AstDynOrbitFitter] Feeding 100 obs to OrbitFitAPI.
+   Time Range: MJD 60712.2 to 60953.6
+   Initial Element Epoch: 61000
+[OrbitFitAPI] Loading OrbFit elements from /tmp/ioc_fit_init.eq1...
+[AstDynOrbitFitter] run_fit returned: success=0 msg='Could not parse equinoctial elements from file: /tmp/ioc_fit_init.eq1' n_obs=1 n_out=4098
+[OccultationEngine] Fit completed. Observations used: 0/0. RMS=0 arcsec.
+[OccultationEngine] ❌ Fit rejected (poor RMS or few obs). Keeping original orbit.
+[PHASE2] calculatePreciseGeometry using AstDynWrapper:0x10d9a1208
 ✓ DE441 loaded (Native Reader): /Users/michelebigi/.ioccultcalc/ephemerides/de441_part-2.bsp
-[Phase1CandidateScreening] Constructor finished.
-./italoccultcalc.sh: line 20:  8942 Bus error: 10           "$EXEC" "$@"
+    [Propagator] Constructor entry (include_asteroids=1).
+    [Propagator] Creating AsteroidPerturbations...
+    [Propagator] Constructor exit.
+Processed Phase 2 for all candidates. Found 15 confirmed events.
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  2644191912794278912
+  Star Pos: RA=353.194887 Dec=-0.842718
+  Date:     61051.99306
+  CA Dist:  104.259"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  2644193149744557440
+  Star Pos: RA=353.179209 Dec=-0.783493
+  Date:     61051.99306
+  CA Dist:  191.849"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  2641211441713247488
+  Star Pos: RA=353.464637 Dec=-0.779833
+  Date:     61052.57639
+  CA Dist:  272.921"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  2644214212264487808
+  Star Pos: RA=353.411966 Dec=-0.746121
+  Date:     61052.49864
+  CA Dist:  78.371"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  2644214796379739008
+  Star Pos: RA=353.343302 Dec=-0.742557
+  Date:     61052.36806
+  CA Dist:  49.686"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  2644218335432804992
+  Star Pos: RA=353.348075 Dec=-0.688083
+  Date:     61052.42361
+  CA Dist:  212.542"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  2641219520547246336
+  Star Pos: RA=353.657777 Dec=-0.672217
+  Date:     61053.11806
+  CA Dist:  246.113"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  2644222389881937792
+  Star Pos: RA=353.561810 Dec=-0.651046
+  Date:     61052.92361
+  CA Dist:  20.043"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  2644222664759847680
+  Star Pos: RA=353.622889 Dec=-0.626885
+  Date:     61053.08130
+  CA Dist:  42.957"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  2644224034853618048
+  Star Pos: RA=353.557136 Dec=-0.566187
+  Date:     61053.00694
+  CA Dist:  259.484"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  2641219245669339776
+  Star Pos: RA=353.724803 Dec=-0.651303
+  Date:     61053.28472
+  CA Dist:  289.133"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  2641313700590086784
+  Star Pos: RA=353.765481 Dec=-0.596162
+  Date:     61053.41977
+  CA Dist:  178.682"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  2644317733860157056
+  Star Pos: RA=353.718382 Dec=-0.496957
+  Date:     61053.42361
+  CA Dist:  216.566"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  2641318712816205696
+  Star Pos: RA=353.979962 Dec=-0.516275
+  Date:     61053.96480
+  CA Dist:  274.763"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  2641319369946959104
+  Star Pos: RA=354.028772 Dec=-0.460820
+  Date:     61054.00694
+  CA Dist:  255.446"
+  Duration: 0.00 s
+--------------------------------------------------
+
+Exporting results to XML...
+✅ Results exported to XML: italoccultcalc_output.xml
+
+Generating Event Cards...
+Generating IOccult Card: ioccult_card_1272_1.png
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+📐 Campo visivo impostato:
+   Centro: RA 353.19° Dec -0.84°
+   Campo visivo: 20.00°
+🔆 Magnitudine limite: 8.00
+⭐ Aggiunte 322 stelle SAO
+🎯 Target impostato: 1272
+   RA: 353.19° Dec: -0.84°
+
+🎨 === Rendering Mappa Celeste ===
+📏 Rendering griglia di coordinate RA/Dec...
+📍 Rendering confini costellazioni...
+📐 Rendering linee costellazioni...
+⭐ Rendering stelle SAO...
+   Stelle visualizzate: 284
+🎯 Rendering target e traiettoria...
+💾 Salvataggio mappa...
+Mapnik LOG> 2026-01-17 11:10:48: SVG parse error: can't infer valid image dimensions from width:"100%" height:"100%"
+
+✅ Mappa celeste generata: results_1272/sky.png
+
+📋 Dettagli renderizzazione:
+   Centro: RA 353.19° Dec -0.84°
+   Campo visivo: 20.00°
+   Dimensioni: 400x400 px
+   Stelle visualizzate: 284
+   Magnitudine limite: 8.00
+   Linee costellazioni: 0
+   Confini costellazioni: 0
+   Griglia RA/Dec: ogni 10.00°
+   Target: 1272
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+Campo visivo impostato: RA 353.19° Dec -0.84° FOV 2.00°
+Magnitudine limite: 14.00
+Aggiunte 379 stelle SAO
+Target impostato: 1272 (RA 353.19° Dec -0.84°)
+
+=== Rendering Finder Chart ===
+Rendering confini costellazioni...
+Rendering linee costellazioni...
+Rendering stelle SAO...
+Rendering target...
+
+✓ Finder Chart generata: results_1272/finder.png
+  ✅ Sfondo bianco per stampa
+  ✅ Stelle del catalogo SAO con numeri
+  ✅ Linee e confini delle costellazioni
+Generating IOccult Card: ioccult_card_1272_2.png
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+📐 Campo visivo impostato:
+   Centro: RA 353.18° Dec -0.78°
+   Campo visivo: 20.00°
+🔆 Magnitudine limite: 8.00
+⭐ Aggiunte 320 stelle SAO
+🎯 Target impostato: 1272
+   RA: 353.18° Dec: -0.78°
+
+🎨 === Rendering Mappa Celeste ===
+📏 Rendering griglia di coordinate RA/Dec...
+📍 Rendering confini costellazioni...
+📐 Rendering linee costellazioni...
+⭐ Rendering stelle SAO...
+   Stelle visualizzate: 282
+🎯 Rendering target e traiettoria...
+💾 Salvataggio mappa...
+
+✅ Mappa celeste generata: results_1272/sky.png
+
+📋 Dettagli renderizzazione:
+   Centro: RA 353.18° Dec -0.78°
+   Campo visivo: 20.00°
+   Dimensioni: 400x400 px
+   Stelle visualizzate: 282
+   Magnitudine limite: 8.00
+   Linee costellazioni: 0
+   Confini costellazioni: 0
+   Griglia RA/Dec: ogni 10.00°
+   Target: 1272
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+Campo visivo impostato: RA 353.18° Dec -0.78° FOV 2.00°
+Magnitudine limite: 14.00
+Aggiunte 383 stelle SAO
+Target impostato: 1272 (RA 353.18° Dec -0.78°)
+
+=== Rendering Finder Chart ===
+Rendering confini costellazioni...
+Rendering linee costellazioni...
+Rendering stelle SAO...
+Rendering target...
+
+✓ Finder Chart generata: results_1272/finder.png
+  ✅ Sfondo bianco per stampa
+  ✅ Stelle del catalogo SAO con numeri
+  ✅ Linee e confini delle costellazioni
+Generating IOccult Card: ioccult_card_1272_3.png
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+📐 Campo visivo impostato:
+   Centro: RA 353.46° Dec -0.78°
+   Campo visivo: 20.00°
+🔆 Magnitudine limite: 8.00
+⭐ Aggiunte 318 stelle SAO
+🎯 Target impostato: 1272
+   RA: 353.46° Dec: -0.78°
+
+🎨 === Rendering Mappa Celeste ===
+📏 Rendering griglia di coordinate RA/Dec...
+📍 Rendering confini costellazioni...
+📐 Rendering linee costellazioni...
+⭐ Rendering stelle SAO...
+   Stelle visualizzate: 279
+🎯 Rendering target e traiettoria...
+💾 Salvataggio mappa...
+
+✅ Mappa celeste generata: results_1272/sky.png
+
+📋 Dettagli renderizzazione:
+   Centro: RA 353.46° Dec -0.78°
+   Campo visivo: 20.00°
+   Dimensioni: 400x400 px
+   Stelle visualizzate: 279
+   Magnitudine limite: 8.00
+   Linee costellazioni: 0
+   Confini costellazioni: 0
+   Griglia RA/Dec: ogni 10.00°
+   Target: 1272
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+Campo visivo impostato: RA 353.46° Dec -0.78° FOV 2.00°
+Magnitudine limite: 14.00
+Aggiunte 395 stelle SAO
+Target impostato: 1272 (RA 353.46° Dec -0.78°)
+
+=== Rendering Finder Chart ===
+Rendering confini costellazioni...
+Rendering linee costellazioni...
+Rendering stelle SAO...
+Rendering target...
+
+✓ Finder Chart generata: results_1272/finder.png
+  ✅ Sfondo bianco per stampa
+  ✅ Stelle del catalogo SAO con numeri
+  ✅ Linee e confini delle costellazioni
+Generating IOccult Card: ioccult_card_1272_4.png
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+📐 Campo visivo impostato:
+   Centro: RA 353.41° Dec -0.75°
+   Campo visivo: 20.00°
+🔆 Magnitudine limite: 8.00
+⭐ Aggiunte 319 stelle SAO
+🎯 Target impostato: 1272
+   RA: 353.41° Dec: -0.75°
+
+🎨 === Rendering Mappa Celeste ===
+📏 Rendering griglia di coordinate RA/Dec...
+📍 Rendering confini costellazioni...
+📐 Rendering linee costellazioni...
+⭐ Rendering stelle SAO...
+   Stelle visualizzate: 280
+🎯 Rendering target e traiettoria...
+💾 Salvataggio mappa...
+
+✅ Mappa celeste generata: results_1272/sky.png
+
+📋 Dettagli renderizzazione:
+   Centro: RA 353.41° Dec -0.75°
+   Campo visivo: 20.00°
+   Dimensioni: 400x400 px
+   Stelle visualizzate: 280
+   Magnitudine limite: 8.00
+   Linee costellazioni: 0
+   Confini costellazioni: 0
+   Griglia RA/Dec: ogni 10.00°
+   Target: 1272
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+Campo visivo impostato: RA 353.41° Dec -0.75° FOV 2.00°
+Magnitudine limite: 14.00
+Aggiunte 393 stelle SAO
+Target impostato: 1272 (RA 353.41° Dec -0.75°)
+
+=== Rendering Finder Chart ===
+Rendering confini costellazioni...
+Rendering linee costellazioni...
+Rendering stelle SAO...
+Rendering target...
+
+✓ Finder Chart generata: results_1272/finder.png
+  ✅ Sfondo bianco per stampa
+  ✅ Stelle del catalogo SAO con numeri
+  ✅ Linee e confini delle costellazioni
+Generating IOccult Card: ioccult_card_1272_5.png
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+📐 Campo visivo impostato:
+   Centro: RA 353.34° Dec -0.74°
+   Campo visivo: 20.00°
+🔆 Magnitudine limite: 8.00
+⭐ Aggiunte 320 stelle SAO
+🎯 Target impostato: 1272
+   RA: 353.34° Dec: -0.74°
+
+🎨 === Rendering Mappa Celeste ===
+📏 Rendering griglia di coordinate RA/Dec...
+📍 Rendering confini costellazioni...
+📐 Rendering linee costellazioni...
+⭐ Rendering stelle SAO...
+   Stelle visualizzate: 281
+🎯 Rendering target e traiettoria...
+💾 Salvataggio mappa...
+
+✅ Mappa celeste generata: results_1272/sky.png
+
+📋 Dettagli renderizzazione:
+   Centro: RA 353.34° Dec -0.74°
+   Campo visivo: 20.00°
+   Dimensioni: 400x400 px
+   Stelle visualizzate: 281
+   Magnitudine limite: 8.00
+   Linee costellazioni: 0
+   Confini costellazioni: 0
+   Griglia RA/Dec: ogni 10.00°
+   Target: 1272
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+Campo visivo impostato: RA 353.34° Dec -0.74° FOV 2.00°
+Magnitudine limite: 14.00
+Aggiunte 390 stelle SAO
+Target impostato: 1272 (RA 353.34° Dec -0.74°)
+
+=== Rendering Finder Chart ===
+Rendering confini costellazioni...
+Rendering linee costellazioni...
+Rendering stelle SAO...
+Rendering target...
+
+✓ Finder Chart generata: results_1272/finder.png
+  ✅ Sfondo bianco per stampa
+  ✅ Stelle del catalogo SAO con numeri
+  ✅ Linee e confini delle costellazioni
+Generating IOccult Card: ioccult_card_1272_6.png
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+📐 Campo visivo impostato:
+   Centro: RA 353.35° Dec -0.69°
+   Campo visivo: 20.00°
+🔆 Magnitudine limite: 8.00
+⭐ Aggiunte 317 stelle SAO
+🎯 Target impostato: 1272
+   RA: 353.35° Dec: -0.69°
+
+🎨 === Rendering Mappa Celeste ===
+📏 Rendering griglia di coordinate RA/Dec...
+📍 Rendering confini costellazioni...
+📐 Rendering linee costellazioni...
+⭐ Rendering stelle SAO...
+   Stelle visualizzate: 278
+🎯 Rendering target e traiettoria...
+💾 Salvataggio mappa...
+
+✅ Mappa celeste generata: results_1272/sky.png
+
+📋 Dettagli renderizzazione:
+   Centro: RA 353.35° Dec -0.69°
+   Campo visivo: 20.00°
+   Dimensioni: 400x400 px
+   Stelle visualizzate: 278
+   Magnitudine limite: 8.00
+   Linee costellazioni: 0
+   Confini costellazioni: 0
+   Griglia RA/Dec: ogni 10.00°
+   Target: 1272
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+Campo visivo impostato: RA 353.35° Dec -0.69° FOV 2.00°
+Magnitudine limite: 14.00
+Aggiunte 394 stelle SAO
+Target impostato: 1272 (RA 353.35° Dec -0.69°)
+
+=== Rendering Finder Chart ===
+Rendering confini costellazioni...
+Rendering linee costellazioni...
+Rendering stelle SAO...
+Rendering target...
+
+✓ Finder Chart generata: results_1272/finder.png
+  ✅ Sfondo bianco per stampa
+  ✅ Stelle del catalogo SAO con numeri
+  ✅ Linee e confini delle costellazioni
+Generating IOccult Card: ioccult_card_1272_7.png
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+📐 Campo visivo impostato:
+   Centro: RA 353.66° Dec -0.67°
+   Campo visivo: 20.00°
+🔆 Magnitudine limite: 8.00
+⭐ Aggiunte 311 stelle SAO
+🎯 Target impostato: 1272
+   RA: 353.66° Dec: -0.67°
+
+🎨 === Rendering Mappa Celeste ===
+📏 Rendering griglia di coordinate RA/Dec...
+📍 Rendering confini costellazioni...
+📐 Rendering linee costellazioni...
+⭐ Rendering stelle SAO...
+   Stelle visualizzate: 271
+🎯 Rendering target e traiettoria...
+💾 Salvataggio mappa...
+
+✅ Mappa celeste generata: results_1272/sky.png
+
+📋 Dettagli renderizzazione:
+   Centro: RA 353.66° Dec -0.67°
+   Campo visivo: 20.00°
+   Dimensioni: 400x400 px
+   Stelle visualizzate: 271
+   Magnitudine limite: 8.00
+   Linee costellazioni: 0
+   Confini costellazioni: 0
+   Griglia RA/Dec: ogni 10.00°
+   Target: 1272
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+Campo visivo impostato: RA 353.66° Dec -0.67° FOV 2.00°
+Magnitudine limite: 14.00
+Aggiunte 384 stelle SAO
+Target impostato: 1272 (RA 353.66° Dec -0.67°)
+
+=== Rendering Finder Chart ===
+Rendering confini costellazioni...
+Rendering linee costellazioni...
+Rendering stelle SAO...
+Rendering target...
+
+✓ Finder Chart generata: results_1272/finder.png
+  ✅ Sfondo bianco per stampa
+  ✅ Stelle del catalogo SAO con numeri
+  ✅ Linee e confini delle costellazioni
+Generating IOccult Card: ioccult_card_1272_8.png
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+📐 Campo visivo impostato:
+   Centro: RA 353.56° Dec -0.65°
+   Campo visivo: 20.00°
+🔆 Magnitudine limite: 8.00
+⭐ Aggiunte 312 stelle SAO
+🎯 Target impostato: 1272
+   RA: 353.56° Dec: -0.65°
+
+🎨 === Rendering Mappa Celeste ===
+📏 Rendering griglia di coordinate RA/Dec...
+📍 Rendering confini costellazioni...
+📐 Rendering linee costellazioni...
+⭐ Rendering stelle SAO...
+   Stelle visualizzate: 273
+🎯 Rendering target e traiettoria...
+💾 Salvataggio mappa...
+
+✅ Mappa celeste generata: results_1272/sky.png
+
+📋 Dettagli renderizzazione:
+   Centro: RA 353.56° Dec -0.65°
+   Campo visivo: 20.00°
+   Dimensioni: 400x400 px
+   Stelle visualizzate: 273
+   Magnitudine limite: 8.00
+   Linee costellazioni: 0
+   Confini costellazioni: 0
+   Griglia RA/Dec: ogni 10.00°
+   Target: 1272
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+Campo visivo impostato: RA 353.56° Dec -0.65° FOV 2.00°
+Magnitudine limite: 14.00
+Aggiunte 394 stelle SAO
+Target impostato: 1272 (RA 353.56° Dec -0.65°)
+
+=== Rendering Finder Chart ===
+Rendering confini costellazioni...
+Rendering linee costellazioni...
+Rendering stelle SAO...
+Rendering target...
+
+✓ Finder Chart generata: results_1272/finder.png
+  ✅ Sfondo bianco per stampa
+  ✅ Stelle del catalogo SAO con numeri
+  ✅ Linee e confini delle costellazioni
+Generating IOccult Card: ioccult_card_1272_9.png
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+📐 Campo visivo impostato:
+   Centro: RA 353.62° Dec -0.63°
+   Campo visivo: 20.00°
+🔆 Magnitudine limite: 8.00
+⭐ Aggiunte 311 stelle SAO
+🎯 Target impostato: 1272
+   RA: 353.62° Dec: -0.63°
+
+🎨 === Rendering Mappa Celeste ===
+📏 Rendering griglia di coordinate RA/Dec...
+📍 Rendering confini costellazioni...
+📐 Rendering linee costellazioni...
+⭐ Rendering stelle SAO...
+   Stelle visualizzate: 271
+🎯 Rendering target e traiettoria...
+💾 Salvataggio mappa...
+
+✅ Mappa celeste generata: results_1272/sky.png
+
+📋 Dettagli renderizzazione:
+   Centro: RA 353.62° Dec -0.63°
+   Campo visivo: 20.00°
+   Dimensioni: 400x400 px
+   Stelle visualizzate: 271
+   Magnitudine limite: 8.00
+   Linee costellazioni: 0
+   Confini costellazioni: 0
+   Griglia RA/Dec: ogni 10.00°
+   Target: 1272
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+Campo visivo impostato: RA 353.62° Dec -0.63° FOV 2.00°
+Magnitudine limite: 14.00
+Aggiunte 392 stelle SAO
+Target impostato: 1272 (RA 353.62° Dec -0.63°)
+
+=== Rendering Finder Chart ===
+Rendering confini costellazioni...
+Rendering linee costellazioni...
+Rendering stelle SAO...
+Rendering target...
+
+✓ Finder Chart generata: results_1272/finder.png
+  ✅ Sfondo bianco per stampa
+  ✅ Stelle del catalogo SAO con numeri
+  ✅ Linee e confini delle costellazioni
+Generating IOccult Card: ioccult_card_1272_10.png
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+📐 Campo visivo impostato:
+   Centro: RA 353.56° Dec -0.57°
+   Campo visivo: 20.00°
+🔆 Magnitudine limite: 8.00
+⭐ Aggiunte 311 stelle SAO
+🎯 Target impostato: 1272
+   RA: 353.56° Dec: -0.57°
+
+🎨 === Rendering Mappa Celeste ===
+📏 Rendering griglia di coordinate RA/Dec...
+📍 Rendering confini costellazioni...
+📐 Rendering linee costellazioni...
+⭐ Rendering stelle SAO...
+   Stelle visualizzate: 272
+🎯 Rendering target e traiettoria...
+💾 Salvataggio mappa...
+
+✅ Mappa celeste generata: results_1272/sky.png
+
+📋 Dettagli renderizzazione:
+   Centro: RA 353.56° Dec -0.57°
+   Campo visivo: 20.00°
+   Dimensioni: 400x400 px
+   Stelle visualizzate: 272
+   Magnitudine limite: 8.00
+   Linee costellazioni: 0
+   Confini costellazioni: 0
+   Griglia RA/Dec: ogni 10.00°
+   Target: 1272
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+Campo visivo impostato: RA 353.56° Dec -0.57° FOV 2.00°
+Magnitudine limite: 14.00
+Aggiunte 402 stelle SAO
+Target impostato: 1272 (RA 353.56° Dec -0.57°)
+
+=== Rendering Finder Chart ===
+Rendering confini costellazioni...
+Rendering linee costellazioni...
+Rendering stelle SAO...
+Rendering target...
+
+✓ Finder Chart generata: results_1272/finder.png
+  ✅ Sfondo bianco per stampa
+  ✅ Stelle del catalogo SAO con numeri
+  ✅ Linee e confini delle costellazioni
+Generating IOccult Card: ioccult_card_1272_11.png
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+📐 Campo visivo impostato:
+   Centro: RA 353.72° Dec -0.65°
+   Campo visivo: 20.00°
+🔆 Magnitudine limite: 8.00
+⭐ Aggiunte 316 stelle SAO
+🎯 Target impostato: 1272
+   RA: 353.72° Dec: -0.65°
+
+🎨 === Rendering Mappa Celeste ===
+📏 Rendering griglia di coordinate RA/Dec...
+📍 Rendering confini costellazioni...
+📐 Rendering linee costellazioni...
+⭐ Rendering stelle SAO...
+   Stelle visualizzate: 270
+🎯 Rendering target e traiettoria...
+💾 Salvataggio mappa...
+
+✅ Mappa celeste generata: results_1272/sky.png
+
+📋 Dettagli renderizzazione:
+   Centro: RA 353.72° Dec -0.65°
+   Campo visivo: 20.00°
+   Dimensioni: 400x400 px
+   Stelle visualizzate: 270
+   Magnitudine limite: 8.00
+   Linee costellazioni: 0
+   Confini costellazioni: 0
+   Griglia RA/Dec: ogni 10.00°
+   Target: 1272
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+Campo visivo impostato: RA 353.72° Dec -0.65° FOV 2.00°
+Magnitudine limite: 14.00
+Aggiunte 379 stelle SAO
+Target impostato: 1272 (RA 353.72° Dec -0.65°)
+
+=== Rendering Finder Chart ===
+Rendering confini costellazioni...
+Rendering linee costellazioni...
+Rendering stelle SAO...
+Rendering target...
+
+✓ Finder Chart generata: results_1272/finder.png
+  ✅ Sfondo bianco per stampa
+  ✅ Stelle del catalogo SAO con numeri
+  ✅ Linee e confini delle costellazioni
+Generating IOccult Card: ioccult_card_1272_12.png
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+📐 Campo visivo impostato:
+   Centro: RA 353.77° Dec -0.60°
+   Campo visivo: 20.00°
+🔆 Magnitudine limite: 8.00
+⭐ Aggiunte 316 stelle SAO
+🎯 Target impostato: 1272
+   RA: 353.77° Dec: -0.60°
+
+🎨 === Rendering Mappa Celeste ===
+📏 Rendering griglia di coordinate RA/Dec...
+📍 Rendering confini costellazioni...
+📐 Rendering linee costellazioni...
+⭐ Rendering stelle SAO...
+   Stelle visualizzate: 270
+🎯 Rendering target e traiettoria...
+💾 Salvataggio mappa...
+
+✅ Mappa celeste generata: results_1272/sky.png
+
+📋 Dettagli renderizzazione:
+   Centro: RA 353.77° Dec -0.60°
+   Campo visivo: 20.00°
+   Dimensioni: 400x400 px
+   Stelle visualizzate: 270
+   Magnitudine limite: 8.00
+   Linee costellazioni: 0
+   Confini costellazioni: 0
+   Griglia RA/Dec: ogni 10.00°
+   Target: 1272
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+Campo visivo impostato: RA 353.77° Dec -0.60° FOV 2.00°
+Magnitudine limite: 14.00
+Aggiunte 382 stelle SAO
+Target impostato: 1272 (RA 353.77° Dec -0.60°)
+
+=== Rendering Finder Chart ===
+Rendering confini costellazioni...
+Rendering linee costellazioni...
+Rendering stelle SAO...
+Rendering target...
+
+✓ Finder Chart generata: results_1272/finder.png
+  ✅ Sfondo bianco per stampa
+  ✅ Stelle del catalogo SAO con numeri
+  ✅ Linee e confini delle costellazioni
+Generating IOccult Card: ioccult_card_1272_13.png
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+📐 Campo visivo impostato:
+   Centro: RA 353.72° Dec -0.50°
+   Campo visivo: 20.00°
+🔆 Magnitudine limite: 8.00
+⭐ Aggiunte 312 stelle SAO
+🎯 Target impostato: 1272
+   RA: 353.72° Dec: -0.50°
+
+🎨 === Rendering Mappa Celeste ===
+📏 Rendering griglia di coordinate RA/Dec...
+📍 Rendering confini costellazioni...
+📐 Rendering linee costellazioni...
+⭐ Rendering stelle SAO...
+   Stelle visualizzate: 268
+🎯 Rendering target e traiettoria...
+💾 Salvataggio mappa...
+
+✅ Mappa celeste generata: results_1272/sky.png
+
+📋 Dettagli renderizzazione:
+   Centro: RA 353.72° Dec -0.50°
+   Campo visivo: 20.00°
+   Dimensioni: 400x400 px
+   Stelle visualizzate: 268
+   Magnitudine limite: 8.00
+   Linee costellazioni: 0
+   Confini costellazioni: 0
+   Griglia RA/Dec: ogni 10.00°
+   Target: 1272
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+Campo visivo impostato: RA 353.72° Dec -0.50° FOV 2.00°
+Magnitudine limite: 14.00
+Aggiunte 386 stelle SAO
+Target impostato: 1272 (RA 353.72° Dec -0.50°)
+
+=== Rendering Finder Chart ===
+Rendering confini costellazioni...
+Rendering linee costellazioni...
+Rendering stelle SAO...
+Rendering target...
+
+✓ Finder Chart generata: results_1272/finder.png
+  ✅ Sfondo bianco per stampa
+  ✅ Stelle del catalogo SAO con numeri
+  ✅ Linee e confini delle costellazioni
+Generating IOccult Card: ioccult_card_1272_14.png
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+📐 Campo visivo impostato:
+   Centro: RA 353.98° Dec -0.52°
+   Campo visivo: 20.00°
+🔆 Magnitudine limite: 8.00
+⭐ Aggiunte 312 stelle SAO
+🎯 Target impostato: 1272
+   RA: 353.98° Dec: -0.52°
+
+🎨 === Rendering Mappa Celeste ===
+📏 Rendering griglia di coordinate RA/Dec...
+📍 Rendering confini costellazioni...
+📐 Rendering linee costellazioni...
+⭐ Rendering stelle SAO...
+   Stelle visualizzate: 263
+🎯 Rendering target e traiettoria...
+💾 Salvataggio mappa...
+
+✅ Mappa celeste generata: results_1272/sky.png
+
+📋 Dettagli renderizzazione:
+   Centro: RA 353.98° Dec -0.52°
+   Campo visivo: 20.00°
+   Dimensioni: 400x400 px
+   Stelle visualizzate: 263
+   Magnitudine limite: 8.00
+   Linee costellazioni: 0
+   Confini costellazioni: 0
+   Griglia RA/Dec: ogni 10.00°
+   Target: 1272
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+Campo visivo impostato: RA 353.98° Dec -0.52° FOV 2.00°
+Magnitudine limite: 14.00
+Aggiunte 359 stelle SAO
+Target impostato: 1272 (RA 353.98° Dec -0.52°)
+
+=== Rendering Finder Chart ===
+Rendering confini costellazioni...
+Rendering linee costellazioni...
+Rendering stelle SAO...
+Rendering target...
+
+✓ Finder Chart generata: results_1272/finder.png
+  ✅ Sfondo bianco per stampa
+  ✅ Stelle del catalogo SAO con numeri
+  ✅ Linee e confini delle costellazioni
+Generating IOccult Card: ioccult_card_1272_15.png
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+📐 Campo visivo impostato:
+   Centro: RA 354.03° Dec -0.46°
+   Campo visivo: 20.00°
+🔆 Magnitudine limite: 8.00
+⭐ Aggiunte 312 stelle SAO
+🎯 Target impostato: 1272
+   RA: 354.03° Dec: -0.46°
+
+🎨 === Rendering Mappa Celeste ===
+📏 Rendering griglia di coordinate RA/Dec...
+📍 Rendering confini costellazioni...
+📐 Rendering linee costellazioni...
+⭐ Rendering stelle SAO...
+   Stelle visualizzate: 262
+🎯 Rendering target e traiettoria...
+💾 Salvataggio mappa...
+
+✅ Mappa celeste generata: results_1272/sky.png
+
+📋 Dettagli renderizzazione:
+   Centro: RA 354.03° Dec -0.46°
+   Campo visivo: 20.00°
+   Dimensioni: 400x400 px
+   Stelle visualizzate: 262
+   Magnitudine limite: 8.00
+   Linee costellazioni: 0
+   Confini costellazioni: 0
+   Griglia RA/Dec: ogni 10.00°
+   Target: 1272
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+Campo visivo impostato: RA 354.03° Dec -0.46° FOV 2.00°
+Magnitudine limite: 14.00
+Aggiunte 370 stelle SAO
+Target impostato: 1272 (RA 354.03° Dec -0.46°)
+
+=== Rendering Finder Chart ===
+Rendering confini costellazioni...
+Rendering linee costellazioni...
+Rendering stelle SAO...
+Rendering target...
+
+✓ Finder Chart generata: results_1272/finder.png
+  ✅ Sfondo bianco per stampa
+  ✅ Stelle del catalogo SAO con numeri
+  ✅ Linee e confini delle costellazioni
+
+IOccultCalc Engine Workflow completed.

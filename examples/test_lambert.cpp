@@ -12,7 +12,6 @@
 
 using namespace ioccultcalc;
 
-constexpr double PI = 3.14159265358979323846;
 constexpr double GAUSS_K = 0.01720209895;
 
 void printVector(const std::string& label, const Vector3D& v) {
