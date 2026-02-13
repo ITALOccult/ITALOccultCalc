@@ -338,8 +338,9 @@ std::string Occult4XMLHandler::generateXML(const OccultationEvent& event) {
 
 std::string Occult4XMLHandler::generateXML(const std::vector<OccultationEvent>& events) {
     std::ostringstream xml;
-    // No XML declaration as per test_output_occult4.xml
+    xml << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
     xml << "<Occultations>\n";
+
     for (const auto& event : events) {
         xml << generateOccult4EventXML(event);
     }

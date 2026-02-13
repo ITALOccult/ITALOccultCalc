@@ -66,12 +66,10 @@ find_path(STARMAP_INCLUDE_DIR starmap/StarMap.h PATHS ${LOCAL_INSTALL_DIR}/inclu
 # add_subdirectory(external/IOC_StarMap EXCLUDE_FROM_ALL)
 
 # 6. IOC_Earth
-# Se non esiste la versione statica, usiamo quella dinamica per ora
-if(EXISTS "${LOCAL_INSTALL_DIR}/lib/libioc_earth.a")
-    set(IOC_EARTH_LIB "${LOCAL_INSTALL_DIR}/lib/libioc_earth.a" CACHE FILEPATH "Path to IOC_Earth static library" FORCE)
-else()
-    find_library(IOC_EARTH_LIB NAMES ioc_earth PATHS ${LOCAL_INSTALL_DIR}/lib REQUIRED NO_DEFAULT_PATH)
-endif()
+# Use internal IOC_Earth from submodule
+add_subdirectory(external/IOC_Earth EXCLUDE_FROM_ALL)
+set(IOC_EARTH_LIB ioc_earth)
+set(IOC_EARTH_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external/IOC_Earth/include")
 set(IOC_EARTH_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external/IOC_Earth/include")
 
 # -----------------------------------------------------
