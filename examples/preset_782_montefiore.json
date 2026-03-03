@@ -1,0 +1,22 @@
+{
+    "object": {
+        "id": "782",
+        "name": "Montefiore"
+    },
+    "search": {
+        "start_mjd": 61063.9,
+        "end_mjd": 61064.2,
+        "mag_limit": 14.0,
+        "corridor_width": 5.0
+    },
+    "propagation": {
+        "use_horizons": true,
+        "refine_orbit": false
+    },
+    "output": {
+        "dir": "results_782",
+        "generate_maps": true,
+        "map_zoom": 5.0,
+        "premium_aesthetics": true
+    }
+}

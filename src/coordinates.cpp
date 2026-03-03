@@ -288,7 +288,7 @@ Vector3D Coordinates::observerPositionFromGeo(const GeographicCoordinates& geo,
     // Entrambi in coordinate EQUATORIALI J2000
     return earth_helio_eq + eq_geocentric;
 }
-
+/*
 Vector3D Coordinates::equatorialToEcliptic(const Vector3D& eq) {
     // Obliquità dell'eclittica (ε) per J2000.0
     // IAU 2000: ε₀ = 23° 26' 21.406" = 23.4392794444°
@@ -308,6 +308,27 @@ Vector3D Coordinates::equatorialToEcliptic(const Vector3D& eq) {
         -eq.y * sin_eps + eq.z * cos_eps
     );
 }
+*/
+
+Vector3D Coordinates::equatorialToEcliptic(const Vector3D& eq) {
+    // Obliquità dell'eclittica (ε) per J2000.0
+    // IAU 2000: ε₀ = 23° 26' 21.406" = 23.4392794444°
+    constexpr double epsilon = 23.4392794444 * DEG_TO_RAD;
+    double cos_eps = cos(epsilon);
+    double sin_eps = sin(epsilon);
+
+    // Rotazione attorno all'asse X di +ε (equatoriale → eclittico)
+    // | x' |   | 1     0        0   |   | x |
+    // | y' | = | 0   cos(ε)   sin(ε)| * | y |
+    // | z' |   | 0  -sin(ε)   cos(ε)|   | z |
+    
+    return Vector3D(
+        eq.x,
+        eq.y * cos_eps + eq.z * sin_eps,
+        -eq.y * sin_eps + eq.z * cos_eps
+    );
+}
+
 
 Vector3D Coordinates::eclipticToEquatorial(const Vector3D& ecl) {
     // Obliquità dell'eclittica (ε) per J2000.0
@@ -326,6 +347,7 @@ Vector3D Coordinates::eclipticToEquatorial(const Vector3D& ecl) {
         ecl.y * cos_eps - ecl.z * sin_eps,
         ecl.y * sin_eps + ecl.z * cos_eps
     );
+    
 }
 
 Vector3D Coordinates::raDecToEclipticUnitVector(double ra_rad, double dec_rad) {

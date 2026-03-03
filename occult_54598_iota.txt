@@ -1,0 +1,15 @@
+================================================================================
+                  ASTEROID OCCULTATION PREDICTION
+================================================================================
+
+Asteroid: 
+Star: Gaia DR3 2545923851335601536
+Event time: 2.46109e+06
+Close approach: 402510 arcsec
+Position angle: 0 deg
+Max duration: 0 sec
+Probability: 0.1%
+
+Shadow Path:
+  Latitude    Longitude   Time (UTC)        Duration
+  -----------------------------------------------------------------

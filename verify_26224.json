@@ -1,0 +1,28 @@
+{
+    "object": {
+        "id": "26224",
+        "min_diameter": 1.0
+    },
+    "propagation": {
+        "type": "RKF78",
+        "step_size": 0.5,
+        "use_perturbations": true,
+        "use_horizons": true,
+        "refine_orbit": true
+    },
+    "search": {
+        "start_mjd": 61055.0,
+        "end_mjd": 61060.0,
+        "step_days": 0.04,
+        "mag_limit": 13.0,
+        "corridor_width": 2.0
+    },
+    "output": {
+        "output_dir": "results_26224",
+        "verbosity": 1,
+        "output_file": "verification_26224.txt",
+        "xml_file": "verification_26224.xml",
+        "ioccult_card_file": "ioccult_card_26224.png",
+        "ioccult_card_dir": "results_26224/visuals"
+    }
+}

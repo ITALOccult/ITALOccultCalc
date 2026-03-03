@@ -1,0 +1,130 @@
+Could not open IAU catalog: data/IAU-CSN.json
+Could not open star names database: data/common_star_names.csv
+Loaded 23 stars from embedded database
+Loaded star names from embedded database
+Loaded Gaia SQLite DR3 catalog: /Users/michelebigi/.catalog/crossreference/gaia_dr3_occult_pro.db
+Loaded Gaia SQLite DR3 catalog: "/Users/michelebigi/.catalog/crossreference/gaia_dr3_occult_pro.db"
+ITALOccultCalc v1.0 [Native API Workflow]
+--- BUILD DATE: Jan 18 2026 15:56:15 ---
+
+=== ITALOccultCalc DEBUG BUILD ===
+
+📄 Loading configuration from: verify_17330_occult4.json
+DEBUG: output config read - A4='', IOccult='ioccult_card_17330_occult4.png'
+Target: 17330 (17330)
+Window: 61051 -> 61052
+SPICESPKReader: Loaded /Users/michelebigi/.ioccultcalc/ephemerides/de440.bsp
+Ephemeris loaded.
+[Phase1CandidateScreening] Constructor started.
+✓ DE441 loaded (Native Reader): /Users/michelebigi/.ioccultcalc/ephemerides/de441_part-2.bsp
+[Phase1CandidateScreening] Constructor finished.
+[Phase2OccultationGeometry] Constructor started.
+[AstDynWrapper] Constructor started.
+  - Creating PlanetaryEphemeris...
+  - Initializing propagator...
+  - Creating RKF78Integrator...
+  - Creating Propagator object...
+    [Propagator] Constructor entry (include_asteroids=1).
+    [Propagator] Creating AsteroidPerturbations...
+    [Propagator] Constructor exit.
+  - Propagator object created.
+[AstDynWrapper] Constructor finished.
+[Phase2OccultationGeometry] Constructor finished.
+Loading asteroid 17330...
+[AsteroidSqliteDatabase] Successfully opened /Users/michelebigi/.ioccultcalc/database/asteroids.db
+[DEBUG-PERT] lapco entry (alpha=0.458995)
+[DEBUG-PERT] lapco entry (alpha=0.458995)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.24992)
+[DEBUG-PERT] lapco entry (alpha=0.24992)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.124254)
+[DEBUG-PERT] lapco entry (alpha=0.124254)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.0793069)
+[DEBUG-PERT] lapco entry (alpha=0.0793069)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.458995)
+[DEBUG-PERT] lapco entry (alpha=0.458995)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.24992)
+[DEBUG-PERT] lapco entry (alpha=0.24992)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.124254)
+[DEBUG-PERT] lapco entry (alpha=0.124254)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.0793069)
+[DEBUG-PERT] lapco entry (alpha=0.0793069)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[AstDynWrapper:0x10dba8c90] setKeplerianElements: asteroid= state set to INITIALIZED (Covariance: NO).
+[AstDynWrapper]   Processing Frame: ECLIPTIC
+  - Creating RKF78Integrator...
+  - Creating Propagator object...
+    [Propagator] Constructor entry (include_asteroids=1).
+    [Propagator] Creating AsteroidPerturbations...
+    [Propagator] Constructor exit.
+  - Propagator object created.
+[Phase2OccultationGeometry] setSPKReader called. Forwarding to wrapper=0x10dba8c90
+Phase 1: Screening stars in 1 deg corridor...
+[PHASE1] Starting native screening for 17330 (MJD 61051 to 61052)...
+    [Propagator] Constructor entry (include_asteroids=0).
+    [Propagator] Constructor exit.
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[PHASE1] Path start: RA=61.0293 Dec=17.7366
+[PHASE1] Path end:   RA=61.0173 Dec=17.7526
+[PHASE1] Querying Gaia catalog with 25 ICRF points...
+Optimized Corridor: 25 points -> 1 query cones.
+[PHASE1] Screening complete. Found 0 candidates (53 stars in corridor).
+Found 0 candidates (53 stars initially in corridor).
+No candidates found in Phase 1.
+
+IOccultCalc Engine Workflow completed.

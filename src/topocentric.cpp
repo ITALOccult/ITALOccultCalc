@@ -233,9 +233,9 @@ void TopocentricConverter::rotationMatrixITRFtoCelestial(double jd_ut1,
     // If ECLIPJ2000 requested, apply obliquity rotation
     if (frame == "ECLIPJ2000") {
         // Mean obliquity at J2000.0: ε₀ = 23°26'21.406"
-        const double epsilon_J2000 = 23.439291 * DEG_TO_RAD;
-        double cos_eps = std::cos(epsilon_J2000);
-        double sin_eps = std::sin(epsilon_J2000);
+
+        double cos_eps = std::cos(OBLIQUITY_J2000);
+        double sin_eps = std::sin(OBLIQUITY_J2000);
         
         // Rotation matrix: equatorial -> ecliptic (around X-axis)
         double ecliptic_rotation[3][3];

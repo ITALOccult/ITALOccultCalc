@@ -1,0 +1,1695 @@
+Could not open IAU catalog: data/IAU-CSN.json
+Could not open star names database: data/common_star_names.csv
+Loaded 23 stars from embedded database
+Loaded star names from embedded database
+Loaded Gaia SQLite DR3 catalog: /Users/michelebigi/.catalog/crossreference/gaia_dr3_occult_pro.db
+Loaded Gaia SQLite DR3 catalog: "/Users/michelebigi/.catalog/crossreference/gaia_dr3_occult_pro.db"
+ITALOccultCalc v1.0 [Native API Workflow]
+--- BUILD DATE: Jan 18 2026 15:56:15 ---
+
+=== ITALOccultCalc DEBUG BUILD ===
+
+📄 Loading configuration from: verify_17330.json
+DEBUG: output config read - A4='', IOccult='ioccult_card_17330.png'
+Target: 17330 (17330)
+Window: 61057 -> 61062
+SPICESPKReader: Loaded /Users/michelebigi/.ioccultcalc/ephemerides/de440.bsp
+Ephemeris loaded.
+[Phase1CandidateScreening] Constructor started.
+✓ DE441 loaded (Native Reader): /Users/michelebigi/.ioccultcalc/ephemerides/de441_part-2.bsp
+[Phase1CandidateScreening] Constructor finished.
+[Phase2OccultationGeometry] Constructor started.
+[AstDynWrapper] Constructor started.
+  - Creating PlanetaryEphemeris...
+  - Initializing propagator...
+  - Creating RKF78Integrator...
+  - Creating Propagator object...
+    [Propagator] Constructor entry (include_asteroids=1).
+    [Propagator] Creating AsteroidPerturbations...
+    [Propagator] Constructor exit.
+  - Propagator object created.
+[AstDynWrapper] Constructor finished.
+[Phase2OccultationGeometry] Constructor finished.
+Loading asteroid 17330...
+[AsteroidSqliteDatabase] Successfully opened /Users/michelebigi/.ioccultcalc/database/asteroids.db
+[DEBUG-PERT] lapco entry (alpha=0.458995)
+[DEBUG-PERT] lapco entry (alpha=0.458995)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.24992)
+[DEBUG-PERT] lapco entry (alpha=0.24992)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.124254)
+[DEBUG-PERT] lapco entry (alpha=0.124254)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.0793069)
+[DEBUG-PERT] lapco entry (alpha=0.0793069)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.458995)
+[DEBUG-PERT] lapco entry (alpha=0.458995)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.24992)
+[DEBUG-PERT] lapco entry (alpha=0.24992)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.124254)
+[DEBUG-PERT] lapco entry (alpha=0.124254)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.0793069)
+[DEBUG-PERT] lapco entry (alpha=0.0793069)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[AstDynWrapper:0x10c1f4410] setKeplerianElements: asteroid= state set to INITIALIZED (Covariance: NO).
+[AstDynWrapper]   Processing Frame: ECLIPTIC
+  - Creating RKF78Integrator...
+  - Creating Propagator object...
+    [Propagator] Constructor entry (include_asteroids=1).
+    [Propagator] Creating AsteroidPerturbations...
+    [Propagator] Constructor exit.
+  - Propagator object created.
+[Phase2OccultationGeometry] setSPKReader called. Forwarding to wrapper=0x10c1f4410
+Phase 1: Screening stars in 2 deg corridor...
+[PHASE1] Starting native screening for 17330 (MJD 61057 to 61062)...
+    [Propagator] Constructor entry (include_asteroids=0).
+    [Propagator] Constructor exit.
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201   1.8717  0.73417
+[PHASE1] Path start: RA=61.0808 Dec=17.8571
+[PHASE1] Path end:   RA=61.3458 Dec=18
+[PHASE1] Querying Gaia catalog with 121 ICRF points...
+Optimized Corridor: 121 points -> 1 query cones.
+[PHASE1] Screening complete. Found 4 candidates (1085 stars in corridor).
+Found 4 candidates (1085 stars initially in corridor).
+
+Phase 2: Calculating precise geometry...
+
+[OccultationEngine] 🔄 Refining orbit for 17330 with last 100 observations...
+[MPCClient] Downloading observations from AstDyS: https://newton.spacedys.com/~astdys2/mpcobs/numbered/17/17330.rwo
+[MPCClient] Parsing RWO with native library parser...
+[MPCClient] Successfully loaded 2130 observations from RWO.
+Debug Rotation:
+ Orig: i=1.96899 O=176.3 w=186.549
+ Eq:   i=21.4748 O=0.347026 w=2.52861
+ Back: i=1.96899 O=176.3 w=186.549
+[AstDynOrbitFitter] Feeding 100 obs to OrbitFitAPI.
+   Time Range: MJD 60450.9 to 60953.5
+   Initial Element Epoch: 61000
+[OrbitFitAPI] Loading OrbFit elements from /tmp/ioc_fit_init.eq1...
+   Detecting ECLIPTIC frame in .eq1, applying rotation to Equatorial J2000.
+   Initial Context: ECLIPTIC/SUN/MEAN
+   Target Context:  EQUATORIAL/SUN/OSCULATING
+   Initial Orbit (Ecliptic): a=2.38797 e=0.138722 i=1.96899deg
+   Initial Orbit (Transformed Equatorial): i=21.4747deg
+[OrbitFitAPI] Loading observations from /tmp/ioc_fit_obs.rwo...
+RWOReader Debug: Total lines 104. Total obs 100
+   Loaded 100 observations
+    [Propagator] Constructor entry (include_asteroids=0).
+    [Propagator] Constructor exit.
+    [Propagator] Constructor entry (include_asteroids=0).
+    [Propagator] Constructor exit.
+
+Initial orbit set:
+  Epoch: 61000.000000 MJD TDB
+  a = 2.387967 AU
+  e = 0.138722
+  i = 21.474746 deg
+
+Initial orbit set:
+  Epoch: 60728.268920 MJD TDB
+  a = 2.387705 AU
+  e = 0.138682
+  i = 21.474710 deg
+[OrbitFitAPI] Running differential correction...
+
+=== Differential Correction ===
+Observations: 100
+Max iterations: 10
+Convergence threshold: 0.000001
+
+========================================
+Differential Corrections
+========================================
+Observations: 100
+Max iterations: 10
+Convergence: 0.000001 AU
+
+[Residuals Debug] MJD=60450.94357 Obs RA=256.67490 Dec=-19.71638 Comp RA=256.68059 Dec=-19.71746 ResRA=-19.27224 ResDec=3.88748
+[Residuals Debug] MJD=60450.94541 Obs RA=256.67456 Dec=-19.71646 Comp RA=256.68019 Dec=-19.71740 ResRA=-19.06884 ResDec=3.38320
+[Residuals Debug] MJD=60450.94816 Obs RA=256.67367 Dec=-19.71664 Comp RA=256.67958 Dec=-19.71731 ResRA=-20.03299 ResDec=2.42154
+[Residuals Debug] MJD=60450.95329 Obs RA=256.67249 Dec=-19.71637 Comp RA=256.67846 Dec=-19.71715 ResRA=-20.22313 ResDec=2.79247
+[Residuals Debug] MJD=60462.21745 Obs RA=253.96323 Dec=-19.34038 Comp RA=253.96738 Dec=-19.34100 ResRA=-14.09071 ResDec=2.24051
+[Residuals Debug] MJD=60462.21888 Obs RA=253.96303 Dec=-19.34039 Comp RA=253.96701 Dec=-19.34095 ResRA=-13.51738 ResDec=2.03549
+[Residuals Debug] MJD=60462.22115 Obs RA=253.96223 Dec=-19.34022 Comp RA=253.96643 Dec=-19.34088 ResRA=-14.25873 ResDec=2.36940
+[Residuals Debug] MJD=60466.44269 Obs RA=252.86893 Dec=-19.19946 Comp RA=252.87410 Dec=-19.19907 ResRA=-17.58749 ResDec=-1.40882
+[Residuals Debug] MJD=60466.47688 Obs RA=252.85958 Dec=-19.19838 Comp RA=252.86520 Dec=-19.19793 ResRA=-19.12135 ResDec=-1.61728
+[Residuals Debug] MJD=60466.47974 Obs RA=252.85878 Dec=-19.19843 Comp RA=252.86446 Dec=-19.19784 ResRA=-19.31315 ResDec=-2.13970
+[Residuals Debug] MJD=60466.48533 Obs RA=252.85728 Dec=-19.19802 Comp RA=252.86300 Dec=-19.19765 ResRA=-19.46566 ResDec=-1.32978
+[Residuals Debug] MJD=60475.39273 Obs RA=250.56708 Dec=-18.91439 Comp RA=250.57355 Dec=-18.91402 ResRA=-22.03455 ResDec=-1.34610
+[Residuals Debug] MJD=60475.40066 Obs RA=250.56502 Dec=-18.91416 Comp RA=250.57158 Dec=-18.91378 ResRA=-22.34158 ResDec=-1.34634
+[Residuals Debug] MJD=60475.40858 Obs RA=250.56297 Dec=-18.91392 Comp RA=250.56960 Dec=-18.91355 ResRA=-22.58816 ResDec=-1.33699
+[Residuals Debug] MJD=60475.41649 Obs RA=250.56091 Dec=-18.91368 Comp RA=250.56763 Dec=-18.91331 ResRA=-22.88238 ResDec=-1.34515
+[Residuals Debug] MJD=60478.24333 Obs RA=249.86701 Dec=-18.83041 Comp RA=249.87414 Dec=-18.83159 ResRA=-24.28554 ResDec=4.24613
+[Residuals Debug] MJD=60478.24659 Obs RA=249.86662 Dec=-18.83034 Comp RA=249.87335 Dec=-18.83150 ResRA=-22.93767 ResDec=4.17888
+[Residuals Debug] MJD=60478.25583 Obs RA=249.86433 Dec=-18.83022 Comp RA=249.87113 Dec=-18.83124 ResRA=-23.16390 ResDec=3.67899
+[Residuals Debug] MJD=60478.28809 Obs RA=249.85622 Dec=-18.82933 Comp RA=249.86336 Dec=-18.83034 ResRA=-24.33402 ResDec=3.63496
+[Residuals Debug] MJD=60487.91966 Obs RA=247.74281 Dec=-18.60043 Comp RA=247.74681 Dec=-18.60126 ResRA=-13.65777 ResDec=2.96913
+[Residuals Debug] MJD=60487.92284 Obs RA=247.74217 Dec=-18.60047 Comp RA=247.74619 Dec=-18.60119 ResRA=-13.71189 ResDec=2.61105
+[Residuals Debug] MJD=60487.92833 Obs RA=247.74115 Dec=-18.60042 Comp RA=247.74512 Dec=-18.60109 ResRA=-13.54172 ResDec=2.41548
+[Residuals Debug] MJD=60487.96272 Obs RA=247.73404 Dec=-18.59963 Comp RA=247.73842 Dec=-18.60044 ResRA=-14.92462 ResDec=2.90558
+[Residuals Debug] MJD=60490.22172 Obs RA=247.30906 Dec=-18.55965 Comp RA=247.31363 Dec=-18.56052 ResRA=-15.58521 ResDec=3.12262
+[Residuals Debug] MJD=60490.22695 Obs RA=247.30799 Dec=-18.55971 Comp RA=247.31268 Dec=-18.56043 ResRA=-15.99366 ResDec=2.59483
+[Residuals Debug] MJD=60490.23015 Obs RA=247.30740 Dec=-18.55946 Comp RA=247.31210 Dec=-18.56038 ResRA=-16.03726 ResDec=3.30670
+[Residuals Debug] MJD=60490.26573 Obs RA=247.30104 Dec=-18.55857 Comp RA=247.30566 Dec=-18.55980 ResRA=-15.76305 ResDec=4.42587
+[Residuals Debug] MJD=60492.01517 Obs RA=246.99396 Dec=-18.53221 Comp RA=246.99904 Dec=-18.53313 ResRA=-17.34580 ResDec=3.31593
+[Residuals Debug] MJD=60492.01855 Obs RA=246.99369 Dec=-18.53196 Comp RA=246.99847 Dec=-18.53308 ResRA=-16.29765 ResDec=4.04339
+[Residuals Debug] MJD=60492.02378 Obs RA=246.99244 Dec=-18.53194 Comp RA=246.99758 Dec=-18.53301 ResRA=-17.53778 ResDec=3.85679
+[Residuals Debug] MJD=60492.03981 Obs RA=246.98952 Dec=-18.53168 Comp RA=246.99486 Dec=-18.53278 ResRA=-18.23153 ResDec=3.97013
+[Residuals Debug] MJD=60492.34390 Obs RA=246.93964 Dec=-18.52901 Comp RA=246.94364 Dec=-18.52854 ResRA=-13.64734 ResDec=-1.70038
+[Residuals Debug] MJD=60492.35191 Obs RA=246.93822 Dec=-18.52891 Comp RA=246.94230 Dec=-18.52843 ResRA=-13.91924 ResDec=-1.71704
+[Residuals Debug] MJD=60492.35996 Obs RA=246.93678 Dec=-18.52880 Comp RA=246.94095 Dec=-18.52832 ResRA=-14.22607 ResDec=-1.72545
+[Residuals Debug] MJD=60492.36782 Obs RA=246.93539 Dec=-18.52869 Comp RA=246.93964 Dec=-18.52821 ResRA=-14.50633 ResDec=-1.71368
+[Residuals Debug] MJD=60493.15242 Obs RA=246.80580 Dec=-18.51684 Comp RA=246.81043 Dec=-18.51783 ResRA=-15.81216 ResDec=3.56291
+[Residuals Debug] MJD=60493.15560 Obs RA=246.80517 Dec=-18.51691 Comp RA=246.80992 Dec=-18.51779 ResRA=-16.20202 ResDec=3.15720
+[Residuals Debug] MJD=60493.16112 Obs RA=246.80431 Dec=-18.51674 Comp RA=246.80902 Dec=-18.51772 ResRA=-16.09353 ResDec=3.52422
+[Residuals Debug] MJD=60494.13305 Obs RA=246.65010 Dec=-18.50493 Comp RA=246.65478 Dec=-18.50595 ResRA=-15.98676 ResDec=3.68434
+[Residuals Debug] MJD=60494.13625 Obs RA=246.64956 Dec=-18.50508 Comp RA=246.65428 Dec=-18.50592 ResRA=-16.13596 ResDec=3.01195
+[Residuals Debug] MJD=60494.14176 Obs RA=246.64866 Dec=-18.50495 Comp RA=246.65343 Dec=-18.50585 ResRA=-16.28647 ResDec=3.25445
+[Residuals Debug] MJD=60494.15295 Obs RA=246.64678 Dec=-18.50467 Comp RA=246.65169 Dec=-18.50573 ResRA=-16.76925 ResDec=3.80283
+[Residuals Debug] MJD=60521.09033 Obs RA=245.19414 Dec=-18.69835 Comp RA=245.19708 Dec=-18.69935 ResRA=-10.01629 ResDec=3.61188
+[Residuals Debug] MJD=60521.09368 Obs RA=245.19401 Dec=-18.69868 Comp RA=245.19725 Dec=-18.69944 ResRA=-11.03960 ResDec=2.72816
+[Residuals Debug] MJD=60521.10011 Obs RA=245.19395 Dec=-18.69865 Comp RA=245.19757 Dec=-18.69960 ResRA=-12.33047 ResDec=3.42599
+[Residuals Debug] MJD=60521.11028 Obs RA=245.19502 Dec=-18.69881 Comp RA=245.19807 Dec=-18.69986 ResRA=-10.40979 ResDec=3.77695
+[Residuals Debug] MJD=60898.59039 Obs RA=58.88984 Dec=19.15307 Comp RA=58.88959 Dec=19.15334 ResRA=0.84792 ResDec=-0.95795
+[Residuals Debug] MJD=60898.59933 Obs RA=58.89345 Dec=19.15366 Comp RA=58.89326 Dec=19.15392 ResRA=0.65693 ResDec=-0.93706
+[Residuals Debug] MJD=60898.60827 Obs RA=58.89709 Dec=19.15429 Comp RA=58.89694 Dec=19.15450 ResRA=0.50942 ResDec=-0.77803
+[Residuals Debug] MJD=60898.61725 Obs RA=58.90072 Dec=19.15483 Comp RA=58.90063 Dec=19.15509 ResRA=0.30958 ResDec=-0.91741
+[Residuals Debug] MJD=60905.58413 Obs RA=61.69129 Dec=19.56751 Comp RA=61.68990 Dec=19.56753 ResRA=4.71576 ResDec=-0.08568
+[Residuals Debug] MJD=60905.59242 Obs RA=61.69434 Dec=19.56799 Comp RA=61.69313 Dec=19.56798 ResRA=4.12234 ResDec=0.04622
+[Residuals Debug] MJD=60905.60070 Obs RA=61.69734 Dec=19.56858 Comp RA=61.69635 Dec=19.56842 ResRA=3.36143 ResDec=0.58873
+[Residuals Debug] MJD=60905.60899 Obs RA=61.70057 Dec=19.56905 Comp RA=61.69958 Dec=19.56886 ResRA=3.37603 ResDec=0.69128
+[Residuals Debug] MJD=60918.41849 Obs RA=66.37255 Dec=20.11331 Comp RA=66.37261 Dec=20.11399 ResRA=-0.18421 ResDec=-2.45040
+[Residuals Debug] MJD=60918.42362 Obs RA=66.37423 Dec=20.11344 Comp RA=66.37434 Dec=20.11416 ResRA=-0.36882 ResDec=-2.58478
+[Residuals Debug] MJD=60918.42873 Obs RA=66.37599 Dec=20.11371 Comp RA=66.37607 Dec=20.11432 ResRA=-0.27397 ResDec=-2.19786
+[Residuals Debug] MJD=60918.43385 Obs RA=66.37768 Dec=20.11381 Comp RA=66.37781 Dec=20.11449 ResRA=-0.41322 ResDec=-2.43171
+[Residuals Debug] MJD=60923.57409 Obs RA=68.05242 Dec=20.25905 Comp RA=68.05394 Dec=20.25957 ResRA=-5.13755 ResDec=-1.86730
+[Residuals Debug] MJD=60923.58777 Obs RA=68.05661 Dec=20.25941 Comp RA=68.05823 Dec=20.25990 ResRA=-5.48026 ResDec=-1.76450
+[Residuals Debug] MJD=60923.60151 Obs RA=68.06082 Dec=20.25976 Comp RA=68.06254 Dec=20.26023 ResRA=-5.80658 ResDec=-1.71542
+[Residuals Debug] MJD=60923.61529 Obs RA=68.06503 Dec=20.26011 Comp RA=68.06686 Dec=20.26057 ResRA=-6.17169 ResDec=-1.65995
+[Residuals Debug] MJD=60934.60489 Obs RA=71.18138 Dec=20.44017 Comp RA=71.18247 Dec=20.44024 ResRA=-3.69581 ResDec=-0.23967
+[Residuals Debug] MJD=60934.60779 Obs RA=71.18176 Dec=20.44008 Comp RA=71.18320 Dec=20.44026 ResRA=-4.87965 ResDec=-0.65116
+[Residuals Debug] MJD=60934.61375 Obs RA=71.18325 Dec=20.44011 Comp RA=71.18470 Dec=20.44031 ResRA=-4.90194 ResDec=-0.72879
+[Residuals Debug] MJD=60934.62545 Obs RA=71.18613 Dec=20.44028 Comp RA=71.18764 Dec=20.44042 ResRA=-5.11251 ResDec=-0.48677
+[Residuals Debug] MJD=60937.56112 Obs RA=71.89765 Dec=20.46032 Comp RA=71.89832 Dec=20.46041 ResRA=-2.25008 ResDec=-0.34202
+[Residuals Debug] MJD=60937.56294 Obs RA=71.89781 Dec=20.46027 Comp RA=71.89874 Dec=20.46042 ResRA=-3.14242 ResDec=-0.55421
+[Residuals Debug] MJD=60937.57254 Obs RA=71.90061 Dec=20.46005 Comp RA=71.90097 Dec=20.46047 ResRA=-1.22598 ResDec=-1.51389
+[Residuals Debug] MJD=60937.57797 Obs RA=71.90162 Dec=20.46037 Comp RA=71.90224 Dec=20.46050 ResRA=-2.07669 ResDec=-0.45988
+[Residuals Debug] MJD=60938.52067 Obs RA=72.11807 Dec=20.46421 Comp RA=72.11849 Dec=20.46455 ResRA=-1.44201 ResDec=-1.21830
+[Residuals Debug] MJD=60938.54611 Obs RA=72.12364 Dec=20.46435 Comp RA=72.12425 Dec=20.46465 ResRA=-2.05950 ResDec=-1.06631
+[Residuals Debug] MJD=60938.55887 Obs RA=72.12642 Dec=20.46442 Comp RA=72.12713 Dec=20.46469 ResRA=-2.38320 ResDec=-0.98470
+[Residuals Debug] MJD=60948.52406 Obs RA=74.02654 Dec=20.44092 Comp RA=74.02978 Dec=20.44162 ResRA=-10.94053 ResDec=-2.53386
+[Residuals Debug] MJD=60948.52786 Obs RA=74.02711 Dec=20.44089 Comp RA=74.03037 Dec=20.44159 ResRA=-10.98649 ResDec=-2.54439
+[Residuals Debug] MJD=60948.53614 Obs RA=74.02831 Dec=20.44084 Comp RA=74.03164 Dec=20.44153 ResRA=-11.25120 ResDec=-2.47543
+[Residuals Debug] MJD=60948.54000 Obs RA=74.02886 Dec=20.44080 Comp RA=74.03224 Dec=20.44150 ResRA=-11.40309 ResDec=-2.50373
+[Residuals Debug] MJD=60948.54802 Obs RA=74.02992 Dec=20.44074 Comp RA=74.03347 Dec=20.44143 ResRA=-11.97746 ResDec=-2.49205
+[Residuals Debug] MJD=60948.54838 Obs RA=74.03007 Dec=20.44075 Comp RA=74.03353 Dec=20.44143 ResRA=-11.67487 ResDec=-2.44149
+[Residuals Debug] MJD=60948.54983 Obs RA=74.03017 Dec=20.44074 Comp RA=74.03375 Dec=20.44142 ResRA=-12.07260 ResDec=-2.43971
+[Residuals Debug] MJD=60948.55219 Obs RA=74.03063 Dec=20.44072 Comp RA=74.03411 Dec=20.44140 ResRA=-11.75275 ResDec=-2.43131
+[Residuals Debug] MJD=60948.55559 Obs RA=74.03113 Dec=20.44086 Comp RA=74.03464 Dec=20.44137 ResRA=-11.82896 ResDec=-1.83291
+[Residuals Debug] MJD=60948.56066 Obs RA=74.03182 Dec=20.44078 Comp RA=74.03542 Dec=20.44133 ResRA=-12.12473 ResDec=-1.97606
+[Residuals Debug] MJD=60948.56075 Obs RA=74.03185 Dec=20.44067 Comp RA=74.03543 Dec=20.44133 ResRA=-12.05740 ResDec=-2.35354
+[Residuals Debug] MJD=60948.56462 Obs RA=74.03243 Dec=20.44064 Comp RA=74.03602 Dec=20.44130 ResRA=-12.13703 ResDec=-2.38143
+[Residuals Debug] MJD=60952.35085 Obs RA=74.55712 Dec=20.40197 Comp RA=74.56107 Dec=20.40317 ResRA=-13.30758 ResDec=-4.31100
+[Residuals Debug] MJD=60952.35598 Obs RA=74.55768 Dec=20.40207 Comp RA=74.56170 Dec=20.40311 ResRA=-13.57344 ResDec=-3.72845
+[Residuals Debug] MJD=60952.36112 Obs RA=74.55823 Dec=20.40203 Comp RA=74.56234 Dec=20.40304 ResRA=-13.84358 ResDec=-3.64528
+[Residuals Debug] MJD=60952.36625 Obs RA=74.55924 Dec=20.40199 Comp RA=74.56297 Dec=20.40298 ResRA=-12.57472 ResDec=-3.57261
+[Residuals Debug] MJD=60952.55783 Obs RA=74.58180 Dec=20.40002 Comp RA=74.58644 Dec=20.40065 ResRA=-15.66041 ResDec=-2.27278
+[Residuals Debug] MJD=60952.56496 Obs RA=74.58272 Dec=20.39979 Comp RA=74.58731 Dec=20.40056 ResRA=-15.48133 ResDec=-2.78794
+[Residuals Debug] MJD=60952.56862 Obs RA=74.58311 Dec=20.40011 Comp RA=74.58775 Dec=20.40052 ResRA=-15.67419 ResDec=-1.46647
+[Residuals Debug] MJD=60952.57163 Obs RA=74.58343 Dec=20.40009 Comp RA=74.58812 Dec=20.40048 ResRA=-15.82904 ResDec=-1.41324
+[Residuals Debug] MJD=60952.57863 Obs RA=74.58412 Dec=20.39976 Comp RA=74.58897 Dec=20.40040 ResRA=-16.36431 ResDec=-2.28409
+[Residuals Debug] MJD=60953.52444 Obs RA=74.69593 Dec=20.38781 Comp RA=74.70026 Dec=20.38832 ResRA=-14.62659 ResDec=-1.84123
+[Residuals Debug] MJD=60953.53124 Obs RA=74.69664 Dec=20.38763 Comp RA=74.70104 Dec=20.38823 ResRA=-14.83126 ResDec=-2.16705
+[Residuals Debug] MJD=60953.53306 Obs RA=74.69688 Dec=20.38775 Comp RA=74.70124 Dec=20.38821 ResRA=-14.72961 ResDec=-1.65003
+[Residuals Debug] MJD=60953.53425 Obs RA=74.69697 Dec=20.38759 Comp RA=74.70138 Dec=20.38819 ResRA=-14.87566 ResDec=-2.17340
+[Residuals Debug] MJD=60953.53608 Obs RA=74.69691 Dec=20.38769 Comp RA=74.70159 Dec=20.38817 ResRA=-15.78659 ResDec=-1.72632
+[Residuals Debug] MJD=60953.54060 Obs RA=74.69759 Dec=20.38764 Comp RA=74.70210 Dec=20.38811 ResRA=-15.21599 ResDec=-1.69036
+Iter  1: RMS = 9.954 arcsec, ||Δx|| = 1.95e-04 AU, Outliers(100.0σ) = 0
+[Residuals Debug] MJD=60450.94357 Obs RA=256.67490 Dec=-19.71638 Comp RA=256.67508 Dec=-19.71693 ResRA=-0.62000 ResDec=1.96968
+[Residuals Debug] MJD=60450.94541 Obs RA=256.67456 Dec=-19.71646 Comp RA=256.67468 Dec=-19.71687 ResRA=-0.41664 ResDec=1.46537
+[Residuals Debug] MJD=60450.94816 Obs RA=256.67367 Dec=-19.71664 Comp RA=256.67408 Dec=-19.71678 ResRA=-1.38085 ResDec=0.50366
+[Residuals Debug] MJD=60450.95329 Obs RA=256.67249 Dec=-19.71637 Comp RA=256.67296 Dec=-19.71661 ResRA=-1.57103 ResDec=0.87451
+[Residuals Debug] MJD=60462.21745 Obs RA=253.96323 Dec=-19.34038 Comp RA=253.96199 Dec=-19.34042 ResRA=4.21600 ResDec=0.14796
+[Residuals Debug] MJD=60462.21888 Obs RA=253.96303 Dec=-19.34039 Comp RA=253.96162 Dec=-19.34037 ResRA=4.78926 ResDec=-0.05708
+[Residuals Debug] MJD=60462.22115 Obs RA=253.96223 Dec=-19.34022 Comp RA=253.96104 Dec=-19.34030 ResRA=4.04780 ResDec=0.27679
+[Residuals Debug] MJD=60466.44269 Obs RA=252.86893 Dec=-19.19946 Comp RA=252.86879 Dec=-19.19847 ResRA=0.47106 ResDec=-3.55636
+[Residuals Debug] MJD=60466.47688 Obs RA=252.85958 Dec=-19.19838 Comp RA=252.85989 Dec=-19.19733 ResRA=-1.06506 ResDec=-3.76522
+[Residuals Debug] MJD=60466.47974 Obs RA=252.85878 Dec=-19.19843 Comp RA=252.85915 Dec=-19.19724 ResRA=-1.25707 ResDec=-4.28767
+[Residuals Debug] MJD=60466.48533 Obs RA=252.85728 Dec=-19.19802 Comp RA=252.85769 Dec=-19.19705 ResRA=-1.40993 ResDec=-3.47782
+[Residuals Debug] MJD=60475.39273 Obs RA=250.56708 Dec=-18.91439 Comp RA=250.56846 Dec=-18.91340 ResRA=-4.70096 ResDec=-3.56958
+[Residuals Debug] MJD=60475.40066 Obs RA=250.56502 Dec=-18.91416 Comp RA=250.56649 Dec=-18.91316 ResRA=-5.00874 ResDec=-3.56987
+[Residuals Debug] MJD=60475.40858 Obs RA=250.56297 Dec=-18.91392 Comp RA=250.56451 Dec=-18.91293 ResRA=-5.25608 ResDec=-3.56056
+[Residuals Debug] MJD=60475.41649 Obs RA=250.56091 Dec=-18.91368 Comp RA=250.56254 Dec=-18.91269 ResRA=-5.55105 ResDec=-3.56875
+[Residuals Debug] MJD=60478.24333 Obs RA=249.86701 Dec=-18.83041 Comp RA=249.86913 Dec=-18.83097 ResRA=-7.23350 ResDec=2.01273
+[Residuals Debug] MJD=60478.24659 Obs RA=249.86662 Dec=-18.83034 Comp RA=249.86835 Dec=-18.83088 ResRA=-5.88597 ResDec=1.94546
+[Residuals Debug] MJD=60478.25583 Obs RA=249.86433 Dec=-18.83022 Comp RA=249.86612 Dec=-18.83062 ResRA=-6.11315 ResDec=1.44556
+[Residuals Debug] MJD=60478.28809 Obs RA=249.85622 Dec=-18.82933 Comp RA=249.85836 Dec=-18.82972 ResRA=-7.28659 ResDec=1.40146
+[Residuals Debug] MJD=60487.91966 Obs RA=247.74281 Dec=-18.60043 Comp RA=247.74213 Dec=-18.60064 ResRA=2.29785 ResDec=0.76087
+[Residuals Debug] MJD=60487.92284 Obs RA=247.74217 Dec=-18.60047 Comp RA=247.74151 Dec=-18.60058 ResRA=2.24333 ResDec=0.40281
+[Residuals Debug] MJD=60487.92833 Obs RA=247.74115 Dec=-18.60042 Comp RA=247.74044 Dec=-18.60048 ResRA=2.41282 ResDec=0.20727
+[Residuals Debug] MJD=60487.96272 Obs RA=247.73404 Dec=-18.59963 Comp RA=247.73374 Dec=-18.59982 ResRA=1.02573 ResDec=0.69764
+[Residuals Debug] MJD=60490.22172 Obs RA=247.30906 Dec=-18.55965 Comp RA=247.30903 Dec=-18.55991 ResRA=0.08521 ResDec=0.93388
+[Residuals Debug] MJD=60490.22695 Obs RA=247.30799 Dec=-18.55971 Comp RA=247.30809 Dec=-18.55982 ResRA=-0.32390 ResDec=0.40614
+[Residuals Debug] MJD=60490.23015 Obs RA=247.30740 Dec=-18.55946 Comp RA=247.30751 Dec=-18.55977 ResRA=-0.36789 ResDec=1.11804
+[Residuals Debug] MJD=60490.26573 Obs RA=247.30104 Dec=-18.55857 Comp RA=247.30107 Dec=-18.55919 ResRA=-0.09811 ResDec=2.23755
+[Residuals Debug] MJD=60492.01517 Obs RA=246.99396 Dec=-18.53221 Comp RA=246.99452 Dec=-18.53253 ResRA=-1.90219 ResDec=1.14590
+[Residuals Debug] MJD=60492.01855 Obs RA=246.99369 Dec=-18.53196 Comp RA=246.99394 Dec=-18.53248 ResRA=-0.85445 ResDec=1.87339
+[Residuals Debug] MJD=60492.02378 Obs RA=246.99244 Dec=-18.53194 Comp RA=246.99306 Dec=-18.53241 ResRA=-2.09526 ResDec=1.68685
+[Residuals Debug] MJD=60492.03981 Obs RA=246.98952 Dec=-18.53168 Comp RA=246.99034 Dec=-18.53218 ResRA=-2.79106 ResDec=1.80037
+[Residuals Debug] MJD=60492.34390 Obs RA=246.93964 Dec=-18.52901 Comp RA=246.93913 Dec=-18.52794 ResRA=1.75417 ResDec=-3.86665
+[Residuals Debug] MJD=60492.35191 Obs RA=246.93822 Dec=-18.52891 Comp RA=246.93779 Dec=-18.52783 ResRA=1.48125 ResDec=-3.88323
+[Residuals Debug] MJD=60492.35996 Obs RA=246.93678 Dec=-18.52880 Comp RA=246.93644 Dec=-18.52772 ResRA=1.17340 ResDec=-3.89154
+[Residuals Debug] MJD=60492.36782 Obs RA=246.93539 Dec=-18.52869 Comp RA=246.93513 Dec=-18.52761 ResRA=0.89213 ResDec=-3.87968
+[Residuals Debug] MJD=60493.15242 Obs RA=246.80580 Dec=-18.51684 Comp RA=246.80595 Dec=-18.51723 ResRA=-0.51419 ResDec=1.40628
+[Residuals Debug] MJD=60493.15560 Obs RA=246.80517 Dec=-18.51691 Comp RA=246.80544 Dec=-18.51719 ResRA=-0.90447 ResDec=1.00062
+[Residuals Debug] MJD=60493.16112 Obs RA=246.80431 Dec=-18.51674 Comp RA=246.80454 Dec=-18.51712 ResRA=-0.79668 ResDec=1.36771
+[Residuals Debug] MJD=60494.13305 Obs RA=246.65010 Dec=-18.50493 Comp RA=246.65034 Dec=-18.50536 ResRA=-0.81535 ResDec=1.54023
+[Residuals Debug] MJD=60494.13625 Obs RA=246.64956 Dec=-18.50508 Comp RA=246.64984 Dec=-18.50532 ResRA=-0.96499 ResDec=0.86788
+[Residuals Debug] MJD=60494.14176 Obs RA=246.64866 Dec=-18.50495 Comp RA=246.64899 Dec=-18.50526 ResRA=-1.11620 ResDec=1.11045
+[Residuals Debug] MJD=60494.15295 Obs RA=246.64678 Dec=-18.50467 Comp RA=246.64725 Dec=-18.50513 ResRA=-1.60042 ResDec=1.65898
+[Residuals Debug] MJD=60521.09033 Obs RA=245.19414 Dec=-18.69835 Comp RA=245.19368 Dec=-18.69893 ResRA=1.58581 ResDec=2.08003
+[Residuals Debug] MJD=60521.09368 Obs RA=245.19401 Dec=-18.69868 Comp RA=245.19384 Dec=-18.69901 ResRA=0.56205 ResDec=1.19641
+[Residuals Debug] MJD=60521.10011 Obs RA=245.19395 Dec=-18.69865 Comp RA=245.19416 Dec=-18.69918 ResRA=-0.72965 ResDec=1.89443
+[Residuals Debug] MJD=60521.11028 Obs RA=245.19502 Dec=-18.69881 Comp RA=245.19467 Dec=-18.69943 ResRA=1.18973 ResDec=2.24570
+[Residuals Debug] MJD=60898.59039 Obs RA=58.88984 Dec=19.15307 Comp RA=58.89078 Dec=19.15321 ResRA=-3.19033 ResDec=-0.48952
+[Residuals Debug] MJD=60898.59933 Obs RA=58.89345 Dec=19.15366 Comp RA=58.89445 Dec=19.15379 ResRA=-3.37926 ResDec=-0.46818
+[Residuals Debug] MJD=60898.60827 Obs RA=58.89709 Dec=19.15429 Comp RA=58.89812 Dec=19.15437 ResRA=-3.52470 ResDec=-0.30868
+[Residuals Debug] MJD=60898.61725 Obs RA=58.90072 Dec=19.15483 Comp RA=58.90182 Dec=19.15496 ResRA=-3.72246 ResDec=-0.44761
+[Residuals Debug] MJD=60905.58413 Obs RA=61.69129 Dec=19.56751 Comp RA=61.69060 Dec=19.56731 ResRA=2.36230 ResDec=0.71934
+[Residuals Debug] MJD=60905.59242 Obs RA=61.69434 Dec=19.56799 Comp RA=61.69382 Dec=19.56775 ResRA=1.77095 ResDec=0.85161
+[Residuals Debug] MJD=60905.60070 Obs RA=61.69734 Dec=19.56858 Comp RA=61.69704 Dec=19.56819 ResRA=1.01212 ResDec=1.39450
+[Residuals Debug] MJD=60905.60899 Obs RA=61.70057 Dec=19.56905 Comp RA=61.70027 Dec=19.56863 ResRA=1.02880 ResDec=1.49742
+[Residuals Debug] MJD=60918.41849 Obs RA=66.37255 Dec=20.11331 Comp RA=66.37229 Dec=20.11363 ResRA=0.90943 ResDec=-1.14374
+[Residuals Debug] MJD=60918.42362 Obs RA=66.37423 Dec=20.11344 Comp RA=66.37402 Dec=20.11379 ResRA=0.72629 ResDec=-1.27795
+[Residuals Debug] MJD=60918.42873 Obs RA=66.37599 Dec=20.11371 Comp RA=66.37575 Dec=20.11396 ResRA=0.82260 ResDec=-0.89086
+[Residuals Debug] MJD=60918.43385 Obs RA=66.37768 Dec=20.11381 Comp RA=66.37748 Dec=20.11412 ResRA=0.68481 ResDec=-1.12455
+[Residuals Debug] MJD=60923.57409 Obs RA=68.05242 Dec=20.25905 Comp RA=68.05317 Dec=20.25916 ResRA=-2.53306 ResDec=-0.40485
+[Residuals Debug] MJD=60923.58777 Obs RA=68.05661 Dec=20.25941 Comp RA=68.05746 Dec=20.25949 ResRA=-2.87167 ResDec=-0.30167
+[Residuals Debug] MJD=60923.60151 Obs RA=68.06082 Dec=20.25976 Comp RA=68.06176 Dec=20.25983 ResRA=-3.19387 ResDec=-0.25221
+[Residuals Debug] MJD=60923.61529 Obs RA=68.06503 Dec=20.26011 Comp RA=68.06608 Dec=20.26016 ResRA=-3.55485 ResDec=-0.19636
+[Residuals Debug] MJD=60934.60489 Obs RA=71.18138 Dec=20.44017 Comp RA=71.18068 Dec=20.43976 ResRA=2.36417 ResDec=1.46819
+[Residuals Debug] MJD=60934.60779 Obs RA=71.18176 Dec=20.44008 Comp RA=71.18141 Dec=20.43979 ResRA=1.18128 ResDec=1.05675
+[Residuals Debug] MJD=60934.61375 Obs RA=71.18325 Dec=20.44011 Comp RA=71.18291 Dec=20.43984 ResRA=1.16094 ResDec=0.97922
+[Residuals Debug] MJD=60934.62545 Obs RA=71.18613 Dec=20.44028 Comp RA=71.18585 Dec=20.43994 ResRA=0.95418 ResDec=1.22144
+[Residuals Debug] MJD=60937.56112 Obs RA=71.89765 Dec=20.46032 Comp RA=71.89623 Dec=20.45993 ResRA=4.78197 ResDec=1.41249
+[Residuals Debug] MJD=60937.56294 Obs RA=71.89781 Dec=20.46027 Comp RA=71.89665 Dec=20.45994 ResRA=3.89024 ResDec=1.20032
+[Residuals Debug] MJD=60937.57254 Obs RA=71.90061 Dec=20.46005 Comp RA=71.89889 Dec=20.45998 ResRA=5.80987 ResDec=0.24078
+[Residuals Debug] MJD=60937.57797 Obs RA=71.90162 Dec=20.46037 Comp RA=71.90015 Dec=20.46001 ResRA=4.96095 ResDec=1.29487
+[Residuals Debug] MJD=60938.52067 Obs RA=72.11807 Dec=20.46421 Comp RA=72.11631 Dec=20.46406 ResRA=5.90920 ResDec=0.54976
+[Residuals Debug] MJD=60938.54611 Obs RA=72.12364 Dec=20.46435 Comp RA=72.12207 Dec=20.46415 ResRA=5.30019 ResDec=0.70209
+[Residuals Debug] MJD=60938.55887 Obs RA=72.12642 Dec=20.46442 Comp RA=72.12495 Dec=20.46420 ResRA=4.98074 ResDec=0.78389
+[Residuals Debug] MJD=60948.52406 Obs RA=74.02654 Dec=20.44092 Comp RA=74.02659 Dec=20.44110 ResRA=-0.17930 ResDec=-0.66497
+[Residuals Debug] MJD=60948.52786 Obs RA=74.02711 Dec=20.44089 Comp RA=74.02718 Dec=20.44107 ResRA=-0.22395 ResDec=-0.67547
+[Residuals Debug] MJD=60948.53614 Obs RA=74.02831 Dec=20.44084 Comp RA=74.02845 Dec=20.44101 ResRA=-0.48579 ResDec=-0.60645
+[Residuals Debug] MJD=60948.54000 Obs RA=74.02886 Dec=20.44080 Comp RA=74.02905 Dec=20.44098 ResRA=-0.63634 ResDec=-0.63472
+[Residuals Debug] MJD=60948.54802 Obs RA=74.02992 Dec=20.44074 Comp RA=74.03028 Dec=20.44091 ResRA=-1.20793 ResDec=-0.62299
+[Residuals Debug] MJD=60948.54838 Obs RA=74.03007 Dec=20.44075 Comp RA=74.03034 Dec=20.44091 ResRA=-0.90522 ResDec=-0.57242
+[Residuals Debug] MJD=60948.54983 Obs RA=74.03017 Dec=20.44074 Comp RA=74.03056 Dec=20.44090 ResRA=-1.30244 ResDec=-0.57064
+[Residuals Debug] MJD=60948.55219 Obs RA=74.03063 Dec=20.44072 Comp RA=74.03092 Dec=20.44088 ResRA=-0.98178 ResDec=-0.56222
+[Residuals Debug] MJD=60948.55559 Obs RA=74.03113 Dec=20.44086 Comp RA=74.03144 Dec=20.44085 ResRA=-1.05682 ResDec=0.03620
+[Residuals Debug] MJD=60948.56066 Obs RA=74.03182 Dec=20.44078 Comp RA=74.03222 Dec=20.44081 ResRA=-1.35083 ResDec=-0.10691
+[Residuals Debug] MJD=60948.56075 Obs RA=74.03185 Dec=20.44067 Comp RA=74.03223 Dec=20.44081 ResRA=-1.28347 ResDec=-0.48439
+[Residuals Debug] MJD=60948.56462 Obs RA=74.03243 Dec=20.44064 Comp RA=74.03283 Dec=20.44078 ResRA=-1.36176 ResDec=-0.51226
+[Residuals Debug] MJD=60952.35085 Obs RA=74.55712 Dec=20.40197 Comp RA=74.55749 Dec=20.40264 ResRA=-1.21689 ResDec=-2.41928
+[Residuals Debug] MJD=60952.35598 Obs RA=74.55768 Dec=20.40207 Comp RA=74.55812 Dec=20.40258 ResRA=-1.48097 ResDec=-1.83670
+[Residuals Debug] MJD=60952.36112 Obs RA=74.55823 Dec=20.40203 Comp RA=74.55875 Dec=20.40252 ResRA=-1.74932 ResDec=-1.75350
+[Residuals Debug] MJD=60952.36625 Obs RA=74.55924 Dec=20.40199 Comp RA=74.55938 Dec=20.40246 ResRA=-0.47869 ResDec=-1.68082
+[Residuals Debug] MJD=60952.55783 Obs RA=74.58180 Dec=20.40002 Comp RA=74.58284 Dec=20.40013 ResRA=-3.49773 ResDec=-0.38002
+[Residuals Debug] MJD=60952.56496 Obs RA=74.58272 Dec=20.39979 Comp RA=74.58370 Dec=20.40004 ResRA=-3.31616 ResDec=-0.89514
+[Residuals Debug] MJD=60952.56862 Obs RA=74.58311 Dec=20.40011 Comp RA=74.58415 Dec=20.39999 ResRA=-3.50779 ResDec=0.42635
+[Residuals Debug] MJD=60952.57163 Obs RA=74.58343 Dec=20.40009 Comp RA=74.58451 Dec=20.39996 ResRA=-3.66158 ResDec=0.47960
+[Residuals Debug] MJD=60952.57863 Obs RA=74.58412 Dec=20.39976 Comp RA=74.58536 Dec=20.39987 ResRA=-4.19440 ResDec=-0.39122
+[Residuals Debug] MJD=60953.52444 Obs RA=74.69593 Dec=20.38781 Comp RA=74.69656 Dec=20.38780 ResRA=-2.12759 ResDec=0.05622
+[Residuals Debug] MJD=60953.53124 Obs RA=74.69664 Dec=20.38763 Comp RA=74.69733 Dec=20.38771 ResRA=-2.32988 ResDec=-0.26956
+[Residuals Debug] MJD=60953.53306 Obs RA=74.69688 Dec=20.38775 Comp RA=74.69754 Dec=20.38768 ResRA=-2.22761 ResDec=0.24746
+[Residuals Debug] MJD=60953.53425 Obs RA=74.69697 Dec=20.38759 Comp RA=74.69767 Dec=20.38767 ResRA=-2.37323 ResDec=-0.27590
+[Residuals Debug] MJD=60953.53608 Obs RA=74.69691 Dec=20.38769 Comp RA=74.69788 Dec=20.38764 ResRA=-3.28354 ResDec=0.17118
+[Residuals Debug] MJD=60953.54060 Obs RA=74.69759 Dec=20.38764 Comp RA=74.69840 Dec=20.38758 ResRA=-2.71137 ResDec=0.20717
+Iter  2: RMS = 2.342 arcsec, ||Δx|| = 8.10e-06 AU, Outliers(100.0σ) = 0
+[Residuals Debug] MJD=60450.94357 Obs RA=256.67490 Dec=-19.71638 Comp RA=256.67477 Dec=-19.71693 ResRA=0.42778 ResDec=1.99039
+[Residuals Debug] MJD=60450.94541 Obs RA=256.67456 Dec=-19.71646 Comp RA=256.67437 Dec=-19.71687 ResRA=0.63114 ResDec=1.48608
+[Residuals Debug] MJD=60450.94816 Obs RA=256.67367 Dec=-19.71664 Comp RA=256.67377 Dec=-19.71678 ResRA=-0.33308 ResDec=0.52437
+[Residuals Debug] MJD=60450.95329 Obs RA=256.67249 Dec=-19.71637 Comp RA=256.67265 Dec=-19.71662 ResRA=-0.52327 ResDec=0.89522
+[Residuals Debug] MJD=60462.21745 Obs RA=253.96323 Dec=-19.34038 Comp RA=253.96169 Dec=-19.34043 ResRA=5.22080 ResDec=0.16263
+[Residuals Debug] MJD=60462.21888 Obs RA=253.96303 Dec=-19.34039 Comp RA=253.96132 Dec=-19.34038 ResRA=5.79405 ResDec=-0.04241
+[Residuals Debug] MJD=60462.22115 Obs RA=253.96223 Dec=-19.34022 Comp RA=253.96074 Dec=-19.34030 ResRA=5.05258 ResDec=0.29146
+[Residuals Debug] MJD=60466.44269 Obs RA=252.86893 Dec=-19.19946 Comp RA=252.86850 Dec=-19.19848 ResRA=1.45319 ResDec=-3.54438
+[Residuals Debug] MJD=60466.47688 Obs RA=252.85958 Dec=-19.19838 Comp RA=252.85960 Dec=-19.19734 ResRA=-0.08312 ResDec=-3.75326
+[Residuals Debug] MJD=60466.47974 Obs RA=252.85878 Dec=-19.19843 Comp RA=252.85886 Dec=-19.19724 ResRA=-0.27515 ResDec=-4.27572
+[Residuals Debug] MJD=60466.48533 Obs RA=252.85728 Dec=-19.19802 Comp RA=252.85741 Dec=-19.19706 ResRA=-0.42804 ResDec=-3.46587
+[Residuals Debug] MJD=60475.39273 Obs RA=250.56708 Dec=-18.91439 Comp RA=250.56819 Dec=-18.91340 ResRA=-3.77474 ResDec=-3.56334
+[Residuals Debug] MJD=60475.40066 Obs RA=250.56502 Dec=-18.91416 Comp RA=250.56622 Dec=-18.91317 ResRA=-4.08257 ResDec=-3.56363
+[Residuals Debug] MJD=60475.40858 Obs RA=250.56297 Dec=-18.91392 Comp RA=250.56424 Dec=-18.91293 ResRA=-4.32996 ResDec=-3.55432
+[Residuals Debug] MJD=60475.41649 Obs RA=250.56091 Dec=-18.91368 Comp RA=250.56227 Dec=-18.91269 ResRA=-4.62498 ResDec=-3.56252
+[Residuals Debug] MJD=60478.24333 Obs RA=249.86701 Dec=-18.83041 Comp RA=249.86887 Dec=-18.83097 ResRA=-6.32651 ResDec=2.01723
+[Residuals Debug] MJD=60478.24659 Obs RA=249.86662 Dec=-18.83034 Comp RA=249.86808 Dec=-18.83088 ResRA=-4.97900 ResDec=1.94997
+[Residuals Debug] MJD=60478.25583 Obs RA=249.86433 Dec=-18.83022 Comp RA=249.86586 Dec=-18.83062 ResRA=-5.20625 ResDec=1.45005
+[Residuals Debug] MJD=60478.28809 Obs RA=249.85622 Dec=-18.82933 Comp RA=249.85809 Dec=-18.82972 ResRA=-6.37990 ResDec=1.40594
+[Residuals Debug] MJD=60487.91966 Obs RA=247.74281 Dec=-18.60043 Comp RA=247.74189 Dec=-18.60064 ResRA=3.13836 ResDec=0.76011
+[Residuals Debug] MJD=60487.92284 Obs RA=247.74217 Dec=-18.60047 Comp RA=247.74127 Dec=-18.60058 ResRA=3.08383 ResDec=0.40205
+[Residuals Debug] MJD=60487.92833 Obs RA=247.74115 Dec=-18.60042 Comp RA=247.74020 Dec=-18.60048 ResRA=3.25328 ResDec=0.20651
+[Residuals Debug] MJD=60487.96272 Obs RA=247.73404 Dec=-18.59963 Comp RA=247.73349 Dec=-18.59982 ResRA=1.86595 ResDec=0.69686
+[Residuals Debug] MJD=60490.22172 Obs RA=247.30906 Dec=-18.55965 Comp RA=247.30879 Dec=-18.55991 ResRA=0.91019 ResDec=0.93204
+[Residuals Debug] MJD=60490.22695 Obs RA=247.30799 Dec=-18.55971 Comp RA=247.30784 Dec=-18.55982 ResRA=0.50103 ResDec=0.40430
+[Residuals Debug] MJD=60490.23015 Obs RA=247.30740 Dec=-18.55946 Comp RA=247.30727 Dec=-18.55977 ResRA=0.45703 ResDec=1.11620
+[Residuals Debug] MJD=60490.26573 Obs RA=247.30104 Dec=-18.55857 Comp RA=247.30083 Dec=-18.55919 ResRA=0.72656 ResDec=2.23569
+[Residuals Debug] MJD=60492.01517 Obs RA=246.99396 Dec=-18.53221 Comp RA=246.99428 Dec=-18.53253 ResRA=-1.08915 ResDec=1.14327
+[Residuals Debug] MJD=60492.01855 Obs RA=246.99369 Dec=-18.53196 Comp RA=246.99370 Dec=-18.53248 ResRA=-0.04144 ResDec=1.87076
+[Residuals Debug] MJD=60492.02378 Obs RA=246.99244 Dec=-18.53194 Comp RA=246.99282 Dec=-18.53241 ResRA=-1.28228 ResDec=1.68423
+[Residuals Debug] MJD=60492.03981 Obs RA=246.98952 Dec=-18.53168 Comp RA=246.99010 Dec=-18.53218 ResRA=-1.97818 ResDec=1.79774
+[Residuals Debug] MJD=60492.34390 Obs RA=246.93964 Dec=-18.52901 Comp RA=246.93889 Dec=-18.52794 ResRA=2.56504 ResDec=-3.86942
+[Residuals Debug] MJD=60492.35191 Obs RA=246.93822 Dec=-18.52891 Comp RA=246.93755 Dec=-18.52783 ResRA=2.29206 ResDec=-3.88600
+[Residuals Debug] MJD=60492.35996 Obs RA=246.93678 Dec=-18.52880 Comp RA=246.93620 Dec=-18.52772 ResRA=1.98415 ResDec=-3.89432
+[Residuals Debug] MJD=60492.36782 Obs RA=246.93539 Dec=-18.52869 Comp RA=246.93489 Dec=-18.52761 ResRA=1.70284 ResDec=-3.88246
+[Residuals Debug] MJD=60493.15242 Obs RA=246.80580 Dec=-18.51684 Comp RA=246.80571 Dec=-18.51723 ResRA=0.29138 ResDec=1.40318
+[Residuals Debug] MJD=60493.15560 Obs RA=246.80517 Dec=-18.51691 Comp RA=246.80520 Dec=-18.51719 ResRA=-0.09892 ResDec=0.99751
+[Residuals Debug] MJD=60493.16112 Obs RA=246.80431 Dec=-18.51674 Comp RA=246.80431 Dec=-18.51712 ResRA=0.00883 ResDec=1.36460
+[Residuals Debug] MJD=60494.13305 Obs RA=246.65010 Dec=-18.50493 Comp RA=246.65010 Dec=-18.50536 ResRA=-0.01616 ResDec=1.53674
+[Residuals Debug] MJD=60494.13625 Obs RA=246.64956 Dec=-18.50508 Comp RA=246.64961 Dec=-18.50532 ResRA=-0.16582 ResDec=0.86438
+[Residuals Debug] MJD=60494.14176 Obs RA=246.64866 Dec=-18.50495 Comp RA=246.64875 Dec=-18.50526 ResRA=-0.31706 ResDec=1.10695
+[Residuals Debug] MJD=60494.15295 Obs RA=246.64678 Dec=-18.50467 Comp RA=246.64701 Dec=-18.50513 ResRA=-0.80135 ResDec=1.65547
+[Residuals Debug] MJD=60521.09033 Obs RA=245.19414 Dec=-18.69835 Comp RA=245.19348 Dec=-18.69893 ResRA=2.23993 ResDec=2.07178
+[Residuals Debug] MJD=60521.09368 Obs RA=245.19401 Dec=-18.69868 Comp RA=245.19365 Dec=-18.69901 ResRA=1.21615 ResDec=1.18816
+[Residuals Debug] MJD=60521.10011 Obs RA=245.19395 Dec=-18.69865 Comp RA=245.19397 Dec=-18.69917 ResRA=-0.07557 ResDec=1.88618
+[Residuals Debug] MJD=60521.11028 Obs RA=245.19502 Dec=-18.69881 Comp RA=245.19448 Dec=-18.69943 ResRA=1.84376 ResDec=2.23745
+[Residuals Debug] MJD=60898.59039 Obs RA=58.88984 Dec=19.15307 Comp RA=58.89085 Dec=19.15322 ResRA=-3.42668 ResDec=-0.53876
+[Residuals Debug] MJD=60898.59933 Obs RA=58.89345 Dec=19.15366 Comp RA=58.89452 Dec=19.15380 ResRA=-3.61549 ResDec=-0.51739
+[Residuals Debug] MJD=60898.60827 Obs RA=58.89709 Dec=19.15429 Comp RA=58.89819 Dec=19.15439 ResRA=-3.76081 ResDec=-0.35787
+[Residuals Debug] MJD=60898.61725 Obs RA=58.90072 Dec=19.15483 Comp RA=58.90188 Dec=19.15497 ResRA=-3.95845 ResDec=-0.49677
+[Residuals Debug] MJD=60905.58413 Obs RA=61.69129 Dec=19.56751 Comp RA=61.69064 Dec=19.56732 ResRA=2.22602 ResDec=0.68726
+[Residuals Debug] MJD=60905.59242 Obs RA=61.69434 Dec=19.56799 Comp RA=61.69386 Dec=19.56776 ResRA=1.63479 ResDec=0.81955
+[Residuals Debug] MJD=60905.60070 Obs RA=61.69734 Dec=19.56858 Comp RA=61.69708 Dec=19.56820 ResRA=0.87609 ResDec=1.36245
+[Residuals Debug] MJD=60905.60899 Obs RA=61.70057 Dec=19.56905 Comp RA=61.70031 Dec=19.56864 ResRA=0.89289 ResDec=1.46539
+[Residuals Debug] MJD=60918.41849 Obs RA=66.37255 Dec=20.11331 Comp RA=66.37226 Dec=20.11363 ResRA=0.98240 ResDec=-1.15110
+[Residuals Debug] MJD=60918.42362 Obs RA=66.37423 Dec=20.11344 Comp RA=66.37400 Dec=20.11380 ResRA=0.79935 ResDec=-1.28531
+[Residuals Debug] MJD=60918.42873 Obs RA=66.37599 Dec=20.11371 Comp RA=66.37573 Dec=20.11396 ResRA=0.89575 ResDec=-0.89821
+[Residuals Debug] MJD=60918.43385 Obs RA=66.37768 Dec=20.11381 Comp RA=66.37746 Dec=20.11413 ResRA=0.75805 ResDec=-1.13189
+[Residuals Debug] MJD=60923.57409 Obs RA=68.05242 Dec=20.25905 Comp RA=68.05312 Dec=20.25916 ResRA=-2.36685 ResDec=-0.40506
+[Residuals Debug] MJD=60923.58777 Obs RA=68.05661 Dec=20.25941 Comp RA=68.05741 Dec=20.25949 ResRA=-2.70520 ResDec=-0.30187
+[Residuals Debug] MJD=60923.60151 Obs RA=68.06082 Dec=20.25976 Comp RA=68.06171 Dec=20.25983 ResRA=-3.02715 ResDec=-0.25239
+[Residuals Debug] MJD=60923.61529 Obs RA=68.06503 Dec=20.26011 Comp RA=68.06603 Dec=20.26016 ResRA=-3.38787 ResDec=-0.19652
+[Residuals Debug] MJD=60934.60489 Obs RA=71.18138 Dec=20.44017 Comp RA=71.18057 Dec=20.43976 ResRA=2.74629 ResDec=1.47775
+[Residuals Debug] MJD=60934.60779 Obs RA=71.18176 Dec=20.44008 Comp RA=71.18129 Dec=20.43978 ResRA=1.56347 ResDec=1.06631
+[Residuals Debug] MJD=60934.61375 Obs RA=71.18325 Dec=20.44011 Comp RA=71.18279 Dec=20.43984 ResRA=1.54324 ResDec=0.98878
+[Residuals Debug] MJD=60934.62545 Obs RA=71.18613 Dec=20.44028 Comp RA=71.18573 Dec=20.43994 ResRA=1.33672 ResDec=1.23101
+[Residuals Debug] MJD=60937.56112 Obs RA=71.89765 Dec=20.46032 Comp RA=71.89610 Dec=20.45992 ResRA=5.22538 ResDec=1.42344
+[Residuals Debug] MJD=60937.56294 Obs RA=71.89781 Dec=20.46027 Comp RA=71.89652 Dec=20.45993 ResRA=4.33369 ResDec=1.21127
+[Residuals Debug] MJD=60937.57254 Obs RA=71.90061 Dec=20.46005 Comp RA=71.89875 Dec=20.45998 ResRA=6.25352 ResDec=0.25173
+[Residuals Debug] MJD=60937.57797 Obs RA=71.90162 Dec=20.46037 Comp RA=71.90002 Dec=20.46001 ResRA=5.40471 ResDec=1.30583
+[Residuals Debug] MJD=60938.52067 Obs RA=72.11807 Dec=20.46421 Comp RA=72.11618 Dec=20.46406 ResRA=6.37277 ResDec=0.56105
+[Residuals Debug] MJD=60938.54611 Obs RA=72.12364 Dec=20.46435 Comp RA=72.12193 Dec=20.46415 ResRA=5.76430 ResDec=0.71340
+[Residuals Debug] MJD=60938.55887 Obs RA=72.12642 Dec=20.46442 Comp RA=72.12481 Dec=20.46420 ResRA=5.44511 ResDec=0.79520
+[Residuals Debug] MJD=60948.52406 Obs RA=74.02654 Dec=20.44092 Comp RA=74.02639 Dec=20.44110 ResRA=0.50085 ResDec=-0.65271
+[Residuals Debug] MJD=60948.52786 Obs RA=74.02711 Dec=20.44089 Comp RA=74.02698 Dec=20.44107 ResRA=0.45628 ResDec=-0.66321
+[Residuals Debug] MJD=60948.53614 Obs RA=74.02831 Dec=20.44084 Comp RA=74.02825 Dec=20.44100 ResRA=0.19462 ResDec=-0.59420
+[Residuals Debug] MJD=60948.54000 Obs RA=74.02886 Dec=20.44080 Comp RA=74.02885 Dec=20.44097 ResRA=0.04416 ResDec=-0.62247
+[Residuals Debug] MJD=60948.54802 Obs RA=74.02992 Dec=20.44074 Comp RA=74.03008 Dec=20.44091 ResRA=-0.52726 ResDec=-0.61073
+[Residuals Debug] MJD=60948.54838 Obs RA=74.03007 Dec=20.44075 Comp RA=74.03013 Dec=20.44091 ResRA=-0.22454 ResDec=-0.56017
+[Residuals Debug] MJD=60948.54983 Obs RA=74.03017 Dec=20.44074 Comp RA=74.03036 Dec=20.44089 ResRA=-0.62173 ResDec=-0.55838
+[Residuals Debug] MJD=60948.55219 Obs RA=74.03063 Dec=20.44072 Comp RA=74.03072 Dec=20.44087 ResRA=-0.30101 ResDec=-0.54996
+[Residuals Debug] MJD=60948.55559 Obs RA=74.03113 Dec=20.44086 Comp RA=74.03124 Dec=20.44085 ResRA=-0.37598 ResDec=0.04846
+[Residuals Debug] MJD=60948.56066 Obs RA=74.03182 Dec=20.44078 Comp RA=74.03202 Dec=20.44081 ResRA=-0.66988 ResDec=-0.09466
+[Residuals Debug] MJD=60948.56075 Obs RA=74.03185 Dec=20.44067 Comp RA=74.03203 Dec=20.44081 ResRA=-0.60251 ResDec=-0.47213
+[Residuals Debug] MJD=60948.56462 Obs RA=74.03243 Dec=20.44064 Comp RA=74.03263 Dec=20.44078 ResRA=-0.68072 ResDec=-0.50000
+[Residuals Debug] MJD=60952.35085 Obs RA=74.55712 Dec=20.40197 Comp RA=74.55726 Dec=20.40264 ResRA=-0.45188 ResDec=-2.40770
+[Residuals Debug] MJD=60952.35598 Obs RA=74.55768 Dec=20.40207 Comp RA=74.55789 Dec=20.40258 ResRA=-0.71585 ResDec=-1.82512
+[Residuals Debug] MJD=60952.36112 Obs RA=74.55823 Dec=20.40203 Comp RA=74.55852 Dec=20.40251 ResRA=-0.98409 ResDec=-1.74193
+[Residuals Debug] MJD=60952.36625 Obs RA=74.55924 Dec=20.40199 Comp RA=74.55916 Dec=20.40245 ResRA=0.28666 ResDec=-1.66924
+[Residuals Debug] MJD=60952.55783 Obs RA=74.58180 Dec=20.40002 Comp RA=74.58261 Dec=20.40012 ResRA=-2.72813 ResDec=-0.36849
+[Residuals Debug] MJD=60952.56496 Obs RA=74.58272 Dec=20.39979 Comp RA=74.58348 Dec=20.40003 ResRA=-2.54640 ResDec=-0.88361
+[Residuals Debug] MJD=60952.56862 Obs RA=74.58311 Dec=20.40011 Comp RA=74.58392 Dec=20.39999 ResRA=-2.73794 ResDec=0.43788
+[Residuals Debug] MJD=60952.57163 Obs RA=74.58343 Dec=20.40009 Comp RA=74.58429 Dec=20.39995 ResRA=-2.89167 ResDec=0.49113
+[Residuals Debug] MJD=60952.57863 Obs RA=74.58412 Dec=20.39976 Comp RA=74.58514 Dec=20.39987 ResRA=-3.42433 ResDec=-0.37969
+[Residuals Debug] MJD=60953.52444 Obs RA=74.69593 Dec=20.38781 Comp RA=74.69633 Dec=20.38779 ResRA=-1.33648 ResDec=0.06751
+[Residuals Debug] MJD=60953.53124 Obs RA=74.69664 Dec=20.38763 Comp RA=74.69710 Dec=20.38770 ResRA=-1.53863 ResDec=-0.25828
+[Residuals Debug] MJD=60953.53306 Obs RA=74.69688 Dec=20.38775 Comp RA=74.69730 Dec=20.38768 ResRA=-1.43631 ResDec=0.25874
+[Residuals Debug] MJD=60953.53425 Obs RA=74.69697 Dec=20.38759 Comp RA=74.69744 Dec=20.38766 ResRA=-1.58191 ResDec=-0.26462
+[Residuals Debug] MJD=60953.53608 Obs RA=74.69691 Dec=20.38769 Comp RA=74.69765 Dec=20.38764 ResRA=-2.49217 ResDec=0.18247
+[Residuals Debug] MJD=60953.54060 Obs RA=74.69759 Dec=20.38764 Comp RA=74.69816 Dec=20.38758 ResRA=-1.91990 ResDec=0.21845
+Iter  3: RMS = 2.279 arcsec, ||Δx|| = 3.60e-07 AU, Outliers(100.0σ) = 0
+DC Debug: Loop finished. Converged=1 Iter=3
+========================================
+
+
+=== Final Orbit ===
+Epoch:    60728.268920 MJD TDB
+a:        2.387997246 AU
+e:        0.138760603
+i:        21.474800 deg
+Ω:        0.347682 deg
+ω:        2.408074 deg
+M:        337.035027 deg
+Period:   1347.874 days
+q:        2.056637 AU
+Q:        2.719357 AU
+
+=== Residuals Summary ===
+Observations:  100
+Rejected:      0
+RMS (RA):      2.760 arcsec
+RMS (Dec):     1.664 arcsec
+Chi²:          4155.44
+Iterations:    3
+Converged:     Yes
+
+Initial orbit set:
+  Epoch: 61000.000000 MJD TDB
+  a = 2.387967 AU
+  e = 0.138722
+  i = 21.474746 deg
+[AstDynOrbitFitter] run_fit finished. success=1 msg='Fit completed'
+[OccultationEngine] Fit completed. Observations used: 100/100. RMS=3.223134 arcsec.
+[OccultationEngine] ❌ Fit rejected (poor RMS or few obs). Keeping original orbit.
+[PHASE2] calculatePreciseGeometry using AstDynWrapper:0x10c1f4410
+✓ DE441 loaded (Native Reader): /Users/michelebigi/.ioccultcalc/ephemerides/de441_part-2.bsp
+    [Propagator] Constructor entry (include_asteroids=1).
+    [Propagator] Creating AsteroidPerturbations...
+    [Propagator] Constructor exit.
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[PHASE2-DEBUG] Star ID: 47028178201977728
+   Star:     RA=61.078501 Dec=17.942342
+   Asteroid: RA=61.119708 Dec=17.883859
+   Dist:     0.070410 deg (253.477098 arcsec)
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[PHASE2] Entering calculateShadowDetails for star 47028178201977728
+[PHASE2] Using Besselian elements for shadow path calculation
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[PHASE2] ❌ Shadow path calculation failed: Not an occultation
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[PHASE2-DEBUG] Star ID: 47035737344489728
+   Star:     RA=61.278790 Dec=18.041800
+   Asteroid: RA=61.308104 Dec=17.983031
+   Dist:     0.065046 deg (234.164561 arcsec)
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[PHASE2] Entering calculateShadowDetails for star 47035737344489728
+[PHASE2] Using Besselian elements for shadow path calculation
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[PHASE2] ❌ Shadow path calculation failed: Not an occultation
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[PHASE2-DEBUG] Star ID: 47024536069729920
+   Star:     RA=61.027824 Dec=17.798219
+   Asteroid: RA=61.080563 Dec=17.856902
+   Dist:     0.077230 deg (278.027400 arcsec)
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[PHASE2] Entering calculateShadowDetails for star 47024536069729920
+[PHASE2] Using Besselian elements for shadow path calculation
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[PHASE2] ❌ Shadow path calculation failed: Not an occultation
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[PHASE2-DEBUG] Star ID: 47027491007220992
+   Star:     RA=61.017139 Dec=17.884564
+   Asteroid: RA=61.080563 Dec=17.856902
+   Dist:     0.066401 deg (239.042076 arcsec)
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[PHASE2] Entering calculateShadowDetails for star 47027491007220992
+[PHASE2] Using Besselian elements for shadow path calculation
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: 0.901201 1.871702 0.734170
+[PHASE2] ❌ Shadow path calculation failed: Not an occultation
+Processed Phase 2 for all candidates. Found 4 confirmed events.
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  47028178201977728
+  Star Pos: RA=61.078501 Dec=17.942342
+  Date:     61058.04329
+  CA Dist:  253.477"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  47035737344489728
+  Star Pos: RA=61.278790 Dec=18.041800
+  Date:     61061.46528
+  CA Dist:  234.165"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  47024536069729920
+  Star Pos: RA=61.027824 Dec=17.798219
+  Date:     61056.99306
+  CA Dist:  278.027"
+  Duration: 0.00 s
+--------------------------------------------------
+--------------------------------------------------
+CANDIDATE RESULT (Phase 2):
+  Star ID:  47027491007220992
+  Star Pos: RA=61.017139 Dec=17.884564
+  Date:     61056.99306
+  CA Dist:  239.042"
+  Duration: 0.00 s
+--------------------------------------------------
+
+Exporting results to XML...
+✅ Results exported to XML: italoccultcalc_output.xml
+
+Generating Event Cards...
+[DEBUG] Calling OutputManager for 4 events
+Generating IOccult Card: ioccult_card_17330_1.png
+[DEBUG] Entering generateGroundMapImage for asteroid 17330, name 
+[DEBUG] Central Path size: 0
+[DEBUG] WARNING: Central path is empty!
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+📐 Campo visivo impostato:
+   Centro: RA 61.08° Dec 17.94°
+   Campo visivo: 20.00°
+🔆 Magnitudine limite: 8.00
+⭐ Aggiunte 496 stelle SAO
+🎯 Target impostato: 
+   RA: 61.08° Dec: 17.94°
+
+🎨 === Rendering Mappa Celeste ===
+📏 Rendering griglia di coordinate RA/Dec...
+📍 Rendering confini costellazioni...
+📐 Rendering linee costellazioni...
+⭐ Rendering stelle SAO...
+   Stelle visualizzate: 491
+💾 Salvataggio mappa...
+Mapnik LOG> 2026-01-18 21:42:41: SVG parse error: can't infer valid image dimensions from width:"100%" height:"100%"
+
+✅ Mappa celeste generata: results_17330/sky.png
+
+📋 Dettagli renderizzazione:
+   Centro: RA 61.08° Dec 17.94°
+   Campo visivo: 20.00°
+   Dimensioni: 400x400 px
+   Stelle visualizzate: 491
+   Magnitudine limite: 8.00
+   Linee costellazioni: 0
+   Confini costellazioni: 0
+   Griglia RA/Dec: ogni 10.00°
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+Campo visivo impostato: RA 61.08° Dec 17.94° FOV 2.00°
+Magnitudine limite: 14.00
+Aggiunte 456 stelle SAO
+Target impostato:  (RA 61.08° Dec 17.94°)
+
+=== Rendering Finder Chart ===
+Rendering confini costellazioni...
+Rendering linee costellazioni...
+Rendering stelle SAO...
+Rendering target...
+
+✓ Finder Chart generata: results_17330/finder.png
+  ✅ Sfondo bianco per stampa
+  ✅ Stelle del catalogo SAO con numeri
+  ✅ Linee e confini delle costellazioni
+Generating IOccult Card: ioccult_card_17330_2.png
+[DEBUG] Entering generateGroundMapImage for asteroid 17330, name 
+[DEBUG] Central Path size: 0
+[DEBUG] WARNING: Central path is empty!
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+📐 Campo visivo impostato:
+   Centro: RA 61.28° Dec 18.04°
+   Campo visivo: 20.00°
+🔆 Magnitudine limite: 8.00
+⭐ Aggiunte 496 stelle SAO
+🎯 Target impostato: 
+   RA: 61.28° Dec: 18.04°
+
+🎨 === Rendering Mappa Celeste ===
+📏 Rendering griglia di coordinate RA/Dec...
+📍 Rendering confini costellazioni...
+📐 Rendering linee costellazioni...
+⭐ Rendering stelle SAO...
+   Stelle visualizzate: 490
+💾 Salvataggio mappa...
+
+✅ Mappa celeste generata: results_17330/sky.png
+
+📋 Dettagli renderizzazione:
+   Centro: RA 61.28° Dec 18.04°
+   Campo visivo: 20.00°
+   Dimensioni: 400x400 px
+   Stelle visualizzate: 490
+   Magnitudine limite: 8.00
+   Linee costellazioni: 0
+   Confini costellazioni: 0
+   Griglia RA/Dec: ogni 10.00°
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+Campo visivo impostato: RA 61.28° Dec 18.04° FOV 2.00°
+Magnitudine limite: 14.00
+Aggiunte 463 stelle SAO
+Target impostato:  (RA 61.28° Dec 18.04°)
+
+=== Rendering Finder Chart ===
+Rendering confini costellazioni...
+Rendering linee costellazioni...
+Rendering stelle SAO...
+Rendering target...
+
+✓ Finder Chart generata: results_17330/finder.png
+  ✅ Sfondo bianco per stampa
+  ✅ Stelle del catalogo SAO con numeri
+  ✅ Linee e confini delle costellazioni
+Generating IOccult Card: ioccult_card_17330_3.png
+[DEBUG] Entering generateGroundMapImage for asteroid 17330, name 
+[DEBUG] Central Path size: 0
+[DEBUG] WARNING: Central path is empty!
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+📐 Campo visivo impostato:
+   Centro: RA 61.03° Dec 17.80°
+   Campo visivo: 20.00°
+🔆 Magnitudine limite: 8.00
+⭐ Aggiunte 495 stelle SAO
+🎯 Target impostato: 
+   RA: 61.03° Dec: 17.80°
+
+🎨 === Rendering Mappa Celeste ===
+📏 Rendering griglia di coordinate RA/Dec...
+📍 Rendering confini costellazioni...
+📐 Rendering linee costellazioni...
+⭐ Rendering stelle SAO...
+   Stelle visualizzate: 492
+💾 Salvataggio mappa...
+
+✅ Mappa celeste generata: results_17330/sky.png
+
+📋 Dettagli renderizzazione:
+   Centro: RA 61.03° Dec 17.80°
+   Campo visivo: 20.00°
+   Dimensioni: 400x400 px
+   Stelle visualizzate: 492
+   Magnitudine limite: 8.00
+   Linee costellazioni: 0
+   Confini costellazioni: 0
+   Griglia RA/Dec: ogni 10.00°
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+Campo visivo impostato: RA 61.03° Dec 17.80° FOV 2.00°
+Magnitudine limite: 14.00
+Aggiunte 460 stelle SAO
+Target impostato:  (RA 61.03° Dec 17.80°)
+
+=== Rendering Finder Chart ===
+Rendering confini costellazioni...
+Rendering linee costellazioni...
+Rendering stelle SAO...
+Rendering target...
+
+✓ Finder Chart generata: results_17330/finder.png
+  ✅ Sfondo bianco per stampa
+  ✅ Stelle del catalogo SAO con numeri
+  ✅ Linee e confini delle costellazioni
+Generating IOccult Card: ioccult_card_17330_4.png
+[DEBUG] Entering generateGroundMapImage for asteroid 17330, name 
+[DEBUG] Central Path size: 0
+[DEBUG] WARNING: Central path is empty!
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+📐 Campo visivo impostato:
+   Centro: RA 61.02° Dec 17.88°
+   Campo visivo: 20.00°
+🔆 Magnitudine limite: 8.00
+⭐ Aggiunte 494 stelle SAO
+🎯 Target impostato: 
+   RA: 61.02° Dec: 17.88°
+
+🎨 === Rendering Mappa Celeste ===
+📏 Rendering griglia di coordinate RA/Dec...
+📍 Rendering confini costellazioni...
+📐 Rendering linee costellazioni...
+⭐ Rendering stelle SAO...
+   Stelle visualizzate: 491
+💾 Salvataggio mappa...
+
+✅ Mappa celeste generata: results_17330/sky.png
+
+📋 Dettagli renderizzazione:
+   Centro: RA 61.02° Dec 17.88°
+   Campo visivo: 20.00°
+   Dimensioni: 400x400 px
+   Stelle visualizzate: 491
+   Magnitudine limite: 8.00
+   Linee costellazioni: 0
+   Confini costellazioni: 0
+   Griglia RA/Dec: ogni 10.00°
+[MapPathRenderer] Inizializzazione Mapnik...
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /usr/local/lib/mapnik/input
+[MapPathRenderer] Datasources registrate da: /opt/homebrew/Cellar/mapnik/4.1.4_2/lib/mapnik/input
+[MapPathRenderer] Plugin caricati: csv gdal geobuf geojson ogr pgraster postgis raster shape sqlite tiles topojson 
+Campo visivo impostato: RA 61.02° Dec 17.88° FOV 2.00°
+Magnitudine limite: 14.00
+Aggiunte 466 stelle SAO
+Target impostato:  (RA 61.02° Dec 17.88°)
+
+=== Rendering Finder Chart ===
+Rendering confini costellazioni...
+Rendering linee costellazioni...
+Rendering stelle SAO...
+Rendering target...
+
+✓ Finder Chart generata: results_17330/finder.png
+  ✅ Sfondo bianco per stampa
+  ✅ Stelle del catalogo SAO con numeri
+  ✅ Linee e confini delle costellazioni
+
+IOccultCalc Engine Workflow completed.

@@ -317,6 +317,11 @@ std::vector<ShadowPathPoint> OccultationPredictor::generateShadowPath(const Occu
     
     for (double t = event.timeCA.jd - halfWindowDays; t <= event.timeCA.jd + halfWindowDays; t += stepSeconds / 86400.0) {
         JulianDate jd(t);
+
+        // TEST DEBUG: Earth velocity
+        Vector3D v_earth = Ephemeris::getEarthVelocity(jd);
+        std::cerr << "[DEBUG] Earth velocity magnitude: " << v_earth.magnitude() 
+          << " (AU/day=" << 0.017 << ", km/s=" << 30.288     << ")" << std::endl;
         
         // A. Posizione asteroide (N-Body) e Terra
         OrbitState astState = pImpl->propagator.propagate(pImpl->asteroid, jd);
@@ -329,7 +334,9 @@ std::vector<ShadowPathPoint> OccultationPredictor::generateShadowPath(const Occu
         
         // C. Rotazione in ITRF per intersezione con Terra
         double rotation[3][3];
-        TopocentricConverter::rotationMatrixITRFtoCelestial(jd.jd, "ECLIPJ2000", rotation);
+        //TopocentricConverter::rotationMatrixITRFtoCelestial(jd.jd, "ECLIPJ2000", rotation);
+        TopocentricConverter::rotationMatrixITRFtoCelestial(jd.jd, "J2000", rotation);
+       
         double invRot[3][3];
         for(int i=0; i<3; i++) for(int j=0; j<3; j++) invRot[i][j] = rotation[j][i];
         

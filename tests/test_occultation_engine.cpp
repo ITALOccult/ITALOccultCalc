@@ -9,8 +9,7 @@ int main() {
 
     OccultationEngine engine;
 
-    // Test 1: Load from EQ1
-    // We use the 1272.eq1 file which exists in the workspace
+    // Test 1: Load from EQ1 (path valid when ctest runs with WORKING_DIRECTORY=${CMAKE_SOURCE_DIR})
     std::string eq1_path = "1272.eq1"; 
     std::cout << "[TEST] Loading from " << eq1_path << "..." << std::endl;
     if (!engine.loadAsteroidFromEQ1(eq1_path)) {

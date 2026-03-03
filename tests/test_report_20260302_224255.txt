@@ -1,0 +1,47 @@
+[RUN_FRAME_TESTS] Running tests...
+[FRAME_EARTH] START
+[FRAME_EARTH] CHECK 1: FAIL (|r_ref - r_act| = 5.78039e+10 m)
+[FRAME_EARTH] CHECK 2: FAIL (|v_ref - v_act| = 4234.15 m/s)
+[FRAME_EARTH] SUMMARY: 0/2 passed
+[FRAME_EARTH] END
+[FRAME_ITRF_ROT] START
+[FRAME_ITRF_ROT] CHECK 1: PASS (|r_ITRF|=6.37814e+06 m, |r_CEL|=6.37814e+06 m, Δ=9.31323e-10 m)
+[FRAME_ITRF_ROT] SUMMARY: 1/3 passed
+[FRAME_ITRF_ROT] END
+[FRAME_ROUNDTRIP] START
+[FRAME_ROUNDTRIP] CHECK 1: PASS (angular error = 0 arcsec)
+[FRAME_ROUNDTRIP] SUMMARY: 2/4 passed
+[FRAME_ROUNDTRIP] END
+[FRAME_TESTS] SUMMARY: 2/4 checks passed
+[SHADOW_PATH] START
+[AstDynWrapper] Constructor started.
+  - Creating PlanetaryEphemeris...
+  - Initializing propagator...
+  - Creating RKF78Integrator...
+  - Creating Propagator object...
+    [Propagator] Constructor entry (include_asteroids=1).
+    [Propagator] Creating AsteroidPerturbations...
+    [Propagator] Constructor exit.
+  - Propagator object created.
+[AstDynWrapper] Constructor finished.
+[TOPOCENTRIC_OD] START
+[TOPOCENTRIC_OD] CHECK 1: PASS (9/9 synthetic residuals < 0.001 arcsec)
+[TOPOCENTRIC_OD] SUMMARY: 1/1 passed
+[TOPOCENTRIC_OD] END
+[COORD_CONV] START
+[COORD_CONV] CHECK 1 (X vector round-trip)
+[COORD_CONV] CHECK 2 (Z vector mapping)
+[COORD_CONV] CHECK 3 (observerPositionFromGeo vs manual)
+[COORD_CONV] SUMMARY: 1/3 passed
+[COORD_CONV] END
+[ENDTOEND] START
+[AstDynWrapper] Constructor started.
+  - Creating PlanetaryEphemeris...
+  - Initializing propagator...
+  - Creating RKF78Integrator...
+  - Creating Propagator object...
+    [Propagator] Constructor entry (include_asteroids=1).
+    [Propagator] Creating AsteroidPerturbations...
+    [Propagator] Constructor exit.
+  - Propagator object created.
+[AstDynWrapper] Constructor finished.

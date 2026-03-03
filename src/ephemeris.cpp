@@ -41,9 +41,9 @@ public:
         // Conversione: km/s → AU/day
         constexpr double KMS_TO_AUD = 86400.0 / 149597870.7;
         return Eigen::Vector3d(
-            state.second.x * KMS_TO_AUD,
-            state.second.y * KMS_TO_AUD,
-            state.second.z * KMS_TO_AUD
+            state.second.x ,
+            state.second.y ,
+            state.second.z 
         );
     }
 
@@ -90,8 +90,13 @@ Ephemeris::Ephemeris(const AstDynEquinoctialElements& elements) : spkReader_(nul
 Ephemeris::Ephemeris(std::shared_ptr<ISPReader> reader) : spkReader_(reader) { ensureGlobalProvider(reader); }
 Ephemeris::Ephemeris(std::shared_ptr<ISPReader> reader, const AstDynEquinoctialElements& elements) : spkReader_(reader), elements_(elements) { ensureGlobalProvider(reader); }
 
+// In ephemeris.cpp, fuori dalla classe
+void initializeSpiceProvider(std::shared_ptr<ISPReader> reader) {
+    ensureGlobalProvider(reader);
+}
+
 void Ephemeris::setElements(const AstDynEquinoctialElements& elements) { elements_ = elements; }
-/* 
+
 Vector3D Ephemeris::getEarthPosition(const JulianDate& jd) {
     auto posEigen = AstEphemeris::PlanetaryEphemeris::getPosition(AstEphemeris::CelestialBody::EARTH, jd.jd);
     return Vector3D(posEigen.x(), posEigen.y(), posEigen.z());
@@ -101,36 +106,8 @@ Vector3D Ephemeris::getEarthVelocity(const JulianDate& jd) {
     auto velEigen = AstEphemeris::PlanetaryEphemeris::getVelocity(AstEphemeris::CelestialBody::EARTH, jd.jd);
     return Vector3D(velEigen.x(), velEigen.y(), velEigen.z());
 }
-*/
-Vector3D Ephemeris::getEarthPosition(const JulianDate& jd) {
-    // Se abbiamo un reader locale, usalo direttamente
-    if (spkReader_ && spkReader_->isLoaded()) {
-        return spkReader_->getPosition(399, jd.jd, 10); // Terra vs Sole
-    }
-    
-    // Altrimenti usa il provider globale (che potrebbe essere analitico)
-    auto posEigen = AstEphemeris::PlanetaryEphemeris::getPosition(
-        AstEphemeris::CelestialBody::EARTH, jd.jd);
-    return Vector3D(posEigen.x(), posEigen.y(), posEigen.z());
-}
 
-Vector3D Ephemeris::getEarthVelocity(const JulianDate& jd) {
-    // Se abbiamo un reader locale, usalo direttamente
-    if (spkReader_ && spkReader_->isLoaded()) {
-        auto state = spkReader_->getState(399, jd.jd, 10);
-        constexpr double KMS_TO_AUD = 86400.0 / 149597870.7;
-        return Vector3D(
-            state.second.x * KMS_TO_AUD,
-            state.second.y * KMS_TO_AUD,
-            state.second.z * KMS_TO_AUD
-        );
-    }
-    
-    // Altrimenti usa il provider globale
-    auto velEigen = AstEphemeris::PlanetaryEphemeris::getVelocity(
-        AstEphemeris::CelestialBody::EARTH, jd.jd);
-    return Vector3D(velEigen.x(), velEigen.y(), velEigen.z());
-}
+
 
 
 

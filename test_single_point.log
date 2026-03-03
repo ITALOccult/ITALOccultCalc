@@ -1,0 +1,300 @@
+Could not open IAU catalog: data/IAU-CSN.json
+Could not open star names database: data/common_star_names.csv
+Loaded 23 stars from embedded database
+Loaded star names from embedded database
+Loaded Gaia SQLite DR3 catalog: /Users/michelebigi/.catalog/crossreference/gaia_dr3_occult_pro.db
+Loaded Gaia SQLite DR3 catalog: "/Users/michelebigi/.catalog/crossreference/gaia_dr3_occult_pro.db"
+ITALOccultCalc v1.0 [Native API Workflow]
+--- BUILD DATE: Jan 18 2026 15:56:15 ---
+
+=== ITALOccultCalc DEBUG BUILD ===
+
+📄 Loading configuration from: verify_1272.json
+DEBUG: output config read - A4='', IOccult='ioccult_card_1272.png'
+Target: 1272 (1272)
+Window: 61052 -> 61054
+SPICESPKReader: Loaded /Users/michelebigi/.ioccultcalc/ephemerides/de440.bsp
+Ephemeris loaded.
+[Phase1CandidateScreening] Constructor started.
+✓ DE441 loaded (Native Reader): /Users/michelebigi/.ioccultcalc/ephemerides/de441_part-2.bsp
+[Phase1CandidateScreening] Constructor finished.
+[Phase2OccultationGeometry] Constructor started.
+[AstDynWrapper] Constructor started.
+  - Creating PlanetaryEphemeris...
+  - Initializing propagator...
+  - Creating RKF78Integrator...
+  - Creating Propagator object...
+    [Propagator] Constructor entry (include_asteroids=1).
+    [Propagator] Creating AsteroidPerturbations...
+    [Propagator] Constructor exit.
+  - Propagator object created.
+[AstDynWrapper] Constructor finished.
+[Phase2OccultationGeometry] Constructor finished.
+Loading asteroid 1272...
+[AsteroidSqliteDatabase] Successfully opened /Users/michelebigi/.ioccultcalc/database/asteroids.db
+[DEBUG-PERT] lapco entry (alpha=0.535911)
+[DEBUG-PERT] lapco entry (alpha=0.535911)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.2918)
+[DEBUG-PERT] lapco entry (alpha=0.2918)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.145076)
+[DEBUG-PERT] lapco entry (alpha=0.145076)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.0925967)
+[DEBUG-PERT] lapco entry (alpha=0.0925967)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.535911)
+[DEBUG-PERT] lapco entry (alpha=0.535911)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.2918)
+[DEBUG-PERT] lapco entry (alpha=0.2918)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.145076)
+[DEBUG-PERT] lapco entry (alpha=0.145076)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[DEBUG-PERT] lapco entry (alpha=0.0925967)
+[DEBUG-PERT] lapco entry (alpha=0.0925967)
+[DEBUG-PERT] Initial Laplace coefficients computed.
+[AstDynWrapper:0x109ba5150] setKeplerianElements: asteroid=Gefion state set to INITIALIZED (Covariance: NO).
+[AstDynWrapper]   Processing Frame: ECLIPTIC
+  - Creating RKF78Integrator...
+  - Creating Propagator object...
+    [Propagator] Constructor entry (include_asteroids=1).
+    [Propagator] Creating AsteroidPerturbations...
+    [Propagator] Constructor exit.
+  - Propagator object created.
+[Phase2OccultationGeometry] setSPKReader called. Forwarding to wrapper=0x109ba5150
+Phase 1: Screening stars in 2 deg corridor...
+[PHASE1] Starting native screening for 1272 (MJD 61052 to 61054)...
+    [Propagator] Constructor entry (include_asteroids=0).
+    [Propagator] Constructor exit.
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[HPP-DEBUG] Input frame is ECLIPTIC. Performing rotation.
+[HPP-DEBUG] Initial Pos: -0.976673   2.58352   1.38955
+[PHASE1] Path start: RA=123.086 Dec=25.1161
+[PHASE1] Path end:   RA=122.591 Dec=25.1574
+[PHASE1] Querying Gaia catalog with 49 ICRF points...
+Optimized Corridor: 49 points -> 1 query cones.
+[PHASE1] Screening complete. Found 18 candidates (1620 stars in corridor).
+Found 18 candidates (1620 stars initially in corridor).
+
+Phase 2: Calculating precise geometry...
+
+[OccultationEngine] 🔄 Refining orbit for 1272 with last 100 observations...
+[MPCClient] Downloading observations from AstDyS: https://newton.spacedys.com/~astdys2/mpcobs/numbered/1/1272.rwo
+[MPCClient] Parsing RWO with native library parser...
+[MPCClient] Successfully loaded 3725 observations from RWO.
+Debug Rotation:
+ Orig: i=8.42335 O=321.276 w=4.9865
+ Eq:   i=30.4439 O=349.581 w=335.574
+ Back: i=8.42335 O=321.276 w=4.9865
+[AstDynOrbitFitter] Feeding 100 obs to OrbitFitAPI.
+   Time Range: MJD 60712.2 to 60953.6
+   Initial Element Epoch: 61000
+[OrbitFitAPI] Loading OrbFit elements from /tmp/ioc_fit_init.eq1...
+   Detecting ECLIPTIC frame in .eq1, applying rotation to Equatorial J2000.
+   Initial Context: ECLIPTIC/SUN/MEAN
+   Target Context:  EQUATORIAL/SUN/OSCULATING
+   Initial Orbit (Ecliptic): a=2.78813 e=0.150823 i=8.42335deg
+   Initial Orbit (Transformed Equatorial): i=30.4439deg
+[OrbitFitAPI] Loading observations from /tmp/ioc_fit_obs.rwo...
+RWOReader Debug: Total lines 104. Total obs 100
+   Loaded 100 observations
+    [Propagator] Constructor entry (include_asteroids=0).
+    [Propagator] Constructor exit.
+    [Propagator] Constructor entry (include_asteroids=0).
+    [Propagator] Constructor exit.
+
+Initial orbit set:
+  Epoch: 61000.000000 MJD TDB
+  a = 2.788128 AU
+  e = 0.150823
+  i = 30.443927 deg
+
+Initial orbit set:
+  Epoch: 60779.895245 MJD TDB
+  a = 2.786092 AU
+  e = 0.150390
+  i = 30.441647 deg
+[OrbitFitAPI] Running differential correction...
+
+=== Differential Correction ===
+Observations: 100
+Max iterations: 10
+Convergence threshold: 0.000001
+
+========================================
+Differential Corrections
+========================================
+Observations: 100
+Max iterations: 10
+Convergence: 0.000001 AU
+
+[Residuals Debug] MJD=60712.24522 Obs RA=26.71465 Dec=19.74865 Comp RA=26.71368 Dec=19.74906 ResRA=3.29908 ResDec=-1.46472
+[Residuals Debug] MJD=60712.25033 Obs RA=26.71612 Dec=19.74898 Comp RA=26.71530 Dec=19.74943 ResRA=2.77546 ResDec=-1.63297
+[Residuals Debug] MJD=60712.26143 Obs RA=26.71949 Dec=19.74982 Comp RA=26.71883 Dec=19.75025 ResRA=2.24377 ResDec=-1.56106
+[Residuals Debug] MJD=60714.24462 Obs RA=27.35518 Dec=19.89810 Comp RA=27.35415 Dec=19.89837 ResRA=3.48751 ResDec=-0.98731
+[Residuals Debug] MJD=60714.26061 Obs RA=27.36049 Dec=19.89922 Comp RA=27.35931 Dec=19.89958 ResRA=3.98873 ResDec=-1.30958
+[Residuals Debug] MJD=60714.26381 Obs RA=27.36140 Dec=19.89943 Comp RA=27.36034 Dec=19.89982 ResRA=3.57429 ResDec=-1.41829
+[Residuals Debug] MJD=60714.26934 Obs RA=27.36316 Dec=19.89994 Comp RA=27.36213 Dec=19.90024 ResRA=3.47796 ResDec=-1.09417
+[Residuals Debug] MJD=60716.23910 Obs RA=28.00442 Dec=20.05076 Comp RA=28.00308 Dec=20.05083 ResRA=4.54313 ResDec=-0.24556
+[Residuals Debug] MJD=60716.24236 Obs RA=28.00555 Dec=20.05079 Comp RA=28.00415 Dec=20.05108 ResRA=4.74092 ResDec=-1.05415
+[Residuals Debug] MJD=60716.24978 Obs RA=28.00764 Dec=20.05166 Comp RA=28.00658 Dec=20.05166 ResRA=3.58914 ResDec=0.02180
+[Residuals Debug] MJD=60716.26038 Obs RA=28.01111 Dec=20.05235 Comp RA=28.01006 Dec=20.05247 ResRA=3.55761 ResDec=-0.44807
+[Residuals Debug] MJD=60718.24841 Obs RA=28.66792 Dec=20.20755 Comp RA=28.66665 Dec=20.20771 ResRA=4.29182 ResDec=-0.57661
+[Residuals Debug] MJD=60718.26485 Obs RA=28.67331 Dec=20.20873 Comp RA=28.67212 Dec=20.20901 ResRA=4.02414 ResDec=-0.99211
+[Residuals Debug] MJD=60718.26803 Obs RA=28.67457 Dec=20.20931 Comp RA=28.67318 Dec=20.20926 ResRA=4.71065 ResDec=0.19384
+[Residuals Debug] MJD=60718.27349 Obs RA=28.67616 Dec=20.20939 Comp RA=28.67499 Dec=20.20969 ResRA=3.93235 ResDec=-1.07766
+[Residuals Debug] MJD=60719.22497 Obs RA=28.99402 Dec=20.28501 Comp RA=28.99262 Dec=20.28508 ResRA=4.72994 ResDec=-0.23034
+[Residuals Debug] MJD=60719.22874 Obs RA=28.99531 Dec=20.28529 Comp RA=28.99388 Dec=20.28538 ResRA=4.81130 ResDec=-0.31103
+[Residuals Debug] MJD=60719.23438 Obs RA=28.99717 Dec=20.28571 Comp RA=28.99577 Dec=20.28582 ResRA=4.71568 ResDec=-0.40840
+[Residuals Debug] MJD=60719.24416 Obs RA=29.00047 Dec=20.28653 Comp RA=28.99905 Dec=20.28660 ResRA=4.80114 ResDec=-0.25956
+[Residuals Debug] MJD=60720.27038 Obs RA=29.34512 Dec=20.36874 Comp RA=29.34404 Dec=20.36866 ResRA=3.66398 ResDec=0.27049
+[Residuals Debug] MJD=60720.27369 Obs RA=29.34644 Dec=20.36897 Comp RA=29.34515 Dec=20.36893 ResRA=4.35764 ResDec=0.14446
+[Residuals Debug] MJD=60720.28023 Obs RA=29.34850 Dec=20.36943 Comp RA=29.34736 Dec=20.36945 ResRA=3.85686 ResDec=-0.08714
+[Residuals Debug] MJD=60720.29368 Obs RA=29.35290 Dec=20.37034 Comp RA=29.35189 Dec=20.37054 ResRA=3.39490 ResDec=-0.70624
+[Residuals Debug] MJD=60721.25737 Obs RA=29.67938 Dec=20.44811 Comp RA=29.67811 Dec=20.44828 ResRA=4.29789 ResDec=-0.60475
+[Residuals Debug] MJD=60721.27215 Obs RA=29.68418 Dec=20.44941 Comp RA=29.68313 Dec=20.44948 ResRA=3.55422 ResDec=-0.23570
+[Residuals Debug] MJD=60721.27534 Obs RA=29.68543 Dec=20.44953 Comp RA=29.68421 Dec=20.44974 ResRA=4.11382 ResDec=-0.73660
+[Residuals Debug] MJD=60721.28176 Obs RA=29.68748 Dec=20.45006 Comp RA=29.68639 Dec=20.45026 ResRA=3.67362 ResDec=-0.69898
+[Residuals Debug] MJD=60725.23591 Obs RA=31.04763 Dec=20.77535 Comp RA=31.04667 Dec=20.77551 ResRA=3.22900 ResDec=-0.56647
+[Residuals Debug] MJD=60725.23909 Obs RA=31.04879 Dec=20.77552 Comp RA=31.04778 Dec=20.77577 ResRA=3.41975 ResDec=-0.90997
+[Residuals Debug] MJD=60725.24560 Obs RA=31.05096 Dec=20.77615 Comp RA=31.05005 Dec=20.77632 ResRA=3.07230 ResDec=-0.59720
+[Residuals Debug] MJD=60725.26490 Obs RA=31.05780 Dec=20.77766 Comp RA=31.05677 Dec=20.77793 ResRA=3.47951 ResDec=-0.95219
+[Residuals Debug] MJD=60726.23538 Obs RA=31.39680 Dec=20.85893 Comp RA=31.39583 Dec=20.85915 ResRA=3.27932 ResDec=-0.80280
+[Residuals Debug] MJD=60726.23857 Obs RA=31.39777 Dec=20.85906 Comp RA=31.39694 Dec=20.85942 ResRA=2.78624 ResDec=-1.29667
+[Residuals Debug] MJD=60726.24504 Obs RA=31.39996 Dec=20.85986 Comp RA=31.39921 Dec=20.85996 ResRA=2.51487 ResDec=-0.37318
+[Residuals Debug] MJD=60726.26474 Obs RA=31.40677 Dec=20.86139 Comp RA=31.40612 Dec=20.86162 ResRA=2.20523 ResDec=-0.82902
+[Residuals Debug] MJD=60727.25170 Obs RA=31.75372 Dec=20.94436 Comp RA=31.75301 Dec=20.94475 ResRA=2.40391 ResDec=-1.38378
+[Residuals Debug] MJD=60727.25449 Obs RA=31.75472 Dec=20.94473 Comp RA=31.75399 Dec=20.94498 ResRA=2.46186 ResDec=-0.90163
+[Residuals Debug] MJD=60727.26244 Obs RA=31.75756 Dec=20.94540 Comp RA=31.75679 Dec=20.94565 ResRA=2.57500 ResDec=-0.91056
+[Residuals Debug] MJD=60727.28513 Obs RA=31.76547 Dec=20.94722 Comp RA=31.76479 Dec=20.94757 ResRA=2.28495 ResDec=-1.26126
+[Residuals Debug] MJD=60729.23501 Obs RA=32.45687 Dec=21.11283 Comp RA=32.45611 Dec=21.11322 ResRA=2.55476 ResDec=-1.39112
+[Residuals Debug] MJD=60729.23782 Obs RA=32.45786 Dec=21.11313 Comp RA=32.45711 Dec=21.11346 ResRA=2.51516 ResDec=-1.17285
+[Residuals Debug] MJD=60729.24335 Obs RA=32.45993 Dec=21.11362 Comp RA=32.45908 Dec=21.11393 ResRA=2.84024 ResDec=-1.11515
+[Residuals Debug] MJD=60729.25447 Obs RA=32.46374 Dec=21.11441 Comp RA=32.46305 Dec=21.11488 ResRA=2.32687 ResDec=-1.68463
+[Residuals Debug] MJD=60730.22166 Obs RA=32.80972 Dec=21.19749 Comp RA=32.80882 Dec=21.19768 ResRA=3.02876 ResDec=-0.69775
+[Residuals Debug] MJD=60730.22652 Obs RA=32.81128 Dec=21.19778 Comp RA=32.81056 Dec=21.19810 ResRA=2.40467 ResDec=-1.15107
+[Residuals Debug] MJD=60730.25608 Obs RA=32.82175 Dec=21.20035 Comp RA=32.82116 Dec=21.20064 ResRA=1.98563 ResDec=-1.03295
+[Residuals Debug] MJD=60730.28867 Obs RA=32.83344 Dec=21.20296 Comp RA=32.83285 Dec=21.20343 ResRA=2.00085 ResDec=-1.70528
+[Residuals Debug] MJD=60731.23405 Obs RA=33.17350 Dec=21.28446 Comp RA=33.17272 Dec=21.28477 ResRA=2.62293 ResDec=-1.10844
+[Residuals Debug] MJD=60731.24295 Obs RA=33.17664 Dec=21.28517 Comp RA=33.17593 Dec=21.28554 ResRA=2.39839 ResDec=-1.32157
+[Residuals Debug] MJD=60731.24939 Obs RA=33.17903 Dec=21.28586 Comp RA=33.17825 Dec=21.28609 ResRA=2.61801 ResDec=-0.83119
+[Residuals Debug] MJD=60731.25452 Obs RA=33.18083 Dec=21.28609 Comp RA=33.18010 Dec=21.28653 ResRA=2.45549 ResDec=-1.60299
+[Residuals Debug] MJD=60731.26939 Obs RA=33.18610 Dec=21.28750 Comp RA=33.18546 Dec=21.28782 ResRA=2.15154 ResDec=-1.13997
+[Residuals Debug] MJD=60732.22869 Obs RA=33.53305 Dec=21.37035 Comp RA=33.53217 Dec=21.37071 ResRA=2.96380 ResDec=-1.30146
+[Residuals Debug] MJD=60732.23424 Obs RA=33.53501 Dec=21.37084 Comp RA=33.53418 Dec=21.37119 ResRA=2.79335 ResDec=-1.26993
+[Residuals Debug] MJD=60732.23470 Obs RA=33.53526 Dec=21.37098 Comp RA=33.53434 Dec=21.37123 ResRA=3.07753 ResDec=-0.90207
+[Residuals Debug] MJD=60732.23745 Obs RA=33.53609 Dec=21.37108 Comp RA=33.53534 Dec=21.37147 ResRA=2.53066 ResDec=-1.39931
+[Residuals Debug] MJD=60732.23790 Obs RA=33.53626 Dec=21.37128 Comp RA=33.53550 Dec=21.37151 ResRA=2.53425 ResDec=-0.82177
+[Residuals Debug] MJD=60732.24629 Obs RA=33.53936 Dec=21.37196 Comp RA=33.53854 Dec=21.37224 ResRA=2.73471 ResDec=-0.98720
+[Residuals Debug] MJD=60732.24815 Obs RA=33.53993 Dec=21.37207 Comp RA=33.53922 Dec=21.37240 ResRA=2.39246 ResDec=-1.17609
+[Residuals Debug] MJD=60732.25736 Obs RA=33.54333 Dec=21.37279 Comp RA=33.54255 Dec=21.37319 ResRA=2.60311 ResDec=-1.45695
+[Residuals Debug] MJD=60733.22896 Obs RA=33.89640 Dec=21.45736 Comp RA=33.89554 Dec=21.45750 ResRA=2.87223 ResDec=-0.48350
+[Residuals Debug] MJD=60733.23218 Obs RA=33.89772 Dec=21.45761 Comp RA=33.89672 Dec=21.45778 ResRA=3.36818 ResDec=-0.59120
+[Residuals Debug] MJD=60733.24928 Obs RA=33.90374 Dec=21.45900 Comp RA=33.90294 Dec=21.45926 ResRA=2.67202 ResDec=-0.94290
+[Residuals Debug] MJD=60733.25840 Obs RA=33.90709 Dec=21.45970 Comp RA=33.90627 Dec=21.46006 ResRA=2.75556 ResDec=-1.27978
+[Residuals Debug] MJD=60734.22921 Obs RA=34.26185 Dec=21.54435 Comp RA=34.26079 Dec=21.54461 ResRA=3.54527 ResDec=-0.93129
+[Residuals Debug] MJD=60734.23243 Obs RA=34.26290 Dec=21.54461 Comp RA=34.26197 Dec=21.54489 ResRA=3.11275 ResDec=-1.00298
+[Residuals Debug] MJD=60734.23793 Obs RA=34.26504 Dec=21.54512 Comp RA=34.26398 Dec=21.54537 ResRA=3.54059 ResDec=-0.90083
+[Residuals Debug] MJD=60734.24900 Obs RA=34.26894 Dec=21.54618 Comp RA=34.26804 Dec=21.54634 ResRA=3.03122 ResDec=-0.55736
+[Residuals Debug] MJD=60742.25244 Obs RA=37.25715 Dec=22.25227 Comp RA=37.25506 Dec=22.25216 ResRA=6.97510 ResDec=0.39532
+[Residuals Debug] MJD=60742.25564 Obs RA=37.25848 Dec=22.25251 Comp RA=37.25627 Dec=22.25244 ResRA=7.34670 ResDec=0.24042
+[Residuals Debug] MJD=60742.26109 Obs RA=37.26057 Dec=22.25292 Comp RA=37.25834 Dec=22.25293 ResRA=7.41730 ResDec=-0.03231
+[Residuals Debug] MJD=60742.27255 Obs RA=37.26462 Dec=22.25405 Comp RA=37.26270 Dec=22.25395 ResRA=6.39446 ResDec=0.37050

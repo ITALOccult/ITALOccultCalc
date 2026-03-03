@@ -1,0 +1,18 @@
+{
+  "asteroid": "",
+  "star": {
+    "gaia_id": "2545923851335601536",
+    "ra": 0.0333485,
+    "dec": 0.0031253,
+    "magnitude": 9.3088
+  },
+  "event": {
+    "time_jd": 2461092.572500,
+    "close_approach_arcsec": 402510.294116,
+    "position_angle_deg": 0.000000,
+    "max_duration_sec": 0.000000,
+    "probability": 0.001000
+  },
+  "shadow_path": [
+  ]
+}

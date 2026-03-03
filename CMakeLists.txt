@@ -310,8 +310,6 @@ target_link_libraries(ioccultcalc
     ${ASTDYN_LIB}
     ${ORBFIT_ALL_LIBS}
     ${GAIALIB_LIB}
-    ${STARMAP_LIB}
-    ${IOC_EARTH_LIB}
     ${IOC_CONFIG_LIB}
     OpenMP::OpenMP_CXX
     ${SQLITE3_LIBRARY}

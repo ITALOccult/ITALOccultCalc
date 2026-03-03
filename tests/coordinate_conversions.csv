@@ -1,0 +1,4 @@
+conversion_type,input_x,input_y,input_z,output_x,output_y,output_z,expected_x,expected_y,expected_z,angular_error_arcsec
+EQ_ECL_EQ_X,1,0,0,1,0,0,1,0,0,0
+EQ_ECL_Z,0,0,1,0,0.397777,0.917482,0,-0.397777,0.917482,168763
+OBSERVER_POS_GEO,0,0,0,-0.351199,-0.872693,-0.378293,6.37814e+06,0,0,396957

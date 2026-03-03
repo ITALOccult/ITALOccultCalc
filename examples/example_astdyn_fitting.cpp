@@ -321,9 +321,9 @@ void case3_occultation_with_fitted_orbit() {
     std::cout << "--------------------------------\n";
     
     OccultationPredictor predictor;
-    predictor.setOrbitalElements(elem);
+    predictor.setAsteroid(elem.toEquinoctial());
     predictor.setAsteroidDiameter(16.8);  // Eros, ~16.8 km medio
-    predictor.setAsteroidUncertainty(fit.rms_total_arcsec);  // Da fit O-C
+    predictor.setOrbitalUncertainty(fit.rms_total_arcsec * elem.a * 1.496e8 / 3600);  // sigma_km (deprecated no-op)
     
     std::cout << "✓ Predittore configurato:\n";
     std::cout << "  Diametro: 16.8 km\n";
@@ -362,12 +362,12 @@ void case3_occultation_with_fitted_orbit() {
         
         for (size_t i = 0; i < std::min(size_t(10), occultations.size()); i++) {
             const auto& occ = occultations[i];
-            std::string date_str = TimeUtils::jdToISO(occ.time);
+            std::string date_str = TimeUtils::jdToISO(occ.timeCA);
             
             std::cout << "  " << date_str.substr(0, 10) 
                       << " " << date_str.substr(11, 8)
                       << "  " << std::setw(6) << std::setprecision(2) 
-                      << occ.star_magnitude
+                      << occ.star_mag
                       << "       " << std::setw(4) << std::setprecision(1) 
                       << occ.mag_drop
                       << "  " << std::setw(4) << std::setprecision(0) 
