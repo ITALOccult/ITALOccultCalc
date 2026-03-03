@@ -236,7 +236,7 @@ OrbitState OrbitPropagator::elementsToState(const AstDynEquinoctialElements& ele
     
     // Position and velocity are in ECLM J2000 (ecliptic frame)
     // Convert to EQUATORIAL J2000 for the propagator
-    constexpr double obliquity = OBLIQUITY_J2000;
+    double obliquity = meanObliquityOfEclipticRad(elements.epoch.jd);
     double cos_eps = cos(obliquity);
     double sin_eps = sin(obliquity);
     
@@ -277,7 +277,7 @@ AstDynEquinoctialElements OrbitPropagator::stateToElements(const OrbitState& sta
     // I vettori in input sono in frame EQUATORIALE (da Horizons)
     // Ma elementsToState assume elementi in frame ECLITTICO
     // Quindi convertiamo vettori equatoriali → eclittici
-    constexpr double obliquity = OBLIQUITY_J2000;
+    double obliquity = meanObliquityOfEclipticRad(state.epoch.jd);
     double cos_eps = cos(obliquity);
     double sin_eps = sin(obliquity);
     

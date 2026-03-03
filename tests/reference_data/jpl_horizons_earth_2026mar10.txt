@@ -1,0 +1,23 @@
+# JPL Horizons data
+# Target body name: Earth (399)
+# Center body name: Sun (10)
+# Reference frame: Ecliptic of J2000.0
+# Ephemeris type: GEOMETRIC cartesian states
+# Source: DE441
+# Date: 2026-Mar-10 00:00:00.0000 TDB
+# JD: 2461109.5
+#
+# Units below: position in AU, velocity in AU/day (converted from Horizons KM-S)
+# 1 AU = 149597870.7 km, 1 km/s = 86400/149597870.7 AU/day
+#
+X = -9.753525639847987E-01
+Y =  1.885674331891021E-01
+Z = -2.889259240400021E-06
+VX = -3.550098268802021E-03
+VY = -1.695351890031234E-02
+VZ =  1.093234801031800E-06
+#
+# Same epoch, original Horizons units (km, km/s) for reference:
+# X_km = -1.458490585778653E+08  Y_km = 2.820193669408020E+07  Z_km = -4.321257434003055E+02
+# VX_km/s = -6.148821781307674  VY_km/s = -2.935343589559483E+01  VZ_km/s = 1.892882781536542E-03
+# RG = 1.485506550693508E+08 km  RR = 4.643273126956278E-01 km/s

@@ -152,18 +152,7 @@ double TimeUtils::lst(const JulianDate& jd, double longitude) {
 }
 
 double TimeUtils::getObliquity(const JulianDate& jd) {
-    // Obliquità dell'eclittica (Laskar 1986)
-    // Formula per la media obliquità, valida per +/- 10.000 anni
-    // T = secoli giuliani (TDB) da J2000.0
-    double T = (jd.jd - JD_J2000) / 36525.0;
-    
-    // Coefficienti in arcosecondi
-    double eps_arcsec = 84381.448 
-                      - 46.8150 * T 
-                      - 0.00059 * T * T 
-                      + 0.001813 * T * T * T;
-    
-    return (eps_arcsec / 3600.0) * DEG_TO_RAD;
+    return meanObliquityOfEclipticRad(jd.jd);
 }
 
 // ============================================================================

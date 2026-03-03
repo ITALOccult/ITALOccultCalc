@@ -322,18 +322,12 @@ Vector3D Coordinates::equatorialToEcliptic(const Vector3D& eq) {
 }
 */
 
-Vector3D Coordinates::equatorialToEcliptic(const Vector3D& eq) {
-    // Obliquità dell'eclittica (ε) per J2000.0
-    // IAU 2000: ε₀ = 23° 26' 21.406" = 23.4392794444°
-    constexpr double epsilon = 23.4392794444 * DEG_TO_RAD;
+Vector3D Coordinates::equatorialToEcliptic(const Vector3D& eq, double jd) {
+    double epsilon = meanObliquityOfEclipticRad(jd);
     double cos_eps = cos(epsilon);
     double sin_eps = sin(epsilon);
 
     // Rotazione attorno all'asse X di +ε (equatoriale → eclittico)
-    // | x' |   | 1     0        0   |   | x |
-    // | y' | = | 0   cos(ε)   sin(ε)| * | y |
-    // | z' |   | 0  -sin(ε)   cos(ε)|   | z |
-    
     return Vector3D(
         eq.x,
         eq.y * cos_eps + eq.z * sin_eps,
@@ -342,32 +336,21 @@ Vector3D Coordinates::equatorialToEcliptic(const Vector3D& eq) {
 }
 
 
-Vector3D Coordinates::eclipticToEquatorial(const Vector3D& ecl) {
-    // Obliquità dell'eclittica (ε) per J2000.0
-    constexpr double epsilon = 23.4392794444 * DEG_TO_RAD;
-    
+Vector3D Coordinates::eclipticToEquatorial(const Vector3D& ecl, double jd) {
+    double epsilon = meanObliquityOfEclipticRad(jd);
     double cos_eps = cos(epsilon);
     double sin_eps = sin(epsilon);
-    
-    // Rotazione attorno all'asse X di +ε (inversa della precedente)
-    // | x' |   |  1      0          0      | | x |
-    // | y' | = |  0   cos(ε)   -sin(ε)    | | y |
-    // | z' |   |  0   sin(ε)    cos(ε)    | | z |
-    
+
     return Vector3D(
         ecl.x,
         ecl.y * cos_eps - ecl.z * sin_eps,
         ecl.y * sin_eps + ecl.z * cos_eps
     );
-    
 }
 
-Vector3D Coordinates::raDecToEclipticUnitVector(double ra_rad, double dec_rad) {
-    // Prima converti RA/Dec in vettore equatoriale
+Vector3D Coordinates::raDecToEclipticUnitVector(double ra_rad, double dec_rad, double jd) {
     Vector3D eq = raDecToUnitVector(ra_rad, dec_rad);
-    
-    // Poi converti in eclittico
-    return equatorialToEcliptic(eq);
+    return equatorialToEcliptic(eq, jd);
 }
 
 } // namespace ioccultcalc

@@ -1,0 +1,35 @@
+============================================
+  Test JPL consistency (Terra, Stella, Asteroide)
+  JD 2461109.500000 (2026-Mar-10 00:00 TDB)
+  Reference dir: ../tests/reference_data
+============================================
+
+========== 1. TERRA (Earth vs Sun) ==========
+Frame riferimento JPL: Ecliptic J2000.0. Nostro SPICE: ICRF J2000.
+Confronto: convertiamo il nostro stato in Ecliptic e confrontiamo con JPL.
+
+  Riferimento JPL (DE441, Ecliptic J2000) Pos [AU]:  -0.975353 0.188567 -0.000003
+  Nostro (convertito Ecl.)  Pos [AU]:  -0.974941 0.188518 0.000008
+  Delta pos [AU]: 0.000412 -0.000049 0.000011
+  |Delta pos| [AU]: 0.000415  (tolleranza 0.000500)
+  JPL (Ecliptic) Vel [AU/day]: -0.003550 -0.016954 0.000001
+  Nostro (conv.) Vel [AU/day]: -0.003551 -0.016953 0.000000
+  |Delta vel| [AU/day]: 0.000002  (tolleranza 0.000005)
+  [PASS] Terra: posizione e velocità entro tolleranza.
+
+========== 2. STELLA (posizione astrometrica / apparente) ==========
+  Stella: RA=120.000000° Dec=10.000000° (epoca JD 2457388.500000)
+  PM RA=10.000000 mas/yr, PM Dec=-5.000000 mas/yr, parallax=5.000000 mas
+  Nostra posizione apparente a JD 2461109.500000: RA=120.000028° Dec=9.999986°
+  Riferimento atteso:     RA=120.000028° Dec=9.999986°
+  Delta: 0.001234 arcsec (tolleranza 0.100000)
+  [PASS] Stella: posizione apparente entro tolleranza.
+  Auto-consistenza (PM inline + parallasse): delta 0.000000 arcsec
+  [PASS] Stella: auto-consistenza OK.
+
+========== 3. ASTEROIDE (posizione astrometrica eliocentrica) ==========
+  [SKIP] jpl_horizons_asteroid_2026mar10.txt ha X,Y,Z=0 (dati non inseriti).
+
+============================================
+  RISULTATO: Tutti i confronti eseguiti sono PASS.
+============================================

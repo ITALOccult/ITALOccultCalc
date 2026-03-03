@@ -218,9 +218,9 @@ void Ephemeris::propagateOrbit(const JulianDate& targetJD, Vector3D& helioPos, V
     double vx_ecl = m11 * vx_ref + m12 * vy_ref + m13 * vz_ref;
     double vy_ecl = m21 * vx_ref + m22 * vy_ref + m23 * vz_ref;
     double vz_ecl = m31 * vx_ref + m32 * vy_ref + m33 * vz_ref;
-    constexpr double OBL_J2000 = OBLIQUITY_J2000;
-    double cos_eps = std::cos(OBL_J2000);
-    double sin_eps = std::sin(OBL_J2000);
+    double eps = meanObliquityOfEclipticRad(elements_.epoch.jd);
+    double cos_eps = std::cos(eps);
+    double sin_eps = std::sin(eps);
     helioPos = Vector3D(x_ecl, y_ecl * cos_eps - z_ecl * sin_eps, y_ecl * sin_eps + z_ecl * cos_eps);
     helioVel = Vector3D(vx_ecl, vy_ecl * cos_eps - vz_ecl * sin_eps, vy_ecl * sin_eps + vz_ecl * cos_eps);
 }

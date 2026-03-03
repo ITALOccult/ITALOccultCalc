@@ -1,0 +1,23 @@
+# JPL Horizons: asteroide (es. 433 Eros) vs Sole, Ecliptic J2000
+# Epoca: 2026-Mar-10 00:00 TDB (JD 2461109.5)
+# Unit: AU, AU/day (come per Terra)
+#
+# Per generare: Horizons -> Target 433 (o altro), Center 10 (Sun),
+# Reference frame Ecliptic J2000, Output vectors, convertire km/km/s in AU e AU/day.
+# 1 AU = 149597870.7 km, 1 km/s = 86400/149597870.7 AU/day
+#
+# JD = 2461109.5
+# X = ...
+# Y = ...
+# Z = ...
+# VX = ...
+# VY = ...
+# VZ = ...
+
+JD = 2461109.5
+X = 0.0
+Y = 0.0
+Z = 0.0
+VX = 0.0
+VY = 0.0
+VZ = 0.0

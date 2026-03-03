@@ -50,18 +50,14 @@ public:
     static Vector3D observerPosition(const std::string& mpc_code, 
                                     const JulianDate& jd);
     
-    // Converte coordinate equatoriali → eclittiche (J2000)
-    // Rotazione di -ε (obliquità eclittica) attorno all'asse X
-    static Vector3D equatorialToEcliptic(const Vector3D& eq);
+    // Converte coordinate equatoriali → eclittiche. ε = obliquità media a jd.
+    static Vector3D equatorialToEcliptic(const Vector3D& eq, double jd = 2451545.0);
     
-    // Converte coordinate eclittiche → equatoriali (J2000)
-    // Rotazione di +ε attorno all'asse X
-    static Vector3D eclipticToEquatorial(const Vector3D& ecl);
+    // Converte coordinate eclittiche → equatoriali. ε = obliquità media a jd.
+    static Vector3D eclipticToEquatorial(const Vector3D& ecl, double jd = 2451545.0);
     
-    // Converte RA/Dec in vettore unitario ECLITTICO
-    // Input: RA/Dec in radianti (equatoriali)
-    // Output: vettore unitario in coordinate eclittiche
-    static Vector3D raDecToEclipticUnitVector(double ra_rad, double dec_rad);
+    // Converte RA/Dec in vettore unitario ECLITTICO (obliquità a jd)
+    static Vector3D raDecToEclipticUnitVector(double ra_rad, double dec_rad, double jd = 2451545.0);
     
     // Posizione osservatore da coordinate geografiche
     static Vector3D observerPositionFromGeo(const GeographicCoordinates& geo,

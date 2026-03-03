@@ -21,7 +21,13 @@ constexpr double ARCSEC_TO_DEG = 1.0 / 3600.0;
 constexpr double ARCMIN_TO_DEG = 1.0 / 60.0;
 constexpr double DEG_TO_ARCSEC = 3600.0;
 constexpr double DEG_TO_ARCMIN = 60.0;
-constexpr double OBLIQUITY_J2000 = 23.4392911 * DEG_TO_RAD; // ~0.4090928 rad
+constexpr double OBLIQUITY_J2000 = 23.4392911 * DEG_TO_RAD; // ~0.4090928 rad (legacy; prefer meanObliquityOfEclipticRad(jd))
+
+/** Obliquità media dell'eclittica (rad) in funzione del JD. T = (jd - 2451545.0) / 36525.0. */
+inline double meanObliquityOfEclipticRad(double jd) {
+    double T = (jd - 2451545.0) / 36525.0;
+    return (23.439291 - 0.0130042 * T - 1.64e-7 * T * T + 5.04e-7 * T * T * T) * DEG_TO_RAD;
+}
 
 // Distances
 constexpr double AU_KM = 149597870.7;             // 1 AU in km

@@ -271,11 +271,6 @@ void TopocentricConverter::rotationMatrixITRFtoCelestial(double jd_ut1,
     }
 }
 */
-double meanObliquity(double T) {
-    // Obliquità media in radianti
-    return (23.439291 - 0.0130042 * T - 1.64e-7 * T * T + 5.04e-7 * T * T * T) * DEG_TO_RAD;
-}
-
 void TopocentricConverter::rotationMatrixITRFtoCelestial(double jd_ut1,
     const std::string& frame,
     double matrix[3][3]) {
@@ -298,7 +293,7 @@ delta_eps *= DEG_TO_RAD / 3600.0;
 double era = earthRotationAngle(jd_ut1);
 
 // Applica nutazione all'angolo di rotazione (semplificato)
-double theta = era + delta_psi * cos(meanObliquity(T));
+double theta = era + delta_psi * cos(meanObliquityOfEclipticRad(jd_ut1));
 
 double cos_theta = cos(theta);
 double sin_theta = sin(theta);

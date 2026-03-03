@@ -305,11 +305,8 @@ static AstDySElements cartesianToKeplerianElem(const Cartesian& c, double epoch,
 static AstDySElements convertEclipticToEquatorial(const AstDySElements& el) {
     Cartesian c = keplerianToCartesianElem(el);
     
-    // Rotate +Obliquity (Ecl -> Eq)
-    // Rx(eps):
-    // y' = y c - z s
-    // z' = y s + z c
-    double eps = OBLIQUITY_J2000;
+    // Rotate +Obliquity (Ecl -> Eq), obliquità media all'epoca elementi
+    double eps = meanObliquityOfEclipticRad(el.epoch_mjd + 2400000.5);  // MJD -> JD
     double co = std::cos(eps);
     double so = std::sin(eps);
     
@@ -469,7 +466,7 @@ OrbitFitResult AstDynOrbitFitter::fit(const AstDySElements& initial_elements,
     
     // Debug Roundtrip
     // Convert back from Equatorial using inverse rotation
-    double eps = OBLIQUITY_J2000;
+    double eps = meanObliquityOfEclipticRad(init_eq.epoch_mjd + 2400000.5);
     double co = std::cos(eps); // Positive for Eq -> Ecl
     double so = std::sin(eps);
     Cartesian eq_c = keplerianToCartesianElem(init_eq);
