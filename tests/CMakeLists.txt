@@ -84,3 +84,6 @@ add_test(NAME FrameConsistencyFull COMMAND test_frame_consistency_full)
 add_test(NAME PerformanceShadow COMMAND test_performance_shadow)
 add_test(NAME AllnumParsing COMMAND test_allnum_parsing)
 add_test(NAME OccultationEngine COMMAND test_occultation_engine)
+
+add_executable(test_agostino_occultation test_agostino_occultation.cpp)
+target_link_libraries(test_agostino_occultation ioccultcalc)
