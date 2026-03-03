@@ -1,0 +1,11 @@
+# JPL Horizons data (velocity only)
+# Target: Earth (399)
+# Center: Sun (10)
+# Frame: Ecliptic J2000
+# Units: AU/day
+# Date: 2020-May-31 00:00:00.0000 TDB
+# JD: 2459000.5
+VX =  1.586019780532659E-02
+VY = -6.015723633732690E-03
+VZ =  1.743271098509803E-07
+

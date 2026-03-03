@@ -1,0 +1,14 @@
+# JPL Horizons data
+# Target: Earth (399)
+# Center: Sun (10)
+# Frame: Ecliptic J2000
+# Ephemeris type: GEOMETRIC cartesian state vectors
+# Units: AU, AU/day
+# Date: 2020-May-31 00:00:00.0000 TDB
+# JD: 2459000.5
+X = -3.511287298470200E-01
+Y = -9.511623735794541E-01
+Z =  4.215195073412049E-05
+VX =  1.586019780532659E-02
+VY = -6.015723633732690E-03
+VZ =  1.743271098509803E-07

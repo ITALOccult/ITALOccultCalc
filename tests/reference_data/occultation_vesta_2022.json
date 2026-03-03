@@ -1,0 +1,26 @@
+{
+  "asteroid": "4",
+  "name": "Vesta",
+  "date_utc": "2022-08-10T21:15:00.000Z",
+  "star": {
+    "gaia_dr3_source_id": "000000000000000002",
+    "ra_deg": 250.123456,
+    "dec_deg": -20.654321,
+    "pm_ra_masyr": -8.3,
+    "pm_dec_masyr": 4.1,
+    "parallax_mas": 2.345,
+    "G_mag": 11.80,
+    "epoch_year": 2016.0
+  },
+  "predicted_path": [
+    { "lat": 35.0, "lon": -5.0, "time_utc": "21:14:50" },
+    { "lat": 36.0, "lon": -3.5, "time_utc": "21:15:00" },
+    { "lat": 37.0, "lon": -2.0, "time_utc": "21:15:10" }
+  ],
+  "observations": [
+    { "site": "Madrid", "lat": 40.4, "lon": -3.7, "observed": true },
+    { "site": "Lisbon", "lat": 38.7, "lon": -9.1, "observed": false }
+  ],
+  "notes": "Synthetic occultation geometry for Vesta; structure matches eros_2021 file and can be replaced with a specific event from asteroidoccultation.com."
+}
+

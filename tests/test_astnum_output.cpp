@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <ioccultcalc/occultation_predictor.h>
 #include <ioccultcalc/output_manager.h>
 #include <ioccultcalc/time_utils.h>
 
@@ -82,8 +83,11 @@ int main() {
     manager.setOptions(opts);
     
     std::cout << "💾 Writing ASTNUM_LIST format to: " << opts.output_file << "\n";
-    
-    bool success = manager.writeEvents(events);
+
+    std::vector<OutputEvent> out_events;
+    out_events.reserve(events.size());
+    for (const auto& e : events) out_events.push_back(e);
+    bool success = manager.writeEvents(out_events);
     
     if (success) {
         std::cout << "✅ ASTNUM_LIST file written successfully!\n\n";

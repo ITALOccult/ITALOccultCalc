@@ -1,0 +1,11 @@
+# AstDyS-2 Equinoctial Elements
+# Asteroid: 433 Eros
+# Epoch: 2459000.5
+a = 1.4579991
+h = 0.0410477
+k = 0.0998739
+p = -0.0613086
+q = 0.0445189
+lambda = 2.8967641
+H = 11.16
+G = 0.46

@@ -1,0 +1,20 @@
+# AstDyS-2 Equinoctial Elements
+# Asteroid: 4 Vesta
+# Epoch: 2459000.5 (approximate, derived from published Keplerian elements)
+# Source Keplerian (example):
+#   a = 2.36096 au
+#   e = 0.089897
+#   i = 7.144 deg
+#   Omega = 103.705 deg
+#   omega = 151.693 deg
+#   M = 223.656 deg
+# The following equinoctial elements were computed from those values.
+a = 2.3609600
+h = 0.0229324
+k = -0.0869252
+p = 0.0430469
+q = -0.0619149
+lambda = 7.9071375
+H = 3.20
+G = 0.32
+

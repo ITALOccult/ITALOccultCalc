@@ -6,6 +6,7 @@
 # testing this directory and lists subdirectories to be tested as well.
 subdirs("external/ITALOccultLibrary/astdyn")
 subdirs("external/IOC_GaiaLib")
+subdirs("external/IOC_Earth")
 subdirs("examples")
 subdirs("tools")
 subdirs("tests")

@@ -53,7 +53,7 @@ int main() {
     double J2_EARTH = 1.08262668e-3;
     // Note: Brouwer's theory results in zero short-period Delta_a, 
     // so we must check eccentricity or inclination to see the correction in action.
-    auto it_osc = OrbitalConversions::meanToOsculating(it_mean, J2_EARTH);
+    auto it_osc = OrbitalConversions::meanToOsculating(it_mean);
     
     std::cout << "  - Mean Eccentricity: " << std::fixed << std::setprecision(6) << it_mean.e << std::endl;
     std::cout << "  - Osc  Eccentricity: " << std::fixed << std::setprecision(6) << it_osc.e << std::endl;
@@ -73,7 +73,7 @@ int main() {
     sierks_mean.e = 0.045; // Approx
     sierks_mean.i = 0.025; // Approx rad
     sierks_mean.M = 2.0;
-    sierks_mean.epoch_mjd_tdb = 61000.0;
+    sierks_mean.epoch = JulianDate::fromMJD(61000.0);
     
     // Convert to osculating (J2=0 to isolate planetary effect)
     auto sierks_osc = mean_eq.toOsculatingKeplerian();

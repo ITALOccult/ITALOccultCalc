@@ -198,7 +198,7 @@ double TopocentricConverter::localSiderealTime(double jd_ut1, double longitude_d
     
     return lst;
 }
-
+/*
 void TopocentricConverter::rotationMatrixITRFtoCelestial(double jd_ut1,
                                                         const std::string& frame,
                                                         double matrix[3][3]) {
@@ -270,6 +270,55 @@ void TopocentricConverter::rotationMatrixITRFtoCelestial(double jd_ut1,
         }
     }
 }
+*/
+double meanObliquity(double T) {
+    // Obliquità media in radianti
+    return (23.439291 - 0.0130042 * T - 1.64e-7 * T * T + 5.04e-7 * T * T * T) * DEG_TO_RAD;
+}
+
+void TopocentricConverter::rotationMatrixITRFtoCelestial(double jd_ut1,
+    const std::string& frame,
+    double matrix[3][3]) {
+// Calcola tempo in secoli giuliani da J2000
+double T = (jd_ut1 - JD_J2000) / 36525.0;
+
+// Nutazione in longitudine e obliquità (approssimazione semplificata IAU 2000)
+// Omega = longitudine del nodo ascendente della Luna
+double Omega = 125.04452 - 1934.136261 * T + 0.0020708 * T * T + T*T*T/450000.0;
+Omega *= DEG_TO_RAD;
+
+// Nutazione in longitudine (delta psi) e obliquità (delta epsilon)
+double delta_psi = -0.0048 * sin(Omega) - 0.0004 * sin(2.0 * (280.47 + 36000.77 * T) - 2.0 * Omega);
+double delta_eps = 0.0026 * cos(Omega);
+
+delta_psi *= DEG_TO_RAD / 3600.0;  // arcsec -> rad
+delta_eps *= DEG_TO_RAD / 3600.0;
+
+// ERA (Earth Rotation Angle) - rotazione principale
+double era = earthRotationAngle(jd_ut1);
+
+// Applica nutazione all'angolo di rotazione (semplificato)
+double theta = era + delta_psi * cos(meanObliquity(T));
+
+double cos_theta = cos(theta);
+double sin_theta = sin(theta);
+
+// Matrice di rotazione base (ITRF -> J2000 approssimato)
+matrix[0][0] = cos_theta;
+matrix[0][1] = -sin_theta;
+matrix[0][2] = 0.0;
+
+matrix[1][0] = sin_theta;
+matrix[1][1] = cos_theta;
+matrix[1][2] = 0.0;
+
+matrix[2][0] = 0.0;
+matrix[2][1] = 0.0;
+matrix[2][2] = 1.0;
+
+// Se ECLIPJ2000, aggiungi rotazione obliquità...
+}
+
 
 Vector3D TopocentricConverter::calculateTopocentricCorrection(const ObserverLocation& observer,
                                                              double jd_tt,

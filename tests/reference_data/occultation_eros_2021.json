@@ -1,0 +1,26 @@
+{
+  "asteroid": "433",
+  "name": "Eros",
+  "date_utc": "2021-03-15T03:42:17.000Z",
+  "star": {
+    "gaia_dr3_source_id": "000000000000000001",
+    "ra_deg": 123.456789,
+    "dec_deg": -45.678901,
+    "pm_ra_masyr": 10.5,
+    "pm_dec_masyr": -5.2,
+    "parallax_mas": 5.123,
+    "G_mag": 12.30,
+    "epoch_year": 2016.0
+  },
+  "predicted_path": [
+    { "lat": 40.5, "lon": 12.3, "time_utc": "03:42:17" },
+    { "lat": 41.2, "lon": 13.1, "time_utc": "03:42:25" },
+    { "lat": 41.8, "lon": 13.9, "time_utc": "03:42:33" }
+  ],
+  "observations": [
+    { "site": "Roma", "lat": 41.9, "lon": 12.5, "observed": true },
+    { "site": "Napoli", "lat": 40.9, "lon": 14.3, "observed": false }
+  ],
+  "notes": "Synthetic but realistic geometry based on IOTA-style occultation paths. Replace with exact IOTA event data if available."
+}
+

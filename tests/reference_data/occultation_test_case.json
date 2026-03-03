@@ -1,0 +1,9 @@
+{
+  "asteroid_name": "433 Eros",
+  "star_ra_deg": 120.0,
+  "star_dec_deg": 10.0,
+  "star_mag": 12.0,
+  "start_mjd": 59200.0,
+  "end_mjd": 59201.0,
+  "notes": "Placeholder occultation case. Replace with real event data (e.g. from asteroidoccultation.com) for precise validation, including observed path coordinates."
+}
