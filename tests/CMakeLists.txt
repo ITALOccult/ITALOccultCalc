@@ -53,6 +53,9 @@ target_link_libraries(test_asteroid_sqlite ioccultcalc)
 add_executable(test_asteroid_database_sqlite test_asteroid_database_sqlite.cpp)
 target_link_libraries(test_asteroid_database_sqlite ioccultcalc)
 
+add_executable(test_frame_consistency test_frame_consistency.cpp)
+target_link_libraries(test_frame_consistency ioccultcalc)
+
 find_package(GTest REQUIRED)
 
 add_executable(test_jpl_astdys_comparison test_jpl_astdys_comparison.cpp)
@@ -60,5 +63,6 @@ target_link_libraries(test_jpl_astdys_comparison ioccultcalc GTest::GTest GTest:
 
 # Tests registration
 add_test(NAME TimeUtils COMMAND test_time_utils)
+add_test(NAME FrameConsistency COMMAND test_frame_consistency)
 add_test(NAME AllnumParsing COMMAND test_allnum_parsing)
 add_test(NAME OccultationEngine COMMAND test_occultation_engine)

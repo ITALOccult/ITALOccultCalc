@@ -29,7 +29,7 @@ public:
     Ephemeris(const AstDynEquinoctialElements& elements);
     Ephemeris(std::shared_ptr<ISPReader> reader);
     Ephemeris(std::shared_ptr<ISPReader> reader, const AstDynEquinoctialElements& elements);
-    
+
     void setElements(const AstDynEquinoctialElements& elements);
     EphemerisData compute(const JulianDate& jd);
     EphemerisData computeTopocentric(const JulianDate& jd, double lat, double lon, double alt_m);
@@ -60,6 +60,8 @@ private:
     Vector3D getObserverPosition(double lat_deg, double lon_deg, double alt_m, double jd) const;
     Vector3D getEarthPositionEcl(double jd) const;
 };
+
+void initializeSpiceProvider(std::shared_ptr<ISPReader> reader);
 
 } // namespace ioccultcalc
 

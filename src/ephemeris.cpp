@@ -33,17 +33,28 @@ public:
         return Eigen::Vector3d(pos.x, pos.y, pos.z);
     }
     Eigen::Vector3d getVelocity(astdyn::ephemeris::CelestialBody body, double jd_tdb) override {
+       
+        std::cerr << "[DEBUG] >>> SpiceEphemerisProvider::getVelocity CALLED <<<" << std::endl;
+
         if (!reader_) return Eigen::Vector3d::Zero();
         auto state = reader_->getState(toNaif(body), jd_tdb, 10);
-        return Eigen::Vector3d(state.second.x, state.second.y, state.second.z);
+        // Conversione: km/s → AU/day
+        constexpr double KMS_TO_AUD = 86400.0 / 149597870.7;
+        return Eigen::Vector3d(
+            state.second.x * KMS_TO_AUD,
+            state.second.y * KMS_TO_AUD,
+            state.second.z * KMS_TO_AUD
+        );
     }
+
+
     std::string getName() const override { return "SPICE (Bridge)"; }
     double getAccuracy() const override { return 0.001; }
     bool isAvailable() const override { return reader_ && reader_->isLoaded(); }
 private:
     std::shared_ptr<ISPReader> reader_;
 };
-
+/* 
 static void ensureGlobalProvider(std::shared_ptr<ISPReader> reader) {
     static bool initialized = false;
     if (!initialized && reader) {
@@ -52,6 +63,24 @@ static void ensureGlobalProvider(std::shared_ptr<ISPReader> reader) {
         initialized = true;
     }
 }
+*/
+static void ensureGlobalProvider(std::shared_ptr<ISPReader> reader) {
+    static bool initialized = false;
+    std::cerr << "[DEBUG] ensureGlobalProvider called, initialized=" << initialized 
+              << ", reader=" << (reader ? "YES" : "NO") << std::endl;
+    
+    if (!initialized && reader) {
+        std::cerr << "[DEBUG] Registering SPICE provider..." << std::endl;
+        auto provider = std::make_shared<SpiceEphemerisProvider>(reader);
+        astdyn::ephemeris::PlanetaryEphemeris::setProvider(provider);
+        initialized = true;
+        std::cerr << "[DEBUG] SPICE provider registered!" << std::endl;
+    } else {
+        std::cerr << "[DEBUG] Provider NOT registered" << std::endl;
+    }
+}
+
+
 
 constexpr double GAUSS_K = 0.01720209895;
 constexpr double C_AU_PER_DAY = 173.1446326846693;
@@ -62,7 +91,7 @@ Ephemeris::Ephemeris(std::shared_ptr<ISPReader> reader) : spkReader_(reader) { e
 Ephemeris::Ephemeris(std::shared_ptr<ISPReader> reader, const AstDynEquinoctialElements& elements) : spkReader_(reader), elements_(elements) { ensureGlobalProvider(reader); }
 
 void Ephemeris::setElements(const AstDynEquinoctialElements& elements) { elements_ = elements; }
-
+/* 
 Vector3D Ephemeris::getEarthPosition(const JulianDate& jd) {
     auto posEigen = AstEphemeris::PlanetaryEphemeris::getPosition(AstEphemeris::CelestialBody::EARTH, jd.jd);
     return Vector3D(posEigen.x(), posEigen.y(), posEigen.z());
@@ -72,6 +101,39 @@ Vector3D Ephemeris::getEarthVelocity(const JulianDate& jd) {
     auto velEigen = AstEphemeris::PlanetaryEphemeris::getVelocity(AstEphemeris::CelestialBody::EARTH, jd.jd);
     return Vector3D(velEigen.x(), velEigen.y(), velEigen.z());
 }
+*/
+Vector3D Ephemeris::getEarthPosition(const JulianDate& jd) {
+    // Se abbiamo un reader locale, usalo direttamente
+    if (spkReader_ && spkReader_->isLoaded()) {
+        return spkReader_->getPosition(399, jd.jd, 10); // Terra vs Sole
+    }
+    
+    // Altrimenti usa il provider globale (che potrebbe essere analitico)
+    auto posEigen = AstEphemeris::PlanetaryEphemeris::getPosition(
+        AstEphemeris::CelestialBody::EARTH, jd.jd);
+    return Vector3D(posEigen.x(), posEigen.y(), posEigen.z());
+}
+
+Vector3D Ephemeris::getEarthVelocity(const JulianDate& jd) {
+    // Se abbiamo un reader locale, usalo direttamente
+    if (spkReader_ && spkReader_->isLoaded()) {
+        auto state = spkReader_->getState(399, jd.jd, 10);
+        constexpr double KMS_TO_AUD = 86400.0 / 149597870.7;
+        return Vector3D(
+            state.second.x * KMS_TO_AUD,
+            state.second.y * KMS_TO_AUD,
+            state.second.z * KMS_TO_AUD
+        );
+    }
+    
+    // Altrimenti usa il provider globale
+    auto velEigen = AstEphemeris::PlanetaryEphemeris::getVelocity(
+        AstEphemeris::CelestialBody::EARTH, jd.jd);
+    return Vector3D(velEigen.x(), velEigen.y(), velEigen.z());
+}
+
+
+
 
 Vector3D Ephemeris::getSunPosition(const JulianDate& jd) { return Vector3D(0, 0, 0); }
 
