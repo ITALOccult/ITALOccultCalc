@@ -54,17 +54,29 @@ GeographicCoordinates Coordinates::ecefToGeographic(const Vector3D& ecef) {
     double p = sqrt(ecef.x * ecef.x + ecef.y * ecef.y);
     double theta = atan2(ecef.z * a, p * b);
     
+    // Stima iniziale
     double lat = atan2(ecef.z + e2 * b * pow(sin(theta), 3),
                       p - e2 * a * pow(cos(theta), 3));
     double lon = atan2(ecef.y, ecef.x);
     
-    double N = a / sqrt(1.0 - e2 * sin(lat) * sin(lat));
-    double h = p / cos(lat) - N;
+    // ITERAZIONE per precisione top
+    double h = 0;
+    double lat_prev;
+    int iter = 0;
+    const double tol = 1e-15;
+    
+    do {
+        lat_prev = lat;
+        double sin_lat = sin(lat);
+        double N = a / sqrt(1.0 - e2 * sin_lat * sin_lat);
+        h = p / cos(lat) - N;
+        lat = atan2(ecef.z + e2 * N * sin_lat, p);
+    } while (fabs(lat - lat_prev) > tol && ++iter < 10);
     
     return GeographicCoordinates(
         lon * RAD_TO_DEG,
         lat * RAD_TO_DEG,
-        h * 1000.0 // converti in metri
+        h * 1000.0
     );
 }
 
