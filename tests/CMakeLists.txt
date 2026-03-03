@@ -1,89 +1,66 @@
-# IOccultCalc Tests
-message(STATUS "Parsing tests/CMakeLists.txt")
 
-add_executable(test_time_utils test_time_utils.cpp)
-target_link_libraries(test_time_utils ioccultcalc)
-
-add_executable(test_orbit_propagator_rkf78 test_orbit_propagator_rkf78.cpp)
-target_link_libraries(test_orbit_propagator_rkf78 ioccultcalc)
-
-add_executable(test_propagation_vs_horizons test_propagation_vs_horizons.cpp)
-target_link_libraries(test_propagation_vs_horizons ioccultcalc)
-
-add_executable(test_vesta_propagation test_vesta_propagation.cpp)
-target_link_libraries(test_vesta_propagation ioccultcalc)
-
-add_executable(test_allnum_parsing test_allnum_parsing.cpp)
-target_link_libraries(test_allnum_parsing ioccultcalc)
-
-add_executable(test_asteroid_list_reader test_asteroid_list_reader.cpp)
-target_link_libraries(test_asteroid_list_reader ioccultcalc)
-
-# Requires full IOC_Earth (Mapnik); fails to link when IOC_Earth is stub
 # add_executable(test_astnum_output test_astnum_output.cpp)
-# target_link_libraries(test_astnum_output ioccultcalc)
-
-add_executable(test_combined_lists test_combined_lists.cpp)
-target_link_libraries(test_combined_lists ioccultcalc)
-
-add_executable(test_localasteroid_real test_localasteroid_real.cpp)
-target_link_libraries(test_localasteroid_real ioccultcalc)
-
-add_executable(test_oop_presets test_oop_presets.cpp)
-target_link_libraries(test_oop_presets ioccultcalc)
-
-add_executable(test_oop_with_asteroid_lists test_oop_with_asteroid_lists.cpp)
-target_link_libraries(test_oop_with_asteroid_lists ioccultcalc)
-
-# Requires orbfit_force_model.h (removed/not present)
 # add_executable(test_rkf78_comparison test_rkf78_comparison.cpp)
-# target_link_libraries(test_rkf78_comparison ioccultcalc)
-
+# IOccultCalc Tests
 # New Occultation Engine Test
-add_executable(test_occultation_engine test_occultation_engine.cpp)
-target_link_libraries(test_occultation_engine ioccultcalc)
-
-add_executable(test_jpl_horizons_comparison test_jpl_horizons_comparison.cpp)
-target_link_libraries(test_jpl_horizons_comparison ioccultcalc)
-
-add_executable(test_mean_to_osculating test_mean_to_osculating.cpp)
-target_link_libraries(test_mean_to_osculating ioccultcalc)
-
-add_executable(test_asteroid_sqlite test_asteroid_sqlite.cpp)
-target_link_libraries(test_asteroid_sqlite ioccultcalc)
-
-add_executable(test_asteroid_database_sqlite test_asteroid_database_sqlite.cpp)
-target_link_libraries(test_asteroid_database_sqlite ioccultcalc)
-
-add_executable(test_frame_consistency test_frame_consistency.cpp)
-target_link_libraries(test_frame_consistency ioccultcalc)
-
-add_executable(test_shadow_path_geometry test_shadow_path_geometry.cpp)
-target_link_libraries(test_shadow_path_geometry ioccultcalc)
-
-add_executable(test_known_occultation_ref test_known_occultation.cpp)
-target_link_libraries(test_known_occultation_ref ioccultcalc)
-
-add_executable(test_frame_consistency_full test_frame_consistency_full.cpp)
-target_link_libraries(test_frame_consistency_full ioccultcalc)
-
-add_executable(test_performance_shadow test_performance_shadow.cpp)
-target_link_libraries(test_performance_shadow ioccultcalc)
-
-find_package(GTest REQUIRED)
-
-add_executable(test_jpl_astdys_comparison test_jpl_astdys_comparison.cpp)
-target_link_libraries(test_jpl_astdys_comparison ioccultcalc GTest::GTest GTest::Main)
-
+# Requires full IOC_Earth (Mapnik); fails to link when IOC_Earth is stub
+# Requires orbfit_force_model.h (removed/not present)
+# target_link_libraries(test_astnum_output ioccultcalc)
+# target_link_libraries(test_rkf78_comparison ioccultcalc)
 # Tests registration
-add_test(NAME TimeUtils COMMAND test_time_utils)
-add_test(NAME FrameConsistency COMMAND test_frame_consistency)
-add_test(NAME ShadowPathGeometry COMMAND test_shadow_path_geometry)
-add_test(NAME KnownOccultationRef COMMAND test_known_occultation_ref)
-add_test(NAME FrameConsistencyFull COMMAND test_frame_consistency_full)
-add_test(NAME PerformanceShadow COMMAND test_performance_shadow)
-add_test(NAME AllnumParsing COMMAND test_allnum_parsing)
-add_test(NAME OccultationEngine COMMAND test_occultation_engine)
-
 add_executable(test_agostino_occultation test_agostino_occultation.cpp)
+add_executable(test_allnum_parsing test_allnum_parsing.cpp)
+add_executable(test_asteroid_database_sqlite test_asteroid_database_sqlite.cpp)
+add_executable(test_asteroid_list_reader test_asteroid_list_reader.cpp)
+add_executable(test_asteroid_sqlite test_asteroid_sqlite.cpp)
+add_executable(test_combined_lists test_combined_lists.cpp)
+add_executable(test_frame_consistency test_frame_consistency.cpp)
+add_executable(test_frame_consistency_full test_frame_consistency_full.cpp)
+add_executable(test_jpl_astdys_comparison test_jpl_astdys_comparison.cpp)
+add_executable(test_jpl_horizons_comparison test_jpl_horizons_comparison.cpp)
+add_executable(test_known_occultation_ref test_known_occultation.cpp)
+add_executable(test_localasteroid_real test_localasteroid_real.cpp)
+add_executable(test_mean_to_osculating test_mean_to_osculating.cpp)
+add_executable(test_occultation_engine test_occultation_engine.cpp)
+add_executable(test_oop_presets test_oop_presets.cpp)
+add_executable(test_oop_with_asteroid_lists test_oop_with_asteroid_lists.cpp)
+add_executable(test_orbit_propagator_rkf78 test_orbit_propagator_rkf78.cpp)
+add_executable(test_performance_shadow test_performance_shadow.cpp)
+add_executable(test_propagation_vs_horizons test_propagation_vs_horizons.cpp)
+add_executable(test_shadow_path_geometry test_shadow_path_geometry.cpp)
+add_executable(test_time_utils test_time_utils.cpp)
+add_executable(test_vesta_propagation test_vesta_propagation.cpp)
+add_test(NAME AllnumParsing COMMAND test_allnum_parsing)
+add_test(NAME FrameConsistency COMMAND test_frame_consistency)
+add_test(NAME FrameConsistencyFull COMMAND test_frame_consistency_full)
+add_test(NAME KnownOccultationRef COMMAND test_known_occultation_ref)
+add_test(NAME OccultationEngine COMMAND test_occultation_engine)
+add_test(NAME PerformanceShadow COMMAND test_performance_shadow)
+add_test(NAME ShadowPathGeometry COMMAND test_shadow_path_geometry)
+add_test(NAME TimeUtils COMMAND test_time_utils)
+find_package(GTest REQUIRED)
+message(STATUS "Parsing tests/CMakeLists.txt")
 target_link_libraries(test_agostino_occultation ioccultcalc)
+target_link_libraries(test_allnum_parsing ioccultcalc)
+target_link_libraries(test_asteroid_database_sqlite ioccultcalc)
+target_link_libraries(test_asteroid_list_reader ioccultcalc)
+target_link_libraries(test_asteroid_sqlite ioccultcalc)
+target_link_libraries(test_combined_lists ioccultcalc)
+target_link_libraries(test_frame_consistency ioccultcalc)
+target_link_libraries(test_frame_consistency_full ioccultcalc)
+target_link_libraries(test_jpl_astdys_comparison ioccultcalc GTest::GTest GTest::Main)
+target_link_libraries(test_jpl_horizons_comparison ioccultcalc)
+target_link_libraries(test_known_occultation_ref ioccultcalc)
+target_link_libraries(test_localasteroid_real ioccultcalc)
+target_link_libraries(test_mean_to_osculating ioccultcalc)
+target_link_libraries(test_occultation_engine ioccultcalc)
+target_link_libraries(test_oop_presets ioccultcalc)
+target_link_libraries(test_oop_with_asteroid_lists ioccultcalc)
+target_link_libraries(test_orbit_propagator_rkf78 ioccultcalc)
+target_link_libraries(test_performance_shadow ioccultcalc)
+target_link_libraries(test_propagation_vs_horizons ioccultcalc)
+target_link_libraries(test_shadow_path_geometry ioccultcalc)
+target_link_libraries(test_time_utils ioccultcalc)
+target_link_libraries(test_vesta_propagation ioccultcalc)
+add_executable(test_agostino_full test_agostino_full.cpp)
+target_link_libraries(test_agostino_full ioccultcalc)
