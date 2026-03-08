@@ -28,7 +28,20 @@ Confronto: convertiamo il nostro stato in Ecliptic e confrontiamo con JPL.
   [PASS] Stella: auto-consistenza OK.
 
 ========== 3. ASTEROIDE (posizione astrometrica eliocentrica) ==========
-  [SKIP] jpl_horizons_asteroid_2026mar10.txt ha X,Y,Z=0 (dati non inseriti).
+  Confronto in Eclittico J2000 (nostro stato convertito da equatoriale).
+
+  --- Valori a JD 2461109.500000 (Eclittico J2000 dove indicato) ---
+  JPL (Ecl.)     Pos [AU]: -0.893493 0.711643 -0.064591
+  JPL (Ecl.)     Vel [AU/day]: -0.012253 -0.013922 -0.003436
+  RKF78 (Equat.) Pos [AU]: -0.893888 0.678243 0.223484
+  RKF78 (Equat.) Vel [AU/day]: -0.011512 -0.010727 -0.008170
+  RKF78 (Ecl.)   Pos [AU]: -0.893888 0.711176 -0.064704
+  RKF78 (Ecl.)   Vel [AU/day]: -0.011512 -0.013092 -0.003230
+
+  --- Confronti con JPL ---
+  RKF78 vs JPL:  |Delta pos| [AU]: 0.000622  (tolleranza 0.001000)
+  RKF78 vs JPL:  |Delta vel| [AU/day]: 0.001132  (tolleranza 0.002000)
+  [PASS] Asteroide: posizione e velocità entro tolleranza vs JPL.
 
 ============================================
   RISULTATO: Tutti i confronti eseguiti sono PASS.

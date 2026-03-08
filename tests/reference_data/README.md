@@ -9,6 +9,7 @@
 - **star_reference_jd2461109.5.txt** – (opzionale) Stella per test posizione astrometrica: ra_deg, dec_deg, ref_epoch_jd, pmra_mas, pmdec_mas, parallax_mas; opzionale expected_app_ra_deg, expected_app_dec_deg per confronto.
 - **jpl_horizons_asteroid_2026mar10.txt** – (opzionale) Asteroide vs Sole, Ecliptic J2000, JD 2461109.5: JD=, X=, Y=, Z=, VX=, VY=, VZ= (AU, AU/day).
 - **asteroid_elements_2026mar10.txt** – (opzionale) Elementi equinoziali per propagazione: epoch_jd=, a_au=, h=, k=, p=, q=, lambda_rad=, number=.
+- **asteroid_golden_regression_2026mar10.txt** – Stato propagato 433 Eros a JD 2461109.5 (X,Y,Z,VX,VY,VZ in AU, AU/day). Usato per test di regressione quando non è presente il riferimento JPL.
 - **earth_rotation_test_points.csv** – Punti test per rotazione ITRF (lat, lon, alt_m).
 
 ## Test completo JPL (test_jpl_consistency_full)
@@ -31,7 +32,16 @@ Per confronto con `types.h` e `coordinates.cpp`:
 | Obliquità J2000  | 23.4392911°            | `OBLIQUITY_J2000`     |
 | GM Terra         | 398600.435436 km³/s²   | (force_model / SPICE) |
 
+## Test stella e asteroide (conclusi)
+
+- **Stella (posizione apparente)**: `star_reference_jd2461109.5.txt` contiene già `expected_app_ra_deg` e `expected_app_dec_deg` (regression test). Per un confronto con riferimento esterno, sostituire con i valori "Apparent RA/Dec" da JPL Horizons per la stessa stella a JD 2461109.5.
+- **Asteroide**: Sono forniti elementi reali 433 Eros in `asteroid_elements_2026mar10.txt`. Per il confronto con JPL:
+  1. Da browser: https://ssd.jpl.nasa.gov/horizons/ → Target 433, Center 10 (Sun), 2026-Mar-10, Ephemeris Type Vectors, Reference frame Ecliptic J2000, Output units AU-D. Copiare X,Y,Z,VX,VY,VZ nel file `jpl_horizons_asteroid_2026mar10.txt` (formato chiave=valore).
+  2. Oppure: `cd tests/reference_data && python3 fetch_asteroid_jpl.py 433` (richiede che l’API Horizons risponda; in caso di errore usare il metodo manuale).
+
+Senza riferimento JPL per l’asteroide, il test usa il golden `asteroid_golden_regression_2026mar10.txt` (regressione sulla nostra propagazione); con JPL si popola `jpl_horizons_asteroid_2026mar10.txt`.
+
 ## Come aggiornare
 
-1. JPL Horizons: https://ssd.jpl.nasa.gov/horizons/ → Ephemeris Type: Vectors, Target: 399 (Earth) o 433 (Eros), Time: JD desiderato; Reference frame: Ecliptic J2000.0; Output units: KM-S (poi convertire in AU, AU/day se serve).
+1. JPL Horizons: https://ssd.jpl.nasa.gov/horizons/ → Ephemeris Type: Vectors, Target: 399 (Earth) o 433 (Eros), Time: JD desiderato; Reference frame: Ecliptic J2000.0; Output units: KM-S (poi convertire in AU, AU/day se serve) oppure AU-D per gli asteroidi.
 2. IOTA: cercare occultazioni Eros documentate e salvare JSON con campi: star_ra_deg, star_dec_deg, central_time_utc, path_observed_km, duration_sec, path_width_km.

@@ -17,6 +17,7 @@
 #include "ioccultcalc/orbital_elements.h"
 #include "ioccultcalc/types.h"
 #include "ioccultcalc/force_model.h"
+#include "ioccultcalc/asteroid_perturbations_spk.h"
 #include <vector>
 #include <functional>
 
@@ -131,6 +132,16 @@ public:
     std::vector<OrbitState> propagateWithOutput(const OrbitState& initialState,
                                                 const JulianDate& targetEpoch,
                                                 double outputStep = 1.0);
+    
+    /**
+     * @brief Imposta configurazione perturbazioni asteroidi (SPK vs AST17)
+     */
+    void setAsteroidPerturbationConfig(const AsteroidPerturbationConfig& config);
+    
+    /**
+     * @brief Ottiene la configurazione perturbazioni asteroidi attuale
+     */
+    AsteroidPerturbationConfig getAsteroidPerturbationConfig() const;
     
     /**
      * @brief Imposta opzioni propagatore

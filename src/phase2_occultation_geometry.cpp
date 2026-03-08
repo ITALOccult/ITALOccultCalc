@@ -6,6 +6,8 @@
 #include "phase2_occultation_geometry.h"
 #include "topocentric.h"
 #include "astdyn_wrapper.h"
+#include <astdyn/core/Constants.hpp>
+#include <astdyn/time/TimeScale.hpp>
 // Forward declare OccultationAnalyzer to avoid ShadowPoint redefinition conflict
 namespace ioccultcalc { class OccultationAnalyzer; }
 #include <cmath>
@@ -27,18 +29,19 @@ namespace ioccultcalc { class OccultationAnalyzer; }
 
 namespace ioccultcalc {
 
-// Funzione helper per distanza angolare tra due punti (RA/Dec in gradi)
+namespace ac = astdyn::constants;
+namespace at = astdyn::time;
+
+// Distanza angolare tra due punti (RA/Dec in gradi)
 double angularDistanceDeg(double ra1, double dec1, double ra2, double dec2) {
-    double r1 = ra1 * DEG_TO_RAD;
-    double d1 = dec1 * DEG_TO_RAD;
-    double r2 = ra2 * DEG_TO_RAD;
-    double d2 = dec2 * DEG_TO_RAD;
-    
-    double cos_dist = std::sin(d1) * std::sin(d2) + 
-                      std::cos(d1) * std::cos(d2) * std::cos(r1 - r2);
+    double r1 = ra1 * ac::DEG_TO_RAD;
+    double d1 = dec1 * ac::DEG_TO_RAD;
+    double r2 = ra2 * ac::DEG_TO_RAD;
+    double d2 = dec2 * ac::DEG_TO_RAD;
+    double cos_dist = std::sin(d1) * std::sin(d2) + std::cos(d1) * std::cos(d2) * std::cos(r1 - r2);
     if (cos_dist > 1.0) cos_dist = 1.0;
     if (cos_dist < -1.0) cos_dist = -1.0;
-    return std::acos(cos_dist) * RAD_TO_DEG;
+    return std::acos(cos_dist) * ac::RAD_TO_DEG;
 }
 
 class Phase2OccultationGeometry::Impl {
@@ -70,17 +73,16 @@ public:
             }
 
             std::cout << "[PHASE2] Retrieved " << obsSet.observations.size() << " observations. "
-                      << "Time range: MJD " << (obsSet.observations.front().epoch.jd - 2400000.5)
-                      << " to " << (obsSet.observations.back().epoch.jd - 2400000.5) << std::endl;
+                      << "Time range: MJD " << at::jd_to_mjd(obsSet.observations.front().epoch.jd)
+                      << " to " << at::jd_to_mjd(obsSet.observations.back().epoch.jd) << std::endl;
 
-            // Convert ObservationSet to RWOObservation for AstDynOrbitFitter
             std::vector<RWOObservation> rwoList;
             for (const auto& obs : obsSet.observations) {
                 RWOObservation rwo;
                 rwo.designation = designation;
-                rwo.mjd_utc = obs.epoch.jd - 2400000.5;
-                rwo.ra_deg = obs.obs.ra * RAD_TO_DEG;
-                rwo.dec_deg = obs.obs.dec * RAD_TO_DEG;
+                rwo.mjd_utc = at::jd_to_mjd(obs.epoch.jd);
+                rwo.ra_deg = obs.obs.ra * ac::RAD_TO_DEG;
+                rwo.dec_deg = obs.obs.dec * ac::RAD_TO_DEG;
                 rwo.ra_sigma_arcsec = 0.5; // Default if not available
                 rwo.dec_sigma_arcsec = 0.5;
                 rwo.obs_code = obs.observatoryCode;
@@ -103,10 +105,10 @@ public:
             initial.name = aelem.object_name;
             initial.a = aelem.semi_major_axis;
             initial.e = aelem.eccentricity;
-            initial.i = aelem.inclination * RAD_TO_DEG;
-            initial.Omega = aelem.longitude_asc_node * RAD_TO_DEG;
-            initial.omega = aelem.argument_perihelion * RAD_TO_DEG;
-            initial.M = aelem.mean_anomaly * RAD_TO_DEG;
+            initial.i = aelem.inclination * ac::RAD_TO_DEG;
+            initial.Omega = aelem.longitude_asc_node * ac::RAD_TO_DEG;
+            initial.omega = aelem.argument_perihelion * ac::RAD_TO_DEG;
+            initial.M = aelem.mean_anomaly * ac::RAD_TO_DEG;
             initial.epoch_mjd = aelem.epoch_mjd_tdb;
             initial.H = aelem.magnitude;
             initial.G = aelem.mag_slope;
@@ -139,10 +141,10 @@ public:
                 // Update wrapper
                 astdyn->setKeplerianElements(
                     fitRes.fitted_elements.a, fitRes.fitted_elements.e, 
-                    fitRes.fitted_elements.i * DEG_TO_RAD,
-                    fitRes.fitted_elements.Omega * DEG_TO_RAD, 
-                    fitRes.fitted_elements.omega * DEG_TO_RAD,
-                    fitRes.fitted_elements.M * DEG_TO_RAD,
+                    fitRes.fitted_elements.i * ac::DEG_TO_RAD,
+                    fitRes.fitted_elements.Omega * ac::DEG_TO_RAD,
+                    fitRes.fitted_elements.omega * ac::DEG_TO_RAD,
+                    fitRes.fitted_elements.M * ac::DEG_TO_RAD,
                     fitRes.fitted_elements.epoch_mjd,
                     designation,
                     astdyn::propagation::HighPrecisionPropagator::InputFrame::EQUATORIAL,
@@ -190,8 +192,14 @@ public:
         
         double t_ref = star.closest_approach_mjd;
         if (t_ref == 0) {
-           // Fallback if MJD is not set (should not happen with new Phase 1)
-           // But just in case, use a default date or error
+            // Candidato senza epoca CA valida (es. non da Phase1 o inserito a mano).
+            // Evitare finestra intorno a MJD 0: segnalare evento non valido.
+            event.is_valid = false;
+            event.t_ca_mjd = 0;
+            event.min_dist_mas = 0;
+            std::cerr << "[PHASE2] Skip candidate star " << star.source_id
+                      << ": closest_approach_mjd not set (t_ref==0). Set from Phase1 or provide valid MJD TDB." << std::endl;
+            return event;
         }
 
         double t_start = t_ref - (config.search_window_sec / 86400.0);
@@ -415,12 +423,11 @@ bool Phase2OccultationGeometry::loadAsteroidFromJSON(int number, const std::stri
         auto data = j[s_num];
         
         double epoch = data["epoch"];
-        if (epoch > 2400000.5) epoch -= 2400000.5;
+        if (epoch > at::mjd_to_jd(0)) epoch = at::jd_to_mjd(epoch);
 
-        double deg2rad = DEG_TO_RAD;
         pimpl_->astdyn->setKeplerianElements(
-            data["a"], data["e"], (double)data["i"] * deg2rad, 
-            (double)data["om"] * deg2rad, (double)data["w"] * deg2rad, (double)data["ma"] * deg2rad, 
+            data["a"], data["e"], (double)data["i"] * ac::DEG_TO_RAD,
+            (double)data["om"] * ac::DEG_TO_RAD, (double)data["w"] * ac::DEG_TO_RAD, (double)data["ma"] * ac::DEG_TO_RAD,
             epoch, s_num, astdyn::propagation::HighPrecisionPropagator::InputFrame::ECLIPTIC,
             data.value("H", 0.0), data.value("G", 0.15), data.value("diameter", 0.0)
         );
@@ -436,10 +443,12 @@ bool Phase2OccultationGeometry::loadAsteroidFromDB(int number) {
         AsteroidSqliteDatabase db;
         auto orbital = db.getOrbitalElements(number);
         if (orbital) {
+            // OrbitalElements da getOrbitalElements() sono in radianti (i, Omega, omega, M).
+            // setKeplerianElements si aspetta radianti per gli angoli.
             pimpl_->astdyn->setKeplerianElements(
                 orbital->a, orbital->e, orbital->i,
                 orbital->Omega, orbital->omega, orbital->M,
-                orbital->epoch.jd - 2400000.5,
+                at::jd_to_mjd(orbital->epoch.jd),
                 std::to_string(number),
                 astdyn::propagation::HighPrecisionPropagator::InputFrame::ECLIPTIC,
                 orbital->H, orbital->G, orbital->diameter

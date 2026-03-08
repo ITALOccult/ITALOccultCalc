@@ -70,7 +70,6 @@ find_path(STARMAP_INCLUDE_DIR starmap/StarMap.h PATHS ${LOCAL_INSTALL_DIR}/inclu
 add_subdirectory(external/IOC_Earth EXCLUDE_FROM_ALL)
 set(IOC_EARTH_LIB ioc_earth)
 set(IOC_EARTH_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external/IOC_Earth/include")
-set(IOC_EARTH_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external/IOC_Earth/include")
 
 # -----------------------------------------------------
 
@@ -119,10 +118,12 @@ set(SOURCES
     src/jpl_ephemeris.cpp
     src/orbit_propagator.cpp
     src/ra15_integrator.cpp
+    src/gauss_asteroid_position.cpp
     src/jpl_horizons_client.cpp
     src/jpl_de_downloader.cpp
     src/spk_reader.cpp
     src/spice_spk_reader.cpp
+    src/asteroid_perturbations_spk.cpp
     src/jpleph.cpp
     src/initial_orbit.cpp
     src/orbfit_wrapper.cpp
@@ -175,9 +176,11 @@ set(HEADERS
     include/ioccultcalc/jpl_ephemeris.h
     include/ioccultcalc/orbit_propagator.h
     include/ioccultcalc/jpl_horizons_client.h
+    include/ioccultcalc/gauss_asteroid_position.h
     include/ioccultcalc/jpl_de_downloader.h
     include/ioccultcalc/spk_reader.h
     include/ioccultcalc/spice_spk_reader.h
+    include/ioccultcalc/asteroid_perturbations_spk.h
     include/ioccultcalc/jpleph.h
     include/ioccultcalc/jpl_int.h
     include/ioccultcalc/get_bin.h
@@ -296,6 +299,7 @@ set_source_files_properties(
     src/phase1_candidate_screening.cpp 
     src/phase2_occultation_geometry.cpp 
     src/astdyn_interface.cpp 
+    src/gauss_asteroid_position.cpp 
     PROPERTIES 
     INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/external/ITALOccultLibrary/astdyn/include"
 )

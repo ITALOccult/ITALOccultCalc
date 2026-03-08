@@ -35,7 +35,7 @@ class SPICESPKReader::Impl {
 public:
     int handle;
     bool loaded;
-    std::string filepath;
+    std::vector<std::string> loadedPaths;
     
     // Cache per interpolazione Chebyshev
     static constexpr int CACHE_SIZE = 10;
@@ -44,7 +44,6 @@ public:
     std::vector<CacheEntry> cache;
     
     Impl() : handle(-1), loaded(false) {
-        // Inizializza CSPICE error handling
         erract_c("SET", 0, const_cast<char*>("RETURN"));
         
         // Sopprime output errori SPICE su stderr (evita spam da asteroidi mancanti)
@@ -91,9 +90,31 @@ public:
             return false;
         }
         
-        filepath = path;
+        loadedPaths.push_back(path);
         loaded = true;
         
+        std::cerr << "SPICESPKReader: Loaded " << path << std::endl;
+        return true;
+    }
+    
+    /** Carica un kernel aggiuntivo senza scaricare quelli già caricati. */
+    bool loadAdditionalFile(const std::string& path) {
+        FILE* f = fopen(path.c_str(), "rb");
+        if (!f) {
+            std::cerr << "SPICESPKReader: File not found: " << path << std::endl;
+            return false;
+        }
+        fclose(f);
+        furnsh_c(path.c_str());
+        if (failed_c()) {
+            char msg[1841];
+            getmsg_c("SHORT", 1840, msg);
+            std::cerr << "SPICE error loading additional " << path << ": " << msg << std::endl;
+            reset_c();
+            return false;
+        }
+        loadedPaths.push_back(path);
+        if (!loaded) loaded = true;
         std::cerr << "SPICESPKReader: Loaded " << path << std::endl;
         return true;
     }
@@ -236,11 +257,12 @@ public:
     }
     
     void close() {
-        if (loaded) {
-            // CSPICE richiede unload dei kernel
-            unload_c(filepath.c_str());
+        if (loaded && !loadedPaths.empty()) {
+            for (const auto& p : loadedPaths) {
+                unload_c(p.c_str());
+            }
+            loadedPaths.clear();
             loaded = false;
-            filepath.clear();
         }
     }
 };
@@ -251,6 +273,10 @@ SPICESPKReader::~SPICESPKReader() = default;
 
 bool SPICESPKReader::loadFile(const std::string& filepath) {
     return pImpl->loadFile(filepath);
+}
+
+bool SPICESPKReader::loadAdditionalFile(const std::string& filepath) {
+    return pImpl->loadAdditionalFile(filepath);
 }
 
 bool SPICESPKReader::ensureFileLoaded(const std::string& name) {
@@ -276,6 +302,16 @@ bool SPICESPKReader::ensureFileLoaded(const std::string& name) {
     return loadFile(filepath);
 }
 
+bool SPICESPKReader::ensureDe441Loaded() {
+    if (ensureFileLoaded("de441_part-2.bsp"))
+        return true;
+    if (ensureFileLoaded("de440.bsp"))
+        return true;
+    if (ensureFileLoaded("de441.bsp"))
+        return true;
+    return false;
+}
+
 Vector3D SPICESPKReader::getPosition(int bodyId, double jd, int centerId) {
     auto [pos, vel] = pImpl->getState(bodyId, jd, centerId);
     return pos;
@@ -290,8 +326,26 @@ bool SPICESPKReader::isLoaded() const {
 }
 
 std::vector<int> SPICESPKReader::getAvailableBodies() const {
-    // TODO: implementare enumerazione corpi
-    return {};
+    std::vector<int> out;
+    if (pImpl->loadedPaths.empty())
+        return out;
+    
+    // CSPICE: find all body IDs in loaded SPK files (union)
+    SPICEINT_CELL(ids, 2048);
+    scard_c(0, &ids);
+    
+    for (const auto& path : pImpl->loadedPaths) {
+        spkobj_c(path.c_str(), &ids);
+        if (failed_c()) {
+            reset_c();
+            continue;
+        }
+    }
+    
+    SpiceInt n = card_c(&ids);
+    for (SpiceInt i = 0; i < n; ++i)
+        out.push_back(static_cast<int>(SPICE_CELL_ELEM_I(&ids, i)));
+    return out;
 }
 
 void SPICESPKReader::close() {

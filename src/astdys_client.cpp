@@ -3,6 +3,7 @@
 #include "ioccultcalc/orbit_propagator.h"
 #include "ioccultcalc/time_utils.h"
 #include "ioccultcalc/allnum_database.h"
+#include <astdyn/time/TimeScale.hpp>
 #include <curl/curl.h>
 #include <sstream>
 #include <iostream>
@@ -233,7 +234,7 @@ AstDynEquinoctialElements AstDysClient::parseEquinoctialFile(const std::string& 
             std::istringstream iss_line(line.substr(3)); // Salta "MJD"
             double mjd;
             iss_line >> mjd;
-            elem.epoch.jd = mjd + 2400000.5; // Converti MJD in JD
+            elem.epoch.jd = astdyn::time::mjd_to_jd(mjd);
             continue;
         }
         
@@ -321,10 +322,10 @@ OrbitalElements AstDysClient::getRecentElements(const std::string& designation) 
             // ma OrbitalElements li memorizza in RADIANTI.
             
             // Epoch (MJD) - posizioni 15-27 (0-indexed: 15-28 escluso)
-            // CONVERSIONE: JD = MJD + 2400000.5
+            // Epoch in MJD → JD
             std::string mjd_str = line.substr(15, 13);
             double mjd = std::stod(mjd_str);
-            elem.epoch.jd = mjd + 2400000.5;
+            elem.epoch.jd = astdyn::time::mjd_to_jd(mjd);
             
             // a (semiasse maggiore) - posizioni 30-52 (0-indexed: 30-53 escluso)
             // UNITÀ: AU (formato scientifico, nessuna conversione)

@@ -22,16 +22,18 @@ struct CandidateStar {
     double dec_deg;
     double phot_g_mean_mag;
     double closest_approach_arcsec;
+    /** Epoca del closest approach in MJD TDB (coerente con Phase1Config e con getApparentStateGeocentric). */
     double closest_approach_mjd;
     double pmra;
     double pmdec;
     double parallax;
 };
 
+/** Configurazione Fase 1. Tutte le epoche in MJD TDB (Tempo Dinamico Baricentrico). */
 struct Phase1Config {
     std::string asteroid_name;
-    double start_mjd_tdb;
-    double end_mjd_tdb;
+    double start_mjd_tdb;  ///< Inizio finestra (MJD TDB)
+    double end_mjd_tdb;    ///< Fine finestra (MJD TDB)
     double corridor_width_deg = 0.5;
     double max_magnitude = 18.0;
     double threshold_arcsec = 10.0; // Soglia per il CA iniziale

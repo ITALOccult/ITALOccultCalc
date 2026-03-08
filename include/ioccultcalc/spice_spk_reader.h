@@ -40,12 +40,27 @@ public:
     bool loadFile(const std::string& filepath);
     
     /**
+     * @brief Carica un kernel SPK aggiuntivo (senza scaricare quelli già caricati)
+     * 
+     * @param filepath Percorso file SPK (es. codes_300ast_20100725.bsp)
+     * @return true se caricato con successo
+     */
+    bool loadAdditionalFile(const std::string& filepath);
+    
+    /**
      * @brief Scarica file se necessario
      * 
      * @param name Nome file (es: "codes_300ast_20100725.bsp")
      * @return true se disponibile
      */
     bool ensureFileLoaded(const std::string& name = "codes_300ast_20100725.bsp");
+    
+    /**
+     * @brief Carica DE441 (o fallback DE440) da $HOME/.ioccultcalc/ephemerides/
+     * Prova prima de441.bsp, se non trovato carica de440.bsp.
+     * @return true se almeno uno dei due è stato caricato
+     */
+    bool ensureDe441Loaded();
     
     /**
      * @brief Ottieni posizione corpo

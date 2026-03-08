@@ -7,6 +7,7 @@
 #include "ioccultcalc/star_catalog.h"
 #include <vector>
 #include <memory>
+#include <utility>
 
 namespace ioccultcalc {
 
@@ -38,6 +39,10 @@ public:
     static Vector3D getEarthPosition(const JulianDate& jd);
     static Vector3D getEarthVelocity(const JulianDate& jd);
     static Vector3D getSunPosition(const JulianDate& jd);
+    
+    /** Posizione/velocità asteroide da SPK (NAIF ID = 2000000 + number, es. 433 → 2000433). Richiede kernel asteroidi caricato. */
+    static Vector3D getAsteroidPosition(int asteroidNumber, const JulianDate& jd);
+    static std::pair<Vector3D, Vector3D> getAsteroidState(int asteroidNumber, const JulianDate& jd);
     
     static double calculateMagnitudeHG(double H, double G, double r, double delta, double alpha_rad);
 

@@ -47,12 +47,11 @@ int main(int argc, char* argv[]) {
         std::string kernelsDir = homeDir + "/.ioccultcalc/ephemerides/";
         
         // Try to load default DE440
-        if (!spk->loadFile(kernelsDir + "de440.bsp")) {
-             // Fallback to what we have
-             if (!spk->loadFile(kernelsDir + "de441_part-2.bsp")) {
-                 std::cerr << "Critical: Failed to load DE ephemeris." << std::endl;
-                 return 1;
-             }
+        if (!spk->loadFile(kernelsDir + "de441_part-2.bsp") && !spk->loadFile(kernelsDir + "de440.bsp") && !spk->loadFile(kernelsDir + "de441.bsp")) {
+            std::cerr << "Critical: Failed to load DE ephemeris.\n";
+            std::cerr << "  Put de441_part-2.bsp, de440.bsp, or de441.bsp in:\n  " << kernelsDir << "\n";
+            std::cerr << "  Download from: https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/\n";
+            return 1;
         }
         std::cout << "Ephemeris loaded." << std::endl;
         

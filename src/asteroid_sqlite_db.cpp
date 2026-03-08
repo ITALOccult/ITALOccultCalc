@@ -1,5 +1,6 @@
 #include "ioccultcalc/asteroid_sqlite_db.h"
 #include "ioccultcalc/data_manager.h"
+#include <astdyn/time/TimeScale.hpp>
 #include <iostream>
 #include <sstream>
 
@@ -92,7 +93,7 @@ std::optional<OrbitalElements> AsteroidSqliteDatabase::getOrbitalElements(int mp
     elem.Omega = props->om * DEG_TO_RAD;
     elem.omega = props->w * DEG_TO_RAD;
     elem.M = props->ma * DEG_TO_RAD;
-    elem.epoch.jd = props->epoch + 2400000.5;
+    elem.epoch.jd = astdyn::time::mjd_to_jd(props->epoch);
     elem.H = props->H;
     elem.diameter = props->diameter;
     

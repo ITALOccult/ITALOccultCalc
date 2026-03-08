@@ -16,9 +16,11 @@
 #include <map>
 #include "ioc_gaialib/unified_gaia_catalog.h"
 class MapPathRenderer;
+#ifndef IOC_EARTH_STUB
 #include "ioc_earth/OccultationRenderer.h"
 #include "ioc_earth/SkyMapRenderer.h"
 #include "ioc_earth/FinderChartRenderer.h"
+#endif
 
 namespace ioccultcalc {
 
@@ -1043,6 +1045,7 @@ bool OutputManager::writeIOccultCard(const OutputEvent& event, const std::string
 }
 
 std::string OutputManager::generateGroundMapImage(const OutputEvent& event, int width, int height, const std::string& output_path) {
+#ifndef IOC_EARTH_STUB
     // 1. Prepare Data
     ioc_earth::OccultationData data;
     data.event_id = "EVT_" + std::to_string(event.asteroid_number);
@@ -1133,11 +1136,19 @@ std::string OutputManager::generateGroundMapImage(const OutputEvent& event, int 
         std::cerr << "Render EXCEPTION: " << e.what() << std::endl;
     }
     return "";
+#else
+    (void)event;
+    (void)width;
+    (void)height;
+    (void)output_path;
+    return "";
+#endif
 }
 
 std::string OutputManager::generateSkyMapImage(const OutputEvent& event,
                                               int width, int height,
                                               const std::string& output_path) {
+#ifndef IOC_EARTH_STUB
     // 1. Query Stars around Target
     double ra = event.star_ra_deg;
     double dec = event.star_dec_deg;
@@ -1190,11 +1201,19 @@ std::string OutputManager::generateSkyMapImage(const OutputEvent& event,
         return output_path;
     }
     return "";
+#else
+    (void)event;
+    (void)width;
+    (void)height;
+    (void)output_path;
+    return "";
+#endif
 }
 
 std::string OutputManager::generateFinderChartImage(const OutputEvent& event,
                                                    int width, int height,
                                                    const std::string& output_path) {
+#ifndef IOC_EARTH_STUB
     // 1. Query Stars around Target
     double ra = event.star_ra_deg;
     double dec = event.star_dec_deg;
@@ -1253,6 +1272,13 @@ std::string OutputManager::generateFinderChartImage(const OutputEvent& event,
         return output_path;
     }
     return "";
+#else
+    (void)event;
+    (void)width;
+    (void)height;
+    (void)output_path;
+    return "";
+#endif
 }
 
 std::string OutputManager::generateApproachChartImage(const OutputEvent& event,

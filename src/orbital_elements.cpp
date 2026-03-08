@@ -1,8 +1,11 @@
 #include "ioccultcalc/orbital_elements.h"
 #include "orbital_conversions.h"
+#include <astdyn/core/Constants.hpp>
 #include <cmath>
 
 namespace ioccultcalc {
+
+namespace ac = astdyn::constants;
 
 void AstDynEquinoctialElements::toKeplerian(double& ecc, double& inc, double& omega,
                                      double& Omega, double& M) const {
@@ -16,19 +19,19 @@ void AstDynEquinoctialElements::toKeplerian(double& ecc, double& inc, double& om
     
     // Longitudine del nodo ascendente
     Omega = atan2(p, q);
-    if (Omega < 0) Omega += 2.0 * M_PI;
+    if (Omega < 0) Omega += ac::TWO_PI;
     
     // Argomento del periapside
     double omega_plus_Omega = atan2(h, k);
-    if (omega_plus_Omega < 0) omega_plus_Omega += 2.0 * M_PI;
+    if (omega_plus_Omega < 0) omega_plus_Omega += ac::TWO_PI;
     
     omega = omega_plus_Omega - Omega;
-    if (omega < 0) omega += 2.0 * M_PI;
+    if (omega < 0) omega += ac::TWO_PI;
     
     // Anomalia media
     M = lambda - omega_plus_Omega;
-    while (M < 0) M += 2.0 * M_PI;
-    while (M >= 2.0 * M_PI) M -= 2.0 * M_PI;
+    while (M < 0) M += ac::TWO_PI;
+    while (M >= ac::TWO_PI) M -= ac::TWO_PI;
 }
 
 AstDynEquinoctialElements AstDynEquinoctialElements::fromKeplerian(double a, double ecc, double inc,
@@ -48,8 +51,8 @@ AstDynEquinoctialElements AstDynEquinoctialElements::fromKeplerian(double a, dou
     elem.lambda = M + omega_plus_Omega;
     
     // Normalizza lambda a [0, 2π)
-    while (elem.lambda < 0) elem.lambda += 2.0 * M_PI;
-    while (elem.lambda >= 2.0 * M_PI) elem.lambda -= 2.0 * M_PI;
+    while (elem.lambda < 0) elem.lambda += ac::TWO_PI;
+    while (elem.lambda >= ac::TWO_PI) elem.lambda -= ac::TWO_PI;
     
     return elem;
 }
@@ -203,7 +206,7 @@ OrbitalElements cartesianToOrbitalElements(
     if (n > 1e-10) {
         elem.Omega = acos(n_vec.x / n);
         if (n_vec.y < 0) {
-            elem.Omega = 2.0 * M_PI - elem.Omega;
+            elem.Omega = ac::TWO_PI - elem.Omega;
         }
     } else {
         // Orbita equatoriale
@@ -214,12 +217,12 @@ OrbitalElements cartesianToOrbitalElements(
     if (n > 1e-10 && elem.e > 1e-10) {
         elem.omega = acos(n_vec.dot(e_vec) / (n * elem.e));
         if (e_vec.z < 0) {
-            elem.omega = 2.0 * M_PI - elem.omega;
+            elem.omega = ac::TWO_PI - elem.omega;
         }
     } else if (elem.e > 1e-10) {
         // Orbita equatoriale ma non circolare
         elem.omega = atan2(e_vec.y, e_vec.x);
-        if (elem.omega < 0) elem.omega += 2.0 * M_PI;
+        if (elem.omega < 0) elem.omega += ac::TWO_PI;
     } else {
         // Orbita circolare
         elem.omega = 0.0;
@@ -230,18 +233,18 @@ OrbitalElements cartesianToOrbitalElements(
     if (elem.e > 1e-10) {
         nu = acos(e_vec.dot(position) / (elem.e * r));
         if (position.dot(velocity) < 0) {
-            nu = 2.0 * M_PI - nu;
+            nu = ac::TWO_PI - nu;
         }
     } else {
         // Orbita circolare: usa argomento di latitudine
         if (n > 1e-10) {
             nu = acos(n_vec.dot(position) / (n * r));
             if (position.z < 0) {
-                nu = 2.0 * M_PI - nu;
+                nu = ac::TWO_PI - nu;
             }
         } else {
             nu = atan2(position.y, position.x);
-            if (nu < 0) nu += 2.0 * M_PI;
+            if (nu < 0) nu += ac::TWO_PI;
         }
     }
     
@@ -269,8 +272,8 @@ OrbitalElements cartesianToOrbitalElements(
     elem.M = E - elem.e * sin(E);
     
     // Normalizza a [0, 2π)
-    while (elem.M < 0) elem.M += 2.0 * M_PI;
-    while (elem.M >= 2.0 * M_PI) elem.M -= 2.0 * M_PI;
+    while (elem.M < 0) elem.M += ac::TWO_PI;
+    while (elem.M >= ac::TWO_PI) elem.M -= ac::TWO_PI;
     
     return elem;
 }

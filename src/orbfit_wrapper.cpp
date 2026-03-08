@@ -5,11 +5,16 @@
 
 #include "ioccultcalc/orbfit_wrapper.h"
 #include "ioccultcalc/coordinates.h"
+#include <astdyn/core/Constants.hpp>
+#include <astdyn/time/TimeScale.hpp>
 #include <cmath>
 #include <iostream>
 #include <cstring>
 
 namespace ioccultcalc {
+
+namespace ac = astdyn::constants;
+namespace at = astdyn::time;
 
 // Static members
 bool OrbFitWrapper::s_initialized = false;
@@ -90,20 +95,6 @@ extern "C" {
 namespace {
 
 /**
- * @brief Converte Modified Julian Date (MJD) in Julian Date (JD)
- */
-inline double mjd_to_jd(double mjd) {
-    return mjd + 2400000.5;
-}
-
-/**
- * @brief Converte Julian Date (JD) in Modified Julian Date (MJD)
- */
-inline double jd_to_mjd(double jd) {
-    return jd - 2400000.5;
-}
-
-/**
  * @brief Converte elementi orbitali da formato OrbFit a OrbitalElements
  * 
  * OrbFit usa:
@@ -114,7 +105,7 @@ inline double jd_to_mjd(double jd) {
  */
 OrbitalElements convertFromOrbFit(const double* elem, const char* eltype, double epoch_mjd) {
     OrbitalElements result;
-    result.epoch = JulianDate(mjd_to_jd(epoch_mjd));
+    result.epoch = JulianDate(at::mjd_to_jd(epoch_mjd));
     
     // OrbFit può ritornare diversi tipi di elementi
     std::string type(eltype, 3);
@@ -123,23 +114,23 @@ OrbitalElements convertFromOrbFit(const double* elem, const char* eltype, double
         // Keplerian: a, e, i, Omega, omega, M
         result.a = elem[0];
         result.e = elem[1];
-        result.i = elem[2] * 180.0 / M_PI;  // rad → deg
-        result.Omega = elem[3] * 180.0 / M_PI;
-        result.omega = elem[4] * 180.0 / M_PI;
-        result.M = elem[5] * 180.0 / M_PI;
+        result.i = elem[2] * ac::RAD_TO_DEG;  // rad → deg
+        result.Omega = elem[3] * ac::RAD_TO_DEG;
+        result.omega = elem[4] * ac::RAD_TO_DEG;
+        result.M = elem[5] * ac::RAD_TO_DEG;
     }
     else if (type == "COM" || type == "com") {
         // Cometary: q, e, i, Omega, omega, T_peri
         double q = elem[0];
         result.e = elem[1];
         result.a = q / (1.0 - result.e);  // a = q / (1-e)
-        result.i = elem[2] * 180.0 / M_PI;
-        result.Omega = elem[3] * 180.0 / M_PI;
-        result.omega = elem[4] * 180.0 / M_PI;
+        result.i = elem[2] * ac::RAD_TO_DEG;
+        result.Omega = elem[3] * ac::RAD_TO_DEG;
+        result.omega = elem[4] * ac::RAD_TO_DEG;
         double T_peri = elem[5];  // MJD
         // Calcola M dalla T_peri (semplificato)
-        double n = std::sqrt(0.01720209895 * 0.01720209895 / (result.a * result.a * result.a));
-        result.M = n * (epoch_mjd - T_peri) * 180.0 / M_PI;
+        double n = std::sqrt(ac::GMS / (result.a * result.a * result.a));
+        result.M = n * (epoch_mjd - T_peri) * ac::RAD_TO_DEG;
         while (result.M < 0) result.M += 360.0;
         while (result.M >= 360.0) result.M -= 360.0;
     }
@@ -147,10 +138,10 @@ OrbitalElements convertFromOrbFit(const double* elem, const char* eltype, double
         std::cerr << "Warning: Unknown OrbFit element type '" << type << "', assuming KEP" << std::endl;
         result.a = elem[0];
         result.e = elem[1];
-        result.i = elem[2] * RAD_TO_DEG;
-        result.Omega = elem[3] * RAD_TO_DEG;
-        result.omega = elem[4] * RAD_TO_DEG;
-        result.M = elem[5] * RAD_TO_DEG;
+        result.i = elem[2] * ac::RAD_TO_DEG;
+        result.Omega = elem[3] * ac::RAD_TO_DEG;
+        result.omega = elem[4] * ac::RAD_TO_DEG;
+        result.M = elem[5] * ac::RAD_TO_DEG;
     }
     
     return result;
@@ -163,12 +154,12 @@ void convertToOrbFit(const OrbitalElements& elements, double* elem, double& epoc
     // OrbFit KEP format: a, e, i, Omega, omega, M (radianti, eclittica J2000)
     elem[0] = elements.a;
     elem[1] = elements.e;
-    elem[2] = elements.i * DEG_TO_RAD;
-    elem[3] = elements.Omega * DEG_TO_RAD;
-    elem[4] = elements.omega * DEG_TO_RAD;
-    elem[5] = elements.M * DEG_TO_RAD;
-    
-    epoch_mjd = jd_to_mjd(elements.epoch.jd);
+elem[2] = elements.i * ac::DEG_TO_RAD;
+    elem[3] = elements.Omega * ac::DEG_TO_RAD;
+    elem[4] = elements.omega * ac::DEG_TO_RAD;
+    elem[5] = elements.M * ac::DEG_TO_RAD;
+
+    epoch_mjd = at::jd_to_mjd(elements.epoch.jd);
 }
 
 } // anonymous namespace
@@ -210,9 +201,9 @@ std::vector<OrbFitWrapper::Solution> OrbFitWrapper::gauss(
     
     // Prepare input arrays
     double tobs[3] = {
-        jd_to_mjd(obs1.epoch.jd),
-        jd_to_mjd(obs2.epoch.jd),
-        jd_to_mjd(obs3.epoch.jd)
+        at::jd_to_mjd(obs1.epoch.jd),
+        at::jd_to_mjd(obs2.epoch.jd),
+        at::jd_to_mjd(obs3.epoch.jd)
     };
     
     double alpha[3] = {
@@ -293,8 +284,8 @@ OrbFitWrapper::Solution OrbFitWrapper::vaisala(
     
     // Prepare input arrays
     double tobs[2] = {
-        jd_to_mjd(obs1.epoch.jd),
-        jd_to_mjd(obs2.epoch.jd)
+        at::jd_to_mjd(obs1.epoch.jd),
+        at::jd_to_mjd(obs2.epoch.jd)
     };
     
     double alpha[2] = {

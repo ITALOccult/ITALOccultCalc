@@ -122,12 +122,12 @@ int main(int argc, char* argv[]) {
         auto spk = std::make_shared<SPICESPKReader>();
         std::string kernelsDir = homeDir + "/.ioccultcalc/ephemerides/";
         
-        if (!spk->loadFile(kernelsDir + "de440.bsp")) {
-             // Fallback
-             if (!spk->loadFile(kernelsDir + "de441_part-2.bsp")) {
-                 std::cerr << "Critical: Failed to load DE ephemeris." << std::endl;
-                 return 1;
-             }
+        // Prefer de441_part-2.bsp, then de440, then full de441
+        if (!spk->loadFile(kernelsDir + "de441_part-2.bsp") && !spk->loadFile(kernelsDir + "de440.bsp") && !spk->loadFile(kernelsDir + "de441.bsp")) {
+            std::cerr << "Critical: Failed to load DE ephemeris.\n";
+            std::cerr << "  Put de441_part-2.bsp, de440.bsp, or de441.bsp in:\n  " << kernelsDir << "\n";
+            std::cerr << "  Download from: https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/\n";
+            return 1;
         }
         std::cout << "Ephemeris loaded." << std::endl;
         

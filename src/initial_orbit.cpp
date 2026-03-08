@@ -13,6 +13,7 @@
 #include "ioccultcalc/coordinates.h"
 #include "ioccultcalc/orbit_propagator.h"
 #include "ioccultcalc/orbital_elements.h"
+#include <astdyn/core/Constants.hpp>
 #include <cmath>
 #include <algorithm>
 #include <stdexcept>
@@ -20,8 +21,7 @@
 
 namespace ioccultcalc {
 
-// Costanti
-constexpr double GAUSS_K = 0.01720209895;  // Costante di Gauss
+namespace ac = astdyn::constants;
 // Use PI from types.h
 constexpr double AU_PER_DAY = 173.14463272;  // AU in un giorno-luce
 
@@ -145,8 +145,8 @@ std::vector<OrbitalElements> InitialOrbit::gauss(
     Vector3D obs_posn3 = Coordinates::observerPosition(obs3.observatoryCode, obs3.epoch);
     
     // Tempi in unità di Gauss (k*tau dove tau è in giorni)
-    double tau1 = GAUSS_K * (obs1.epoch.jd - obs2.epoch.jd);
-    double tau3 = GAUSS_K * (obs3.epoch.jd - obs2.epoch.jd);
+    double tau1 = ac::K_GAUSS * (obs1.epoch.jd - obs2.epoch.jd);
+    double tau3 = ac::K_GAUSS * (obs3.epoch.jd - obs2.epoch.jd);
     double tau = tau3 - tau1;
     
     // Verifica condizioni di validità
@@ -508,7 +508,7 @@ static OrbitPropagator* getInitialOrbitPropagator() {
 static bool propagateStateRobust(const double* state_in, double t0, double target_time, 
                                  double* state_out) {
     double dt = target_time - t0;
-    double mu = GAUSS_K * GAUSS_K;
+    double mu = ac::GMS;
     
     Vector3D pos(state_in[0], state_in[1], state_in[2]);
     Vector3D vel(state_in[3], state_in[4], state_in[5]);
@@ -736,7 +736,7 @@ OrbitalElements InitialOrbit::herget(
     Vector3D pos(orbit[0], orbit[1], orbit[2]);
     Vector3D vel(orbit[3], orbit[4], orbit[5]);
     
-    return cartesianToOrbitalElements(pos, vel, GAUSS_K * GAUSS_K, obs[idx1].epoch);
+    return cartesianToOrbitalElements(pos, vel, ac::GMS, obs[idx1].epoch);
 }
 
 /**
@@ -756,7 +756,7 @@ int InitialOrbit::adjustHergetResults(
     const double outlier_threshold = 3.0; // 3-sigma outlier rejection
     
     // Stato iniziale
-    double mu = GAUSS_K * GAUSS_K;
+    double mu = ac::GMS;
     double t0 = orbit.epoch.jd;
     
     // Parametri da ottimizzare: [x, y, z, vx, vy, vz]
@@ -1323,7 +1323,7 @@ int InitialOrbit::findTransferOrbit(
     // Usa Lambert solver per calcolare velocità
     Vector3D vel1_pro, vel2_pro;
     Vector3D vel1_retro, vel2_retro;
-    double mu = GAUSS_K * GAUSS_K; // k^2 per sistema solare
+    double mu = ac::GMS; // k^2 per sistema solare
     
     // Prova entrambe le soluzioni (prograde e retrograde)
     int result_pro = solveLambert(pos1, pos2, dt, mu, true, vel1_pro, vel2_pro);

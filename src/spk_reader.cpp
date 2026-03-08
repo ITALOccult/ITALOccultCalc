@@ -7,7 +7,6 @@
  */
 
 #include "ioccultcalc/spk_reader.h"
-#include "ioccultcalc/jpl_de_downloader.h"
 #include "ioccultcalc/jpleph.h"
 #include <stdexcept>
 #include <iostream>
@@ -46,6 +45,8 @@ public:
         if (!ephem) {
             int err = jpl_init_error_code();
             std::cerr << "SPKReader: jpl_init_ephemeris failed with error " << err << std::endl;
+            std::cerr << "Verifica che il file esista: " << path << std::endl;
+            // NON scaricare automaticamente: lascia che il chiamante gestisca l'errore
             return false;
         }
         
@@ -117,14 +118,17 @@ bool SPKReader::loadFile(const std::string& filePath) {
 }
 
 bool SPKReader::ensureFileLoaded(const std::string& version) {
-    // Try standard JPL filename first (linux_p1550p2650.430)
-    std::string cacheDir = getenv("HOME") + std::string("/.ioccultcalc/ephemerides/");
+    const char* home = getenv("HOME");
+    if (!home) {
+        std::cerr << "SPKReader: HOME non impostato" << std::endl;
+        return false;
+    }
+    std::string cacheDir = std::string(home) + "/.ioccultcalc/ephemerides/";
     
-    // Map version to filename
     std::map<std::string, std::string> versionToFile = {
         {"DE430", "linux_p1550p2650.430"},
-        {"DE441", "linux_m13000p17000.441"},  // DE441: 343 asteroids + planets
-        {"DE440", "linux_p1550p2650.440"}
+        {"DE441", "linux_m13000p17000.441"},
+        {"DE440", "de440.bsp"}
     };
     
     auto it = versionToFile.find(version);
@@ -135,15 +139,8 @@ bool SPKReader::ensureFileLoaded(const std::string& version) {
         }
     }
     
-    // Fallback: try with downloader (old format)
-    JPLDEDownloader downloader;
-    try {
-        std::string filePath = downloader.ensureFileAvailable(version);
-        return loadFile(filePath);
-    } catch (const std::exception& e) {
-        std::cerr << "Error loading SPK file: " << e.what() << std::endl;
-        return false;
-    }
+    std::cerr << "SPKReader: file non trovato per " << version << ". Verifica " << cacheDir << std::endl;
+    return false;
 }
 
 Vector3D SPKReader::getPosition(int bodyId, double jd, int centerId) {

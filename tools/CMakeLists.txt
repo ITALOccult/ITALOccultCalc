@@ -27,9 +27,9 @@ target_link_libraries(gaia_cache_downloader PRIVATE ioccultcalc)
 add_executable(build_allnum_database build_allnum_database.cpp)
 target_link_libraries(build_allnum_database PRIVATE ioccultcalc)
 
-# Verification tool for AstDyn covariance loading
+# Verification tool for AstDyn covariance loading (uses OrbitFitAPI::parse_eq1 directly, no wrapper)
 add_executable(test_covariance_loading test_covariance_loading.cpp)
-target_link_libraries(test_covariance_loading PRIVATE ioccultcalc)
+target_link_libraries(test_covariance_loading PRIVATE ioccultcalc astdyn)
 
 # Map generator utility
 add_executable(map_generator map_generator.cpp)

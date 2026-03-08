@@ -6,6 +6,8 @@
 #include "ioccultcalc/star_catalog.h"
 #include "astdyn/ephemeris/PlanetaryEphemeris.hpp"
 #include "astdyn/ephemeris/EphemerisProvider.hpp"
+#include "astdyn/core/Constants.hpp"
+#include "astdyn/time/TimeScale.hpp"
 #include <cmath>
 #include <stdexcept>
 #include <iostream>
@@ -14,6 +16,8 @@
 namespace ioccultcalc {
 
 namespace AstEphemeris = astdyn::ephemeris;
+namespace ac = astdyn::constants;
+namespace at = astdyn::time;
 
 // Bridge provider
 class SpiceEphemerisProvider : public astdyn::ephemeris::EphemerisProvider {
@@ -66,7 +70,6 @@ static void ensureGlobalProvider(std::shared_ptr<ISPReader> reader) {
 
 
 
-constexpr double GAUSS_K = 0.01720209895;
 constexpr double C_AU_PER_DAY = 173.1446326846693;
 
 Ephemeris::Ephemeris() : spkReader_(nullptr) {}
@@ -138,6 +141,28 @@ Vector3D Ephemeris::getEarthVelocity(const JulianDate& jd) {
 
 Vector3D Ephemeris::getSunPosition(const JulianDate& jd) { return Vector3D(0, 0, 0); }
 
+Vector3D Ephemeris::getAsteroidPosition(int asteroidNumber, const JulianDate& jd) {
+    if (!g_spiceReader || !g_spiceReader->isLoaded())
+        return Vector3D(0, 0, 0);
+    int naifId = 2000000 + asteroidNumber;  // 433 → 2000433 (Eros)
+    try {
+        return g_spiceReader->getPosition(naifId, jd.jd, 10);
+    } catch (...) {
+        return Vector3D(0, 0, 0);
+    }
+}
+
+std::pair<Vector3D, Vector3D> Ephemeris::getAsteroidState(int asteroidNumber, const JulianDate& jd) {
+    if (!g_spiceReader || !g_spiceReader->isLoaded())
+        return {Vector3D(0, 0, 0), Vector3D(0, 0, 0)};
+    int naifId = 2000000 + asteroidNumber;
+    try {
+        return g_spiceReader->getState(naifId, jd.jd, 10);
+    } catch (...) {
+        return {Vector3D(0, 0, 0), Vector3D(0, 0, 0)};
+    }
+}
+
 EphemerisData Ephemeris::compute(const JulianDate& jd) {
     EphemerisData data;
     data.jd = jd;
@@ -179,7 +204,7 @@ std::vector<EphemerisData> Ephemeris::computeRange(const JulianDate& startJD, co
 
 void Ephemeris::propagateOrbit(const JulianDate& targetJD, Vector3D& helioPos, Vector3D& helioVel) {
     double dt = targetJD.jd - elements_.epoch.jd;
-    double n = GAUSS_K / sqrt(elements_.a * elements_.a * elements_.a);
+    double n = ac::K_GAUSS / sqrt(elements_.a * elements_.a * elements_.a);
     double lambda_t = elements_.lambda + n * dt;
     double omega_plus_Omega = atan2(elements_.h, elements_.k);
     double M = lambda_t - omega_plus_Omega;
@@ -191,7 +216,7 @@ void Ephemeris::propagateOrbit(const JulianDate& targetJD, Vector3D& helioPos, V
     double r = elements_.a * (1.0 - e * cos(E));
     double x_orb = r * cos(nu);
     double y_orb = r * sin(nu);
-    double v_factor = GAUSS_K * sqrt(elements_.a) / r;
+    double v_factor = ac::K_GAUSS * sqrt(elements_.a) / r;
     double vx_orb = -v_factor * sin(E);
     double vy_orb = v_factor * sqrt(1.0 - e * e) * cos(E);
     double f = 1.0 + elements_.p * elements_.p + elements_.q * elements_.q;
@@ -250,7 +275,7 @@ double Ephemeris::calculateMagnitudeHG(double H, double G, double r, double delt
 }
 
 double Ephemeris::calculateMagnitude(double r, double delta, double phaseAngle) {
-    return calculateMagnitudeHG(elements_.H, elements_.G, r, delta, phaseAngle * DEG_TO_RAD);
+    return calculateMagnitudeHG(elements_.H, elements_.G, r, delta, phaseAngle * ac::DEG_TO_RAD);
 }
 
 Vector3D Ephemeris::applyStellarParallax(const Vector3D& starUnitVector, double parallax_mas, const Vector3D& earthHelioPos) {

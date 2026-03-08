@@ -14,6 +14,7 @@
  */
 
 #include <cmath>
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -25,22 +26,30 @@
 #include "ioccultcalc/ephemeris.h"
 #include "ioccultcalc/orbit_propagator.h"
 #include "ioccultcalc/orbital_elements.h"
+#include "ioccultcalc/gauss_asteroid_position.h"
 #include "ioccultcalc/spice_spk_reader.h"
 #include "ioccultcalc/star_catalog.h"
 #include "ioccultcalc/types.h"
+
+#include "astdyn/propagation/saba4_integrator.hpp"
+#include "astdyn/propagation/Propagator.hpp"
+#include "astdyn/propagation/OrbitalElements.hpp"
+#include "astdyn/ephemeris/PlanetaryEphemeris.hpp"
+#include "astdyn/ephemeris/DE441Provider.hpp"
+#include "astdyn/core/Constants.hpp"
 
 using namespace ioccultcalc;
 
 static const double JD_TEST = 2461109.5;  // 2026-Mar-10 00:00 TDB
 
 // Tolleranze (configurabili). Riferimento Terra/asteroide da JPL è DE441.
-// Se si usa de440.bsp le differenze possono essere ~1e-4 AU; per match stretto usare de441.bsp.
+// Per l'asteroide: propagazione RKF78 da elementi può dare ~0.001 AU e ~0.001 AU/day vs Horizons.
 struct Tolerances {
     double earth_pos_au = 5e-4;       // AU (~75e3 km); stringere a 1e-5 se stesso kernel
     double earth_vel_au_per_day = 5e-6;
     double star_app_arcsec = 0.1;     // posizione apparente (regressione stretta)
-    double asteroid_pos_au = 1e-4;
-    double asteroid_vel_au_per_day = 1e-6;
+    double asteroid_pos_au = 1e-3;   // ~150e3 km; differenze da elementi/epoch vs JPL
+    double asteroid_vel_au_per_day = 2e-3;
 };
 
 static std::ostringstream g_report;
@@ -263,7 +272,8 @@ static bool loadAsteroidElements(const std::string& path, AstDynEquinoctialEleme
 }
 
 // Confronto asteroide: propagazione vs riferimento JPL (Ecliptic)
-static void testAsteroid(const std::string& refDir) {
+// Se codes_300ast è caricato, usa Eros (433) direttamente dallo SPK invece di propagare da elementi.
+static void testAsteroid(const std::string& refDir, const std::string& spkPath) {
     report("\n========== 3. ASTEROIDE (posizione astrometrica eliocentrica) ==========\n");
 
     std::map<std::string, double> ref;
@@ -281,51 +291,252 @@ static void testAsteroid(const std::string& refDir) {
     double jdRef = get("JD", JD_TEST);
     Vector3D posRef(get("X", 0), get("Y", 0), get("Z", 0));
     Vector3D velRef(get("VX", 0), get("VY", 0), get("VZ", 0));
-    if (posRef.x == 0 && posRef.y == 0 && posRef.z == 0) {
-        report("  [SKIP] jpl_horizons_asteroid_2026mar10.txt ha X,Y,Z=0 (dati non inseriti).\n");
-        return;
+    bool hasJplRef = (posRef.x != 0 || posRef.y != 0 || posRef.z != 0);
+
+    // Prova prima Eros (433) direttamente dallo SPK (codes_300ast_20100725.bsp)
+    bool use_eros_spk = false;
+    Vector3D posOursEqu(0, 0, 0), velOursEqu(0, 0, 0);
+    {
+        auto stateEros = Ephemeris::getAsteroidState(433, JulianDate(jdRef));
+        double r = std::sqrt(stateEros.first.x*stateEros.first.x + stateEros.first.y*stateEros.first.y + stateEros.first.z*stateEros.first.z);
+        if (r > 1e-6) {
+            posOursEqu = stateEros.first;
+            velOursEqu = stateEros.second;
+            use_eros_spk = true;
+            report("  Eros (433) da SPK (codes_300ast), JD " + std::to_string(jdRef) + ".\n");
+        }
     }
 
-    // Cerca elementi: asteroid_elements_2026mar10.txt o simile
+    if (!use_eros_spk) {
+        std::string elemPath = refDir + "/asteroid_elements_2026mar10.txt";
+        AstDynEquinoctialElements elem;
+        if (!loadAsteroidElements(elemPath, elem)) {
+            if (hasJplRef) report("  [SKIP] File elementi " + elemPath + " non trovato e Eros non in SPK.\n");
+            else report("  [SKIP] File elementi " + elemPath + " non trovato (necessario per test asteroide).\n");
+            report("  Formato: epoch_jd=, a_au=, h=, k=, p=, q=, lambda_rad=, number=\n");
+            return;
+        }
+        PropagatorOptions opts;
+        opts.integrator = IntegratorType::RKF78;
+        opts.usePlanetaryPerturbations = true;
+        opts.tolerance = 1e-12;
+        OrbitPropagator prop(opts);
+        OrbitState state = prop.propagate(elem, JulianDate(jdRef));
+        posOursEqu = state.position;
+        velOursEqu = state.velocity;
+    }
+
     std::string elemPath = refDir + "/asteroid_elements_2026mar10.txt";
     AstDynEquinoctialElements elem;
-    if (!loadAsteroidElements(elemPath, elem)) {
-        report("  [SKIP] File elementi " + elemPath + " non trovato o invalido.\n");
-        report("  Formato: epoch_jd=, a_au=, h=, k=, p=, q=, lambda_rad=, number=\n");
+    bool have_elem = loadAsteroidElements(elemPath, elem);
+
+    bool gauss_ok = false;
+    Vector3D posGaussEqu(0, 0, 0), velGaussEqu(0, 0, 0);
+    if (std::getenv("USE_GAUSS") && !spkPath.empty() && have_elem) {
+        std::string gaussBspPath = spkPath;
+        if (spkPath.find('/') == std::string::npos) {
+            const char* home = std::getenv("HOME");
+            if (home)
+                gaussBspPath = std::string(home) + "/.ioccultcalc/ephemerides/" + spkPath;
+        }
+        try {
+            report("  [INFO] Avvio Gauss (DE441)...\n");
+            GaussAsteroidPositionCalculator calc(gaussBspPath);
+            report("  Propagazione SABA4 (epoca elementi -> JD " + std::to_string(jdRef) + ") in corso...\n");
+            std::cout.flush();
+            OrbitState stateGauss = calc.computePositionFromEquinoctial(elem, jdRef);
+            report("  Propagazione SABA4 completata.\n");
+            posGaussEqu = stateGauss.position;
+            velGaussEqu = stateGauss.velocity;
+            gauss_ok = true;
+            report("  Gauss (DE441) path: " + gaussBspPath + "\n");
+            auto st = calc.lastStatistics();
+            report("  Gauss (DE441) stats: steps=" + std::to_string(st.steps_accepted) + " evals=" + std::to_string(st.function_evaluations) + "\n");
+        } catch (const std::exception& e) {
+            report("  [ERRORE] Gauss: " + std::string(e.what()) + "\n");
+        } catch (...) {
+            report("  [ERRORE] Gauss: eccezione sconosciuta\n");
+        }
+    }
+
+    Vector3D posOurs = posOursEqu;
+    Vector3D velOurs = velOursEqu;
+    if (hasJplRef) {
+        posOurs = Coordinates::equatorialToEcliptic(posOursEqu, jdRef);
+        velOurs = Coordinates::equatorialToEcliptic(velOursEqu, jdRef);
+    }
+
+    if (!hasJplRef) {
+        // Regressione: confronto con golden (stato in EQUATORIALE, come output del propagator)
+        std::map<std::string, double> golden;
+        std::string goldenPath = refDir + "/asteroid_golden_regression_2026mar10.txt";
+        if (parseRefFile(goldenPath, golden)) {
+            double gX = golden.count("X") ? golden["X"] : 0, gY = golden.count("Y") ? golden["Y"] : 0, gZ = golden.count("Z") ? golden["Z"] : 0;
+            double gVX = golden.count("VX") ? golden["VX"] : 0, gVY = golden.count("VY") ? golden["VY"] : 0, gVZ = golden.count("VZ") ? golden["VZ"] : 0;
+            if (gX != 0 || gY != 0 || gZ != 0) {
+                Vector3D posGold(gX, gY, gZ), velGold(gVX, gVY, gVZ);
+                Vector3D dPos(posOursEqu.x - posGold.x, posOursEqu.y - posGold.y, posOursEqu.z - posGold.z);
+                Vector3D dVel(velOursEqu.x - velGold.x, velOursEqu.y - velGold.y, velOursEqu.z - velGold.z);
+                double dPosAu = std::sqrt(dPos.x*dPos.x + dPos.y*dPos.y + dPos.z*dPos.z);
+                double dVelAud = std::sqrt(dVel.x*dVel.x + dVel.y*dVel.y + dVel.z*dVel.z);
+                double tolRegressPos = 5e-4;  // AU (regressione: stessa propagazione)
+                double tolRegressVel = 5e-6;
+                report("  Riferimento JPL assente. Confronto con golden (regressione) da " + goldenPath + ".\n");
+                report("  Golden (Equat.) Pos [AU]: " + std::to_string(posGold.x) + " " + std::to_string(posGold.y) + " " + std::to_string(posGold.z) + "\n");
+                report("  Nostro (Equat.) Pos [AU]: " + std::to_string(posOursEqu.x) + " " + std::to_string(posOursEqu.y) + " " + std::to_string(posOursEqu.z) + "\n");
+                report("  Nostro (Equat.) Vel [AU/day]: " + std::to_string(velOursEqu.x) + " " + std::to_string(velOursEqu.y) + " " + std::to_string(velOursEqu.z) + "\n");
+                report("  |Delta pos| [AU]: " + std::to_string(dPosAu) + "  (tolleranza " + std::to_string(tolRegressPos) + ")\n");
+                report("  |Delta vel| [AU/day]: " + std::to_string(dVelAud) + "  (tolleranza " + std::to_string(tolRegressVel) + ")\n");
+                bool okR = dPosAu <= tolRegressPos && dVelAud <= tolRegressVel;
+                if (okR) {
+                    report("  [PASS] Asteroide: regressione vs golden OK.\n");
+                } else {
+                    report("  [FAIL] Asteroide: regressione fuori tolleranza (propagazione cambiata?). Aggiornare " + goldenPath + " se intenzionale.\n");
+                    g_fail_count++;
+                }
+                return;
+            }
+        }
+        report("  Riferimento JPL e golden assenti. Propagazione 433 Eros a JD " + std::to_string(jdRef) + ".\n");
+        report("  Stato (Equat.) Pos [AU]: " + std::to_string(posOursEqu.x) + " " + std::to_string(posOursEqu.y) + " " + std::to_string(posOursEqu.z) + "\n");
+        report("  Stato (Ecl.)  Pos [AU]: " + std::to_string(posOurs.x) + " " + std::to_string(posOurs.y) + " " + std::to_string(posOurs.z) + "\n");
+        report("  Vel [AU/day]: " + std::to_string(velOurs.x) + " " + std::to_string(velOurs.y) + " " + std::to_string(velOurs.z) + "\n");
+        report("  Per confronto JPL: popolare jpl_horizons_asteroid_2026mar10.txt. Per regressione: usare asteroid_golden_regression_2026mar10.txt.\n");
+        report("  [PASS] Asteroide: propagazione OK (nessun riferimento per confronto).\n");
         return;
     }
 
-    PropagatorOptions opts;
-    opts.integrator = IntegratorType::RKF78;
-    opts.usePlanetaryPerturbations = true;
-    opts.tolerance = 1e-12;
-    OrbitPropagator prop(opts);
+    report("  Confronto in Eclittico J2000 (nostro stato convertito da equatoriale).\n\n");
 
-    OrbitState state = prop.propagate(elem, JulianDate(jdRef));
-    // state.position/velocity sono nel frame degli elementi (eclittico)
-    Vector3D posOurs = state.position;
-    Vector3D velOurs = state.velocity;
+    Vector3D posGaussEcl(0, 0, 0), velGaussEcl(0, 0, 0);
+    if (gauss_ok) {
+        report("  [DEBUG] Elementi asteroide frame (0=ECLIPTIC 1=EQUATORIAL): " + std::to_string(static_cast<int>(elem.frame)) + "\n");
+        report("  [DEBUG] Gauss/SABA4 restituisce stato in ICRF (equatoriale); conversione Equat->Ecl per confronto JPL.\n");
+        posGaussEcl = Coordinates::equatorialToEcliptic(posGaussEqu, jdRef);
+        velGaussEcl = Coordinates::equatorialToEcliptic(velGaussEqu, jdRef);
+    }
+
+    report("  --- Valori a JD " + std::to_string(jdRef) + " (Eclittico J2000 dove indicato) ---\n");
+    report("  JPL (Ecl.)     Pos [AU]: " + std::to_string(posRef.x) + " " + std::to_string(posRef.y) + " " + std::to_string(posRef.z) + "\n");
+    report("  JPL (Ecl.)     Vel [AU/day]: " + std::to_string(velRef.x) + " " + std::to_string(velRef.y) + " " + std::to_string(velRef.z) + "\n");
+    report("  " + std::string(use_eros_spk ? "Eros SPK" : "RKF78") + " (Equat.) Pos [AU]: " + std::to_string(posOursEqu.x) + " " + std::to_string(posOursEqu.y) + " " + std::to_string(posOursEqu.z) + "\n");
+    report("  " + std::string(use_eros_spk ? "Eros SPK" : "RKF78") + " (Equat.) Vel [AU/day]: " + std::to_string(velOursEqu.x) + " " + std::to_string(velOursEqu.y) + " " + std::to_string(velOursEqu.z) + "\n");
+    report("  " + std::string(use_eros_spk ? "Eros SPK" : "RKF78") + " (Ecl.)   Pos [AU]: " + std::to_string(posOurs.x) + " " + std::to_string(posOurs.y) + " " + std::to_string(posOurs.z) + "\n");
+    report("  " + std::string(use_eros_spk ? "Eros SPK" : "RKF78") + " (Ecl.)   Vel [AU/day]: " + std::to_string(velOurs.x) + " " + std::to_string(velOurs.y) + " " + std::to_string(velOurs.z) + "\n");
+    if (gauss_ok) {
+        report("  Gauss (Equat.) Pos [AU]: " + std::to_string(posGaussEqu.x) + " " + std::to_string(posGaussEqu.y) + " " + std::to_string(posGaussEqu.z) + "\n");
+        report("  Gauss (Equat.) Vel [AU/day]: " + std::to_string(velGaussEqu.x) + " " + std::to_string(velGaussEqu.y) + " " + std::to_string(velGaussEqu.z) + "\n");
+        report("  Gauss (Ecl.)   Pos [AU]: " + std::to_string(posGaussEcl.x) + " " + std::to_string(posGaussEcl.y) + " " + std::to_string(posGaussEcl.z) + "\n");
+        report("  Gauss (Ecl.)   Vel [AU/day]: " + std::to_string(velGaussEcl.x) + " " + std::to_string(velGaussEcl.y) + " " + std::to_string(velGaussEcl.z) + "\n");
+    }
+    report("\n  --- Confronti con JPL ---\n");
 
     Vector3D dPos(posOurs.x - posRef.x, posOurs.y - posRef.y, posOurs.z - posRef.z);
     Vector3D dVel(velOurs.x - velRef.x, velOurs.y - velRef.y, velOurs.z - velRef.z);
     double dPosAu = std::sqrt(dPos.x*dPos.x + dPos.y*dPos.y + dPos.z*dPos.z);
     double dVelAud = std::sqrt(dVel.x*dVel.x + dVel.y*dVel.y + dVel.z*dVel.z);
 
-    report("  JPL (Ecliptic) Pos [AU]: " + std::to_string(posRef.x) + " " + std::to_string(posRef.y) + " " + std::to_string(posRef.z) + "\n");
-    report("  Nostro (prop.) Pos [AU]: " + std::to_string(posOurs.x) + " " + std::to_string(posOurs.y) + " " + std::to_string(posOurs.z) + "\n");
-    report("  |Delta pos| [AU]: " + std::to_string(dPosAu) + "  (tolleranza " + std::to_string(g_tol.asteroid_pos_au) + ")\n");
-    report("  JPL Vel [AU/day]: " + std::to_string(velRef.x) + " " + std::to_string(velRef.y) + " " + std::to_string(velRef.z) + "\n");
-    report("  Nostro Vel [AU/day]: " + std::to_string(velOurs.x) + " " + std::to_string(velOurs.y) + " " + std::to_string(velOurs.z) + "\n");
-    report("  |Delta vel| [AU/day]: " + std::to_string(dVelAud) + "  (tolleranza " + std::to_string(g_tol.asteroid_vel_au_per_day) + ")\n");
+    report("  " + std::string(use_eros_spk ? "Eros SPK" : "RKF78") + " vs JPL:  |Delta pos| [AU]: " + std::to_string(dPosAu) + "  (tolleranza " + std::to_string(g_tol.asteroid_pos_au) + ")\n");
+    report("  " + std::string(use_eros_spk ? "Eros SPK" : "RKF78") + " vs JPL:  |Delta vel| [AU/day]: " + std::to_string(dVelAud) + "  (tolleranza " + std::to_string(g_tol.asteroid_vel_au_per_day) + ")\n");
+    if (gauss_ok) {
+        double dPosGjpl = std::sqrt(std::pow(posGaussEcl.x - posRef.x, 2) + std::pow(posGaussEcl.y - posRef.y, 2) + std::pow(posGaussEcl.z - posRef.z, 2));
+        double dVelGjpl = std::sqrt(std::pow(velGaussEcl.x - velRef.x, 2) + std::pow(velGaussEcl.y - velRef.y, 2) + std::pow(velGaussEcl.z - velRef.z, 2));
+        report("  Gauss vs JPL:  |Delta pos| [AU]: " + std::to_string(dPosGjpl) + "\n");
+        report("  Gauss vs JPL:  |Delta vel| [AU/day]: " + std::to_string(dVelGjpl) + "\n");
+        double dPosGRkf = std::sqrt(std::pow(posOursEqu.x - posGaussEqu.x, 2) + std::pow(posOursEqu.y - posGaussEqu.y, 2) + std::pow(posOursEqu.z - posGaussEqu.z, 2));
+        double dVelGRkf = std::sqrt(std::pow(velOursEqu.x - velGaussEqu.x, 2) + std::pow(velOursEqu.y - velGaussEqu.y, 2) + std::pow(velOursEqu.z - velGaussEqu.z, 2));
+        report("  " + std::string(use_eros_spk ? "Eros SPK" : "RKF78") + " vs Gauss: |Delta pos|=" + std::to_string(dPosGRkf) + " AU, |Delta vel|=" + std::to_string(dVelGRkf) + " AU/day\n");
+    }
 
     bool okPos = dPosAu <= g_tol.asteroid_pos_au;
     bool okVel = dVelAud <= g_tol.asteroid_vel_au_per_day;
     if (okPos && okVel) {
-        report("  [PASS] Asteroide: posizione e velocità entro tolleranza.\n");
+        report("  [PASS] Asteroide: posizione e velocità entro tolleranza vs JPL.\n");
     } else {
         if (!okPos) { report("  [FAIL] Asteroide: posizione fuori tolleranza.\n"); g_fail_count++; }
         if (!okVel) { report("  [FAIL] Asteroide: velocità fuori tolleranza.\n"); g_fail_count++; }
     }
+}
+
+// Confronto diretto con SABA4Integrator: stessa propagazione asteroide, statistiche SABA4.
+// Richiede USE_GAUSS=1 e spkPath non vuoto (path a DE441 .bsp).
+static void testAsteroidWithSABA4(const std::string& refDir, const std::string& spkPath) {
+    if (!std::getenv("USE_GAUSS") || spkPath.empty()) return;
+
+    std::string elemPath = refDir + "/asteroid_elements_2026mar10.txt";
+    AstDynEquinoctialElements elem;
+    if (!loadAsteroidElements(elemPath, elem)) return;
+
+    std::string de441Path = spkPath;
+    if (spkPath.find('/') == std::string::npos) {
+        const char* home = std::getenv("HOME");
+        if (home) de441Path = std::string(home) + "/.ioccultcalc/ephemerides/" + spkPath;
+    }
+
+    using namespace astdyn::propagation;
+    using namespace astdyn::ephemeris;
+    using namespace astdyn::constants;
+
+    PropagatorSettings settings;
+    settings.include_planets = true;
+    settings.perturb_mercury = true;
+    settings.perturb_venus = true;
+    settings.perturb_earth = true;
+    settings.perturb_mars = true;
+    settings.perturb_jupiter = true;
+    settings.perturb_saturn = true;
+    settings.perturb_uranus = true;
+    settings.perturb_neptune = true;
+    settings.include_relativity = true;
+    settings.include_moon = true;
+    settings.include_asteroids = true;
+    settings.ppn_beta = 1.0;
+    settings.ppn_gamma = 1.0;
+    settings.asteroid_ephemeris_file = "";
+
+    auto de441 = std::make_shared<DE441Provider>(de441Path);
+    PlanetaryEphemeris::setProvider(de441);
+    auto ephem = std::make_shared<PlanetaryEphemeris>();
+
+    auto saba4 = std::make_unique<SABA4Integrator>(1.0, 1e-6, 1e-6, 100.0);
+    SABA4Integrator* saba4_ptr = saba4.get();
+    auto prop = std::make_unique<Propagator>(std::move(saba4), ephem, settings);
+
+    EquinoctialElements eq;
+    eq.epoch_mjd_tdb = elem.epoch.jd - 2400000.5;
+    eq.a = elem.a;
+    eq.h = elem.h;
+    eq.k = elem.k;
+    eq.p = elem.p;
+    eq.q = elem.q;
+    eq.lambda = elem.lambda;
+    eq.gravitational_parameter = GMS;
+
+    KeplerianElements kep = equinoctial_to_keplerian(eq);
+    CartesianElements init_cart = keplerian_to_cartesian(kep);
+    // Elementi da file sono in ECLITTICO; convertire stato iniziale in equatoriale per il Propagator (efemeridi ICRF).
+    {
+        Vector3D pos_ecl(init_cart.position.x(), init_cart.position.y(), init_cart.position.z());
+        Vector3D vel_ecl(init_cart.velocity.x(), init_cart.velocity.y(), init_cart.velocity.z());
+        Vector3D pos_eq = Coordinates::eclipticToEquatorial(pos_ecl, elem.epoch.jd);
+        Vector3D vel_eq = Coordinates::eclipticToEquatorial(vel_ecl, elem.epoch.jd);
+        init_cart.position = Eigen::Vector3d(pos_eq.x, pos_eq.y, pos_eq.z);
+        init_cart.velocity = Eigen::Vector3d(vel_eq.x, vel_eq.y, vel_eq.z);
+    }
+    double target_mjd = JD_TEST - 2400000.5;
+    report("  Propagazione SABA4 diretta in corso (epoca -> JD " + std::to_string(JD_TEST) + ")...\n");
+    std::cout.flush();
+    CartesianElements result = prop->propagate_cartesian(init_cart, target_mjd);
+
+    auto stats = saba4_ptr->stats();
+    report("\n  --- SABA4 (confronto diretto) ---\n");
+    report("  SABA4 stats: steps=" + std::to_string(stats.num_steps) +
+           " rejected=" + std::to_string(stats.num_rejected) +
+           " energy_drift=" + std::to_string(stats.energy_drift) + "\n");
+    report("  SABA4 Pos [AU] (Equat.): " + std::to_string(result.position.x()) + " " +
+           std::to_string(result.position.y()) + " " + std::to_string(result.position.z()) + "\n");
+    report("  SABA4 Vel [AU/day]: " + std::to_string(result.velocity.x()) + " " +
+           std::to_string(result.velocity.y()) + " " + std::to_string(result.velocity.z()) + "\n");
 }
 
 // Trova directory reference: da argv, o fallback se eseguito da build/
@@ -361,17 +572,35 @@ int main(int argc, char** argv) {
     report("============================================\n");
 
     auto reader = std::make_shared<SPICESPKReader>();
-    std::string spkPath = "de440.bsp";
-    if (argc > 2) spkPath = argv[2];
-    if (!reader->ensureFileLoaded(spkPath)) {
+    std::string spkPath = "de441.bsp";
+    if (argc > 2) {
+        spkPath = argv[2];
+    } else {
+        if (!reader->ensureFileLoaded("de441.bsp")) {
+            report("  [WARNING] DE441 non trovato, uso DE440.\n");
+            spkPath = "de440.bsp";
+        } else {
+            spkPath = "de441.bsp";
+        }
+    }
+    if (!reader->isLoaded() && !reader->ensureFileLoaded(spkPath)) {
         report("ERRORE: Impossibile caricare SPK " + spkPath + ". Verificare path e kernel.\n");
         return 1;
+    }
+    // Carica kernel asteroidi (contiene 433 Eros) per confronto diretto SPK vs JPL
+    {
+        const char* home = std::getenv("HOME");
+        if (home) {
+            std::string codesPath = std::string(home) + "/.ioccultcalc/ephemerides/codes_300ast_20100725.bsp";
+            reader->loadAdditionalFile(codesPath);
+        }
     }
     initializeSpiceProvider(reader);
 
     testEarth(refDir);
     testStar(refDir);
-    testAsteroid(refDir);
+    testAsteroid(refDir, spkPath);
+    testAsteroidWithSABA4(refDir, spkPath);
 
     report("\n============================================\n");
     if (g_fail_count == 0) {

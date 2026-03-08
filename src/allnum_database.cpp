@@ -5,6 +5,7 @@
 
 #include "ioccultcalc/allnum_database.h"
 #include "ioccultcalc/types.h"
+#include <astdyn/time/TimeScale.hpp>
 #include <iostream>
 #include <cmath>
 
@@ -124,7 +125,7 @@ std::optional<OrbitalElements> AllnumDatabaseReader::getElement(const std::strin
         
         // Epoch (MJD) -> JD
         double epoch_mjd = sqlite3_column_double(stmt, 3);
-        elem.epoch.jd = epoch_mjd + 2400000.5;
+        elem.epoch.jd = astdyn::time::mjd_to_jd(epoch_mjd);
         
         // Elementi orbitali (già in radianti nel database allnum.db)
         elem.a = sqlite3_column_double(stmt, 4);

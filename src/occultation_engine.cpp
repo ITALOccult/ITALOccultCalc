@@ -3,7 +3,10 @@
 #include "ioccultcalc/asteroid_sqlite_db.h"
 #include "ioccultcalc/mpc_client.h"
 #include "ioccultcalc/astdyn_interface.h"
+#include <astdyn/core/Constants.hpp>
+#include <astdyn/time/TimeScale.hpp>
 #include <iostream>
+#include <iomanip>
 #include "ioccultcalc/types.h"
 
 namespace {
@@ -22,6 +25,8 @@ namespace {
 
 namespace ioccultcalc {
 
+namespace ac = astdyn::constants;
+namespace at = astdyn::time;
 
 OccultationEngine::OccultationEngine() = default;
 OccultationEngine::~OccultationEngine() = default;
@@ -50,7 +55,7 @@ bool OccultationEngine::loadAsteroidFromEQ1(const std::string& eq1_path) {
         current_elements_.k = elements.k;
         current_elements_.p = elements.p;
         current_elements_.q = elements.q;
-        current_elements_.lambda = elements.lambda * DEG_TO_RAD; // Convert to radians
+        current_elements_.lambda = elements.lambda * ac::DEG_TO_RAD;
         current_elements_.epoch = JulianDate::fromMJD(elements.epoch_mjd);
         current_elements_.name = elements.name;
         current_elements_.designation = elements.name; 
@@ -140,22 +145,22 @@ bool OccultationEngine::loadAsteroidFromJSON(int number, const std::string& path
                 // Do NOT assign ma to lambda directly if we are in Equinoctial mode.
                 // If the JSON has h,k,p,q, it should also have 'lambda'.
                 if (data.contains("lambda")) {
-                    current_elements_.lambda = safe_get<double>(data, "lambda", 0.0) * (data.contains("lambda_deg") ? DEG_TO_RAD : 1.0);
+                    current_elements_.lambda = safe_get<double>(data, "lambda", 0.0) * (data.contains("lambda_deg") ? ac::DEG_TO_RAD : 1.0);
                 } else if (!data.contains("e")) {
                      // Fallback if no lambda but ma is present - this is risky if h,k,p,q are non-zero
-                     current_elements_.lambda = safe_get<double>(data, "ma", 0.0) * DEG_TO_RAD; 
+                     current_elements_.lambda = safe_get<double>(data, "ma", 0.0) * ac::DEG_TO_RAD; 
                 }
                 
                 // Handle Keplerian if needed (if JSON has a,e,i,om,w,ma)
                 if (data.contains("e") && !data["e"].is_null() && current_elements_.h == 0) {
                     double ecc = safe_get<double>(data, "e", 0.0);
-                    double inc = safe_get<double>(data, "i", 0.0) * DEG_TO_RAD;
-                    double om = safe_get<double>(data, "om", 0.0) * DEG_TO_RAD;
-                    double w = safe_get<double>(data, "w", 0.0) * DEG_TO_RAD;
-                    double ma = safe_get<double>(data, "ma", 0.0) * DEG_TO_RAD;
+                    double inc = safe_get<double>(data, "i", 0.0) * ac::DEG_TO_RAD;
+                    double om = safe_get<double>(data, "om", 0.0) * ac::DEG_TO_RAD;
+                    double w = safe_get<double>(data, "w", 0.0) * ac::DEG_TO_RAD;
+                    double ma = safe_get<double>(data, "ma", 0.0) * ac::DEG_TO_RAD;
                     double a = safe_get<double>(data, "a", 0.0);
                     double epoch = safe_get<double>(data, "epoch", 0.0);
-                    if (epoch > 2400000.5) epoch -= 2400000.5;
+                    if (epoch > at::mjd_to_jd(0)) epoch = at::jd_to_mjd(epoch);
                     
                     auto kep = AstDynEquinoctialElements::fromKeplerian(a, ecc, inc, w, om, ma, JulianDate::fromMJD(epoch));
                     current_elements_.a = kep.a;
@@ -195,8 +200,21 @@ bool OccultationEngine::loadAsteroidFromDB(int number) {
         AsteroidSqliteDatabase db;
         auto orbital = db.getOrbitalElements(number);
         if (orbital) {
+            // Stampa elementi orbitali utilizzati (da asteroids.db)
+            double mjd_epoch = at::jd_to_mjd(orbital->epoch.jd);
+            std::cout << "[OccultationEngine] Elementi orbitali utilizzati (asteroid " << number << "):\n"
+                      << "  a = " << std::fixed << std::setprecision(8) << orbital->a << " AU\n"
+                      << "  e = " << std::setprecision(8) << orbital->e << "\n"
+                      << "  i = " << std::setprecision(6) << (orbital->i * ac::RAD_TO_DEG) << " deg\n"
+                      << "  Omega = " << (orbital->Omega * ac::RAD_TO_DEG) << " deg\n"
+                      << "  omega = " << (orbital->omega * ac::RAD_TO_DEG) << " deg\n"
+                      << "  M = " << (orbital->M * ac::RAD_TO_DEG) << " deg\n"
+                      << "  epoch MJD = " << std::setprecision(2) << mjd_epoch << "\n"
+                      << "  H = " << std::setprecision(2) << orbital->H << "  diameter = " << orbital->diameter << " km\n"
+                      << "  (fonte: ~/.ioccultcalc/database/asteroids.db)\n";
+
             current_elements_ = orbital->toEquinoctial();
-            
+
             // Fallback diameter if missing in DB
             if (current_elements_.diameter <= 0 && current_elements_.H > 0) {
                 current_elements_.diameter = (1329.0 / std::sqrt(0.15)) * std::pow(10.0, -0.2 * current_elements_.H);
@@ -270,9 +288,9 @@ bool OccultationEngine::refineOrbit(int n_observations) {
         for (const auto& obs : obsSet.observations) {
             RWOObservation rwo;
             rwo.designation = designation;
-            rwo.mjd_utc = obs.epoch.jd - 2400000.5;
-            rwo.ra_deg = obs.obs.ra * RAD_TO_DEG;
-            rwo.dec_deg = obs.obs.dec * RAD_TO_DEG;
+            rwo.mjd_utc = at::jd_to_mjd(obs.epoch.jd);
+            rwo.ra_deg = obs.obs.ra * ac::RAD_TO_DEG;
+            rwo.dec_deg = obs.obs.dec * ac::RAD_TO_DEG;
             rwo.ra_sigma_arcsec = 0.5; // Default sigma
             rwo.dec_sigma_arcsec = 0.5;
             rwo.obs_code = obs.observatoryCode;

@@ -29,6 +29,7 @@ struct ShadowPoint {
 
 struct Phase2OccultationEvent {
     long long star_id;
+    /** Tempo del Closest Approach in MJD TDB (stessa scala di closest_approach_mjd in CandidateStar). */
     double t_ca_mjd;      // Tempo del Closest Approach
     double min_dist_mas;  // Distanza minima in milliarcosecondi
     double duration_sec;  // Durata stimata occultazione
@@ -68,7 +69,10 @@ struct Phase2Config {
     bool compute_shadow = true;
     bool refine_orbit = false;   // Se vero, esegue il fit con le ultime N osservazioni
     int last_n_obs = 50;         // Numero di osservazioni da usare per il fit
-    bool use_horizons = false;   // Se vero, scarica elementi osculanti da JPL Horizons all'epoca CA
+    /** Se vero, scarica elementi osculanti da JPL Horizons all'epoca CA.
+     *  Ordine: se entrambi refine_orbit e use_horizons sono true, viene eseguito prima
+     *  refine_orbit, poi fetch Horizons (orbita finale = Horizons). */
+    bool use_horizons = false;
 };
 
 class Phase2OccultationGeometry {

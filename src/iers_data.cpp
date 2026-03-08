@@ -4,6 +4,7 @@
  */
 
 #include "ioccultcalc/iers_data.h"
+#include <astdyn/time/TimeScale.hpp>
 #include <fstream>
 #include <sstream>
 #include <cmath>
@@ -46,8 +47,7 @@ std::string IERSData::getDefaultCacheDir() const {
 }
 
 EarthOrientationParams IERSData::getEOP(double jd) {
-    // Convert JD to MJD
-    double mjd = jd - 2400000.5;
+    double mjd = astdyn::time::jd_to_mjd(jd);
     int mjd_int = static_cast<int>(std::floor(mjd));
     
     // Check if we have data
@@ -213,7 +213,7 @@ bool IERSData::parseFinals2000A(const std::string& line, EarthOrientationParams&
 bool IERSData::hasDataFor(double jd) const {
     if (eop_data_.empty()) return false;
     
-    double mjd = jd - 2400000.5;
+    double mjd = astdyn::time::jd_to_mjd(jd);
     int mjd_int = static_cast<int>(std::floor(mjd));
     
     int mjd_min = eop_data_.begin()->first;

@@ -1,4 +1,6 @@
 #include "ioccultcalc/time_utils.h"
+#include <astdyn/core/Constants.hpp>
+#include <astdyn/time/TimeScale.hpp>
 #include <sstream>
 #include <iomanip>
 #include <cmath>
@@ -6,6 +8,9 @@
 #include <stdexcept>
 
 namespace ioccultcalc {
+
+namespace ac = astdyn::constants;
+namespace at = astdyn::time;
 
 JulianDate TimeUtils::isoToJD(const std::string& isoDate) {
     int year, month, day, hour = 0, minute = 0;
@@ -125,29 +130,20 @@ JulianDate TimeUtils::now() {
 }
 
 double TimeUtils::gmst(const JulianDate& jd) {
-    // Greenwich Mean Sidereal Time
-    // Formula da Meeus
-    double T = (jd.jd - JD_J2000) / 36525.0;
-    
-    double gmst = 280.46061837 + 360.98564736629 * (jd.jd - JD_J2000) +
+    // Greenwich Mean Sidereal Time (formula da Meeus)
+    double T = (jd.jd - ac::JD2000) / 36525.0;
+    double gmst = 280.46061837 + 360.98564736629 * (jd.jd - ac::JD2000) +
                   T * T * (0.000387933 - T / 38710000.0);
-    
-    // Normalizza a [0, 360)
     gmst = fmod(gmst, 360.0);
     if (gmst < 0) gmst += 360.0;
-    
-    return gmst * DEG_TO_RAD;
+    return gmst * ac::DEG_TO_RAD;
 }
 
 double TimeUtils::lst(const JulianDate& jd, double longitude) {
-    // Local Sidereal Time
     double gmstRad = gmst(jd);
-    double lstRad = gmstRad + longitude * DEG_TO_RAD;
-    
-    // Normalizza a [0, 2π)
-    lstRad = fmod(lstRad, TWO_PI);
-    if (lstRad < 0) lstRad += TWO_PI;
-    
+    double lstRad = gmstRad + longitude * ac::DEG_TO_RAD;
+    lstRad = fmod(lstRad, ac::TWO_PI);
+    if (lstRad < 0) lstRad += ac::TWO_PI;
     return lstRad;
 }
 
@@ -160,16 +156,10 @@ double TimeUtils::getObliquity(const JulianDate& jd) {
 // ============================================================================
 
 JulianDate TimeUtils::ttToTDB(const JulianDate& jd_tt) {
-    // TDB - TT = formula di Fairhead & Bretagnon (1990)
-    // Oscillazione periodica dovuta all'orbita terrestre
-    
-    // Secoli giuliani da J2000.0
-    double T = (jd_tt.jd - JD_J2000) / 36525.0;
-    
-    // Formula approssimata (accurata a ~10 µs)
-    // Termine principale: oscillazione annuale
-    double g = 357.53 + 35999.050 * T;  // anomalia media Terra (gradi)
-    g *= DEG_TO_RAD;  // → radianti
+    // TDB - TT: formula Fairhead & Bretagnon (1990), oscillazione orbita terrestre
+    double T = (jd_tt.jd - ac::JD2000) / 36525.0;
+    double g = 357.53 + 35999.050 * T;
+    g *= ac::DEG_TO_RAD;
     
     // TDB - TT in secondi
     double tdb_tt_sec = 0.001657 * std::sin(g) + 0.000014 * std::sin(2.0 * g);
@@ -183,10 +173,9 @@ JulianDate TimeUtils::ttToTDB(const JulianDate& jd_tt) {
 }
 
 JulianDate TimeUtils::tdbToTT(const JulianDate& jd_tdb) {
-    // Inversione approssimata (iterazione non necessaria per accuratezza ms)
-    double T = (jd_tdb.jd - JD_J2000) / 36525.0;
+    double T = (jd_tdb.jd - ac::JD2000) / 36525.0;
     double g = 357.53 + 35999.050 * T;
-    g *= DEG_TO_RAD;
+    g *= ac::DEG_TO_RAD;
     
     double tdb_tt_sec = 0.001657 * std::sin(g) + 0.000014 * std::sin(2.0 * g);
     double tdb_tt_days = tdb_tt_sec / 86400.0;
@@ -249,7 +238,7 @@ JulianDate TimeUtils::utcToTDB(const JulianDate& jd_utc) {
 
 std::string TimeUtils::mjdToUtcString(double mjd) {
     JulianDate jd;
-    jd.jd = mjd + 2400000.5;
+    jd.jd = at::mjd_to_jd(mjd);
     return jdToISO(jd);
 }
 

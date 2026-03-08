@@ -1,5 +1,6 @@
 #include "ioccultcalc/occult4_xml.h"
 #include "ioccultcalc/time_utils.h"
+#include <astdyn/time/TimeScale.hpp>
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 #include <fstream>
@@ -466,7 +467,7 @@ std::string Occult4XMLHandler::generateOccult4EventXML(const OccultationEvent& e
     // Remove any non-digit characters if it's a Gaia ID
     cleanId.erase(std::remove_if(cleanId.begin(), cleanId.end(), [](char c) { return !std::isdigit(c); }), cleanId.end());
     xml << dateID << "_" << cleanId.substr(std::max(0, (int)cleanId.length() - 8));
-    xml << "," << std::setprecision(4) << (jd_utc.jd - 2400000.5);
+    xml << "," << std::setprecision(4) << astdyn::time::jd_to_mjd(jd_utc.jd);
     xml << "</ID>\n";
     
     // 8. Path points (CenterLine, NorthLimit, SouthLimit)

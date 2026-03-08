@@ -289,6 +289,9 @@ target_link_libraries(verify_jpl_icrf ioccultcalc)
 add_executable(calc_occultation_13477 calc_occultation_13477.cpp)
 target_link_libraries(calc_occultation_13477 ioccultcalc)
 
+add_executable(calc_occultation_138716 calc_occultation_138716.cpp)
+target_link_libraries(calc_occultation_138716 ioccultcalc)
+
 add_executable(diagnose_catalog ../diagnose_catalog.cpp)
 target_link_libraries(diagnose_catalog ioccultcalc)
 

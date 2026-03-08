@@ -1,6 +1,7 @@
 #include "ioccultcalc/chebyshev_detector.h"
 #include "ioccultcalc/ephemeris.h"
 #include "ioccultcalc/types.h"
+#include <astdyn/time/TimeScale.hpp>
 #include <cmath>
 #include <algorithm>
 
@@ -31,7 +32,7 @@ bool ChebyshevOccultationDetector::initialize(Ephemeris& ephemeris, double start
         positions.push_back(Eigen::Vector3d(x, y, z));
     }
 
-    bool success = approximation_->fit(positions, startJD - 2400000.5, endJD - 2400000.5);
+    bool success = approximation_->fit(positions, astdyn::time::jd_to_mjd(startJD), astdyn::time::jd_to_mjd(endJD));
     
     if (success) {
         startJD_ = startJD;
@@ -80,8 +81,7 @@ OccultationCandidate ChebyshevOccultationDetector::findCandidate(int starIndex, 
     for (int i = 0; i < nSamples; i++) {
         double jd = jdStart + (jdEnd - jdStart) * i / (nSamples - 1);
         
-        // Evaluate position using MJD
-        double mjd = jd - 2400000.5;
+        double mjd = astdyn::time::jd_to_mjd(jd);
         Eigen::Vector3d pos = approximation_->evaluatePosition(mjd);
         double r = pos.norm();
         double ast_dec = std::asin(pos.z() / r) * 180.0 / M_PI;
@@ -105,7 +105,7 @@ OccultationCandidate ChebyshevOccultationDetector::findCandidate(int starIndex, 
             double jd = jdStart + (jdEnd - jdStart) * i / (nSamples - 1);
             
             // Evaluate position using MJD
-            double mjd = jd - 2400000.5;
+            double mjd = astdyn::time::jd_to_mjd(jd);
             Eigen::Vector3d pos = approximation_->evaluatePosition(mjd);
             double r = pos.norm();
             double ast_dec = std::asin(pos.z() / r) * 180.0 / M_PI;

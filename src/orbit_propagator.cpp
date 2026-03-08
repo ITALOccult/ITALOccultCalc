@@ -4,24 +4,31 @@
  */
 
 #include "ioccultcalc/orbit_propagator.h"
+#include "ioccultcalc/coordinates.h"
 #include "ioccultcalc/jpl_ephemeris.h"
 #include "ioccultcalc/spk_reader.h"
 #include "ioccultcalc/spice_spk_reader.h"
 #include "ioccultcalc/ephemeris.h"
+#include "ioccultcalc/asteroid_perturbations_spk.h"
 #include "ioccultcalc/ra15_integrator.hpp"
 #include "ioccultcalc/rkf78_integrator.h"
+#include <astdyn/core/Constants.hpp>
+#include <astdyn/time/TimeScale.hpp>
 #include <cmath>
 #include <iostream>
 #include <chrono>
 #include <map>
+#include <memory>
 
 namespace ioccultcalc {
 
-// Costanti
+namespace ac = astdyn::constants;
+namespace at = astdyn::time;
+
+// Costanti (AU, tempo; GM Sole da AstDyn in AU³/day²)
 static constexpr double AU_TO_KM = 149597870.7;
 static constexpr double DAY_TO_SEC = 86400.0;
-static constexpr double GM_SUN = 1.32712440041279419e11;  // km³/s²
-static constexpr double GM_SUN_AU = GM_SUN / (AU_TO_KM * AU_TO_KM * AU_TO_KM) * (DAY_TO_SEC * DAY_TO_SEC);  // AU³/day²
+static constexpr double GM_SUN_AU = ac::GMS;  // AU³/day² (astdyn::constants)
 // Use C_LIGHT_AU_DAY from types.h
 
 // GM pianeti in AU³/day² (valori da JPL DE441)
@@ -49,51 +56,71 @@ struct AsteroidGM {
 class OrbitPropagator::Impl {
 public:
     JPLEphemerisReader jplReader;  // Fallback VSOP87
-    SPKReader spkReader;            // JPL DE (alta precisione pianeti)
-    SPICESPKReader asteroidReader;  // SPK asteroidi (CSPICE)
+    SPKReader spkReader;            // JPL DE binario (jpl_eph) — fallback se non c'è de441.bsp
+    SPICESPKReader asteroidReader;  // CSPICE: DE441 + codes_300ast (pianeti e asteroidi)
     bool useJPLDE;
+    bool useSpiceForPlanets;        // true se pianeti da SPICE (de441.bsp), evita jpl_pleph -2
     bool useAsteroidPerturbations;
+
+    AsteroidPerturbationConfig asteroidConfig_;
+    std::unique_ptr<AsteroidPerturbationsSPK> asteroidSPK_;
     
-    Impl() : useAsteroidPerturbations(false) {
-        // Prova a caricare JPL DE441 (pianeti), fallback a DE430, poi VSOP87
-        useJPLDE = spkReader.ensureFileLoaded("DE441");
-        
-        if (!useJPLDE) {
-            std::cerr << "OrbitPropagator: DE441 not available, trying DE430..." << std::endl;
-            useJPLDE = spkReader.ensureFileLoaded("DE430");
-        }
-        
-        if (useJPLDE) {
-            std::cerr << "OrbitPropagator: Using JPL " << spkReader.getVersion() 
-                     << " (high precision planets)" << std::endl;
+    Impl() : useAsteroidPerturbations(false), useSpiceForPlanets(false) {
+        asteroidConfig_.model = AsteroidPerturbationConfig::AST17_ANALYTIC;
+        // Preferenza: DE441 via CSPICE (de441.bsp) per evitare jpl_pleph READ_ERROR con file .bsp
+        useSpiceForPlanets = asteroidReader.ensureDe441Loaded();
+        if (useSpiceForPlanets) {
+            useJPLDE = true;
+            const char* home = getenv("HOME");
+            if (home) {
+                std::string astPath = std::string(home) + "/.ioccultcalc/ephemerides/codes_300ast_20100725.bsp";
+                asteroidReader.loadAdditionalFile(astPath);
+            }
+            useAsteroidPerturbations = asteroidReader.isLoaded();
+            std::cerr << "OrbitPropagator: Using SPICE DE441 (de441.bsp) for planets";
+            if (useAsteroidPerturbations) std::cerr << " + asteroid perturbations";
+            std::cerr << std::endl;
         } else {
-            std::cerr << "OrbitPropagator: Using VSOP87 (fallback, ~100 km precision)" << std::endl;
-            jplReader.loadFile("");  // Usa backend VSOP87
-        }
-        
-        // Carica file asteroidi (codes_300ast contiene i primi 300 asteroidi inclusi AST17)
-        useAsteroidPerturbations = asteroidReader.ensureFileLoaded("codes_300ast_20100725.bsp");
-        if (useAsteroidPerturbations) {
-            std::cerr << "OrbitPropagator: Asteroid perturbations enabled (AST17: 17 massive asteroids matching OrbFit)" << std::endl;
-        } else {
-            std::cerr << "OrbitPropagator: WARNING - Asteroid perturbations disabled (codes_300ast_20100725.bsp not found)" << std::endl;
+            useJPLDE = spkReader.ensureFileLoaded("DE441");
+            if (!useJPLDE) {
+                std::cerr << "OrbitPropagator: DE441 not available, trying DE430..." << std::endl;
+                useJPLDE = spkReader.ensureFileLoaded("DE430");
+            }
+            if (useJPLDE) {
+                std::cerr << "OrbitPropagator: Using JPL " << spkReader.getVersion() 
+                         << " (high precision planets)" << std::endl;
+            } else {
+                std::cerr << "OrbitPropagator: Using VSOP87 (fallback, ~100 km precision)" << std::endl;
+                jplReader.loadFile("");
+            }
+            useAsteroidPerturbations = asteroidReader.ensureFileLoaded("codes_300ast_20100725.bsp");
+            if (useAsteroidPerturbations) {
+                std::cerr << "OrbitPropagator: Asteroid perturbations enabled (AST17)" << std::endl;
+            } else {
+                std::cerr << "OrbitPropagator: WARNING - Asteroid perturbations disabled" << std::endl;
+            }
         }
     }
     
     Vector3D getPlanetPosition(int naifId, double jd) {
+        if (useJPLDE && useSpiceForPlanets && asteroidReader.isLoaded()) {
+            try {
+                // NAIF SPICE: 10 = Sun (eliocentrico). jpl_eph usa 11 = Sun.
+                return asteroidReader.getPosition(naifId, jd, 10);
+            } catch (const std::exception& e) {
+                std::cerr << "OrbitPropagator: SPICE planet error, fallback: " << e.what() << std::endl;
+                useSpiceForPlanets = false;
+            }
+        }
         if (useJPLDE && spkReader.isLoaded()) {
             try {
-                // Usa JPL DE per alta precisione (~1 km) - HELIOCENTRIC
-                // DE441 fornisce posizioni eliocentriche (centro = 11 = Sun)
-                return spkReader.getPosition(naifId, jd, 11);  // Heliocentric
+                return spkReader.getPosition(naifId, jd, 11);  // jpl_eph: 11 = Sun
             } catch (const std::exception& e) {
-                std::cerr << "SPK read error, falling back to VSOP87: " << e.what() << std::endl;
-                useJPLDE = false;  // Fallback permanente
+                std::cerr << "OrbitPropagator: jpl_pleph error, fallback to VSOP87: " << e.what() << std::endl;
+                useJPLDE = false;
             }
         }
         
-        // Fallback: VSOP87 (~100 km precision)
-        // Mappa NAIF ID a JPLBody per VSOP87
         static const std::map<int, JPLBody> naifToVSOP = {
             {1, JPLBody::MERCURY},
             {2, JPLBody::VENUS},
@@ -136,14 +163,34 @@ void OrbitPropagator::setOptions(const PropagatorOptions& options) {
     options_ = options;
 }
 
+void OrbitPropagator::setAsteroidPerturbationConfig(const AsteroidPerturbationConfig& config) {
+    pImpl->asteroidConfig_ = config;
+    pImpl->asteroidSPK_.reset();
+    if (config.model == AsteroidPerturbationConfig::SPK_FULL && !config.asteroid_spk_path.empty()) {
+        pImpl->asteroidSPK_ = std::make_unique<AsteroidPerturbationsSPK>();
+        if (pImpl->asteroidSPK_->loadFromSPK(config.asteroid_spk_path)) {
+            std::cerr << "OrbitPropagator: Asteroid perturbations SPK_FULL (" << config.asteroid_spk_path << ")" << std::endl;
+        } else {
+            pImpl->asteroidSPK_.reset();
+        }
+    }
+}
+
+AsteroidPerturbationConfig OrbitPropagator::getAsteroidPerturbationConfig() const {
+    return pImpl->asteroidConfig_;
+}
+
 OrbitState OrbitPropagator::elementsToState(const AstDynEquinoctialElements& elements) {
+    // Input: elementi EQUINOZIALI (a, h, k, p, q, lambda) — NON kepleriani.
+    // Convenzione OEF/AstDyS: p = tan(i/2)*sin(Omega), q = tan(i/2)*cos(Omega) → Omega = atan2(p,q);
+    // h = e*sin(omega_bar), k = e*cos(omega_bar) → omega_bar = atan2(h,k); lambda = longitudine media.
     // Implementation following OrbFit's prop2b function EXACTLY
     // Reference: OrbFit/src/suit/orb_els.f90, subroutine prop2b
     // This propagates equinoctial elements using 2-body Kepler dynamics
     // Elements from AstDyS are in ECLM J2000 (ecliptic frame)
     
     const double gm = GM_SUN_AU;  // AU^3/day^2
-    const double t0 = elements.epoch.jd - 2400000.5;  // MJD
+    const double t0 = at::jd_to_mjd(elements.epoch.jd);
     const double t1 = t0;  // No propagation, just convert at epoch
     
     // Mean motion (enne in OrbFit)
@@ -165,21 +212,21 @@ OrbitState OrbitPropagator::elementsToState(const AstDynEquinoctialElements& ele
     } else {
         pol = atan2(elements.h, elements.k);
         // Normalize to [-pi, pi]
-        while (pol > PI) pol -= TWO_PI;
-        while (pol < -PI) pol += TWO_PI;
+        while (pol > ac::PI) pol -= ac::TWO_PI;
+        while (pol < -ac::PI) pol += ac::TWO_PI;
     }
     
     // Normalize pml to [pol, pol + 2*pi]
-    while (pml > PI) pml -= TWO_PI;
-    while (pml < -PI) pml += TWO_PI;
+    while (pml > ac::PI) pml -= ac::TWO_PI;
+    while (pml < -ac::PI) pml += ac::TWO_PI;
     if (pml < pol) {
-        pml += TWO_PI;
+        pml += ac::TWO_PI;
     }
     
     // Newton's method to solve Kepler equation in equinoctial form:
     // F - k*sin(F) + h*cos(F) - lambda = 0
     // Starting guess
-    double el = PI + pol;
+    double el = ac::PI + pol;
     const int iter_max = 25;
     
     for (int j = 0; j < iter_max; j++) {
@@ -234,37 +281,17 @@ OrbitState OrbitPropagator::elementsToState(const AstDynEquinoctialElements& ele
     velocity_ecl.y = f.y * xpe + g.y * ype;
     velocity_ecl.z = f.z * xpe + g.z * ype;
     
-    // Position and velocity are in ECLM J2000 (ecliptic frame)
-    // Convert to EQUATORIAL J2000 for the propagator
-    double obliquity = meanObliquityOfEclipticRad(elements.epoch.jd);
-    double cos_eps = cos(obliquity);
-    double sin_eps = sin(obliquity);
-    
+    // Position and velocity sono in ECLITTICO J2000 (elementi OEF/AstDyS).
+    // Il propagator integra in EQUATORIALE perché le posizioni pianeti SPICE sono in ICRF.
+    // Conversione esplicita Eclittico → Equatoriale prima di restituire lo stato.
     Vector3D position, velocity;
-    position.x = position_ecl.x;
-    position.y = position_ecl.y * cos_eps - position_ecl.z * sin_eps;
-    position.z = position_ecl.y * sin_eps + position_ecl.z * cos_eps;
-    
-    velocity.x = velocity_ecl.x;
-    velocity.y = velocity_ecl.y * cos_eps - velocity_ecl.z * sin_eps;
-    velocity.z = velocity_ecl.y * sin_eps + velocity_ecl.z * cos_eps;
-    
-    // Check if input elements were already EQUATORIAL
-    if (elements.frame == FrameType::EQUATORIAL_ICRF) {
-        // If elements indicate they are already Equatorial, we shouldn't have applied 
-        // the rotation from Ecliptic. 
-        // However, the calculation above (prop2b algorithm) assumes the Keplerian/Equinoctial 
-        // elements define the orbit relative to the reference plane.
-        
-        // If 'elements' defines Inclination relative to Equator, then 'position_ecl' 
-        // (calculated above) is actually 'position_equ'.
-        // So applying the rotation was wrong. We should revert it or just use position_ecl directly.
-        
-        // Let's assume the math above generated coordinates in the frame defined by the elements.
+    if (elements.frame == FrameType::ECLIPTIC_J2000) {
+        position = Coordinates::eclipticToEquatorial(position_ecl, elements.epoch.jd);
+        velocity = Coordinates::eclipticToEquatorial(velocity_ecl, elements.epoch.jd);
+    } else {
+        // Elementi già in equatoriale (es. EQUATORIAL_ICRF): prop2b ha generato nel frame degli elementi
         position = position_ecl;
         velocity = velocity_ecl;
-        
-        // Note: prop2b generates in the frame of the elements.
     }
     
     return OrbitState(elements.epoch, position, velocity);
@@ -321,7 +348,7 @@ AstDynEquinoctialElements OrbitPropagator::stateToElements(const OrbitState& sta
     double Omega;
     if (n_mag > 1e-10) {
         Omega = acos(n_vec.x / n_mag);
-        if (n_vec.y < 0) Omega = TWO_PI - Omega;
+        if (n_vec.y < 0) Omega = ac::TWO_PI - Omega;
     } else {
         Omega = 0.0;  // Orbita equatoriale
     }
@@ -334,7 +361,7 @@ AstDynEquinoctialElements OrbitPropagator::stateToElements(const OrbitState& sta
         if (cos_omega > 1.0) cos_omega = 1.0;
         if (cos_omega < -1.0) cos_omega = -1.0;
         omega = acos(cos_omega);
-        if (e_vec.z < 0) omega = TWO_PI - omega;
+        if (e_vec.z < 0) omega = ac::TWO_PI - omega;
     } else {
         omega = 0.0;
     }
@@ -346,11 +373,10 @@ AstDynEquinoctialElements OrbitPropagator::stateToElements(const OrbitState& sta
         if (cos_nu > 1.0) cos_nu = 1.0;
         if (cos_nu < -1.0) cos_nu = -1.0;
         nu = acos(cos_nu);
-        if (r.dot(v) < 0) nu = TWO_PI - nu;
+        if (r.dot(v) < 0) nu = ac::TWO_PI - nu;
     } else {
-        // Orbita circolare, usa longitudine
         nu = atan2(r.y, r.x) - Omega - omega;
-        if (nu < 0) nu += TWO_PI;
+        if (nu < 0) nu += ac::TWO_PI;
     }
     
     // Anomalia eccentrica
@@ -358,7 +384,7 @@ AstDynEquinoctialElements OrbitPropagator::stateToElements(const OrbitState& sta
     
     // Anomalia media
     double M = E - e * sin(E);
-    if (M < 0) M += TWO_PI;
+    if (M < 0) M += ac::TWO_PI;
     
     // Converti in elementi equinoziali
     AstDynEquinoctialElements elem;
@@ -370,8 +396,8 @@ AstDynEquinoctialElements OrbitPropagator::stateToElements(const OrbitState& sta
     elem.lambda = M + omega + Omega;
     
     // Normalizza lambda in [0, 2π]
-    while (elem.lambda < 0) elem.lambda += TWO_PI;
-    while (elem.lambda >= TWO_PI) elem.lambda -= TWO_PI;
+    while (elem.lambda < 0) elem.lambda += ac::TWO_PI;
+    while (elem.lambda >= ac::TWO_PI) elem.lambda -= ac::TWO_PI;
     
     elem.epoch = state.epoch;
     elem.designation = "";  // Da riempire dal chiamante
@@ -510,8 +536,23 @@ Vector3D OrbitPropagator::computeAcceleration(const JulianDate& jd,
         // TODO: Luna - DE441 non contiene corpo 301 (Moon) separatamente
         // Necessita file SPK planetario completo con satelliti
         
-        // Perturbazioni asteroidali (usando CSPICE + file SPK sb441-n16)
-        if (pImpl->useAsteroidPerturbations) {
+        // Perturbazioni asteroidali
+        if (pImpl->asteroidConfig_.model == AsteroidPerturbationConfig::NONE) {
+            // Nessuna perturbazione asteroidale
+        } else if (pImpl->asteroidConfig_.model == AsteroidPerturbationConfig::SPK_FULL &&
+                   pImpl->asteroidSPK_ && pImpl->asteroidSPK_->isLoaded()) {
+            // Ephemeris completa da SPK (con selezione intelligente opzionale)
+            const auto& c = pImpl->asteroidConfig_;
+            if (c.max_asteroids_per_step > 0) {
+                Vector3D aast = pImpl->asteroidSPK_->getAccelerationSelected(
+                    pos, jd.jd, c.min_perturbation_mass_solar,
+                    c.max_perturbation_distance_au, c.max_asteroids_per_step);
+                acc.x += aast.x; acc.y += aast.y; acc.z += aast.z;
+            } else {
+                Vector3D aast = pImpl->asteroidSPK_->getAcceleration(pos, jd.jd);
+                acc.x += aast.x; acc.y += aast.y; acc.z += aast.z;
+            }
+        } else if (pImpl->useAsteroidPerturbations) {
             struct Asteroid {
                 int naifId;
                 double GM;

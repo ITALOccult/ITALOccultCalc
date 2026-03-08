@@ -11,6 +11,8 @@
 #include <astdyn/AstDyn.hpp>
 #include <astdyn/api/OrbitFitAPI.hpp>
 #include <astdyn/propagation/HighPrecisionPropagator.hpp>
+#include <astdyn/core/Constants.hpp>
+#include <astdyn/time/TimeScale.hpp>
 #include "ioc_gaialib/unified_gaia_catalog.h"
 #include "ioc_gaialib/types.h"
 #include <iostream>
@@ -23,6 +25,9 @@
 
 namespace ioccultcalc {
 
+namespace ac = astdyn::constants;
+namespace at = astdyn::time;
+
 class Phase1CandidateScreening::Impl {
 public:
     std::unique_ptr<astdyn::propagation::HighPrecisionPropagator> propagator;
@@ -32,14 +37,42 @@ public:
     
     Impl() : catalog(nullptr) {
         std::cout << "[Phase1CandidateScreening] Constructor started." << std::endl;
-        // Initialize High Precision Propagator with DE441
         astdyn::propagation::HighPrecisionPropagator::Config config;
-        config.de441_path = std::string(getenv("HOME")) + "/.ioccultcalc/ephemerides/de441_part-2.bsp";
+        const char* home = getenv("HOME");
+        std::string cacheDir = home ? (std::string(home) + "/.ioccultcalc/ephemerides/") : "";
+        // Prefer de441_part-2.bsp (user choice), then de440, then full de441 to avoid OOM
+        std::vector<std::string> tryPaths = {
+            cacheDir + "de441_part-2.bsp",    // preferred
+            cacheDir + "de440.bsp",
+            cacheDir + "de441.bsp"            // full ~3.1 GB – last resort
+        };
+        config.de441_path = "";
+        for (const auto& p : tryPaths) {
+            if (p.empty()) continue;
+            std::ifstream f(p);
+            if (f.good()) {
+                config.de441_path = p;
+                break;
+            }
+        }
+        if (config.de441_path.empty() && !cacheDir.empty()) {
+            std::cerr << "[Phase1CandidateScreening] WARNING: No DE441/DE440 SPK found in " << cacheDir
+                      << ". Using analytical ephemeris (lower precision)." << std::endl;
+        }
         config.perturbations_planets = true;
-        config.perturbations_asteroids = false; // Not needed for coarse corridor
+        config.perturbations_asteroids = false;
         config.relativity = true;
-        config.tolerance = 1e-9; // Sufficient for screening
+        config.tolerance = 1e-9;
+        if (!config.de441_path.empty()) {
+            if (config.de441_path.find("de441.bsp") != std::string::npos && config.de441_path.find("part-2") == std::string::npos) {
+                std::cout << "[Phase1CandidateScreening] Loading full de441.bsp (~3 GB) – needs ~4+ GB RAM; consider using de440.bsp to avoid OOM." << std::endl;
+            }
+            std::cout << "[Phase1CandidateScreening] Loading DE ephemeris (may take 1–2 min for large .bsp)... " << std::flush;
+        }
         propagator = std::make_unique<astdyn::propagation::HighPrecisionPropagator>(config);
+        if (!config.de441_path.empty()) {
+            std::cout << "done." << std::endl;
+        }
         std::cout << "[Phase1CandidateScreening] Constructor finished." << std::endl;
     }
 
@@ -47,14 +80,20 @@ public:
      * @brief Calcola il punto apparente (RA/Dec ICRF) dell'asteroide visto dalla Terra.
      * Sfrutta le routine di alta precisione di AstDyn.
      */
-    ioc::gaia::CelestialPoint getApparentPoint(double mjd) {
-        // Usa l'API ad alta precisione con frame Eclittico
-        double target_jd_tdb = mjd + 2400000.5;
+    ioc::gaia::CelestialPoint getApparentPoint(astdyn::MJD mjd) {
+        double target_jd_tdb = at::mjd_to_jd(mjd);
         auto obs = propagator->calculateGeocentricObservation(
             initial_kep_ecl, 
             target_jd_tdb, 
             astdyn::propagation::HighPrecisionPropagator::InputFrame::ECLIPTIC
         );
+
+ // DEBUG: Stampiamo cosa restituisce
+    if (verbose_level >= 2) {
+        std::cout << "[ASTDYN DEBUG] JD=" << target_jd_tdb 
+         << " Raw output: ra=" << obs.ra_deg << " dec=" << obs.dec_deg
+        << " (frame: ECLIPTIC input -> ??? output)" << std::endl;
+    }
         return ioc::gaia::CelestialPoint(obs.ra_deg, obs.dec_deg);
     }
 };
@@ -119,30 +158,25 @@ bool Phase1CandidateScreening::loadAsteroidFromJSON(int number, const std::strin
         }
 
         if (found) {
-            // Epoch guard clause
             double epoch = data["epoch"];
-            if (epoch > 2400000.5) {
-                epoch -= 2400000.5; // JD to MJD
-            }
+            if (epoch > at::mjd_to_jd(0))
+                epoch = at::jd_to_mjd(epoch);
 
-            // Use constants from types.h
-            double deg2rad = DEG_TO_RAD;
-            
-            // Populate initial elements for the propagator
             pimpl_->initial_kep_ecl.semi_major_axis = data["a"];
             pimpl_->initial_kep_ecl.eccentricity = data["e"];
-            pimpl_->initial_kep_ecl.inclination = (double)data["i"] * deg2rad;
-            pimpl_->initial_kep_ecl.longitude_ascending_node = (double)data["om"] * deg2rad;
-            pimpl_->initial_kep_ecl.argument_perihelion = (double)data["w"] * deg2rad;
-            pimpl_->initial_kep_ecl.mean_anomaly = (double)data["ma"] * deg2rad;
+            pimpl_->initial_kep_ecl.inclination = (double)data["i"] * ac::DEG_TO_RAD;
+            pimpl_->initial_kep_ecl.longitude_ascending_node = (double)data["om"] * ac::DEG_TO_RAD;
+            pimpl_->initial_kep_ecl.argument_perihelion = (double)data["w"] * ac::DEG_TO_RAD;
+            pimpl_->initial_kep_ecl.mean_anomaly = (double)data["ma"] * ac::DEG_TO_RAD;
             pimpl_->initial_kep_ecl.epoch_mjd_tdb = epoch;
-            pimpl_->initial_kep_ecl.gravitational_parameter = 2.959122082855911e-04; // GMS in AU^3/day^2
-            
+            pimpl_->initial_kep_ecl.gravitational_parameter = ac::GMS;
+
             return true;
         }
     } catch (...) {
         return false;
     }
+    return false;
 }
 
 bool Phase1CandidateScreening::loadAsteroidFromDB(int number) {
@@ -150,15 +184,22 @@ bool Phase1CandidateScreening::loadAsteroidFromDB(int number) {
         AsteroidSqliteDatabase db;
         auto orbital = db.getOrbitalElements(number);
         if (orbital) {
-            // Convert OrbitalElements to Keplerian for the propagator
+            astdyn::MJD mjd_epoch = at::jd_to_mjd(orbital->epoch.jd);
+            std::cout << "[Phase1] Elementi orbitali utilizzati (asteroid " << number << ", da asteroids.db):\n"
+                      << "  a=" << std::fixed << std::setprecision(8) << orbital->a << " AU  e=" << orbital->e
+                      << "  i=" << std::setprecision(5) << (orbital->i * ac::RAD_TO_DEG) << " deg\n"
+                      << "  Omega=" << (orbital->Omega * ac::RAD_TO_DEG) << "  omega=" << (orbital->omega * ac::RAD_TO_DEG)
+                      << "  M=" << (orbital->M * ac::RAD_TO_DEG) << " deg  epoch MJD=" << std::setprecision(2) << mjd_epoch
+                      << "  H=" << orbital->H << "  diam=" << orbital->diameter << " km\n";
+
             pimpl_->initial_kep_ecl.semi_major_axis = orbital->a;
             pimpl_->initial_kep_ecl.eccentricity = orbital->e;
             pimpl_->initial_kep_ecl.inclination = orbital->i;
             pimpl_->initial_kep_ecl.longitude_ascending_node = orbital->Omega;
             pimpl_->initial_kep_ecl.argument_perihelion = orbital->omega;
             pimpl_->initial_kep_ecl.mean_anomaly = orbital->M;
-            pimpl_->initial_kep_ecl.epoch_mjd_tdb = orbital->epoch.jd - 2400000.5;
-            pimpl_->initial_kep_ecl.gravitational_parameter = 2.959122082855911e-04;
+            pimpl_->initial_kep_ecl.epoch_mjd_tdb = at::jd_to_mjd(orbital->epoch.jd);
+            pimpl_->initial_kep_ecl.gravitational_parameter = ac::GMS;
             return true;
         }
     } catch (...) {
@@ -190,8 +231,8 @@ bool Phase1CandidateScreening::setAsteroidElements(const AstDynEquinoctialElemen
     pimpl_->initial_kep_ecl.longitude_ascending_node = kep.Omega;
     pimpl_->initial_kep_ecl.argument_perihelion = kep.omega;
     pimpl_->initial_kep_ecl.mean_anomaly = kep.M;
-    pimpl_->initial_kep_ecl.epoch_mjd_tdb = kep.epoch.jd - 2400000.5;
-    pimpl_->initial_kep_ecl.gravitational_parameter = 2.959122082855911e-04; // GMS in AU^3/day^2
+    pimpl_->initial_kep_ecl.epoch_mjd_tdb = at::jd_to_mjd(kep.epoch.jd);
+    pimpl_->initial_kep_ecl.gravitational_parameter = ac::GMS;
     
     return true;
 }

@@ -60,9 +60,12 @@ struct AstDySElements {
     // Conversione a OrbitalElements di IOccultCalc
     OrbitalElements toOrbitalElements() const;
     
-    // Crea da file .eq1
+    // Crea da file .eq1 (lancia se fallisce)
     static AstDySElements fromFile(const std::string& filename);
-    
+
+    /// Parsing senza eccezioni: ritorna std::nullopt in caso di errore
+    static std::optional<AstDySElements> tryFromFile(const std::string& filename);
+
     // Download da AstDyS
     static AstDySElements download(int asteroid_number);
     static AstDySElements download(const std::string& designation);
@@ -92,9 +95,12 @@ struct RWOObservation {
     // Conversione a AstrometricObservation di IOccultCalc
     AstrometricObservation toObservation() const;
     
-    // Carica da file .rwo
+    // Carica da file .rwo (può lanciare)
     static std::vector<RWOObservation> fromFile(const std::string& filename);
-    
+
+    /// Parsing senza eccezioni: ritorna std::nullopt in caso di errore
+    static std::optional<std::vector<RWOObservation>> tryFromFile(const std::string& filename);
+
     // Download da AstDyS
     static std::vector<RWOObservation> download(int asteroid_number);
     static std::vector<RWOObservation> download(const std::string& designation);
@@ -178,10 +184,10 @@ public:
      * @brief Propaga elementi orbitali da epoca iniziale a finale
      * @param elements Elementi all'epoca iniziale
      * @param target_mjd Epoca target [MJD]
-     * @return Elementi propagati all'epoca target
+     * @return Elementi propagati, o std::nullopt in caso di errore (es. propagatore non disponibile)
      */
-    AstDySElements propagate(const AstDySElements& elements, 
-                             double target_mjd);
+    std::optional<AstDySElements> propagate(const AstDySElements& elements,
+                                            double target_mjd);
     
     /**
      * @brief Calcola effemeridi (RA, Dec) per data epoca
@@ -320,9 +326,9 @@ namespace astdyn_utils {
     std::string formatRMS(double arcsec);
     std::string formatChi2(double chi2, int ndf);
     
-    // Parser file locali
-    AstDySElements parseEQ1File(const std::string& filename);
-    std::vector<RWOObservation> parseRWOFile(const std::string& filename);
+    // Parser file locali (ritornano std::nullopt in caso di errore)
+    std::optional<AstDySElements> parseEQ1File(const std::string& filename);
+    std::optional<std::vector<RWOObservation>> parseRWOFile(const std::string& filename);
     
 } // namespace astdyn_utils
 

@@ -2,15 +2,26 @@
 #include "astdyn/ephemeris/AsteroidFitter.hpp"
 #include "astdyn/coordinates/ReferenceFrame.hpp"
 #include "astdyn/propagation/OrbitalElements.hpp"
+#include "astdyn/propagation/HighPrecisionPropagator.hpp"
 #include "astdyn/core/Constants.hpp"
+#include "astdyn/core/Types.hpp"
+#include "astdyn/time/TimeScale.hpp"
 #include "ioccultcalc/time_utils.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <iomanip>
 #include <cmath>
+#include <cstdlib>
 
 namespace ioccultcalc {
+
+namespace ac = astdyn::constants;
+namespace at = astdyn::time;
+
+// Forward declarations for conversion helpers (used by AstDynPropagator::propagate)
+static astdyn::propagation::KeplerianElements toAstDynKeplerian(const AstDySElements& el);
+static AstDySElements fromAstDynKeplerian(const astdyn::propagation::KeplerianElements& kep, const std::string& name);
 
 // ============================================================================
 // AstDySElements Implementation
@@ -19,13 +30,13 @@ namespace ioccultcalc {
 OrbitalElements AstDySElements::toOrbitalElements() const {
     OrbitalElements elem;
     elem.designation = name;
-    elem.epoch.jd = epoch_mjd + 2400000.5;
+    elem.epoch.jd = at::mjd_to_jd(epoch_mjd);
     elem.a = a;
     elem.e = e;
-    elem.i = i * DEG_TO_RAD;
-    elem.Omega = Omega * DEG_TO_RAD;
-    elem.omega = omega * DEG_TO_RAD;
-    elem.M = M * DEG_TO_RAD;
+    elem.i = i * ac::DEG_TO_RAD;
+    elem.Omega = Omega * ac::DEG_TO_RAD;
+    elem.omega = omega * ac::DEG_TO_RAD;
+    elem.M = M * ac::DEG_TO_RAD;
     elem.H = H;
     elem.G = G;
     elem.frame = frame;
@@ -33,27 +44,33 @@ OrbitalElements AstDySElements::toOrbitalElements() const {
     return elem;
 }
 
-AstDySElements AstDySElements::fromFile(const std::string& filename) {
+std::optional<AstDySElements> AstDySElements::tryFromFile(const std::string& filename) {
     try {
         auto equ = astdyn::api::OrbitFitAPI::parse_eq1(filename);
         AstDySElements out;
-        out.name = "Unknown"; // parse_eq1 doesn't return name yet
+        out.name = "Unknown";
         out.number = 0;
         out.a = equ.a;
-        // Convert Equinoctial to Keplerian for AstDySElements storage (Degrees)
         auto kep = astdyn::propagation::equinoctial_to_keplerian(equ);
         out.a = kep.semi_major_axis;
         out.e = kep.eccentricity;
-        out.i = kep.inclination * RAD_TO_DEG;
-        out.omega = kep.argument_perihelion * RAD_TO_DEG;
-        out.Omega = kep.longitude_ascending_node * RAD_TO_DEG;
-        out.M = kep.mean_anomaly * RAD_TO_DEG;
+        out.i = kep.inclination * ac::RAD_TO_DEG;
+        out.omega = kep.argument_perihelion * ac::RAD_TO_DEG;
+        out.Omega = kep.longitude_ascending_node * ac::RAD_TO_DEG;
+        out.M = kep.mean_anomaly * ac::RAD_TO_DEG;
         out.epoch_mjd = equ.epoch_mjd_tdb;
         out.has_covariance = false;
         return out;
-    } catch (const std::exception& e) {
-        throw std::runtime_error("AstDySElements::fromFile failed: " + std::string(e.what()));
+    } catch (const std::exception&) {
+        return std::nullopt;
     }
+}
+
+AstDySElements AstDySElements::fromFile(const std::string& filename) {
+    auto opt = tryFromFile(filename);
+    if (!opt)
+        throw std::runtime_error("AstDySElements::fromFile failed: cannot parse " + filename);
+    return *opt;
 }
 
 // ============================================================================
@@ -62,31 +79,42 @@ AstDySElements AstDySElements::fromFile(const std::string& filename) {
 
 AstrometricObservation RWOObservation::toObservation() const {
     AstrometricObservation obs;
-    obs.epoch.jd = mjd_utc + 2400000.5;
-    obs.obs.ra = ra_deg * DEG_TO_RAD;
-    obs.obs.dec = dec_deg * DEG_TO_RAD;
+    obs.epoch.jd = at::mjd_to_jd(mjd_utc);
+    obs.obs.ra = ra_deg * ac::DEG_TO_RAD;
+    obs.obs.dec = dec_deg * ac::DEG_TO_RAD;
     obs.raError = ra_sigma_arcsec;
     obs.decError = dec_sigma_arcsec;
     obs.observatoryCode = obs_code;
     return obs;
 }
 
-std::vector<RWOObservation> RWOObservation::fromFile(const std::string& filename) {
-    auto internal_obs = astdyn::observations::RWOReader::readFile(filename);
-    std::vector<RWOObservation> out;
-    for (const auto& o : internal_obs) {
-        RWOObservation r;
-        r.designation = o.object_designation;
-        r.mjd_utc = o.mjd_utc;
-        r.ra_deg = o.ra * (180.0 / M_PI);
-        r.dec_deg = o.dec * (180.0 / M_PI);
-        r.ra_sigma_arcsec = o.sigma_ra * (180.0 / M_PI) * 3600.0;
-        r.dec_sigma_arcsec = o.sigma_dec * (180.0 / M_PI) * 3600.0;
-        r.obs_code = o.observatory_code;
-        r.magnitude = o.magnitude.value_or(0.0);
-        out.push_back(r);
+std::optional<std::vector<RWOObservation>> RWOObservation::tryFromFile(const std::string& filename) {
+    try {
+        auto internal_obs = astdyn::observations::RWOReader::readFile(filename);
+        std::vector<RWOObservation> out;
+        for (const auto& o : internal_obs) {
+            RWOObservation r;
+            r.designation = o.object_designation;
+            r.mjd_utc = o.mjd_utc;
+            r.ra_deg = o.ra * ac::RAD_TO_DEG;
+            r.dec_deg = o.dec * ac::RAD_TO_DEG;
+            r.ra_sigma_arcsec = o.sigma_ra * ac::RAD_TO_ARCSEC;
+            r.dec_sigma_arcsec = o.sigma_dec * ac::RAD_TO_ARCSEC;
+            r.obs_code = o.observatory_code;
+            r.magnitude = o.magnitude.value_or(0.0);
+            out.push_back(r);
+        }
+        return out;
+    } catch (const std::exception&) {
+        return std::nullopt;
     }
-    return out;
+}
+
+std::vector<RWOObservation> RWOObservation::fromFile(const std::string& filename) {
+    auto opt = tryFromFile(filename);
+    if (!opt)
+        throw std::runtime_error("RWOObservation::fromFile failed: cannot parse " + filename);
+    return *opt;
 }
 
 // ============================================================================
@@ -115,23 +143,84 @@ public:
     bool usePlanets = true;
     bool useAsteroids = true;
     bool useRelativity = true;
-    
-    explicit Impl(double tol) : tolerance(tol) {}
+    std::string de441_path;
+    mutable std::unique_ptr<astdyn::propagation::HighPrecisionPropagator> hpp;
+
+    explicit Impl(double tol) : tolerance(tol) {
+        discoverDe441Path();
+    }
+
+    void discoverDe441Path() {
+        const char* home = std::getenv("HOME");
+        std::string cacheDir = home ? (std::string(home) + "/.ioccultcalc/ephemerides/") : "";
+        std::vector<std::string> tryPaths = {
+            cacheDir + "de441_part-2.bsp",
+            cacheDir + "de440.bsp",
+            cacheDir + "de441.bsp"
+        };
+        for (const auto& p : tryPaths) {
+            if (p.empty()) continue;
+            std::ifstream f(p);
+            if (f.good()) {
+                de441_path = p;
+                return;
+            }
+        }
+        de441_path.clear();
+    }
+
+    astdyn::propagation::HighPrecisionPropagator& getPropagator() {
+        if (!hpp) {
+            astdyn::propagation::HighPrecisionPropagator::Config config;
+            config.de441_path = de441_path;
+            config.tolerance = tolerance;
+            config.perturbations_planets = usePlanets;
+            config.perturbations_asteroids = useAsteroids;
+            config.relativity = useRelativity;
+            config.step_size = 0.5;
+            hpp = std::make_unique<astdyn::propagation::HighPrecisionPropagator>(config);
+        }
+        return *hpp;
+    }
+
+    void invalidatePropagator() { hpp.reset(); }
 };
 
-AstDynPropagator::AstDynPropagator(double tolerance) 
+AstDynPropagator::AstDynPropagator(double tolerance)
     : pimpl_(std::make_unique<Impl>(tolerance)) {}
 
 AstDynPropagator::~AstDynPropagator() = default;
 
-void AstDynPropagator::setTolerance(double tol) { pimpl_->tolerance = tol; }
-void AstDynPropagator::usePlanetPerturbations(bool enable) { pimpl_->usePlanets = enable; }
-void AstDynPropagator::useAsteroidPerturbations(bool enable) { pimpl_->useAsteroids = enable; }
-void AstDynPropagator::useRelativisticCorrections(bool enable) { pimpl_->useRelativity = enable; }
+void AstDynPropagator::setTolerance(double tol) {
+    pimpl_->tolerance = tol;
+    pimpl_->invalidatePropagator();
+}
+void AstDynPropagator::usePlanetPerturbations(bool enable) {
+    pimpl_->usePlanets = enable;
+    pimpl_->invalidatePropagator();
+}
+void AstDynPropagator::useAsteroidPerturbations(bool enable) {
+    pimpl_->useAsteroids = enable;
+    pimpl_->invalidatePropagator();
+}
+void AstDynPropagator::useRelativisticCorrections(bool enable) {
+    pimpl_->useRelativity = enable;
+    pimpl_->invalidatePropagator();
+}
 
-AstDySElements AstDynPropagator::propagate(const AstDySElements& elements, double target_mjd) {
-    // TODO: Bridge to astdyn implementation
-    return elements; // Stub
+std::optional<AstDySElements> AstDynPropagator::propagate(const AstDySElements& elements, double target_mjd) {
+    try {
+        astdyn::propagation::KeplerianElements kep = toAstDynKeplerian(elements);
+        astdyn::propagation::HighPrecisionPropagator& hpp = pimpl_->getPropagator();
+        astdyn::propagation::CartesianElements cart =
+            hpp.propagate_cartesian(kep, target_mjd,
+                                    astdyn::propagation::HighPrecisionPropagator::InputFrame::ECLIPTIC);
+        astdyn::propagation::KeplerianElements kep_target =
+            astdyn::propagation::cartesian_to_keplerian(cart);
+        return fromAstDynKeplerian(kep_target, elements.name);
+    } catch (const std::exception&) {
+        return std::nullopt;
+    }
 }
 
 // ============================================================================
@@ -159,157 +248,67 @@ void AstDynOrbitFitter::setMaxIterations(int max_iter) { pimpl_->maxIterations =
 // Geometric Constants
 // Use OBLIQUITY_J2000 from types.h
 
-// Conversion Helpers
+// Conversion Helpers (bridge AstDySElements <-> AstDyn Keplerian/Cartesian)
 struct Cartesian { double x, y, z, vx, vy, vz; };
 
+namespace propagation = astdyn::propagation;
+
+static propagation::KeplerianElements toAstDynKeplerian(const AstDySElements& el) {
+    propagation::KeplerianElements kep;
+    kep.epoch_mjd_tdb = el.epoch_mjd;
+    kep.semi_major_axis = el.a;
+    kep.eccentricity = el.e;
+    kep.inclination = el.i * ac::DEG_TO_RAD;
+    kep.longitude_ascending_node = el.Omega * ac::DEG_TO_RAD;
+    kep.argument_perihelion = el.omega * ac::DEG_TO_RAD;
+    kep.mean_anomaly = el.M * ac::DEG_TO_RAD;
+    kep.gravitational_parameter = ac::GMS;
+    return kep;
+}
+
+static AstDySElements fromAstDynKeplerian(const propagation::KeplerianElements& kep, const std::string& name) {
+    AstDySElements el;
+    el.name = name;
+    el.epoch_mjd = kep.epoch_mjd_tdb;
+    el.a = kep.semi_major_axis;
+    el.e = kep.eccentricity;
+    el.i = kep.inclination * ac::RAD_TO_DEG;
+    el.Omega = kep.longitude_ascending_node * ac::RAD_TO_DEG;
+    el.omega = kep.argument_perihelion * ac::RAD_TO_DEG;
+    el.M = kep.mean_anomaly * ac::RAD_TO_DEG;
+    return el;
+}
+
 static Cartesian keplerianToCartesianElem(const AstDySElements& el) {
-    double a = el.a;
-    double e = el.e;
-    double i = el.i * DEG_TO_RAD;
-    double O = el.Omega * DEG_TO_RAD;
-    double w = el.omega * DEG_TO_RAD;
-    double M = el.M * DEG_TO_RAD;
-    
-    // Solve Kepler
-    double E = M;
-    for(int k=0; k<15; k++) E = M + e*std::sin(E);
-    
-    double nu = 2.0 * std::atan(std::sqrt((1.0+e)/(1.0-e)) * std::tan(E/2.0));
-    double r = a * (1.0 - e*std::cos(E));
-    double mu = 0.01720209895 * 0.01720209895; // GMS
-    double n = std::sqrt(mu / (a*a*a));
-    
-    // Pos/Vel in Orbital Plane
-    double X = r * std::cos(nu);
-    double Y = r * std::sin(nu);
-    double p = a * (1.0 - e*e);
-    double Vfac = std::sqrt(mu/p);
-    double VX = -Vfac * std::sin(nu);
-    double VY =  Vfac * (e + std::cos(nu));
-    
-    // Rotate to 3D (3-1-3 Euler: O, i, w) where w is argument of periapsis
-    // Correction: The order is usually Rz(-O) Rx(-i) Rz(-w) to go Inertial -> Orbital.
-    // So Orbital -> Inertial is Rz(O) Rx(i) Rz(w) ?? No.
-    // Standard: 
-    // x = r ( cO cw - sO sw ci ) - r sin(nu) ... no
-    // Let's rotate vectors.
-    // 1. Rotate by -w around Z (to align periapsis) -> actually vector is (X,Y,0) in Perifocal.
-    //    Rotate by -w? No, 'w' is angle from Node to Periapsis.
-    //    Perifocal to Nodal: Rz(-w)? No.
-    //    Let's use standard direction cosine matrix P and Q vectors.
-    // P = [ cO cw - sO sw ci ]
-    //     [ sO cw + cO sw ci ]
-    //     [ sw si            ]
-    // Q = [ -cO sw - sO cw ci ]
-    //     [ -sO sw + cO cw ci ]
-    //     [ cw si             ]
-    // r_vec = X*P + Y*Q
-    // v_vec = VX*P + VY*Q
-    
-    double cw = std::cos(w), sw = std::sin(w);
-    double cO = std::cos(O), sO = std::sin(O);
-    double ci = std::cos(i), si = std::sin(i);
-    
-    double Px = cO*cw - sO*sw*ci;
-    double Py = sO*cw + cO*sw*ci;
-    double Pz = sw*si;
-    
-    double Qx = -cO*sw - sO*cw*ci;
-    double Qy = -sO*sw + cO*cw*ci;
-    double Qz = cw*si;
-    
+    propagation::KeplerianElements kep = toAstDynKeplerian(el);
+    propagation::CartesianElements cart = propagation::keplerian_to_cartesian(kep);
     Cartesian c;
-    c.x = X*Px + Y*Qx;
-    c.y = X*Py + Y*Qy;
-    c.z = X*Pz + Y*Qz;
-    c.vx = VX*Px + VY*Qx;
-    c.vy = VX*Py + VY*Qy;
-    c.vz = VX*Pz + VY*Qz;
+    c.x = cart.position(0);
+    c.y = cart.position(1);
+    c.z = cart.position(2);
+    c.vx = cart.velocity(0);
+    c.vy = cart.velocity(1);
+    c.vz = cart.velocity(2);
     return c;
 }
 
-static AstDySElements cartesianToKeplerianElem(const Cartesian& c, double epoch, const std::string& name) {
-    double mu = 0.01720209895 * 0.01720209895;
-    double r = std::sqrt(c.x*c.x + c.y*c.y + c.z*c.z);
-    double v2 = c.vx*c.vx + c.vy*c.vy + c.vz*c.vz;
-    
-    // h = r x v
-    double hx = c.y*c.vz - c.z*c.vy;
-    double hy = c.z*c.vx - c.x*c.vz;
-    double hz = c.x*c.vy - c.y*c.vx;
-    double h2 = hx*hx + hy*hy + hz*hz;
-    double h = std::sqrt(h2);
-    
-    // i
-    double i = std::acos(hz/h);
-    
-    // Omega
-    double O = std::atan2(hx, -hy); // Node vector n = (-hy, hx, 0) -> No. n = k x h = (-hy, hx, 0).
-    // O is angle of n. atan2(ny, nx) = atan2(hx, -hy). Correct.
-    if (O < 0) O += 2*M_PI;
-    
-    // e vector
-    // e = (1/mu) * ((v^2 - mu/r)*r - (r.v)*v)
-    double rv = c.x*c.vx + c.y*c.vy + c.z*c.vz;
-    double ex = (1.0/mu) * ((v2 - mu/r)*c.x - rv*c.vx);
-    double ey = (1.0/mu) * ((v2 - mu/r)*c.y - rv*c.vy);
-    double ez = (1.0/mu) * ((v2 - mu/r)*c.z - rv*c.vz);
-    double e = std::sqrt(ex*ex + ey*ey + ez*ez);
-    
-    // omega
-    // w is angle from n to e.
-    // n = (-hy, hx, 0). n_mag = sqrt(hx^2+hy^2) = h sin i.
-    // cos w = n.e / (n e). sin w = (n x e).k / (n e) ? No.
-    // Easier: w = u - nu. u = arg of latitude.
-    // Let's use dot products.
-    // nx = -hy, ny = hx, nz = 0.
-    // n.e = nx*ex + ny*ey.
-    double nx = -hy, ny = hx;
-    double nmag = std::sqrt(nx*nx + ny*ny);
-    double w = 0;
-    if (nmag > 1e-10 && e > 1e-10) {
-        double c_w = (nx*ex + ny*ey) / (nmag*e);
-        if (c_w > 1.0) c_w = 1.0; if (c_w < -1.0) c_w = -1.0;
-        w = std::acos(c_w);
-        if (ez < 0) w = 2*M_PI - w;
-    }
-    
-    // a
-    double a = 1.0 / (2.0/r - v2/mu);
-    
-    // M
-    // find E first.
-    // cos E = (1 - r/a) / e
-    double E = 0;
-     if (e > 1e-10) {
-        double cE = (1.0 - r/a) / e;
-        if(cE > 1.0) cE=1.0; if(cE < -1.0) cE=-1.0;
-        E = std::acos(cE);
-        if (rv < 0) E = 2*M_PI - E;
-    }
-    double M = E - e*std::sin(E);
-    if(M<0) M += 2*M_PI;
-    
-    AstDySElements el;
-    el.name = name;
-    el.epoch_mjd = epoch;
-    el.a = a;
-    el.e = e;
-    el.i = i * RAD_TO_DEG;
-    el.Omega = O * RAD_TO_DEG;
-    el.omega = w * RAD_TO_DEG;
-    el.M = M * RAD_TO_DEG;
-    return el;
+static AstDySElements cartesianToKeplerianElem(const Cartesian& c, astdyn::MJD epoch, const std::string& name) {
+    propagation::CartesianElements cart;
+    cart.epoch_mjd_tdb = epoch;
+    cart.position << c.x, c.y, c.z;
+    cart.velocity << c.vx, c.vy, c.vz;
+    cart.gravitational_parameter = ac::GMS;
+    propagation::KeplerianElements kep = propagation::cartesian_to_keplerian(cart);
+    return fromAstDynKeplerian(kep, name);
 }
 
 static AstDySElements convertEclipticToEquatorial(const AstDySElements& el) {
     Cartesian c = keplerianToCartesianElem(el);
-    
-    // Rotate +Obliquity (Ecl -> Eq), obliquità media all'epoca elementi
-    double eps = meanObliquityOfEclipticRad(el.epoch_mjd + 2400000.5);  // MJD -> JD
+    double jd = at::mjd_to_jd(el.epoch_mjd);
+    double eps = meanObliquityOfEclipticRad(jd);
     double co = std::cos(eps);
     double so = std::sin(eps);
-    
+
     Cartesian eq;
     eq.x  = c.x;
     eq.y  = c.y * co - c.z * so;
@@ -317,7 +316,7 @@ static AstDySElements convertEclipticToEquatorial(const AstDySElements& el) {
     eq.vx = c.vx;
     eq.vy = c.vy * co - c.vz * so;
     eq.vz = c.vy * so + c.vz * co;
-    
+
     return cartesianToKeplerianElem(eq, el.epoch_mjd, el.name);
 }
 
@@ -341,7 +340,7 @@ static void writeRWO(const std::string& path, const std::string& name, const std
         // Conversione MJD -> Date
         int y, m; double d;
         double mjd = o.mjd_utc;
-        double jd = mjd + 2400000.5;
+        double jd = at::mjd_to_jd(mjd);
         int Z = (int)(jd + 0.5);
         double F = jd + 0.5 - Z;
         int A = Z;
@@ -421,10 +420,10 @@ static void writeEQ1(const std::string& path, const AstDySElements& el) {
     // Converti Keplerian (Degrees) -> Equinoctial
     double a = el.a;
     double e = el.e;
-    double i_rad = el.i * DEG_TO_RAD;
-    double Omega_rad = el.Omega * DEG_TO_RAD;
-    double omega_rad = el.omega * DEG_TO_RAD;
-    double M_rad = el.M * DEG_TO_RAD;
+    double i_rad = el.i * ac::DEG_TO_RAD;
+    double Omega_rad = el.Omega * ac::DEG_TO_RAD;
+    double omega_rad = el.omega * ac::DEG_TO_RAD;
+    double M_rad = el.M * ac::DEG_TO_RAD;
     
     double h = e * std::sin(omega_rad + Omega_rad);
     double k = e * std::cos(omega_rad + Omega_rad);
@@ -434,8 +433,8 @@ static void writeEQ1(const std::string& path, const AstDySElements& el) {
     double lambda_rad = M_rad + omega_rad + Omega_rad;
     
     // Normalize lambda 0-2PI
-    while (lambda_rad < 0.0) lambda_rad += 2.0*M_PI;
-    while (lambda_rad >= 2.0*M_PI) lambda_rad -= 2.0*M_PI;
+    while (lambda_rad < 0.0) lambda_rad += ac::TWO_PI;
+    while (lambda_rad >= ac::TWO_PI) lambda_rad -= ac::TWO_PI;
 
     std::ofstream f(path);
     if (!f.is_open()) {
@@ -451,7 +450,7 @@ static void writeEQ1(const std::string& path, const AstDySElements& el) {
     
     // Semplificato: parole chiave all'inizio della riga
     f << "EQU " << std::fixed << std::setprecision(16) 
-      << a << " " << h << " " << k << " " << p << " " << q << " " << (lambda_rad * RAD_TO_DEG) << "\n";
+      << a << " " << h << " " << k << " " << p << " " << q << " " << (lambda_rad * ac::RAD_TO_DEG) << "\n";
     f << "MJD " << std::fixed << std::setprecision(8) << el.epoch_mjd << " TDT\n";
     f.close();
 }
@@ -466,7 +465,7 @@ OrbitFitResult AstDynOrbitFitter::fit(const AstDySElements& initial_elements,
     
     // Debug Roundtrip
     // Convert back from Equatorial using inverse rotation
-    double eps = meanObliquityOfEclipticRad(init_eq.epoch_mjd + 2400000.5);
+    double eps = meanObliquityOfEclipticRad(at::mjd_to_jd(init_eq.epoch_mjd));
     double co = std::cos(eps); // Positive for Eq -> Ecl
     double so = std::sin(eps);
     Cartesian eq_c = keplerianToCartesianElem(init_eq);
@@ -525,10 +524,10 @@ OrbitFitResult AstDynOrbitFitter::fit(const AstDySElements& initial_elements,
             // Aggiorna elementi con quelli fittati
             out.fitted_elements.a = res.fitted_orbit.semi_major_axis;
             out.fitted_elements.e = res.fitted_orbit.eccentricity;
-            out.fitted_elements.i = res.fitted_orbit.inclination * RAD_TO_DEG;
-            out.fitted_elements.Omega = res.fitted_orbit.longitude_ascending_node * RAD_TO_DEG;
-            out.fitted_elements.omega = res.fitted_orbit.argument_perihelion * RAD_TO_DEG;
-            out.fitted_elements.M = res.fitted_orbit.mean_anomaly * RAD_TO_DEG;
+            out.fitted_elements.i = res.fitted_orbit.inclination * ac::RAD_TO_DEG;
+            out.fitted_elements.Omega = res.fitted_orbit.longitude_ascending_node * ac::RAD_TO_DEG;
+            out.fitted_elements.omega = res.fitted_orbit.argument_perihelion * ac::RAD_TO_DEG;
+            out.fitted_elements.M = res.fitted_orbit.mean_anomaly * ac::RAD_TO_DEG;
             out.fitted_elements.epoch_mjd = res.fitted_orbit.epoch_mjd_tdb;
             
             // CRITICAL FIX: The fitter always returns Equatorial ICRF elements
@@ -609,11 +608,11 @@ AstDySElements toAstDySElements(const OrbitalElements& elem) {
     out.number = elem.number;
     out.a = elem.a;
     out.e = elem.e;
-    out.i = elem.i * RAD_TO_DEG;
-    out.Omega = elem.Omega * RAD_TO_DEG;
-    out.omega = elem.omega * RAD_TO_DEG;
-    out.M = elem.M * RAD_TO_DEG;
-    out.epoch_mjd = elem.epoch.jd - 2400000.5;
+    out.i = elem.i * ac::RAD_TO_DEG;
+    out.Omega = elem.Omega * ac::RAD_TO_DEG;
+    out.omega = elem.omega * ac::RAD_TO_DEG;
+    out.M = elem.M * ac::RAD_TO_DEG;
+    out.epoch_mjd = at::jd_to_mjd(elem.epoch.jd);
     out.H = elem.H;
     out.G = elem.G;
     out.frame = elem.frame;
@@ -639,11 +638,11 @@ OrbitalElements fromAstDySElements(const AstDySElements& elem) {
     out.name = elem.name;
     out.a = elem.a;
     out.e = elem.e;
-    out.i = elem.i * M_PI / 180.0;
-    out.Omega = elem.Omega * M_PI / 180.0;
-    out.omega = elem.omega * M_PI / 180.0;
-    out.M = elem.M * M_PI / 180.0;
-    out.epoch = JulianDate(elem.epoch_mjd + 2400000.5);
+    out.i = elem.i * ac::RAD_TO_DEG;
+    out.Omega = elem.Omega * ac::RAD_TO_DEG;
+    out.omega = elem.omega * ac::RAD_TO_DEG;
+    out.M = elem.M * ac::RAD_TO_DEG;
+    out.epoch = JulianDate(at::mjd_to_jd(elem.epoch_mjd));
     out.H = elem.H;
     out.G = elem.G;
     out.frame = elem.frame;
@@ -655,9 +654,9 @@ OrbitalElements fromAstDySElements(const AstDySElements& elem) {
 RWOObservation toRWOObservation(const AstrometricObservation& obs) {
     // Already defined? No, this is the implementation file.
     RWOObservation rwo;
-    rwo.mjd_utc = obs.epoch.jd - 2400000.5;
-    rwo.ra_deg = obs.obs.ra * RAD_TO_DEG;
-    rwo.dec_deg = obs.obs.dec * RAD_TO_DEG;
+    rwo.mjd_utc = at::jd_to_mjd(obs.epoch.jd);
+    rwo.ra_deg = obs.obs.ra * ac::RAD_TO_DEG;
+    rwo.dec_deg = obs.obs.dec * ac::RAD_TO_DEG;
     rwo.ra_sigma_arcsec = obs.raError;
     rwo.dec_sigma_arcsec = obs.decError;
     rwo.obs_code = obs.observatoryCode;
@@ -666,9 +665,9 @@ RWOObservation toRWOObservation(const AstrometricObservation& obs) {
 
 AstrometricObservation fromRWOObservation(const RWOObservation& rwo) {
     AstrometricObservation obs;
-    obs.epoch.jd = rwo.mjd_utc + 2400000.5;
-    obs.obs.ra = rwo.ra_deg * DEG_TO_RAD;
-    obs.obs.dec = rwo.dec_deg * DEG_TO_RAD;
+    obs.epoch.jd = at::mjd_to_jd(rwo.mjd_utc);
+    obs.obs.ra = rwo.ra_deg * ac::DEG_TO_RAD;
+    obs.obs.dec = rwo.dec_deg * ac::DEG_TO_RAD;
     obs.raError = rwo.ra_sigma_arcsec;
     obs.decError = rwo.dec_sigma_arcsec;
     obs.observatoryCode = rwo.obs_code;
@@ -689,12 +688,12 @@ std::string formatChi2(double chi2, int ndf) {
     return ss.str();
 }
 
-AstDySElements parseEQ1File(const std::string& filename) {
-     throw std::runtime_error("Not implemented");
+std::optional<AstDySElements> parseEQ1File(const std::string& filename) {
+    return AstDySElements::tryFromFile(filename);
 }
 
-std::vector<RWOObservation> parseRWOFile(const std::string& filename) {
-     throw std::runtime_error("Not implemented");
+std::optional<std::vector<RWOObservation>> parseRWOFile(const std::string& filename) {
+    return RWOObservation::tryFromFile(filename);
 }
 
 } // namespace astdyn_utils

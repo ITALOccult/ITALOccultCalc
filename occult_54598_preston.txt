@@ -1,6 +1,0 @@
-  2.46109e+06 UTC
-Star: Gaia DR3 2545923851335601536  Mag 9.3088
-C/A: 402510"  PA: 0°
-Duration: 0 sec  Prob: 0.1%
-
-Center Line:
